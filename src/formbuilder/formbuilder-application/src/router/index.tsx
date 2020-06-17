@@ -3,7 +3,7 @@ import { Switch } from "react-router-dom";
 import { Route, Redirect } from "react-router-dom";
 
 import index from '../views/index';
-import createForm from "../views/createForm";
+import createForm from '../views/createForm';
 
 export default function Routes() {
   return (

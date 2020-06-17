@@ -1,17 +1,11 @@
 import React from 'react';
-//import logo from './logo.svg';
 import { Button } from "antd";
 
-import './App.css';
 
-function App() {
+function index() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Button type="primary" size="large" >Create form</Button>
-      </header>
-    </div>
+    <Button type="primary" size="large" >Create form</Button>
   );
 }
 
-export default App;
+export default index;
