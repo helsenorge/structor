@@ -2,7 +2,8 @@ import React from 'react';
 import { Button } from "antd";
 
 
-function createForm() {
+function CreateForm() {
+  console.log("hello");
   return (
       <div>
         <h1>Create form</h1>
@@ -11,4 +12,4 @@ function createForm() {
   );
 }
 
-export default createForm;
+export default CreateForm;
