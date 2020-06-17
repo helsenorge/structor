@@ -1,15 +1,25 @@
 import React from 'react';
-import { Button } from "antd";
+import { FunctionButton } from '@helsenorge/toolkit/components/atoms/buttons/function-button';
 
 
 function CreateForm() {
-  console.log("hello");
   return (
-      <div>
-        <h1>Create form</h1>
-        <Button type="primary" size="large" >Create form</Button>
+    <div style={{height: "100vh", width: "100vw", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
+    <h1>Overskrift</h1>
+    <div style={{display:"inline-block"}}>
+    <FunctionButton
+      iconType="add"
+      onClick={() => {
+        /* tom */
+      }}
+    >
+      {}
+    </FunctionButton>
       </div>
+</div>
   );
 }
 
 export default CreateForm;
+
+

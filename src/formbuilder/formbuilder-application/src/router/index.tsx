@@ -8,8 +8,8 @@ import CreateForm from '../views/createForm';
 export default function Routes() {
   return (
     <Switch>
-      <Route path="/" component={Index} />
-      <Route path="/create-form" component={CreateForm} />
+      <Route path="/" exact> <Index/></Route> 
+      <Route path="/create-form"><CreateForm/></Route> 
     </Switch>
   );
 }
