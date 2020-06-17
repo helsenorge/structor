@@ -1,8 +1,12 @@
 import React from "react";
-import "./App.css";
+import { Route, Switch } from "react-router-dom";
 
-const App = () => {
-  return <div className="App">Hei</div>;
-};
+import Dashboard from "./Dashboard/Dashboard";
+
+const App = () => (
+  <Switch>
+    <Route exact={true} path="/" component={Dashboard} />
+  </Switch>
+);
 
 export default App;
