@@ -1,15 +1,23 @@
-import React from 'react';
-import { Col, Row } from 'antd';
-import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import React from "react";
+import { Row, Col, Button } from "antd";
+import NavBar from "../components/formBuilder/NavBar";
+import Section from "../components/formBuilder/Section";
 
-function CreateForm(): JSX.Element {
-    return (
-        <Row justify="center" align="middle" style={{ height: '100vh' }}>
-            <Col span={8}>
-                <h1>Overskrift</h1>
-            </Col>
-        </Row>
-    );
+function CreateForm() {
+  return (
+    <div style={{ backgroundColor: "#C7C7C7", height: "100vh" }}>
+      <Row style={{ height: "56px" }}>
+        <Col span="24">
+          <NavBar></NavBar>
+        </Col>
+      </Row>
+      <Row>
+        <Col span="24">
+          <Section></Section>
+        </Col>
+      </Row>
+    </div>
+  );
 }
 
 export default CreateForm;
