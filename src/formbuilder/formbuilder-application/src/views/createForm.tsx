@@ -1,31 +1,15 @@
-import React from "react";
-import { FunctionButton } from "@helsenorge/toolkit/components/atoms/buttons/function-button";
+import React from 'react';
+import { Col, Row } from 'antd';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 
-function CreateForm() {
-  return (
-    <div
-      style={{
-        height: "100vh",
-        width: "100vw",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-      }}
-    >
-      <h1>Overskrift</h1>
-      <div style={{ display: "inline-block" }}>
-        <FunctionButton
-          iconType="add"
-          onClick={() => {
-            /* tom */
-          }}
-        >
-          {}
-        </FunctionButton>
-      </div>
-    </div>
-  );
+function CreateForm(): JSX.Element {
+    return (
+        <Row justify="center" align="middle" style={{ height: '100vh' }}>
+            <Col span={8}>
+                <h1>Overskrift</h1>
+            </Col>
+        </Row>
+    );
 }
 
 export default CreateForm;
