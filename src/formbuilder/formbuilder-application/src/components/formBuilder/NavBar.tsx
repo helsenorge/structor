@@ -7,17 +7,7 @@ const { Title } = Typography;
 
 function NavBar() {
   return (
-    <div
-      style={{
-        position: "fixed",
-        zIndex: 1,
-        width: "100%",
-        padding: "5px",
-        height: "56px",
-        display: "block",
-        backgroundColor: "#006D84",
-      }}
-    >
+    <div className="nav-bar" >
       <Row>
         <Col span={1}>
           <Tooltip title="Tilbake">
@@ -38,7 +28,7 @@ function NavBar() {
         <Col span={6}>
           <div style={{ float: "right" }}>
             <Button
-              className="navButton"
+              className="nav-button"
               type="link"
               size="large"
               style={{ margin: "2px" }}
@@ -47,7 +37,7 @@ function NavBar() {
               Forhåndsvisning
             </Button>
             <Button
-              className="navButton"
+              className="nav-button"
               type="link"
               size="large"
               style={{ margin: "2px 10px" }}
@@ -59,19 +49,6 @@ function NavBar() {
         </Col>
       </Row>
     </div>
-
-    /*
-                <PageHeader
-                    onBack={() => window.history.back()}
-                    title="Skjemabygger"
-                    extra={[
-                        <Button key="previewForm">Forhåndsvisning</Button>,
-                        <Button key="2">Lagre</Button>,
-                    ]}
-                    title-color="#FAFAFA"
-                    style={{backgroundColor:"#006D84", color:"#FAFAFA"}}
-                    ></PageHeader>
-            */
   );
 }
 
