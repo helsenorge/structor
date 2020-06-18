@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
 const MyPatients = () => {
-  return <div>View for mine Pasienter</div>;
+    return <div>View for mine Pasienter</div>;
 };
 
 export default MyPatients;
