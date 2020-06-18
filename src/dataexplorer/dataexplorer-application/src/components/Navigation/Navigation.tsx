@@ -34,8 +34,8 @@ const data =
   ]
   }
 
-const Navigation = ({}) => (
-  <React.Fragment>
+const Navigation = () => (
+  <>
     <Layout>
     <Sider
       breakpoint="xs"
@@ -72,7 +72,7 @@ const Navigation = ({}) => (
       <Footer />
     </Layout>
   </Layout>
-  </React.Fragment>
+  </>
 )
 
 export default withRouter(Navigation);
