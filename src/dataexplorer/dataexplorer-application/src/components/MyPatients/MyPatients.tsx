@@ -1,7 +1,7 @@
 import React from "react";
 
-const Dashboard = () => {
+const MyPatients = () => {
   return <div>View for mine Pasienter</div>;
 };
 
-export default Dashboard;
+export default MyPatients;

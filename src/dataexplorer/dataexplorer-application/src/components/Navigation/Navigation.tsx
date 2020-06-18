@@ -2,8 +2,8 @@ import React from 'react';
 import { Menu, Layout} from 'antd';
 import 'antd/dist/antd.css';
 import Dashboard from '../Dashboard/Dashboard'
-import MineSkjema from '../MineSkjema/MineSkjema'
-import MinePasienter from '../MinePasienter/MinePasienter'
+import MySchemas from '../MySchemas/MySchemas'
+import MyPatients from '../MyPatients/MyPatients'
 import {Switch, Route, Link, withRouter } from 'react-router-dom'
 import MenuItem from 'antd/lib/menu/MenuItem';
 
@@ -34,19 +34,6 @@ const data =
   ]
   }
 
-// for (let index = 0; index < array.length; index++) {
-//   const element = array[index];
-
-
-// Function for generating elements dynamically. Doesnt work yet.
-// const Generate = () => {
-//   {data.items.map(({id, url, title}) => (
-//       <Menu.Item key={id}> 
-//         <Link to={url}> {title} </Link> 
-//       </Menu.Item>
-// ))}
-// }
-
 const Navigation = ({}) => (
   <React.Fragment>
     <Layout>
@@ -69,22 +56,6 @@ const Navigation = ({}) => (
           <Link to={url}> {title} </Link> 
         </MenuItem>
         ))}
-
-        {/* <Menu.Item key="1">
-        <Link to="/" > Hjem </Link>
-        </Menu.Item>
-        <Menu.Item key="2">
-        <Link to="/skjema"> Mine Skjema </Link>
-        </Menu.Item>
-        <Menu.Item key="3">
-        <Link to="/pasient"> Mine Pasienter </Link>
-        </Menu.Item>
-        <Menu.Item key="4">
-            Søk
-        </Menu.Item>
-        <Menu.Item key="5">
-            Filtrer
-        </Menu.Item>   */}
       </Menu>
     </Sider>
     <Layout>
@@ -93,8 +64,8 @@ const Navigation = ({}) => (
         <div className="content">
           <Switch>
             <Route  exact path={"/"} component={Dashboard} />
-            <Route  exact path="/Skjema" component={MineSkjema} />
-            <Route  exact path="/Pasient" component={MinePasienter} />
+            <Route  exact path="/Skjema" component={MySchemas} />
+            <Route  exact path="/Pasient" component={MyPatients} />
           </Switch>
         </div>
       </Content>

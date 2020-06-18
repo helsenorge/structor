@@ -5,13 +5,11 @@ const Dashboard = () => {
     return <div>Hei</div>;
 =======
 import React from "react";
-import { Card, Row, Col, Space } from "antd";
+import { Card, Row, Col} from "antd";
 import Search from "antd/lib/input/Search";
 
-
-const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a blandit quam. Vestibulum metus nisi, imperdiet in nunc sed, tempus feugiat velit. Integer ut congue lectus, at semper neque. Aeneansit amet, iaculis ac neque."
-
 const Dashboard = () => {
+  const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a blandit quam. Vestibulum metus nisi, imperdiet in nunc sed, tempus feugiat velit. Integer ut congue lectus, at semper neque. Aeneansit amet, iaculis ac neque."
   return(
     <React.Fragment>
       <Row gutter={[60, 40]} justify={"center"}>
@@ -19,9 +17,7 @@ const Dashboard = () => {
         <Search placeholder="Finn et Skjema!" enterButton />
       </Col>
       </Row>
-
       <Row style={{paddingTop: 100}}/>
-
       <Row gutter={[105, 105]} justify={"center"}>
       <Col span={8}>
         <Card title="Mottatte Skjema" hoverable> 
@@ -34,8 +30,6 @@ const Dashboard = () => {
       </Col>
       </Row>
     </React.Fragment>
-
-
   ) 
 >>>>>>> Dashboard component
 };
