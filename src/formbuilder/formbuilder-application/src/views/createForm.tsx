@@ -1,29 +1,21 @@
 import React from "react";
-import { FunctionButton } from "@helsenorge/toolkit/components/atoms/buttons/function-button";
+import { Row, Col, Button } from "antd";
+import NavBar from "../components/formBuilder/NavBar";
+import Section from "../components/formBuilder/Section";
 
 function CreateForm() {
   return (
-    <div
-      style={{
-        height: "100vh",
-        width: "100vw",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-      }}
-    >
-      <h1>Overskrift</h1>
-      <div style={{ display: "inline-block" }}>
-        <FunctionButton
-          iconType="add"
-          onClick={() => {
-            /* tom */
-          }}
-        >
-          {}
-        </FunctionButton>
-      </div>
+    <div style={{ backgroundColor: "#C7C7C7", height: "100vh" }}>
+      <Row style={{ height: "56px" }}>
+        <Col span="24">
+          <NavBar></NavBar>
+        </Col>
+      </Row>
+      <Row>
+        <Col span="24">
+          <Section></Section>
+        </Col>
+      </Row>
     </div>
   );
 }

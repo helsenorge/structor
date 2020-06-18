@@ -1,0 +1,8 @@
+.navButton {
+    color:#FAFAFA !important;
+
+}
+.navButton:hover {
+    color:#FAFAFA !important;
+    border-color: #FAFAFA !important;
+}
