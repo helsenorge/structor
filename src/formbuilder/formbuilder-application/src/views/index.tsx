@@ -1,32 +1,54 @@
 import React from 'react';
-import { ActionButton } from '@helsenorge/toolkit/components/atoms/buttons/action-button';
 import { Link } from 'react-router-dom';
+import { Row, Col, Button } from 'antd';
 
 function Index(): JSX.Element {
     return (
-        <div
-            style={{
-                height: '100vh',
-                width: '100vw',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-            }}
+        <Row
+            align="middle"
+            justify="center"
+            style={{ backgroundColor: '#006D84', height: '100vh' }}
         >
-            <h1>Velkommen til skjemadesigneren</h1>
-            <div style={{ display: 'inline-block' }}>
-                <Link to="create-form">
-                    <ActionButton
-                        onClick={() => {
-                            /* */
-                        }}
-                    >
-                        {'Lag nytt spørreskjema'}
-                    </ActionButton>
-                </Link>
-            </div>
-        </div>
+            <Col
+                span={8}
+                style={{
+                    backgroundColor: '#FAFAFA',
+                    height: '33vh',
+                    boxShadow: '4px 4px 4px rgba(0, 0, 0, 0.25)',
+                }}
+            >
+                <Row align="middle" justify="center" style={{ height: '100%' }}>
+                    <Col>
+                        <Row gutter={[10, 48]}>
+                            <Col>
+                                <h1> Velkommen til skjemadesigneren</h1>
+                            </Col>
+                        </Row>
+                        <Row align="middle" justify="center">
+                            <Col>
+                                <div
+                                    style={{
+                                        display: 'inline-block',
+                                        alignContent: 'center',
+                                    }}
+                                >
+                                    <Link to="create-form">
+                                        <Button
+                                            style={{
+                                                backgroundColor: '#A61E7B',
+                                                color: '#FAFAFA',
+                                            }}
+                                        >
+                                            Lag nytt skjema
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
     );
 }
 
