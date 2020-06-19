@@ -18,7 +18,6 @@ function Section({id}:SectionProps) {
     }
 
     useEffect(() => {
-        console.log("I seksjon: ", id);
         findPlaceholder();
     });
 
