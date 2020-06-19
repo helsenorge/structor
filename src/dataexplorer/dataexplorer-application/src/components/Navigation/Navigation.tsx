@@ -2,8 +2,8 @@ import React from 'react';
 import { Menu, Layout } from 'antd';
 import 'antd/dist/antd.css';
 import Dashboard from '../Dashboard/Dashboard';
-import MySchemas from '../MySchemas/MySchemas';
-import MyPatients from '../MyPatients/MyPatients';
+import MySchemas from '../MySchemas/MySchemas.jsx';
+import MyPatients from '../MyPatients/MyPatients.jsx';
 import { Switch, Route, Link, withRouter } from 'react-router-dom';
 import MenuItem from 'antd/lib/menu/MenuItem';
 

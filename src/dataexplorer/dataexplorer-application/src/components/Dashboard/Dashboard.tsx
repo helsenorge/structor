@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, Row, Col } from 'antd';
-import Search from 'antd/lib/input/Search';
 
 const Dashboard = () => {
     const lorem =
@@ -8,9 +7,7 @@ const Dashboard = () => {
     return (
         <>
             <Row gutter={[60, 40]} justify={'center'}>
-                <Col span={300}>
-                    <Search placeholder="Finn et Skjema!" enterButton />
-                </Col>
+                <Col span={300}></Col>
             </Row>
             <Row style={{ paddingTop: 100 }} />
             <Row gutter={[105, 105]} justify={'center'}>
