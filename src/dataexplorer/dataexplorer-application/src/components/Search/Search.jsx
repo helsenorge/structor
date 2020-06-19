@@ -34,7 +34,7 @@ const SearchBox = () => {
             card.text.toLowerCase().includes(searchTerm)
             );
             setSearchResults(results);
-    }, [searchTerm, cards.items])
+    }, [searchTerm])
 
     return(
         <>
