@@ -3,7 +3,7 @@ import { Row, Col, Button } from 'antd';
 import TitleInput from '../questionComponent/TitleInput';
 import { PlusOutlined, MoreOutlined } from '@ant-design/icons';
 
-function Section() {
+function Section(): JSX.Element {
     return (
         <div
             style={{
