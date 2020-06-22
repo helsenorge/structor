@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Col, Row } from 'antd';
+import { Card } from 'antd';
 import Search from 'antd/lib/input/Search';
 import { IPatient } from 'types/IPatient';
 
@@ -60,6 +60,7 @@ const SearchBox = () => {
             card.name.toLowerCase().includes(searchTerm),
         );
         setSearchResults(results);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchTerm]);
 
     return (
