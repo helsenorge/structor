@@ -15,7 +15,7 @@ function NavBar() {
                             style={{
                                 margin: '5px',
                                 float: 'left',
-                                color: '#FAFAFA',
+                                color: 'var(--color-base-1)',
                             }}
                             type="link"
                             shape="circle"
@@ -27,7 +27,7 @@ function NavBar() {
                 <Col span={17}>
                     <Title
                         level={2}
-                        style={{ color: '#FAFAFA', float: 'left' }}
+                        style={{ color: 'var(--color-base-1)', float: 'left' }}
                     >
                         Skjemabygger
                     </Title>

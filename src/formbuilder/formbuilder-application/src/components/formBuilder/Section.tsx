@@ -1,44 +1,64 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Button } from 'antd';
-import TitleInput from '../questionComponent/TitleInput';
-import RadioButton from '../answerComponent/RadioButton';
-import { PlusOutlined, MoreOutlined } from '@ant-design/icons';
+import InputField from '../questionComponent/InputField';
+import { PlusOutlined, MoreOutlined, DeleteOutlined } from '@ant-design/icons';
 
-function Section() {
+type SectionProps = {
+    id: number;
+    removeSection: ()=> void;
+}
+
+function Section({id, removeSection}:SectionProps) {
+    const [placeholder, setPlaceholder] = useState('Tittel...');
+    const [isSection, setIsSection] = useState(false);
+    
+    function findPlaceholder(){
+        if (id === 0){
+            setIsSection(false);
+            setPlaceholder('Tittel...');
+            return;
+        } 
+        setIsSection(true);
+        setPlaceholder('Seksjonstittel...');
+    }
+
+    useEffect(() => {
+        findPlaceholder();
+    });
+
     return (
         <div
             style={{
                 margin: '10px',
                 padding: '10px',
-                backgroundColor: '#FAFAFA',
+                backgroundColor: 'var(--color-base-1)',
                 width: '95%',
+                display: 'inline-block'
             }}
         >
             <Row>
-                <Col span={24}>
+                <Col span={22}>
                     <div style={{ display: 'inline' }}>
-                        <TitleInput></TitleInput>
+                        <InputField placeholder={placeholder} />
                     </div>
                     <div style={{ display: 'inline' }}>
                         <Button
                             type="link"
                             shape="circle"
-                            style={{ color: '#A61E7B' }}
+                            style={{ color: 'var(--primary-1)' }}
                             icon={<MoreOutlined />}
                         />
                     </div>
-                    <div style={{ display: 'inline' }}>
-                        <RadioButton></RadioButton>
-                    </div>
-                    <div style={{ display: 'inline' }}>
-                        <Button
-                            type="link"
-                            shape="circle"
-                            style={{ color: '#A61E7B' }}
-                            icon={<MoreOutlined />}
-                        />
-                    </div>
-
+                </Col>
+                <Col span={2} >
+                    {isSection && (
+                    <Button 
+                        style={{zIndex: 1, color:'var(--primary-1)'}} 
+                        size='large' 
+                        icon={<DeleteOutlined/>} 
+                        type="link" 
+                        onClick={()=>removeSection()}/> 
+                    )}
                 </Col>
             </Row>
             <Row>
@@ -47,8 +67,8 @@ function Section() {
                         type="primary"
                         shape="circle"
                         style={{
-                            backgroundColor: '#A61E7B',
-                            borderColor: '#A61E7B',
+                            backgroundColor: 'var(--primary-1)',
+                            borderColor: 'var(--primary-1)',
                         }}
                         icon={<PlusOutlined />}
                         size="large"
