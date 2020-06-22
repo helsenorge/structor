@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Button } from 'antd';
 import InputField from '../questionComponent/InputField';
 import { PlusOutlined, MoreOutlined, DeleteOutlined } from '@ant-design/icons';
+import Question from '../questionComponent/Question';
 
 type SectionProps = {
     id: number;
@@ -41,14 +42,6 @@ function Section({id, removeSection}:SectionProps) {
                     <div style={{ display: 'inline' }}>
                         <InputField placeholder={placeholder} />
                     </div>
-                    <div style={{ display: 'inline' }}>
-                        <Button
-                            type="link"
-                            shape="circle"
-                            style={{ color: 'var(--primary-1)' }}
-                            icon={<MoreOutlined />}
-                        />
-                    </div>
                 </Col>
                 <Col span={2} >
                     {isSection && (
@@ -59,6 +52,12 @@ function Section({id, removeSection}:SectionProps) {
                         type="link" 
                         onClick={()=>removeSection()}/> 
                     )}
+                </Col>
+            </Row>
+            <Row>
+                <hr style={{color: 'black', width: '100%', border:'0.2px solid var(--color-base-2)'}}/>
+                <Col span={24}>
+                        <Question/>
                 </Col>
             </Row>
             <Row>

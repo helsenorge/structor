@@ -1,7 +1,26 @@
-.answer-component {
-    width: '60%';
-    display: 'inline-block';
-    padding: '5px';
-    borderStyle: 'dashed';
-    borderColor: '#A61E7B'
+@import "/src/index.css";
+
+@import "/node_modules/antd/dist/antd.css";
+
+.input-question:hover {
+    border-color: #A61E7B !important;
+    
 }
+.input-question:focus {
+    border-color: #A61E7B !important;
+    outline: 0 !important;
+    -webkit-box-shadow: 0 0 0 2px rgba(166,30,123, .2) !important;
+    box-shadow: 0 0 0 2px rgba(166,30,123, .2) !important;
+} 
+
+.ant-btn-primary {
+    background: var(--primary-1) !important;
+    border-color: transparent !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+    -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+  }
+
+  .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+      background-color: var(--color-base-2) !important;
+  }

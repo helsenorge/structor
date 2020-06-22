@@ -20,17 +20,15 @@ function CreateForm(): JSX.Element {
     }
 
     return (
-        <div style={{ backgroundColor: 'var(--color-base-2)', height: '100vh' }}>
+        <div>
             <Row>
                 <Col span={24}>
                     <NavBar/>
                 </Col>
             </Row>
             <Row style={{margin:'61px 0 0 0'}}>
-                <Col span={24}>
-                            
-                    <div style={{display:'inline', position:'relative'}}>
-                            
+                <Col span={24}>       
+                    <div style={{display:'inline', position:'relative'}}>  
                         { sections.map((section) => [
                             <Section key={section} id={section} removeSection={()=>removeSection(section)} />
                         ])}
