@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button } from 'antd';
 import InputField from '../questionComponent/InputField';
-import { PlusOutlined, MoreOutlined } from '@ant-design/icons';
+import { PlusOutlined, MoreOutlined, DeleteOutlined } from '@ant-design/icons';
 
 type SectionProps = {
     id: number;
+    removeSection: ()=> void;
 }
 
-function Section({id}:SectionProps) {
+function Section({id, removeSection}:SectionProps) {
     const [placeholder, setPlaceholder] = useState('Tittel...');
+    const [isSection, setIsSection] = useState(false);
+    
     function findPlaceholder(){
-        if (id == 0){
+        if (id === 0){
+            setIsSection(false);
             setPlaceholder('Tittel...');
             return;
         } 
+        setIsSection(true);
         setPlaceholder('Seksjonstittel...');
     }
 
@@ -32,7 +37,7 @@ function Section({id}:SectionProps) {
             }}
         >
             <Row>
-                <Col span={24}>
+                <Col span={22}>
                     <div style={{ display: 'inline' }}>
                         <InputField placeholder={placeholder} />
                     </div>
@@ -44,6 +49,16 @@ function Section({id}:SectionProps) {
                             icon={<MoreOutlined />}
                         />
                     </div>
+                </Col>
+                <Col span={2} >
+                    {isSection && (
+                    <Button 
+                        style={{zIndex: 1, color:'var(--primary-1)'}} 
+                        size='large' 
+                        icon={<DeleteOutlined/>} 
+                        type="link" 
+                        onClick={()=>removeSection()}/> 
+                    )}
                 </Col>
             </Row>
             <Row>
