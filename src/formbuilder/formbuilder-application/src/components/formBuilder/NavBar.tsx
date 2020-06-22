@@ -5,7 +5,7 @@ import './NavBar.css';
 
 const { Title } = Typography;
 
-function NavBar() {
+function NavBar(): JSX.Element {
     return (
         <div className="nav-bar">
             <Row>

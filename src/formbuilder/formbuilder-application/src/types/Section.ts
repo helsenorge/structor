@@ -1,4 +1,4 @@
-import Question from './IQuestion';
+import Question from './Question';
 import ISection from './ISection';
 import InvalidArgumentException from './InvalidArgumentException';
 
