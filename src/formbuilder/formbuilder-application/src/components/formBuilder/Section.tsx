@@ -14,9 +14,9 @@ function Section({ id, removeSection }: SectionProps): JSX.Element {
     const [isSection, setIsSection] = useState(false);
     const [questions, setQuestions] = useState([0]);
     const [count, setCount] = useState(0);
-    
-    function findPlaceholder(){
-        if (id === 0){
+
+    function findPlaceholder() {
+        if (id === 0) {
             setIsSection(false);
             setPlaceholder('Tittel...');
             return;
@@ -29,14 +29,14 @@ function Section({ id, removeSection }: SectionProps): JSX.Element {
         findPlaceholder();
     });
 
-    function addQuestion(){
-        questions.push(count+1);
+    function addQuestion() {
+        questions.push(count + 1);
         setQuestions(questions);
-        setCount(count+1);
+        setCount(count + 1);
     }
 
-    function removeQuestion(questionId:number){
-        setQuestions(questions.filter(index => index !==questionId));
+    function removeQuestion(questionId: number) {
+        setQuestions(questions.filter((index) => index !== questionId));
     }
 
     return (
@@ -57,38 +57,39 @@ function Section({ id, removeSection }: SectionProps): JSX.Element {
                 </Col>
                 <Col span={2}>
                     {isSection && (
-<<<<<<< HEAD
-                        <Button
-                            style={{ zIndex: 1, color: 'var(--primary-1)' }}
-                            size="large"
-                            icon={<DeleteOutlined />}
-                            type="link"
-                            onClick={() => removeSection()}
-                        />
-=======
                         <Tooltip title="Slett seksjon">
-                    <Button 
-                        style={{zIndex: 1, color:'var(--primary-1)'}} 
-                        size='large' 
-                        icon={<DeleteOutlined/>} 
-                        type="link" 
-                        onClick={()=>removeSection()}/> 
+                            <Button
+                                style={{ zIndex: 1, color: 'var(--primary-1)' }}
+                                size="large"
+                                icon={<DeleteOutlined />}
+                                type="link"
+                                onClick={() => removeSection()}
+                            />
                         </Tooltip>
->>>>>>> origin/fb-dev
                     )}
                 </Col>
             </Row>
             <Row>
                 <Col span={24}>
-                    { questions.map((question, index) => [
-                            <hr style={{color: 'black', width: '100%', border:'0.2px solid var(--color-base-2)'}}/>,
-                            <Question key={question} id={index} removeQuestion={()=>removeQuestion(question)}/>
-                            ]
-                        )}
+                    {questions.map((question, index) => [
+                        <hr
+                            key={'hr' + index}
+                            style={{
+                                color: 'black',
+                                width: '100%',
+                                border: '0.2px solid var(--color-base-2)',
+                            }}
+                        />,
+                        <Question
+                            key={question}
+                            id={index}
+                            removeQuestion={() => removeQuestion(question)}
+                        />,
+                    ])}
                 </Col>
             </Row>
             <Row>
-                <Col span={24} style={{margin:'10px'}}>
+                <Col span={24} style={{ margin: '10px' }}>
                     <Tooltip title="Legg til nytt spørsmål">
                         <Button
                             style={{

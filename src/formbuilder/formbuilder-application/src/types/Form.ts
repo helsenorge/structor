@@ -6,11 +6,10 @@ import Question from './Question';
 export type SectionList = { [sectionNumber: number]: Section };
 
 export default class Form {
-    static addSection(
-        sectionList: SectionList,
-        index?: number,
-    ): SectionList {
-        return sectionList[index] = new Section(index);
+    static addSection(sectionList: SectionList, index: number): SectionList {
+        if (!index) throw new InvalidArgumentException('No index was provided');
+        sectionList[index] = new Section(index);
+        return sectionList;
     }
 
     static removeSection(sectionList: SectionList, index: number): SectionList {
