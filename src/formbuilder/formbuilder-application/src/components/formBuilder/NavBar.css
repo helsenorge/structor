@@ -1,10 +1,10 @@
 .nav-button {
-    color:#FAFAFA !important;
+    color: var(--color-base-1) !important;
 
 }
 .nav-button:hover {
-    color:#FAFAFA !important;
-    border-color: #FAFAFA !important;
+    color: var(--color-base-1) !important;
+    border-color: var(--color-base-1) !important;
 }
 .nav-bar{
     position: fixed;
@@ -13,6 +13,6 @@
     padding: 5px;
     height: 56px;
     display: block;
-    background-color: #006D84;
+    background-color: var(--primary-2);
 
 }
