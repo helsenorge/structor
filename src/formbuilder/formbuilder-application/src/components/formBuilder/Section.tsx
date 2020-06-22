@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col, Button } from 'antd';
 import TitleInput from '../questionComponent/TitleInput';
+import RadioButton from '../answerComponent/RadioButton';
 import { PlusOutlined, MoreOutlined } from '@ant-design/icons';
 
 function Section() {
@@ -26,6 +27,18 @@ function Section() {
                             icon={<MoreOutlined />}
                         />
                     </div>
+                    <div style={{ display: 'inline' }}>
+                        <RadioButton></RadioButton>
+                    </div>
+                    <div style={{ display: 'inline' }}>
+                        <Button
+                            type="link"
+                            shape="circle"
+                            style={{ color: '#A61E7B' }}
+                            icon={<MoreOutlined />}
+                        />
+                    </div>
+
                 </Col>
             </Row>
             <Row>
