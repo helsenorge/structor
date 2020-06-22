@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import NavBar from '../components/formBuilder/NavBar';
 import Section from '../types/Section';
+import SectionRenderer from '../components/formBuilder/SectionRenderer';
 import Form from '../types/Form';
 import { SectionList } from '../types/Form';
 import * as DND from 'react-beautiful-dnd';
@@ -43,7 +44,7 @@ function CreateForm(): JSX.Element {
                         {Object.keys(sections).map((sectionId: string) => {
                             const section = sections[parseInt(sectionId)];
                             return (
-                                <Section
+                                <SectionRenderer
                                     key={section.id}
                                     id={section.id}
                                     removeSection={() =>
@@ -68,7 +69,7 @@ function CreateForm(): JSX.Element {
                             type="dashed"
                             ghost
                             size="large"
-                            onClick={addNewSection}
+                            onClick={() => addNewSection(i)}
                         >
                             Legg til ny seksjon
                         </Button>
