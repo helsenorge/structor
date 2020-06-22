@@ -48,20 +48,6 @@ const Question: React.FC = (): ReactElement => {
                         </Col>
                     </Row>
                     <AnswerComponent></AnswerComponent>
-                    <Row>
-                        <Col span={23}>
-                            <Button
-                                type="primary"
-                                shape="circle"
-                                style={{
-                                    backgroundColor: '#A61E7B',
-                                    borderColor: '#A61E7B',
-                                }}
-                                icon={<PlusOutlined />}
-                                size="large"
-                            />
-                        </Col>
-                    </Row>
                 </Col>
 
                 <Col span={1}>
@@ -69,7 +55,7 @@ const Question: React.FC = (): ReactElement => {
                         <Button
                             type="link"
                             shape="circle"
-                            style={{ color: '#A61E7B' }}
+                            style={{ color: 'var(--primary-1)' }}
                             icon={<MoreOutlined />}
                         />
                     </div>
