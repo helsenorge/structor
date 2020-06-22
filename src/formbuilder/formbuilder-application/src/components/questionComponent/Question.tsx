@@ -1,11 +1,24 @@
-import React, { ReactElement } from 'react';
-import { Input, Row, Col, Button } from 'antd';
-import { PlusOutlined, MoreOutlined } from '@ant-design/icons';
+import React, { useEffect, useState } from 'react';
+import { Input, Row, Col, Button, Tooltip } from 'antd';
+import { MoreOutlined, DeleteOutlined } from '@ant-design/icons';
 import './QuestionComponents.css';
 import AnswerComponent from '../answerComponent/AnswerComponent';
 const { TextArea } = Input;
 
-const Question: React.FC = (): ReactElement => {
+type QuestionProps ={
+    id: number;
+    removeQuestion: ()=> void;
+}
+
+function Question({id, removeQuestion}:QuestionProps){
+    const [placeholder, setPlaceholder] = useState('Spørsmål 1...');
+    useEffect(() => {
+        findPlaceholder();
+    });
+    function findPlaceholder(){
+        console.log(id+1);
+        setPlaceholder('Spørsmål ' + (id+1) + '...');
+    }
     return (
         <div>
             <Row>
@@ -21,14 +34,22 @@ const Question: React.FC = (): ReactElement => {
                                     }}
                                 >
                                     <TextArea
-                                        rows={2}
-                                        placeholder="Spørsmål...."
+                                        rows={1}
+                                        placeholder={placeholder} 
                                     />
                                 </div>
                             </div>
                         </Col>
+                        <Col>
+                        <Tooltip title="Slett spørsmål">
+                    <Button 
+                        style={{zIndex: 1, color:'var(--primary-1)'}}  
+                        icon={<DeleteOutlined/>} 
+                        type="link" 
+                        onClick={()=>removeQuestion()}/> 
+                        </Tooltip>
+                        </Col>
                     </Row>
-
                     <Row>
                         <Col span={23}>
                             <div style={{ display: 'inline' }}>
@@ -47,9 +68,8 @@ const Question: React.FC = (): ReactElement => {
                             </div>
                         </Col>
                     </Row>
-                    <AnswerComponent></AnswerComponent>
+                    <AnswerComponent/>
                 </Col>
-
                 <Col span={1}>
                     <div style={{ display: 'inline' }}>
                         <Button
