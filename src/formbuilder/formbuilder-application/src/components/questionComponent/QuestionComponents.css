@@ -1,3 +1,5 @@
+@import "/index.css";
+
 .input-question:hover {
     border-color: var(--primary-1) !important;
     

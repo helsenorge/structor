@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Tooltip } from 'antd';
 import InputField from '../questionComponent/InputField';
-import { PlusOutlined, MoreOutlined, DeleteOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import Question from '../questionComponent/Question';
 
 type SectionProps = {
     id: number;
@@ -11,9 +12,11 @@ type SectionProps = {
 function Section({ id, removeSection }: SectionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Tittel...');
     const [isSection, setIsSection] = useState(false);
-
-    function findPlaceholder() {
-        if (id === 0) {
+    const [questions, setQuestions] = useState([0]);
+    const [count, setCount] = useState(0);
+    
+    function findPlaceholder(){
+        if (id === 0){
             setIsSection(false);
             setPlaceholder('Tittel...');
             return;
@@ -25,6 +28,16 @@ function Section({ id, removeSection }: SectionProps): JSX.Element {
     useEffect(() => {
         findPlaceholder();
     });
+
+    function addQuestion(){
+        questions.push(count+1);
+        setQuestions(questions);
+        setCount(count+1);
+    }
+
+    function removeQuestion(questionId:number){
+        setQuestions(questions.filter(index => index !==questionId));
+    }
 
     return (
         <div
@@ -41,17 +54,10 @@ function Section({ id, removeSection }: SectionProps): JSX.Element {
                     <div style={{ display: 'inline' }}>
                         <InputField placeholder={placeholder} />
                     </div>
-                    <div style={{ display: 'inline' }}>
-                        <Button
-                            type="link"
-                            shape="circle"
-                            style={{ color: 'var(--primary-1)' }}
-                            icon={<MoreOutlined />}
-                        />
-                    </div>
                 </Col>
                 <Col span={2}>
                     {isSection && (
+<<<<<<< HEAD
                         <Button
                             style={{ zIndex: 1, color: 'var(--primary-1)' }}
                             size="large"
@@ -59,21 +65,42 @@ function Section({ id, removeSection }: SectionProps): JSX.Element {
                             type="link"
                             onClick={() => removeSection()}
                         />
+=======
+                        <Tooltip title="Slett seksjon">
+                    <Button 
+                        style={{zIndex: 1, color:'var(--primary-1)'}} 
+                        size='large' 
+                        icon={<DeleteOutlined/>} 
+                        type="link" 
+                        onClick={()=>removeSection()}/> 
+                        </Tooltip>
+>>>>>>> origin/fb-dev
                     )}
                 </Col>
             </Row>
             <Row>
                 <Col span={24}>
-                    <Button
-                        type="primary"
-                        shape="circle"
-                        style={{
-                            backgroundColor: 'var(--primary-1)',
-                            borderColor: 'var(--primary-1)',
-                        }}
-                        icon={<PlusOutlined />}
-                        size="large"
-                    />
+                    { questions.map((question, index) => [
+                            <hr style={{color: 'black', width: '100%', border:'0.2px solid var(--color-base-2)'}}/>,
+                            <Question key={question} id={index} removeQuestion={()=>removeQuestion(question)}/>
+                            ]
+                        )}
+                </Col>
+            </Row>
+            <Row>
+                <Col span={24} style={{margin:'10px'}}>
+                    <Tooltip title="Legg til nytt spørsmål">
+                        <Button
+                            style={{
+                                backgroundColor: 'var(--primary-1)',
+                                borderColor: 'var(--primary-1)',
+                            }}
+                            type="primary"
+                            shape="circle"
+                            icon={<PlusOutlined />}
+                            onClick={addQuestion}
+                        />
+                    </Tooltip>
                 </Col>
             </Row>
         </div>

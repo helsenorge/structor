@@ -31,12 +31,7 @@ function CreateForm(): JSX.Element {
     }
 
     return (
-        <div
-            style={{
-                backgroundColor: 'var(--color-base-2)',
-                height: '100vh',
-            }}
-        >
+        <div>
             <Row>
                 <Col span={24}>
                     <NavBar />
@@ -51,7 +46,9 @@ function CreateForm(): JSX.Element {
                                 <Section
                                     key={section.id}
                                     id={section.id}
-                                    removeSection={() => removeSection(section.id)}
+                                    removeSection={() =>
+                                        removeSection(section.id)
+                                    }
                                 />
                             );
                         })}
