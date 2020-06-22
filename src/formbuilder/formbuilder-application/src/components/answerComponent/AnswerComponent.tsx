@@ -12,26 +12,26 @@ const AnswerComponent: React.FC = (): ReactElement => {
             <div style={{ display: 'inline', marginBottom: '100px' }}>
                 <Button
                     className="answerPickerButton"
-                    {...(answerType == 'boolean' ? { type: 'primary' } : {})}
+                    {...(answerType === 'boolean' ? { type: 'primary' } : {})}
                     onClick={() => setAnswerType('boolean')}
                 >
                     Ja/nei
                 </Button>
                 <Button
                     onClick={() => setAnswerType('decimal')}
-                    {...(answerType == 'decimal' ? { type: 'primary' } : {})}
+                    {...(answerType === 'decimal' ? { type: 'primary' } : {})}
                 >
                     Tall
                 </Button>
                 <Button
                     onClick={() => setAnswerType('text')}
-                    {...(answerType == 'text' ? { type: 'primary' } : {})}
+                    {...(answerType === 'text' ? { type: 'primary' } : {})}
                 >
                     Tekst
                 </Button>
                 <Button
                     onClick={() => setAnswerType('textArea')}
-                    {...(answerType == 'textArea' ? { type: 'primary' } : {})}
+                    {...(answerType === 'textArea' ? { type: 'primary' } : {})}
                 >
                     Lang tekst
                 </Button>
