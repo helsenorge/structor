@@ -1,6 +1,8 @@
 import React, { useState, ReactElement } from 'react';
 import { Button, Row, Col, Radio, Select } from 'antd';
 import './AnswerComponent.css';
+import RadioButton from './RadioButton';
+
 
 const AnswerComponent: React.FC = (): ReactElement => {
     const [answerType, setAnswerType] = useState('');
@@ -34,6 +36,12 @@ const AnswerComponent: React.FC = (): ReactElement => {
                     {...(answerType === 'textArea' ? { type: 'primary' } : {})}
                 >
                     Lang tekst
+                </Button>
+                <Button
+                    onClick={() => setAnswerType('radio')}
+                    {...(answerType == 'radio' ? { type: 'primary' } : {})}
+                >
+                    Radio button
                 </Button>
 
                 <Select
@@ -142,6 +150,33 @@ const AnswerComponent: React.FC = (): ReactElement => {
                     </Row>
                 </div>
             );
+
+            case 'radio':
+                return (
+                    <div
+                        style={{
+                            width: '100%',
+                            display: 'inline-block',
+                            marginBottom: '20px',
+                        }}
+                    >
+                        {answerPicker()}
+                        <Row>
+                            <Col span={23}>
+                                <div style={{ width: '100%', display: 'inline' }}>
+                                    <RadioButton></RadioButton>
+                                </div>
+                            </Col>
+                            <Col span={1}>
+                                <div>
+                                    <Button onClick={() => setAnswerType('')}>
+                                        X
+                                    </Button>
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+                );
         default:
             return (
                 <div
