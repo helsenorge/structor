@@ -31,7 +31,12 @@ function RadioButton() {
 
     function createButton(id: number) {
         return (
-            <Radio key={'radio' + id} style={radioStyle} value={id}>
+            <Radio
+                key={'radio' + id}
+                style={radioStyle}
+                value={id}
+                disabled={true}
+            >
                 {' '}
                 {buttonText}{' '}
                 <Button
@@ -52,7 +57,7 @@ function RadioButton() {
     }
 
     return (
-        <div className="question-component">
+        <div className="question-component" style={{ marginTop: '20px' }}>
             <h4>Radio buttons</h4>
             <Radio.Group name="radiogroup">
                 {buttonIndexes.map((id) => [createButton(id)])}
