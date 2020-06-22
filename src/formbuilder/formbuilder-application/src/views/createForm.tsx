@@ -15,16 +15,20 @@ function CreateForm(): JSX.Element {
     const [sections, setSections] = useState(initList);
 
     function addNewSection(index?: number) {
+        console.log(i);
         setI(i + 1);
+        console.log(i);
         if (index && !sections[index]) {
             setSections(Form.addSection(sections, index));
         } else {
-            setSections(Form.addSection(sections, i));
+            setSections(Form.addSection(sections, i + 1));
         }
     }
 
     function removeSection(index: number) {
+        console.log(sections);
         setSections(Form.removeSection(sections, index));
+        console.log(sections);
     }
 
     function onDragEnd(sections: SectionList, result: DND.DropResult) {
@@ -69,7 +73,7 @@ function CreateForm(): JSX.Element {
                             type="dashed"
                             ghost
                             size="large"
-                            onClick={() => addNewSection(i)}
+                            onClick={() => addNewSection()}
                         >
                             Legg til ny seksjon
                         </Button>
