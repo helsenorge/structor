@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchBox from '../../components/Search/Search';
+import SearchBox from '../SearchBox/SearchBox';
 const MyPatients = () => {
     return (
         <div>
