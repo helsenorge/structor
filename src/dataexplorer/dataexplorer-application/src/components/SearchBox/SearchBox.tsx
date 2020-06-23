@@ -90,7 +90,11 @@ const SearchBox = () => {
     return (
         <>
             <div className="searchbox">
-                <Search onChange={handleChange} />
+                <Search
+                    placeholder="Søk etter en pasient"
+                    onChange={handleChange}
+                    loading
+                />
             </div>
             <div>
                 {searchResults.map((data) => (

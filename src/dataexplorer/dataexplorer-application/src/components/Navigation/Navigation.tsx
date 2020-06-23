@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Layout } from 'antd';
+import { Menu, Layout, Avatar } from 'antd';
 import 'antd/dist/antd.css';
 import Dashboard from '../Dashboard/Dashboard';
 import MySchemas from '../MySchemas/MySchemas';
@@ -42,7 +42,8 @@ const Navigation = () => (
                         style={{
                             color: 'white',
                             paddingLeft: 20,
-                            paddingTop: 26,
+                            paddingTop: 20,
+                            marginBottom: 15,
                         }}
                     >
                         Datautforskeren
@@ -59,8 +60,53 @@ const Navigation = () => (
             <Layout>
                 <Header
                     className="site-layout-sub-header-background"
-                    style={{ padding: 0 }}
-                />
+                    style={{
+                        padding: 0,
+                        position: 'fixed',
+                        zIndex: 1,
+                        width: '100%',
+                        flexDirection: 'row',
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar
+                        shape="square"
+                        size="large"
+                        src="https://i.pinimg.com/236x/6c/ab/cc/6cabccf7f0ebb599cb4fd1dd783877dd--wallpaper-house-gregory-house.jpg"
+                    />
+                    <h1
+                        style={{
+                            color: 'white',
+                            paddingRight: 220,
+                            paddingLeft: 20,
+                        }}
+                    >
+                        Dr. Gregory House
+                    </h1>
+                </Header>
+                <Header
+                    className="patientHeader"
+                    style={{
+                        padding: 0,
+                        position: 'fixed',
+                        zIndex: 2,
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignContent: 'center',
+                        marginTop: 64,
+                        backgroundColor: 'lightgrey',
+                        height: 30,
+                        borderBottom: 'solid grey 1px',
+                    }}
+                >
+                    <p style={{ paddingRight: 200, paddingTop: 10 }}>
+                        Du undersøker nå: Erling van de Weijer{' '}
+                    </p>
+                </Header>
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div className="content">
                         <Switch>
