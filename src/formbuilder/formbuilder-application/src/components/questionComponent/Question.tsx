@@ -10,7 +10,7 @@ type QuestionProps = {
     removeQuestion: () => void;
 };
 
-function Question({ id, removeQuestion }: QuestionProps) {
+function Question({ id, removeQuestion }: QuestionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Spørsmål 1...');
     useEffect(() => {
         findPlaceholder();
