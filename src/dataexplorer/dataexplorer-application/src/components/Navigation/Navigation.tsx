@@ -16,14 +16,9 @@ const data = {
             title: 'Hjem',
         },
         {
-            id: 2,
-            url: '/Skjema',
-            title: 'Mine Skjema',
-        },
-        {
             id: 3,
             url: '/Pasient',
-            title: 'Mine pasienter',
+            title: 'Finn en pasient ->',
         },
         {
             id: 4,
