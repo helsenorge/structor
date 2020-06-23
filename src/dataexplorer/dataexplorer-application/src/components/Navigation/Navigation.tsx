@@ -4,6 +4,7 @@ import 'antd/dist/antd.css';
 import Dashboard from '../Dashboard/Dashboard';
 import MySchemas from '../MySchemas/MySchemas';
 import MyPatients from '../MyPatients/MyPatients';
+import SchemaView from '../PatientInfo/SchemaView/SchemaView';
 import { Switch, Route, Link, withRouter } from 'react-router-dom';
 import MenuItem from 'antd/lib/menu/MenuItem';
 
@@ -111,6 +112,11 @@ const Navigation = () => (
                                 exact
                                 path="/Pasient"
                                 component={MyPatients}
+                            />
+                            <Route
+                                exact
+                                path="/Pasient/SkjemaVisning"
+                                component={SchemaView}
                             />
                         </Switch>
                     </div>
