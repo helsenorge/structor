@@ -3,7 +3,7 @@ import { Card } from 'antd';
 import Search from 'antd/lib/input/Search';
 import { IPatient } from 'types/IPatient';
 
-const SearchBox = () => {
+const SearchBox = (props: any) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState<IPatient[]>([]);
 
@@ -91,7 +91,7 @@ const SearchBox = () => {
         <>
             <div className="searchbox">
                 <Search
-                    placeholder="Søk etter en pasient"
+                    placeholder={props.placeholder}
                     onChange={handleChange}
                     loading
                 />
