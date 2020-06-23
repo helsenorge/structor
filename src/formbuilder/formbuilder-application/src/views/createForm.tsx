@@ -15,9 +15,8 @@ function CreateForm(): JSX.Element {
     const [sections, setSections] = useState(initList);
 
     function addNewSection(index?: number) {
-        console.log(i);
         setI(i + 1);
-        console.log(i);
+        console.log(sections);
         if (index && !sections[index]) {
             setSections(Form.addSection(sections, index));
         } else {
@@ -26,9 +25,7 @@ function CreateForm(): JSX.Element {
     }
 
     function removeSection(index: number) {
-        console.log(sections);
         setSections(Form.removeSection(sections, index));
-        console.log(sections);
     }
 
     function onDragEnd(sections: SectionList, result: DND.DropResult) {

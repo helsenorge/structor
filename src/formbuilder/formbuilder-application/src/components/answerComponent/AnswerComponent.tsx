@@ -7,7 +7,6 @@ const AnswerComponent: React.FC = (): ReactElement => {
 
     const { Option } = Select;
     function answerPicker() {
-        console.log(answerType);
         return (
             <div style={{ display: 'inline', marginBottom: '100px' }}>
                 <Button

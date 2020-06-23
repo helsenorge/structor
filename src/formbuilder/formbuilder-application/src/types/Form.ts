@@ -14,8 +14,8 @@ export default class Form {
 
     static removeSection(sectionList: SectionList, index: number): SectionList {
         if (!index) throw new InvalidArgumentException('No index was provided');
-        delete sectionList[index];
-        return sectionList;
+        const { [index]: omit, ...res } = sectionList;
+        return res;
     }
 
     static reorderSections(
