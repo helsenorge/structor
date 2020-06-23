@@ -7,4 +7,12 @@
 .section-button:hover {
     color: var(--color-base-1) !important;
     border-color: var(--color-base-1) !important;
+    background-color: var(--color-base-3) !important;
+}
+
+.section-button:focus {
+    border-color: var(--color-base-1) !important;
+    outline: 0 !important;
+    -webkit-box-shadow: 0 0 0 2px rgba(250,250,250, .2) !important;
+    box-shadow: 0 0 0 2px rgba(250,250,250, .2) !important;
 }

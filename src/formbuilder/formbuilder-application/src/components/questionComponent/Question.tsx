@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Input, Row, Col, Button, Tooltip } from 'antd';
-import { MoreOutlined, DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import './QuestionComponents.css';
 import AnswerComponent from '../answerComponent/AnswerComponent';
 const { TextArea } = Input;
@@ -21,10 +21,9 @@ function Question({id, removeQuestion}:QuestionProps){
     }
     return (
         <div>
-            <Row>
-                <Col span={23}>
+            
                     <Row>
-                        <Col span={23}>
+                        <Col span={22}>
                             <div style={{ display: 'inline' }}>
                                 <div
                                     style={{
@@ -40,18 +39,28 @@ function Question({id, removeQuestion}:QuestionProps){
                                 </div>
                             </div>
                         </Col>
-                        <Col>
-                        <Tooltip title="Slett spørsmål">
-                    <Button 
-                        style={{zIndex: 1, color:'var(--primary-1)'}}  
-                        icon={<DeleteOutlined/>} 
-                        type="link" 
-                        onClick={()=>removeQuestion()}/> 
-                        </Tooltip>
+                        <Col span={1}>
+                            <Tooltip title="Slett spørsmål">
+                                <Button 
+                                    style={{zIndex: 1, color:'var(--primary-1)'}}  
+                                    icon={<DeleteOutlined/>} 
+                                    type="link" 
+                                    onClick={()=>removeQuestion()}/> 
+                            </Tooltip>
+                        </Col>
+                        <Col span={1}>
+                                <Tooltip title="Flytt spørsmål">
+                                    <Button 
+                                        style={{zIndex: 1, color:'var(--primary-1)'}} 
+                                        size='large' 
+                                        type="link">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path fill="var(--primary-1)" d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"/></svg>
+                                    </Button> 
+                                </Tooltip>                            
                         </Col>
                     </Row>
                     <Row>
-                        <Col span={23}>
+                        <Col span={22}>
                             <div style={{ display: 'inline' }}>
                                 <div
                                     style={{
@@ -69,18 +78,7 @@ function Question({id, removeQuestion}:QuestionProps){
                         </Col>
                     </Row>
                     <AnswerComponent/>
-                </Col>
-                <Col span={1}>
-                    <div style={{ display: 'inline' }}>
-                        <Button
-                            type="link"
-                            shape="circle"
-                            style={{ color: 'var(--primary-1)' }}
-                            icon={<MoreOutlined />}
-                        />
-                    </div>
-                </Col>
-            </Row>
+                
         </div>
     );
 };
