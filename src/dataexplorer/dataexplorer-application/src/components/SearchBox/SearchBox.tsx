@@ -12,52 +12,76 @@ const SearchBox = () => {
     };
     const cards: IPatient[] = [
         {
-            id: 1,
-            name: 'Erling',
-            description: ['tall', 'male', 'sick'],
-            age: 98,
-            isHuman: true,
+            id: '1',
+            birthDate: '2015-01-02',
+            gender: 'male',
+            name: [
+                {
+                    family: 'Er',
+                    given: ['Erling'],
+                },
+            ],
         },
         {
-            id: 2,
-            name: 'Frøydis',
-            description: ['short', 'male', 'healthy'],
-            age: 27,
-            isHuman: false,
+            id: '2',
+            birthDate: '2016-01-02',
+            gender: 'male',
+            name: [
+                {
+                    family: 'Ma',
+                    given: ['Marius'],
+                },
+            ],
         },
         {
-            id: 3,
-            name: 'Marius',
-            description: ['short', 'male', ''],
-            age: 14,
-            isHuman: true,
+            id: '3',
+            birthDate: '2017-01-02',
+            gender: 'female',
+            name: [
+                {
+                    family: 'Fr',
+                    given: ['Frøydis'],
+                },
+            ],
         },
         {
-            id: 4,
-            name: 'Rebekka',
-            description: ['tall', 'female', 'sick'],
-            age: 16,
-            isHuman: true,
+            id: '4',
+            birthDate: '2018-01-02',
+            gender: 'female',
+            name: [
+                {
+                    family: 'Re',
+                    given: ['Rebekka'],
+                },
+            ],
         },
         {
-            id: 5,
-            name: 'Jenny',
-            description: ['tall', 'female', 'sick'],
-            age: 42,
-            isHuman: false,
+            id: '5',
+            birthDate: '2019-01-02',
+            gender: 'robot',
+            name: [
+                {
+                    family: 'Pan',
+                    given: ['Pieter'],
+                },
+            ],
         },
         {
-            id: 6,
-            name: 'Jens',
-            description: ['tall', 'female', 'sick'],
-            age: 7,
-            isHuman: true,
+            id: '6',
+            birthDate: '2020-01-02',
+            gender: 'apache helicopter',
+            name: [
+                {
+                    family: 'van de Heuvel',
+                    given: ['Pieter'],
+                },
+            ],
         },
     ];
 
     useEffect(() => {
         const results: IPatient[] = cards.filter((card) =>
-            card.name.toLowerCase().includes(searchTerm),
+            card.name[0].given[0].includes(searchTerm),
         );
         setSearchResults(results);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,15 +97,6 @@ const SearchBox = () => {
                     <Card key={data.id} hoverable>
                         <h1>{data.name}</h1>
                         <p>Patient ID: {data.id} </p>
-                        <p>Age: {data.age} years old.</p>
-                        <p>
-                            Description:{' '}
-                            {data.description[0] +
-                                ' ' +
-                                data.description[1] +
-                                ' ' +
-                                data.description[2]}
-                        </p>
                     </Card>
                 ))}
             </div>

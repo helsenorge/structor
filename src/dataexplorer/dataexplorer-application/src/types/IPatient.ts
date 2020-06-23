@@ -1,7 +1,11 @@
 export interface IPatient {
-    id: number;
-    name: string;
-    description: string[];
-    isHuman: boolean;
-    age?: number;
+    id: string;
+    name: IName[];
+    birthDate: string;
+    gender: string;
+}
+
+export interface IName {
+    family: string;
+    given: string[];
 }
