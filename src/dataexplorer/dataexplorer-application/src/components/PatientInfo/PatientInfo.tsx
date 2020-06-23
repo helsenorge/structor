@@ -5,8 +5,6 @@ import { IPatient } from 'types/IPatient';
 const PatientInfo = ({ patientID }: any) => {
     const { response } = useFetch<IPatient>('fhir/Patient/' + patientID);
 
-    console.log(response);
-
     if (response && response !== undefined) {
         return displayPatientInfo(response);
     }
