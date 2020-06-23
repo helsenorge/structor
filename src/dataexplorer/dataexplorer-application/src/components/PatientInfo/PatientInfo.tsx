@@ -3,7 +3,10 @@ import useFetch from 'utils/hooks/useFetch';
 import { IPatient } from 'types/IPatient';
 
 const PatientInfo = ({ patientID }: any) => {
-    const { response } = useFetch<IPatient>('fhir/Patient/' + patientID);
+    const { response } = useFetch<IPatient>(
+        'fhir/Patient/' + patientID,
+        patientID,
+    );
 
     if (response && response !== undefined) {
         return displayPatientInfo(response);
