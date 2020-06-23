@@ -9,7 +9,7 @@ type SectionProps = {
     removeSection: () => void;
 };
 
-function Section({ id, removeSection }: SectionProps) {
+function Section({ id, removeSection }: SectionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Tittel...');
     const [isSection, setIsSection] = useState(false);
     const [questions, setQuestions] = useState([0]);
