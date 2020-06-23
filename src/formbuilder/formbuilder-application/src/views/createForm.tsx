@@ -28,9 +28,9 @@ function CreateForm(): JSX.Element {
         setSections(Form.removeSection(sections, index));
     }
 
-    function onDragEnd(sections: SectionList, result: DND.DropResult) {
-        setSections(Form.onDragEnd(sections, result));
-    }
+    // function onDragEnd(sections: SectionList, result: DND.DropResult) {
+    //     setSections(Form.onDragEnd(sections, result));
+    // }
 
     return (
         <div>

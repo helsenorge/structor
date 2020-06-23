@@ -2,7 +2,7 @@ import React, { useState, ReactElement } from 'react';
 import { Button, Row, Col, Radio, Select } from 'antd';
 import './AnswerComponent.css';
 import TextInput from './TextInput';
-import TextArea from 'antd/lib/input/TextArea';
+// import TextArea from 'antd/lib/input/TextArea';
 import TextInputLong from './TextInputLong';
 import RadioButton from './RadioButton';
 
@@ -15,33 +15,33 @@ const AnswerComponent: React.FC = (): ReactElement => {
             <div style={{ display: 'inline', marginBottom: '100px' }}>
                 <Button
                     className="answerPickerButton"
-                    {...(answerType == 'boolean' ? { type: 'primary' } : {})}
+                    {...(answerType === 'boolean' ? { type: 'primary' } : {})}
                     onClick={() => setAnswerType('boolean')}
                 >
                     Ja/nei
                 </Button>
                 <Button
                     onClick={() => setAnswerType('decimal')}
-                    {...(answerType == 'decimal' ? { type: 'primary' } : {})}
+                    {...(answerType === 'decimal' ? { type: 'primary' } : {})}
                 >
                     Tall
                 </Button>
                 <Button
                     onClick={() => setAnswerType('text')}
-                    {...(answerType == 'text' ? { type: 'primary' } : {})}
+                    {...(answerType === 'text' ? { type: 'primary' } : {})}
                 >
                     Tekst
                 </Button>
                 <Button
                     onClick={() => setAnswerType('textArea')}
-                    {...(answerType == 'textArea' ? { type: 'primary' } : {})}
+                    {...(answerType === 'textArea' ? { type: 'primary' } : {})}
                 >
                     Lang tekst
                 </Button>
 
                 <Button
                     onClick={() => setAnswerType('radio')}
-                    {...(answerType == 'radio' ? { type: 'primary' } : {})}
+                    {...(answerType === 'radio' ? { type: 'primary' } : {})}
                 >
                     Radio button
                 </Button>
