@@ -5,7 +5,7 @@ import Section from '../types/Section';
 import SectionRenderer from '../components/formBuilder/SectionRenderer';
 import Form from '../types/Form';
 import { SectionList } from '../types/Form';
-import * as DND from 'react-beautiful-dnd';
+//import * as DND from 'react-beautiful-dnd';
 import './createForm.css';
 
 function CreateForm(): JSX.Element {
