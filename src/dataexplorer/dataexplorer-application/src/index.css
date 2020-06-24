@@ -15,5 +15,4 @@ code {
 #root,
 #root > section {
     height: 100%;
-    overflow: hidden;
 }
