@@ -15,7 +15,6 @@ function RadioButton(): JSX.Element {
 
     function deleteButton(id: number) {
         const res = [...buttonNames];
-        console.log(res);
         res.splice(id, 1);
         setButtonNames(res);
     }
