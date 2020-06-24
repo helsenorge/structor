@@ -6,8 +6,8 @@ const MyPatients = () => {
     const [patientID, setPatientID] = useState<string>();
     return (
         <>
-            <div style={{ paddingTop: 100 }}></div>
-            <Row gutter={[60, 40]} justify={'center'}>
+            <div style={{ marginTop: 90 }}></div>
+            <Row gutter={[60, 40]} justify={'start'}>
                 <Col span={300}>
                     <Search
                         placeholder="Søk etter en pasient!"
