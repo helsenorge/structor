@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { Input } from 'antd';
 import './AnswerComponent.css';
 
-const TextInput: React.FC = (): ReactElement => {
+function TextInput(): JSX.Element {
     return (
         <div
             style={{

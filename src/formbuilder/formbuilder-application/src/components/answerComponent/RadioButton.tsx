@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Radio, Button, Input, Tooltip } from 'antd';
-import './AnswerComponent.css';
 import { PlusCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import './AnswerComponent.css';
 
-function RadioButton() {
+function RadioButton(): JSX.Element {
     const radioStyle = {
         display: 'block',
         height: '30px',
@@ -11,34 +11,43 @@ function RadioButton() {
         marginBottom: 10,
     };
 
-    const buttonText = (
-        <Tooltip
-            trigger={['focus']}
-            title={'Enter option'}
-            placement="topLeft"
-            overlayClassName="numeric-input"
-        >
-            <Input className="input-question" placeholder={'Enter option'} />
-        </Tooltip>
-    );
-
-    const [i, setI] = useState(0);
-    const [buttonIndexes, setButtonIndexes] = useState(Array(0));
+    const [buttonNames, setButtonNames] = useState(['']);
 
     function deleteButton(id: number) {
-        setButtonIndexes(buttonIndexes.filter((index) => index !== id));
+        const res = [...buttonNames];
+        console.log(res);
+        res.splice(id, 1);
+        setButtonNames(res);
     }
 
     function createButton(id: number) {
         return (
             <Radio
-                key={'radio' + id}
+                key={'Radio' + id}
                 style={radioStyle}
-                value={id}
                 disabled={true}
+                value={id}
             >
-                {' '}
-                {buttonText}{' '}
+                <Tooltip
+                    trigger={['focus']}
+                    title={'Enter option'}
+                    placement="topLeft"
+                    overlayClassName="numeric-input"
+                >
+                    <Input
+                        type="text"
+                        className="input-question"
+                        placeholder={'Enter option'}
+                        value={buttonNames[id]}
+                        onChange={(
+                            e: React.ChangeEvent<HTMLInputElement>,
+                        ): void => {
+                            const temp = buttonNames.slice();
+                            temp[id] = e.target.value;
+                            setButtonNames(temp);
+                        }}
+                    />
+                </Tooltip>{' '}
                 <Button
                     type="text"
                     shape="circle"
@@ -51,16 +60,14 @@ function RadioButton() {
     }
 
     function addButtonClick() {
-        setI(i + 1);
-        buttonIndexes.push(i + 1);
-        setButtonIndexes(buttonIndexes);
+        setButtonNames([...buttonNames, '']);
     }
 
     return (
         <div className="question-component" style={{ marginTop: '20px' }}>
             <h4>Radio buttons</h4>
-            <Radio.Group name="radiogroup">
-                {buttonIndexes.map((id) => [createButton(id)])}
+            <Radio.Group name="radiogroup" defaultValue={1}>
+                {buttonNames.map((name, id) => [createButton(id)])}
                 <Button
                     type="text"
                     shape="circle"
