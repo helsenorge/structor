@@ -9,8 +9,11 @@ function Decimal(): JSX.Element {
     // TODO: Implement min/max usage later
     const [maxValue, setMaxValue] = useState(0);
     const [minValue, setMinValue] = useState(0);
-    const answerType = "decimal";
-
+    const answerType = 'decimal';
+    setMaxValue(0);
+    console.log(maxValue);
+    console.log(minValue);
+    console.log(answerType);
     return (
         <div
             style={{
@@ -35,6 +38,6 @@ function Decimal(): JSX.Element {
             )}
         </div>
     );
-};
+}
 
 export default Decimal;
