@@ -51,7 +51,6 @@ const Navigation = () => (
                             paddingLeft: 20,
                             paddingTop: 20,
                             paddingBottom: 18,
-                            backgroundColor: '#012120',
                             marginBottom: 0,
                         }}
                     >
