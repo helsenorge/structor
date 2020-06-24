@@ -3,7 +3,7 @@ import { Row, Col } from 'antd';
 import Search from 'antd/lib/input/Search';
 import PatientInfo from 'components/PatientInfo/PatientInfo';
 const MyPatients = () => {
-    const [patientID, setPatientID] = useState();
+    const [patientID, setPatientID] = useState<string>();
     return (
         <>
             <div>View for mine Pasienter</div>
