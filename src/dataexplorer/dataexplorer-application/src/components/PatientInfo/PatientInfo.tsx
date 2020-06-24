@@ -3,10 +3,12 @@ import useFetch from 'utils/hooks/useFetch';
 import { IPatient, IPatientIdentifier } from 'types/IPatient';
 
 const PatientInfo = ({ patientID }: any) => {
+
     // The oid signifies that we are searching on social security number
     const { response } = useFetch<IPatientIdentifier>(
         'fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' +
             patientID,
+
     );
 
     if (response && response !== undefined) {

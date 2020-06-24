@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 const useFetch = <T extends any>(
     endpoint: string,
+    update?: any,
     options: RequestInit = {},
 ) => {
     const [response, setResponse] = useState<T>();
@@ -31,6 +32,7 @@ const useFetch = <T extends any>(
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [endpoint]);
+
     return { response, error };
 };
 
