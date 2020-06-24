@@ -4,9 +4,10 @@ import 'antd/dist/antd.css';
 import Dashboard from '../Dashboard/Dashboard';
 import MySchemas from '../MySchemas/MySchemas';
 import MyPatients from '../MyPatients/MyPatients';
-import SchemaView from '../PatientInfo/SchemaView/SchemaView';
 import { Switch, Route, Link, withRouter } from 'react-router-dom';
 import MenuItem from 'antd/lib/menu/MenuItem';
+import ListView from '../PatientInfo/ListView/ListView';
+import SchemaView from 'components/PatientInfo/SchemaView/SchemaView';
 
 const { Header, Content, Sider, Footer } = Layout;
 const data = {
@@ -17,14 +18,24 @@ const data = {
             title: 'Hjem',
         },
         {
+            id: 2,
+            url: '/Pasient',
+            title: 'Finn en Pasient',
+        },
+        {
             id: 3,
             url: '/Pasient',
-            title: 'Finn en pasient ->',
+            title: 'Lag Nytt Skjema',
         },
         {
             id: 4,
-            url: '/Search',
-            title: 'Filtrer på egenskaper',
+            url: '/Pasient',
+            title: 'Se Mottatte Skjema',
+        },
+        {
+            id: 5,
+            url: '/Pasient',
+            title: 'Visualiser Data',
         },
     ],
 };
@@ -39,7 +50,9 @@ const Navigation = () => (
                             color: 'white',
                             paddingLeft: 20,
                             paddingTop: 20,
-                            marginBottom: 15,
+                            paddingBottom: 18,
+                            backgroundColor: '#012120',
+                            marginBottom: 0,
                         }}
                     >
                         Datautforskeren
@@ -47,7 +60,7 @@ const Navigation = () => (
                 </div>
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                     {data.items.map(({ id, url, title }) => (
-                        <MenuItem key={id}>
+                        <MenuItem style={{ marginTop: 0 }} key={id}>
                             <Link to={url}> {title} </Link>
                         </MenuItem>
                     ))}
@@ -100,7 +113,7 @@ const Navigation = () => (
                     }}
                 >
                     <p style={{ paddingRight: 200, paddingTop: 10 }}>
-                        Du undersøker nå: Erling van de Weijer{' '}
+                        Du undersøker nå: Erling van de Weijer
                     </p>
                 </Header>
                 <Content style={{ margin: '24px 16px 0' }}>
@@ -115,7 +128,12 @@ const Navigation = () => (
                             />
                             <Route
                                 exact
-                                path="/Pasient/SkjemaVisning"
+                                path="/Pasient/Skjemaisning"
+                                component={ListView}
+                            />
+                            <Route
+                                exact
+                                path="/Pasient/ListeVisning"
                                 component={SchemaView}
                             />
                         </Switch>
