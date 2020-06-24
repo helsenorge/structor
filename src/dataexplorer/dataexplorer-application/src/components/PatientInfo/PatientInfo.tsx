@@ -5,7 +5,6 @@ import { IPatient } from 'types/IPatient';
 const PatientInfo = ({ patientID }: any) => {
     const { response } = useFetch<IPatient>(
         'fhir/Patient/' + patientID,
-        patientID,
     );
 
     if (response && response !== undefined) {
