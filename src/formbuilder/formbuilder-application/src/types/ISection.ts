@@ -1,6 +1,6 @@
 import IQuestion from './IQuestion';
 
 export default interface ISection {
-    id: number;
-    questions: Array<IQuestion>;
+    readonly id: number;
+    readonly questions: { [questionNumber: number]: IQuestion };
 }
