@@ -12,6 +12,7 @@ export interface IName {
 
 export interface IPatientIdentifier {
     entry: IPatientResource[];
+    total: number;
 }
 
 export interface IPatientResource {
