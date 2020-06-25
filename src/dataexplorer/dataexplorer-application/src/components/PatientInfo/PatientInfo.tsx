@@ -12,27 +12,33 @@ const PatientInfo = ({ patientID }: any) => {
 
     if (patientData && patientData !== undefined) {
         // Since the search uses social security number, which are
-        // unique, response.entry will only contain one element.
-        return displayPatientInfo(patientData.entry[0].resource);
+        // unique, the response will contain a maximum value of 1,
+        // if the patient exists in the database.
+        if (patientData.total === 1) {
+            return displayPatientInfo(patientData.entry[0].resource);
+        }
     }
-    return <div>no information</div>;
+    return <div>Fant ingen pasienter med dette personnummeret</div>;
 };
 
 const displayPatientInfo = (response: IPatient) => {
-    return (
-        <>
-            <div>
-                <div>navn: {response.name[0].given[0]}</div>
-                <div>kjønn: {response.gender} </div>
-                <div>Fødselsdato: {response.birthDate} </div>
-                <div>Etternavn: {response.name[0].family} </div>
-                <div>ID: {response.id}</div>
-            </div>
-            <div>
-                <PatientQuestionnaireResponses patientID={response.id} />
-            </div>
-        </>
-    );
+    if (response) {
+        return (
+            <>
+                <div>
+                    <div>navn: {response.name[0].given[0]}</div>
+                    <div>kjønn: {response.gender} </div>
+                    <div>Fødselsdato: {response.birthDate} </div>
+                    <div>Etternavn: {response.name[0].family} </div>
+                    <div>ID: {response.id}</div>
+                </div>
+                <div>
+                    <PatientQuestionnaireResponses patientID={response.id} />
+                </div>
+            </>
+        );
+    }
+    return <div>Fant ikke pasienten</div>;
 };
 
 export default PatientInfo;
