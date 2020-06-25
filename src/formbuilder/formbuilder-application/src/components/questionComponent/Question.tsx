@@ -22,28 +22,26 @@ function Question({ id, removeQuestion }: QuestionProps): JSX.Element {
     return (
         <div>
             <Row>
-                <Col span={22}>
-                    <div style={{ display: 'inline' }}>
-                        <div
-                            style={{
-                                width: '60%',
-                                display: 'inline-block',
-                                padding: '5px',
-                            }}
-                        >
-                            <TextArea rows={1} placeholder={placeholder} />
-                        </div>
-                    </div>
+                <Col
+                    span={8}
+                    className="controller"
+                    style={{ padding: '0px 10px 10px' }}
+                >
+                    <h3>Alternativer</h3>
                 </Col>
-                <Col span={1}>
-                    <Tooltip title="Slett spørsmål">
-                        <Button
-                            style={{ zIndex: 1, color: 'var(--primary-1)' }}
-                            icon={<DeleteOutlined />}
-                            type="link"
-                            onClick={() => removeQuestion()}
-                        />
-                    </Tooltip>
+                <Col span={10} style={{ padding: '0 10px' }}>
+                    <TextArea rows={1} placeholder={placeholder} />
+                </Col>
+                <Col span={2}></Col>
+                <Col span={3}>
+                    <Button
+                        style={{ zIndex: 1, color: 'var(--primary-1)' }}
+                        icon={<DeleteOutlined />}
+                        type="default"
+                        onClick={() => removeQuestion()}
+                    >
+                        Slett spørsmål
+                    </Button>
                 </Col>
                 <Col span={1}>
                     <Tooltip title="Flytt spørsmål">
@@ -68,24 +66,7 @@ function Question({ id, removeQuestion }: QuestionProps): JSX.Element {
                     </Tooltip>
                 </Col>
             </Row>
-            <Row>
-                <Col span={22}>
-                    <div style={{ display: 'inline' }}>
-                        <div
-                            style={{
-                                width: '60%',
-                                display: 'inline-block',
-                                padding: '5px',
-                            }}
-                        >
-                            <TextArea
-                                rows={4}
-                                placeholder="Forklarende tekst....."
-                            />
-                        </div>
-                    </div>
-                </Col>
-            </Row>
+
             <AnswerComponent />
         </div>
     );

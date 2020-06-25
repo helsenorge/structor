@@ -50,22 +50,22 @@ function Section({ id, removeSection }: SectionProps): JSX.Element {
             }}
         >
             <Row>
-                <Col span={22}>
+                <Col span={20}>
                     <div style={{ display: 'inline' }}>
                         <InputField placeholder={placeholder} />
                     </div>
                 </Col>
-                <Col span={1}>
+                <Col span={3}>
                     {isSection && (
-                        <Tooltip title="Slett seksjon">
-                            <Button
-                                style={{ zIndex: 1, color: 'var(--primary-1)' }}
-                                size="large"
-                                icon={<DeleteOutlined />}
-                                type="link"
-                                onClick={() => removeSection()}
-                            />
-                        </Tooltip>
+                        <Button
+                            style={{ zIndex: 1, color: 'var(--primary-1)' }}
+                            size="large"
+                            icon={<DeleteOutlined />}
+                            type="default"
+                            onClick={() => removeSection()}
+                        >
+                            Slett seksjon
+                        </Button>
                     )}
                 </Col>
                 <Col span={1}>
@@ -94,38 +94,47 @@ function Section({ id, removeSection }: SectionProps): JSX.Element {
                 </Col>
             </Row>
             <Row>
+                <hr
+                    key="hrTitle"
+                    style={{
+                        color: 'black',
+                        width: '100%',
+                        border: '0.2px solid var(--color-base-2)',
+                    }}
+                />
+            </Row>
+            <Row>
                 <Col span={24}>
                     {questions.map((question, index) => [
+                        <Question
+                            key={question}
+                            id={index}
+                            removeQuestion={() => removeQuestion(question)}
+                        />,
                         <hr
-                            key={index}
+                            key="hrQuestion"
                             style={{
                                 color: 'black',
                                 width: '100%',
                                 border: '0.2px solid var(--color-base-2)',
                             }}
                         />,
-                        <Question
-                            key={question}
-                            id={index}
-                            removeQuestion={() => removeQuestion(question)}
-                        />,
                     ])}
                 </Col>
             </Row>
             <Row>
                 <Col span={24} style={{ margin: '10px' }}>
-                    <Tooltip title="Legg til nytt spørsmål">
-                        <Button
-                            style={{
-                                backgroundColor: 'var(--primary-1)',
-                                borderColor: 'var(--primary-1)',
-                            }}
-                            type="primary"
-                            shape="circle"
-                            icon={<PlusOutlined />}
-                            onClick={addQuestion}
-                        />
-                    </Tooltip>
+                    <Button
+                        style={{
+                            backgroundColor: 'var(--primary-1)',
+                            borderColor: 'var(--primary-1)',
+                        }}
+                        type="primary"
+                        icon={<PlusOutlined />}
+                        onClick={addQuestion}
+                    >
+                        Legg til nytt spørsmål
+                    </Button>
                 </Col>
             </Row>
         </div>

@@ -6,19 +6,11 @@ const { TextArea } = Input;
 
 const TextInputLong: React.FC = (): ReactElement => {
     return (
-        <div
-            style={{
-                marginTop: '20px',
-                width: '60%',
-                display: 'inline-block',
-            }}
-        >
-            <TextArea
-                placeholder="Lang tekst svar..."
-                rows={4}
-                disabled={true}
-            ></TextArea>
-        </div>
+        <TextArea
+            placeholder="Mottaker skriver inn sitt svar her"
+            rows={4}
+            disabled={true}
+        ></TextArea>
     );
 };
 

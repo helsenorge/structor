@@ -24,3 +24,7 @@
   .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
       background-color: var(--color-base-2) !important;
   }
+
+  .ant-radio-group {
+      display: inline !important;
+  }
