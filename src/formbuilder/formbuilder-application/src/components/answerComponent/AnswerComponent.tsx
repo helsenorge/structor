@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Row, Col, Select } from 'antd';
 import './AnswerComponent.css';
-import TextInputLong from './TextInputLong';
 import TextInput from './TextInput';
 import RadioButton from './RadioButton';
 import Decimal from './Decimal';
@@ -37,22 +36,18 @@ function AnswerComponent(): JSX.Element {
                 <Button
                     onClick={() => {
                         setAnswerType('text');
-                        setAnswerBuilder(<TextInput></TextInput>);
+                        setAnswerBuilder(
+                            <TextInput
+                                maxLength={100}
+                                longAnswer={true}
+                                placeholder="Svartext..."
+                            ></TextInput>,
+                        );
                     }}
                     {...(answerType === 'text' ? { type: 'primary' } : {})}
                 >
                     Tekst
                 </Button>
-                <Button
-                    onClick={() => {
-                        setAnswerType('textArea');
-                        setAnswerBuilder(<TextInputLong></TextInputLong>);
-                    }}
-                    {...(answerType === 'textArea' ? { type: 'primary' } : {})}
-                >
-                    Lang tekst
-                </Button>
-
                 <Button
                     onClick={() => {
                         setAnswerType('radio');
@@ -87,6 +82,6 @@ function AnswerComponent(): JSX.Element {
             </Row>
         </div>
     );
-};
+}
 
 export default AnswerComponent;
