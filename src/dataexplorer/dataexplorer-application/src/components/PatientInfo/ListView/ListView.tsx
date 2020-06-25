@@ -138,6 +138,13 @@ const ListView = (props: any) => {
                 title={props.title}
                 columns={columns}
                 dataSource={dataSource}
+                onRow={(record) => {
+                    return {
+                        onClick: () => {
+                            console.log('test');
+                        },
+                    };
+                }}
             />
         </div>
     );
