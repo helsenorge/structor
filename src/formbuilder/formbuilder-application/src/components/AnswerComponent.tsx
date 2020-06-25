@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Row, Col, Select, Input, Switch } from 'antd';
-import './AnswerComponent.css';
-import TextInput from './TextInput';
-import RadioButton from './RadioButton';
-import Decimal from './Decimal';
+import './answerComponents/AnswerComponent.css';
+import TextInput from './answerComponents/TextInput';
+import RadioButton from './answerComponents/RadioButton';
+import Decimal from './answerComponents/Decimal';
 
 const { TextArea } = Input;
 
@@ -39,32 +39,25 @@ function AnswerComponent(): JSX.Element {
     }
     return (
         <Row>
-            <Col span={8} className="controller">
+            <Col span={7} className="controller">
                 <Row>
                     <Col span={3} style={{ padding: '0 10px' }}>
-                        <div style={{ float: 'left' }}>
-                            <Switch onChange={setDescState} />
-                        </div>
+                        <Switch onChange={setDescState} />
                     </Col>
                     <Col span={21} style={{ padding: '0 10px' }}>
-                        <div style={{ float: 'left' }}>
-                            <p>Forklaring av spørsmål til mottaker</p>
-                        </div>
+                        <p style={{ textAlign: 'left' }}>
+                            Forklaring av spørsmål til mottaker
+                        </p>
                     </Col>
                 </Row>
                 <Row>
                     <Col span={3} style={{ padding: '0 10px' }}>
-                        <div style={{ float: 'left' }}>
-                            <Switch defaultChecked onChange={setObligatory} />
-                        </div>
+                        <Switch defaultChecked onChange={setObligatory} />
                     </Col>
                     <Col span={21} style={{ padding: '0 10px' }}>
-                        <div style={{ float: 'left' }}>
-                            <p>
-                                Spørsmålet skal være obligatorisk å svare på for
-                                mottaker
-                            </p>
-                        </div>
+                        <p style={{ textAlign: 'left' }}>
+                            Spørsmålet skal være obligatorisk
+                        </p>
                     </Col>
                 </Row>
                 <Row>
@@ -138,6 +131,7 @@ function AnswerComponent(): JSX.Element {
                         <TextArea
                             rows={4}
                             placeholder="Fyll inn beskrivelse av spørsmål eller mer informasjon til mottaker av skjema..."
+                            className="input-question"
                         />
                     </div>
                 )}

@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Row, Col, Button, Tooltip } from 'antd';
-import InputField from '../questionComponent/InputField';
+import { Row, Col, Button, Tooltip, Input } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import Question from '../questionComponent/Question';
+import Question from './Question';
 import {
     FormContext,
     addNewQuestion,
     removeQuestion,
-} from '../../store/FormStore';
+} from '../store/FormStore';
 
 type SectionProps = {
     sectionId: number;
@@ -24,7 +23,7 @@ function Section({ sectionId, removeSection }: SectionProps): JSX.Element {
     function findPlaceholder() {
         if (sectionId === 0) {
             setIsSection(false);
-            setPlaceholder('Tittel...');
+            setPlaceholder('Skjematittel...');
             return;
         }
         setIsSection(true);
@@ -55,11 +54,15 @@ function Section({ sectionId, removeSection }: SectionProps): JSX.Element {
             }}
         >
             <Row>
-                <Col span={20}>
-                    <div style={{ display: 'inline' }}>
-                        <InputField placeholder={placeholder} />
-                    </div>
+                <Col span={6}></Col>
+                <Col span={12}>
+                    <Input
+                        placeholder={placeholder}
+                        className="input-question"
+                        size="large"
+                    />
                 </Col>
+                <Col span={2}></Col>
                 <Col span={3}>
                     {isSection && (
                         <Button

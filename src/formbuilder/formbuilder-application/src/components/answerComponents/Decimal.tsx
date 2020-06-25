@@ -12,7 +12,7 @@ function Decimal(): JSX.Element {
     const answerType = 'decimal';
     useEffect(() => {
         console.log(minValue, answerType); // to not get warnings when deploying fb-dev
-      });
+    });
     return (
         <div
             style={{

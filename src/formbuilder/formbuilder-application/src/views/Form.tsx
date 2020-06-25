@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { Row, Col, Button } from 'antd';
-import NavBar from '../components/formBuilder/NavBar';
-import SectionRenderer from '../components/formBuilder/SectionRenderer';
+import NavBar from '../components/commonComponents/NavBar';
+import SectionRenderer from '../components/Section';
 import { FormContext, addNewSection, removeSection } from '../store/FormStore';
 //import * as DND from 'react-beautiful-dnd';
-import './createForm.css';
+import './Form.css';
 
 function CreateForm(): JSX.Element {
     const [i, setI] = useState(0);

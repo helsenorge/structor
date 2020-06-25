@@ -32,26 +32,20 @@ function RadioButton(): JSX.Element {
                 disabled={true}
                 value={id}
             >
-                <Tooltip
-                    trigger={['focus']}
-                    title={'Enter option'}
-                    placement="topLeft"
-                    overlayClassName="numeric-input"
-                >
-                    <Input
-                        type="text"
-                        className="input-question"
-                        placeholder={'Skriv inn alternativ her'}
-                        value={buttonNames[id]}
-                        onChange={(
-                            e: React.ChangeEvent<HTMLInputElement>,
-                        ): void => {
-                            const temp = buttonNames.slice();
-                            temp[id] = e.target.value;
-                            setButtonNames(temp);
-                        }}
-                    />
-                </Tooltip>{' '}
+                <Input
+                    type="text"
+                    className="input-question"
+                    placeholder={'Skriv inn alternativ her'}
+                    value={buttonNames[id]}
+                    onChange={(
+                        e: React.ChangeEvent<HTMLInputElement>,
+                    ): void => {
+                        const temp = buttonNames.slice();
+                        temp[id] = e.target.value;
+                        setButtonNames(temp);
+                    }}
+                />
+
                 <Tooltip title="Fjern alternativ" placement="right">
                     <Button
                         type="text"
