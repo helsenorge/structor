@@ -17,7 +17,6 @@ type SectionProps = {
 function Section({ sectionId, removeSection }: SectionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Tittel...');
     const [isSection, setIsSection] = useState(false);
-    const [questions, setQuestions] = useState([0]);
     const [count, setCount] = useState(0);
 
     const { state, dispatch } = useContext(FormContext);
