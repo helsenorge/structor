@@ -1,6 +1,6 @@
 import Section from '../types/Section';
 import InvalidArgumentException from './InvalidArgumentException';
-import * as DND from 'react-beautiful-dnd';
+// import * as DND from 'react-beautiful-dnd';
 import Question from './Question';
 
 export type SectionList = { [sectionNumber: number]: Section };
@@ -8,7 +8,8 @@ export type SectionList = { [sectionNumber: number]: Section };
 export default class Form {
     static addSection(sectionList: SectionList, index: number): SectionList {
         if (!index) throw new InvalidArgumentException('No index was provided');
-        sectionList[index] = new Section(index);
+        const tmpSection: Section = { id: index, questions: [] };
+        sectionList[index] = tmpSection;
         return sectionList;
     }
 
@@ -85,45 +86,45 @@ export default class Form {
         };
     }
 
-    static onDragEnd(
-        sectionList: SectionList,
-        result: DND.DropResult,
-    ): SectionList {
-        if (!result.destination) {
-            return sectionList;
-        }
-        const sourceIndex = result.source.index;
-        const destIndex = result.destination.index;
+    // static onDragEnd(
+    //     sectionList: SectionList,
+    //     result: DND.DropResult,
+    // ): SectionList {
+    //     if (!result.destination) {
+    //         return sectionList;
+    //     }
+    //     const sourceIndex = result.source.index;
+    //     const destIndex = result.destination.index;
 
-        if (result.type === 'droppableItem') {
-            sectionList = Form.reorderSections(
-                sectionList,
-                sourceIndex,
-                destIndex,
-            );
-        } else if (result.type === 'droppableSubItem') {
-            const sourceSectionId = parseInt(result.source.droppableId);
-            const destSectionId = parseInt(result.destination.droppableId);
+    //     if (result.type === 'droppableItem') {
+    //         sectionList = Form.reorderSections(
+    //             sectionList,
+    //             sourceIndex,
+    //             destIndex,
+    //         );
+    //     } else if (result.type === 'droppableSubItem') {
+    //         const sourceSectionId = parseInt(result.source.droppableId);
+    //         const destSectionId = parseInt(result.destination.droppableId);
 
-            const sourceQuestions = sectionList[sourceSectionId].questions;
-            const destQuestions = sectionList[destSectionId].questions;
+    //         const sourceQuestions = sectionList[sourceSectionId].questions;
+    //         const destQuestions = sectionList[destSectionId].questions;
 
-            if (sourceSectionId === destSectionId) {
-                const reorderedQuestions = Form.reorderQuestions(
-                    sourceQuestions,
-                    sourceIndex,
-                    destIndex,
-                );
-                sectionList[sourceSectionId].questions = reorderedQuestions;
-            } else {
-                const draggedItem = sourceQuestions.splice(sourceIndex, 1)[0];
+    //         if (sourceSectionId === destSectionId) {
+    //             const reorderedQuestions = Form.reorderQuestions(
+    //                 sourceQuestions,
+    //                 sourceIndex,
+    //                 destIndex,
+    //             );
+    //             sectionList[sourceSectionId].questions = reorderedQuestions;
+    //         } else {
+    //             const draggedItem = sourceQuestions.splice(sourceIndex, 1)[0];
 
-                destQuestions.splice(destIndex, 0, draggedItem);
+    //             destQuestions.splice(destIndex, 0, draggedItem);
 
-                sectionList[sourceSectionId].questions = sourceQuestions;
-                sectionList[destSectionId].questions = destQuestions;
-            }
-        }
-        return sectionList;
-    }
+    //             sectionList[sourceSectionId].questions = sourceQuestions;
+    //             sectionList[destSectionId].questions = destQuestions;
+    //         }
+    //     }
+    //     return sectionList;
+    // }
 }

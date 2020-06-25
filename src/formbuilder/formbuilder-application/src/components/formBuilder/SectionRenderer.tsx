@@ -97,7 +97,7 @@ function Section({ id, removeSection }: SectionProps): JSX.Element {
                 <Col span={24}>
                     {questions.map((question, index) => [
                         <hr
-                            key={question}
+                            key={'question' + question}
                             style={{
                                 color: 'black',
                                 width: '100%',
