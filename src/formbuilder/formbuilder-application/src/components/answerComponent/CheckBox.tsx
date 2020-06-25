@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { Radio, Button, Input, Tooltip } from 'antd';
-import { PlusCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import { Checkbox, Button, Input, Tooltip } from 'antd';
 import './AnswerComponent.css';
+import { PlusSquareOutlined, CloseOutlined } from '@ant-design/icons';
 
-function RadioButton(): JSX.Element {
-    const radioStyle = {
+function CheckBox(): JSX.Element {
+    const checkStyle = {
         display: 'block',
-        height: '30px',
-        lineHeight: '30px',
-        marginBottom: 10,
+        marginBottom: '10px',
     };
 
     const [buttonNames, setButtonNames] = useState(['']);
@@ -25,12 +23,7 @@ function RadioButton(): JSX.Element {
 
     function createButton(id: number) {
         return (
-            <Radio
-                key={'Radio' + id}
-                style={radioStyle}
-                disabled={true}
-                value={id}
-            >
+            <Checkbox key={'Check' + id} style={checkStyle} value={id}>
                 <Tooltip
                     trigger={['focus']}
                     title={'Enter option'}
@@ -41,6 +34,9 @@ function RadioButton(): JSX.Element {
                         type="text"
                         className="input-question"
                         placeholder={'Enter option'}
+                        style={{
+                            width: '250px',
+                        }}
                         value={buttonNames[id]}
                         onChange={(
                             e: React.ChangeEvent<HTMLInputElement>,
@@ -50,7 +46,7 @@ function RadioButton(): JSX.Element {
                             setButtonNames(temp);
                         }}
                     />
-                </Tooltip>{' '}
+                </Tooltip>
                 <Button
                     type="text"
                     shape="circle"
@@ -58,25 +54,23 @@ function RadioButton(): JSX.Element {
                     onClick={() => deleteButton(id)}
                     value="Delete"
                 />
-            </Radio>
+            </Checkbox>
         );
     }
 
     return (
         <div className="question-component" style={{ marginTop: '20px' }}>
-            <h4>Radio buttons</h4>
-            <Radio.Group name="radiogroup" defaultValue={1}>
-                {buttonNames.map((name, id) => [createButton(id)])}
-                <Button
-                    type="text"
-                    shape="circle"
-                    icon={<PlusCircleOutlined />}
-                    onClick={addButtonClick}
-                    value="Add"
-                />
-            </Radio.Group>
+            <h4>Answers:</h4>
+            {buttonNames.map((_, id) => [createButton(id)])}
+            <Button
+                type="text"
+                shape="circle"
+                icon={<PlusSquareOutlined />}
+                onClick={addButtonClick}
+                value="Add"
+            />
         </div>
     );
 }
 
-export default RadioButton;
+export default CheckBox;
