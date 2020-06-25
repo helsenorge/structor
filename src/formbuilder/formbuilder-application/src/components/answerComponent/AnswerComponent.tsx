@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col, Select, Input, Switch } from 'antd';
 import './AnswerComponent.css';
-import TextInputLong from './TextInputLong';
 import TextInput from './TextInput';
 import RadioButton from './RadioButton';
 import Decimal from './Decimal';
@@ -26,10 +25,13 @@ function AnswerComponent(): JSX.Element {
             setAnswerBuilder(<Decimal></Decimal>);
         } else if (value === 'text') {
             setAnswerType('text');
-            setAnswerBuilder(<TextInput></TextInput>);
-        } else if (value === 'textArea') {
-            setAnswerType('textArea');
-            setAnswerBuilder(<TextInputLong></TextInputLong>);
+            setAnswerBuilder(
+                <TextInput
+                    maxLength={100}
+                    longAnswer={true}
+                    placeholder="Mottaker skriver svar her"
+                ></TextInput>,
+            );
         } else if (value === 'radio') {
             setAnswerType('radio');
             setAnswerBuilder(<RadioButton></RadioButton>);
@@ -97,7 +99,13 @@ function AnswerComponent(): JSX.Element {
                                 value="text"
                                 onSelect={() => {
                                     setAnswerType('text');
-                                    setAnswerBuilder(<TextInput></TextInput>);
+                                    setAnswerBuilder(
+                                        <TextInput
+                                            maxLength={100}
+                                            longAnswer={true}
+                                            placeholder="Mottaker skriver svar her"
+                                        ></TextInput>,
+                                    );
                                 }}
                                 {...(answerType === 'text'
                                     ? { type: 'primary' }
@@ -105,21 +113,6 @@ function AnswerComponent(): JSX.Element {
                             >
                                 Tekst
                             </Option>
-                            <Option
-                                value="textArea"
-                                onSelect={() => {
-                                    setAnswerType('textArea');
-                                    setAnswerBuilder(
-                                        <TextInputLong></TextInputLong>,
-                                    );
-                                }}
-                                {...(answerType === 'textArea'
-                                    ? { type: 'primary' }
-                                    : {})}
-                            >
-                                Lang tekst
-                            </Option>
-
                             <Option
                                 value="radio"
                                 onSelect={() => {

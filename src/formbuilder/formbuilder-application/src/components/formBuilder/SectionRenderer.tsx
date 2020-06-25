@@ -1,22 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Row, Col, Button, Tooltip } from 'antd';
 import InputField from '../questionComponent/InputField';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import Question from '../questionComponent/Question';
+import {
+    FormContext,
+    addNewQuestion,
+    removeQuestion,
+} from '../../store/FormStore';
 
 type SectionProps = {
-    id: number;
+    sectionId: number;
     removeSection: () => void;
 };
 
-function Section({ id, removeSection }: SectionProps): JSX.Element {
+function Section({ sectionId, removeSection }: SectionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Tittel...');
     const [isSection, setIsSection] = useState(false);
-    const [questions, setQuestions] = useState([0]);
     const [count, setCount] = useState(0);
 
+    const { state, dispatch } = useContext(FormContext);
+
     function findPlaceholder() {
-        if (id === 0) {
+        if (sectionId === 0) {
             setIsSection(false);
             setPlaceholder('Tittel...');
             return;
@@ -29,14 +35,13 @@ function Section({ id, removeSection }: SectionProps): JSX.Element {
         findPlaceholder();
     });
 
-    function addQuestion() {
-        questions.push(count + 1);
-        setQuestions(questions);
+    function dispatchAddQuestion() {
+        dispatch(addNewQuestion(sectionId, count + 1));
         setCount(count + 1);
     }
 
-    function removeQuestion(questionId: number) {
-        setQuestions(questions.filter((index) => index !== questionId));
+    function dispatchRemoveQuestion(questionId: number) {
+        dispatch(removeQuestion(sectionId, questionId));
     }
 
     return (
@@ -105,21 +110,34 @@ function Section({ id, removeSection }: SectionProps): JSX.Element {
             </Row>
             <Row>
                 <Col span={24}>
-                    {questions.map((question, index) => [
-                        <Question
-                            key={question}
-                            id={index}
-                            removeQuestion={() => removeQuestion(question)}
-                        />,
-                        <hr
-                            key="hrQuestion"
-                            style={{
-                                color: 'black',
-                                width: '100%',
-                                border: '0.2px solid var(--color-base-2)',
-                            }}
-                        />,
-                    ])}
+                    {Object.keys(state.sections[sectionId].questions).map(
+                        (questionId) => {
+                            const question =
+                                state.sections[sectionId].questions[
+                                    parseInt(questionId)
+                                ];
+                            return [
+                                <hr
+                                    key={'questionhr' + sectionId + questionId}
+                                    style={{
+                                        color: 'black',
+                                        width: '100%',
+                                        border:
+                                            '0.2px solid var(--color-base-2)',
+                                    }}
+                                />,
+                                <Question
+                                    key={'question' + sectionId + questionId}
+                                    question={question}
+                                    removeQuestion={() =>
+                                        dispatchRemoveQuestion(
+                                            parseInt(questionId),
+                                        )
+                                    }
+                                />,
+                            ];
+                        },
+                    )}
                 </Col>
             </Row>
             <Row>
@@ -131,7 +149,7 @@ function Section({ id, removeSection }: SectionProps): JSX.Element {
                         }}
                         type="primary"
                         icon={<PlusOutlined />}
-                        onClick={addQuestion}
+                        onClick={dispatchAddQuestion}
                     >
                         Legg til nytt spørsmål
                     </Button>

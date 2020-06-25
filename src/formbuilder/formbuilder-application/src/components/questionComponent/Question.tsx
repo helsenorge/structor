@@ -3,21 +3,21 @@ import { Input, Row, Col, Button, Tooltip } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import './QuestionComponents.css';
 import AnswerComponent from '../answerComponent/AnswerComponent';
+import IQuestion from '../../types/IQuestion';
 const { TextArea } = Input;
 
 type QuestionProps = {
-    id: number;
+    question: IQuestion;
     removeQuestion: () => void;
 };
 
-function Question({ id, removeQuestion }: QuestionProps): JSX.Element {
+function Question({ question, removeQuestion }: QuestionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Spørsmål 1...');
     useEffect(() => {
         findPlaceholder();
     });
     function findPlaceholder() {
-        console.log(id + 1);
-        setPlaceholder('Spørsmål ' + (id + 1) + '...');
+        setPlaceholder('Spørsmål ' + (question.id + 1) + '...');
     }
     return (
         <div>

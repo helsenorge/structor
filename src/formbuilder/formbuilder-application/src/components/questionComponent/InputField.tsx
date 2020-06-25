@@ -4,11 +4,10 @@ import './QuestionComponents.css';
 
 type InputFieldProps = {
     placeholder: string;
-    className?:string;
-}
+    className?: string;
+};
 
-function InputField({placeholder}:InputFieldProps) {
-    
+function InputField({ placeholder }: InputFieldProps) {
     return (
         <div style={{ width: '60%', display: 'inline-block', padding: '5px' }}>
             <Input
