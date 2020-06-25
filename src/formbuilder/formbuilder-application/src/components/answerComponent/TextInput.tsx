@@ -14,6 +14,6 @@ function TextInput(): JSX.Element {
             <Input placeholder="Kort tekst svar..." disabled={true}></Input>
         </div>
     );
-};
+}
 
 export default TextInput;

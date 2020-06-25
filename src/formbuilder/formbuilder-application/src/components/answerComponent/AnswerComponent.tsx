@@ -87,6 +87,6 @@ function AnswerComponent(): JSX.Element {
             </Row>
         </div>
     );
-};
+}
 
 export default AnswerComponent;
