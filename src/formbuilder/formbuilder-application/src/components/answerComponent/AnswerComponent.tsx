@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Row, Col, Select, Input, Switch } from 'antd';
+import { Row, Col, Select, Input, Switch } from 'antd';
 import './AnswerComponent.css';
 import TextInputLong from './TextInputLong';
 import TextInput from './TextInput';
@@ -16,6 +16,7 @@ function AnswerComponent(): JSX.Element {
     const [obligatory, setObligatory] = useState(true);
 
     function answerPicker(value: string) {
+        console.log(obligatory); // to not get warnings when deploying
         if (value === 'boolean') {
             setAnswerType('boolean');
             //TODO: Implement Boolean answerComponent, using RadioButtons for testing

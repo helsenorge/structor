@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Radio, Button, Input, Tooltip, Row, Col } from 'antd';
+import { Radio, Button, Input, Tooltip } from 'antd';
 import { PlusCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import './AnswerComponent.css';
 

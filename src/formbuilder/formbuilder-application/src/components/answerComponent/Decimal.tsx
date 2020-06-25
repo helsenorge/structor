@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react';
 import { InputNumber, Checkbox } from 'antd';
 import './AnswerComponent.css';
@@ -7,9 +7,12 @@ function Decimal(): JSX.Element {
     const [max, setMax] = useState(false);
     const [min, setMin] = useState(false);
     // TODO: Implement min/max usage later
-    const [maxValue, setMaxValue] = useState(0);
+    //const [maxValue, setMaxValue] = useState(0);
     const [minValue, setMinValue] = useState(0);
     const answerType = 'decimal';
+    useEffect(() => {
+        console.log(minValue, answerType); // to not get warnings when deploying fb-dev
+      });
     return (
         <div
             style={{
