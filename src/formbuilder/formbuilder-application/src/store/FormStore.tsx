@@ -1,10 +1,10 @@
 import React, { useReducer, createContext, Dispatch } from 'react';
-import Section from '../types/Section';
-import Question from '../types/Question';
-import { SectionList } from '../types/Form';
+import ISection from '../types/ISection';
+import IQuestion from '../types/IQuestion';
+import SectionList from '../types/SectionList';
 import produce from 'immer';
 
-const initSection: Section = { id: 0, questions: [] };
+const initSection: ISection = { id: 0, questions: [] };
 
 export const initialState: State = { sections: { 0: initSection } };
 
@@ -21,14 +21,14 @@ export interface Action {
     type: ActionTypes;
     sectionIndex: number;
     questionIndex?: number;
-    section?: Section;
-    question?: Question;
+    section?: ISection;
+    question?: IQuestion;
 }
 export interface State {
     readonly sections: SectionList;
 }
 
-export function addSection(sectionIndex: number, section: Section): Action {
+export function addSection(sectionIndex: number, section: ISection): Action {
     return {
         type: ActionTypes.ADD_SECTION,
         sectionIndex: sectionIndex,
@@ -39,7 +39,7 @@ export function addSection(sectionIndex: number, section: Section): Action {
 }
 
 export function addNewSection(sectionIndex: number): Action {
-    const newSection: Section = { id: sectionIndex, questions: [] };
+    const newSection: ISection = { id: sectionIndex, questions: [] };
     return {
         type: ActionTypes.ADD_NEW_SECTION,
         sectionIndex: sectionIndex,
@@ -59,13 +59,30 @@ export function removeSection(sectionIndex: number): Action {
 export function addQuestion(
     sectionIndex: number,
     questionIndex: number,
-    question: Question,
+    question: IQuestion,
 ): Action {
     return {
         type: ActionTypes.ADD_QUESTION,
         sectionIndex: sectionIndex,
         questionIndex: questionIndex,
         question: question,
+    };
+}
+
+export function addNewQuestion(
+    sectionIndex: number,
+    questionIndex: number,
+): Action {
+    const newQuestion: IQuestion = {
+        id: questionIndex,
+        sectionId: sectionIndex,
+        questionText: '',
+    };
+    return {
+        type: ActionTypes.ADD_QUESTION,
+        sectionIndex: sectionIndex,
+        questionIndex: questionIndex,
+        question: newQuestion,
     };
 }
 
@@ -94,6 +111,12 @@ const reducer = produce((draft: State, action: Action) => {
             delete draft.sections[action.sectionIndex];
             break;
         case ActionTypes.ADD_QUESTION:
+            if (action.question && action.questionIndex)
+                draft.sections[action.sectionIndex].questions[
+                    action.questionIndex
+                ] = action.question;
+            break;
+        case ActionTypes.ADD_NEW_QUESTION:
             if (action.question && action.questionIndex)
                 draft.sections[action.sectionIndex].questions[
                     action.questionIndex
@@ -164,7 +187,6 @@ export const FormContext = createContext<{
     state: initialState,
     dispatch: () => null,
 });
-
 
 export const FormContextProvider = (props: {
     children: JSX.Element;

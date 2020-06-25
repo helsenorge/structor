@@ -1,23 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { Row, Col, Button } from 'antd';
 import NavBar from '../components/formBuilder/NavBar';
-import Section from '../types/Section';
 import SectionRenderer from '../components/formBuilder/SectionRenderer';
-import Form from '../types/Form';
-import { SectionList } from '../types/Form';
-import {
-    FormContext,
-    FormContextProvider,
-    addNewSection,
-    removeSection,
-} from '../store/FormStore';
+import { FormContext, addNewSection, removeSection } from '../store/FormStore';
 //import * as DND from 'react-beautiful-dnd';
 import './createForm.css';
 
 function CreateForm(): JSX.Element {
-    const initSection: Section = { id: 0, questions: [] };
-    const initList: SectionList = { 0: initSection };
-
     const [i, setI] = useState(0);
     const { state, dispatch } = useContext(FormContext);
 
@@ -61,7 +50,7 @@ function CreateForm(): JSX.Element {
                                         return (
                                             <SectionRenderer
                                                 key={'section' + section.id}
-                                                id={section.id}
+                                                sectionId={section.id}
                                                 removeSection={() =>
                                                     dispatch(
                                                         removeSection(
