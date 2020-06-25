@@ -10,6 +10,7 @@ const TextInputLong: React.FC = (): ReactElement => {
             placeholder="Mottaker skriver inn sitt svar her"
             rows={4}
             disabled={true}
+            className="input-question"
         ></TextArea>
     );
 };

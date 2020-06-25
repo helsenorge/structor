@@ -22,11 +22,16 @@ function TextInput({
                     placeholder={placeholder}
                     maxLength={maxLength}
                     autoSize={{ minRows: 3, maxRows: 3 }}
+                    className="input-question"
                 ></TextArea>
             );
         } else {
             return (
-                <Input placeholder={placeholder} maxLength={maxLength}></Input>
+                <Input
+                    placeholder={placeholder}
+                    maxLength={maxLength}
+                    className="input-question"
+                ></Input>
             );
         }
     };

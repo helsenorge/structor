@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Input, Row, Col, Button, Tooltip } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import './QuestionComponents.css';
-import AnswerComponent from '../answerComponent/AnswerComponent';
-import IQuestion from '../../types/IQuestion';
+import './answerComponents/AnswerComponent.css';
+import AnswerComponent from './AnswerComponent';
+import IQuestion from '../types/IQuestion';
 const { TextArea } = Input;
 
 type QuestionProps = {
@@ -23,16 +23,20 @@ function Question({ question, removeQuestion }: QuestionProps): JSX.Element {
         <div>
             <Row>
                 <Col
-                    span={8}
+                    span={7}
                     className="controller"
                     style={{ padding: '0px 10px 10px' }}
                 >
                     <h3>Alternativer</h3>
                 </Col>
                 <Col span={10} style={{ padding: '0 10px' }}>
-                    <TextArea rows={1} placeholder={placeholder} />
+                    <TextArea
+                        rows={1}
+                        placeholder={placeholder}
+                        className="input-question"
+                    />
                 </Col>
-                <Col span={2}></Col>
+                <Col span={3}></Col>
                 <Col span={3}>
                     <Button
                         style={{ zIndex: 1, color: 'var(--primary-1)' }}

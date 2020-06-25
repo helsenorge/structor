@@ -3,7 +3,7 @@ import { Switch } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 
 import Index from '../views/index';
-import CreateForm from '../views/createForm';
+import CreateForm from '../views/Form';
 import { FormContextProvider } from '../store/FormStore';
 
 export default function Routes(): JSX.Element {
