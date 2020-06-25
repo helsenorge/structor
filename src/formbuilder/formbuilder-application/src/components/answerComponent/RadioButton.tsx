@@ -9,6 +9,7 @@ function RadioButton(): JSX.Element {
         height: '30px',
         lineHeight: '30px',
         marginBottom: 10,
+        width: '90%',
     };
 
     const [buttonNames, setButtonNames] = useState(['']);
@@ -40,7 +41,7 @@ function RadioButton(): JSX.Element {
                     <Input
                         type="text"
                         className="input-question"
-                        placeholder={'Enter option'}
+                        placeholder={'Skriv inn alternativ her'}
                         value={buttonNames[id]}
                         onChange={(
                             e: React.ChangeEvent<HTMLInputElement>,
@@ -51,31 +52,31 @@ function RadioButton(): JSX.Element {
                         }}
                     />
                 </Tooltip>{' '}
-                <Button
-                    type="text"
-                    shape="circle"
-                    icon={<CloseOutlined />}
-                    onClick={() => deleteButton(id)}
-                    value="Delete"
-                />
+                <Tooltip title="Fjern alternativ" placement="right">
+                    <Button
+                        type="text"
+                        shape="circle"
+                        icon={<CloseOutlined />}
+                        onClick={() => deleteButton(id)}
+                        value="Delete"
+                    />
+                </Tooltip>
             </Radio>
         );
     }
 
     return (
-        <div className="question-component" style={{ marginTop: '20px' }}>
-            <h4>Radio buttons</h4>
-            <Radio.Group name="radiogroup" defaultValue={1}>
-                {buttonNames.map((name, id) => [createButton(id)])}
-                <Button
-                    type="text"
-                    shape="circle"
-                    icon={<PlusCircleOutlined />}
-                    onClick={addButtonClick}
-                    value="Add"
-                />
-            </Radio.Group>
-        </div>
+        <Radio.Group name="radiogroup">
+            {buttonNames.map((name, id) => [createButton(id)])}
+            <Button
+                type="text"
+                icon={<PlusCircleOutlined />}
+                onClick={addButtonClick}
+                value="Add"
+            >
+                Legg til alternativ
+            </Button>
+        </Radio.Group>
     );
 }
 

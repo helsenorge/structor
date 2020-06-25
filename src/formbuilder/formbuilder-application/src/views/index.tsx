@@ -21,7 +21,7 @@ function Index(): JSX.Element {
                     <Col>
                         <Row gutter={[10, 48]}>
                             <Col>
-                                <h1> Velkommen til skjemadesigneren</h1>
+                                <h1> Velkommen til skjemabyggeren</h1>
                             </Col>
                         </Row>
                         <Row align="middle" justify="center">

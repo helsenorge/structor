@@ -22,3 +22,8 @@ code {
   --color-base-2: #C7C7C7C7;
   --color-base-3: #B8B8B8;
 }
+
+.controller{
+  border-right: solid var(--color-base-2) 0.5px;
+}
+

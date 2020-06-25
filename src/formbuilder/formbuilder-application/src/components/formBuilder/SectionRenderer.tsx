@@ -55,22 +55,22 @@ function Section({ sectionId, removeSection }: SectionProps): JSX.Element {
             }}
         >
             <Row>
-                <Col span={22}>
+                <Col span={20}>
                     <div style={{ display: 'inline' }}>
                         <InputField placeholder={placeholder} />
                     </div>
                 </Col>
-                <Col span={1}>
+                <Col span={3}>
                     {isSection && (
-                        <Tooltip title="Slett seksjon">
-                            <Button
-                                style={{ zIndex: 1, color: 'var(--primary-1)' }}
-                                size="large"
-                                icon={<DeleteOutlined />}
-                                type="link"
-                                onClick={() => removeSection()}
-                            />
-                        </Tooltip>
+                        <Button
+                            style={{ zIndex: 1, color: 'var(--primary-1)' }}
+                            size="large"
+                            icon={<DeleteOutlined />}
+                            type="default"
+                            onClick={() => removeSection()}
+                        >
+                            Slett seksjon
+                        </Button>
                     )}
                 </Col>
                 <Col span={1}>
@@ -97,6 +97,16 @@ function Section({ sectionId, removeSection }: SectionProps): JSX.Element {
                         </Tooltip>
                     )}
                 </Col>
+            </Row>
+            <Row>
+                <hr
+                    key="hrTitle"
+                    style={{
+                        color: 'black',
+                        width: '100%',
+                        border: '0.2px solid var(--color-base-2)',
+                    }}
+                />
             </Row>
             <Row>
                 <Col span={24}>
@@ -132,18 +142,17 @@ function Section({ sectionId, removeSection }: SectionProps): JSX.Element {
             </Row>
             <Row>
                 <Col span={24} style={{ margin: '10px' }}>
-                    <Tooltip title="Legg til nytt spørsmål">
-                        <Button
-                            style={{
-                                backgroundColor: 'var(--primary-1)',
-                                borderColor: 'var(--primary-1)',
-                            }}
-                            type="primary"
-                            shape="circle"
-                            icon={<PlusOutlined />}
-                            onClick={dispatchAddQuestion}
-                        />
-                    </Tooltip>
+                    <Button
+                        style={{
+                            backgroundColor: 'var(--primary-1)',
+                            borderColor: 'var(--primary-1)',
+                        }}
+                        type="primary"
+                        icon={<PlusOutlined />}
+                        onClick={dispatchAddQuestion}
+                    >
+                        Legg til nytt spørsmål
+                    </Button>
                 </Col>
             </Row>
         </div>

@@ -1,86 +1,149 @@
 import React, { useState } from 'react';
-import { Button, Row, Col, Select } from 'antd';
+import { Row, Col, Select, Input, Switch } from 'antd';
 import './AnswerComponent.css';
 import TextInput from './TextInput';
 import RadioButton from './RadioButton';
 import Decimal from './Decimal';
 
+const { TextArea } = Input;
+
 function AnswerComponent(): JSX.Element {
-    const [answerType, setAnswerType] = useState('');
+    const [answerType, setAnswerType] = useState('Velg type spørsmål');
     const [answerBuilder, setAnswerBuilder] = useState(<div></div>);
     const { Option } = Select;
+    const [desc, setDescState] = useState(false);
+    const [obligatory, setObligatory] = useState(true);
 
-    function answerPicker() {
-        return (
-            <div style={{ display: 'inline', marginBottom: '100px' }}>
-                <Button
-                    className="answerPickerButton"
-                    {...(answerType === 'boolean' ? { type: 'primary' } : {})}
-                    onClick={() => {
-                        setAnswerType('boolean');
-                        //TODO: Implement Boolean answerComponent, using RadioButtons for testing
-                        setAnswerBuilder(<RadioButton></RadioButton>);
-                    }}
-                >
-                    Ja/nei
-                </Button>
-                <Button
-                    {...(answerType === 'decimal' ? { type: 'primary' } : {})}
-                    onClick={() => {
-                        setAnswerType('decimal');
-                        setAnswerBuilder(<Decimal></Decimal>);
-                    }}
-                >
-                    Tall
-                </Button>
-                <Button
-                    onClick={() => {
-                        setAnswerType('text');
-                        setAnswerBuilder(
-                            <TextInput
-                                maxLength={100}
-                                longAnswer={true}
-                                placeholder="Svartext..."
-                            ></TextInput>,
-                        );
-                    }}
-                    {...(answerType === 'text' ? { type: 'primary' } : {})}
-                >
-                    Tekst
-                </Button>
-                <Button
-                    onClick={() => {
-                        setAnswerType('radio');
-                        setAnswerBuilder(<RadioButton></RadioButton>);
-                    }}
-                    {...(answerType === 'radio' ? { type: 'primary' } : {})}
-                >
-                    Radio button
-                </Button>
-
-                <Select defaultValue="ValueSet1" style={{ width: '120px' }}>
-                    <Option value="ValueSet1"> Value sett 1</Option>
-                    <Option value="ValueSet2"> Value sett 2</Option>
-                    <Option value="NyttSet"> Lag nytt set</Option>
-                </Select>
-            </div>
-        );
+    function answerPicker(value: string) {
+        console.log(obligatory); // to not get warnings when deploying
+        if (value === 'boolean') {
+            setAnswerType('boolean');
+            //TODO: Implement Boolean answerComponent, using RadioButtons for testing
+            setAnswerBuilder(<RadioButton></RadioButton>);
+        } else if (value === 'decimal') {
+            setAnswerType('decimal');
+            setAnswerBuilder(<Decimal></Decimal>);
+        } else if (value === 'text') {
+            setAnswerType('text');
+            setAnswerBuilder(
+                <TextInput
+                    maxLength={100}
+                    longAnswer={true}
+                    placeholder="Mottaker skriver svar her"
+                ></TextInput>,
+            );
+        } else if (value === 'radio') {
+            setAnswerType('radio');
+            setAnswerBuilder(<RadioButton></RadioButton>);
+        }
     }
     return (
-        <div
-            style={{
-                width: '100%',
-                display: 'inline-block',
-                marginBottom: '20px',
-            }}
-        >
-            <Row>
-                <Col span={22}>{answerPicker()}</Col>
-            </Row>
-            <Row>
-                <Col span={22}>{answerBuilder}</Col>
-            </Row>
-        </div>
+        <Row>
+            <Col span={8} className="controller">
+                <Row>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <div style={{ float: 'left' }}>
+                            <Switch onChange={setDescState} />
+                        </div>
+                    </Col>
+                    <Col span={21} style={{ padding: '0 10px' }}>
+                        <div style={{ float: 'left' }}>
+                            <p>Forklaring av spørsmål til mottaker</p>
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <div style={{ float: 'left' }}>
+                            <Switch defaultChecked onChange={setObligatory} />
+                        </div>
+                    </Col>
+                    <Col span={21} style={{ padding: '0 10px' }}>
+                        <div style={{ float: 'left' }}>
+                            <p>
+                                Spørsmålet skal være obligatorisk å svare på for
+                                mottaker
+                            </p>
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={24} style={{ alignItems: 'center' }}>
+                        <Select
+                            value={answerType}
+                            style={{ width: '200px' }}
+                            onSelect={(value) => answerPicker(value)}
+                        >
+                            <Option
+                                value="boolean"
+                                onSelect={() => {
+                                    setAnswerType('boolean');
+                                    //TODO: Implement Boolean answerComponent, using RadioButtons for testing
+                                    setAnswerBuilder(
+                                        <RadioButton></RadioButton>,
+                                    );
+                                }}
+                            >
+                                Ja/nei spørsmål
+                            </Option>
+                            <Option
+                                value="decimal"
+                                onSelect={() => {
+                                    setAnswerType('decimal');
+                                    setAnswerBuilder(<Decimal></Decimal>);
+                                }}
+                            >
+                                Tall
+                            </Option>
+                            <Option
+                                value="text"
+                                onSelect={() => {
+                                    setAnswerType('text');
+                                    setAnswerBuilder(
+                                        <TextInput
+                                            maxLength={100}
+                                            longAnswer={true}
+                                            placeholder="Mottaker skriver svar her"
+                                        ></TextInput>,
+                                    );
+                                }}
+                                {...(answerType === 'text'
+                                    ? { type: 'primary' }
+                                    : {})}
+                            >
+                                Tekst
+                            </Option>
+                            <Option
+                                value="radio"
+                                onSelect={() => {
+                                    setAnswerType('radio');
+                                    setAnswerBuilder(
+                                        <RadioButton></RadioButton>,
+                                    );
+                                }}
+                                {...(answerType === 'radio'
+                                    ? { type: 'primary' }
+                                    : {})}
+                            >
+                                Radio button
+                            </Option>
+                        </Select>
+                    </Col>
+                </Row>
+            </Col>
+
+            <Col span={10} style={{ padding: '10px' }}>
+                {desc && (
+                    <div style={{ paddingBottom: '10px' }}>
+                        <TextArea
+                            rows={4}
+                            placeholder="Fyll inn beskrivelse av spørsmål eller mer informasjon til mottaker av skjema..."
+                        />
+                    </div>
+                )}
+                {answerBuilder}
+            </Col>
+        </Row>
     );
 }
 
