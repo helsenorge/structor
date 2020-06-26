@@ -4,14 +4,21 @@ import { DeleteOutlined } from '@ant-design/icons';
 import './answerComponents/AnswerComponent.css';
 import AnswerComponent from './AnswerComponent';
 import IQuestion from '../types/IQuestion';
+import * as DND from 'react-beautiful-dnd';
+
 const { TextArea } = Input;
 
 type QuestionProps = {
     question: IQuestion;
     removeQuestion: () => void;
+    provided: DND.DraggableProvided;
 };
 
-function Question({ question, removeQuestion }: QuestionProps): JSX.Element {
+function Question({
+    question,
+    removeQuestion,
+    provided,
+}: QuestionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Spørsmål 1...');
     useEffect(() => {
         findPlaceholder();
@@ -20,7 +27,7 @@ function Question({ question, removeQuestion }: QuestionProps): JSX.Element {
         setPlaceholder('Spørsmål ' + (question.id + 1) + '...');
     }
     return (
-        <div>
+        <div style={{ backgroundColor: 'var(--color-base-1)' }}>
             <Row>
                 <Col
                     span={7}
@@ -53,6 +60,7 @@ function Question({ question, removeQuestion }: QuestionProps): JSX.Element {
                             style={{ zIndex: 1, color: 'var(--primary-1)' }}
                             size="large"
                             type="link"
+                            {...provided.dragHandleProps}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
