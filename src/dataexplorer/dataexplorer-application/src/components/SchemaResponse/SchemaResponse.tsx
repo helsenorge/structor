@@ -4,10 +4,7 @@ import 'dayjs/locale/nb';
 import Title from 'antd/lib/typography/Title';
 import useFetch from 'utils/hooks/useFetch';
 import dayjs from 'dayjs';
-import {
-  QuestionnaireResponse,
-  Questionnaire,
-} from 'types/fhirTypes/fhir';
+import { QuestionnaireResponse, Questionnaire } from 'types/fhirTypes/fhir';
 
 const SchemaResponse = () => {
   const questionnaireResponseId = '10';
@@ -23,6 +20,8 @@ const SchemaResponse = () => {
     'fhir/' + questionnaireUrl,
   );
   const [answer, setAnswer] = useState<any[]>([]);
+  const [question, setQuestion] = useState<any[]>([]);
+
   console.log(schemaResponse);
   console.log(questionnaire);
   dayjs.locale('nb');
@@ -40,8 +39,11 @@ const SchemaResponse = () => {
     i.item?.map((i2) => i2.item?.map((i3) => i3.item?.map((i4) => i4.text))),
   );
 
-  const updateAnswer = (update: any ) => {
+  const updateAnswer = (update: any) => {
     setAnswer((answer) => [...answer, update]);
+  };
+  const updateQuestion = (update: any) => {
+    setQuestion((question) => [...question, update]);
   };
 
   useEffect(() => {
@@ -52,21 +54,21 @@ const SchemaResponse = () => {
       }
       if (list.answer) {
         if (list.item) {
-            console.log('if');
+          console.log('if');
           updateAnswer(list);
           findAnswer(list.item);
         } else {
-            console.log('else');
+          console.log('else');
           updateAnswer(list);
         }
         return;
       } else {
-          console.log('else 2');
+        console.log('else 2');
         list.item.forEach((element: any) => findAnswer(element));
       }
     };
     if (schemaResponse.response?.item) {
-        console.log('if 2');
+      console.log('if 2');
       for (let a = 0; a < schemaResponse.response.item.length; a++) {
         findAnswer(schemaResponse.response.item[a]);
       }
@@ -74,7 +76,38 @@ const SchemaResponse = () => {
     return;
   }, [schemaResponse.response]);
 
+  useEffect(() => {
+    console.log('inne2');
+    const findQuestion = (list: any) => {
+      if (!list?.text && !list.item) {
+        return;
+      }
+      if (list.text) {
+        if (list.item) {
+          console.log('if');
+          updateQuestion(list);
+          findQuestion(list.item);
+        } else {
+          console.log('else');
+          updateQuestion(list);
+        }
+        return;
+      } else {
+        console.log('else 2');
+        list.item.forEach((element: any) => findQuestion(element));
+      }
+    };
+    if (questionnaire?.item) {
+      console.log('if 2');
+      for (let a = 0; a < questionnaire.item.length; a++) {
+        findQuestion(questionnaire.item[a]);
+      }
+    }
+    return;
+  }, [questionnaire]);
+
   console.log(answer);
+  console.log(question);
 
   return (
     <>
