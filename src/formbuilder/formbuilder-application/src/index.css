@@ -27,3 +27,7 @@ code {
   border-right: solid var(--color-base-2) 0.5px;
 }
 
+p{
+  text-align: left;
+}
+
