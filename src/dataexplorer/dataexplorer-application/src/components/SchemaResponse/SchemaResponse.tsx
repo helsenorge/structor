@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Spin } from 'antd';
 import 'dayjs/locale/nb';
 import Title from 'antd/lib/typography/Title';
 import useFetch from 'utils/hooks/useFetch';
 import dayjs from 'dayjs';
-import { QuestionnaireResponse, Questionnaire } from 'types/fhirTypes/fhir';
+import {
+  QuestionnaireResponse,
+  Questionnaire,
+} from 'types/fhirTypes/fhir';
 
 const SchemaResponse = () => {
   const questionnaireResponseId = '10';
@@ -19,6 +22,7 @@ const SchemaResponse = () => {
   const { response: questionnaire } = useFetch<Questionnaire>(
     'fhir/' + questionnaireUrl,
   );
+  const [answer, setAnswer] = useState<any[]>([]);
   console.log(schemaResponse);
   console.log(questionnaire);
   dayjs.locale('nb');
@@ -35,6 +39,43 @@ const SchemaResponse = () => {
   const thirdQuestion = questionnaire?.item?.map((i) =>
     i.item?.map((i2) => i2.item?.map((i3) => i3.item?.map((i4) => i4.text))),
   );
+
+  const updateAnswer = (update: any ) => {
+    setAnswer((answer) => [...answer, update]);
+  };
+
+  useEffect(() => {
+    console.log('inne');
+    const findAnswer = (list: any) => {
+      if (!list?.answer && !list.item) {
+        return;
+      }
+      if (list.answer) {
+        if (list.item) {
+            console.log('if');
+          updateAnswer(list);
+          findAnswer(list.item);
+        } else {
+            console.log('else');
+          updateAnswer(list);
+        }
+        return;
+      } else {
+          console.log('else 2');
+        list.item.forEach((element: any) => findAnswer(element));
+      }
+    };
+    if (schemaResponse.response?.item) {
+        console.log('if 2');
+      for (let a = 0; a < schemaResponse.response.item.length; a++) {
+        findAnswer(schemaResponse.response.item[a]);
+      }
+    }
+    return;
+  }, [schemaResponse.response]);
+
+  console.log(answer);
+
   return (
     <>
       {schemaResponse && questionnaire ? (
@@ -106,7 +147,7 @@ const SchemaResponse = () => {
                                               </Row>
                                             ))
                                           ) : (
-                                            <Row justify="center" >
+                                            <Row justify="center">
                                               <Col
                                                 style={{
                                                   color: 'green',
