@@ -6,6 +6,10 @@ import { Row, Col, Card, Avatar, Table } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
 const PatientInfo = ({ patientID, setName, setSchemaNumber }: any) => {
+    const handleClick = (record: any) => {
+        message.info('Du har valgt Skjema ' + record.id);
+        setSchemaNumber(record.id);
+    };
     // The oid signifies that we are searching on social security number
     const { response: patientData } = useFetch<IPatientIdentifier>(
         'fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' +
@@ -23,7 +27,11 @@ const PatientInfo = ({ patientID, setName, setSchemaNumber }: any) => {
         // unique, the response will contain a maximum value of 1,
         // if the patient exists in the database.
         if (patientData.total === 1) {
-            return displayPatientInfo(patientData.entry[0].resource);
+            return displayPatientInfo({
+                patientData.entry[0].resource,
+                handleClick
+            }
+            );
         }
     }
     return <div>Fant ingen pasienter med dette personnummeret</div>;
@@ -155,8 +163,9 @@ const columns = [
     },
 ];
 
-const displayPatientInfo = (response: IPatient) => {
-    const name = response.name[0].given[0] + ' ' + response.name[0].family;
+const displayPatientInfo = (props: any) => {
+    const name =
+        props.response.name[0].given[0] + ' ' + props.response.name[0].family;
     return (
         <>
             <Row gutter={[1, 40]} justify="center">
@@ -166,7 +175,7 @@ const displayPatientInfo = (response: IPatient) => {
                             style={{ marginTop: 100 }}
                             type="inner"
                             hoverable
-                            key={response.id}
+                            key={props.response.id}
                             title={name}
                         >
                             <div
@@ -177,34 +186,35 @@ const displayPatientInfo = (response: IPatient) => {
                                 }}
                             >
                                 <div className="info-left">
-                                    {/* <b>
+                                    <b>
                                         <i>
                                             <h1>Personlig Informasjon</h1>
                                         </i>
-                                    </b> */}
+                                    </b>
                                     <p>
-                                        <b>Pnr: </b> {response.id}
+                                        <b>Pnr: </b> {props.response.id}
                                     </p>
                                     <p>
-                                        <b>Kjønn: </b> {response.gender}
+                                        <b>Kjønn: </b> {props.response.gender}
                                     </p>
                                     <p>
-                                        <b>Fødselsdato:</b> {response.birthDate}
+                                        <b>Fødselsdato:</b>{' '}
+                                        {props.response.birthDate}
                                     </p>
                                 </div>
                                 <div className="info-right">
-                                    {/* <b>
+                                    <b>
                                         <i>
                                             <h1>Kontakt</h1>
                                         </i>
-                                    </b> */}
+                                    </b>
                                     <p>
                                         <b>Addresse: </b>
-                                        {response.address[0].line[0]}
+                                        {props.response.address[0].line[0]}
                                     </p>
                                     <p>
                                         <b>Telefon: </b>
-                                        {response.telecom[0].value}
+                                        {props.response.telecom[0].value}
                                     </p>
                                     <p>
                                         <b>E-post: </b>
@@ -215,6 +225,7 @@ const displayPatientInfo = (response: IPatient) => {
                         </Card>
                     </Link>
                     <Table
+                        key={props.response.id}
                         style={{ marginTop: 20 }}
                         size="small"
                         columns={columns}
@@ -223,9 +234,7 @@ const displayPatientInfo = (response: IPatient) => {
                         onRow={(record) => {
                             return {
                                 onClick: () => {
-                                    message.info(
-                                        'Du har valgt Skjema ' + record.id,
-                                    );
+                                    props.handleClick(record);
                                 },
                             };
                         }}
