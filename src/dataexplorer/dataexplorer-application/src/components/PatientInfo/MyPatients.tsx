@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { Row, Col } from 'antd';
 import Search from 'antd/lib/input/Search';
-import PatientInfo from './PatientInfo/PatientInfo';
 const MyPatients = (props: any) => {
     const handleSearch = (value: any) => {
         setPatientID(value);
-        // props.history.push({ pathname: 'Søk' });
     };
 
     const [patientID, setPatientID] = useState();
@@ -20,7 +18,7 @@ const MyPatients = (props: any) => {
                     />
                 </Col>
             </Row>
-            {patientID && <PatientInfo patientID={patientID} />}
+            {patientID && props.history.push({ pathname: 'Pasient', state: patientID })}
         </>
     );
 };
