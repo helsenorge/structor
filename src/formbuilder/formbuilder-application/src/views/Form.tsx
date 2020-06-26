@@ -2,7 +2,13 @@ import React, { useState, useContext } from 'react';
 import { Row, Col, Button } from 'antd';
 import NavBar from '../components/commonComponents/NavBar';
 import Section from '../components/Section';
-import { FormContext, addNewSection, removeSection } from '../store/FormStore';
+import {
+    FormContext,
+    addNewSection,
+    removeSection,
+    swapSection,
+    swapQuestion,
+} from '../store/FormStore';
 import * as DND from 'react-beautiful-dnd';
 import './Form.css';
 import ISection from '../types/ISection';
@@ -17,15 +23,6 @@ function CreateForm(): JSX.Element {
         setI(i + 1);
         const newSectionAction = addNewSection();
         dispatch(addNewSection());
-        // try {
-        //     if (index && !state.sections[index]) {
-        //         dispatch(addNewSection(index));
-        //     } else {
-        //         dispatch(addNewSection(i + 1));
-        //     }
-        // } catch (e) {
-        //     console.log(e);
-        // }
     }
 
     function dispatchRemoveSection(index: number) {
@@ -35,23 +32,28 @@ function CreateForm(): JSX.Element {
     function onDragEnd(result: DND.DropResult) {
         setDragIndex(-1);
         if (!result.destination) return;
-        const sourceIndex = state.sections[result.source.index].id;
-        const destIndex = state.sections[result.destination.index].id;
+        const sourceIndex = result.source.index;
+        const destIndex = result.destination.index;
 
         if (result.type === 'section') {
-            const tmpOldSection = state.sections[sourceIndex];
-            tmpOldSection.id = destIndex;
-            const tmpNewSection = state.sections[destIndex];
-            tmpNewSection.id = sourceIndex;
-            // dispatch(addSection(destIndex, tmpOldSection));
-            // dispatch(addSection(sourceIndex, tmpNewSection));
+            dispatch(swapSection(sourceIndex, destIndex));
+        } else if (result.type === 'question') {
+            const sourceParentId = result.source.droppableId;
+            const destParentId = result.destination.droppableId;
+            dispatch(
+                swapQuestion(
+                    sourceParentId,
+                    sourceIndex,
+                    destParentId,
+                    destIndex,
+                ),
+            );
         }
-        console.log(state);
     }
 
     function onDragStart(startResponder: DND.DragStart) {
-        console.log(state);
-        // setDragIndex(state.sections[startResponder.source.index].id);
+        if (startResponder.type === 'section')
+            setDragIndex(startResponder.source.index);
     }
 
     return (
@@ -82,13 +84,8 @@ function CreateForm(): JSX.Element {
                                                 state.sections[sectionId];
                                             return (
                                                 <DND.Draggable
-                                                    key={
-                                                        'dragSection' +
-                                                        section.id
-                                                    }
-                                                    draggableId={
-                                                        'section' + section.id
-                                                    }
+                                                    key={section.id}
+                                                    draggableId={section.id}
                                                     index={index}
                                                 >
                                                     {(provided, snapshot) => (
@@ -99,10 +96,7 @@ function CreateForm(): JSX.Element {
                                                             {...provided.draggableProps}
                                                         >
                                                             <Section
-                                                                key={
-                                                                    'section' +
-                                                                    section.id
-                                                                }
+                                                                key={section.id}
                                                                 section={
                                                                     section
                                                                 }

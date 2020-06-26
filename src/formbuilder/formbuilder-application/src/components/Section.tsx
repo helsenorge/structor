@@ -27,7 +27,7 @@ function Section({
     index,
 }: SectionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Tittel...');
-    const [isSection, setIsSection] = useState(false);
+    const [isSection, setIsSection] = useState(true);
     const [count, setCount] = useState(0);
 
     const { state, dispatch } = useContext(FormContext);
@@ -47,13 +47,10 @@ function Section({
     });
 
     function dispatchAddQuestion() {
-        console.log(section.id);
         dispatch(addNewQuestion(section.id));
-        console.log(state);
     }
 
     function dispatchRemoveQuestion(questionIndex: number) {
-        console.log(questionIndex);
         dispatch(removeQuestion(questionIndex, section.id));
     }
 
@@ -94,6 +91,7 @@ function Section({
                     {isSection && (
                         <Tooltip title="Flytt seksjon">
                             <Button
+                                {...provided.dragHandleProps}
                                 style={{ zIndex: 1, color: 'var(--primary-1)' }}
                                 size="large"
                                 type="link"
@@ -127,38 +125,66 @@ function Section({
             </Row>
             <Row>
                 <Col span={24}>
-                    {!collapsed &&
-                        section.questionOrder.map(
-                            (questionId: string, index: number) => {
-                                const question = state.questions[questionId];
-                                return [
-                                    <hr
-                                        key={
-                                            'questionhr' +
-                                            section.id +
-                                            question.id
-                                        }
-                                        style={{
-                                            color: 'black',
-                                            width: '100%',
-                                            border:
-                                                '0.2px solid var(--color-base-2)',
-                                        }}
-                                    />,
-                                    <Question
-                                        key={
-                                            'question' +
-                                            section.id +
-                                            question.id
-                                        }
-                                        question={question}
-                                        removeQuestion={() =>
-                                            dispatchRemoveQuestion(index)
-                                        }
-                                    />,
-                                ];
-                            },
+                    <DND.Droppable droppableId={section.id} type={'question'}>
+                        {(provided, snapshot) => (
+                            <div ref={provided.innerRef}>
+                                {!collapsed &&
+                                    section.questionOrder.map(
+                                        (questionId: string, index: number) => {
+                                            const question =
+                                                state.questions[questionId];
+                                            return (
+                                                <DND.Draggable
+                                                    key={questionId}
+                                                    draggableId={questionId}
+                                                    index={index}
+                                                >
+                                                    {(provided, snapshot) => (
+                                                        <div
+                                                            ref={
+                                                                provided.innerRef
+                                                            }
+                                                            {...provided.draggableProps}
+                                                        >
+                                                            <Question
+                                                                key={
+                                                                    question.id
+                                                                }
+                                                                question={
+                                                                    question
+                                                                }
+                                                                removeQuestion={() =>
+                                                                    dispatchRemoveQuestion(
+                                                                        index,
+                                                                    )
+                                                                }
+                                                                provided={
+                                                                    provided
+                                                                }
+                                                            />
+                                                            <hr
+                                                                key={
+                                                                    'hr' + question.id
+                                                                }
+                                                                style={{
+                                                                    color:
+                                                                        'black',
+                                                                    width:
+                                                                        '100%',
+                                                                    border:
+                                                                        '0.2px solid var(--color-base-2)',
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                </DND.Draggable>
+                                            );
+                                        },
+                                    )}
+                                {provided.placeholder}
+                            </div>
                         )}
+                    </DND.Droppable>
                 </Col>
             </Row>
             <Row>
