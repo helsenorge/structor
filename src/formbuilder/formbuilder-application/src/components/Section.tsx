@@ -7,13 +7,25 @@ import {
     addNewQuestion,
     removeQuestion,
 } from '../store/FormStore';
+import ISection from '../types/ISection';
+import IQuestion from '../types/IQuestion';
+import * as DND from 'react-beautiful-dnd';
 
 type SectionProps = {
-    sectionId: number;
+    section: ISection;
     removeSection: () => void;
+    provided: DND.DraggableProvided;
+    collapsed: boolean;
+    index: number;
 };
 
-function Section({ sectionId, removeSection }: SectionProps): JSX.Element {
+function Section({
+    section,
+    removeSection,
+    provided,
+    collapsed,
+    index,
+}: SectionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Tittel...');
     const [isSection, setIsSection] = useState(false);
     const [count, setCount] = useState(0);
@@ -21,9 +33,9 @@ function Section({ sectionId, removeSection }: SectionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
 
     function findPlaceholder() {
-        if (sectionId === 0) {
-            setIsSection(false);
-            setPlaceholder('Skjematittel...');
+        if (index === 0) {
+            // setIsSection(false);
+            setPlaceholder('Tittel...');
             return;
         }
         setIsSection(true);
@@ -35,12 +47,14 @@ function Section({ sectionId, removeSection }: SectionProps): JSX.Element {
     });
 
     function dispatchAddQuestion() {
-        dispatch(addNewQuestion(sectionId, count + 1));
-        setCount(count + 1);
+        console.log(section.id);
+        dispatch(addNewQuestion(section.id));
+        console.log(state);
     }
 
-    function dispatchRemoveQuestion(questionId: number) {
-        dispatch(removeQuestion(sectionId, questionId));
+    function dispatchRemoveQuestion(questionIndex: number) {
+        console.log(questionIndex);
+        dispatch(removeQuestion(questionIndex, section.id));
     }
 
     return (
@@ -113,34 +127,38 @@ function Section({ sectionId, removeSection }: SectionProps): JSX.Element {
             </Row>
             <Row>
                 <Col span={24}>
-                    {Object.keys(state.sections[sectionId].questions).map(
-                        (questionId) => {
-                            const question =
-                                state.sections[sectionId].questions[
-                                    parseInt(questionId)
+                    {!collapsed &&
+                        section.questionOrder.map(
+                            (questionId: string, index: number) => {
+                                const question = state.questions[questionId];
+                                return [
+                                    <hr
+                                        key={
+                                            'questionhr' +
+                                            section.id +
+                                            question.id
+                                        }
+                                        style={{
+                                            color: 'black',
+                                            width: '100%',
+                                            border:
+                                                '0.2px solid var(--color-base-2)',
+                                        }}
+                                    />,
+                                    <Question
+                                        key={
+                                            'question' +
+                                            section.id +
+                                            question.id
+                                        }
+                                        question={question}
+                                        removeQuestion={() =>
+                                            dispatchRemoveQuestion(index)
+                                        }
+                                    />,
                                 ];
-                            return [
-                                <hr
-                                    key={'questionhr' + sectionId + questionId}
-                                    style={{
-                                        color: 'black',
-                                        width: '100%',
-                                        border:
-                                            '0.2px solid var(--color-base-2)',
-                                    }}
-                                />,
-                                <Question
-                                    key={'question' + sectionId + questionId}
-                                    question={question}
-                                    removeQuestion={() =>
-                                        dispatchRemoveQuestion(
-                                            parseInt(questionId),
-                                        )
-                                    }
-                                />,
-                            ];
-                        },
-                    )}
+                            },
+                        )}
                 </Col>
             </Row>
             <Row>
