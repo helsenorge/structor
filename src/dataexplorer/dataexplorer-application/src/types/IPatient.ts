@@ -6,6 +6,7 @@ export interface IPatient {
     map(data: any): any;
     address: IAddress[];
     telecom: ITelecom[];
+    setName: () => void;
 }
 
 export interface IName {

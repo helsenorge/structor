@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Row, Col, Card, Avatar, Table } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
-const PatientInfo = ({ patientID }: any) => {
+const PatientInfo = ({ patientID, setName, setSchemaNumber }: any) => {
     // The oid signifies that we are searching on social security number
     const { response: patientData } = useFetch<IPatientIdentifier>(
         'fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' +
@@ -13,6 +13,12 @@ const PatientInfo = ({ patientID }: any) => {
     );
 
     if (patientData && patientData !== undefined) {
+        setName(
+            ' ' +
+                patientData.entry[0].resource.name[0].given[0] +
+                ' ' +
+                patientData.entry[0].resource.name[0].family,
+        );
         // Since the search uses social security number, which are
         // unique, the response will contain a maximum value of 1,
         // if the patient exists in the database.
@@ -150,8 +156,6 @@ const columns = [
 ];
 
 const displayPatientInfo = (response: IPatient) => {
-    console.log(response);
-
     const name = response.name[0].given[0] + ' ' + response.name[0].family;
     return (
         <>
@@ -159,7 +163,7 @@ const displayPatientInfo = (response: IPatient) => {
                 <Col span={12}>
                     <Link to="./Pasient/ListeVisning">
                         <Card
-                            style={{ marginTop: -73 }}
+                            style={{ marginTop: 100 }}
                             type="inner"
                             hoverable
                             key={response.id}
@@ -216,6 +220,15 @@ const displayPatientInfo = (response: IPatient) => {
                         columns={columns}
                         dataSource={dataSource}
                         pagination={{ pageSize: 8 }}
+                        onRow={(record) => {
+                            return {
+                                onClick: () => {
+                                    message.info(
+                                        'Du har valgt Skjema ' + record.id,
+                                    );
+                                },
+                            };
+                        }}
                     />
                 </Col>
             </Row>

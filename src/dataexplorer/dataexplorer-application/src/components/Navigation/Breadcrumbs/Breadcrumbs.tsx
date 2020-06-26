@@ -2,19 +2,21 @@ import React from 'react';
 import Breadcrumb from 'antd/lib/breadcrumb';
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 
-const Breadcrumbs = (props: any) => {
+const Breadcrumbs = ({name}:any) => {
+
     return (
+
         <>
-            <div className="Breadcrumbcontainer" style={props.style}>
+            <div className="Breadcrumbcontainer" >
                 <Breadcrumb>
                     <Breadcrumb.Item href="/">
                         <HomeOutlined />
-                        <span style={{ color: 'black' }}>Søk</span>
+                        <span style={{ color: 'black' }}>Hjem</span>
                     </Breadcrumb.Item>
-                    <Breadcrumb.Item href="Pasient">
+                    <Breadcrumb.Item>
                         <UserOutlined />
+                        <b>{name}</b>
                         <span style={{ color: 'black' }}>
-                            Pasient - Erling van de Weijer
                         </span>
                     </Breadcrumb.Item>
                     <Breadcrumb.Item>

@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout, Avatar } from 'antd';
-import Breadcrumbs from './Breadcrumbs';
+import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
 import 'antd/dist/antd.css';
 import MySchemas from '../MySchemas/MySchemas';
-import MyPatients from '../MyPatients/MyPatients';
+import MyPatients from '../PatientInfo/MyPatients'
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import ListView from '../PatientInfo/ListView/ListView';
-import SchemaView from 'components/MyPatients/SchemaView/SchemaView';
+import SchemaView from './SchemaView'
 import { UserOutlined } from '@ant-design/icons';
-import PatientInfo from '../MyPatients/PatientInfo/PatientInfo';
+import PatientInfo from '../PatientInfo/PatientInfo'
 
 const { Header, Content } = Layout;
-
-const Navigation = (props: any) => (
-    <>
+const Navigation = (props: any) => {
+    const [name, setName] = useState('')
+    return(
+        <>
         <Layout>
             <Layout>
                 <Header
@@ -44,8 +45,8 @@ const Navigation = (props: any) => (
                         </h1>
                     </Link>
                     <Breadcrumbs
-                        path={props.history}
                         style={{ flexGrow: 2, paddingLeft: 20 }}
+                        name={name}
                     />
 
                     <div
@@ -65,7 +66,6 @@ const Navigation = (props: any) => (
                             }}
                             shape="square"
                             size="large"
-                            // src="https://i.pinimg.com/236x/6c/ab/cc/6cabccf7f0ebb599cb4fd1dd783877dd--wallpaper-house-gregory-house.jpg"
                             icon={<UserOutlined />}
                         />
                         <h1 style={{ margin: 0, marginRight: -40 }}>
@@ -76,12 +76,17 @@ const Navigation = (props: any) => (
                 <Content style={{ margin: '24px 16px 0', overflow: 'hidden' }}>
                     <div className="content">
                         <Switch>
-                            <Route exact path="/Skjema" component={MySchemas} />
                             <Route exact path="/" component={MyPatients} />
+                            <Route exact path="/Skjema" component={MySchemas} />
                             <Route
                                 exact
-                                path="/PasientInfo"
-                                component={PatientInfo}
+                                path="/Pasient"
+                                component={() => 
+                                    <PatientInfo
+                                        setName={setName}
+                                        patientID={props.history.location.state}
+                                    />
+                                }
                             />
                             <Route
                                 exact
@@ -99,6 +104,9 @@ const Navigation = (props: any) => (
             </Layout>
         </Layout>
     </>
-);
+        )
+}
+
+    
 
 export default withRouter(Navigation);
