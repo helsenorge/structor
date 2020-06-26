@@ -23,6 +23,7 @@ function TextInput({
                     maxLength={maxLength}
                     autoSize={{ minRows: 3, maxRows: 3 }}
                     className="input-question"
+                    disabled
                 ></TextArea>
             );
         } else {
@@ -31,6 +32,7 @@ function TextInput({
                     placeholder={placeholder}
                     maxLength={maxLength}
                     className="input-question"
+                    disabled
                 ></Input>
             );
         }
