@@ -1,4 +1,4 @@
 import ISection from './ISection';
 
-type SectionList = { [sectionNumber: number]: ISection };
+type SectionList = { [id: string]: ISection };
 export default SectionList;
