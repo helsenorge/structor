@@ -5,6 +5,7 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import { generateID } from '../helpers/IDGenerator';
 import produce from 'immer';
+import IAnswer, { AnswerTypes, IChoice } from '../types/IAnswer';
 
 const initSectionId = generateID();
 const initSection: ISection = { id: initSectionId, questionOrder: [] };
@@ -24,6 +25,7 @@ export enum ActionTypes {
     ADD_QUESTION = 'ADD_QUESTION',
     ADD_NEW_QUESTION = 'ADD_NEW_QUESTION',
     REMOVE_QUESTION = 'REMOVE_QUESTION',
+    UPDATE_ANSWER = 'UPDATE_ANSWER',
 }
 
 export enum SwapActionTypes {
@@ -39,6 +41,7 @@ export interface Action {
     questionIndex?: number;
     section?: ISection;
     question?: IQuestion;
+    answer?: IAnswer | IChoice;
 }
 
 export interface SwapAction {
@@ -63,6 +66,17 @@ export function addSection(sectionIndex: number, section: ISection): Action {
         type: ActionTypes.ADD_SECTION,
         sectionIndex: sectionIndex,
         section: section,
+    };
+}
+
+export function updateAnswer(
+    questionId: string,
+    answer: IAnswer | IChoice,
+): Action {
+    return {
+        type: ActionTypes.UPDATE_ANSWER,
+        questionId: questionId,
+        answer: answer,
     };
 }
 
@@ -112,6 +126,7 @@ export function addNewQuestion(sectionId: string): Action {
         id: questionId,
         sectionId: sectionId,
         questionText: '',
+        answer: { type: AnswerTypes.bool, choices: [''] },
     };
     return {
         type: ActionTypes.ADD_NEW_QUESTION,
@@ -156,6 +171,11 @@ const reducer = produce((draft: State, action: Action | SwapAction) => {
                 draft.sections[action.section.id] = action.section;
                 draft.sectionOrder.push(action.section.id);
             }
+            break;
+        case ActionTypes.UPDATE_ANSWER:
+            draft.questions[action.questionId as string].answer = action.answer as IChoice;
+            // console.log(action.answer);
+            // console.log(action.questionId);
             break;
         case ActionTypes.REMOVE_SECTION:
             if (action.sectionIndex !== undefined) {

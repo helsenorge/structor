@@ -79,7 +79,7 @@ function Question({
                 </Col>
             </Row>
 
-            <AnswerComponent />
+            <AnswerComponent question={question} />
         </div>
     );
 }
