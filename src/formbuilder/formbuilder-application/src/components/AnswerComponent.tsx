@@ -4,16 +4,16 @@ import './answerComponents/AnswerComponent.css';
 import TextInput from './answerComponents/TextInput';
 import RadioButton from './answerComponents/RadioButton';
 import Decimal from './answerComponents/Decimal';
-import IQuestion from '../types/IQuestion';
+import { AnswerTypes } from '../types/IAnswer';
 
 const { TextArea } = Input;
 
 type AnswerComponentProps = {
-    question: IQuestion;
+    questionId: string;
 };
 
-function AnswerComponent({ question }: AnswerComponentProps): JSX.Element {
-    const [answerType, setAnswerType] = useState('Velg type spørsmål');
+function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
+    const [answerType, setAnswerType] = useState(AnswerTypes.bool);
     const [answerBuilder, setAnswerBuilder] = useState(<div></div>);
     const { Option } = Select;
 
@@ -36,16 +36,16 @@ function AnswerComponent({ question }: AnswerComponentProps): JSX.Element {
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(0);
 
-    function answerPicker(value: string) {
-        if (value === 'boolean') {
-            setAnswerType('boolean');
+    function answerPicker(value: AnswerTypes) {
+        if (value === AnswerTypes.choice) {
+            setAnswerType(AnswerTypes.choice);
             //TODO: Implement Boolean answerComponent, using RadioButtons for testing
             setAnswerBuilder(<div></div>);
-        } else if (value === 'decimal') {
-            setAnswerType('decimal');
+        } else if (value === AnswerTypes.decimal) {
+            setAnswerType(AnswerTypes.decimal);
             setAnswerBuilder(<Decimal max={maxValue} min={minValue}></Decimal>);
-        } else if (value === 'text') {
-            setAnswerType('text');
+        } else if (value === AnswerTypes.text) {
+            setAnswerType(AnswerTypes.text);
             setAnswerBuilder(
                 <TextInput
                     maxLength={maxLengthText}
@@ -53,9 +53,11 @@ function AnswerComponent({ question }: AnswerComponentProps): JSX.Element {
                     placeholder="Mottaker skriver svar her"
                 ></TextInput>,
             );
-        } else if (value === 'radio') {
-            setAnswerType('radio');
-            setAnswerBuilder(<RadioButton question={question}></RadioButton>);
+        } else if (value === AnswerTypes.bool) {
+            setAnswerType(AnswerTypes.bool);
+            setAnswerBuilder(
+                <RadioButton questionId={questionId}></RadioButton>,
+            );
         }
     }
     function changeToLongText(value: boolean) {
@@ -118,33 +120,33 @@ function AnswerComponent({ question }: AnswerComponentProps): JSX.Element {
                             onSelect={(value) => answerPicker(value)}
                         >
                             <Option
-                                value="boolean"
+                                value={AnswerTypes.bool}
                                 onSelect={() => {
-                                    setAnswerType('boolean');
+                                    setAnswerType(AnswerTypes.bool);
                                 }}
                             >
                                 Ja/nei
                             </Option>
                             <Option
-                                value="decimal"
+                                value={AnswerTypes.decimal}
                                 onSelect={() => {
-                                    setAnswerType('decimal');
+                                    setAnswerType(AnswerTypes.decimal);
                                 }}
                             >
                                 Tall
                             </Option>
                             <Option
-                                value="text"
+                                value={AnswerTypes.text}
                                 onSelect={() => {
-                                    setAnswerType('text');
+                                    setAnswerType(AnswerTypes.text);
                                 }}
                             >
                                 Tekst
                             </Option>
                             <Option
-                                value="radio"
+                                value={AnswerTypes.choice}
                                 onSelect={() => {
-                                    setAnswerType('radio');
+                                    setAnswerType(AnswerTypes.choice);
                                 }}
                             >
                                 Flervalg
@@ -152,7 +154,7 @@ function AnswerComponent({ question }: AnswerComponentProps): JSX.Element {
                         </Select>
                     </Col>
                 </Row>
-                {answerType === 'radio' && (
+                {answerType === AnswerTypes.bool && (
                     <div>
                         <Row>
                             <Col span={24} style={{ padding: '0 10px' }}>
@@ -190,7 +192,7 @@ function AnswerComponent({ question }: AnswerComponentProps): JSX.Element {
                         </Row>
                     </div>
                 )}
-                {answerType === 'text' && (
+                {answerType === AnswerTypes.text && (
                     <div>
                         <Row>
                             <Col span={24} style={{ padding: '0 10px' }}>
@@ -230,7 +232,7 @@ function AnswerComponent({ question }: AnswerComponentProps): JSX.Element {
                         </Row>
                     </div>
                 )}
-                {answerType === 'decimal' && (
+                {answerType === AnswerTypes.decimal && (
                     <div>
                         <Row>
                             <Col span={24} style={{ padding: '0 10px' }}>

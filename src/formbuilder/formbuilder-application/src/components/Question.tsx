@@ -10,27 +10,30 @@ import { FormContext, updateQuestion } from '../store/FormStore';
 const { TextArea } = Input;
 
 type QuestionProps = {
-    question: IQuestion;
+    // question: IQuestion;
+    key: string;
+    questionId: string;
     removeQuestion: () => void;
     provided: DND.DraggableProvided;
 };
 
 function Question({
-    question,
+    questionId,
     removeQuestion,
     provided,
 }: QuestionProps): JSX.Element {
-    const { dispatch } = useContext(FormContext);
+    const { state, dispatch } = useContext(FormContext);
     const [placeholder, setPlaceholder] = useState('Spørsmål 1...');
     useEffect(() => {
         findPlaceholder();
     });
     function findPlaceholder() {
-        setPlaceholder('Spørsmål ' + (question.id + 1) + '...');
+        setPlaceholder('Spørsmål ' + (questionId + 1) + '...');
     }
 
     function handleInput(e: ChangeEvent<HTMLTextAreaElement>) {
         setPlaceholder(e.target.value);
+        const question = state.questions[questionId];
         if (question) {
             const temp = { ...question };
             temp.questionText = e.target.value;
@@ -52,7 +55,7 @@ function Question({
                         rows={1}
                         placeholder={placeholder}
                         className="input-question"
-                        value={question.questionText}
+                        value={state.questions[questionId].questionText}
                         onChange={(e): void => {
                             handleInput(e);
                         }}
@@ -94,7 +97,7 @@ function Question({
                 </Col>
             </Row>
 
-            <AnswerComponent question={question} />
+            <AnswerComponent questionId={questionId} />
         </div>
     );
 }

@@ -7,10 +7,10 @@ import IQuestion from '../../types/IQuestion';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 
 type radioButtonProps = {
-    question: IQuestion;
+    questionId: string;
 };
 
-function RadioButton({ question }: radioButtonProps): JSX.Element {
+function RadioButton({ questionId }: radioButtonProps): JSX.Element {
     const radioStyle = {
         display: 'block',
         height: '30px',
@@ -18,12 +18,12 @@ function RadioButton({ question }: radioButtonProps): JSX.Element {
         marginBottom: 10,
         width: '90%',
     };
-    let choiceList = (question.answer as IChoice).choices;
+    const { state, dispatch } = useContext(FormContext);
+    let choiceList = (state.questions[questionId].answer as IChoice).choices;
     if (!choiceList) {
         choiceList = [''];
     }
     const [buttonNames, setButtonNames] = useState(choiceList);
-    const { dispatch } = useContext(FormContext);
 
     function addButtonClick() {
         setButtonNames([...buttonNames, '']);
@@ -38,9 +38,9 @@ function RadioButton({ question }: radioButtonProps): JSX.Element {
     const handleInput = () => {
         dispatch(
             updateAnswer(
-                question.id as string,
+                questionId as string,
                 {
-                    type: question.answer.type as AnswerTypes,
+                    type: AnswerTypes.bool as AnswerTypes,
                     choices: buttonNames,
                 } as IChoice,
             ),

@@ -7,11 +7,10 @@ import {
     addNewQuestion,
     removeQuestion,
 } from '../store/FormStore';
-import ISection from '../types/ISection';
 import * as DND from 'react-beautiful-dnd';
 
 type SectionProps = {
-    section: ISection;
+    sectionId: string;
     removeSection: () => void;
     provided: DND.DraggableProvided;
     collapsed: boolean;
@@ -19,7 +18,7 @@ type SectionProps = {
 };
 
 function Section({
-    section,
+    sectionId,
     removeSection,
     provided,
     collapsed,
@@ -41,16 +40,16 @@ function Section({
         setPlaceholder('Seksjonstittel...');
     }
 
-    useEffect(() => {
-        findPlaceholder();
-    });
+    // useEffect(() => {
+    //     findPlaceholder();
+    // });
 
     function dispatchAddQuestion() {
-        dispatch(addNewQuestion(section.id));
+        dispatch(addNewQuestion(sectionId));
     }
 
     function dispatchRemoveQuestion(questionIndex: number) {
-        dispatch(removeQuestion(questionIndex, section.id));
+        dispatch(removeQuestion(questionIndex, sectionId));
     }
 
     return (
@@ -124,11 +123,11 @@ function Section({
             </Row>
             <Row>
                 <Col span={24}>
-                    <DND.Droppable droppableId={section.id} type={'question'}>
+                    <DND.Droppable droppableId={sectionId} type={'question'}>
                         {(provided, snapshot) => (
                             <div ref={provided.innerRef}>
                                 {!collapsed &&
-                                    section.questionOrder.map(
+                                    state.sections[sectionId].questionOrder.map(
                                         (questionId: string, index: number) => {
                                             const question =
                                                 state.questions[questionId];
@@ -149,8 +148,8 @@ function Section({
                                                                 key={
                                                                     question.id
                                                                 }
-                                                                question={
-                                                                    question
+                                                                questionId={
+                                                                    question.id
                                                                 }
                                                                 removeQuestion={() =>
                                                                     dispatchRemoveQuestion(

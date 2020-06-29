@@ -96,8 +96,8 @@ function CreateForm(): JSX.Element {
                                                         >
                                                             <Section
                                                                 key={section.id}
-                                                                section={
-                                                                    section
+                                                                sectionId={
+                                                                    sectionId
                                                                 }
                                                                 removeSection={() =>
                                                                     dispatchRemoveSection(
