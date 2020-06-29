@@ -8,8 +8,10 @@ import {
     QuestionnaireResponse,
     Questionnaire,
     QuestionnaireResponseItem,
+    QuestionnaireItem,
 } from 'types/fhirTypes/fhir';
-import { IAnswer, IQuestion } from 'types/IQuestionnaireResponse';
+import { IAnswer, IQuestion, IQA } from 'types/IQuestionnaireResponse';
+import SchemaView from './SchemaView/SchemaView';
 
 const SchemaResponse = () => {
     const questionnaireResponseId = '13';
@@ -24,9 +26,9 @@ const SchemaResponse = () => {
     const { response: questionnaire } = useFetch<Questionnaire>(
         'fhir/' + questionnaireUrl,
     );
-    const [answer, setAnswer] = useState<IAnswer[]>([]);
+    const [answers, setAnswers] = useState<IAnswer[]>([]);
 
-    const [question, setQuestion] = useState<IQuestion[]>([]);
+    const [questions, setQuestions] = useState<IQuestion[]>([]);
 
     dayjs.locale('nb');
     const filledInDate = dayjs(schemaResponse.response?.authored).format(
@@ -35,19 +37,19 @@ const SchemaResponse = () => {
 
     const updateAnswer = (update: QuestionnaireResponseItem) => {
         const answerObject: IAnswer = { id: update.linkId, answers: update };
-        setAnswer((answer) => [...answer, answerObject]);
+        setAnswers((answer) => [...answer, answerObject]);
     };
 
-    const updateQuestion = (update: any) => {
+    const updateQuestion = (update: QuestionnaireItem) => {
         const questionObject: IQuestion = {
             id: update.linkId,
             questions: update,
         };
-        setQuestion((question) => [...question, questionObject]);
+        setQuestions((question) => [...question, questionObject]);
     };
 
-    console.log(answer);
-    console.log(question);
+    console.log(answers);
+    console.log(questions);
     useEffect(() => {
         const findAnswer = (list: QuestionnaireResponseItem) => {
             if (!list?.answer && !list.item) {
@@ -78,20 +80,21 @@ const SchemaResponse = () => {
     }, [schemaResponse.response]);
 
     useEffect(() => {
-        const findQuestion = (list: any) => {
+        const findQuestion = (list: QuestionnaireItem) => {
             if (!list?.text && !list.item) {
                 return;
             }
             if (list.text) {
                 if (list.item) {
                     updateQuestion(list);
-                    list.item.map((i: any) => findQuestion(i));
+                    list.item.map((i) => findQuestion(i));
                 } else {
                     updateQuestion(list);
                 }
                 return;
             } else {
-                list.item.forEach((element: any) => findQuestion(element));
+                list.item &&
+                    list.item.forEach((element) => findQuestion(element));
             }
         };
         if (questionnaire?.item) {
@@ -102,7 +105,7 @@ const SchemaResponse = () => {
         return;
     }, [questionnaire]);
 
-    const displayQA = (answer: any) => {
+    /*     const displayQA = (answer: any) => {
         if (answer.answer[0].valueCoding) {
             return (
                 answer.text,
@@ -110,11 +113,11 @@ const SchemaResponse = () => {
             );
         }
         return answer.text, answer.answer.map((i: any) => i.valueString);
-    };
+    }; */
 
     return (
         <>
-            {schemaResponse && questionnaire && answer.length > 0 ? (
+            {schemaResponse && questionnaire ? (
                 <div style={{ marginBottom: '5rem' }}>
                     <Row gutter={40} justify="center">
                         <Title level={3}>{questionnaire.name}</Title>
@@ -127,12 +130,7 @@ const SchemaResponse = () => {
                     <Row justify="center">
                         Skjemaet ble fyllt ut: {filledInDate}
                     </Row>
-                    {answer.map((i) => (
-                        <div key={i.id}>
-                            <h3>{i.answers.text}</h3>
-                            <p>{displayQA(i.answers)} </p>
-                        </div>
-                    ))}
+                    <SchemaView questions={questions} answers={answers} />
                 </div>
             ) : (
                 <Row justify="center">
