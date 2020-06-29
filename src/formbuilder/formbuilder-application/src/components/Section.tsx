@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Row, Col, Button, Tooltip, Input } from 'antd';
-import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import Question from './Question';
 import {
     FormContext,
     addNewQuestion,
     removeQuestion,
+    duplicateQuestion,
 } from '../store/FormStore';
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
@@ -13,6 +14,7 @@ import * as DND from 'react-beautiful-dnd';
 
 type SectionProps = {
     sectionId: string;
+    duplicateSection: () => void;
     removeSection: () => void;
     provided: DND.DraggableProvided;
     collapsed: boolean;
@@ -21,6 +23,7 @@ type SectionProps = {
 
 function Section({
     sectionId,
+    duplicateSection,
     removeSection,
     provided,
     collapsed,
@@ -52,6 +55,14 @@ function Section({
         dispatch(addNewQuestion(section.id));
     }
 
+    function dispatchDuplicateQuestion(
+        sectionId: string,
+        questionIndex: number,
+        questionId: string,
+    ) {
+        dispatch(duplicateQuestion(sectionId, questionIndex, questionId));
+    }
+
     function dispatchRemoveQuestion(questionIndex: number) {
         dispatch(removeQuestion(questionIndex, section.id));
     }
@@ -66,53 +77,64 @@ function Section({
                 display: 'inline-block',
             }}
         >
-            <Row>
-                <Col span={6}></Col>
-                <Col span={12}>
+            <Row justify="center">
+                <Col span={2} />
+                <Col span={14}>
                     <Input
                         placeholder={placeholder}
                         className="input-question"
                         size="large"
                     />
                 </Col>
-                <Col span={2}></Col>
+                <Col span={1} />
                 <Col span={3}>
-                    {isSection && (
-                        <Button
-                            style={{ zIndex: 1, color: 'var(--primary-1)' }}
-                            size="large"
-                            icon={<DeleteOutlined />}
-                            type="default"
-                            onClick={() => removeSection()}
-                        >
-                            Slett seksjon
-                        </Button>
-                    )}
+                    <Button
+                        style={{
+                            zIndex: 1,
+                            color: 'var(--primary-1)',
+                            margin: '0 10px',
+                        }}
+                        size="large"
+                        icon={<CopyOutlined />}
+                        type="default"
+                        onClick={() => duplicateSection()}
+                    >
+                        Dupliser seksjon
+                    </Button>
+                </Col>
+                <Col span={3}>
+                    <Button
+                        style={{ zIndex: 1, color: 'var(--primary-1)' }}
+                        size="large"
+                        icon={<DeleteOutlined />}
+                        type="default"
+                        onClick={() => removeSection()}
+                    >
+                        Slett seksjon
+                    </Button>
                 </Col>
                 <Col span={1}>
-                    {isSection && (
-                        <Tooltip title="Flytt seksjon">
-                            <Button
-                                {...provided.dragHandleProps}
-                                style={{ zIndex: 1, color: 'var(--primary-1)' }}
-                                size="large"
-                                type="link"
+                    <Tooltip title="Flytt seksjon">
+                        <Button
+                            {...provided.dragHandleProps}
+                            style={{ zIndex: 1, color: 'var(--primary-1)' }}
+                            size="large"
+                            type="link"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    width="24"
-                                >
-                                    <path d="M0 0h24v24H0V0z" fill="none" />
-                                    <path
-                                        fill="var(--primary-1)"
-                                        d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
-                                    />
-                                </svg>
-                            </Button>
-                        </Tooltip>
-                    )}
+                                <path d="M0 0h24v24H0V0z" fill="none" />
+                                <path
+                                    fill="var(--primary-1)"
+                                    d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
+                                />
+                            </svg>
+                        </Button>
+                    </Tooltip>
                 </Col>
             </Row>
             <Row>
@@ -155,6 +177,13 @@ function Section({
                                                                 question={
                                                                     question
                                                                 }
+                                                                duplicateQuestion={() =>
+                                                                    dispatchDuplicateQuestion(
+                                                                        sectionId,
+                                                                        index,
+                                                                        questionId,
+                                                                    )
+                                                                }
                                                                 removeQuestion={() =>
                                                                     dispatchRemoveQuestion(
                                                                         index,
@@ -166,7 +195,8 @@ function Section({
                                                             />
                                                             <hr
                                                                 key={
-                                                                    'hr' + question.id
+                                                                    'hr' +
+                                                                    question.id
                                                                 }
                                                                 style={{
                                                                     color:
