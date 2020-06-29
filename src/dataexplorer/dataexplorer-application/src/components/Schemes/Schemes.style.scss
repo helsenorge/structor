@@ -50,9 +50,16 @@ div.card {
 h1.title {
     font-size: 34px;
     padding-left: 110px;
-    padding-top: 60px;
+    padding-top: 80px;
 }
 
 Button.nopadding {
-    padding-left: 0;
+    padding-left: 0px;
+    padding-top: 0px;
+}
+
+p.inline {
+    font-size: 16px;
+    display: inline;
+    font-weight: bold;
 }
