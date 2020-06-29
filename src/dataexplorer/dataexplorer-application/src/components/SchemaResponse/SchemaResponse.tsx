@@ -8,12 +8,11 @@ import {
     QuestionnaireResponse,
     Questionnaire,
     QuestionnaireResponseItem,
-    QuestionnaireItem,
 } from 'types/fhirTypes/fhir';
 import { IAnswer, IQuestion } from 'types/IQuestionnaireResponse';
 
 const SchemaResponse = () => {
-    const questionnaireResponseId = '10';
+    const questionnaireResponseId = '13';
     const schemaResponse = useFetch<QuestionnaireResponse>(
         'fhir/QuestionnaireResponse/' + questionnaireResponseId,
     );
@@ -56,10 +55,13 @@ const SchemaResponse = () => {
             }
             if (list.answer) {
                 if (list.item) {
-                    updateAnswer(list);
-                    findAnswer(list);
+                    list.item.map((i) => updateAnswer(i));
+                    list.item.map((i) => findAnswer(i));
                 } else {
                     updateAnswer(list);
+                    list.answer.map(
+                        (i) => i.item && i.item.map((a) => updateAnswer(a)),
+                    );
                 }
                 return;
             } else {
@@ -76,28 +78,23 @@ const SchemaResponse = () => {
     }, [schemaResponse.response]);
 
     useEffect(() => {
-        console.log('inne2');
         const findQuestion = (list: any) => {
             if (!list?.text && !list.item) {
                 return;
             }
             if (list.text) {
                 if (list.item) {
-                    console.log('if');
                     updateQuestion(list);
-                    findQuestion(list.item);
+                    list.item.map((i: any) => findQuestion(i));
                 } else {
-                    console.log('else');
                     updateQuestion(list);
                 }
                 return;
             } else {
-                console.log('else 2');
                 list.item.forEach((element: any) => findQuestion(element));
             }
         };
         if (questionnaire?.item) {
-            console.log('if 2');
             for (let a = 0; a < questionnaire.item.length; a++) {
                 findQuestion(questionnaire.item[a]);
             }
