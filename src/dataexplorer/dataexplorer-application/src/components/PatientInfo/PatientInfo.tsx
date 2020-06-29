@@ -2,7 +2,8 @@ import React from 'react';
 import useFetch from 'utils/hooks/useFetch';
 import { IPatient, IPatientIdentifier } from 'types/IPatient';
 import { Link } from 'react-router-dom';
-import { Row, Col, Card, Avatar, Table } from 'antd';
+import { Row, Col, Card, Table, message, Empty, Avatar } from 'antd';
+import PatientQuestionnaireResponses from '../PatientQuestionnaireResponses/PatientQuestionnaireResponses';
 import { UserOutlined } from '@ant-design/icons';
 
 const PatientInfo = ({ patientID, setName, setSchemaNumber }: any) => {
@@ -17,24 +18,32 @@ const PatientInfo = ({ patientID, setName, setSchemaNumber }: any) => {
     );
 
     if (patientData && patientData !== undefined) {
-        setName(
-            ' ' +
-                patientData.entry[0].resource.name[0].given[0] +
-                ' ' +
-                patientData.entry[0].resource.name[0].family,
-        );
         // Since the search uses social security number, which are
         // unique, the response will contain a maximum value of 1,
         // if the patient exists in the database.
         if (patientData.total === 1) {
-            return displayPatientInfo({
+            console.log(patientData);
+            setName(
+                ' ' +
+                    patientData.entry[0].resource.name[0].given[0] +
+                    ' ' +
+                    patientData.entry[0].resource.name[0].family,
+            );
+            return displayPatientInfo(
                 patientData.entry[0].resource,
-                handleClick
-            }
+                handleClick,
             );
         }
     }
-    return <div>Fant ingen pasienter med dette personnummeret</div>;
+    return (
+        <div className="failed" style={{ marginTop: 200 }}>
+            <Empty
+                description={
+                    <span>Fant ingen pasienter med dette personnummeret</span>
+                }
+            ></Empty>
+        </div>
+    );
 };
 
 const dataSource = [
@@ -163,9 +172,8 @@ const columns = [
     },
 ];
 
-const displayPatientInfo = (props: any) => {
-    const name =
-        props.response.name[0].given[0] + ' ' + props.response.name[0].family;
+const displayPatientInfo = (patient: IPatient, handleClick: any) => {
+    const name = patient.name[0].given[0] + ' ' + patient.name[0].family;
     return (
         <>
             <Row gutter={[1, 40]} justify="center">
@@ -175,7 +183,7 @@ const displayPatientInfo = (props: any) => {
                             style={{ marginTop: 100 }}
                             type="inner"
                             hoverable
-                            key={props.response.id}
+                            key={patient.id}
                             title={name}
                         >
                             <div
@@ -185,6 +193,15 @@ const displayPatientInfo = (props: any) => {
                                     justifyContent: 'space-between',
                                 }}
                             >
+                                <div className="photo">
+                                    <Avatar
+                                        size={200}
+                                        shape="square"
+                                        src={patient?.photo?.[0]?.url}
+                                        icon={<UserOutlined />}
+                                        style={{ border: 'black solid thin' }}
+                                    />
+                                </div>
                                 <div className="info-left">
                                     <b>
                                         <i>
@@ -192,14 +209,13 @@ const displayPatientInfo = (props: any) => {
                                         </i>
                                     </b>
                                     <p>
-                                        <b>Pnr: </b> {props.response.id}
+                                        <b>Pnr: </b> {patient.id}
                                     </p>
                                     <p>
-                                        <b>Kjønn: </b> {props.response.gender}
+                                        <b>Kjønn: </b> {patient.gender}
                                     </p>
                                     <p>
-                                        <b>Fødselsdato:</b>{' '}
-                                        {props.response.birthDate}
+                                        <b>Fødselsdato:</b> {patient.birthDate}
                                     </p>
                                 </div>
                                 <div className="info-right">
@@ -210,11 +226,11 @@ const displayPatientInfo = (props: any) => {
                                     </b>
                                     <p>
                                         <b>Addresse: </b>
-                                        {props.response.address[0].line[0]}
+                                        {patient?.address?.[0]?.line?.[0]}
                                     </p>
                                     <p>
                                         <b>Telefon: </b>
-                                        {props.response.telecom[0].value}
+                                        {patient?.telecom?.[0]?.value}
                                     </p>
                                     <p>
                                         <b>E-post: </b>
@@ -224,17 +240,18 @@ const displayPatientInfo = (props: any) => {
                             </div>
                         </Card>
                     </Link>
+                    <PatientQuestionnaireResponses patientID={patient.id} />
                     <Table
-                        key={props.response.id}
+                        key={patient.id}
                         style={{ marginTop: 20 }}
                         size="small"
                         columns={columns}
                         dataSource={dataSource}
-                        pagination={{ pageSize: 8 }}
+                        pagination={{ pageSize: 12 }}
                         onRow={(record) => {
                             return {
                                 onClick: () => {
-                                    props.handleClick(record);
+                                    handleClick(record);
                                 },
                             };
                         }}

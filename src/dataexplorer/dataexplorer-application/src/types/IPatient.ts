@@ -7,6 +7,8 @@ export interface IPatient {
     address: IAddress[];
     telecom: ITelecom[];
     setName: () => void;
+    photo: IPhoto[];
+    url: string;
 }
 
 export interface IName {
@@ -29,4 +31,8 @@ export interface IAddress {
 
 export interface ITelecom {
     value: number;
+}
+
+export interface IPhoto {
+    url: string;
 }

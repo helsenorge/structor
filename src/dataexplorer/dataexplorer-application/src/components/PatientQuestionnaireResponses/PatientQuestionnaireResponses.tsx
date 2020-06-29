@@ -7,6 +7,7 @@ const PatientQuestionnnaireResponses = ({ patientID }: any) => {
         IQuestionnaireResponses
     >('fhir/QuestionnaireResponse?subject=Patient/' + patientID);
     if (questionnaireResponses) {
+        console.log(questionnaireResponses);
         return (
             <h1>
                 Pasienten har {questionnaireResponses.total} utfylte skjemaer
