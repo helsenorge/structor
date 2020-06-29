@@ -5,6 +5,7 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import { generateID } from '../helpers/IDGenerator';
 import produce from 'immer';
+import IAnswer, { AnswerTypes, IChoice } from '../types/IAnswer';
 
 const initSectionId = generateID();
 const initSection: ISection = {
@@ -28,6 +29,9 @@ export enum ActionTypes {
     ADD_QUESTION = 'ADD_QUESTION',
     ADD_NEW_QUESTION = 'ADD_NEW_QUESTION',
     REMOVE_QUESTION = 'REMOVE_QUESTION',
+    UPDATE_ANSWER = 'UPDATE_ANSWER',
+    UPDATE_QUESTION = 'UPDATE_QUESTION',
+    UPDATE_SECTION = 'UPDATE_SECTION',
 }
 
 export enum SwapActionTypes {
@@ -48,6 +52,8 @@ export interface Action {
     questionIndex?: number;
     section?: ISection;
     question?: IQuestion;
+    answer?: IAnswer | IChoice;
+    sectionTitle?: string;
 }
 
 export interface SwapAction {
@@ -133,6 +139,14 @@ export function swapSection(
     };
 }
 
+export function updateSection(sectionId: string, sectionTitle: string): Action {
+    return {
+        type: ActionTypes.UPDATE_SECTION,
+        sectionId: sectionId,
+        sectionTitle: sectionTitle,
+    };
+}
+
 // export function addQuestion(
 //     sectionIndex: number,
 //     questionIndex: number,
@@ -152,6 +166,7 @@ export function addNewQuestion(sectionId: string): Action {
         id: questionId,
         sectionId: sectionId,
         questionText: '',
+        answer: { type: AnswerTypes.bool, choices: [''], id: generateID() },
     };
     return {
         type: ActionTypes.ADD_NEW_QUESTION,
@@ -198,6 +213,24 @@ export function swapQuestion(
         newQuestionIndex: newQuestionIndex,
         oldSectionId: oldSectionId,
         newSectionId: newSectionId,
+    };
+}
+
+export function updateQuestion(question: IQuestion): Action {
+    return {
+        type: ActionTypes.UPDATE_QUESTION,
+        question: question,
+    };
+}
+
+export function updateAnswer(
+    questionId: string,
+    answer: IAnswer | IChoice,
+): Action {
+    return {
+        type: ActionTypes.UPDATE_ANSWER,
+        questionId: questionId,
+        answer: answer,
     };
 }
 
