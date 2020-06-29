@@ -217,7 +217,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             onChange={(e) => {
                                 handleDescriptionCheck(e.target.checked);
                             }}
-                            checked = {ifDesc}
+                            checked={ifDesc}
                         />
                     </Col>
                     <Col span={21} style={{ padding: '0 10px' }}>
@@ -251,38 +251,10 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             style={{ width: '200px' }}
                             onSelect={(value) => answerPicker(value)}
                         >
-                            <Option
-                                value={AnswerTypes.bool}
-                                onSelect={() => {
-                                    answerPicker(AnswerTypes.bool);
-                                }}
-                            >
-                                Ja/nei
-                            </Option>
-                            <Option
-                                value={AnswerTypes.decimal}
-                                onSelect={() => {
-                                    answerPicker(AnswerTypes.decimal);
-                                }}
-                            >
-                                Tall
-                            </Option>
-                            <Option
-                                value={AnswerTypes.text}
-                                onSelect={() => {
-                                    answerPicker(AnswerTypes.text);
-                                }}
-                            >
-                                Tekst
-                            </Option>
-                            <Option
-                                value={AnswerTypes.choice}
-                                onSelect={() => {
-                                    answerPicker(AnswerTypes.choice);
-                                }}
-                            >
-                                Flervalg
-                            </Option>
+                            <Option value={AnswerTypes.bool}>Ja/nei</Option>
+                            <Option value={AnswerTypes.decimal}>Tall</Option>
+                            <Option value={AnswerTypes.text}>Tekst</Option>
+                            <Option value={AnswerTypes.choice}>Flervalg</Option>
                         </Select>
                     </Col>
                 </Row>
