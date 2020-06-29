@@ -5,97 +5,103 @@ import Title from 'antd/lib/typography/Title';
 import useFetch from 'utils/hooks/useFetch';
 import dayjs from 'dayjs';
 import {
-  QuestionnaireResponse,
-  Questionnaire,
-  QuestionnaireResponseItem,
+    QuestionnaireResponse,
+    Questionnaire,
+    QuestionnaireResponseItem,
 } from 'types/fhirTypes/fhir';
+import { IAnswer } from 'types/IQuestionnaireResponse';
 
 const SchemaResponse = () => {
-  const questionnaireResponseId = '10';
-  const schemaResponse = useFetch<QuestionnaireResponse>(
-    'fhir/QuestionnaireResponse/' + questionnaireResponseId,
-  );
-  const questionnaireUrl = schemaResponse.response?.questionnaire?.reference?.substr(
-    schemaResponse.response?.questionnaire?.reference?.indexOf(
-      'Questionnaire/',
-    ),
-  );
-  const { response: questionnaire } = useFetch<Questionnaire>(
-    'fhir/' + questionnaireUrl,
-  );
-  const [answer, setAnswer] = useState<QuestionnaireResponseItem[]>([]);
+    const questionnaireResponseId = '10';
+    const schemaResponse = useFetch<QuestionnaireResponse>(
+        'fhir/QuestionnaireResponse/' + questionnaireResponseId,
+    );
+    const questionnaireUrl = schemaResponse.response?.questionnaire?.reference?.substr(
+        schemaResponse.response?.questionnaire?.reference?.indexOf(
+            'Questionnaire/',
+        ),
+    );
+    const { response: questionnaire } = useFetch<Questionnaire>(
+        'fhir/' + questionnaireUrl,
+    );
+    const [answer, setAnswer] = useState<IAnswer[]>([]);
 
-  dayjs.locale('nb');
-  const filledInDate = dayjs(schemaResponse.response?.authored).format(
-    'DD/MM/YYYY HH:mm',
-  );
+    dayjs.locale('nb');
+    const filledInDate = dayjs(schemaResponse.response?.authored).format(
+        'DD/MM/YYYY HH:mm',
+    );
 
-  const updateAnswer = (update: QuestionnaireResponseItem) => {
-    setAnswer((answer) => [...answer, update]);
-  };
+    const updateAnswer = (update: QuestionnaireResponseItem) => {
+        const answerObject: IAnswer = { id: update.linkId, answers: update };
+        setAnswer((answer) => [...answer, answerObject]);
+    };
 
-  useEffect(() => {
-    const findAnswer = (list: QuestionnaireResponseItem) => {
-      if (!list?.answer && !list.item) {
-        return;
-      }
-      if (list.answer) {
-        if (list.item) {
-          updateAnswer(list);
-          findAnswer(list);
-        } else {
-          updateAnswer(list);
+    console.log(answer);
+    useEffect(() => {
+        const findAnswer = (list: QuestionnaireResponseItem) => {
+            if (!list?.answer && !list.item) {
+                return;
+            }
+            if (list.answer) {
+                if (list.item) {
+                    updateAnswer(list);
+                    findAnswer(list);
+                } else {
+                    updateAnswer(list);
+                }
+                return;
+            } else {
+                list.item &&
+                    list.item.forEach((element) => findAnswer(element));
+            }
+        };
+        if (schemaResponse.response?.item) {
+            for (let a = 0; a < schemaResponse.response.item.length; a++) {
+                findAnswer(schemaResponse.response.item[a]);
+            }
         }
         return;
-      } else {
-        list.item && list.item.forEach((element) => findAnswer(element));
-      }
+    }, [schemaResponse.response]);
+
+    const displayQA = (answer: any) => {
+        if (answer.answer[0].valueCoding) {
+            return (
+                answer.text,
+                answer.answer.map((i: any) => i.valueCoding.display)
+            );
+        }
+        return answer.text, answer.answer.map((i: any) => i.valueString);
     };
-    if (schemaResponse.response?.item) {
-      for (let a = 0; a < schemaResponse.response.item.length; a++) {
-        findAnswer(schemaResponse.response.item[a]);
-      }
-    }
-    return;
-  }, [schemaResponse.response]);
 
-  const displayQA = (answer: any) => {
-    if (answer.answer[0].valueCoding) {
-      return answer.text, answer.answer[0].valueCoding.display;
-    }
-    return answer.text, answer.answer[0].valueString;
-  };
-  if (answer && answer[0] !== undefined) {
-    answer.forEach((i) => console.log(i.text, displayQA(i)));
-  }
-
-  console.log(answer);
-
-  return (
-    <>
-      {schemaResponse && questionnaire && answer.length > 0 ? (
-        <div style={{ marginBottom: '5rem' }}>
-          <Row gutter={40} justify="center">
-            <Title level={3}>{questionnaire.name}</Title>
-          </Row>
-          <Row justify="center">
-            <Title level={3}>id - {schemaResponse.response?.id}</Title>
-          </Row>
-          <Row justify="center">Skjemaet ble fyllt ut: {filledInDate}</Row>
-          {answer.map((i) => (
-            <div key={i.linkId}>
-              <h3>{i.text}</h3>
-              <p>{displayQA(i)}</p>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <Row justify="center">
-          <Spin size="large" />
-        </Row>
-      )}
-    </>
-  );
+    return (
+        <>
+            {schemaResponse && questionnaire && answer.length > 0 ? (
+                <div style={{ marginBottom: '5rem' }}>
+                    <Row gutter={40} justify="center">
+                        <Title level={3}>{questionnaire.name}</Title>
+                    </Row>
+                    <Row justify="center">
+                        <Title level={3}>
+                            id - {schemaResponse.response?.id}
+                        </Title>
+                    </Row>
+                    <Row justify="center">
+                        Skjemaet ble fyllt ut: {filledInDate}
+                    </Row>
+                    {answer.map((i) => (
+                        <div key={i.id}>
+                            <h3>{i.answers.text}</h3>
+                            <p>{displayQA(i.answers)} </p>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <Row justify="center">
+                    <Spin size="large" />
+                </Row>
+            )}
+        </>
+    );
 };
 
 export default SchemaResponse;
