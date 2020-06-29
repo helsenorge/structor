@@ -23,7 +23,7 @@ function RadioButton({ question }: radioButtonProps): JSX.Element {
         choiceList = [''];
     }
     const [buttonNames, setButtonNames] = useState(choiceList);
-    const { state, dispatch } = useContext(FormContext);
+    const { dispatch } = useContext(FormContext);
 
     function addButtonClick() {
         setButtonNames([...buttonNames, '']);
@@ -66,15 +66,6 @@ function RadioButton({ question }: radioButtonProps): JSX.Element {
                         const temp = buttonNames.slice();
                         temp[id] = e.target.value;
                         setButtonNames(temp);
-                        // dispatch(
-                        //     updateAnswer(
-                        //         question.id as string,
-                        //         {
-                        //             type: question.answer.type as AnswerTypes,
-                        //             choices: buttonNames,
-                        //         } as IChoice,
-                        //     ),
-                        // );
                         handleInput();
                     }}
                 />

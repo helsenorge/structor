@@ -8,7 +8,6 @@ import {
     removeQuestion,
 } from '../store/FormStore';
 import ISection from '../types/ISection';
-import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 
 type SectionProps = {
@@ -28,7 +27,7 @@ function Section({
 }: SectionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Tittel...');
     const [isSection, setIsSection] = useState(true);
-    const [count, setCount] = useState(0);
+    // const [count, setCount] = useState(0);
 
     const { state, dispatch } = useContext(FormContext);
 

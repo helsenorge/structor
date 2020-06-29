@@ -20,7 +20,7 @@ function CreateForm(): JSX.Element {
 
     function dispatchAddNewSection(index?: number) {
         setI(i + 1);
-        const newSectionAction = addNewSection();
+        //const newSectionAction = addNewSection();
         dispatch(addNewSection());
     }
 

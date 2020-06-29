@@ -26,6 +26,7 @@ export enum ActionTypes {
     ADD_NEW_QUESTION = 'ADD_NEW_QUESTION',
     REMOVE_QUESTION = 'REMOVE_QUESTION',
     UPDATE_ANSWER = 'UPDATE_ANSWER',
+    UPDATE_QUESTION = 'UPDATE_QUESTION',
 }
 
 export enum SwapActionTypes {
@@ -77,6 +78,13 @@ export function updateAnswer(
         type: ActionTypes.UPDATE_ANSWER,
         questionId: questionId,
         answer: answer,
+    };
+}
+
+export function updateQuestion(question: IQuestion): Action {
+    return {
+        type: ActionTypes.UPDATE_QUESTION,
+        question: question,
     };
 }
 
@@ -173,7 +181,17 @@ const reducer = produce((draft: State, action: Action | SwapAction) => {
             }
             break;
         case ActionTypes.UPDATE_ANSWER:
-            draft.questions[action.questionId as string].answer = action.answer as IChoice;
+            draft.questions[
+                action.questionId as string
+            ].answer = action.answer as IChoice;
+            // console.log(action.answer);
+            // console.log(action.questionId);
+            break;
+        case ActionTypes.UPDATE_QUESTION:
+            if (action.question) {
+                draft.questions[action.question.id] = action.question;
+                console.log(action.question);
+            }
             // console.log(action.answer);
             // console.log(action.questionId);
             break;

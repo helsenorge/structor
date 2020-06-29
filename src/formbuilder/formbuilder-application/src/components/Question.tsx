@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ChangeEvent, useContext } from 'react';
 import { Input, Row, Col, Button, Tooltip } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import './answerComponents/AnswerComponent.css';
 import AnswerComponent from './AnswerComponent';
 import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
+import { FormContext, updateQuestion } from '../store/FormStore';
 
 const { TextArea } = Input;
 
@@ -19,12 +20,22 @@ function Question({
     removeQuestion,
     provided,
 }: QuestionProps): JSX.Element {
+    const { dispatch } = useContext(FormContext);
     const [placeholder, setPlaceholder] = useState('Spørsmål 1...');
     useEffect(() => {
         findPlaceholder();
     });
     function findPlaceholder() {
         setPlaceholder('Spørsmål ' + (question.id + 1) + '...');
+    }
+
+    function handleInput(e: ChangeEvent<HTMLTextAreaElement>) {
+        setPlaceholder(e.target.value);
+        if (question) {
+            const temp = { ...question };
+            temp.questionText = e.target.value;
+            dispatch(updateQuestion(temp));
+        }
     }
     return (
         <div style={{ backgroundColor: 'var(--color-base-1)' }}>
@@ -41,6 +52,10 @@ function Question({
                         rows={1}
                         placeholder={placeholder}
                         className="input-question"
+                        value={question.questionText}
+                        onChange={(e): void => {
+                            handleInput(e);
+                        }}
                     />
                 </Col>
                 <Col span={3}></Col>
