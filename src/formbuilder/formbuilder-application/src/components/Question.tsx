@@ -41,6 +41,7 @@ function Question({
             dispatch(updateQuestion(temp));
         }
     }
+
     return (
         <div style={{ backgroundColor: 'var(--color-base-1)' }}>
             <Row>

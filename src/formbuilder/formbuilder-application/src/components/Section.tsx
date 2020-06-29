@@ -59,7 +59,6 @@ function Section({
         setSectiontitle(value);
         dispatch(updateSection(sectionId, value));
     }
-    console.log(state.sections);
     return (
         <div
             style={{
