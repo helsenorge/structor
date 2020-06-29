@@ -16,17 +16,21 @@ type AnswerComponentProps = {
 };
 
 function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
-    const [answerType, setAnswerType] = useState(AnswerTypes.bool);
+    const { state, dispatch } = useContext(FormContext);
+    const [answerType, setAnswerType] = useState(
+        state.questions[questionId].answer.type,
+    );
     const [answerBuilder, setAnswerBuilder] = useState(<div></div>);
     const { Option } = Select;
-    const { state, dispatch } = useContext(FormContext);
     const question = state.questions[questionId];
-    const answer = state.questions[questionId].answer;
 
     // TODO: send all of the below to context
     // General form restrictions
-    const [ifDesc, setDescState] = useState(question.description);
-    const [obligatory, setObligatory] = useState(question.required);
+    const [ifDesc, setDescState] = useState(question.isDescription);
+    const [obligatory, setObligatory] = useState(question.isRequired);
+    const [descriptionText, setDescriptionText] = useState(
+        question.description,
+    );
 
     // Radio button restrictions
     const [defaultChoice, setDefaultChoice] = useState(-1);
@@ -46,10 +50,11 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
     const [propsController, setPropController] = useState(<div></div>);
 
     function answerPicker(value: AnswerTypes) {
-        if (value === AnswerTypes.choice) {
-            setAnswerType(AnswerTypes.choice);
-            //TODO: Implement Boolean answerComponent, using RadioButtons for testing
-            setAnswerBuilder(<div></div>);
+        if (value === AnswerTypes.radio) {
+            setAnswerType(AnswerTypes.radio);
+            setAnswerBuilder(
+                <RadioButton questionId={questionId}></RadioButton>,
+            );
         } else if (value === AnswerTypes.decimal) {
             setAnswerType(AnswerTypes.decimal);
             setAnswerBuilder(<Decimal max={maxValue} min={minValue}></Decimal>);
@@ -156,7 +161,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                 </div>,
             );
         } else if (value === AnswerTypes.bool) {
-            setAnswerType(AnswerTypes.bool);
+            // setAnswerType(AnswerTypes.bool);
             setAnswerBuilder(
                 <BooleanInput questionId={questionId}></BooleanInput>,
             );
@@ -195,18 +200,31 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
 
     function handleObligatoryCheck(value: boolean) {
         const temp = { ...question };
-        temp.required = value;
+        temp.isRequired = value;
         dispatch(updateQuestion(temp));
         setObligatory(value);
     }
 
     function handleDescriptionCheck(value: boolean) {
         const temp = { ...question };
-        temp.description = value;
+        temp.isDescription = value;
         dispatch(updateQuestion(temp));
         setDescState(value);
     }
 
+    function handleDescriptionText(value: string) {
+        const temp = { ...question };
+        temp.description = value;
+        dispatch(updateQuestion(temp));
+    }
+
+    function handleAnswerType(value: AnswerTypes) {
+        setAnswerType(value);
+        const temp = { ...state.questions[questionId].answer };
+        temp.type = value;
+        dispatch(updateAnswer(questionId, temp));
+    }
+    console.log('AnswerComponent: '+answerType);
     return (
         <Row>
             <Col span={7} className="controller">
@@ -249,12 +267,16 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                         <Select
                             value={answerType}
                             style={{ width: '200px' }}
-                            onSelect={(value) => answerPicker(value)}
+                            onSelect={(value) => {
+                                handleAnswerType(value);
+                                answerPicker(value);
+                            }}
+                            placeholder="Velg svartype"
                         >
                             <Option value={AnswerTypes.bool}>Ja/nei</Option>
                             <Option value={AnswerTypes.decimal}>Tall</Option>
                             <Option value={AnswerTypes.text}>Tekst</Option>
-                            <Option value={AnswerTypes.choice}>Flervalg</Option>
+                            <Option value={AnswerTypes.radio}>Flervalg</Option>
                         </Select>
                     </Col>
                 </Row>
@@ -268,6 +290,13 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             rows={4}
                             placeholder="Fyll inn beskrivelse av spørsmål eller mer informasjon til mottaker av skjema..."
                             className="input-question"
+                            value={descriptionText}
+                            onBlur={(e) =>
+                                handleDescriptionText(e.currentTarget.value)
+                            }
+                            onChange={(e) =>
+                                setDescriptionText(e.currentTarget.value)
+                            }
                         />
                     </div>
                 )}

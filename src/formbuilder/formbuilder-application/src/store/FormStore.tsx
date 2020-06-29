@@ -153,8 +153,8 @@ export function addNewQuestion(sectionId: string): Action {
         sectionId: sectionId,
         questionText: '',
         answer: { type: AnswerTypes.bool, choices: [''], id: generateID() },
-        required: true,
-        description: false,
+        isRequired: true,
+        isDescription: false,
     };
     return {
         type: ActionTypes.ADD_NEW_QUESTION,
@@ -205,15 +205,11 @@ const reducer = produce((draft: State, action: Action | SwapAction) => {
                 draft.sections[action.sectionId].sectionTitle =
                     action.sectionTitle;
             }
-            // console.log(action.answer);
-            // console.log(action.questionId);
             break;
         case ActionTypes.UPDATE_ANSWER:
             draft.questions[
                 action.questionId as string
             ].answer = action.answer as IChoice;
-            // console.log(action.answer);
-            // console.log(action.questionId);
             break;
         case ActionTypes.UPDATE_QUESTION:
             if (action.question) {

@@ -5,6 +5,7 @@ export default interface IQuestion {
     sectionId: string;
     questionText: string;
     answer: IAnswer | IChoice;
-    description: boolean;
-    required: boolean;
+    isDescription: boolean;
+    isRequired: boolean;
+    description?: string;
 }

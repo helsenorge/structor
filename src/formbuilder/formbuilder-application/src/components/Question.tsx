@@ -100,7 +100,10 @@ function Question({
                 </Col>
             </Row>
 
-            <AnswerComponent questionId={questionId} key={'answer'+questionId} />
+            <AnswerComponent
+                questionId={questionId}
+                key={'answer' + questionId}
+            />
         </div>
     );
 }

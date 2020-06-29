@@ -8,6 +8,7 @@ export enum AnswerTypes {
     'choice',
     'string',
     'text',
+    'radio',
 }
 
 // export default interface IAnswer {
