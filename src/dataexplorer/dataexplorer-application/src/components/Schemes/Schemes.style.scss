@@ -1,0 +1,58 @@
+.site-collapse-custom-panel {
+    background: white;
+    font-size: 24px;
+    border-radius: 0px;
+    margin-bottom: 24px;
+    border: 0px;
+    overflow: inherit;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 50px;
+}
+
+.site-collapse-custom-collapse {
+    border-radius: 0px;
+    font-size: 10px;
+    background: white;
+    border: 0px;
+    overflow: inherit;
+    margin-bottom: 24px;
+    padding-left: 100px;
+    padding-right: 0px;
+}
+
+p.answers {
+    font-size: 16px;
+    font-style: oblique;
+}
+
+p.bold {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+p.questions {
+    font-size: 16px;
+}
+
+div.boarder {
+    border-bottom: double;
+    border-bottom-color: #f0f2f5;
+}
+
+div.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    background: white;
+    width: 1200px;
+}
+
+h1.title {
+    font-size: 34px;
+    padding-left: 110px;
+    padding-top: 60px;
+}
+
+Button.nopadding {
+    padding-left: 0;
+}
