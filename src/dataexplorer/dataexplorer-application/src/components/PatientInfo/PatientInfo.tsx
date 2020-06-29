@@ -1,11 +1,9 @@
 import React from 'react';
 import useFetch from 'utils/hooks/useFetch';
 import { IPatient, IPatientIdentifier } from 'types/IPatient';
-import { Link } from 'react-router-dom';
 import { Row, Col, Card, Table, message, Empty, Avatar } from 'antd';
 import PatientQuestionnaireResponses from '../PatientQuestionnaireResponses/PatientQuestionnaireResponses';
 import { UserOutlined } from '@ant-design/icons';
-
 const PatientInfo = ({ patientID, setName, setSchemaNumber }: any) => {
     const handleClick = (record: any) => {
         message.info('Du har valgt Skjema ' + record.id);
@@ -178,68 +176,66 @@ const displayPatientInfo = (patient: IPatient, handleClick: any) => {
         <>
             <Row gutter={[1, 40]} justify="center">
                 <Col span={12}>
-                    <Link to="./Pasient/ListeVisning">
-                        <Card
-                            style={{ marginTop: 100 }}
-                            type="inner"
-                            hoverable
-                            key={patient.id}
-                            title={name}
+                    <Card
+                        style={{ marginTop: 100 }}
+                        type="inner"
+                        hoverable
+                        key={patient.id}
+                        title={name}
+                    >
+                        <div
+                            className="info-container"
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
                         >
-                            <div
-                                className="info-container"
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <div className="photo">
-                                    <Avatar
-                                        size={200}
-                                        shape="square"
-                                        src={patient?.photo?.[0]?.url}
-                                        icon={<UserOutlined />}
-                                        style={{ border: 'black solid thin' }}
-                                    />
-                                </div>
-                                <div className="info-left">
-                                    <b>
-                                        <i>
-                                            <h1>Personlig Informasjon</h1>
-                                        </i>
-                                    </b>
-                                    <p>
-                                        <b>Pnr: </b> {patient.id}
-                                    </p>
-                                    <p>
-                                        <b>Kjønn: </b> {patient.gender}
-                                    </p>
-                                    <p>
-                                        <b>Fødselsdato:</b> {patient.birthDate}
-                                    </p>
-                                </div>
-                                <div className="info-right">
-                                    <b>
-                                        <i>
-                                            <h1>Kontakt</h1>
-                                        </i>
-                                    </b>
-                                    <p>
-                                        <b>Addresse: </b>
-                                        {patient?.address?.[0]?.line?.[0]}
-                                    </p>
-                                    <p>
-                                        <b>Telefon: </b>
-                                        {patient?.telecom?.[0]?.value}
-                                    </p>
-                                    <p>
-                                        <b>E-post: </b>
-                                        eksempel@epost.no
-                                    </p>
-                                </div>
+                            <div className="photo">
+                                <Avatar
+                                    size={200}
+                                    shape="square"
+                                    src={patient?.photo?.[0]?.url}
+                                    icon={<UserOutlined />}
+                                    style={{ border: 'black solid thin' }}
+                                />
                             </div>
-                        </Card>
-                    </Link>
+                            <div className="info-left">
+                                <b>
+                                    <i>
+                                        <h1>Personlig Informasjon</h1>
+                                    </i>
+                                </b>
+                                <p>
+                                    <b>Pnr: </b> {patient.id}
+                                </p>
+                                <p>
+                                    <b>Kjønn: </b> {patient.gender}
+                                </p>
+                                <p>
+                                    <b>Fødselsdato:</b> {patient.birthDate}
+                                </p>
+                            </div>
+                            <div className="info-right">
+                                <b>
+                                    <i>
+                                        <h1>Kontakt</h1>
+                                    </i>
+                                </b>
+                                <p>
+                                    <b>Addresse: </b>
+                                    {patient?.address?.[0]?.line?.[0]}
+                                </p>
+                                <p>
+                                    <b>Telefon: </b>
+                                    {patient?.telecom?.[0]?.value}
+                                </p>
+                                <p>
+                                    <b>E-post: </b>
+                                    eksempel@epost.no
+                                </p>
+                            </div>
+                        </div>
+                    </Card>
                     <PatientQuestionnaireResponses patientID={patient.id} />
                     <Table
                         key={patient.id}
