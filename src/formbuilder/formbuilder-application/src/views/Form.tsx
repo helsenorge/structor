@@ -5,6 +5,7 @@ import Section from '../components/Section';
 import {
     FormContext,
     addNewSection,
+    duplicateSection,
     removeSection,
     swapSection,
     swapQuestion,
@@ -22,13 +23,15 @@ function CreateForm(): JSX.Element {
     const [collapsedSection, setCollapsedSection] = useState('A');
 
     function dispatchAddNewSection(index?: number) {
-        setI(i + 1);
-        const newSectionAction = addNewSection();
         dispatch(addNewSection());
     }
 
     function dispatchRemoveSection(index: number) {
         dispatch(removeSection(index));
+    }
+
+    function dispatchDuplicateSection(index: number, id: string) {
+        dispatch(duplicateSection(index, id));
     }
 
     function onDragEnd(result: DND.DropResult) {
@@ -56,11 +59,6 @@ function CreateForm(): JSX.Element {
 
     function onBeforeCapture(startResponder: DND.BeforeCapture) {
         setCollapsedSection(startResponder.draggableId);
-    }
-
-    function onDragStart(startResponder: DND.DragStart) {
-        if (startResponder.type === 'section')
-            setDragIndex(startResponder.source.index);
     }
 
     type memoSection = {
@@ -99,7 +97,6 @@ function CreateForm(): JSX.Element {
             <Row style={{ margin: '61px 0 0 0' }}>
                 <DND.DragDropContext
                     onDragEnd={onDragEnd}
-                    onBeforeDragStart={onDragStart}
                     onBeforeCapture={onBeforeCapture}
                 >
                     <DND.Droppable droppableId="section" type="section">
@@ -141,6 +138,12 @@ function CreateForm(): JSX.Element {
                                                                 key={sectionId}
                                                                 sectionId={
                                                                     sectionId
+                                                                }
+                                                                duplicateSection={() =>
+                                                                    dispatchDuplicateSection(
+                                                                        index,
+                                                                        sectionId,
+                                                                    )
                                                                 }
                                                                 removeSection={() =>
                                                                     dispatchRemoveSection(
