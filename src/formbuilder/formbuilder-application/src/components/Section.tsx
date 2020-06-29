@@ -43,9 +43,9 @@ function Section({
         setPlaceholder('Seksjonstittel...');
     }
 
-    // useEffect(() => {
-    //     findPlaceholder();
-    // });
+    useEffect(() => {
+        findPlaceholder();
+    });
 
     function dispatchAddQuestion() {
         dispatch(addNewQuestion(sectionId));

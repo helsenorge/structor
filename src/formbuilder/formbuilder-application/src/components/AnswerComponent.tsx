@@ -11,13 +11,9 @@ const { TextArea } = Input;
 
 type AnswerComponentProps = {
     questionId: string;
-    key: string;
 };
 
-function AnswerComponent({
-    questionId,
-    key,
-}: AnswerComponentProps): JSX.Element {
+function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
     const [answerType, setAnswerType] = useState(AnswerTypes.bool);
     const [answerBuilder, setAnswerBuilder] = useState(<div></div>);
     const { Option } = Select;
