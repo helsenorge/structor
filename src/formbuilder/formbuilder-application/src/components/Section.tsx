@@ -10,6 +10,7 @@ import {
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
+import Converter from './Converter'
 
 type SectionProps = {
     section: ISection;
@@ -162,7 +163,7 @@ function Section({
                 </Col>
             </Row>
             <Row>
-                <Col span={24} style={{ margin: '10px' }}>
+                <Col span={12} style={{ margin: '10px' }}>
                     <Button
                         style={{
                             backgroundColor: 'var(--primary-1)',
@@ -175,6 +176,7 @@ function Section({
                         Legg til nytt spørsmål
                     </Button>
                 </Col>
+                <Col><Converter/></Col>
             </Row>
         </div>
     );

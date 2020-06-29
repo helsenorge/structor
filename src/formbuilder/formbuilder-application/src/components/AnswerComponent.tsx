@@ -191,7 +191,9 @@ function AnswerComponent(): JSX.Element {
                             <Col span={24} style={{ padding: '0 10px' }}>
                                 <p>
                                     Mottaker fyller ut et skriftlig svar i en
-                                    tekstboks, enten i form av et kortsvar eller et langsvar begrenset av et satt antall karakterer.
+                                    tekstboks, enten i form av et kortsvar eller
+                                    et langsvar begrenset av et satt antall
+                                    karakterer.
                                 </p>
                             </Col>
                         </Row>
@@ -203,7 +205,7 @@ function AnswerComponent(): JSX.Element {
                                     }
                                 />
                             </Col>
-                            <Col span={14} style={{ padding: '0 10px' }}>
+                            <Col span={12} style={{ padding: '0 10px' }}>
                                 <p style={{ textAlign: 'left' }}>
                                     Langsvar. Maks antall karakterer:{' '}
                                 </p>
@@ -226,9 +228,10 @@ function AnswerComponent(): JSX.Element {
                 {answerType === 'decimal' && (
                     <div>
                         <Row>
-                        <Col span={24} style={{ padding: '0 10px' }}>
+                            <Col span={24} style={{ padding: '0 10px' }}>
                                 <p>
-                                    Mottaker fyller ut en tallverdi, enten fritt eller innenfor bestemte verdier. 
+                                    Mottaker fyller ut en tallverdi, enten fritt
+                                    eller innenfor bestemte verdier.
                                 </p>
                             </Col>
                         </Row>

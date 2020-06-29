@@ -11,20 +11,8 @@ function Decimal({ max, min }: DecimalProps): JSX.Element {
     //const [maxValue, setMaxValue] = useState(0);
     const [minValue, setMinValue] = useState(0);
     const answerType = 'decimal';
-    useEffect(() => {
-        console.log(minValue, answerType); // to not get warnings when deploying fb-dev
-    });
-    return (
-        <div
-            style={{
-                marginTop: '20px',
-                width: '60%',
-                display: 'inline-block',
-            }}
-        >
-            <InputNumber placeholder="Tallverdi" disabled={true}></InputNumber>
-        </div>
-    );
+
+    return <InputNumber placeholder="Tallverdi" disabled={true}></InputNumber>;
 }
 
 export default Decimal;

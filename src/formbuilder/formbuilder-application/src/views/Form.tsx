@@ -46,11 +46,9 @@ function CreateForm(): JSX.Element {
             // dispatch(addSection(destIndex, tmpOldSection));
             // dispatch(addSection(sourceIndex, tmpNewSection));
         }
-        console.log(state);
     }
 
     function onDragStart(startResponder: DND.DragStart) {
-        console.log(state);
         // setDragIndex(state.sections[startResponder.source.index].id);
     }
 
