@@ -8,7 +8,11 @@ import produce from 'immer';
 import IAnswer, { AnswerTypes, IChoice } from '../types/IAnswer';
 
 const initSectionId = generateID();
-const initSection: ISection = { id: initSectionId, questionOrder: [] };
+const initSection: ISection = {
+    id: initSectionId,
+    questionOrder: [],
+    sectionTitle: '',
+};
 const initSections: SectionList = {};
 initSections[initSectionId] = initSection;
 
@@ -27,6 +31,7 @@ export enum ActionTypes {
     REMOVE_QUESTION = 'REMOVE_QUESTION',
     UPDATE_ANSWER = 'UPDATE_ANSWER',
     UPDATE_QUESTION = 'UPDATE_QUESTION',
+    UPDATE_SECTION = 'UPDATE_SECTION',
 }
 
 export enum SwapActionTypes {
@@ -43,6 +48,7 @@ export interface Action {
     section?: ISection;
     question?: IQuestion;
     answer?: IAnswer | IChoice;
+    sectionTitle?: string;
 }
 
 export interface SwapAction {
@@ -81,6 +87,14 @@ export function updateAnswer(
     };
 }
 
+export function updateSection(sectionId: string, sectionTitle: string): Action {
+    return {
+        type: ActionTypes.UPDATE_SECTION,
+        sectionId: sectionId,
+        sectionTitle: sectionTitle,
+    };
+}
+
 export function updateQuestion(question: IQuestion): Action {
     return {
         type: ActionTypes.UPDATE_QUESTION,
@@ -90,7 +104,11 @@ export function updateQuestion(question: IQuestion): Action {
 
 export function addNewSection(): Action {
     const sectionId = generateID();
-    const newSection: ISection = { id: sectionId, questionOrder: [] };
+    const newSection: ISection = {
+        id: sectionId,
+        questionOrder: [],
+        sectionTitle: '',
+    };
     return {
         type: ActionTypes.ADD_NEW_SECTION,
         section: newSection,
@@ -134,7 +152,7 @@ export function addNewQuestion(sectionId: string): Action {
         id: questionId,
         sectionId: sectionId,
         questionText: '',
-        answer: { type: AnswerTypes.bool, choices: [''] },
+        answer: { type: AnswerTypes.bool, choices: [''], id: generateID() },
     };
     return {
         type: ActionTypes.ADD_NEW_QUESTION,
@@ -180,6 +198,14 @@ const reducer = produce((draft: State, action: Action | SwapAction) => {
                 draft.sectionOrder.push(action.section.id);
             }
             break;
+        case ActionTypes.UPDATE_SECTION:
+            if (action.sectionId && action.sectionTitle) {
+                draft.sections[action.sectionId].sectionTitle =
+                    action.sectionTitle;
+            }
+            // console.log(action.answer);
+            // console.log(action.questionId);
+            break;
         case ActionTypes.UPDATE_ANSWER:
             draft.questions[
                 action.questionId as string
@@ -190,10 +216,7 @@ const reducer = produce((draft: State, action: Action | SwapAction) => {
         case ActionTypes.UPDATE_QUESTION:
             if (action.question) {
                 draft.questions[action.question.id] = action.question;
-                console.log(action.question);
             }
-            // console.log(action.answer);
-            // console.log(action.questionId);
             break;
         case ActionTypes.REMOVE_SECTION:
             if (action.sectionIndex !== undefined) {

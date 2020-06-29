@@ -49,8 +49,12 @@ function CreateForm(): JSX.Element {
             );
         }
     }
-
+    // TODO: Remember to comment this !!!
     function onDragStart(startResponder: DND.DragStart) {
+        const focusButton = document.getElementById('MoveSectionButton');
+        if (focusButton) {
+            focusButton.focus();
+        }
         if (startResponder.type === 'section')
             setDragIndex(startResponder.source.index);
     }
@@ -83,7 +87,7 @@ function CreateForm(): JSX.Element {
                                                 state.sections[sectionId];
                                             return (
                                                 <DND.Draggable
-                                                    key={section.id}
+                                                    key={'drag'+section.id}
                                                     draggableId={section.id}
                                                     index={index}
                                                 >

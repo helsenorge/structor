@@ -8,9 +8,10 @@ import { FormContext, updateAnswer } from '../../store/FormStore';
 
 type radioButtonProps = {
     questionId: string;
+    key: string;
 };
 
-function RadioButton({ questionId }: radioButtonProps): JSX.Element {
+function RadioButton({ questionId, key }: radioButtonProps): JSX.Element {
     const radioStyle = {
         display: 'block',
         height: '30px',

@@ -3,7 +3,6 @@ import { Input, Row, Col, Button, Tooltip } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import './answerComponents/AnswerComponent.css';
 import AnswerComponent from './AnswerComponent';
-import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 import { FormContext, updateQuestion } from '../store/FormStore';
 
@@ -21,9 +20,12 @@ function Question({
     questionId,
     removeQuestion,
     provided,
+    key,
 }: QuestionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
+    const question = state.questions[questionId];
     const [placeholder, setPlaceholder] = useState('Spørsmål 1...');
+    const [questionTitle, setQuestionTitle] = useState(question.questionText);
     useEffect(() => {
         findPlaceholder();
     });
@@ -32,8 +34,7 @@ function Question({
     }
 
     function handleInput(e: ChangeEvent<HTMLTextAreaElement>) {
-        setPlaceholder(e.target.value);
-        const question = state.questions[questionId];
+        setPlaceholder(e.currentTarget.value);
         if (question) {
             const temp = { ...question };
             temp.questionText = e.target.value;
@@ -55,10 +56,11 @@ function Question({
                         rows={1}
                         placeholder={placeholder}
                         className="input-question"
-                        value={state.questions[questionId].questionText}
+                        value={questionTitle}
                         onChange={(e): void => {
-                            handleInput(e);
+                            setQuestionTitle(e.target.value);
                         }}
+                        onBlur={(e) => handleInput(e)}
                     />
                 </Col>
                 <Col span={3}></Col>
@@ -97,7 +99,7 @@ function Question({
                 </Col>
             </Row>
 
-            <AnswerComponent questionId={questionId} />
+            <AnswerComponent questionId={questionId} key={'answer'+questionId} />
         </div>
     );
 }

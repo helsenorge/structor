@@ -1,21 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Row, Col, Select, Input, Checkbox, InputNumber } from 'antd';
 import './answerComponents/AnswerComponent.css';
 import TextInput from './answerComponents/TextInput';
 import RadioButton from './answerComponents/RadioButton';
 import Decimal from './answerComponents/Decimal';
 import { AnswerTypes } from '../types/IAnswer';
+import { FormContext } from '../store/FormStore';
 
 const { TextArea } = Input;
 
 type AnswerComponentProps = {
     questionId: string;
+    key: string;
 };
 
-function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
+function AnswerComponent({
+    questionId,
+    key,
+}: AnswerComponentProps): JSX.Element {
     const [answerType, setAnswerType] = useState(AnswerTypes.bool);
     const [answerBuilder, setAnswerBuilder] = useState(<div></div>);
     const { Option } = Select;
+    const { state, dispatch } = useContext(FormContext);
+    const answer = state.questions[questionId].answer;
 
     // TODO: send all of the below to context
     // General form restrictions
@@ -36,6 +43,9 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(0);
 
+    // Answer and controller components to be rendered
+    const [propsController, setPropController] = useState(<div></div>);
+
     function answerPicker(value: AnswerTypes) {
         if (value === AnswerTypes.choice) {
             setAnswerType(AnswerTypes.choice);
@@ -44,6 +54,60 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
         } else if (value === AnswerTypes.decimal) {
             setAnswerType(AnswerTypes.decimal);
             setAnswerBuilder(<Decimal max={maxValue} min={minValue}></Decimal>);
+            setPropController(
+                <div>
+                    <Row>
+                        <Col span={24} style={{ padding: '0 10px' }}>
+                            <p>
+                                Mottaker fyller ut en tallverdi, enten fritt
+                                eller innenfor bestemte verdier.
+                            </p>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={10}>
+                            <Checkbox
+                                onChange={(e) => setMin(e.target.checked)}
+                            >
+                                Min
+                            </Checkbox>
+                        </Col>
+                        <Col span={14}>
+                            <InputNumber
+                                type="number"
+                                defaultValue={0}
+                                disabled={!min}
+                                onChange={(value) =>
+                                    value
+                                        ? setMinValue(value as number)
+                                        : setMinValue(0)
+                                }
+                            />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={10}>
+                            <Checkbox
+                                onChange={(e) => setMax(e.target.checked)}
+                            >
+                                Max
+                            </Checkbox>
+                        </Col>
+                        <Col span={14}>
+                            <InputNumber
+                                type="number"
+                                defaultValue={100}
+                                disabled={!max}
+                                onChange={(value) =>
+                                    value
+                                        ? setMaxValue(value as number)
+                                        : setMaxValue(0)
+                                }
+                            />
+                        </Col>
+                    </Row>
+                </div>,
+            );
         } else if (value === AnswerTypes.text) {
             setAnswerType(AnswerTypes.text);
             setAnswerBuilder(
@@ -53,10 +117,88 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                     placeholder="Mottaker skriver svar her"
                 ></TextInput>,
             );
+            setPropController(
+                <div>
+                    <Row>
+                        <Col span={24} style={{ padding: '0 10px' }}>
+                            <p>
+                                Mottaker fyller ut et skriftlig svar i en
+                                tekstboks, enten i form av et kortsvar eller et
+                                langsvar begrenset av et satt antall karakterer.
+                            </p>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={3} style={{ padding: '0 10px' }}>
+                            <Checkbox
+                                onChange={(e) =>
+                                    changeToLongText(e.target.checked)
+                                }
+                            />
+                        </Col>
+                        <Col span={14} style={{ padding: '0 10px' }}>
+                            <p style={{ textAlign: 'left' }}>
+                                Langsvar. Maks antall karakterer:{' '}
+                            </p>
+                        </Col>
+                        <Col span={5} style={{ padding: '0 10px' }}>
+                            <InputNumber
+                                min={1}
+                                max={5000}
+                                size="small"
+                                defaultValue={maxLengthText}
+                                disabled={!ifLongText}
+                                onChange={(value) =>
+                                    setMaxLengthText(value as number)
+                                }
+                            />
+                        </Col>
+                    </Row>
+                </div>,
+            );
         } else if (value === AnswerTypes.bool) {
             setAnswerType(AnswerTypes.bool);
+            setPropController(
+                <div>
+                    <Row>
+                        <Col span={24} style={{ padding: '0 10px' }}>
+                            <p>
+                                Mottaker har flere svaralternativer, men kan
+                                bare velge ett alternativ.
+                            </p>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={3} style={{ padding: '0 10px' }}>
+                            <Checkbox
+                                onChange={(e) => setIfDefault(e.target.checked)}
+                            />
+                        </Col>
+                        <Col span={10} style={{ padding: '0 10px' }}>
+                            <p style={{ textAlign: 'left' }}>
+                                Sett standardalternativ:
+                            </p>
+                        </Col>
+                        <Col span={5} style={{ padding: '0 10px' }}>
+                            <InputNumber
+                                min={1}
+                                max={20}
+                                size="small"
+                                defaultValue={1}
+                                disabled={!ifDefault}
+                                onChange={(value) =>
+                                    setDefaultChoice(value as number)
+                                }
+                            />
+                        </Col>
+                    </Row>
+                </div>,
+            );
             setAnswerBuilder(
-                <RadioButton questionId={questionId}></RadioButton>,
+                <RadioButton
+                    key={'radio' + answer.id}
+                    questionId={questionId}
+                ></RadioButton>,
             );
         }
     }
@@ -114,6 +256,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                         span={24}
                         style={{ alignItems: 'center', padding: '10px' }}
                     >
+                        {/* Answerdropdown*/}
                         <Select
                             value={answerType}
                             style={{ width: '200px' }}
@@ -122,7 +265,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             <Option
                                 value={AnswerTypes.bool}
                                 onSelect={() => {
-                                    setAnswerType(AnswerTypes.bool);
+                                    answerPicker(AnswerTypes.bool);
                                 }}
                             >
                                 Ja/nei
@@ -130,7 +273,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             <Option
                                 value={AnswerTypes.decimal}
                                 onSelect={() => {
-                                    setAnswerType(AnswerTypes.decimal);
+                                    answerPicker(AnswerTypes.decimal);
                                 }}
                             >
                                 Tall
@@ -138,7 +281,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             <Option
                                 value={AnswerTypes.text}
                                 onSelect={() => {
-                                    setAnswerType(AnswerTypes.text);
+                                    answerPicker(AnswerTypes.text);
                                 }}
                             >
                                 Tekst
@@ -146,7 +289,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             <Option
                                 value={AnswerTypes.choice}
                                 onSelect={() => {
-                                    setAnswerType(AnswerTypes.choice);
+                                    answerPicker(AnswerTypes.choice);
                                 }}
                             >
                                 Flervalg
@@ -154,138 +297,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                         </Select>
                     </Col>
                 </Row>
-                {answerType === AnswerTypes.bool && (
-                    <div>
-                        <Row>
-                            <Col span={24} style={{ padding: '0 10px' }}>
-                                <p>
-                                    Mottaker har flere svaralternativer, men kan
-                                    bare velge ett alternativ.
-                                </p>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={3} style={{ padding: '0 10px' }}>
-                                <Checkbox
-                                    onChange={(e) =>
-                                        setIfDefault(e.target.checked)
-                                    }
-                                />
-                            </Col>
-                            <Col span={10} style={{ padding: '0 10px' }}>
-                                <p style={{ textAlign: 'left' }}>
-                                    Sett standardalternativ:
-                                </p>
-                            </Col>
-                            <Col span={5} style={{ padding: '0 10px' }}>
-                                <InputNumber
-                                    min={1}
-                                    max={20}
-                                    size="small"
-                                    defaultValue={1}
-                                    disabled={!ifDefault}
-                                    onChange={(value) =>
-                                        setDefaultChoice(value as number)
-                                    }
-                                />
-                            </Col>
-                        </Row>
-                    </div>
-                )}
-                {answerType === AnswerTypes.text && (
-                    <div>
-                        <Row>
-                            <Col span={24} style={{ padding: '0 10px' }}>
-                                <p>
-                                    Mottaker fyller ut et skriftlig svar i en
-                                    tekstboks, enten i form av et kortsvar eller
-                                    et langsvar begrenset av et satt antall
-                                    karakterer.
-                                </p>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={3} style={{ padding: '0 10px' }}>
-                                <Checkbox
-                                    onChange={(e) =>
-                                        changeToLongText(e.target.checked)
-                                    }
-                                />
-                            </Col>
-                            <Col span={14} style={{ padding: '0 10px' }}>
-                                <p style={{ textAlign: 'left' }}>
-                                    Langsvar. Maks antall karakterer:{' '}
-                                </p>
-                            </Col>
-                            <Col span={5} style={{ padding: '0 10px' }}>
-                                <InputNumber
-                                    min={1}
-                                    max={5000}
-                                    size="small"
-                                    defaultValue={maxLengthText}
-                                    disabled={!ifLongText}
-                                    onChange={(value) =>
-                                        setMaxLengthText(value as number)
-                                    }
-                                />
-                            </Col>
-                        </Row>
-                    </div>
-                )}
-                {answerType === AnswerTypes.decimal && (
-                    <div>
-                        <Row>
-                            <Col span={24} style={{ padding: '0 10px' }}>
-                                <p>
-                                    Mottaker fyller ut en tallverdi, enten fritt
-                                    eller innenfor bestemte verdier.
-                                </p>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={10}>
-                                <Checkbox
-                                    onChange={(e) => setMin(e.target.checked)}
-                                >
-                                    Min
-                                </Checkbox>
-                            </Col>
-                            <Col span={14}>
-                                <InputNumber
-                                    type="number"
-                                    defaultValue={0}
-                                    disabled={!min}
-                                    onChange={(value) =>
-                                        value
-                                            ? setMinValue(value as number)
-                                            : setMinValue(0)
-                                    }
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={10}>
-                                <Checkbox
-                                    onChange={(e) => setMax(e.target.checked)}
-                                >
-                                    Max
-                                </Checkbox>
-                            </Col>
-                            <Col span={14}>
-                                <InputNumber
-                                    type="number"
-                                    defaultValue={100}
-                                    disabled={!max}
-                                    onChange={(value) =>
-                                        value
-                                            ? setMaxValue(value as number)
-                                            : setMaxValue(0)
-                                    }
-                                />
-                            </Col>
-                        </Row>
-                    </div>
-                )}
+                {propsController}
             </Col>
 
             <Col span={10} style={{ padding: '10px' }}>

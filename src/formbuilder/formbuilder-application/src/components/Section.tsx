@@ -6,6 +6,7 @@ import {
     FormContext,
     addNewQuestion,
     removeQuestion,
+    updateSection,
 } from '../store/FormStore';
 import * as DND from 'react-beautiful-dnd';
 
@@ -29,7 +30,9 @@ function Section({
     // const [count, setCount] = useState(0);
 
     const { state, dispatch } = useContext(FormContext);
-
+    const [sectionTitle, setSectiontitle] = useState(
+        state.sections[sectionId].sectionTitle,
+    );
     function findPlaceholder() {
         if (index === 0) {
             // setIsSection(false);
@@ -52,6 +55,11 @@ function Section({
         dispatch(removeQuestion(questionIndex, sectionId));
     }
 
+    function handleChange(value: string) {
+        setSectiontitle(value);
+        dispatch(updateSection(sectionId, value));
+    }
+    console.log(state.sections);
     return (
         <div
             style={{
@@ -69,6 +77,7 @@ function Section({
                         placeholder={placeholder}
                         className="input-question"
                         size="large"
+                        onBlur={(e) => handleChange(e.target.value)}
                     />
                 </Col>
                 <Col span={2}></Col>
@@ -93,6 +102,7 @@ function Section({
                                 style={{ zIndex: 1, color: 'var(--primary-1)' }}
                                 size="large"
                                 type="link"
+                                id="MoveSectionButton"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +143,7 @@ function Section({
                                                 state.questions[questionId];
                                             return (
                                                 <DND.Draggable
-                                                    key={questionId}
+                                                    key={'drag' + questionId}
                                                     draggableId={questionId}
                                                     index={index}
                                                 >
@@ -162,7 +172,8 @@ function Section({
                                                             />
                                                             <hr
                                                                 key={
-                                                                    'hr' + question.id
+                                                                    'hr' +
+                                                                    question.id
                                                                 }
                                                                 style={{
                                                                     color:
