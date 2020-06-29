@@ -12056,7 +12056,7 @@ interface _QuestionnaireItem extends _BackboneElement {
     /** Text, questions and other groups to be nested beneath a question or group. */
     item?: QuestionnaireItem[];
     /** An identifier that is unique within the Questionnaire allowing linkage to the equivalent item in a QuestionnaireResponse resource. */
-    linkId: string;
+    linkId?: string;
     /** The maximum number of characters that are permitted in the answer to be considered a "valid" QuestionnaireResponse. */
     maxLength?: integer;
     /** One of the permitted answers for a "choice" or "open-choice" question. */
@@ -12075,7 +12075,7 @@ interface _QuestionnaireItem extends _BackboneElement {
     text?: string;
     _text?: Element;
     /** The type of questionnaire item this is - whether text for display, a grouping of other items or a particular type of data to be captured (string, integer, coded choice, etc.). */
-    type: QuestionnaireItemTypeList;
+    type?: QuestionnaireItemTypeList;
     deactivated?: boolean;
 }
 export interface QuestionnaireItem extends _QuestionnaireItem {}
