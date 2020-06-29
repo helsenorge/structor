@@ -12,7 +12,7 @@ import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 
 type SectionProps = {
-    section: ISection;
+    sectionId: string;
     removeSection: () => void;
     provided: DND.DraggableProvided;
     collapsed: boolean;
@@ -20,7 +20,7 @@ type SectionProps = {
 };
 
 function Section({
-    section,
+    sectionId,
     removeSection,
     provided,
     collapsed,
@@ -31,6 +31,8 @@ function Section({
     const [count, setCount] = useState(0);
 
     const { state, dispatch } = useContext(FormContext);
+
+    const section = state.sections[sectionId];
 
     function findPlaceholder() {
         if (index === 0) {
