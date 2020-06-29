@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import { Layout, Avatar } from 'antd';
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
 import 'antd/dist/antd.css';
-import MySchemas from '../MySchemas/MySchemas';
 import MyPatients from '../PatientInfo/MyPatients';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
-import ListView from '../PatientInfo/ListView/ListView';
-import SchemaView from './SchemaView';
 import { UserOutlined } from '@ant-design/icons';
 import PatientInfo from '../PatientInfo/PatientInfo';
 
@@ -84,11 +81,6 @@ const Navigation = (props: any) => {
                                 <Route exact path="/" component={MyPatients} />
                                 <Route
                                     exact
-                                    path="/Skjema"
-                                    component={MySchemas}
-                                />
-                                <Route
-                                    exact
                                     path="/Pasient"
                                     render={() => (
                                         <PatientInfo
@@ -99,16 +91,6 @@ const Navigation = (props: any) => {
                                             }
                                         />
                                     )}
-                                />
-                                <Route
-                                    exact
-                                    path="/Pasient/Skjemaisning"
-                                    component={ListView}
-                                />
-                                <Route
-                                    exact
-                                    path="/Pasient/ListeVisning"
-                                    component={SchemaView}
                                 />
                             </Switch>
                         </div>
