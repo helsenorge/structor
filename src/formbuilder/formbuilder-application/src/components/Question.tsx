@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ChangeEvent, useContext } from 'react';
 import { Input, Row, Col, Button, Tooltip } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import './answerComponents/AnswerComponent.css';
 import AnswerComponent from './AnswerComponent';
 import IQuestion from '../types/IQuestion';
@@ -11,12 +11,14 @@ const { TextArea } = Input;
 
 type QuestionProps = {
     question: IQuestion;
+    duplicateQuestion: () => void;
     removeQuestion: () => void;
     provided: DND.DraggableProvided;
 };
 
 function Question({
     question,
+    duplicateQuestion,
     removeQuestion,
     provided,
 }: QuestionProps): JSX.Element {
@@ -58,7 +60,16 @@ function Question({
                         }}
                     />
                 </Col>
-                <Col span={3}></Col>
+                <Col span={3}>
+                    <Button
+                        style={{ zIndex: 1, color: 'var(--primary-1)' }}
+                        icon={<CopyOutlined />}
+                        type="default"
+                        onClick={() => duplicateQuestion()}
+                    >
+                        Dupliser spørsmål
+                    </Button>
+                </Col>
                 <Col span={3}>
                     <Button
                         style={{ zIndex: 1, color: 'var(--primary-1)' }}
