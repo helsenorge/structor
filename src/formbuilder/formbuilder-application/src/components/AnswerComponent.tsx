@@ -4,8 +4,10 @@ import './answerComponents/AnswerComponent.css';
 import TextInput from './answerComponents/TextInput';
 import RadioButton from './answerComponents/RadioButton';
 import Decimal from './answerComponents/Decimal';
-import { AnswerTypes } from '../types/IAnswer';
-import { FormContext } from '../store/FormStore';
+import IAnswer, { AnswerTypes } from '../types/IAnswer';
+import { FormContext, updateAnswer, updateQuestion } from '../store/FormStore';
+import Question from './Question';
+import BooleanInput from './answerComponents/BooleanInput';
 
 const { TextArea } = Input;
 
@@ -18,12 +20,13 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
     const [answerBuilder, setAnswerBuilder] = useState(<div></div>);
     const { Option } = Select;
     const { state, dispatch } = useContext(FormContext);
+    const question = state.questions[questionId];
     const answer = state.questions[questionId].answer;
 
     // TODO: send all of the below to context
     // General form restrictions
-    const [ifDesc, setDescState] = useState(false);
-    const [obligatory, setObligatory] = useState(true);
+    const [ifDesc, setDescState] = useState(question.description);
+    const [obligatory, setObligatory] = useState(question.required);
 
     // Radio button restrictions
     const [defaultChoice, setDefaultChoice] = useState(-1);
@@ -154,47 +157,16 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
             );
         } else if (value === AnswerTypes.bool) {
             setAnswerType(AnswerTypes.bool);
-            setPropController(
-                <div>
-                    <Row>
-                        <Col span={24} style={{ padding: '0 10px' }}>
-                            <p>
-                                Mottaker har flere svaralternativer, men kan
-                                bare velge ett alternativ.
-                            </p>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={3} style={{ padding: '0 10px' }}>
-                            <Checkbox
-                                onChange={(e) => setIfDefault(e.target.checked)}
-                            />
-                        </Col>
-                        <Col span={10} style={{ padding: '0 10px' }}>
-                            <p style={{ textAlign: 'left' }}>
-                                Sett standardalternativ:
-                            </p>
-                        </Col>
-                        <Col span={5} style={{ padding: '0 10px' }}>
-                            <InputNumber
-                                min={1}
-                                max={20}
-                                size="small"
-                                defaultValue={1}
-                                disabled={!ifDefault}
-                                onChange={(value) =>
-                                    setDefaultChoice(value as number)
-                                }
-                            />
-                        </Col>
-                    </Row>
-                </div>,
-            );
             setAnswerBuilder(
-                <RadioButton
-                    key={'radio' + answer.id}
-                    questionId={questionId}
-                ></RadioButton>,
+                <BooleanInput questionId={questionId}></BooleanInput>,
+            );
+            dispatch(
+                updateAnswer(
+                    questionId as string,
+                    {
+                        type: AnswerTypes.bool as AnswerTypes,
+                    } as IAnswer,
+                ),
             );
         }
     }
@@ -221,13 +193,31 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
         );
     }
 
+    function handleObligatoryCheck(value: boolean) {
+        const temp = { ...question };
+        temp.required = value;
+        dispatch(updateQuestion(temp));
+        setObligatory(value);
+    }
+
+    function handleDescriptionCheck(value: boolean) {
+        const temp = { ...question };
+        temp.description = value;
+        dispatch(updateQuestion(temp));
+        setDescState(value);
+    }
+
     return (
         <Row>
             <Col span={7} className="controller">
                 <Row>
                     <Col span={3} style={{ padding: '0 10px' }}>
                         <Checkbox
-                            onChange={(e) => setDescState(e.target.checked)}
+                            value={state.questions[questionId].description}
+                            onChange={(e) => {
+                                handleDescriptionCheck(e.target.checked);
+                            }}
+                            checked = {ifDesc}
                         />
                     </Col>
                     <Col span={21} style={{ padding: '0 10px' }}>
@@ -239,8 +229,11 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                 <Row>
                     <Col span={3} style={{ padding: '0 10px' }}>
                         <Checkbox
-                            defaultChecked
-                            onChange={(e) => setObligatory(e.target.checked)}
+                            onChange={(e) => {
+                                setObligatory(e.target.checked);
+                                handleObligatoryCheck(e.target.checked);
+                            }}
+                            checked={obligatory}
                         />
                     </Col>
                     <Col span={21} style={{ padding: '0 10px' }}>

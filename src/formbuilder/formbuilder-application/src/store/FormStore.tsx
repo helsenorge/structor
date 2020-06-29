@@ -153,6 +153,8 @@ export function addNewQuestion(sectionId: string): Action {
         sectionId: sectionId,
         questionText: '',
         answer: { type: AnswerTypes.bool, choices: [''], id: generateID() },
+        required: true,
+        description: false,
     };
     return {
         type: ActionTypes.ADD_NEW_QUESTION,

@@ -3,7 +3,6 @@ import { Radio, Button, Input, Tooltip } from 'antd';
 import { PlusCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import './AnswerComponent.css';
 import { IChoice, AnswerTypes } from '../../types/IAnswer';
-import IQuestion from '../../types/IQuestion';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 
 type radioButtonProps = {
