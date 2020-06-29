@@ -1,17 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ChangeEvent, useContext } from 'react';
 import { Input, Row, Col, Button, Tooltip } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import './answerComponents/AnswerComponent.css';
 import AnswerComponent from './AnswerComponent';
 import IQuestion from '../types/IQuestion';
+import * as DND from 'react-beautiful-dnd';
+import { FormContext, updateQuestion } from '../store/FormStore';
+
 const { TextArea } = Input;
 
 type QuestionProps = {
     question: IQuestion;
     removeQuestion: () => void;
+    provided: DND.DraggableProvided;
 };
 
-function Question({ question, removeQuestion }: QuestionProps): JSX.Element {
+function Question({
+    question,
+    removeQuestion,
+    provided,
+}: QuestionProps): JSX.Element {
+    const { dispatch } = useContext(FormContext);
     const [placeholder, setPlaceholder] = useState('Spørsmål 1...');
     useEffect(() => {
         findPlaceholder();
@@ -19,8 +28,17 @@ function Question({ question, removeQuestion }: QuestionProps): JSX.Element {
     function findPlaceholder() {
         setPlaceholder('Spørsmål ' + (question.id + 1) + '...');
     }
+
+    function handleInput(e: ChangeEvent<HTMLTextAreaElement>) {
+        setPlaceholder(e.target.value);
+        if (question) {
+            const temp = { ...question };
+            temp.questionText = e.target.value;
+            dispatch(updateQuestion(temp));
+        }
+    }
     return (
-        <div>
+        <div style={{ backgroundColor: 'var(--color-base-1)' }}>
             <Row>
                 <Col
                     span={7}
@@ -34,6 +52,10 @@ function Question({ question, removeQuestion }: QuestionProps): JSX.Element {
                         rows={1}
                         placeholder={placeholder}
                         className="input-question"
+                        value={question.questionText}
+                        onChange={(e): void => {
+                            handleInput(e);
+                        }}
                     />
                 </Col>
                 <Col span={3}></Col>
@@ -53,6 +75,7 @@ function Question({ question, removeQuestion }: QuestionProps): JSX.Element {
                             style={{ zIndex: 1, color: 'var(--primary-1)' }}
                             size="large"
                             type="link"
+                            {...provided.dragHandleProps}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +94,7 @@ function Question({ question, removeQuestion }: QuestionProps): JSX.Element {
                 </Col>
             </Row>
 
-            <AnswerComponent />
+            <AnswerComponent question={question} />
         </div>
     );
 }

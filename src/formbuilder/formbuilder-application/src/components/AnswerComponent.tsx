@@ -4,10 +4,15 @@ import './answerComponents/AnswerComponent.css';
 import TextInput from './answerComponents/TextInput';
 import RadioButton from './answerComponents/RadioButton';
 import Decimal from './answerComponents/Decimal';
+import IQuestion from '../types/IQuestion';
 
 const { TextArea } = Input;
 
-function AnswerComponent(): JSX.Element {
+type AnswerComponentProps = {
+    question: IQuestion;
+};
+
+function AnswerComponent({ question }: AnswerComponentProps): JSX.Element {
     const [answerType, setAnswerType] = useState('Velg type spørsmål');
     const [answerBuilder, setAnswerBuilder] = useState(<div></div>);
     const { Option } = Select;
@@ -35,7 +40,7 @@ function AnswerComponent(): JSX.Element {
         if (value === 'boolean') {
             setAnswerType('boolean');
             //TODO: Implement Boolean answerComponent, using RadioButtons for testing
-            setAnswerBuilder(<RadioButton></RadioButton>);
+            setAnswerBuilder(<div></div>);
         } else if (value === 'decimal') {
             setAnswerType('decimal');
             setAnswerBuilder(<Decimal max={maxValue} min={minValue}></Decimal>);
@@ -50,7 +55,7 @@ function AnswerComponent(): JSX.Element {
             );
         } else if (value === 'radio') {
             setAnswerType('radio');
-            setAnswerBuilder(<RadioButton></RadioButton>);
+            setAnswerBuilder(<RadioButton question={question}></RadioButton>);
         }
     }
     function changeToLongText(value: boolean) {

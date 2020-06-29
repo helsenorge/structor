@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Radio, Button, Input, Tooltip } from 'antd';
 import { PlusCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import './AnswerComponent.css';
+import { IChoice, AnswerTypes } from '../../types/IAnswer';
+import IQuestion from '../../types/IQuestion';
+import { FormContext, updateAnswer } from '../../store/FormStore';
 
-function RadioButton(): JSX.Element {
+type radioButtonProps = {
+    question: IQuestion;
+};
+
+function RadioButton({ question }: radioButtonProps): JSX.Element {
     const radioStyle = {
         display: 'block',
         height: '30px',
@@ -11,8 +18,12 @@ function RadioButton(): JSX.Element {
         marginBottom: 10,
         width: '90%',
     };
-
-    const [buttonNames, setButtonNames] = useState(['']);
+    let choiceList = (question.answer as IChoice).choices;
+    if (!choiceList) {
+        choiceList = [''];
+    }
+    const [buttonNames, setButtonNames] = useState(choiceList);
+    const { dispatch } = useContext(FormContext);
 
     function addButtonClick() {
         setButtonNames([...buttonNames, '']);
@@ -22,6 +33,18 @@ function RadioButton(): JSX.Element {
         const res = [...buttonNames];
         res.splice(id, 1);
         setButtonNames(res);
+    }
+
+    const handleInput = () => {
+        dispatch(
+            updateAnswer(
+                question.id as string,
+                {
+                    type: question.answer.type as AnswerTypes,
+                    choices: buttonNames,
+                } as IChoice,
+            ),
+        );
     }
 
     function createButton(id: number) {
@@ -43,6 +66,7 @@ function RadioButton(): JSX.Element {
                         const temp = buttonNames.slice();
                         temp[id] = e.target.value;
                         setButtonNames(temp);
+                        handleInput();
                     }}
                 />
 
@@ -58,18 +82,19 @@ function RadioButton(): JSX.Element {
             </Radio>
         );
     }
-
     return (
         <Radio.Group name="radiogroup">
             {buttonNames.map((name, id) => [createButton(id)])}
-            <Button
-                type="text"
-                icon={<PlusCircleOutlined />}
-                onClick={addButtonClick}
-                value="Add"
-            >
-                Legg til alternativ
-            </Button>
+            {
+                <Button
+                    type="text"
+                    icon={<PlusCircleOutlined />}
+                    onClick={addButtonClick}
+                    value="Add"
+                >
+                    Legg til alternativ
+                </Button>
+            }
         </Radio.Group>
     );
 }

@@ -5,6 +5,7 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import { generateID } from '../helpers/IDGenerator';
 import produce from 'immer';
+import IAnswer, { AnswerTypes, IChoice } from '../types/IAnswer';
 
 const initSectionId = generateID();
 const initSection: ISection = { id: initSectionId, questionOrder: [] };
@@ -18,17 +19,19 @@ export const initialState: State = {
 };
 
 export enum ActionTypes {
-    'ADD_SECTION',
-    'ADD_NEW_SECTION',
-    'REMOVE_SECTION',
-    'ADD_QUESTION',
-    'ADD_NEW_QUESTION',
-    'REMOVE_QUESTION',
+    ADD_SECTION = 'ADD_SECTION',
+    ADD_NEW_SECTION = 'ADD_NEW_SECTION',
+    REMOVE_SECTION = 'REMOVE_SECTION',
+    ADD_QUESTION = 'ADD_QUESTION',
+    ADD_NEW_QUESTION = 'ADD_NEW_QUESTION',
+    REMOVE_QUESTION = 'REMOVE_QUESTION',
+    UPDATE_ANSWER = 'UPDATE_ANSWER',
+    UPDATE_QUESTION = 'UPDATE_QUESTION',
 }
 
 export enum SwapActionTypes {
-    'SWAP_SECTION',
-    'SWAP_QUESTION',
+    SWAP_SECTION = 'SWAP_SECTION',
+    SWAP_QUESTION = 'SWAP_QUESTION',
 }
 
 export interface Action {
@@ -39,14 +42,16 @@ export interface Action {
     questionIndex?: number;
     section?: ISection;
     question?: IQuestion;
+    answer?: IAnswer | IChoice;
 }
 
 export interface SwapAction {
     type: SwapActionTypes;
     sectionId?: string;
-    questionId?: string;
     oldSectionIndex?: number;
     newSectionIndex?: number;
+    oldSectionId?: string;
+    newSectionId?: string;
     oldQuestionIndex?: number;
     newQuestionIndex?: number;
 }
@@ -62,6 +67,24 @@ export function addSection(sectionIndex: number, section: ISection): Action {
         type: ActionTypes.ADD_SECTION,
         sectionIndex: sectionIndex,
         section: section,
+    };
+}
+
+export function updateAnswer(
+    questionId: string,
+    answer: IAnswer | IChoice,
+): Action {
+    return {
+        type: ActionTypes.UPDATE_ANSWER,
+        questionId: questionId,
+        answer: answer,
+    };
+}
+
+export function updateQuestion(question: IQuestion): Action {
+    return {
+        type: ActionTypes.UPDATE_QUESTION,
+        question: question,
     };
 }
 
@@ -81,16 +104,16 @@ export function removeSection(sectionIndex: number): Action {
     };
 }
 
-// export function swapSection(
-//     sectionIndex: number,
-//     newSectionIndex: number,
-// ): Action {
-//     return {
-//         type: ActionTypes.SWAP_SECTION,
-//         sectionIndex: sectionIndex,
-//         newSectionIndex: newSectionIndex,
-//     };
-// }
+export function swapSection(
+    oldSectionIndex: number,
+    newSectionIndex: number,
+): SwapAction {
+    return {
+        type: SwapActionTypes.SWAP_SECTION,
+        oldSectionIndex: oldSectionIndex,
+        newSectionIndex: newSectionIndex,
+    };
+}
 
 // export function addQuestion(
 //     sectionIndex: number,
@@ -111,6 +134,7 @@ export function addNewQuestion(sectionId: string): Action {
         id: questionId,
         sectionId: sectionId,
         questionText: '',
+        answer: { type: AnswerTypes.bool, choices: [''] },
     };
     return {
         type: ActionTypes.ADD_NEW_QUESTION,
@@ -129,20 +153,20 @@ export function removeQuestion(
     };
 }
 
-// export function swapQuestion(
-//     sectionIndex: number,
-//     questionIndex: number,
-//     newSectionIndex: number,
-//     newQuestionIndex: number,
-// ): Action {
-//     return {
-//         type: ActionTypes.SWAP_QUESTION,
-//         sectionIndex: sectionIndex,
-//         newSectionIndex: newSectionIndex,
-//         questionIndex: questionIndex,
-//         newQuestionIndex: newQuestionIndex,
-//     };
-// }
+export function swapQuestion(
+    oldSectionId: string,
+    oldQuestionIndex: number,
+    newSectionId: string,
+    newQuestionIndex: number,
+): SwapAction {
+    return {
+        type: SwapActionTypes.SWAP_QUESTION,
+        oldQuestionIndex: oldQuestionIndex,
+        newQuestionIndex: newQuestionIndex,
+        oldSectionId: oldSectionId,
+        newSectionId: newSectionId,
+    };
+}
 
 const reducer = produce((draft: State, action: Action | SwapAction) => {
     switch (action.type) {
@@ -156,6 +180,21 @@ const reducer = produce((draft: State, action: Action | SwapAction) => {
                 draft.sectionOrder.push(action.section.id);
             }
             break;
+        case ActionTypes.UPDATE_ANSWER:
+            draft.questions[
+                action.questionId as string
+            ].answer = action.answer as IChoice;
+            // console.log(action.answer);
+            // console.log(action.questionId);
+            break;
+        case ActionTypes.UPDATE_QUESTION:
+            if (action.question) {
+                draft.questions[action.question.id] = action.question;
+                console.log(action.question);
+            }
+            // console.log(action.answer);
+            // console.log(action.questionId);
+            break;
         case ActionTypes.REMOVE_SECTION:
             if (action.sectionIndex !== undefined) {
                 const sectionId = draft.sectionOrder[action.sectionIndex];
@@ -167,14 +206,17 @@ const reducer = produce((draft: State, action: Action | SwapAction) => {
                 delete draft.sections[sectionId];
             }
             break;
-        // case SwapActionTypes.SWAP_SECTION:
-        //     if (action.newSectionIndex) {
-        //         const tmpSection = draft.sections[action.sectionIndex];
-        //         draft.sections[action.sectionIndex] =
-        //             draft.sections[action.newSectionIndex];
-        //         draft.sections[action.newSectionIndex] = tmpSection;
-        //     }
-        //     break;
+        case SwapActionTypes.SWAP_SECTION:
+            if (
+                action.oldSectionIndex !== undefined &&
+                action.newSectionIndex !== undefined
+            ) {
+                const oldId = draft.sectionOrder[action.oldSectionIndex];
+                draft.sectionOrder[action.oldSectionIndex] =
+                    draft.sectionOrder[action.newSectionIndex];
+                draft.sectionOrder[action.newSectionIndex] = oldId;
+            }
+            break;
         // case ActionTypes.ADD_QUESTION:
         //     if (action.question && action.questionIndex)
         //         draft.sections[action.sectionIndex].questions[
@@ -205,82 +247,37 @@ const reducer = produce((draft: State, action: Action | SwapAction) => {
                 delete draft.questions[questionId];
             }
             break;
-        // case ActionTypes.SWAP_QUESTION:
-        //     if (
-        //         action.newSectionIndex &&
-        //         action.newQuestionIndex &&
-        //         action.questionIndex
-        //     ) {
-        //         const tmpQuestion =
-        //             draft.sections[action.sectionIndex].questions[
-        //                 action.questionIndex
-        //             ];
-        //         draft.sections[action.sectionIndex].questions[
-        //             action.questionIndex
-        //         ] =
-        //             draft.sections[action.newSectionIndex].questions[
-        //                 action.newQuestionIndex
-        //             ];
-        //         draft.sections[action.newSectionIndex].questions[
-        //             action.questionIndex
-        //         ] = tmpQuestion;
-        //     }
-        //     break;
+        case SwapActionTypes.SWAP_QUESTION:
+            if (
+                action.oldQuestionIndex !== undefined &&
+                action.newQuestionIndex !== undefined &&
+                action.oldSectionId !== undefined &&
+                action.newSectionId !== undefined
+            ) {
+                const sourceId =
+                    draft.sections[action.oldSectionId].questionOrder[
+                        action.oldQuestionIndex
+                    ];
+                if (action.oldSectionId !== action.newSectionId) {
+                    draft.questions[sourceId].sectionId = action.newSectionId;
+                }
+                draft.sections[action.oldSectionId].questionOrder.splice(
+                    action.oldQuestionIndex,
+                    1,
+                );
+                draft.sections[action.newSectionId].questionOrder.splice(
+                    action.newQuestionIndex,
+                    0,
+                    sourceId,
+                );
+            }
+            break;
     }
 });
 
-// export const oldReducer = (state: State, action: Action): State => {
-//     switch (action.type) {
-//         case ActionTypes.ADD_SECTION:
-//             if (!action.section)
-//                 throw new InvalidArgumentException('No section was provided');
-//             state.sections[action.sectionIndex] = action.section;
-//             return {
-//                 sections: state.sections,
-//             };
-//         case ActionTypes.REMOVE_SECTION:
-//             const {
-//                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//                 [action.sectionIndex]: removedSection,
-//                 ...returnNewSections
-//             } = state.sections;
-//             return { sections: state.sections = returnNewSections };
-//         case ActionTypes.ADD_QUESTION:
-//             if (!action.question)
-//                 throw new InvalidArgumentException('No question was provided');
-//             if (!action.questionIndex)
-//                 throw new InvalidArgumentException(
-//                     'No questionIndex was provided',
-//                 );
-//             state.sections[action.sectionIndex].questions[
-//                 action.questionIndex
-//             ] = action.question;
-//             return {
-//                 sections: state.sections,
-//             };
-//         case ActionTypes.REMOVE_QUESTION:
-//             if (!action.questionIndex)
-//                 throw new InvalidArgumentException(
-//                     'No questionIndex was provided',
-//                 );
-//             const sectionCopyRemoveQuestion = { ...state.sections };
-//             const {
-//                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//                 [action.questionIndex]: removedQuestion,
-//                 ...returnSectionWithNewQuestions
-//             } = sectionCopyRemoveQuestion;
-//             return {
-//                 sections: returnSectionWithNewQuestions,
-//             };
-
-//         default:
-//             return state;
-//     }
-// };
-
 export const FormContext = createContext<{
     state: State;
-    dispatch: Dispatch<Action>;
+    dispatch: Dispatch<Action | SwapAction>;
 }>({
     state: initialState,
     dispatch: () => null,
@@ -290,7 +287,6 @@ export const FormContextProvider = (props: {
     children: JSX.Element;
 }): JSX.Element => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    console.log(state);
     return (
         // eslint-disable-next-line
         // @ts-ignore
