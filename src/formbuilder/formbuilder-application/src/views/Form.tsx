@@ -27,7 +27,8 @@ function CreateForm(): JSX.Element {
     }
 
     function dispatchRemoveSection(index: number) {
-        dispatch(removeSection(index));
+        if (window.confirm('Vil du slette denne seksjonen?'))
+            dispatch(removeSection(index));
     }
 
     function dispatchDuplicateSection(index: number, id: string) {

@@ -64,7 +64,8 @@ function Section({
     }
 
     function dispatchRemoveQuestion(questionIndex: number) {
-        dispatch(removeQuestion(questionIndex, section.id));
+        if (window.confirm('Vil du slette dette spørsmålet?'))
+            dispatch(removeQuestion(questionIndex, section.id));
     }
 
     return (
