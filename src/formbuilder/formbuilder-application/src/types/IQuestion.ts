@@ -1,4 +1,4 @@
-import IAnswer, { IChoice } from "./IAnswer";
+import IAnswer, { IChoice } from './IAnswer';
 
 export default interface IQuestion {
     id: string;

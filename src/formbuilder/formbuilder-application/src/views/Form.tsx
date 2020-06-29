@@ -51,12 +51,8 @@ function CreateForm(): JSX.Element {
     }
 
     function onDragStart(startResponder: DND.DragStart) {
-<<<<<<< HEAD
-        // setDragIndex(state.sections[startResponder.source.index].id);
-=======
         if (startResponder.type === 'section')
             setDragIndex(startResponder.source.index);
->>>>>>> feature/formbuilder/data-binding
     }
 
     return (

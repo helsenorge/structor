@@ -42,6 +42,7 @@ function RadioButton({ question }: radioButtonProps): JSX.Element {
                 {
                     type: question.answer.type as AnswerTypes,
                     choices: buttonNames,
+                    id: question.id, // TODO
                 } as IChoice,
             ),
         );

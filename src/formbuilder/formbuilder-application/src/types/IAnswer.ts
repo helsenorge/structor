@@ -20,6 +20,7 @@ export enum AnswerTypes {
 export default interface IAnswer {
     type: AnswerTypes;
     choices?: Array<string>;
+    id: string;
 }
 
 export interface IChoice extends IAnswer {

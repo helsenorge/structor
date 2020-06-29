@@ -12408,6 +12408,7 @@ interface _ResourceContainer extends BaseType {
   ValueSet: ValueSet;
   /** An authorization for the supply of glasses and/or contact lenses to a patient. */
   VisionPrescription: VisionPrescription;
+  resourceType?: string;
 }
 export interface ResourceContainer extends _ResourceContainer {
   constructor: { new (): ResourceContainer };
