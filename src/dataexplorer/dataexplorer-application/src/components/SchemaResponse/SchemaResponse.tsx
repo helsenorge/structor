@@ -8,8 +8,9 @@ import {
     QuestionnaireResponse,
     Questionnaire,
     QuestionnaireResponseItem,
+    QuestionnaireItem,
 } from 'types/fhirTypes/fhir';
-import { IAnswer } from 'types/IQuestionnaireResponse';
+import { IAnswer, IQuestion } from 'types/IQuestionnaireResponse';
 
 const SchemaResponse = () => {
     const questionnaireResponseId = '10';
@@ -26,6 +27,8 @@ const SchemaResponse = () => {
     );
     const [answer, setAnswer] = useState<IAnswer[]>([]);
 
+    const [question, setQuestion] = useState<IQuestion[]>([]);
+
     dayjs.locale('nb');
     const filledInDate = dayjs(schemaResponse.response?.authored).format(
         'DD/MM/YYYY HH:mm',
@@ -36,7 +39,16 @@ const SchemaResponse = () => {
         setAnswer((answer) => [...answer, answerObject]);
     };
 
+    const updateQuestion = (update: any) => {
+        const questionObject: IQuestion = {
+            id: update.linkId,
+            questions: update,
+        };
+        setQuestion((question) => [...question, questionObject]);
+    };
+
     console.log(answer);
+    console.log(question);
     useEffect(() => {
         const findAnswer = (list: QuestionnaireResponseItem) => {
             if (!list?.answer && !list.item) {
@@ -62,6 +74,36 @@ const SchemaResponse = () => {
         }
         return;
     }, [schemaResponse.response]);
+
+    useEffect(() => {
+        console.log('inne2');
+        const findQuestion = (list: any) => {
+            if (!list?.text && !list.item) {
+                return;
+            }
+            if (list.text) {
+                if (list.item) {
+                    console.log('if');
+                    updateQuestion(list);
+                    findQuestion(list.item);
+                } else {
+                    console.log('else');
+                    updateQuestion(list);
+                }
+                return;
+            } else {
+                console.log('else 2');
+                list.item.forEach((element: any) => findQuestion(element));
+            }
+        };
+        if (questionnaire?.item) {
+            console.log('if 2');
+            for (let a = 0; a < questionnaire.item.length; a++) {
+                findQuestion(questionnaire.item[a]);
+            }
+        }
+        return;
+    }, [questionnaire]);
 
     const displayQA = (answer: any) => {
         if (answer.answer[0].valueCoding) {

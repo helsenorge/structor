@@ -12056,7 +12056,7 @@ interface _QuestionnaireItem extends _BackboneElement {
     /** Text, questions and other groups to be nested beneath a question or group. */
     item?: QuestionnaireItem[];
     /** An identifier that is unique within the Questionnaire allowing linkage to the equivalent item in a QuestionnaireResponse resource. */
-    linkId?: string;
+    linkId: string;
     /** The maximum number of characters that are permitted in the answer to be considered a "valid" QuestionnaireResponse. */
     maxLength?: integer;
     /** One of the permitted answers for a "choice" or "open-choice" question. */

@@ -20,5 +20,11 @@ export interface IAnswer {
 }
 export interface IQuestion {
     id: string;
-    answers: QuestionnaireItem;
+    questions: QuestionnaireItem;
+}
+
+export interface IQA {
+    id: string;
+    answers?: IAnswer;
+    questions: IQuestion;
 }
