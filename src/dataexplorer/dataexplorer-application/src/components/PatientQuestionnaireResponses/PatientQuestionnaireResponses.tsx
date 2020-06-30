@@ -1,15 +1,16 @@
 import React from 'react';
 import useFetch from 'utils/hooks/useFetch';
-import { IQuestionnaireResponses } from 'types/IQuestionnaireResponse';
+import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 
 const PatientQuestionnnaireResponses = ({ patientID }: any) => {
     const { response: questionnaireResponses } = useFetch<
-        IQuestionnaireResponses
+        IQuestionnaireResponse
     >('fhir/QuestionnaireResponse?subject=Patient/' + patientID);
     if (questionnaireResponses) {
         return (
             <h1>
-                Pasienten har {questionnaireResponses.total} utfylte skjemaer
+                Pasienten har {questionnaireResponses.entry.length} utfylte
+                skjemaer
             </h1>
         );
     }
