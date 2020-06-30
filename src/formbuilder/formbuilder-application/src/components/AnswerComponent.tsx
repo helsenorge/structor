@@ -25,7 +25,6 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
 
     const question = state.questions[questionId];
-    console.log(question);
 
     const [questionMeta, setQuestionMeta] = useState(question);
 
@@ -38,12 +37,11 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
         description?: string,
     ) {
         const a = { ...question } as IQuestion;
-        console.log(answerType);
-        console.log(a);
-        if (hasDescription) {
+        if (hasDescription !== undefined) {
             a.hasDescription = hasDescription;
         }
-        if (isRequired) {
+        if (isRequired !== undefined) {
+            console.log('Check: ' + isRequired);
             a.isRequired = isRequired;
         }
         if (description) {
@@ -53,7 +51,6 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
             a.answerType = answerType;
             if (answerType === AnswerTypes.radio) {
                 a.answer = { type: answerType, choices: [''] } as IChoice;
-                console.log(a);
             } else if (answerType === AnswerTypes.text) {
                 a.answer = { type: answerType, maxLength: 100 } as IText;
             } else if (answerType === AnswerTypes.decimal) {
@@ -67,7 +64,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
             }
         }
         setQuestionMeta(a);
-        dispatch(updateQuestion(questionMeta));
+        dispatch(updateQuestion(a));
     }
 
     function updateExtremas(minValue?: number, maxValue?: number) {
@@ -219,7 +216,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                 <Row>
                     <Col span={3} style={{ padding: '0 10px' }}>
                         <Checkbox
-                            value={question.hasDescription}
+                            checked={question.hasDescription}
                             onChange={(e) =>
                                 e.target.checked
                                     ? updateQuestionMeta(
@@ -246,7 +243,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                 <Row>
                     <Col span={3} style={{ padding: '0 10px' }}>
                         <Checkbox
-                            value={question.isRequired}
+                            checked={question.isRequired}
                             onChange={(e) => {
                                 e.target.checked
                                     ? updateQuestionMeta(
@@ -275,7 +272,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                     >
                         {/* Answerdropdown*/}
                         <Select
-                            value={state.questions[questionId].answerType}
+                            value={question.answerType}
                             style={{ width: '200px' }}
                             onSelect={(value) => {
                                 updateQuestionMeta(
