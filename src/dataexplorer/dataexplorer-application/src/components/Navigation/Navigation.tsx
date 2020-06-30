@@ -6,9 +6,14 @@ import MyPatients from '../PatientInfo/MyPatients';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
 import PatientInfo from '../PatientInfo/PatientInfo';
+import { History } from 'history';
+
+interface IHistory {
+    history: History;
+}
 
 const { Header, Content } = Layout;
-const Navigation = (props: any) => {
+const Navigation = (props: IHistory) => {
     const [name, setName] = useState('');
     const [schemaNumber, setSchema] = useState('');
 

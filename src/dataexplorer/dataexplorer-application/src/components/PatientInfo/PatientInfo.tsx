@@ -1,11 +1,16 @@
 import React from 'react';
 import useFetch from 'utils/hooks/useFetch';
-import { IPatient, IPatientIdentifier, IState, IRecord } from 'types/IPatient';
-import { Row, Col, Card, Table, message, Empty, Avatar } from 'antd';
+import { IPatient, IPatientIdentifier, IRecord } from 'types/IPatient';
+import { Row, Col, Card, Table, message, Empty } from 'antd';
 import PatientQuestionnaireResponses from '../PatientQuestionnaireResponses/PatientQuestionnaireResponses';
-import { UserOutlined } from '@ant-design/icons';
 
-const PatientInfo = ({ patientID, setName, setSchema }: IState) => {
+interface IInterfaceProps {
+    setName: (name: string) => void;
+    setSchema: (id: string) => void;
+    patientID: string | undefined | null | {};
+}
+
+const PatientInfo = ({ patientID, setName, setSchema }: IInterfaceProps) => {
     const handleClick = (record: IRecord) => {
         message.info('Du har valgt Skjema ' + record.id);
         setSchema(record.schemaName);
@@ -189,15 +194,6 @@ const displayPatientInfo = (patient: IPatient, handleClick: any) => {
                                 justifyContent: 'space-between',
                             }}
                         >
-                            <div className="photo">
-                                <Avatar
-                                    size={200}
-                                    shape="square"
-                                    src={patient?.photo?.[0]?.url}
-                                    icon={<UserOutlined />}
-                                    style={{ border: 'black solid thin' }}
-                                />
-                            </div>
                             <div className="info-left">
                                 <b>
                                     <i>
