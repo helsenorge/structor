@@ -1,16 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
 import { Button, Tooltip, Row, Col, Typography } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
-import Container from '../../skjemautfyller/container';
+//import { convertQuestions } from '../../helpers/JSONConverter';
+import { FormContext } from '../../store/FormStore';
 import './NavBar.css';
-
-const { Title } = Typography;
+import JSONQuestion from '../../types/JSONQuestion';
+import JSONAnswer from '../../types/JSONAnswer';
+import JSONConverter from '../../helpers/JSONGenerator';
+import { Link } from 'react-router-dom';
 
 function NavBar(): JSX.Element {
-    function formPreview() {
-        return <Container />;
+    const { state, dispatch } = useContext(FormContext);
+
+    const { Title } = Typography;
+
+    function convertQuestions() {
+        const questionnaire = JSONConverter(
+            state.sectionOrder,
+            state.sections,
+            state.questions,
+        );
+        console.log(questionnaire);
     }
+
     return (
         <div className="nav-bar">
             <Row>
@@ -57,6 +69,7 @@ function NavBar(): JSX.Element {
                             size="large"
                             style={{ margin: '2px 10px' }}
                             key="saveForm"
+                            onClick={convertQuestions}
                         >
                             Lagre
                         </Button>

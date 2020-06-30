@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Radio, Button, Input, Tooltip } from 'antd';
 import { PlusCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import './AnswerComponent.css';
+import { IChoice, AnswerTypes } from '../../types/IAnswer';
+import { FormContext, updateAnswer } from '../../store/FormStore';
 
-function RadioButton(): JSX.Element {
+type radioButtonProps = {
+    questionId: string;
+};
+
+function RadioButton({ questionId }: radioButtonProps): JSX.Element {
     const radioStyle = {
         display: 'block',
         height: '30px',
@@ -11,8 +17,12 @@ function RadioButton(): JSX.Element {
         marginBottom: 10,
         width: '90%',
     };
-
-    const [buttonNames, setButtonNames] = useState(['']);
+    const { state, dispatch } = useContext(FormContext);
+    let choiceList = (state.questions[questionId].answer as IChoice).choices;
+    if (!choiceList) {
+        choiceList = [''];
+    }
+    const [buttonNames, setButtonNames] = useState(choiceList);
 
     function addButtonClick() {
         setButtonNames([...buttonNames, '']);
@@ -24,10 +34,29 @@ function RadioButton(): JSX.Element {
         setButtonNames(res);
     }
 
+    function handleInput(value: string) {
+        dispatch(
+            updateAnswer(
+                questionId as string,
+                {
+                    type: AnswerTypes.boolean as AnswerTypes,
+                    choices: buttonNames,
+                    id: questionId, // TODO
+                } as IChoice,
+            ),
+        );
+    }
+
+    function handleInputChange(value: string, id: number){
+        const temp = buttonNames.slice();
+        temp[id] = value;
+        setButtonNames(temp);
+    }
+
     function createButton(id: number) {
         return (
             <Radio
-                key={'Radio' + id}
+                key={'Radio' + questionId + id}
                 style={radioStyle}
                 disabled={true}
                 value={id}
@@ -37,13 +66,14 @@ function RadioButton(): JSX.Element {
                     className="input-question"
                     placeholder={'Skriv inn alternativ her'}
                     value={buttonNames[id]}
-                    onChange={(
-                        e: React.ChangeEvent<HTMLInputElement>,
-                    ): void => {
-                        const temp = buttonNames.slice();
-                        temp[id] = e.target.value;
-                        setButtonNames(temp);
-                    }}
+                    // onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                    //     const temp = buttonNames.slice();
+                    //     temp[id] = e.target.value;
+                    //     setButtonNames(temp);
+                    //     handleInput();
+                    // }}
+                    onChange={(e) => handleInputChange(e.target.value,id)}
+                    onBlur={(e) => handleInput(e.target.value)}
                 />
 
                 <Tooltip title="Fjern alternativ" placement="right">
@@ -58,18 +88,19 @@ function RadioButton(): JSX.Element {
             </Radio>
         );
     }
-
     return (
         <Radio.Group name="radiogroup">
             {buttonNames.map((name, id) => [createButton(id)])}
-            <Button
-                type="text"
-                icon={<PlusCircleOutlined />}
-                onClick={addButtonClick}
-                value="Add"
-            >
-                Legg til alternativ
-            </Button>
+            {
+                <Button
+                    type="text"
+                    icon={<PlusCircleOutlined />}
+                    onClick={addButtonClick}
+                    value="Add"
+                >
+                    Legg til alternativ
+                </Button>
+            }
         </Radio.Group>
     );
 }
