@@ -58,7 +58,6 @@ function NavBar(): JSX.Element {
                                 size="large"
                                 style={{ margin: '2px' }}
                                 key="previewForm"
-                                onClick={formPreview}
                             >
                                 Forhåndsvisning
                             </Button>
