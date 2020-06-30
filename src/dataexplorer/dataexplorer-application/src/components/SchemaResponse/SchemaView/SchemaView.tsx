@@ -6,6 +6,7 @@ import {
 } from 'types/IQuestionAndAnswer';
 import Title from 'antd/lib/typography/Title';
 import { ResourceContainer } from 'types/fhirTypes/fhir';
+import Schemes from 'components/Schemes/Schemes';
 
 interface ISchemaViewProps {
     questions: IQuestion[];
@@ -37,6 +38,12 @@ const SchemaView = (props: ISchemaViewProps) => {
 
     return (
         <>
+            {qAndA && (
+                <Schemes
+                    qAndA={qAndA}
+                    questionnnaireResource={questionnaireResource}
+                />
+            )}
             {qAndA.length > 0 &&
                 qAndA.map((i) => (
                     <div key={i.id}>
