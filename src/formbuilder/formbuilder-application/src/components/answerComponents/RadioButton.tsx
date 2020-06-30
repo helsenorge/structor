@@ -39,7 +39,7 @@ function RadioButton({ questionId }: radioButtonProps): JSX.Element {
             updateAnswer(
                 questionId as string,
                 {
-                    type: AnswerTypes.boolean as AnswerTypes,
+                    type: AnswerTypes.radio as AnswerTypes,
                     choices: buttonNames,
                     id: questionId, // TODO
                 } as IChoice,

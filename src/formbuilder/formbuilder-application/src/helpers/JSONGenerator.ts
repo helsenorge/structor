@@ -1,5 +1,6 @@
 import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
+import { AnswerTypes } from '../types/IAnswer';
 
 function convertQuestions(
     sectionOrder: Array<string>,
@@ -25,14 +26,16 @@ function convertQuestions(
             const subItem: fhir.QuestionnaireItem = {
                 linkId: i + 1 + '.' + (j + 1) + '00',
                 text: question.questionText,
-                type: question.answer.type.toString(),
+                type: getAnswerType(question.answer.type),
                 required: true, // TODO: true | false
                 repeats: false, // TODO
                 readOnly: false, // TODO
-                options: {
-                    reference: '#' + question.answer.id,
-                },
             };
+            if (question.answer.choices && question.answer.choices.length > 0) {
+                subItem.options = {
+                    reference: '#' + question.answer.id,
+                };
+            }
             // TODO: if (question.description) add _text with extension.
             item.item?.push(subItem);
         }
@@ -50,38 +53,52 @@ function convertAnswers(
         const sectionId = sectionOrder[i];
         for (const j in sections[sectionId].questionOrder) {
             const questionId = sections[sectionId].questionOrder[j];
-            const answerId = questions[questionId].answer.id;
-            const choices = questions[questionId].answer.choices;
-            const containPart: fhir.Resource = {
-                resourceType: 'ValueSet',
-                id: answerId,
-                name: 'NAME' + i, // TODO: CHECK THIS
-                title: 'TITLE' + i, // TODO: CHECK THIS
-                status: 'draft',
-                publisher: 'NHN',
-                compose: {
-                    include: [
-                        {
-                            system: '', // TODO: FIX ME
-                            concept: new Array<
-                                fhir.ValueSetComposeIncludeConcept
-                            >(),
-                        },
-                    ],
-                },
-            };
-            for (const k in choices) {
-                if (choices !== undefined && k !== undefined) {
-                    containPart.compose?.include[0].concept?.push({
-                        code: String(parseInt(k) + 1),
-                        display: choices[parseInt(k)],
-                    });
+            if (questions[questionId].answer.choices) {
+                const answerId = questions[questionId].answer.id;
+                const choices = questions[questionId].answer.choices;
+                const containPart: fhir.Resource = {
+                    resourceType: 'ValueSet',
+                    id: answerId,
+                    name: 'NAME' + i, // TODO: CHECK THIS
+                    title: 'TITLE' + i, // TODO: CHECK THIS
+                    status: 'draft',
+                    publisher: 'NHN',
+                    compose: {
+                        include: [
+                            {
+                                system: '', // TODO: FIX ME
+                                concept: new Array<
+                                    fhir.ValueSetComposeIncludeConcept
+                                >(),
+                            },
+                        ],
+                    },
+                };
+
+                for (const k in choices) {
+                    if (choices !== undefined && k !== undefined) {
+                        containPart.compose?.include[0].concept?.push({
+                            code: String(parseInt(k) + 1),
+                            display: choices[parseInt(k)],
+                        });
+                    }
                 }
+                valueSets.push(containPart);
             }
-            valueSets.push(containPart);
         }
     }
     return valueSets;
+}
+
+function getAnswerType(answerType: AnswerTypes): string {
+    switch (answerType) {
+        case AnswerTypes.radio:
+            return 'choices';
+        case AnswerTypes.boolean:
+            return 'choices';
+        default:
+            return answerType;
+    }
 }
 
 function convertToJSON(
