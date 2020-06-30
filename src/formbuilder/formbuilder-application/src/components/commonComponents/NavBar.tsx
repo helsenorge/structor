@@ -1,11 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Tooltip, Row, Col, Typography } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
+import Container from '../../skjemautfyller/container';
 import './NavBar.css';
 
 const { Title } = Typography;
 
 function NavBar(): JSX.Element {
+    function formPreview() {
+        return <Container />;
+    }
     return (
         <div className="nav-bar">
             <Row>
@@ -34,15 +39,18 @@ function NavBar(): JSX.Element {
                 </Col>
                 <Col span={6}>
                     <div style={{ float: 'right' }}>
-                        <Button
-                            className="nav-button"
-                            type="link"
-                            size="large"
-                            style={{ margin: '2px' }}
-                            key="previewForm"
-                        >
-                            Forhåndsvisning
-                        </Button>
+                        <Link to="preview">
+                            <Button
+                                className="nav-button"
+                                type="link"
+                                size="large"
+                                style={{ margin: '2px' }}
+                                key="previewForm"
+                                onClick={formPreview}
+                            >
+                                Forhåndsvisning
+                            </Button>
+                        </Link>
                         <Button
                             className="nav-button"
                             type="link"
