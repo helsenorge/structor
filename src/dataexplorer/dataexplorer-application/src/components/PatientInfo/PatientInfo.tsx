@@ -1,13 +1,14 @@
 import React from 'react';
 import useFetch from 'utils/hooks/useFetch';
-import { IPatient, IPatientIdentifier } from 'types/IPatient';
+import { IPatient, IPatientIdentifier, IState, IRecord } from 'types/IPatient';
 import { Row, Col, Card, Table, message, Empty, Avatar } from 'antd';
 import PatientQuestionnaireResponses from '../PatientQuestionnaireResponses/PatientQuestionnaireResponses';
 import { UserOutlined } from '@ant-design/icons';
-const PatientInfo = ({ patientID, setName, setSchemaNumber }: any) => {
-    const handleClick = (record: any) => {
+
+const PatientInfo = ({ patientID, setName, setSchema }: IState) => {
+    const handleClick = (record: IRecord) => {
         message.info('Du har valgt Skjema ' + record.id);
-        setSchemaNumber(record.id);
+        setSchema(record.schemaName);
     };
     // The oid signifies that we are searching on social security number
     const { response: patientData } = useFetch<IPatientIdentifier>(
@@ -16,17 +17,15 @@ const PatientInfo = ({ patientID, setName, setSchemaNumber }: any) => {
     );
 
     if (patientData && patientData !== undefined) {
+        const name =
+            patientData.entry[0].resource.name[0].given[0] +
+            ' ' +
+            patientData.entry[0].resource.name[0].family;
         // Since the search uses social security number, which are
         // unique, the response will contain a maximum value of 1,
         // if the patient exists in the database.
         if (patientData.total === 1) {
-            console.log(patientData);
-            setName(
-                ' ' +
-                    patientData.entry[0].resource.name[0].given[0] +
-                    ' ' +
-                    patientData.entry[0].resource.name[0].family,
-            );
+            setName(name);
             return displayPatientInfo(
                 patientData.entry[0].resource,
                 handleClick,
