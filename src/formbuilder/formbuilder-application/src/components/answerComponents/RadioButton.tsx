@@ -3,14 +3,13 @@ import { Radio, Button, Input, Tooltip } from 'antd';
 import { PlusCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import './AnswerComponent.css';
 import { IChoice, AnswerTypes } from '../../types/IAnswer';
-import IQuestion from '../../types/IQuestion';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 
 type radioButtonProps = {
-    question: IQuestion;
+    questionId: string;
 };
 
-function RadioButton({ question }: radioButtonProps): JSX.Element {
+function RadioButton({ questionId }: radioButtonProps): JSX.Element {
     const radioStyle = {
         display: 'block',
         height: '30px',
@@ -18,12 +17,12 @@ function RadioButton({ question }: radioButtonProps): JSX.Element {
         marginBottom: 10,
         width: '90%',
     };
-    let choiceList = (question.answer as IChoice).choices;
+    const { state, dispatch } = useContext(FormContext);
+    let choiceList = (state.questions[questionId].answer as IChoice).choices;
     if (!choiceList) {
         choiceList = [''];
     }
     const [buttonNames, setButtonNames] = useState(choiceList);
-    const { dispatch } = useContext(FormContext);
 
     function addButtonClick() {
         setButtonNames([...buttonNames, '']);
@@ -35,23 +34,29 @@ function RadioButton({ question }: radioButtonProps): JSX.Element {
         setButtonNames(res);
     }
 
-    const handleInput = () => {
+    function handleInput(value: string) {
         dispatch(
             updateAnswer(
-                question.id as string,
+                questionId as string,
                 {
-                    type: question.answer.type as AnswerTypes,
+                    type: AnswerTypes.boolean as AnswerTypes,
                     choices: buttonNames,
-                    id: question.id, // TODO
+                    id: questionId, // TODO
                 } as IChoice,
             ),
         );
     }
 
+    function handleInputChange(value: string, id: number){
+        const temp = buttonNames.slice();
+        temp[id] = value;
+        setButtonNames(temp);
+    }
+
     function createButton(id: number) {
         return (
             <Radio
-                key={'Radio' + id}
+                key={'Radio' + questionId + id}
                 style={radioStyle}
                 disabled={true}
                 value={id}
@@ -61,14 +66,14 @@ function RadioButton({ question }: radioButtonProps): JSX.Element {
                     className="input-question"
                     placeholder={'Skriv inn alternativ her'}
                     value={buttonNames[id]}
-                    onChange={(
-                        e: React.ChangeEvent<HTMLInputElement>,
-                    ): void => {
-                        const temp = buttonNames.slice();
-                        temp[id] = e.target.value;
-                        setButtonNames(temp);
-                        handleInput();
-                    }}
+                    // onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                    //     const temp = buttonNames.slice();
+                    //     temp[id] = e.target.value;
+                    //     setButtonNames(temp);
+                    //     handleInput();
+                    // }}
+                    onChange={(e) => handleInputChange(e.target.value,id)}
+                    onBlur={(e) => handleInput(e.target.value)}
                 />
 
                 <Tooltip title="Fjern alternativ" placement="right">

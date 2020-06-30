@@ -18,7 +18,7 @@ function convertQuestions(
         const section = sections[sectionKey];
         const item: fhir.QuestionnaireItem = {
             linkId: i,
-            text: section.title,
+            text: section.sectionTitle,
             type: 'group',
             repeats: false,
             item: new Array<fhir.QuestionnaireItem>(),

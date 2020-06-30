@@ -3,42 +3,46 @@ import { Input, Row, Col, Button, Tooltip } from 'antd';
 import { DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import './answerComponents/AnswerComponent.css';
 import AnswerComponent from './AnswerComponent';
-import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 import { FormContext, updateQuestion } from '../store/FormStore';
+import IQuestion from '../types/IQuestion';
 
 const { TextArea } = Input;
 
 type QuestionProps = {
-    question: IQuestion;
     duplicateQuestion: () => void;
+    // question: IQuestion;
+    questionId: string;
     removeQuestion: () => void;
     provided: DND.DraggableProvided;
 };
 
 function Question({
-    question,
     duplicateQuestion,
+    questionId,
     removeQuestion,
     provided,
 }: QuestionProps): JSX.Element {
-    const { dispatch } = useContext(FormContext);
+    const { state, dispatch } = useContext(FormContext);
+    const question = state.questions[questionId];
     const [placeholder, setPlaceholder] = useState('Spørsmål 1...');
+    const [questionTitle, setQuestionTitle] = useState(question.questionText);
     useEffect(() => {
         findPlaceholder();
     });
     function findPlaceholder() {
-        setPlaceholder('Spørsmål ' + (question.id + 1) + '...');
+        setPlaceholder('Spørsmål ' + (questionId + 1) + '...');
     }
 
     function handleInput(e: ChangeEvent<HTMLTextAreaElement>) {
-        setPlaceholder(e.target.value);
+        setPlaceholder(e.currentTarget.value);
         if (question) {
             const temp = { ...question };
             temp.questionText = e.target.value;
             dispatch(updateQuestion(temp));
         }
     }
+
     return (
         <div style={{ backgroundColor: 'var(--color-base-1)' }}>
             <Row>
@@ -54,10 +58,11 @@ function Question({
                         rows={1}
                         placeholder={placeholder}
                         className="input-question"
-                        value={question.questionText}
+                        value={questionTitle}
                         onChange={(e): void => {
-                            handleInput(e);
+                            setQuestionTitle(e.target.value);
                         }}
+                        onBlur={(e) => handleInput(e)}
                     />
                 </Col>
                 <Col span={3}>
@@ -105,7 +110,10 @@ function Question({
                 </Col>
             </Row>
 
-            <AnswerComponent question={question} />
+            <AnswerComponent
+                questionId={questionId}
+                key={'answer' + questionId}
+            />
         </div>
     );
 }
