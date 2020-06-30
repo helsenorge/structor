@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Row, Col, Select, Input, Checkbox, InputNumber } from 'antd';
+import { Row, Col, Select, Input, Checkbox, InputNumber, Button } from 'antd';
 import './answerComponents/AnswerComponent.css';
 import TextInput from './answerComponents/TextInput';
 import RadioButton from './answerComponents/RadioButton';
@@ -48,13 +48,15 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
 
     // Answer and controller components to be rendered
     const [propsController, setPropController] = useState(<div></div>);
-
+    
     function answerPicker(value: AnswerTypes) {
+        console.log('answerPicker');
         if (value === AnswerTypes.radio) {
             setAnswerType(AnswerTypes.radio);
             setAnswerBuilder(
                 <RadioButton questionId={questionId}></RadioButton>,
             );
+            setPropController(<div></div>);
         } else if (value === AnswerTypes.decimal) {
             setAnswerType(AnswerTypes.decimal);
             setAnswerBuilder(<Decimal max={maxValue} min={minValue}></Decimal>);
@@ -165,6 +167,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
             setAnswerBuilder(
                 <BooleanInput questionId={questionId}></BooleanInput>,
             );
+            setPropController(<div></div>);
             dispatch(
                 updateAnswer(
                     questionId as string,
@@ -175,6 +178,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
             );
         }
     }
+
     function changeToLongText(value: boolean) {
         console.log(maxLengthText);
 
@@ -224,7 +228,6 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
         temp.type = value;
         dispatch(updateAnswer(questionId, temp));
     }
-    console.log('AnswerComponent: '+answerType);
     return (
         <Row>
             <Col span={7} className="controller">
@@ -242,6 +245,9 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                         <p style={{ textAlign: 'left' }}>
                             Forklaring av spørsmål til mottaker
                         </p>
+                        <Button onClick={() => console.log(answerType)} >
+                            Test
+                        </Button>
                     </Col>
                 </Row>
                 <Row>
