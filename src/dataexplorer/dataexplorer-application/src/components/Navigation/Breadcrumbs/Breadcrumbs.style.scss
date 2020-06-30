@@ -1,0 +1,11 @@
+.breadcrumbs-container {
+    flex-grow: 2;
+    display: flex;
+    margin-left: 25px;
+    flex-direction: row;
+
+    .breadcrumbs-item {
+        color: black;
+        padding-left: 3px;
+    }
+}

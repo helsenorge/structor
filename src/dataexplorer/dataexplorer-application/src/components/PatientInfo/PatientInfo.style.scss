@@ -1,0 +1,27 @@
+.failed-container {
+    margin-top: 200px;
+}
+
+.patient-card {
+    margin-top: (100px !important);
+
+    .info-container {
+        display: flex;
+        justify-content: space-between;
+
+        .avatar {
+            border: black solid thin;
+        }
+        h1 {
+            font-style: italic;
+            font-weight: bold;
+        }
+        h4 {
+            font-weight: bold;
+        }
+    }
+}
+
+.patient-table {
+    margin-top: 20px;
+}
