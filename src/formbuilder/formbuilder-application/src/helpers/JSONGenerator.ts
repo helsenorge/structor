@@ -1,11 +1,5 @@
-import Converter from '../components/Converter';
 import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
-import JSONQuestion from '../types/JSONQuestion';
-import JSONAnswer from '../types/JSONAnswer';
-import { title } from 'process';
-// import { Questionnaire } from '../types/fhir';
-// import { Questionnaire, uri, code, Coding, Meta, ValueSet } from '../types/fhir';
 
 function convertQuestions(
     sectionOrder: Array<string>,
@@ -13,23 +7,23 @@ function convertQuestions(
     questions: QuestionList,
 ): Array<fhir.QuestionnaireItem> {
     const items = [];
-    for (const i in sectionOrder) {
+    for (let i = 0; i < sectionOrder.length; i++) {
         const sectionKey = sectionOrder[i];
         const section = sections[sectionKey];
         const item: fhir.QuestionnaireItem = {
-            linkId: i,
+            linkId: String(i + 1),
             text: section.sectionTitle,
             type: 'group',
             repeats: false,
             item: new Array<fhir.QuestionnaireItem>(),
         };
         // TODO: Add section desctiption
-        for (const j in sections[sectionKey].questionOrder) {
+        for (let j = 0; j < sections[sectionKey].questionOrder.length; j++) {
             const questionKey = sections[sectionKey].questionOrder[j];
             const question = questions[questionKey];
             // Will be within 'item' and if in section another 'item' of type group
-            const item: fhir.QuestionnaireItem = {
-                linkId: i + '.' + j + '00',
+            const subItem: fhir.QuestionnaireItem = {
+                linkId: i + 1 + '.' + (j + 1) + '00',
                 text: question.questionText,
                 type: question.answer.type.toString(),
                 required: true, // TODO: true | false
@@ -40,6 +34,7 @@ function convertQuestions(
                 },
             };
             // TODO: if (question.description) add _text with extension.
+            item.item?.push(subItem);
         }
         items.push(item);
     }
@@ -52,13 +47,14 @@ function convertAnswers(
 ): Array<fhir.Resource> {
     const valueSets = [];
     for (const i in sectionOrder) {
-        const sectionKey = sectionOrder[i];
-        for (const j in sections[sectionKey].questionOrder) {
-            const questionKey = sections[sectionKey].questionOrder[j];
-            const choices = questions[questionKey].answer.choices;
+        const sectionId = sectionOrder[i];
+        for (const j in sections[sectionId].questionOrder) {
+            const questionId = sections[sectionId].questionOrder[j];
+            const answerId = questions[questionId].answer.id;
+            const choices = questions[questionId].answer.choices;
             const containPart: fhir.Resource = {
                 resourceType: 'ValueSet',
-                id: questionKey,
+                id: answerId,
                 name: 'NAME' + i, // TODO: CHECK THIS
                 title: 'TITLE' + i, // TODO: CHECK THIS
                 status: 'draft',
@@ -74,7 +70,6 @@ function convertAnswers(
                     ],
                 },
             };
-            const compose = {};
             for (const k in choices) {
                 if (choices !== undefined && k !== undefined) {
                     containPart.compose?.include[0].concept?.push({
@@ -83,7 +78,7 @@ function convertAnswers(
                     });
                 }
             }
-            valueSets.push(compose);
+            valueSets.push(containPart);
         }
     }
     return valueSets;
