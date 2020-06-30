@@ -3,8 +3,9 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import JSONQuestion from '../types/JSONQuestion';
 import JSONAnswer from '../types/JSONAnswer';
+import { Questionnaire } from '../types/fhir';
 // import { Questionnaire } from '../types/fhir';
-import { Questionnaire, uri, code, Coding, Meta, ValueSet } from '../types/fhir';
+// import { Questionnaire, uri, code, Coding, Meta, ValueSet } from '../types/fhir';
 
 function convertQuestions(
     sectionOrder: Array<string>,
@@ -69,24 +70,7 @@ function convertToJSON(
         questions,
     );
     const questionnaire: Questionnaire = {
-        resourceType: 'Questionnaire',
-        meta: ({
-            profile: ([
-                'http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire',
-            ] as unknown) as Array<uri>,
-            tag: [
-                ({
-                    system: ('urn:ietf:bcp:47' as unknown) as uri,
-                    code: 'nb-NO',
-                    display: 'Norsk bokmål',
-                } as unknown) as Coding,
-            ],
-        } as unknown) as Meta,
-        language: ('nb-NO' as unknown) as code,
-        contained: [
-
-            },
-        ],
+       
     };
     return questionnaire;
 }
