@@ -3,6 +3,7 @@ import useFetch from 'utils/hooks/useFetch';
 import { IPatient, IPatientIdentifier, IRecord } from 'types/IPatient';
 import { Row, Col, Card, Table, message, Empty } from 'antd';
 import PatientQuestionnaireResponses from '../PatientQuestionnaireResponses/PatientQuestionnaireResponses';
+import './PatientInfo.style.scss';
 
 interface IPatientInfoProps {
     setName: (name: string) => void;
@@ -38,7 +39,7 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
         }
     }
     return (
-        <div className="failed" style={{ marginTop: 200 }}>
+        <div className="failed-container">
             <Empty
                 description={
                     <span>Fant ingen pasienter med dette personnummeret</span>
@@ -181,51 +182,37 @@ const displayPatientInfo = (patient: IPatient, handleClick: any) => {
             <Row gutter={[1, 40]} justify="center">
                 <Col span={12}>
                     <Card
-                        style={{ marginTop: 100 }}
+                        className="patient-card"
                         type="inner"
                         hoverable
                         key={patient.id}
                         title={name}
                     >
-                        <div
-                            className="info-container"
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                            }}
-                        >
+                        <div className="info-container">
                             <div className="info-left">
-                                <b>
-                                    <i>
-                                        <h1>Personlig Informasjon</h1>
-                                    </i>
-                                </b>
+                                <h1>Personlig Informasjon</h1>
+                                <h4>Pnr:</h4>
+                                <p>{patient.id}</p>
                                 <p>
-                                    <b>Pnr: </b> {patient.id}
+                                    <h4>Kjønn:</h4> {patient.gender}
                                 </p>
                                 <p>
-                                    <b>Kjønn: </b> {patient.gender}
-                                </p>
-                                <p>
-                                    <b>Fødselsdato:</b> {patient.birthDate}
+                                    <h4>Fødselsdato:</h4>
+                                    {patient.birthDate}
                                 </p>
                             </div>
                             <div className="info-right">
-                                <b>
-                                    <i>
-                                        <h1>Kontakt</h1>
-                                    </i>
-                                </b>
+                                <h1>Kontakt</h1>
                                 <p>
-                                    <b>Addresse: </b>
+                                    <h4>Addresse: </h4>
                                     {patient?.address?.[0]?.line?.[0]}
                                 </p>
                                 <p>
-                                    <b>Telefon: </b>
+                                    <h4>Telefon: </h4>
                                     {patient?.telecom?.[0]?.value}
                                 </p>
                                 <p>
-                                    <b>E-post: </b>
+                                    <h4>E-post: </h4>
                                     eksempel@epost.no
                                 </p>
                             </div>
@@ -233,11 +220,11 @@ const displayPatientInfo = (patient: IPatient, handleClick: any) => {
                     </Card>
                     <PatientQuestionnaireResponses patientID={patient.id} />
                     <Table
+                        className="patient-table"
                         key={patient.id}
-                        style={{ marginTop: 20 }}
-                        size="small"
                         columns={columns}
                         dataSource={dataSource}
+                        size="small"
                         pagination={{ pageSize: 12 }}
                         onRow={(record) => {
                             return {

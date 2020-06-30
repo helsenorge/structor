@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { Row, Col } from 'antd';
 import Search from 'antd/lib/input/Search';
 import { History } from 'history';
+import { Row, Col } from 'antd';
+import './MyPatients.style.scss';
 
 const MyPatients = (props: { history: History }) => {
     const [patientID, setPatientID] = useState('');
     return (
         <>
-            <div style={{ marginTop: 90 }}></div>
+            <div className="search-container"></div>
             <Row gutter={[60, 40]} justify={'center'}>
-                <Col span={300}>
+                <Col span={1000}>
                     <p>Søk med personnummer for å finne en pasient.</p>
                     <Search
                         style={{ width: 400 }}
+                        className="search-bar"
                         placeholder="Søk etter en pasient!"
                         onSearch={(value: string) => setPatientID(value)}
                     />
