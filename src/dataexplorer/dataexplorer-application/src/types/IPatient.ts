@@ -6,19 +6,27 @@ export interface IPatient {
     map(data: any): any;
     address: IAddress[];
     telecom: ITelecom[];
-    setName: () => void;
     photo: IPhoto[];
     url: string;
+}
+
+export interface IState {
+    setName: (name: string) => void;
+    setSchema: (id: string) => void;
+    patientID: number;
+}
+export interface IRecord {
+    id: number;
+    schemaName: string;
+}
+export interface IPatientIdentifier {
+    entry: IPatientResource[];
+    total: number;
 }
 
 export interface IName {
     family: string;
     given: string[];
-}
-
-export interface IPatientIdentifier {
-    entry: IPatientResource[];
-    total: number;
 }
 
 export interface IPatientResource {
