@@ -6,7 +6,6 @@ import { FormContext } from '../../store/FormStore';
 import './NavBar.css';
 import JSONQuestion from '../../types/JSONQuestion';
 import JSONAnswer from '../../types/JSONAnswer';
-import { Questionnaire, ResourceType, uri, code } from '../../types/fhir';
 import JSONConverter from '../../helpers/JSONGenerator';
 
 function NavBar(): JSX.Element {

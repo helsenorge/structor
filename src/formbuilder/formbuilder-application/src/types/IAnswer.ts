@@ -1,13 +1,13 @@
 export enum AnswerTypes {
-    'bool',
-    'decimal',
-    'integer',
-    'date',
-    'dateTime',
-    'time',
-    'choice',
-    'string',
-    'text',
+    boolean = 'boolean',
+    decimal = 'decimal',
+    integer = 'integer',
+    date = 'date',
+    dateTime = 'dateTime',
+    time = 'time',
+    choice = 'choice',
+    string = 'string',
+    text = 'text',
 }
 
 // export default interface IAnswer {

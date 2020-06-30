@@ -166,7 +166,7 @@ export function addNewQuestion(sectionId: string): Action {
         id: questionId,
         sectionId: sectionId,
         questionText: '',
-        answer: { type: AnswerTypes.bool, choices: [''], id: generateID() },
+        answer: { type: AnswerTypes.boolean, choices: [''], id: generateID() },
     };
     return {
         type: ActionTypes.ADD_NEW_QUESTION,

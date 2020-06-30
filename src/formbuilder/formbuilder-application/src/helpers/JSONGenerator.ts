@@ -3,7 +3,7 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import JSONQuestion from '../types/JSONQuestion';
 import JSONAnswer from '../types/JSONAnswer';
-import { Questionnaire } from '../types/fhir';
+import { title } from 'process';
 // import { Questionnaire } from '../types/fhir';
 // import { Questionnaire, uri, code, Coding, Meta, ValueSet } from '../types/fhir';
 
@@ -11,66 +11,142 @@ function convertQuestions(
     sectionOrder: Array<string>,
     sections: SectionList,
     questions: QuestionList,
-): Array<JSONQuestion> {
-    const aux = [];
+): Array<fhir.QuestionnaireItem> {
+    const items = [];
     for (const i in sectionOrder) {
         const sectionKey = sectionOrder[i];
+        const section = sections[sectionKey];
+        const item: fhir.QuestionnaireItem = {
+            linkId: i,
+            text: section.title,
+            type: 'group',
+            repeats: false,
+            item: new Array<fhir.QuestionnaireItem>(),
+        };
+        // TODO: Add section desctiption
         for (const j in sections[sectionKey].questionOrder) {
             const questionKey = sections[sectionKey].questionOrder[j];
+            const question = questions[questionKey];
             // Will be within 'item' and if in section another 'item' of type group
-            aux.push({
-                linkId: questions[questionKey].sectionId, // sectionId.newId
-                text: questions[questionKey].questionText, // question text
-                type: questions[questionKey].answer.type, // TODO: display | boolean | decimal | integer | date | dateTime
-                required: true, // true | false TODO
+            const item: fhir.QuestionnaireItem = {
+                linkId: i + '.' + j + '00',
+                text: question.questionText,
+                type: question.answer.type.toString(),
+                required: true, // TODO: true | false
                 repeats: false, // TODO
                 readOnly: false, // TODO
                 options: {
-                    reference: '', // with a hashtag in front. TODO: Add valuesetID
+                    reference: '#' + question.answer.id,
                 },
-                // TODO: 'initialCoding' and 'extension'
-            });
+            };
+            // TODO: if (question.description) add _text with extension.
         }
+        items.push(item);
     }
-    return aux;
+    return items;
 }
 function convertAnswers(
     sectionOrder: Array<string>,
     sections: SectionList,
     questions: QuestionList,
-): Array<JSONAnswer> {
-    const aux = [];
+): Array<fhir.Resource> {
+    const valueSets = [];
     for (const i in sectionOrder) {
         const sectionKey = sectionOrder[i];
         for (const j in sections[sectionKey].questionOrder) {
             const questionKey = sections[sectionKey].questionOrder[j];
             const choices = questions[questionKey].answer.choices;
+            const containPart: fhir.Resource = {
+                resourceType: 'ValueSet',
+                id: questionKey,
+                name: 'NAME' + i, // TODO: CHECK THIS
+                title: 'TITLE' + i, // TODO: CHECK THIS
+                status: 'draft',
+                publisher: 'NHN',
+                compose: {
+                    include: [
+                        {
+                            system: '', // TODO: FIX ME
+                            concept: new Array<
+                                fhir.ValueSetComposeIncludeConcept
+                            >(),
+                        },
+                    ],
+                },
+            };
+            const compose = {};
             for (const k in choices) {
                 if (choices !== undefined && k !== undefined) {
-                    aux.push({
-                        code: parseInt(k) + 1,
+                    containPart.compose?.include[0].concept?.push({
+                        code: String(parseInt(k) + 1),
                         display: choices[parseInt(k)],
                     });
                 }
             }
+            valueSets.push(compose);
         }
     }
-    return aux;
+    return valueSets;
 }
 
 function convertToJSON(
     sectionOrder: Array<string>,
     sections: SectionList,
     questions: QuestionList,
-): Questionnaire {
+): fhir.Questionnaire {
     const valueSets = convertAnswers(sectionOrder, sections, questions);
     const convertedQuestions = convertQuestions(
         sectionOrder,
         sections,
         questions,
     );
-    const questionnaire: Questionnaire = {
-       
+    const questionnaire: fhir.Questionnaire = {
+        resourceType: 'Questionnaire',
+        language: 'nb-NO',
+        name: 'hdir-NAVN', // TODO: FIX ME
+        title: 'TITLE', // TODO: FIX ME
+        status: 'draft',
+        publisher: 'NHN',
+        description: 'Description', // TODO: FIX ME
+        meta: {
+            profile: [
+                'http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire',
+            ],
+            tag: [
+                {
+                    system: 'urn:ietf:bcp:47',
+                    code: 'nb-NO',
+                    display: 'Norsk bokmål',
+                },
+            ],
+        },
+        contained: valueSets,
+        useContext: [
+            // TODO: FIX USECONTEXT
+            {
+                code: {
+                    system: 'uri', // TODO: FIX ME
+                    code: 'focus',
+                    display: 'Clinical focus',
+                },
+                valueCodeableConcept: {
+                    coding: [
+                        {
+                            system: 'uri',
+                            code: '29',
+                            display: 'TITLE', // TODO: FIX ME
+                        },
+                    ],
+                },
+            },
+        ],
+        contact: [
+            {
+                name: 'https://fhi.no/', // TODO: FIX ME
+            },
+        ],
+        subjectType: ['Patient'],
+        item: convertedQuestions,
     };
     return questionnaire;
 }
