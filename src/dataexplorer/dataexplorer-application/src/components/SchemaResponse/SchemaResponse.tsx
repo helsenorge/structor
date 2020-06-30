@@ -10,7 +10,7 @@ import {
     QuestionnaireResponseItem,
     QuestionnaireItem,
 } from 'types/fhirTypes/fhir';
-import { IAnswer, IQuestion, IQA } from 'types/IQuestionnaireResponse';
+import { IAnswer, IQuestion } from 'types/IQuestionnaireResponse';
 import SchemaView from './SchemaView/SchemaView';
 
 const SchemaResponse = () => {
@@ -48,8 +48,6 @@ const SchemaResponse = () => {
         setQuestions((question) => [...question, questionObject]);
     };
 
-    console.log(answers);
-    console.log(questions);
     useEffect(() => {
         const findAnswer = (list: QuestionnaireResponseItem) => {
             if (!list?.answer && !list.item) {
@@ -104,16 +102,6 @@ const SchemaResponse = () => {
         }
         return;
     }, [questionnaire]);
-
-    /*     const displayQA = (answer: any) => {
-        if (answer.answer[0].valueCoding) {
-            return (
-                answer.text,
-                answer.answer.map((i: any) => i.valueCoding.display)
-            );
-        }
-        return answer.text, answer.answer.map((i: any) => i.valueString);
-    }; */
 
     return (
         <>
