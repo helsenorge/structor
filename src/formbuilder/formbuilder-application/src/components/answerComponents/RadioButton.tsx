@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Radio, Button, Input, Tooltip } from 'antd';
 import { PlusCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import './AnswerComponent.css';
-import { IChoice, AnswerTypes } from '../../types/IAnswer';
+import { IChoice } from '../../types/IAnswer';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 
 type radioButtonProps = {
@@ -34,21 +34,20 @@ function RadioButton({ questionId }: radioButtonProps): JSX.Element {
         setButtonNames(res);
     }
 
-    function handleInput(value: string){
+    function handleInput() {
         dispatch(
             updateAnswer(
                 questionId as string,
                 {
-                    type: AnswerTypes.bool as AnswerTypes,
                     choices: buttonNames,
                 } as IChoice,
             ),
         );
     }
 
-    function handleInputChange(value: string, id: number){
+    function handleInputChange(choiceText: string, id: number){
         const temp = buttonNames.slice();
-        temp[id] = value;
+        temp[id] = choiceText;
         setButtonNames(temp);
     }
 
@@ -71,8 +70,8 @@ function RadioButton({ questionId }: radioButtonProps): JSX.Element {
                     //     setButtonNames(temp);
                     //     handleInput();
                     // }}
-                    onChange={(e) => handleInputChange(e.target.value,id)}
-                    onBlur={(e) => handleInput(e.target.value)}
+                    onChange={(e) => handleInputChange(e.target.value, id)}
+                    onBlur={() => handleInput()}
                 />
 
                 <Tooltip title="Fjern alternativ" placement="right">

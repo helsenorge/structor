@@ -1,11 +1,12 @@
-import IAnswer, { IChoice } from './IAnswer';
+import IAnswer, { AnswerTypes, IChoice, IExtremas, IText } from './IAnswer';
 
 export default interface IQuestion {
     id: string;
     sectionId: string;
     questionText: string;
-    answer: IAnswer | IChoice;
-    isDescription: boolean;
+    answerType: AnswerTypes;
+    answer: IAnswer | IChoice | IExtremas | IText;
+    hasDescription: boolean;
     isRequired: boolean;
     description?: string;
 }

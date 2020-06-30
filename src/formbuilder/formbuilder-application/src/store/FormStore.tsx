@@ -152,9 +152,10 @@ export function addNewQuestion(sectionId: string): Action {
         id: questionId,
         sectionId: sectionId,
         questionText: '',
-        answer: { type: AnswerTypes.bool, choices: [''], id: generateID() },
+        answerType: AnswerTypes.boolean,
+        answer: { type: AnswerTypes.boolean, choices: [''] },
         isRequired: true,
-        isDescription: false,
+        hasDescription: false,
     };
     return {
         type: ActionTypes.ADD_NEW_QUESTION,
@@ -213,6 +214,7 @@ const reducer = produce((draft: State, action: Action | SwapAction) => {
             break;
         case ActionTypes.UPDATE_QUESTION:
             if (action.question) {
+                console.log(action.question);
                 draft.questions[action.question.id] = action.question;
             }
             break;
