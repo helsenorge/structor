@@ -1,13 +1,14 @@
 import React from 'react';
 import Breadcrumb from 'antd/lib/breadcrumb';
+import { IBread } from 'types/IBread';
+import { Link } from 'react-router-dom';
 import {
     HomeOutlined,
     UserOutlined,
     FileTextOutlined,
 } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
 
-const Breadcrumbs = ({ name, schemaNumber }: any) => {
+const Breadcrumbs = ({ name, schemaNumber }: IBread) => {
     return (
         <>
             <div

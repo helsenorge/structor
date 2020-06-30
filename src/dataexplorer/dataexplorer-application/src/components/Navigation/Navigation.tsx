@@ -42,12 +42,7 @@ const Navigation = (props: any) => {
                             Datautforskeren
                         </h1>
                     </Link>
-                    <Breadcrumbs
-                        style={{ flexGrow: 2, paddingLeft: 20 }}
-                        name={name}
-                        schemaNumber={schemaNumber}
-                    />
-
+                    <Breadcrumbs name={name} schemaNumber={schemaNumber} />
                     <div
                         className="avatar-container"
                         style={{
