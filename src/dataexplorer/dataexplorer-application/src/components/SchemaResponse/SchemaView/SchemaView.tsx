@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { IQA, IAnswer, IQuestion } from 'types/IQuestionnaireResponse';
+import {
+    IQuestionAndAnswer,
+    IAnswer,
+    IQuestion,
+} from 'types/IQuestionAndAnswer';
 import Title from 'antd/lib/typography/Title';
+import { ResourceContainer } from 'types/fhirTypes/fhir';
 
 interface ISchemaViewProps {
     questions: IQuestion[];
     answers: IAnswer[];
+    questionnaireResource: ResourceContainer[];
 }
 
 const SchemaView = (props: ISchemaViewProps) => {
-    const [qAndA, setQAndA] = useState<IQA[]>([]);
+    const [qAndA, setQAndA] = useState<IQuestionAndAnswer[]>([]);
     useEffect(() => {
         let hasAddedId = false;
+        // eslint-disable-next-line
         props.questions.map((q) => {
+            // eslint-disable-next-line
             props.answers.map((a) => {
                 if (q.id === a.id) {
                     hasAddedId = true;
@@ -26,7 +34,7 @@ const SchemaView = (props: ISchemaViewProps) => {
             hasAddedId = false;
         });
     }, [props]);
-    qAndA.length > 0 ? console.log(qAndA) : console.log('alltid tom');
+
     return (
         <>
             {qAndA.length > 0 &&
@@ -41,6 +49,21 @@ const SchemaView = (props: ISchemaViewProps) => {
                                 {i.questions.questions.text}
                             </Title>
                         )}
+                        {i.questions.questions.options?.reference &&
+                            props.questionnaireResource.map(
+                                (qr) =>
+                                    qr.id ===
+                                        i.questions.questions.options?.reference?.slice(
+                                            1,
+                                        ) &&
+                                    qr.compose.include.map((c) =>
+                                        c.concept.map((co) => (
+                                            <Title level={4} key={co.code}>
+                                                {co.display}
+                                            </Title>
+                                        )),
+                                    ),
+                            )}
                         <p>
                             {i.answers?.answers.answer?.map(
                                 (a) => a.valueString,

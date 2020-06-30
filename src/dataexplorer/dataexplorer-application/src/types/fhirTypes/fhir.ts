@@ -17,6 +17,7 @@
  */
 import * as Primitive from './xml-primitives';
 import * as xhtml from './www.w3.org/1999/xhtml';
+import { ICompose } from '../IQuestionnaireResources';
 
 // Source files:
 // http://hl7.org/fhir/account.xsd
@@ -13009,6 +13010,10 @@ interface _ResourceContainer extends BaseType {
     ValueSet: ValueSet;
     /** An authorization for the supply of glasses and/or contact lenses to a patient. */
     VisionPrescription: VisionPrescription;
+
+    id: string;
+
+    compose: ICompose;
 }
 export interface ResourceContainer extends _ResourceContainer {
     constructor: { new (): ResourceContainer };

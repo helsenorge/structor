@@ -9,8 +9,9 @@ import {
     Questionnaire,
     QuestionnaireResponseItem,
     QuestionnaireItem,
+    ResourceContainer,
 } from 'types/fhirTypes/fhir';
-import { IAnswer, IQuestion } from 'types/IQuestionnaireResponse';
+import { IAnswer, IQuestion } from 'types/IQuestionAndAnswer';
 import SchemaView from './SchemaView/SchemaView';
 
 const SchemaResponse = () => {
@@ -29,6 +30,10 @@ const SchemaResponse = () => {
     const [answers, setAnswers] = useState<IAnswer[]>([]);
 
     const [questions, setQuestions] = useState<IQuestion[]>([]);
+
+    const [questionnaireResource, setQuestionnaireResource] = useState<
+        ResourceContainer[]
+    >([]);
 
     dayjs.locale('nb');
     const filledInDate = dayjs(schemaResponse.response?.authored).format(
@@ -100,6 +105,8 @@ const SchemaResponse = () => {
                 findQuestion(questionnaire.item[a]);
             }
         }
+        questionnaire?.contained &&
+            setQuestionnaireResource(questionnaire?.contained);
         return;
     }, [questionnaire]);
 
@@ -118,7 +125,11 @@ const SchemaResponse = () => {
                     <Row justify="center">
                         Skjemaet ble fyllt ut: {filledInDate}
                     </Row>
-                    <SchemaView questions={questions} answers={answers} />
+                    <SchemaView
+                        questions={questions}
+                        answers={answers}
+                        questionnaireResource={questionnaireResource}
+                    />
                 </div>
             ) : (
                 <Row justify="center">
