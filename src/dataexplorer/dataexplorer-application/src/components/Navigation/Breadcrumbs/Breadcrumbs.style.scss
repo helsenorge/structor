@@ -1,8 +1,8 @@
 .breadcrumbs-container {
-    flex-grow: 2;
     display: flex;
-    margin-left: 25px;
     flex-direction: row;
+    flex-grow: 2;
+    position: fixed;
 
     .breadcrumbs-item {
         color: black;

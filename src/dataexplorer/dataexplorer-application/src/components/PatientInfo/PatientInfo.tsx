@@ -190,7 +190,6 @@ const displayPatientInfo = (patient: IPatient, handleClick: any) => {
                     >
                         <div className="info-container">
                             <div className="info-left">
-                                <h1>Personlig Informasjon</h1>
                                 <h4>Pnr:</h4>
                                 <p>{patient.id}</p>
                                 <p>
@@ -202,7 +201,6 @@ const displayPatientInfo = (patient: IPatient, handleClick: any) => {
                                 </p>
                             </div>
                             <div className="info-right">
-                                <h1>Kontakt</h1>
                                 <p>
                                     <h4>Addresse: </h4>
                                     {patient?.address?.[0]?.line?.[0]}
