@@ -37,7 +37,25 @@ function convertQuestions(
                     reference: '#' + question.answer.id,
                 };
             }
-            // TODO: if (question.description) add _text with extension.
+
+            if (
+                question.description !== '' ||
+                question.description !== undefined
+            ) {
+                subItem._text = {
+                    extension: [
+                        {
+                            url:
+                                'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                            valueMarkdown:
+                                '### ' +
+                                question.questionText +
+                                '\r\n' +
+                                question.description,
+                        },
+                    ],
+                };
+            }
             item.item?.push(subItem);
         }
         items.push(item);
