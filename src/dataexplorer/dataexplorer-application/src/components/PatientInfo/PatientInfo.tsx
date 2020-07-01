@@ -21,8 +21,7 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
         'fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' +
             patientID,
     );
-
-    if (patientData && patientData !== undefined) {
+    if (patientData && patientData !== undefined && patientData.total !== 0) {
         const name =
             patientData.entry[0].resource.name[0].given[0] +
             ' ' +
