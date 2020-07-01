@@ -8,12 +8,8 @@ import { UserOutlined } from '@ant-design/icons';
 import PatientInfo from '../PatientInfo/PatientInfo';
 import { History } from 'history';
 
-interface IHistory {
-    history: History;
-}
-
 const { Header, Content } = Layout;
-const Navigation = (props: IHistory) => {
+const Navigation = (props: { history: History }) => {
     const [name, setName] = useState('');
     const [schemaNumber, setSchema] = useState('');
 

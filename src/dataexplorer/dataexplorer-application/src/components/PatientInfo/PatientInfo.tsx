@@ -4,13 +4,13 @@ import { IPatient, IPatientIdentifier, IRecord } from 'types/IPatient';
 import { Row, Col, Card, Table, message, Empty } from 'antd';
 import PatientQuestionnaireResponses from '../PatientQuestionnaireResponses/PatientQuestionnaireResponses';
 
-interface IInterfaceProps {
+interface IPatientInfoProps {
     setName: (name: string) => void;
     setSchema: (id: string) => void;
-    patientID: string | undefined | null | {};
+    patientID?: string | null | {};
 }
 
-const PatientInfo = ({ patientID, setName, setSchema }: IInterfaceProps) => {
+const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
     const handleClick = (record: IRecord) => {
         message.info('Du har valgt Skjema ' + record.id);
         setSchema(record.schemaName);

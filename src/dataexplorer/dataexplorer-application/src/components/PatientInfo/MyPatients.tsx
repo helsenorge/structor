@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Row, Col } from 'antd';
 import Search from 'antd/lib/input/Search';
-import { IHistory } from '../../types/IHistory';
+import { History } from 'history';
 
-const MyPatients = (props: IHistory) => {
+const MyPatients = (props: { history: History }) => {
     const [patientID, setPatientID] = useState('');
     return (
         <>
