@@ -72,6 +72,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
         if (attribute.isDecimal !== undefined) {
             a.isDecimal = attribute.isDecimal;
         }
+        a.unit = attribute.unit;
         setAnswerMeta(a);
     }
 
@@ -110,18 +111,47 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={10}>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <Checkbox
+                            onChange={(e) =>
+                                e.target.checked
+                                    ? updateNumbers({ unit: '' })
+                                    : updateNumbers({ unit: undefined })
+                            }
+                        ></Checkbox>
+                    </Col>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <p style={{ textAlign: 'left' }}>Unit:</p>
+                    </Col>
+                    <Col span={5} style={{ padding: '0 10px' }}>
+                        <Input
+                            type="text"
+                            disabled={
+                                (answerMeta as INumber).unit === undefined
+                            }
+                            onBlur={() =>
+                                dispatch(updateAnswer(question.id, answerMeta))
+                            }
+                            onChange={(e) =>
+                                updateNumbers({ unit: e.target.value })
+                            }
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={2} style={{ textAlign: 'right' }}>
                         <Checkbox
                             onChange={(e) =>
                                 e.target.checked
                                     ? updateNumbers({ minValue: 0 as number })
                                     : updateNumbers({ minValue: NaN })
                             }
-                        >
-                            Min
-                        </Checkbox>
+                        ></Checkbox>
                     </Col>
-                    <Col span={14}>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <p style={{ textAlign: 'left' }}>Min</p>
+                    </Col>
+                    <Col span={8} style={{ textAlign: 'left' }}>
                         <InputNumber
                             type="number"
                             disabled={isNaN((answerMeta as INumber).minValue)}
@@ -133,20 +163,19 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             }
                         />
                     </Col>
-                </Row>
-                <Row>
-                    <Col span={10}>
+                    <Col span={1}>
                         <Checkbox
                             onChange={(e) =>
                                 e.target.checked
                                     ? updateNumbers({ maxValue: 0 as number })
                                     : updateNumbers({ maxValue: NaN })
                             }
-                        >
-                            Max
-                        </Checkbox>
+                        ></Checkbox>
                     </Col>
-                    <Col span={14}>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <p style={{ textAlign: 'left' }}>Max</p>
+                    </Col>
+                    <Col span={6} style={{ textAlign: 'left' }}>
                         <InputNumber
                             type="number"
                             disabled={isNaN((answerMeta as INumber).maxValue)}
