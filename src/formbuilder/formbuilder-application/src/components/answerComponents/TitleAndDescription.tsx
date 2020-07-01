@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Input, Row, Col, Checkbox } from 'antd';
 import './AnswerComponent.css';
 
+const { TextArea } = Input;
+
 function TitleAndDescription(): JSX.Element {
     return (
         <div
@@ -27,10 +29,10 @@ function TitleAndDescription(): JSX.Element {
             <Row style={{ padding: '0 10px' }}>
                 <Col xs={0} lg={4}></Col>
                 <Col xs={24} lg={16}>
-                    <Input
-                        placeholder="Beskrivelse av skjema (må ikke fylles ut)..."
+                    <TextArea
+                        placeholder="Beskrivelse av skjema..."
                         className="input-question"
-                    ></Input>
+                    ></TextArea>
                 </Col>
                 <Col xs={0} lg={4}></Col>
             </Row>
