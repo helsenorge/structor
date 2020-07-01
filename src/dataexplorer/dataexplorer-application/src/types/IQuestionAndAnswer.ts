@@ -1,12 +1,10 @@
-import { QuestionnaireItem, QuestionnaireResponseItem } from './fhirTypes/fhir';
-
 export interface IAnswer {
     id: string;
-    answers: QuestionnaireResponseItem;
+    answers: fhir.QuestionnaireResponseItem;
 }
 export interface IQuestion {
     id: string;
-    questions: QuestionnaireItem;
+    questions: fhir.QuestionnaireItem;
 }
 
 export interface IQuestionAndAnswer {

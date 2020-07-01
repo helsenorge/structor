@@ -1,36 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Collapse, Row, Popover, Button } from 'antd';
 import './Schemes.style.scss';
-import { IQuestionAndAnswer } from 'types/IQuestionAndAnswer';
-import { ResourceContainer } from 'types/fhirTypes/fhir';
-import { IConcept } from 'types/IQuestionnaireResources';
+import {
+    IQuestionAndAnswer,
+    IQuestion,
+    IAnswer,
+} from 'types/IQuestionAndAnswer';
+import dayjs, { Dayjs } from 'dayjs';
 
 export interface SchemesProps {
-    qAndA: IQuestionAndAnswer[];
-    questionnaireResource: ResourceContainer[];
+    questions: IQuestion[];
+    answers: IAnswer[];
+    questionnaireResource: fhir.ValueSet[];
+    date: Dayjs;
+    title: string;
 }
 
 const Schemes = (props: SchemesProps) => {
+    dayjs.locale('nb');
+    const [qAndA, setQAndA] = useState<IQuestionAndAnswer[]>([]);
+    useEffect(() => {
+        let hasAddedId = false;
+        // eslint-disable-next-line
+        props.questions.map((q) => {
+            // eslint-disable-next-line
+            props.answers.map((a) => {
+                if (q.id === a.id) {
+                    hasAddedId = true;
+                    setQAndA((qAndA) => [
+                        ...qAndA,
+                        { id: q.id, questions: q, answers: a },
+                    ]);
+                }
+            });
+            hasAddedId === false &&
+                setQAndA((qAndA) => [...qAndA, { id: q.id, questions: q }]);
+            hasAddedId = false;
+        });
+    }, [props]);
+
     const { Panel } = Collapse;
 
-    function setContent(data: IConcept[]) {
+    const setContent = (data: fhir.ValueSetComposeIncludeConcept[]) => {
         if (data) {
             return data.map((line) => <li key={line.code}>{line.display}</li>);
         }
         return;
-    }
+    };
 
     return (
         <>
             <Row justify="center">
                 <div className="card">
-                    <h1 className="title"> Tittel </h1>
+                    <h1 className="title">{props.title}</h1>
+                    {console.log()}
+                    <Row justify="center">
+                        {props.date.format('DD/MM/YYYY HH:mm')}
+                    </Row>
                     <Collapse
                         bordered={false}
                         style={{ width: 1000 }}
                         className="site-collapse-custom-collapse"
                     >
-                        {props.qAndA.map(
+                        {qAndA.map(
                             (section) =>
                                 section.id.match('^[^.]*$') && (
                                     <Panel
@@ -40,7 +72,7 @@ const Schemes = (props: SchemesProps) => {
                                         key={section.id}
                                         className="site-collapse-custom-panel"
                                     >
-                                        {props.qAndA.map(
+                                        {qAndA.map(
                                             (qa, qaIndex) =>
                                                 qa.id.split('.').length === 2 &&
                                                 section.id ===
@@ -69,32 +101,32 @@ const Schemes = (props: SchemesProps) => {
                                                                     qa.questions.questions.options?.reference?.slice(
                                                                         1,
                                                                     ) &&
+                                                                qr.compose &&
                                                                 (props
                                                                     .questionnaireResource
                                                                     .length > 0
                                                                     ? qr.compose.include.map(
-                                                                          (
-                                                                              m,
-                                                                          ) => (
-                                                                              <Popover
-                                                                                  key={
-                                                                                      m.system
-                                                                                  }
-                                                                                  placement="rightTop"
-                                                                                  trigger="click"
-                                                                                  content={setContent(
-                                                                                      m.concept,
-                                                                                  )}
-                                                                              >
-                                                                                  <Button
-                                                                                      className="nopadding"
-                                                                                      type="link"
+                                                                          (m) =>
+                                                                              m.concept && (
+                                                                                  <Popover
+                                                                                      key={
+                                                                                          m.system
+                                                                                      }
+                                                                                      placement="rightTop"
+                                                                                      trigger="click"
+                                                                                      content={setContent(
+                                                                                          m.concept,
+                                                                                      )}
                                                                                   >
-                                                                                      (Vis
-                                                                                      alternativer)
-                                                                                  </Button>
-                                                                              </Popover>
-                                                                          ),
+                                                                                      <Button
+                                                                                          className="nopadding"
+                                                                                          type="link"
+                                                                                      >
+                                                                                          (Vis
+                                                                                          alternativer)
+                                                                                      </Button>
+                                                                                  </Popover>
+                                                                              ),
                                                                       )
                                                                     : null),
                                                         )}
@@ -140,7 +172,7 @@ const Schemes = (props: SchemesProps) => {
                                                     </div>
                                                 ),
                                         )}
-                                        {props.qAndA.map(
+                                        {qAndA.map(
                                             (qa, qaIndex) =>
                                                 qa.id.split('.').length === 3 &&
                                                 qa.id.split('.')[0] ===
@@ -166,32 +198,32 @@ const Schemes = (props: SchemesProps) => {
                                                                     qa.questions.questions.options?.reference?.slice(
                                                                         1,
                                                                     ) &&
+                                                                qr.compose &&
                                                                 (props
                                                                     .questionnaireResource
                                                                     .length > 0
                                                                     ? qr.compose.include.map(
-                                                                          (
-                                                                              m,
-                                                                          ) => (
-                                                                              <Popover
-                                                                                  key={
-                                                                                      m.system
-                                                                                  }
-                                                                                  placement="rightTop"
-                                                                                  trigger="click"
-                                                                                  content={setContent(
-                                                                                      m.concept,
-                                                                                  )}
-                                                                              >
-                                                                                  <Button
-                                                                                      className="nopadding"
-                                                                                      type="link"
+                                                                          (m) =>
+                                                                              m.concept && (
+                                                                                  <Popover
+                                                                                      key={
+                                                                                          m.system
+                                                                                      }
+                                                                                      placement="rightTop"
+                                                                                      trigger="click"
+                                                                                      content={setContent(
+                                                                                          m.concept,
+                                                                                      )}
                                                                                   >
-                                                                                      (Vis
-                                                                                      alternativer)
-                                                                                  </Button>
-                                                                              </Popover>
-                                                                          ),
+                                                                                      <Button
+                                                                                          className="nopadding"
+                                                                                          type="link"
+                                                                                      >
+                                                                                          (Vis
+                                                                                          alternativer)
+                                                                                      </Button>
+                                                                                  </Popover>
+                                                                              ),
                                                                       )
                                                                     : null),
                                                         )}

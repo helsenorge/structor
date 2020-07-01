@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Spin } from 'antd';
 import 'dayjs/locale/nb';
-import Title from 'antd/lib/typography/Title';
 import useFetch from 'utils/hooks/useFetch';
 import dayjs from 'dayjs';
-import {
-    QuestionnaireResponse,
-    Questionnaire,
-    QuestionnaireResponseItem,
-    QuestionnaireItem,
-    ResourceContainer,
-} from 'types/fhirTypes/fhir';
 import { IAnswer, IQuestion } from 'types/IQuestionAndAnswer';
-import SchemaView from './SchemaView/SchemaView';
+import Schemes from 'components/Schemes/Schemes';
 
 const SchemaResponse = () => {
     const questionnaireResponseId = '13';
-    const schemaResponse = useFetch<QuestionnaireResponse>(
+    const schemaResponse = useFetch<fhir.QuestionnaireResponse>(
         'fhir/QuestionnaireResponse/' + questionnaireResponseId,
     );
     const questionnaireUrl = schemaResponse.response?.questionnaire?.reference?.substr(
@@ -24,7 +16,7 @@ const SchemaResponse = () => {
             'Questionnaire/',
         ),
     );
-    const { response: questionnaire } = useFetch<Questionnaire>(
+    const { response: questionnaire } = useFetch<fhir.Questionnaire>(
         'fhir/' + questionnaireUrl,
     );
     const [answers, setAnswers] = useState<IAnswer[]>([]);
@@ -32,20 +24,15 @@ const SchemaResponse = () => {
     const [questions, setQuestions] = useState<IQuestion[]>([]);
 
     const [questionnaireResource, setQuestionnaireResource] = useState<
-        ResourceContainer[]
+        fhir.ValueSet[]
     >([]);
 
-    dayjs.locale('nb');
-    const filledInDate = dayjs(schemaResponse.response?.authored).format(
-        'DD/MM/YYYY HH:mm',
-    );
-
-    const updateAnswer = (update: QuestionnaireResponseItem) => {
+    const updateAnswer = (update: fhir.QuestionnaireResponseItem) => {
         const answerObject: IAnswer = { id: update.linkId, answers: update };
         setAnswers((answer) => [...answer, answerObject]);
     };
 
-    const updateQuestion = (update: QuestionnaireItem) => {
+    const updateQuestion = (update: fhir.QuestionnaireItem) => {
         const questionObject: IQuestion = {
             id: update.linkId,
             questions: update,
@@ -54,7 +41,7 @@ const SchemaResponse = () => {
     };
 
     useEffect(() => {
-        const findAnswer = (list: QuestionnaireResponseItem) => {
+        const findAnswer = (list: fhir.QuestionnaireResponseItem) => {
             if (!list?.answer && !list.item) {
                 return;
             }
@@ -83,7 +70,7 @@ const SchemaResponse = () => {
     }, [schemaResponse.response]);
 
     useEffect(() => {
-        const findQuestion = (list: QuestionnaireItem) => {
+        const findQuestion = (list: fhir.QuestionnaireItem) => {
             if (!list?.text && !list.item) {
                 return;
             }
@@ -106,18 +93,24 @@ const SchemaResponse = () => {
             }
         }
         questionnaire?.contained &&
-            setQuestionnaireResource(questionnaire?.contained);
+            setQuestionnaireResource(
+                questionnaire.contained as fhir.ValueSet[],
+            );
         return;
     }, [questionnaire]);
 
     return (
         <>
-            {schemaResponse && questionnaire ? (
-                <SchemaView
-                    questions={questions}
-                    answers={answers}
-                    questionnaireResource={questionnaireResource}
-                />
+            {schemaResponse && questionnaire && questionnaire.name ? (
+                <div>
+                    <Schemes
+                        questions={questions}
+                        answers={answers}
+                        questionnaireResource={questionnaireResource}
+                        date={dayjs(schemaResponse.response?.authored)}
+                        title={questionnaire.name}
+                    />
+                </div>
             ) : (
                 <Row justify="center">
                     <Spin size="large" />
