@@ -4,12 +4,22 @@ import './answerComponents/AnswerComponent.css';
 import TextInput from './answerComponents/TextInput';
 import RadioButton from './answerComponents/RadioButton';
 import Decimal from './answerComponents/Decimal';
-import IAnswer, { AnswerTypes } from '../types/IAnswer';
-import { FormContext, updateAnswer, updateQuestion } from '../store/FormStore';
-import Question from './Question';
+import DateTime from './answerComponents/DateTime';
+import {
+    AnswerTypes,
+    INumber,
+    IText,
+    IChoice,
+    IDateTime,
+} from '../types/IAnswer';
+import { FormContext, updateQuestion, updateAnswer } from '../store/FormStore';
 import BooleanInput from './answerComponents/BooleanInput';
+import IQuestion from '../types/IQuestion';
+import { generateID } from '../helpers/IDGenerator';
 
 const { TextArea } = Input;
+
+const { Option } = Select;
 
 type AnswerComponentProps = {
     questionId: string;
@@ -17,247 +27,371 @@ type AnswerComponentProps = {
 
 function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [answerType, setAnswerType] = useState(
-        state.questions[questionId].answer.type,
-    );
-    const [answerBuilder, setAnswerBuilder] = useState(<div></div>);
-    const { Option } = Select;
-    const question = state.questions[questionId];
+    const [question, setQuestion] = useState(state.questions[questionId]);
+    const [answerMeta, setAnswerMeta] = useState(question.answer);
 
-    // TODO: send all of the below to context
-    // General form restrictions
-    const [ifDesc, setDescState] = useState(question.isDescription);
-    const [obligatory, setObligatory] = useState(question.isRequired);
-    const [descriptionText, setDescriptionText] = useState(
-        question.description,
-    );
-
-    // Radio button restrictions
-    const [defaultChoice, setDefaultChoice] = useState(-1);
-    const [ifDefault, setIfDefault] = useState(false);
-
-    // Text restrictions
-    const [ifLongText, setIfLongText] = useState(false);
-    const [maxLengthText, setMaxLengthText] = useState(100);
-
-    // Decimal restrictions
-    const [max, setMax] = useState(false);
-    const [min, setMin] = useState(false);
-    const [minValue, setMinValue] = useState(0);
-    const [maxValue, setMaxValue] = useState(0);
-
-    // Answer and controller components to be rendered
-    const [propsController, setPropController] = useState(<div></div>);
-
-    function answerPicker(value: AnswerTypes) {
-        console.log('answerPicker');
-        if (value === AnswerTypes.radio) {
-            setAnswerType(AnswerTypes.radio);
-            setAnswerBuilder(
-                <RadioButton questionId={questionId}></RadioButton>,
-            );
-            setPropController(<div></div>);
-        } else if (value === AnswerTypes.decimal) {
-            setAnswerType(AnswerTypes.decimal);
-            setAnswerBuilder(<Decimal max={maxValue} min={minValue}></Decimal>);
-            setPropController(
-                <div>
-                    <Row>
-                        <Col span={24} style={{ padding: '0 10px' }}>
-                            <p>
-                                Mottaker fyller ut en tallverdi, enten fritt
-                                eller innenfor bestemte verdier.
-                            </p>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={10}>
-                            <Checkbox
-                                onChange={(e) => setMin(e.target.checked)}
-                            >
-                                Min
-                            </Checkbox>
-                        </Col>
-                        <Col span={14}>
-                            <InputNumber
-                                type="number"
-                                defaultValue={0}
-                                disabled={!min}
-                                onChange={(value) =>
-                                    value
-                                        ? setMinValue(value as number)
-                                        : setMinValue(0)
-                                }
-                            />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={10}>
-                            <Checkbox
-                                onChange={(e) => setMax(e.target.checked)}
-                            >
-                                Max
-                            </Checkbox>
-                        </Col>
-                        <Col span={14}>
-                            <InputNumber
-                                type="number"
-                                defaultValue={100}
-                                disabled={!max}
-                                onChange={(value) =>
-                                    value
-                                        ? setMaxValue(value as number)
-                                        : setMaxValue(0)
-                                }
-                            />
-                        </Col>
-                    </Row>
-                </div>,
-            );
-        } else if (value === AnswerTypes.text) {
-            setAnswerType(AnswerTypes.text);
-            setAnswerBuilder(
-                <TextInput
-                    maxLength={maxLengthText}
-                    longAnswer={ifLongText}
-                    placeholder="Mottaker skriver svar her"
-                ></TextInput>,
-            );
-            setPropController(
-                <div>
-                    <Row>
-                        <Col span={24} style={{ padding: '0 10px' }}>
-                            <p>
-                                Mottaker fyller ut et skriftlig svar i en
-                                tekstboks, enten i form av et kortsvar eller et
-                                langsvar begrenset av et satt antall karakterer.
-                            </p>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={3} style={{ padding: '0 10px' }}>
-                            <Checkbox
-                                onChange={(e) =>
-                                    changeToLongText(e.target.checked)
-                                }
-                            />
-                        </Col>
-                        <Col span={14} style={{ padding: '0 10px' }}>
-                            <p style={{ textAlign: 'left' }}>
-                                Langsvar. Maks antall karakterer:{' '}
-                            </p>
-                        </Col>
-                        <Col span={5} style={{ padding: '0 10px' }}>
-                            <InputNumber
-                                min={1}
-                                max={5000}
-                                size="small"
-                                defaultValue={maxLengthText}
-                                disabled={!ifLongText}
-                                onChange={(value) =>
-                                    setMaxLengthText(value as number)
-                                }
-                            />
-                        </Col>
-                    </Row>
-                </div>,
-            );
-        } else if (value === AnswerTypes.boolean) {
-            // setAnswerType(AnswerTypes.bool);
-            setAnswerBuilder(
-                <BooleanInput questionId={questionId}></BooleanInput>,
-            );
-            setPropController(<div></div>);
-            dispatch(
-                updateAnswer(
-                    questionId as string,
-                    {
-                        type: AnswerTypes.boolean as AnswerTypes,
-                    } as IAnswer,
-                ),
-            );
+    function updateQuestionMeta(attribute: {
+        answerType?: AnswerTypes;
+        hasDescription?: boolean;
+        isRequired?: boolean;
+        description?: string;
+    }) {
+        const a = { ...question } as IQuestion;
+        if (attribute.hasDescription !== undefined) {
+            a.hasDescription = attribute.hasDescription;
         }
+        if (attribute.isRequired !== undefined) {
+            console.log('Check: ' + attribute.isRequired);
+            a.isRequired = attribute.isRequired;
+        }
+        if (attribute.answerType) {
+            a.answerType = attribute.answerType;
+            if (attribute.answerType === AnswerTypes.radio) {
+                a.answer = {
+                    id: generateID(),
+                    choices: [''],
+                } as IChoice;
+            } else if (attribute.answerType === AnswerTypes.text) {
+                a.answer = {
+                    id: generateID(),
+                    maxLength: 100,
+                } as IText;
+            } else if (attribute.answerType === AnswerTypes.dateTime) {
+                a.answer = {
+                    id: generateID(),
+                    isDate: true,
+                    isTime: false,
+                } as IDateTime;
+            }
+        }
+        if (attribute.description) {
+            a.description = attribute.description;
+        } else {
+            dispatch(updateQuestion(a));
+        }
+        setQuestion(a);
     }
 
-    function changeToLongText(value: boolean) {
-        console.log(maxLengthText);
-
-        setIfLongText(value);
-        if (!value) {
-            setAnswerBuilder(
-                <TextInput
-                    maxLength={100}
-                    longAnswer={value}
-                    placeholder="Mottaker skriver svar her"
-                ></TextInput>,
-            );
-            return;
+    function updateNumbers(attribute: {
+        minValue?: number;
+        maxValue?: number;
+        unit?: string;
+        isDecimal?: boolean;
+        hasUnit?: boolean;
+        hasMax?: boolean;
+        hasMin?: boolean;
+    }) {
+        const a = { ...answerMeta } as INumber;
+        if (attribute.minValue !== undefined) {
+            a.minValue = attribute.minValue;
         }
-        setAnswerBuilder(
+        if (attribute.maxValue !== undefined) {
+            a.maxValue = attribute.maxValue;
+        }
+        if (attribute.isDecimal !== undefined) {
+            a.isDecimal = attribute.isDecimal;
+        }
+        if (attribute.unit !== undefined) {
+            a.unit = attribute.unit;
+        }
+        if (attribute.hasUnit !== undefined) {
+            a.hasUnit = attribute.hasUnit;
+        }
+        if (attribute.hasMax !== undefined) {
+            a.hasMax = attribute.hasMax;
+        }
+        if (attribute.hasMin !== undefined) {
+            a.hasMin = attribute.hasMin;
+        }
+        setAnswerMeta(a);
+    }
+
+    function updateText(maxLength: number) {
+        const a = { ...answerMeta } as IText;
+        a.maxLength = maxLength;
+        setAnswerMeta(a);
+        dispatch(updateAnswer(question.id, a));
+    }
+
+    function updateDateTime(attribute: { isTime?: boolean; isDate?: boolean }) {
+        const a = { ...answerMeta } as IDateTime;
+        if (attribute.isTime !== undefined) {
+            a.isTime = attribute.isTime;
+        }
+        if (attribute.isDate !== undefined) {
+            a.isDate = attribute.isDate;
+        }
+        setAnswerMeta(a);
+    }
+
+    type answerList = { [key: string]: JSX.Element };
+
+    const propsController: answerList = {
+        [AnswerTypes.radio]: <div></div>,
+        [AnswerTypes.boolean]: <div></div>,
+        [AnswerTypes.decimal]: (
+            <div>
+                <Row>
+                    <Col span={24} style={{ padding: '0 10px' }}>
+                        <p>
+                            Mottaker fyller ut en tallverdi, enten fritt eller
+                            innenfor bestemte verdier.
+                        </p>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <Checkbox
+                            onChange={(e) =>
+                                updateNumbers({ isDecimal: e.target.checked })
+                            }
+                            checked={(answerMeta as INumber).isDecimal}
+                        ></Checkbox>
+                    </Col>
+                    <Col span={21} style={{ padding: '0 10px' }}>
+                        <p style={{ textAlign: 'left' }}>Tillat desimaltall</p>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <Checkbox
+                            onChange={(e) =>
+                                e.target.checked
+                                    ? updateNumbers({ hasUnit: true })
+                                    : updateNumbers({ hasUnit: false })
+                            }
+                            checked={(answerMeta as INumber).hasUnit}
+                        ></Checkbox>
+                    </Col>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <p style={{ textAlign: 'left' }}>Enhet:</p>
+                    </Col>
+                    <Col span={5} style={{ padding: '0 10px' }}>
+                        <Input
+                            value={(answerMeta as INumber).unit}
+                            type="text"
+                            disabled={!(answerMeta as INumber).hasUnit}
+                            onBlur={() =>
+                                dispatch(updateAnswer(question.id, answerMeta))
+                            }
+                            onChange={(e) =>
+                                updateNumbers({ unit: e.target.value })
+                            }
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={2} style={{ textAlign: 'right' }}>
+                        <Checkbox
+                            checked={(answerMeta as INumber).hasMin}
+                            onChange={(e) =>
+                                updateNumbers({ hasMin: e.target.checked })
+                            }
+                        ></Checkbox>
+                    </Col>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <p style={{ textAlign: 'left' }}>Min</p>
+                    </Col>
+                    <Col span={8} style={{ textAlign: 'left' }}>
+                        <InputNumber
+                            value={(answerMeta as INumber).minValue}
+                            type="number"
+                            disabled={!(answerMeta as INumber).hasMin}
+                            onBlur={() =>
+                                dispatch(updateAnswer(question.id, answerMeta))
+                            }
+                            onChange={(value) =>
+                                updateNumbers({ minValue: value as number })
+                            }
+                        />
+                    </Col>
+                    <Col span={1}>
+                        <Checkbox
+                            checked={(answerMeta as INumber).hasMax}
+                            onChange={(e) =>
+                                updateNumbers({ hasMax: e.target.checked })
+                            }
+                        ></Checkbox>
+                    </Col>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <p style={{ textAlign: 'left' }}>Maks</p>
+                    </Col>
+                    <Col span={6} style={{ textAlign: 'left' }}>
+                        <InputNumber
+                            value={(answerMeta as INumber).maxValue}
+                            type="number"
+                            disabled={!(answerMeta as INumber).hasMax}
+                            onBlur={() =>
+                                dispatch(updateAnswer(question.id, answerMeta))
+                            }
+                            onChange={(value) =>
+                                updateNumbers({ maxValue: value as number })
+                            }
+                        />
+                    </Col>
+                </Row>
+            </div>
+        ),
+        [AnswerTypes.text]: (
+            <div>
+                <Row>
+                    <Col span={24} style={{ padding: '0 10px' }}>
+                        <p>
+                            Mottaker fyller ut et skriftlig svar i en tekstboks,
+                            enten i form av et kortsvar eller et langsvar
+                            begrenset av et satt antall karakterer.
+                        </p>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <Checkbox
+                            onChange={(e) =>
+                                e.target.checked
+                                    ? updateText(0 as number)
+                                    : updateText(NaN)
+                            }
+                        />
+                    </Col>
+                    <Col span={14} style={{ padding: '0 10px' }}>
+                        <p style={{ textAlign: 'left' }}>
+                            Langsvar. Maks antall karakterer:{' '}
+                        </p>
+                    </Col>
+                    <Col span={5} style={{ padding: '0 10px' }}>
+                        <InputNumber
+                            min={1}
+                            max={5000}
+                            size="small"
+                            defaultValue={(answerMeta as IText).maxLength}
+                            disabled={!(answerMeta as IText).maxLength}
+                            onChange={(value) => updateText(value as number)}
+                        />
+                    </Col>
+                </Row>
+            </div>
+        ),
+        [AnswerTypes.dateTime]: (
+            <div>
+                <Row>
+                    <Col span={24} style={{ padding: '0 10px' }}>
+                        <p>
+                            Mottaker velger en dato, tid eller begge deler, helt
+                            fritt. eller innenfor bestemte verdier når vi
+                            implementerer det.
+                        </p>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={24} style={{ padding: '0 10px' }}>
+                        <Row>
+                            <Col span={24} style={{ alignItems: 'center' }}>
+                                <Button
+                                    type={
+                                        (answerMeta as IDateTime).isDate &&
+                                        !(answerMeta as IDateTime).isTime
+                                            ? 'primary'
+                                            : undefined
+                                    }
+                                    onClick={() =>
+                                        updateDateTime({
+                                            isDate: true,
+                                            isTime: false,
+                                        })
+                                    }
+                                >
+                                    Dato
+                                </Button>
+                                <Button
+                                    type={
+                                        !(answerMeta as IDateTime).isDate &&
+                                        (answerMeta as IDateTime).isTime
+                                            ? 'primary'
+                                            : undefined
+                                    }
+                                    onClick={() =>
+                                        updateDateTime({
+                                            isDate: false,
+                                            isTime: true,
+                                        })
+                                    }
+                                >
+                                    Tid
+                                </Button>
+                                <Button
+                                    type={
+                                        (answerMeta as IDateTime).isDate &&
+                                        (answerMeta as IDateTime).isTime
+                                            ? 'primary'
+                                            : undefined
+                                    }
+                                    onClick={() =>
+                                        updateDateTime({
+                                            isDate: true,
+                                            isTime: true,
+                                        })
+                                    }
+                                >
+                                    Dato og Tid
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </div>
+        ),
+    };
+
+    const answerBuilder: answerList = {
+        [AnswerTypes.radio]: (
+            <RadioButton questionId={questionId}></RadioButton>
+        ),
+        [AnswerTypes.boolean]: <BooleanInput></BooleanInput>,
+        [AnswerTypes.decimal]: <Decimal></Decimal>,
+        [AnswerTypes.text]: (
             <TextInput
-                maxLength={maxLengthText}
-                longAnswer={value}
+                longAnswer={(answerMeta as IText).maxLength ? true : false}
+                maxLength={(answerMeta as IText).maxLength}
                 placeholder="Mottaker skriver svar her"
-            ></TextInput>,
-        );
-    }
+            ></TextInput>
+        ),
+        [AnswerTypes.dateTime]: (
+            <DateTime
+                isDate={(answerMeta as IDateTime).isDate}
+                isTime={(answerMeta as IDateTime).isTime}
+            ></DateTime>
+        ),
+    };
 
-    function handleObligatoryCheck(value: boolean) {
-        const temp = { ...question };
-        temp.isRequired = value;
-        dispatch(updateQuestion(temp));
-        setObligatory(value);
-    }
-
-    function handleDescriptionCheck(value: boolean) {
-        const temp = { ...question };
-        temp.isDescription = value;
-        dispatch(updateQuestion(temp));
-        setDescState(value);
-    }
-
-    function handleDescriptionText(value: string) {
-        const temp = { ...question };
-        temp.description = value;
-        dispatch(updateQuestion(temp));
-    }
-
-    function handleAnswerType(value: AnswerTypes) {
-        setAnswerType(value);
-        const temp = { ...state.questions[questionId].answer };
-        temp.type = value;
-        dispatch(updateAnswer(questionId, temp));
-    }
     return (
         <Row>
             <Col span={7} className="controller">
                 <Row>
                     <Col span={3} style={{ padding: '0 10px' }}>
                         <Checkbox
-                            value={state.questions[questionId].description}
-                            onChange={(e) => {
-                                handleDescriptionCheck(e.target.checked);
-                            }}
-                            checked={ifDesc}
+                            checked={question.hasDescription}
+                            onChange={(e) =>
+                                updateQuestionMeta({
+                                    hasDescription: e.target.checked,
+                                })
+                            }
                         />
                     </Col>
                     <Col span={21} style={{ padding: '0 10px' }}>
                         <p style={{ textAlign: 'left' }}>
                             Forklaring av spørsmål til mottaker
                         </p>
-                        <Button onClick={() => console.log(answerType)}>
-                            Test
-                        </Button>
                     </Col>
                 </Row>
                 <Row>
                     <Col span={3} style={{ padding: '0 10px' }}>
                         <Checkbox
-                            onChange={(e) => {
-                                setObligatory(e.target.checked);
-                                handleObligatoryCheck(e.target.checked);
-                            }}
-                            checked={obligatory}
+                            checked={question.isRequired}
+                            onChange={(e) =>
+                                updateQuestionMeta({
+                                    isRequired: e.target.checked,
+                                })
+                            }
                         />
                     </Col>
                     <Col span={21} style={{ padding: '0 10px' }}>
@@ -271,42 +405,48 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                     >
                         {/* Answerdropdown*/}
                         <Select
-                            value={answerType}
+                            value={question.answerType}
                             style={{ width: '200px' }}
                             onSelect={(value) => {
-                                handleAnswerType(value);
-                                answerPicker(value);
+                                updateQuestionMeta({ answerType: value });
                             }}
                             placeholder="Velg svartype"
                         >
                             <Option value={AnswerTypes.boolean}>Ja/nei</Option>
                             <Option value={AnswerTypes.decimal}>Tall</Option>
                             <Option value={AnswerTypes.text}>Tekst</Option>
+                            <Option value={AnswerTypes.dateTime}>
+                                Dato/tid
+                            </Option>
                             <Option value={AnswerTypes.radio}>Flervalg</Option>
                         </Select>
                     </Col>
                 </Row>
-                {propsController}
+                {propsController[question.answerType]}
             </Col>
 
             <Col span={10} style={{ padding: '10px' }}>
-                {ifDesc && (
+                {question.hasDescription && (
                     <div style={{ paddingBottom: '10px' }}>
                         <TextArea
                             rows={4}
                             placeholder="Fyll inn beskrivelse av spørsmål eller mer informasjon til mottaker av skjema..."
                             className="input-question"
-                            value={descriptionText}
-                            onBlur={(e) =>
-                                handleDescriptionText(e.currentTarget.value)
-                            }
-                            onChange={(e) =>
-                                setDescriptionText(e.currentTarget.value)
-                            }
+                            value={question.description}
+                            onBlur={() => dispatch(updateQuestion(question))}
+                            onChange={(e) => {
+                                e.currentTarget.value
+                                    ? updateQuestionMeta({
+                                          description: e.currentTarget.value,
+                                      })
+                                    : updateQuestionMeta({
+                                          description: undefined,
+                                      });
+                            }}
                         />
                     </div>
                 )}
-                {answerBuilder}
+                {answerBuilder[question.answerType]}
             </Col>
         </Row>
     );

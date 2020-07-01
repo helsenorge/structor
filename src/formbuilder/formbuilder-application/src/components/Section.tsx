@@ -44,7 +44,6 @@ function Section({
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (index + 1) + '...';
         setPlaceholder(placeholderString);
-        console.log(Object.keys(state.sections).length);
         if (Object.keys(state.sections).length > 1) {
             setNeedsSections(true);
         } else {

@@ -5,7 +5,13 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import { generateID } from '../helpers/IDGenerator';
 import produce from 'immer';
-import IAnswer, { AnswerTypes, IChoice } from '../types/IAnswer';
+import {
+    AnswerTypes,
+    IChoice,
+    IDateTime,
+    INumber,
+    IText,
+} from '../types/IAnswer';
 import {
     UpdateAction,
     UpdateActionTypes,
@@ -107,9 +113,10 @@ export function addNewQuestion(sectionId: string): UpdateAction {
         id: questionId,
         sectionId: sectionId,
         questionText: '',
-        answer: { type: AnswerTypes.boolean, choices: [''], id: generateID() },
+        answerType: AnswerTypes.boolean,
+        answer: { id: generateID(), choices: [''] },
         isRequired: true,
-        isDescription: false,
+        hasDescription: false,
     };
     return {
         type: UpdateActionTypes.ADD_NEW_QUESTION,
@@ -173,8 +180,9 @@ export function updateQuestion(question: IQuestion): UpdateAction {
 
 export function updateAnswer(
     questionId: string,
-    answer: IAnswer | IChoice,
+    answer: IChoice | INumber | IText | IDateTime,
 ): UpdateAction {
+    console.log(answer);
     return {
         type: UpdateActionTypes.UPDATE_ANSWER,
         member: MemberTypes.UPDATE,

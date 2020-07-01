@@ -1,6 +1,6 @@
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
-import IAnswer, { IChoice } from '../types/IAnswer';
+import { IChoice, IText, IDateTime, INumber } from '../types/IAnswer';
 
 export enum UpdateActionTypes {
     ADD_SECTION = 'ADD_SECTION',
@@ -39,7 +39,7 @@ export interface UpdateAction {
     questionIndex?: number;
     section?: ISection;
     question?: IQuestion;
-    answer?: IAnswer | IChoice;
+    answer?: IText | IChoice | IDateTime | INumber;
     sectionTitle?: string;
 }
 

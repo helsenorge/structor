@@ -11,19 +11,35 @@ export enum AnswerTypes {
     radio = 'radio',
 }
 
-// export default interface IAnswer {
-//     type: AnswerTypes;
-//     max?: number;
-//     min?: number;
-//     choices?: Array<string>;
-// }
-
-export default interface IAnswer {
-    type: AnswerTypes;
-    choices?: Array<string>;
+export interface IChoice {
     id: string;
+    choices: Array<string>;
+    default?: string;
 }
 
-export interface IChoice extends IAnswer {
-    choices: Array<string>;
+export interface INumber {
+    id: string;
+    hasMax: boolean;
+    hasMin: boolean;
+    maxValue: number;
+    minValue: number;
+    isDecimal: boolean;
+    default?: number;
+    unit?: string;
+    hasUnit: boolean;
 }
+
+export interface IText {
+    id: string;
+    maxLength: number;
+}
+
+export interface IDateTime {
+    id: string;
+    isTime: boolean;
+    isDate: boolean;
+    /* Max date
+        Min Date*/
+}
+
+export default AnswerTypes;
