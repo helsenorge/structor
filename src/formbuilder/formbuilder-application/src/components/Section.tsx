@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, ChangeEvent } from 'react';
 import { Row, Col, Button, Tooltip, Input } from 'antd';
 import { PlusOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import Question from './Question';
@@ -70,6 +70,14 @@ function Section({
     function dispatchRemoveQuestion(questionIndex: number) {
         if (window.confirm('Vil du slette dette spørsmålet?'))
             dispatch(removeQuestion(questionIndex, section.id));
+    }
+    function handleInput(e: ChangeEvent<HTMLTextAreaElement>) {
+        setPlaceholder(e.currentTarget.value);
+        if (section) {
+            const temp = { ...section };
+            temp.sectionTitle = e.target.value;
+            dispatch(updateSection(sectionId, temp));
+        }
     }
 
     function handleChange(value: string) {
