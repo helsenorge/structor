@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Tooltip, Row, Col, Typography } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
+//import { convertQuestions } from '../../helpers/JSONConverter';
+import { FormContext } from '../../store/FormStore';
 import './NavBar.css';
-
-const { Title } = Typography;
+import JSONQuestion from '../../types/JSONQuestion';
+import JSONAnswer from '../../types/JSONAnswer';
+import JSONConverter from '../../helpers/JSONGenerator';
+import { Link } from 'react-router-dom';
 
 function NavBar(): JSX.Element {
+    const { state, dispatch } = useContext(FormContext);
+
+    const { Title } = Typography;
+
+    function convertQuestions() {
+        const questionnaire = JSONConverter(
+            state.sectionOrder,
+            state.sections,
+            state.questions,
+        );
+        console.log(questionnaire);
+    }
+
     return (
         <div className="nav-bar">
             <Row>
@@ -34,21 +51,24 @@ function NavBar(): JSX.Element {
                 </Col>
                 <Col span={6}>
                     <div style={{ float: 'right' }}>
-                        <Button
-                            className="nav-button"
-                            type="link"
-                            size="large"
-                            style={{ margin: '2px' }}
-                            key="previewForm"
-                        >
-                            Forhåndsvisning
-                        </Button>
+                        <Link to="preview">
+                            <Button
+                                className="nav-button"
+                                type="link"
+                                size="large"
+                                style={{ margin: '2px' }}
+                                key="previewForm"
+                            >
+                                Forhåndsvisning
+                            </Button>
+                        </Link>
                         <Button
                             className="nav-button"
                             type="link"
                             size="large"
                             style={{ margin: '2px 10px' }}
                             key="saveForm"
+                            onClick={convertQuestions}
                         >
                             Lagre
                         </Button>
