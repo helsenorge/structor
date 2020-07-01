@@ -30,7 +30,7 @@ function Section({
     index,
 }: SectionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Tittel...');
-    const [isSection, setIsSection] = useState(true);
+    const [needsSections, setNeedsSections] = useState(false);
     const [count, setCount] = useState(0);
 
     const { state, dispatch } = useContext(FormContext);
@@ -38,13 +38,14 @@ function Section({
     const section = state.sections[sectionId];
 
     function findPlaceholder() {
-        if (index === 0) {
-            // setIsSection(false);
-            setPlaceholder('Tittel...');
-            return;
+        const placeholderString = 'Seksjon ' + (index + 1) + '...';
+        setPlaceholder(placeholderString);
+        console.log(Object.keys(state.sections).length);
+        if (Object.keys(state.sections).length > 1) {
+            setNeedsSections(true);
+        } else {
+            setNeedsSections(false);
         }
-        setIsSection(true);
-        setPlaceholder('Seksjonstittel...');
     }
 
     useEffect(() => {
@@ -78,76 +79,83 @@ function Section({
                 display: 'inline-block',
             }}
         >
-            <Row justify="center">
-                <Col span={2} />
-                <Col span={14}>
-                    <Input
-                        placeholder={placeholder}
-                        className="input-question"
-                        size="large"
-                    />
-                </Col>
-                <Col span={1} />
-                <Col span={3}>
-                    <Button
-                        style={{
-                            zIndex: 1,
-                            color: 'var(--primary-1)',
-                            margin: '0 10px',
-                        }}
-                        size="large"
-                        icon={<CopyOutlined />}
-                        type="default"
-                        onClick={() => duplicateSection()}
-                    >
-                        Dupliser seksjon
-                    </Button>
-                </Col>
-                <Col span={3}>
-                    <Button
-                        style={{ zIndex: 1, color: 'var(--primary-1)' }}
-                        size="large"
-                        icon={<DeleteOutlined />}
-                        type="default"
-                        onClick={() => removeSection()}
-                    >
-                        Slett seksjon
-                    </Button>
-                </Col>
-                <Col span={1}>
-                    <Tooltip title="Flytt seksjon">
-                        <Button
-                            {...provided.dragHandleProps}
-                            style={{ zIndex: 1, color: 'var(--primary-1)' }}
-                            size="large"
-                            type="link"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                width="24"
+            {needsSections && (
+                <div>
+                    <Row justify="center">
+                        <Col span={4} />
+                        <Col span={13}>
+                            <Input
+                                placeholder={placeholder}
+                                className="input-question"
+                                size="large"
+                            />
+                        </Col>
+                        <Col span={3}>
+                            <Button
+                                style={{
+                                    zIndex: 1,
+                                    color: 'var(--primary-1)',
+                                    margin: '0 10px',
+                                }}
+                                size="large"
+                                icon={<CopyOutlined />}
+                                type="default"
+                                onClick={() => duplicateSection()}
                             >
-                                <path d="M0 0h24v24H0V0z" fill="none" />
-                                <path
-                                    fill="var(--primary-1)"
-                                    d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
-                                />
-                            </svg>
-                        </Button>
-                    </Tooltip>
-                </Col>
-            </Row>
-            <Row>
-                <hr
-                    key="hrTitle"
-                    style={{
-                        color: 'black',
-                        width: '100%',
-                        border: '0.2px solid var(--color-base-2)',
-                    }}
-                />
-            </Row>
+                                Dupliser seksjon
+                            </Button>
+                        </Col>
+                        <Col span={3}>
+                            <Button
+                                style={{ zIndex: 1, color: 'var(--primary-1)' }}
+                                size="large"
+                                icon={<DeleteOutlined />}
+                                type="default"
+                                onClick={() => removeSection()}
+                            >
+                                Slett seksjon
+                            </Button>
+                        </Col>
+                        <Col span={1}>
+                            <Tooltip title="Flytt seksjon">
+                                <Button
+                                    {...provided.dragHandleProps}
+                                    style={{
+                                        zIndex: 1,
+                                        color: 'var(--primary-1)',
+                                    }}
+                                    size="large"
+                                    type="link"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        width="24"
+                                    >
+                                        <path d="M0 0h24v24H0V0z" fill="none" />
+                                        <path
+                                            fill="var(--primary-1)"
+                                            d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
+                                        />
+                                    </svg>
+                                </Button>
+                            </Tooltip>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <hr
+                            key="hrTitle"
+                            style={{
+                                color: 'black',
+                                width: '100%',
+                                border: '0.2px solid var(--color-base-2)',
+                            }}
+                        />
+                    </Row>
+                </div>
+            )}
             <Row>
                 <Col span={24}>
                     <DND.Droppable droppableId={section.id} type={'question'}>

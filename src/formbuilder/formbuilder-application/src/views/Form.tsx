@@ -97,7 +97,9 @@ function CreateForm(): JSX.Element {
                 </Col>
             </Row>
             <Row style={{ margin: '61px 0 0 0' }}>
-                <Col span={24}><TitleAndDescription /></Col>
+                <Col span={24}>
+                    <TitleAndDescription />
+                </Col>
             </Row>
             <Row>
                 <DND.DragDropContext

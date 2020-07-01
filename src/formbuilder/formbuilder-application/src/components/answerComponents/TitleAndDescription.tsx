@@ -3,7 +3,6 @@ import { Input, Row, Col, Checkbox } from 'antd';
 import './AnswerComponent.css';
 
 function TitleAndDescription(): JSX.Element {
-    const [desc, setDescState] = useState(true);
     return (
         <div
             style={{
@@ -14,30 +13,25 @@ function TitleAndDescription(): JSX.Element {
                 display: 'inline-block',
             }}
         >
-            <Row>
+            <Row style={{ padding: '10px' }}>
                 <Col xs={0} lg={4}></Col>
                 <Col xs={24} lg={16}>
-                <Input
-                    placeholder="Skjematittel..."
-                    className="input-question"
-                ></Input>
+                    <Input
+                        placeholder="Skjematittel..."
+                        className="input-question"
+                        size="large"
+                    ></Input>
                 </Col>
                 <Col xs={0} lg={4}></Col>
             </Row>
-            <Row>
-            <Col xs={0} lg={4}></Col>
-                <Col xs={20} lg={12}>
+            <Row style={{ padding: '0 10px' }}>
+                <Col xs={0} lg={4}></Col>
+                <Col xs={24} lg={16}>
                     <Input
-                        placeholder="Beskrivelse av skjema..."
+                        placeholder="Beskrivelse av skjema (må ikke fylles ut)..."
                         className="input-question"
-                        disabled={!desc}
                     ></Input>
                 </Col>
-                <Col span={4} style={{ padding: '0 10px' }}>
-                    <Checkbox defaultChecked onChange={(e) => setDescState(e.target.checked)}>
-                        Ta med beskrivelse av skjema
-                    </Checkbox>
-                    </Col>
                 <Col xs={0} lg={4}></Col>
             </Row>
         </div>
