@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Row, Col, Button } from 'antd';
 import NavBar from '../components/commonComponents/NavBar';
 import Section from '../components/Section';
+import TitleAndDescription from '../components/answerComponents/TitleAndDescription';
 import {
     FormContext,
     addNewSection,
@@ -99,6 +100,11 @@ function CreateForm(): JSX.Element {
                 </Col>
             </Row>
             <Row style={{ margin: '61px 0 0 0' }}>
+                <Col span={24}>
+                    <TitleAndDescription />
+                </Col>
+            </Row>
+            <Row>
                 <DND.DragDropContext
                     onDragEnd={onDragEnd}
                     onBeforeCapture={onBeforeCapture}

@@ -1,11 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Button, Tooltip, Row, Col, Typography } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 //import { convertQuestions } from '../../helpers/JSONConverter';
 import { FormContext } from '../../store/FormStore';
 import './NavBar.css';
-import JSONQuestion from '../../types/JSONQuestion';
-import JSONAnswer from '../../types/JSONAnswer';
 import JSONConverter from '../../helpers/JSONGenerator';
 import { Link } from 'react-router-dom';
 
