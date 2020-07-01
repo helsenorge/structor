@@ -7,12 +7,12 @@ import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
 import PatientInfo from '../PatientInfo/PatientInfo';
 import './Navigation.style.scss';
-import {History } from 'history'
 
 const { Header, Content } = Layout;
-const Navigation = (props: { history: History }) => {
+const Navigation = () => {
     const [name, setName] = useState('');
     const [schemaNumber, setSchema] = useState('');
+    const patientID = localStorage.getItem('myData');
 
     return (
         <>
@@ -33,7 +33,12 @@ const Navigation = (props: { history: History }) => {
                     </div>
                 </Header>
                 <div className="breadcrumb-header">
-                    <Breadcrumbs name={name} schemaNumber={schemaNumber} />
+                    <Breadcrumbs
+                        name={name}
+                        schemaNumber={schemaNumber}
+                        setName={setName}
+                        setSchemaNumber={setSchema}
+                    />
                 </div>
                 <Content>
                     <div className="content">
@@ -46,7 +51,7 @@ const Navigation = (props: { history: History }) => {
                                     <PatientInfo
                                         setName={setName}
                                         setSchema={setSchema}
-                                        patientID={props.history.location.state}
+                                        patientID={patientID}
                                     />
                                 )}
                             />
