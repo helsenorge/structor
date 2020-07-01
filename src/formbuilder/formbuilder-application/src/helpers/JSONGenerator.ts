@@ -54,7 +54,7 @@ function convertAnswers(
     Object.values(questions).forEach((question: IQuestion) => {
         questionIndex++;
         const answer = question.answer;
-        if (!answer.choices) return;
+        if (answer.choices === undefined) return;
         const containPart: fhir.Resource = {
             resourceType: 'ValueSet',
             id: answer.id,
@@ -75,12 +75,10 @@ function convertAnswers(
         };
 
         for (const k in answer.choices) {
-            if (answer.choices !== undefined && k !== undefined) {
-                containPart.compose?.include[0].concept?.push({
-                    code: String(parseInt(k) + 1),
-                    display: answer.choices[parseInt(k)],
-                });
-            }
+            containPart.compose?.include[0].concept?.push({
+                code: String(parseInt(k) + 1),
+                display: answer.choices[parseInt(k)],
+            });
         }
         valueSets.push(containPart);
     });
@@ -90,11 +88,11 @@ function convertAnswers(
 function getAnswerType(answerType: AnswerTypes): string {
     switch (answerType) {
         case AnswerTypes.radio:
-            return 'choices';
+            return 'choice';
         case AnswerTypes.boolean:
-            return 'choices';
+            return 'choice';
         default:
-            return answerType;
+            return answerType.toString();
     }
 }
 
