@@ -4,79 +4,75 @@ import './answerComponents/AnswerComponent.css';
 import TextInput from './answerComponents/TextInput';
 import RadioButton from './answerComponents/RadioButton';
 import Decimal from './answerComponents/Decimal';
-import IAnswer, {
-    AnswerTypes,
-    IExtremas,
-    IText,
-    IChoice,
-} from '../types/IAnswer';
+import { AnswerTypes, INumber, IText, IChoice } from '../types/IAnswer';
 import { FormContext, updateQuestion, updateAnswer } from '../store/FormStore';
 import BooleanInput from './answerComponents/BooleanInput';
 import IQuestion from '../types/IQuestion';
 
 const { TextArea } = Input;
 
+const { Option } = Select;
+
 type AnswerComponentProps = {
     questionId: string;
 };
 
 function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
-    const { Option } = Select;
     const { state, dispatch } = useContext(FormContext);
-
-    const question = state.questions[questionId];
-
-    const [questionMeta, setQuestionMeta] = useState(question);
-
+    const [question, setQuestion] = useState(state.questions[questionId]);
     const [answerMeta, setAnswerMeta] = useState(question.answer);
 
-    function updateQuestionMeta(
-        answerType?: AnswerTypes,
-        hasDescription?: boolean,
-        isRequired?: boolean,
-        description?: string,
-    ) {
+    function updateQuestionMeta(attribute: {
+        answerType?: AnswerTypes;
+        hasDescription?: boolean;
+        isRequired?: boolean;
+        description?: string;
+    }) {
         const a = { ...question } as IQuestion;
-        if (hasDescription !== undefined) {
-            a.hasDescription = hasDescription;
+        if (attribute.hasDescription !== undefined) {
+            a.hasDescription = attribute.hasDescription;
         }
-        if (isRequired !== undefined) {
-            console.log('Check: ' + isRequired);
-            a.isRequired = isRequired;
+        if (attribute.isRequired !== undefined) {
+            console.log('Check: ' + attribute.isRequired);
+            a.isRequired = attribute.isRequired;
         }
-        if (description) {
-            a.description = description;
-        }
-        if (answerType) {
-            a.answerType = answerType;
-            if (answerType === AnswerTypes.radio) {
-                a.answer = { type: answerType, choices: [''] } as IChoice;
-            } else if (answerType === AnswerTypes.text) {
-                a.answer = { type: answerType, maxLength: 100 } as IText;
-            } else if (answerType === AnswerTypes.decimal) {
+        if (attribute.answerType) {
+            a.answerType = attribute.answerType;
+            if (attribute.answerType === AnswerTypes.radio) {
                 a.answer = {
-                    type: answerType,
-                    maxValue: 0,
-                    minValue: 200,
-                } as IExtremas;
-            } else {
-                a.answer = { type: answerType } as IAnswer;
+                    choices: [''],
+                } as IChoice;
+            } else if (attribute.answerType === AnswerTypes.text) {
+                a.answer = {
+                    maxLength: 100,
+                } as IText;
             }
         }
-        setQuestionMeta(a);
-        dispatch(updateQuestion(a));
+        if (attribute.description) {
+            a.description = attribute.description;
+        } else {
+            dispatch(updateQuestion(a));
+        }
+        setQuestion(a);
     }
 
-    function updateExtremas(minValue?: number, maxValue?: number) {
-        const a = { ...answerMeta } as IExtremas;
-        if (minValue) {
-            a.minValue = minValue;
+    function updateNumbers(attribute: {
+        minValue?: number;
+        maxValue?: number;
+        unit?: string;
+        isDecimal?: boolean;
+    }) {
+        const a = { ...answerMeta } as INumber;
+        if (attribute.minValue !== undefined) {
+            a.minValue = attribute.minValue;
         }
-        if (maxValue) {
-            a.maxValue = maxValue;
+        if (attribute.maxValue !== undefined) {
+            a.maxValue = attribute.maxValue;
+        }
+        if (attribute.isDecimal !== undefined) {
+            a.isDecimal = attribute.isDecimal;
         }
         setAnswerMeta(a);
-        dispatch(updateAnswer(question.id, a));
     }
 
     function updateText(maxLength: number) {
@@ -102,12 +98,24 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                     </Col>
                 </Row>
                 <Row>
+                    <Col span={3} style={{ padding: '0 10px' }}>
+                        <Checkbox
+                            onChange={(e) =>
+                                updateNumbers({ isDecimal: e.target.checked })
+                            }
+                        ></Checkbox>
+                    </Col>
+                    <Col span={21} style={{ padding: '0 10px' }}>
+                        <p style={{ textAlign: 'left' }}>Tillat desimaltall</p>
+                    </Col>
+                </Row>
+                <Row>
                     <Col span={10}>
                         <Checkbox
                             onChange={(e) =>
                                 e.target.checked
-                                    ? updateExtremas(0 as number, undefined)
-                                    : updateExtremas(undefined, undefined)
+                                    ? updateNumbers({ minValue: 0 as number })
+                                    : updateNumbers({ minValue: NaN })
                             }
                         >
                             Min
@@ -116,10 +124,12 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                     <Col span={14}>
                         <InputNumber
                             type="number"
-                            defaultValue={0}
-                            disabled={!(answerMeta as IExtremas).minValue}
+                            disabled={isNaN((answerMeta as INumber).minValue)}
+                            onBlur={() =>
+                                dispatch(updateAnswer(question.id, answerMeta))
+                            }
                             onChange={(value) =>
-                                updateExtremas(value as number, undefined)
+                                updateNumbers({ minValue: value as number })
                             }
                         />
                     </Col>
@@ -129,8 +139,8 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                         <Checkbox
                             onChange={(e) =>
                                 e.target.checked
-                                    ? updateExtremas(undefined, 0 as number)
-                                    : updateExtremas(undefined, undefined)
+                                    ? updateNumbers({ maxValue: 0 as number })
+                                    : updateNumbers({ maxValue: NaN })
                             }
                         >
                             Max
@@ -139,10 +149,12 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                     <Col span={14}>
                         <InputNumber
                             type="number"
-                            defaultValue={100}
-                            disabled={!(answerMeta as IExtremas).maxValue}
+                            disabled={isNaN((answerMeta as INumber).maxValue)}
+                            onBlur={() =>
+                                dispatch(updateAnswer(question.id, answerMeta))
+                            }
                             onChange={(value) =>
-                                updateExtremas(undefined, value as number)
+                                updateNumbers({ maxValue: value as number })
                             }
                         />
                     </Col>
@@ -195,12 +207,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
             <RadioButton questionId={questionId}></RadioButton>
         ),
         [AnswerTypes.boolean]: <BooleanInput></BooleanInput>,
-        [AnswerTypes.decimal]: (
-            <Decimal
-                max={(answerMeta as IExtremas).maxValue}
-                min={(answerMeta as IExtremas).minValue}
-            ></Decimal>
-        ),
+        [AnswerTypes.decimal]: <Decimal></Decimal>,
         [AnswerTypes.text]: (
             <TextInput
                 longAnswer={(answerMeta as IText).maxLength ? true : false}
@@ -218,19 +225,9 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                         <Checkbox
                             checked={question.hasDescription}
                             onChange={(e) =>
-                                e.target.checked
-                                    ? updateQuestionMeta(
-                                          undefined,
-                                          true,
-                                          undefined,
-                                          undefined,
-                                      )
-                                    : updateQuestionMeta(
-                                          undefined,
-                                          false,
-                                          undefined,
-                                          undefined,
-                                      )
+                                updateQuestionMeta({
+                                    hasDescription: e.target.checked,
+                                })
                             }
                         />
                     </Col>
@@ -244,21 +241,11 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                     <Col span={3} style={{ padding: '0 10px' }}>
                         <Checkbox
                             checked={question.isRequired}
-                            onChange={(e) => {
-                                e.target.checked
-                                    ? updateQuestionMeta(
-                                          undefined,
-                                          undefined,
-                                          true,
-                                          undefined,
-                                      )
-                                    : updateQuestionMeta(
-                                          undefined,
-                                          undefined,
-                                          false,
-                                          undefined,
-                                      );
-                            }}
+                            onChange={(e) =>
+                                updateQuestionMeta({
+                                    isRequired: e.target.checked,
+                                })
+                            }
                         />
                     </Col>
                     <Col span={21} style={{ padding: '0 10px' }}>
@@ -275,12 +262,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             value={question.answerType}
                             style={{ width: '200px' }}
                             onSelect={(value) => {
-                                updateQuestionMeta(
-                                    value,
-                                    undefined,
-                                    undefined,
-                                    undefined,
-                                );
+                                updateQuestionMeta({ answerType: value });
                             }}
                             placeholder="Velg svartype"
                         >
@@ -302,23 +284,15 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             placeholder="Fyll inn beskrivelse av spørsmål eller mer informasjon til mottaker av skjema..."
                             className="input-question"
                             value={question.description}
-                            onBlur={() =>
-                                dispatch(updateQuestion(questionMeta))
-                            }
+                            onBlur={() => dispatch(updateQuestion(question))}
                             onChange={(e) => {
                                 e.currentTarget.value
-                                    ? updateQuestionMeta(
-                                          undefined,
-                                          undefined,
-                                          undefined,
-                                          e.currentTarget.value,
-                                      )
-                                    : updateQuestionMeta(
-                                          undefined,
-                                          undefined,
-                                          undefined,
-                                          undefined,
-                                      );
+                                    ? updateQuestionMeta({
+                                          description: e.currentTarget.value,
+                                      })
+                                    : updateQuestionMeta({
+                                          description: undefined,
+                                      });
                             }}
                         />
                     </div>

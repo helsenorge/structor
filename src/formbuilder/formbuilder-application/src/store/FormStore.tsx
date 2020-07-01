@@ -5,7 +5,7 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import { generateID } from '../helpers/IDGenerator';
 import produce from 'immer';
-import IAnswer, { AnswerTypes, IChoice } from '../types/IAnswer';
+import { AnswerTypes, IChoice, INumber, IText } from '../types/IAnswer';
 
 const initSectionId = generateID();
 const initSection: ISection = {
@@ -47,7 +47,7 @@ export interface Action {
     questionIndex?: number;
     section?: ISection;
     question?: IQuestion;
-    answer?: IAnswer | IChoice;
+    answer?: IChoice | INumber | IText;
     sectionTitle?: string;
 }
 
@@ -78,7 +78,7 @@ export function addSection(sectionIndex: number, section: ISection): Action {
 
 export function updateAnswer(
     questionId: string,
-    answer: IAnswer | IChoice,
+    answer: IChoice | INumber | IText,
 ): Action {
     return {
         type: ActionTypes.UPDATE_ANSWER,
@@ -153,7 +153,7 @@ export function addNewQuestion(sectionId: string): Action {
         sectionId: sectionId,
         questionText: '',
         answerType: AnswerTypes.boolean,
-        answer: { type: AnswerTypes.boolean, choices: [''] },
+        answer: { choices: [''] },
         isRequired: true,
         hasDescription: false,
     };
@@ -214,7 +214,6 @@ const reducer = produce((draft: State, action: Action | SwapAction) => {
             break;
         case ActionTypes.UPDATE_QUESTION:
             if (action.question) {
-                console.log(action.question);
                 draft.questions[action.question.id] = action.question;
             }
             break;

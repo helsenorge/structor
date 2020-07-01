@@ -11,19 +11,19 @@ export enum AnswerTypes {
     radio = 'radio',
 }
 
-export default interface IAnswer {
-    type: AnswerTypes;
-}
-
-export interface IChoice extends IAnswer {
+export interface IChoice {
     choices: Array<string>;
+    default?: string;
 }
 
-export interface IExtremas extends IAnswer {
+export interface INumber {
     maxValue: number;
     minValue: number;
+    isDecimal: boolean;
+    default?: number;
+    unit?: string;
 }
 
-export interface IText extends IAnswer {
+export interface IText {
     maxLength: number;
 }
