@@ -3,7 +3,7 @@
     z-index: 1;
     width: 100%;
     display: flex;
-    padding-left: 30px;
+    padding-left: 1.875rem;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -11,7 +11,7 @@
     border-bottom: solid lightgrey thin;
 
     h1 {
-        padding-right: 20px;
+        padding-right: 1.25rem;
         margin: 0;
         border-right: solid lightgrey thin;
         color: white;
@@ -25,21 +25,21 @@
         border-left: solid lightgrey thin;
 
         .header-avatar {
-            margin-left: 20px;
-            margin-right: 20px;
-            margin-top: 12px;
+            margin-left: 1.25rem;
+            margin-right: 1.25rem;
+            margin-top: 0.75rem;
         }
         h1 {
-            margin: 0px;
-            margin-right: -40px;
+            margin: 0;
+            margin-right: -2.5rem;
             border-right: 0;
         }
     }
 }
 
 .breadcrumb-header {
-    padding-top: 75px;
-    margin-left: 20px;
+    padding-top: 4.6875rem;
+    margin-left: 1.25rem;
     z-index: 2;
 }
 
