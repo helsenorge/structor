@@ -15,6 +15,7 @@ import {
 import { FormContext, updateQuestion, updateAnswer } from '../store/FormStore';
 import BooleanInput from './answerComponents/BooleanInput';
 import IQuestion from '../types/IQuestion';
+import { generateID } from '../helpers/IDGenerator';
 
 const { TextArea } = Input;
 
@@ -47,14 +48,20 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
             a.answerType = attribute.answerType;
             if (attribute.answerType === AnswerTypes.radio) {
                 a.answer = {
+                    id: generateID(),
                     choices: [''],
                 } as IChoice;
             } else if (attribute.answerType === AnswerTypes.text) {
                 a.answer = {
+                    id: generateID(),
                     maxLength: 100,
                 } as IText;
             } else if (attribute.answerType === AnswerTypes.dateTime) {
-                a.answer = { isDate: true, isTime: false } as IDateTime;
+                a.answer = {
+                    id: generateID(),
+                    isDate: true,
+                    isTime: false,
+                } as IDateTime;
             }
         }
         if (attribute.description) {
@@ -70,6 +77,9 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
         maxValue?: number;
         unit?: string;
         isDecimal?: boolean;
+        hasUnit?: boolean;
+        hasMax?: boolean;
+        hasMin?: boolean;
     }) {
         const a = { ...answerMeta } as INumber;
         if (attribute.minValue !== undefined) {
@@ -81,7 +91,18 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
         if (attribute.isDecimal !== undefined) {
             a.isDecimal = attribute.isDecimal;
         }
-        a.unit = attribute.unit;
+        if (attribute.unit !== undefined) {
+            a.unit = attribute.unit;
+        }
+        if (attribute.hasUnit !== undefined) {
+            a.hasUnit = attribute.hasUnit;
+        }
+        if (attribute.hasMax !== undefined) {
+            a.hasMax = attribute.hasMax;
+        }
+        if (attribute.hasMin !== undefined) {
+            a.hasMin = attribute.hasMin;
+        }
         setAnswerMeta(a);
     }
 
@@ -124,6 +145,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             onChange={(e) =>
                                 updateNumbers({ isDecimal: e.target.checked })
                             }
+                            checked={(answerMeta as INumber).isDecimal}
                         ></Checkbox>
                     </Col>
                     <Col span={21} style={{ padding: '0 10px' }}>
@@ -135,20 +157,20 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                         <Checkbox
                             onChange={(e) =>
                                 e.target.checked
-                                    ? updateNumbers({ unit: '' })
-                                    : updateNumbers({ unit: undefined })
+                                    ? updateNumbers({ hasUnit: true })
+                                    : updateNumbers({ hasUnit: false })
                             }
+                            checked={(answerMeta as INumber).hasUnit}
                         ></Checkbox>
                     </Col>
                     <Col span={3} style={{ padding: '0 10px' }}>
-                        <p style={{ textAlign: 'left' }}>Unit:</p>
+                        <p style={{ textAlign: 'left' }}>Enhet:</p>
                     </Col>
                     <Col span={5} style={{ padding: '0 10px' }}>
                         <Input
+                            value={(answerMeta as INumber).unit}
                             type="text"
-                            disabled={
-                                (answerMeta as INumber).unit === undefined
-                            }
+                            disabled={!(answerMeta as INumber).hasUnit}
                             onBlur={() =>
                                 dispatch(updateAnswer(question.id, answerMeta))
                             }
@@ -161,10 +183,9 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                 <Row>
                     <Col span={2} style={{ textAlign: 'right' }}>
                         <Checkbox
+                            checked={(answerMeta as INumber).hasMin}
                             onChange={(e) =>
-                                e.target.checked
-                                    ? updateNumbers({ minValue: 0 as number })
-                                    : updateNumbers({ minValue: NaN })
+                                updateNumbers({ hasMin: e.target.checked })
                             }
                         ></Checkbox>
                     </Col>
@@ -173,8 +194,9 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                     </Col>
                     <Col span={8} style={{ textAlign: 'left' }}>
                         <InputNumber
+                            value={(answerMeta as INumber).minValue}
                             type="number"
-                            disabled={isNaN((answerMeta as INumber).minValue)}
+                            disabled={!(answerMeta as INumber).hasMin}
                             onBlur={() =>
                                 dispatch(updateAnswer(question.id, answerMeta))
                             }
@@ -185,20 +207,20 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                     </Col>
                     <Col span={1}>
                         <Checkbox
+                            checked={(answerMeta as INumber).hasMax}
                             onChange={(e) =>
-                                e.target.checked
-                                    ? updateNumbers({ maxValue: 0 as number })
-                                    : updateNumbers({ maxValue: NaN })
+                                updateNumbers({ hasMax: e.target.checked })
                             }
                         ></Checkbox>
                     </Col>
                     <Col span={3} style={{ padding: '0 10px' }}>
-                        <p style={{ textAlign: 'left' }}>Max</p>
+                        <p style={{ textAlign: 'left' }}>Maks</p>
                     </Col>
                     <Col span={6} style={{ textAlign: 'left' }}>
                         <InputNumber
+                            value={(answerMeta as INumber).maxValue}
                             type="number"
-                            disabled={isNaN((answerMeta as INumber).maxValue)}
+                            disabled={!(answerMeta as INumber).hasMax}
                             onBlur={() =>
                                 dispatch(updateAnswer(question.id, answerMeta))
                             }

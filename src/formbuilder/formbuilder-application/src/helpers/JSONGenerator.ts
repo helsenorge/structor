@@ -1,6 +1,6 @@
 import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
-import { AnswerTypes } from '../types/IAnswer';
+import { AnswerTypes, IChoice } from '../types/IAnswer';
 import IQuestion from '../types/IQuestion';
 
 function convertQuestions(
@@ -27,12 +27,15 @@ function convertQuestions(
             const subItem: fhir.QuestionnaireItem = {
                 linkId: i + 1 + '.' + (j + 1) + '00',
                 text: question.questionText,
-                type: getAnswerType(question.answer.type),
+                type: getAnswerType(question.answerType),
                 required: true, // TODO: true | false
                 repeats: false, // TODO
                 readOnly: false, // TODO
             };
-            if (question.answer.choices && question.answer.choices.length > 0) {
+            if (
+                (question.answer as IChoice).choices &&
+                (question.answer as IChoice).choices.length > 0
+            ) {
                 subItem.options = {
                     reference: '#' + question.answer.id,
                 };
@@ -54,7 +57,7 @@ function convertAnswers(
     Object.values(questions).forEach((question: IQuestion) => {
         questionIndex++;
         const answer = question.answer;
-        if (answer.choices === undefined) return;
+        if ((answer as IChoice).choices === undefined) return;
         const containPart: fhir.Resource = {
             resourceType: 'ValueSet',
             id: answer.id,
@@ -74,10 +77,10 @@ function convertAnswers(
             },
         };
 
-        for (const k in answer.choices) {
+        for (const k in (answer as IChoice).choices) {
             containPart.compose?.include[0].concept?.push({
                 code: String(parseInt(k) + 1),
-                display: answer.choices[parseInt(k)],
+                display: (answer as IChoice).choices[parseInt(k)],
             });
         }
         valueSets.push(containPart);

@@ -114,7 +114,7 @@ export function addNewQuestion(sectionId: string): UpdateAction {
         sectionId: sectionId,
         questionText: '',
         answerType: AnswerTypes.boolean,
-        answer: { choices: [''] },
+        answer: { id: generateID(), choices: [''] },
         isRequired: true,
         hasDescription: false,
     };
@@ -182,6 +182,7 @@ export function updateAnswer(
     questionId: string,
     answer: IChoice | INumber | IText | IDateTime,
 ): UpdateAction {
+    console.log(answer);
     return {
         type: UpdateActionTypes.UPDATE_ANSWER,
         member: MemberTypes.UPDATE,
