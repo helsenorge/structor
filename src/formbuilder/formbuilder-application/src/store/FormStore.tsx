@@ -5,7 +5,7 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import { generateID } from '../helpers/IDGenerator';
 import produce from 'immer';
-import { AnswerTypes, IChoice, INumber, IText } from '../types/IAnswer';
+import { AnswerTypes, IChoice, INumber, IText, IDateTime } from '../types/IAnswer';
 
 const initSectionId = generateID();
 const initSection: ISection = {
@@ -47,7 +47,7 @@ export interface Action {
     questionIndex?: number;
     section?: ISection;
     question?: IQuestion;
-    answer?: IChoice | INumber | IText;
+    answer?: IChoice | INumber | IText | IDateTime;
     sectionTitle?: string;
 }
 
@@ -78,7 +78,7 @@ export function addSection(sectionIndex: number, section: ISection): Action {
 
 export function updateAnswer(
     questionId: string,
-    answer: IChoice | INumber | IText,
+    answer: IChoice | INumber | IText | IDateTime,
 ): Action {
     return {
         type: ActionTypes.UPDATE_ANSWER,

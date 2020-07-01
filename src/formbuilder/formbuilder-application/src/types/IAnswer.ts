@@ -27,3 +27,10 @@ export interface INumber {
 export interface IText {
     maxLength: number;
 }
+
+export interface IDateTime {
+    isTime: boolean;
+    isDate: boolean;
+    /* Max date
+        Min Date*/
+}

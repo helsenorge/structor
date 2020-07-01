@@ -1,10 +1,17 @@
 import React, { useState, useContext } from 'react';
-import { Row, Col, Select, Input, Checkbox, InputNumber } from 'antd';
+import { Row, Col, Select, Input, Checkbox, InputNumber, Button } from 'antd';
 import './answerComponents/AnswerComponent.css';
 import TextInput from './answerComponents/TextInput';
 import RadioButton from './answerComponents/RadioButton';
 import Decimal from './answerComponents/Decimal';
-import { AnswerTypes, INumber, IText, IChoice } from '../types/IAnswer';
+import DateTime from './answerComponents/DateTime';
+import {
+    AnswerTypes,
+    INumber,
+    IText,
+    IChoice,
+    IDateTime,
+} from '../types/IAnswer';
 import { FormContext, updateQuestion, updateAnswer } from '../store/FormStore';
 import BooleanInput from './answerComponents/BooleanInput';
 import IQuestion from '../types/IQuestion';
@@ -46,6 +53,8 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                 a.answer = {
                     maxLength: 100,
                 } as IText;
+            } else if (attribute.answerType === AnswerTypes.dateTime) {
+                a.answer = { isDate: true, isTime: false } as IDateTime;
             }
         }
         if (attribute.description) {
@@ -80,6 +89,17 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
         a.maxLength = maxLength;
         setAnswerMeta(a);
         dispatch(updateAnswer(question.id, a));
+    }
+
+    function updateDateTime(attribute: { isTime?: boolean; isDate?: boolean }) {
+        const a = { ...answerMeta } as IDateTime;
+        if (attribute.isTime !== undefined) {
+            a.isTime = attribute.isTime;
+        }
+        if (attribute.isDate !== undefined) {
+            a.isDate = attribute.isDate;
+        }
+        setAnswerMeta(a);
     }
 
     type answerList = { [key: string]: JSX.Element };
@@ -200,6 +220,75 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                 </Row>
             </div>
         ),
+        [AnswerTypes.dateTime]: (
+            <div>
+                <Row>
+                    <Col span={24} style={{ padding: '0 10px' }}>
+                        <p>
+                            Mottaker velger en dato, tid eller begge deler, helt
+                            fritt. eller innenfor bestemte verdier når vi
+                            implementerer det.
+                        </p>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={24} style={{ padding: '0 10px' }}>
+                        <Row>
+                            <Col span={24} style={{alignItems:'center'}}>
+                                <Button
+                                    type={
+                                        (answerMeta as IDateTime).isDate &&
+                                        !(answerMeta as IDateTime).isTime
+                                            ? 'primary'
+                                            : undefined
+                                    }
+                                    onClick={() =>
+                                        updateDateTime({
+                                            isDate: true,
+                                            isTime: false,
+                                        })
+                                    }
+                                >
+                                    Dato
+                                </Button>
+                                <Button
+                                    type={
+                                        !(answerMeta as IDateTime).isDate &&
+                                        (answerMeta as IDateTime).isTime
+                                            ? 'primary'
+                                            : undefined
+                                    }
+                                    onClick={() =>
+                                        updateDateTime({
+                                            isDate: false,
+                                            isTime: true,
+                                        })
+                                    }
+                                >
+                                    Tid
+                                </Button>
+                                <Button
+                                    type={
+                                        (answerMeta as IDateTime).isDate &&
+                                        (answerMeta as IDateTime).isTime
+                                            ? 'primary'
+                                            : undefined
+                                    }
+                                    onClick={() =>
+                                        updateDateTime({
+                                            isDate: true,
+                                            isTime: true,
+                                        })
+                                    }
+                                >
+                                    Dato og Tid
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </div>
+        ),
     };
 
     const answerBuilder: answerList = {
@@ -214,6 +303,12 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                 maxLength={(answerMeta as IText).maxLength}
                 placeholder="Mottaker skriver svar her"
             ></TextInput>
+        ),
+        [AnswerTypes.dateTime]: (
+            <DateTime
+                isDate={(answerMeta as IDateTime).isDate}
+                isTime={(answerMeta as IDateTime).isTime}
+            ></DateTime>
         ),
     };
 
@@ -269,6 +364,9 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             <Option value={AnswerTypes.boolean}>Ja/nei</Option>
                             <Option value={AnswerTypes.decimal}>Tall</Option>
                             <Option value={AnswerTypes.text}>Tekst</Option>
+                            <Option value={AnswerTypes.dateTime}>
+                                Dato/tid
+                            </Option>
                             <Option value={AnswerTypes.radio}>Flervalg</Option>
                         </Select>
                     </Col>
