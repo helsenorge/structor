@@ -3,32 +3,13 @@ import { Collapse, Row, Popover, Button } from 'antd';
 import './Schemes.style.scss';
 import { IQuestionAndAnswer } from 'types/IQuestionAndAnswer';
 import { ResourceContainer } from 'types/fhirTypes/fhir';
-import { IInclude, IConcept } from 'types/IQuestionnaireResources';
-
-type Schemetype = {
-    title: string;
-    sections: {
-        sect: string;
-        key: string;
-        qa: {
-            q: string;
-            a: string[];
-            alt: string[];
-            subarray: {
-                subq: string;
-                suba: string[];
-                subalt: string[];
-            }[];
-        }[];
-    }[];
-};
+import { IConcept } from 'types/IQuestionnaireResources';
 
 export interface SchemesProps {
     qAndA: IQuestionAndAnswer[];
     questionnaireResource: ResourceContainer[];
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const Schemes = (props: SchemesProps) => {
     const { Panel } = Collapse;
 
@@ -49,92 +30,216 @@ const Schemes = (props: SchemesProps) => {
                         style={{ width: 1000 }}
                         className="site-collapse-custom-collapse"
                     >
-                        {props.qAndA.map((i) => (
-                            i.id.match('^[^.]*$') ? (
-                                <Panel
-                                    header={i.questions.questions.text}
-                                    key={i.id}
-                                    className="site-collapse-custom-panel"
-                                >  : (
-                                    <>
-                                        <div className="boarder">
-                                            <br></br>
-                                            <p className="questions">
-                                                {i.questions.questions.text}
-                                            </p>
-                                            <p className="inline">Svar: </p>
-                                            {props.questionnaireResource.map(qr => qr.id ===
-                                                i.questions.questions.options?.reference?.slice(1) &&
-                                                (
-                                                    props.questionnaireResource.length > 0 ? (
-                                                        qr.compose.include.map((m) =>
-                                                            <Popover
-                                                                placement="rightTop"
-                                                                trigger="click"
-                                                                content={setContent(m.concept)}
-                                                            >
-                                                                <Button
-                                                                    className="nopadding"
-                                                                    type="link"
+                        {props.qAndA.map(
+                            (section) =>
+                                section.id.match('^[^.]*$') && (
+                                    <Panel
+                                        header={
+                                            section.questions.questions.text
+                                        }
+                                        key={section.id}
+                                        className="site-collapse-custom-panel"
+                                    >
+                                        {props.qAndA.map(
+                                            (qa, qaIndex) =>
+                                                qa.id.split('.').length === 2 &&
+                                                section.id ===
+                                                    qa.id.split('.')[0] &&
+                                                qa.answers?.answers.answer &&
+                                                qa.answers?.answers
+                                                    .answer[0] && (
+                                                    <div
+                                                        key={qaIndex}
+                                                        className="boarder"
+                                                    >
+                                                        <br></br>
+                                                        <p className="questions">
+                                                            {
+                                                                qa.questions
+                                                                    .questions
+                                                                    .text
+                                                            }
+                                                        </p>
+                                                        <p className="inline">
+                                                            Svar:
+                                                        </p>
+                                                        {props.questionnaireResource.map(
+                                                            (qr) =>
+                                                                qr.id ===
+                                                                    qa.questions.questions.options?.reference?.slice(
+                                                                        1,
+                                                                    ) &&
+                                                                (props
+                                                                    .questionnaireResource
+                                                                    .length > 0
+                                                                    ? qr.compose.include.map(
+                                                                          (
+                                                                              m,
+                                                                          ) => (
+                                                                              <Popover
+                                                                                  key={
+                                                                                      m.system
+                                                                                  }
+                                                                                  placement="rightTop"
+                                                                                  trigger="click"
+                                                                                  content={setContent(
+                                                                                      m.concept,
+                                                                                  )}
+                                                                              >
+                                                                                  <Button
+                                                                                      className="nopadding"
+                                                                                      type="link"
+                                                                                  >
+                                                                                      (Vis
+                                                                                      alternativer)
+                                                                                  </Button>
+                                                                              </Popover>
+                                                                          ),
+                                                                      )
+                                                                    : null),
+                                                        )}
+                                                        {qa.answers?.answers.answer?.map(
+                                                            (item) => (
+                                                                <p
+                                                                    className="answers"
+                                                                    key={
+                                                                        item
+                                                                            .valueCoding
+                                                                            ?.display
+                                                                            ? qa
+                                                                                  .answers
+                                                                                  ?.id +
+                                                                              item
+                                                                                  .valueCoding
+                                                                                  .display
+                                                                            : qa
+                                                                                  .answers
+                                                                                  ?.id
+                                                                    }
                                                                 >
-                                                                    (Vis alternativer)
-                                                        </Button>
-                                                            </Popover>)
-                                                    ) : null
-                                                ))}
-                                            {i.answers?.answers.answer?.map((item) => (
-                                                <p
-                                                    className="answers"
-                                                    key={item.id}
-                                                >
-                                                    {item.valueBoolean}
-                                                    {item.valueCoding?.display}
-                                                    {item.valueDate}
-                                                    {item.valueDecimal}
-                                                    {item.valueString}
-                                                </p>
-                                            ))}
-                                            {/* {subarray.map(
-                                                    ({ subalt, subq, suba }) =>
-                                                        suba.length > 0 ? (
-                                                            <>
-                                                                <br></br>
-                                                                <p className="questions">
-                                                                    {subq}
+                                                                    {
+                                                                        item.valueBoolean
+                                                                    }
+                                                                    {
+                                                                        item
+                                                                            .valueCoding
+                                                                            ?.display
+                                                                    }
+                                                                    {
+                                                                        item.valueDate
+                                                                    }
+                                                                    {
+                                                                        item.valueDecimal
+                                                                    }
+                                                                    {
+                                                                        item.valueString
+                                                                    }
                                                                 </p>
-                                                                <p className="inline">
-                                                                    Svar:{' '}
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                ),
+                                        )}
+                                        {props.qAndA.map(
+                                            (qa, qaIndex) =>
+                                                qa.id.split('.').length === 3 &&
+                                                qa.id.split('.')[0] ===
+                                                    section.id &&
+                                                qa.answers?.answers.answer &&
+                                                qa.answers?.answers
+                                                    .answer[0] && (
+                                                    <div key={qaIndex}>
+                                                        <br></br>
+                                                        <p className="questions">
+                                                            {
+                                                                qa.questions
+                                                                    .questions
+                                                                    .text
+                                                            }
+                                                        </p>
+                                                        <p className="inline">
+                                                            Subspørsmål Svar:
+                                                        </p>
+                                                        {props.questionnaireResource.map(
+                                                            (qr) =>
+                                                                qr.id ===
+                                                                    qa.questions.questions.options?.reference?.slice(
+                                                                        1,
+                                                                    ) &&
+                                                                (props
+                                                                    .questionnaireResource
+                                                                    .length > 0
+                                                                    ? qr.compose.include.map(
+                                                                          (
+                                                                              m,
+                                                                          ) => (
+                                                                              <Popover
+                                                                                  key={
+                                                                                      m.system
+                                                                                  }
+                                                                                  placement="rightTop"
+                                                                                  trigger="click"
+                                                                                  content={setContent(
+                                                                                      m.concept,
+                                                                                  )}
+                                                                              >
+                                                                                  <Button
+                                                                                      className="nopadding"
+                                                                                      type="link"
+                                                                                  >
+                                                                                      (Vis
+                                                                                      alternativer)
+                                                                                  </Button>
+                                                                              </Popover>
+                                                                          ),
+                                                                      )
+                                                                    : null),
+                                                        )}
+                                                        {qa.answers?.answers.answer?.map(
+                                                            (item) => (
+                                                                <p
+                                                                    className="answers"
+                                                                    key={
+                                                                        item
+                                                                            .valueCoding
+                                                                            ?.display
+                                                                            ? qa
+                                                                                  .answers
+                                                                                  ?.id +
+                                                                              item
+                                                                                  .valueCoding
+                                                                                  .display
+                                                                            : qa
+                                                                                  .answers
+                                                                                  ?.id
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        item.valueBoolean
+                                                                    }
+                                                                    {
+                                                                        item
+                                                                            .valueCoding
+                                                                            ?.display
+                                                                    }
+                                                                    {
+                                                                        item.valueDate
+                                                                    }
+                                                                    {
+                                                                        item.valueDecimal
+                                                                    }
+                                                                    {
+                                                                        item.valueString
+                                                                    }
                                                                 </p>
-                                                                {subalt.length >
-                                                                0 ? (
-                                                                    <Popover
-                                                                        placement="rightTop"
-                                                                        trigger="click"
-                                                                        content={setContent(
-                                                                            subalt,
-                                                                        )}
-                                                                    >
-                                                                        <Button
-                                                                            className="nopadding"
-                                                                            type="link"
-                                                                        >
-                                                                            (Vis
-                                                                            alternativer)
-                                                                        </Button>
-                                                                    </Popover>
-                                                                ) : null}
-                                                                <p className="answers">
-                                                                    {suba}
-                                                                </p>
-                                                            </>
-                                                        ) : null,
-                                                )} */}
-                                        </div>
-                                    </>
-                                    )
-                                </Panel>
-
-                            ))}
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                ),
+                                        )}
+                                    </Panel>
+                                ),
+                        )}
                     </Collapse>
                 </div>
             </Row>

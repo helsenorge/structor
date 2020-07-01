@@ -113,24 +113,11 @@ const SchemaResponse = () => {
     return (
         <>
             {schemaResponse && questionnaire ? (
-                <div style={{ marginBottom: '5rem' }}>
-                    <Row gutter={40} justify="center">
-                        <Title level={3}>{questionnaire.name}</Title>
-                    </Row>
-                    <Row justify="center">
-                        <Title level={3}>
-                            id - {schemaResponse.response?.id}
-                        </Title>
-                    </Row>
-                    <Row justify="center">
-                        Skjemaet ble fyllt ut: {filledInDate}
-                    </Row>
-                    <SchemaView
-                        questions={questions}
-                        answers={answers}
-                        questionnaireResource={questionnaireResource}
-                    />
-                </div>
+                <SchemaView
+                    questions={questions}
+                    answers={answers}
+                    questionnaireResource={questionnaireResource}
+                />
             ) : (
                 <Row justify="center">
                     <Spin size="large" />

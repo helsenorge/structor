@@ -4,7 +4,6 @@ import {
     IAnswer,
     IQuestion,
 } from 'types/IQuestionAndAnswer';
-import Title from 'antd/lib/typography/Title';
 import { ResourceContainer } from 'types/fhirTypes/fhir';
 import Schemes from 'components/Schemes/Schemes';
 
@@ -41,56 +40,9 @@ const SchemaView = (props: ISchemaViewProps) => {
             {qAndA && (
                 <Schemes
                     qAndA={qAndA}
-                    questionnnaireResource={questionnaireResource}
+                    questionnaireResource={props.questionnaireResource}
                 />
             )}
-            {qAndA.length > 0 &&
-                qAndA.map((i) => (
-                    <div key={i.id}>
-                        {i.id.match('^[^.]*$') ? (
-                            <Title level={2}>
-                                {i.questions.questions.text}
-                            </Title>
-                        ) : (
-                            <Title level={3}>
-                                {i.questions.questions.text}
-                            </Title>
-                        )}
-                        {i.questions.questions.options?.reference &&
-                            props.questionnaireResource.map(
-                                (qr) =>
-                                    qr.id ===
-                                        i.questions.questions.options?.reference?.slice(
-                                            1,
-                                        ) &&
-                                    qr.compose.include.map((c) =>
-                                        c.concept.map((co) => (
-                                            <Title level={4} key={co.code}>
-                                                {co.display}
-                                            </Title>
-                                        )),
-                                    ),
-                            )}
-                        <p>
-                            {i.answers?.answers.answer?.map(
-                                (a) => a.valueString,
-                            )}
-                            {i.answers?.answers.answer?.map(
-                                (a) => a.valueCoding?.code,
-                            )}
-                            {i.answers?.answers.answer?.map(
-                                (a) => a.valueCoding?.display,
-                            )}
-                            {i.answers?.answers.answer?.map((a) => a.valueDate)}
-                            {i.answers?.answers.answer?.map(
-                                (a) => a.valueBoolean,
-                            )}
-                            {i.answers?.answers.answer?.map(
-                                (a) => a.valueDecimal,
-                            )}
-                        </p>
-                    </div>
-                ))}
         </>
     );
 };
