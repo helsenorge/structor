@@ -7,9 +7,8 @@ import {
     addNewQuestion,
     removeQuestion,
     duplicateQuestion,
+    updateSection,
 } from '../store/FormStore';
-import ISection from '../types/ISection';
-import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 
 const { TextArea } = Input;
@@ -33,12 +32,15 @@ function Section({
 }: SectionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Tittel...');
     const [needsSections, setNeedsSections] = useState(false);
-    const [count, setCount] = useState(0);
+    // const [count, setCount] = useState(0);
 
     const { state, dispatch } = useContext(FormContext);
 
     const section = state.sections[sectionId];
 
+    const [sectionTitle, setSectiontitle] = useState(
+        state.sections[sectionId].sectionTitle,
+    );
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (index + 1) + '...';
         setPlaceholder(placeholderString);
@@ -55,7 +57,7 @@ function Section({
     });
 
     function dispatchAddQuestion() {
-        dispatch(addNewQuestion(section.id));
+        dispatch(addNewQuestion(sectionId));
     }
 
     function dispatchDuplicateQuestion(
@@ -71,6 +73,10 @@ function Section({
             dispatch(removeQuestion(questionIndex, section.id));
     }
 
+    function handleChange(value: string) {
+        setSectiontitle(value);
+        dispatch(updateSection(sectionId, value));
+    }
     return (
         <div
             style={{
@@ -170,17 +176,17 @@ function Section({
             )}
             <Row>
                 <Col span={24}>
-                    <DND.Droppable droppableId={section.id} type={'question'}>
+                    <DND.Droppable droppableId={sectionId} type={'question'}>
                         {(provided, snapshot) => (
                             <div ref={provided.innerRef}>
                                 {!collapsed &&
-                                    section.questionOrder.map(
+                                    state.sections[sectionId].questionOrder.map(
                                         (questionId: string, index: number) => {
                                             const question =
                                                 state.questions[questionId];
                                             return (
                                                 <DND.Draggable
-                                                    key={questionId}
+                                                    key={'drag' + questionId}
                                                     draggableId={questionId}
                                                     index={index}
                                                 >
@@ -195,8 +201,8 @@ function Section({
                                                                 key={
                                                                     question.id
                                                                 }
-                                                                question={
-                                                                    question
+                                                                questionId={
+                                                                    question.id
                                                                 }
                                                                 duplicateQuestion={() =>
                                                                     dispatchDuplicateQuestion(

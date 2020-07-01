@@ -23,7 +23,7 @@ function CreateForm(): JSX.Element {
 
     const [collapsedSection, setCollapsedSection] = useState('A');
 
-    function dispatchAddNewSection(index?: number) {
+    function dispatchAddNewSection() {
         dispatch(addNewSection());
     }
 
@@ -58,8 +58,11 @@ function CreateForm(): JSX.Element {
             );
         }
     }
-
     function onBeforeCapture(startResponder: DND.BeforeCapture) {
+        const focusButton = document.getElementById('MoveSectionButton');
+        if (focusButton) {
+            focusButton.focus();
+        }
         setCollapsedSection(startResponder.draggableId);
     }
 
