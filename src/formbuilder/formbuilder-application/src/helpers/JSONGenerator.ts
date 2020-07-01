@@ -1,6 +1,7 @@
 import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import { AnswerTypes } from '../types/IAnswer';
+import IQuestion from '../types/IQuestion';
 
 function convertQuestions(
     sectionOrder: Array<string>,
@@ -48,45 +49,41 @@ function convertAnswers(
     sections: SectionList,
     questions: QuestionList,
 ): Array<fhir.Resource> {
-    const valueSets = [];
-    for (const i in sectionOrder) {
-        const sectionId = sectionOrder[i];
-        for (const j in sections[sectionId].questionOrder) {
-            const questionId = sections[sectionId].questionOrder[j];
-            if (questions[questionId].answer.choices) {
-                const answerId = questions[questionId].answer.id;
-                const choices = questions[questionId].answer.choices;
-                const containPart: fhir.Resource = {
-                    resourceType: 'ValueSet',
-                    id: answerId,
-                    name: 'NAME' + i, // TODO: CHECK THIS
-                    title: 'TITLE' + i, // TODO: CHECK THIS
-                    status: 'draft',
-                    publisher: 'NHN',
-                    compose: {
-                        include: [
-                            {
-                                system: '', // TODO: FIX ME
-                                concept: new Array<
-                                    fhir.ValueSetComposeIncludeConcept
-                                >(),
-                            },
-                        ],
+    const valueSets = new Array<fhir.Resource>();
+    let questionIndex = 0;
+    Object.values(questions).forEach((question: IQuestion) => {
+        questionIndex++;
+        const answer = question.answer;
+        if (!answer.choices) return;
+        const containPart: fhir.Resource = {
+            resourceType: 'ValueSet',
+            id: answer.id,
+            name: 'NAME' + questionIndex, // TODO: CHECK THIS
+            title: 'TITLE' + questionIndex, // TODO: CHECK THIS
+            status: 'draft',
+            publisher: 'NHN',
+            compose: {
+                include: [
+                    {
+                        system: '', // TODO: FIX ME
+                        concept: new Array<
+                            fhir.ValueSetComposeIncludeConcept
+                        >(),
                     },
-                };
+                ],
+            },
+        };
 
-                for (const k in choices) {
-                    if (choices !== undefined && k !== undefined) {
-                        containPart.compose?.include[0].concept?.push({
-                            code: String(parseInt(k) + 1),
-                            display: choices[parseInt(k)],
-                        });
-                    }
-                }
-                valueSets.push(containPart);
+        for (const k in answer.choices) {
+            if (answer.choices !== undefined && k !== undefined) {
+                containPart.compose?.include[0].concept?.push({
+                    code: String(parseInt(k) + 1),
+                    display: answer.choices[parseInt(k)],
+                });
             }
         }
-    }
+        valueSets.push(containPart);
+    });
     return valueSets;
 }
 
