@@ -2,15 +2,18 @@ import React, { useState, useContext } from 'react';
 import { Row, Col, Button } from 'antd';
 import NavBar from '../components/commonComponents/NavBar';
 import Section from '../components/Section';
+import TitleAndDescription from '../components/answerComponents/TitleAndDescription';
 import {
     FormContext,
     addNewSection,
+    duplicateSection,
     removeSection,
     swapSection,
     swapQuestion,
 } from '../store/FormStore';
 import * as DND from 'react-beautiful-dnd';
 import './Form.css';
+import ISection from '../types/ISection';
 
 function CreateForm(): JSX.Element {
     const [i, setI] = useState(0);
@@ -18,14 +21,19 @@ function CreateForm(): JSX.Element {
 
     const [dragIndex, setDragIndex] = useState(-1);
 
-    function dispatchAddNewSection(index?: number) {
-        setI(i + 1);
-        //const newSectionAction = addNewSection();
+    const [collapsedSection, setCollapsedSection] = useState('A');
+
+    function dispatchAddNewSection() {
         dispatch(addNewSection());
     }
 
     function dispatchRemoveSection(index: number) {
-        dispatch(removeSection(index));
+        if (window.confirm('Vil du slette denne seksjonen?'))
+            dispatch(removeSection(index));
+    }
+
+    function dispatchDuplicateSection(index: number, id: string) {
+        dispatch(duplicateSection(index, id));
     }
 
     function onDragEnd(result: DND.DropResult) {
@@ -36,6 +44,7 @@ function CreateForm(): JSX.Element {
 
         if (result.type === 'section') {
             dispatch(swapSection(sourceIndex, destIndex));
+            setCollapsedSection('A');
         } else if (result.type === 'question') {
             const sourceParentId = result.source.droppableId;
             const destParentId = result.destination.droppableId;
@@ -49,15 +58,39 @@ function CreateForm(): JSX.Element {
             );
         }
     }
-    // TODO: Remember to comment this !!!
-    function onDragStart(startResponder: DND.DragStart) {
+    function onBeforeCapture(startResponder: DND.BeforeCapture) {
         const focusButton = document.getElementById('MoveSectionButton');
         if (focusButton) {
             focusButton.focus();
         }
-        if (startResponder.type === 'section')
-            setDragIndex(startResponder.source.index);
+        setCollapsedSection(startResponder.draggableId);
     }
+
+    type memoSection = {
+        sectionId: string;
+        index: number;
+        provided: DND.DraggableProvided;
+    };
+
+    function compareSections(
+        prevSection: memoSection,
+        nextSection: memoSection,
+    ) {
+        return prevSection.index === nextSection.index;
+    }
+
+    // const SectionMemo = React.memo((props: memoSection) => {
+    //     return (
+    //         <Section
+    //             key={props.sectionId}
+    //             sectionId={props.sectionId}
+    //             removeSection={() => dispatchRemoveSection(props.index)}
+    //             provided={props.provided}
+    //             collapsed={props.sectionId === collapsedSection}
+    //             index={props.index}
+    //         />
+    //     );
+    // }, compareSections);
 
     return (
         <div>
@@ -67,9 +100,14 @@ function CreateForm(): JSX.Element {
                 </Col>
             </Row>
             <Row style={{ margin: '61px 0 0 0' }}>
+                <Col span={24}>
+                    <TitleAndDescription />
+                </Col>
+            </Row>
+            <Row>
                 <DND.DragDropContext
                     onDragEnd={onDragEnd}
-                    onBeforeDragStart={onDragStart}
+                    onBeforeCapture={onBeforeCapture}
                 >
                     <DND.Droppable droppableId="section" type="section">
                         {(provided, snapshot) => (
@@ -83,12 +121,10 @@ function CreateForm(): JSX.Element {
                                 >
                                     {state.sectionOrder.map(
                                         (sectionId: string, index: number) => {
-                                            const section =
-                                                state.sections[sectionId];
                                             return (
                                                 <DND.Draggable
-                                                    key={'drag'+section.id}
-                                                    draggableId={section.id}
+                                                    key={'drag' + sectionId}
+                                                    draggableId={sectionId}
                                                     index={index}
                                                 >
                                                     {(provided, snapshot) => (
@@ -98,10 +134,26 @@ function CreateForm(): JSX.Element {
                                                             }
                                                             {...provided.draggableProps}
                                                         >
-                                                            <Section
-                                                                key={section.id}
+                                                            {/* <SectionMemo
+                                                                key={sectionId}
                                                                 sectionId={
                                                                     sectionId
+                                                                }
+                                                                index={index}
+                                                                provided={
+                                                                    provided
+                                                                }
+                                                            /> */}
+                                                            <Section
+                                                                key={sectionId}
+                                                                sectionId={
+                                                                    sectionId
+                                                                }
+                                                                duplicateSection={() =>
+                                                                    dispatchDuplicateSection(
+                                                                        index,
+                                                                        sectionId,
+                                                                    )
                                                                 }
                                                                 removeSection={() =>
                                                                     dispatchRemoveSection(
@@ -112,8 +164,8 @@ function CreateForm(): JSX.Element {
                                                                     provided
                                                                 }
                                                                 collapsed={
-                                                                    index ===
-                                                                    dragIndex
+                                                                    sectionId ===
+                                                                    collapsedSection
                                                                 }
                                                                 index={index}
                                                             />

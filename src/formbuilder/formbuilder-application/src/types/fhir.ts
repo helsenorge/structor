@@ -11388,7 +11388,7 @@ interface _QuantityComparatorList extends _codePrimitive {
 }
 
 /** A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.If the element is present, it must have either a @value, an @id, or extensions */
-interface _Questionnaire extends _DomainResource {
+interface _Questionnaire extends _DomainResource, _Resource {
   /** The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage. */
   approvalDate?: date;
   /** An identifier for this question or group of questions in a particular terminology such as LOINC. */
@@ -11431,7 +11431,6 @@ interface _Questionnaire extends _DomainResource {
   useContext?: UsageContext[];
   /** The identifier that is used to identify this version of the questionnaire when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the questionnaire author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. */
   version?: string;
-  resourceType?: string;
 }
 export interface Questionnaire extends _Questionnaire {}
 export var Questionnaire: { new (): Questionnaire };
@@ -12408,6 +12407,8 @@ interface _ResourceContainer extends BaseType {
   ValueSet: ValueSet;
   /** An authorization for the supply of glasses and/or contact lenses to a patient. */
   VisionPrescription: VisionPrescription;
+  resourceType?: string;
+  id?: string;
 }
 export interface ResourceContainer extends _ResourceContainer {
   constructor: { new (): ResourceContainer };

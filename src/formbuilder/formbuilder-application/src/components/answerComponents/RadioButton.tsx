@@ -40,6 +40,7 @@ function RadioButton({ questionId }: radioButtonProps): JSX.Element {
                 questionId as string,
                 {
                     choices: buttonNames,
+                    id: questionId, // TODO
                 } as IChoice,
             ),
         );

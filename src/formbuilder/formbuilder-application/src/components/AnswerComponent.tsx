@@ -263,7 +263,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                 <Row>
                     <Col span={24} style={{ padding: '0 10px' }}>
                         <Row>
-                            <Col span={24} style={{alignItems:'center'}}>
+                            <Col span={24} style={{ alignItems: 'center' }}>
                                 <Button
                                     type={
                                         (answerMeta as IDateTime).isDate &&

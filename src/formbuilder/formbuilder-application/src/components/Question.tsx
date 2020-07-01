@@ -1,26 +1,27 @@
 import React, { useEffect, useState, ChangeEvent, useContext } from 'react';
 import { Input, Row, Col, Button, Tooltip } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import './answerComponents/AnswerComponent.css';
 import AnswerComponent from './AnswerComponent';
 import * as DND from 'react-beautiful-dnd';
 import { FormContext, updateQuestion } from '../store/FormStore';
+import IQuestion from '../types/IQuestion';
 
 const { TextArea } = Input;
 
 type QuestionProps = {
+    duplicateQuestion: () => void;
     // question: IQuestion;
-    key: string;
     questionId: string;
     removeQuestion: () => void;
     provided: DND.DraggableProvided;
 };
 
 function Question({
+    duplicateQuestion,
     questionId,
     removeQuestion,
     provided,
-    key,
 }: QuestionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const question = state.questions[questionId];
@@ -64,7 +65,16 @@ function Question({
                         onBlur={(e) => handleInput(e)}
                     />
                 </Col>
-                <Col span={3}></Col>
+                <Col span={3}>
+                    <Button
+                        style={{ zIndex: 1, color: 'var(--primary-1)' }}
+                        icon={<CopyOutlined />}
+                        type="default"
+                        onClick={() => duplicateQuestion()}
+                    >
+                        Dupliser spørsmål
+                    </Button>
+                </Col>
                 <Col span={3}>
                     <Button
                         style={{ zIndex: 1, color: 'var(--primary-1)' }}
