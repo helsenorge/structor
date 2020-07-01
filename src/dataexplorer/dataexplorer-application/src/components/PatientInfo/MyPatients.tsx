@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col } from 'antd';
 import Search from 'antd/lib/input/Search';
 import { History } from 'history';
 
 const MyPatients = (props: { history: History }) => {
-    const [patientID, setPatientID] = useState('');
+    localStorage.clear();
+    const [patientID, setPatientID] = useState(
+        localStorage.getItem('myData') || '',
+    );
+
+    useEffect(() => {
+        localStorage.setItem('myData', patientID);
+    }, [patientID]);
     return (
         <>
             <div style={{ marginTop: 90 }}></div>

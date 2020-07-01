@@ -1,6 +1,5 @@
 import React from 'react';
 import Breadcrumb from 'antd/lib/breadcrumb';
-import { IBread } from 'types/IBread';
 import { Link } from 'react-router-dom';
 import {
     HomeOutlined,
@@ -8,7 +7,26 @@ import {
     FileTextOutlined,
 } from '@ant-design/icons';
 
-const Breadcrumbs = ({ name, schemaNumber }: IBread) => {
+interface IBreadCrumbsProps {
+    setName: (name: string) => void;
+    setSchemaNumber: (id: string) => void;
+    name: string;
+    schemaNumber: string;
+}
+
+const Breadcrumbs = ({
+    setName,
+    setSchemaNumber,
+    name,
+    schemaNumber,
+}: IBreadCrumbsProps) => {
+    function fromSchemeToHome() {
+        setSchemaNumber('');
+        setName('');
+    }
+    function fromSchemeToPatient() {
+        setSchemaNumber('');
+    }
     return (
         <>
             <div
@@ -17,7 +35,7 @@ const Breadcrumbs = ({ name, schemaNumber }: IBread) => {
             >
                 <Breadcrumb>
                     <Breadcrumb.Item>
-                        <Link to="/">
+                        <Link to="/" onClick={() => fromSchemeToHome()}>
                             <HomeOutlined />
 
                             <span style={{ color: 'black', paddingLeft: 5 }}>
@@ -27,7 +45,7 @@ const Breadcrumbs = ({ name, schemaNumber }: IBread) => {
                     </Breadcrumb.Item>
 
                     {name !== '' && (
-                        <Breadcrumb.Item>
+                        <Breadcrumb.Item onClick={() => fromSchemeToPatient()}>
                             <Link to="/Pasient">
                                 <UserOutlined />
                                 <>

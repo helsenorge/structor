@@ -6,12 +6,12 @@ import MyPatients from '../PatientInfo/MyPatients';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
 import PatientInfo from '../PatientInfo/PatientInfo';
-import { History } from 'history';
 
 const { Header, Content } = Layout;
-const Navigation = (props: { history: History }) => {
+const Navigation = () => {
     const [name, setName] = useState('');
     const [schemaNumber, setSchema] = useState('');
+    const patientID = localStorage.getItem('myData');
 
     return (
         <>
@@ -43,7 +43,12 @@ const Navigation = (props: { history: History }) => {
                             Datautforskeren
                         </h1>
                     </Link>
-                    <Breadcrumbs name={name} schemaNumber={schemaNumber} />
+                    <Breadcrumbs
+                        name={name}
+                        schemaNumber={schemaNumber}
+                        setName={setName}
+                        setSchemaNumber={setSchema}
+                    />
                     <div
                         className="avatar-container"
                         style={{
@@ -79,7 +84,7 @@ const Navigation = (props: { history: History }) => {
                                     <PatientInfo
                                         setName={setName}
                                         setSchema={setSchema}
-                                        patientID={props.history.location.state}
+                                        patientID={patientID}
                                     />
                                 )}
                             />
