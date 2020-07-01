@@ -38,6 +38,12 @@
 }
 
 .breadcrumb-header {
-    padding-top: 90px;
+    padding-top: 75px;
     margin-left: 20px;
+    z-index: 2;
+}
+
+.content {
+    background-color: #f0f2f5;
+    height: 150%;
 }

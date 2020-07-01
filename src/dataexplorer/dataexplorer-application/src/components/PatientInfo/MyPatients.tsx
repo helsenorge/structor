@@ -11,7 +11,7 @@ const MyPatients = (props: { history: History }) => {
             <div className="search-container"></div>
             <Row gutter={[60, 40]} justify={'center'}>
                 <Col span={1000}>
-                    <p>Søk med personnummer for å finne en pasient.</p>
+                    <p>Søk med personnummer for å finne en pasient</p>
                     <Search
                         style={{ width: 400 }}
                         className="search-bar"
