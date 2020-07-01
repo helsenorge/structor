@@ -12,6 +12,8 @@ import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 
+const { TextArea } = Input;
+
 type SectionProps = {
     sectionId: string;
     duplicateSection: () => void;
@@ -81,7 +83,7 @@ function Section({
         >
             {needsSections && (
                 <div>
-                    <Row justify="center">
+                    <Row justify="center" style={{ padding: '10px' }}>
                         <Col span={4} />
                         <Col span={13}>
                             <Input
@@ -142,6 +144,16 @@ function Section({
                                 </Button>
                             </Tooltip>
                         </Col>
+                    </Row>
+                    <Row style={{ padding: '0 10px' }}>
+                        <Col xs={0} lg={4}></Col>
+                        <Col xs={24} lg={13}>
+                            <TextArea
+                                placeholder="Beskrivelse av seksjon..."
+                                className="input-question"
+                            ></TextArea>
+                        </Col>
+                        <Col xs={0} lg={4}></Col>
                     </Row>
 
                     <Row>

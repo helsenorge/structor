@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Input, Row, Col, Checkbox } from 'antd';
+import React from 'react';
+import { Input, Row, Col } from 'antd';
 import './AnswerComponent.css';
 
 const { TextArea } = Input;
