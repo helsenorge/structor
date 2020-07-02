@@ -1,15 +1,17 @@
 import React from 'react';
 import useFetch from 'utils/hooks/useFetch';
-import { IQuestionnaireResponses } from 'types/IQuestionnaireResponse';
+import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 
-const PatientQuestionnnaireResponses = ({ patientID }: any) => {
-    const { response: questionnaireResponses } = useFetch<
-        IQuestionnaireResponses
-    >('fhir/QuestionnaireResponse?subject=Patient/' + patientID);
-    if (questionnaireResponses) {
+const PatientQuestionnnaireResponses = (props: { patientID: string }) => {
+    const { response: patientQuestionnaireResponses } = useFetch<
+        IQuestionnaireResponse
+    >('fhir/QuestionnaireResponse?subject=Patient/' + props.patientID);
+    if (patientQuestionnaireResponses) {
         return (
             <h1>
-                Pasienten har {questionnaireResponses.total} utfylte skjemaer
+                Pasienten har
+                {patientQuestionnaireResponses.entry.length}
+                utfylte skjemaer
             </h1>
         );
     }

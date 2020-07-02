@@ -8,7 +8,7 @@ import './PatientInfo.style.scss';
 interface IPatientInfoProps {
     setName: (name: string) => void;
     setSchema: (id: string) => void;
-    patientID?: string | null | {};
+    patientID?: string | null;
 }
 
 const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
