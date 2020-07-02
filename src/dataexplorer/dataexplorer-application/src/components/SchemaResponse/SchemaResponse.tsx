@@ -101,6 +101,8 @@ const SchemaResponse = (props: { questionnaireResponseId: string }) => {
         return;
     }, [questionnaire]);
 
+    console.log(schemaResponse);
+
     return (
         <>
             {schemaResponse && questionnaire && questionnaire.name && (
@@ -114,13 +116,15 @@ const SchemaResponse = (props: { questionnaireResponseId: string }) => {
                     />
                 </div>
             )}
-            {!schemaResponse.error && !schemaResponse.response && (
+            {!schemaResponse.response && schemaResponse.error.length === 0 && (
                 <Row justify="space-around" align="middle">
                     <Spin size="large" />
                 </Row>
             )}
-            {schemaResponse.error && (
-                <Row justify="center">Fant ikke skjemaet</Row>
+            {schemaResponse.error.length > 0 && (
+                <Row justify="center">
+                    Feil ved lasting av skjema: {schemaResponse.error}
+                </Row>
             )}
         </>
     );

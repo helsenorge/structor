@@ -17,9 +17,10 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
         setSchema(record.schemaName);
     };
     // The oid signifies that we are searching on social security number
-    const { response: patientData, error: patientDataError } = useFetch<
-        IPatientIdentifier
-    >('fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' + patientID);
+    const { response: patientData, error } = useFetch<IPatientIdentifier>(
+        'fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' +
+            patientID,
+    );
     if (patientData && patientData !== undefined && patientData.total !== 0) {
         const name =
             patientData.entry[0].resource.name[0].given[0] +
@@ -39,12 +40,12 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
     }
     return (
         <>
-            {!patientData && !patientDataError && (
+            {!patientData && error.length === 0 && (
                 <Row justify="space-around" align="middle">
                     <Spin size="large" />
                 </Row>
             )}
-            {patientDataError && (
+            {patientData?.total === 0 && error.length === 0 && (
                 <div className="failed-container">
                     <Empty
                         description={
@@ -54,6 +55,13 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
                         }
                     ></Empty>
                 </div>
+            )}
+            {error.length > 0 && (
+                <Empty
+                    description={
+                        <span>Feil ved lasting av pasienter: {error}</span>
+                    }
+                ></Empty>
             )}
         </>
     );
