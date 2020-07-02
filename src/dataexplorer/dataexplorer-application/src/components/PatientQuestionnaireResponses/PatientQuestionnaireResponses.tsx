@@ -3,14 +3,14 @@ import useFetch from 'utils/hooks/useFetch';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 
 const PatientQuestionnnaireResponses = ({ patientID }: any) => {
-    const { response: questionnaireResponses } = useFetch<
+    const { response: patientQuestionnaireResponses } = useFetch<
         IQuestionnaireResponse
     >('fhir/QuestionnaireResponse?subject=Patient/' + patientID);
-    if (questionnaireResponses) {
+    if (patientQuestionnaireResponses) {
         return (
             <h1>
-                Pasienten har {questionnaireResponses.entry.length} utfylte
-                skjemaer
+                Pasienten har {patientQuestionnaireResponses.entry.length}{' '}
+                utfylte skjemaer
             </h1>
         );
     }

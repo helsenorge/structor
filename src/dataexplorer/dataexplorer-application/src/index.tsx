@@ -6,7 +6,9 @@ import './index.css';
 
 ReactDOM.render(
     <Router>
-        <App />
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
     </Router>,
     document.getElementById('root'),
 );
