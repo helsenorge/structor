@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Collapse, Row, Popover, Button } from 'antd';
+import { Collapse, Row } from 'antd';
 import './Schemes.style.scss';
 import {
     IQuestionAndAnswer,
@@ -7,6 +7,8 @@ import {
     IAnswer,
 } from 'types/IQuestionAndAnswer';
 import dayjs, { Dayjs } from 'dayjs';
+import QuestionsAndAnswersDisplay from './QuestionsAndAnswersDisplay/QuestionsAndAnswersDisplay';
+import SubQuestionsAndAnswersDisplay from './SubQuestionsAndAnswersDisplay/SubQuestionsAndAnswersDisplay';
 
 export interface SchemesProps {
     questions: IQuestion[];
@@ -39,13 +41,6 @@ const Schemes = (props: SchemesProps) => {
 
     const { Panel } = Collapse;
 
-    const setContent = (data: fhir.ValueSetComposeIncludeConcept[]) => {
-        if (data) {
-            return data.map((line) => <li key={line.code}>{line.display}</li>);
-        }
-        return;
-    };
-
     return (
         <>
             <Row justify="center">
@@ -77,98 +72,22 @@ const Schemes = (props: SchemesProps) => {
                                                 qa.answers?.answers.answer &&
                                                 qa.answers?.answers
                                                     .answer[0] && (
-                                                    <div
-                                                        key={qaIndex}
-                                                        className="border"
-                                                    >
-                                                        <br></br>
-                                                        <p className="questions">
-                                                            {
-                                                                qa.questions
-                                                                    .questions
-                                                                    .text
+                                                    <div key={qaIndex}>
+                                                        <QuestionsAndAnswersDisplay
+                                                            questionAndAnswer={
+                                                                qa
                                                             }
-                                                        </p>
-                                                        <p className="inline-answer-container">
-                                                            Svar:
-                                                        </p>
-                                                        {props.questionnaireResource.map(
-                                                            (qr) =>
-                                                                qr.id ===
-                                                                    qa.questions.questions.options?.reference?.slice(
-                                                                        1,
-                                                                    ) &&
-                                                                qr.compose &&
-                                                                (props
-                                                                    .questionnaireResource
-                                                                    .length > 0
-                                                                    ? qr.compose.include.map(
-                                                                          (m) =>
-                                                                              m.concept && (
-                                                                                  <Popover
-                                                                                      key={
-                                                                                          m.system
-                                                                                      }
-                                                                                      placement="rightTop"
-                                                                                      trigger="click"
-                                                                                      content={setContent(
-                                                                                          m.concept,
-                                                                                      )}
-                                                                                  >
-                                                                                      <Button
-                                                                                          className="nopadding"
-                                                                                          type="link"
-                                                                                      >
-                                                                                          (Vis
-                                                                                          alternativer)
-                                                                                      </Button>
-                                                                                  </Popover>
-                                                                              ),
-                                                                      )
-                                                                    : null),
-                                                        )}
-                                                        {qa.answers?.answers.answer?.map(
-                                                            (item) => (
-                                                                <p
-                                                                    className="answers"
-                                                                    key={
-                                                                        item
-                                                                            .valueCoding
-                                                                            ?.display
-                                                                            ? qa
-                                                                                  .answers
-                                                                                  ?.id +
-                                                                              item
-                                                                                  .valueCoding
-                                                                                  .display
-                                                                            : qa
-                                                                                  .answers
-                                                                                  ?.id
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        item.valueBoolean
-                                                                    }
-                                                                    {
-                                                                        item
-                                                                            .valueCoding
-                                                                            ?.display
-                                                                    }
-                                                                    {
-                                                                        item.valueDate
-                                                                    }
-                                                                    {
-                                                                        item.valueDecimal
-                                                                    }
-                                                                    {
-                                                                        item.valueString
-                                                                    }
-                                                                </p>
-                                                            ),
-                                                        )}
+                                                            questionnaireResource={
+                                                                props.questionnaireResource
+                                                            }
+                                                            questionAndAnswerIndex={
+                                                                qaIndex
+                                                            }
+                                                        />
                                                     </div>
                                                 ),
                                         )}
+
                                         {qAndA.map(
                                             (qa, qaIndex) =>
                                                 qa.id.split('.').length === 3 &&
@@ -178,91 +97,17 @@ const Schemes = (props: SchemesProps) => {
                                                 qa.answers?.answers
                                                     .answer[0] && (
                                                     <div key={qaIndex}>
-                                                        <br></br>
-                                                        <p className="questions">
-                                                            {
-                                                                qa.questions
-                                                                    .questions
-                                                                    .text
+                                                        <SubQuestionsAndAnswersDisplay
+                                                            questionAndAnswer={
+                                                                qa
                                                             }
-                                                        </p>
-                                                        <p className="inline-answer-container">
-                                                            Subspørsmål Svar:
-                                                        </p>
-                                                        {props.questionnaireResource.map(
-                                                            (qr) =>
-                                                                qr.id ===
-                                                                    qa.questions.questions.options?.reference?.slice(
-                                                                        1,
-                                                                    ) &&
-                                                                qr.compose &&
-                                                                (props
-                                                                    .questionnaireResource
-                                                                    .length > 0
-                                                                    ? qr.compose.include.map(
-                                                                          (m) =>
-                                                                              m.concept && (
-                                                                                  <Popover
-                                                                                      key={
-                                                                                          m.system
-                                                                                      }
-                                                                                      placement="rightTop"
-                                                                                      trigger="click"
-                                                                                      content={setContent(
-                                                                                          m.concept,
-                                                                                      )}
-                                                                                  >
-                                                                                      <Button
-                                                                                          className="nopadding"
-                                                                                          type="link"
-                                                                                      >
-                                                                                          (Vis
-                                                                                          alternativer)
-                                                                                      </Button>
-                                                                                  </Popover>
-                                                                              ),
-                                                                      )
-                                                                    : null),
-                                                        )}
-                                                        {qa.answers?.answers.answer?.map(
-                                                            (item) => (
-                                                                <p
-                                                                    className="answers"
-                                                                    key={
-                                                                        item
-                                                                            .valueCoding
-                                                                            ?.display
-                                                                            ? qa
-                                                                                  .answers
-                                                                                  ?.id +
-                                                                              item
-                                                                                  .valueCoding
-                                                                                  .display
-                                                                            : qa
-                                                                                  .answers
-                                                                                  ?.id
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        item.valueBoolean
-                                                                    }
-                                                                    {
-                                                                        item
-                                                                            .valueCoding
-                                                                            ?.display
-                                                                    }
-                                                                    {
-                                                                        item.valueDate
-                                                                    }
-                                                                    {
-                                                                        item.valueDecimal
-                                                                    }
-                                                                    {
-                                                                        item.valueString
-                                                                    }
-                                                                </p>
-                                                            ),
-                                                        )}
+                                                            questionnaireResource={
+                                                                props.questionnaireResource
+                                                            }
+                                                            questionAndAnswerIndex={
+                                                                qaIndex
+                                                            }
+                                                        />
                                                     </div>
                                                 ),
                                         )}
