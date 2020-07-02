@@ -9,15 +9,14 @@
         display: flex;
         justify-content: space-between;
 
-        .avatar {
-            border: black solid thin;
-        }
         h1 {
             font-style: italic;
             font-weight: bold;
         }
         h4 {
             font-weight: bold;
+            margin-bottom: 0;
+            margin-top: 0.8125rem;
         }
     }
 }

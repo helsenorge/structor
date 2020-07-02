@@ -34,6 +34,7 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
             return displayPatientInfo(
                 patientData.entry[0].resource,
                 handleClick,
+                dataSource,
             );
         }
     }
@@ -174,7 +175,11 @@ const columns = [
     },
 ];
 
-const displayPatientInfo = (patient: IPatient, handleClick: any) => {
+const displayPatientInfo = (
+    patient: IPatient,
+    handleClick: any,
+    dataSource: any,
+) => {
     const name = patient.name[0].given[0] + ' ' + patient.name[0].family;
     return (
         <>
@@ -190,35 +195,27 @@ const displayPatientInfo = (patient: IPatient, handleClick: any) => {
                         <div className="info-container">
                             <div className="info-left">
                                 <h4>Pnr:</h4>
-                                <p>{patient.id}</p>
-                                <p>
-                                    <h4>Kjønn:</h4> {patient.gender}
-                                </p>
-                                <p>
-                                    <h4>Fødselsdato:</h4>
-                                    {patient.birthDate}
-                                </p>
+                                <span>{patient.id}</span>
+                                <h4>Kjønn:</h4>
+                                <span>{patient.gender}</span>
+                                <h4>Fødselsdato:</h4>
+                                <span>{patient.birthDate}</span>
                             </div>
+
                             <div className="info-right">
-                                <p>
-                                    <h4>Addresse: </h4>
-                                    {patient?.address?.[0]?.line?.[0]}
-                                </p>
-                                <p>
-                                    <h4>Telefon: </h4>
-                                    {patient?.telecom?.[0]?.value}
-                                </p>
-                                <p>
-                                    <h4>E-post: </h4>
-                                    eksempel@epost.no
-                                </p>
+                                <h4>Addresse: </h4>
+                                <span>{patient?.address?.[0]?.line?.[0]}</span>
+                                <h4>Telefon: </h4>
+                                <span>{patient?.telecom?.[0]?.value}</span>
+                                <h4>E-post: </h4>
+                                <span>eksempel@epost.no</span>
                             </div>
                         </div>
                     </Card>
                     <PatientQuestionnaireResponses patientID={patient.id} />
                     <Table
                         className="patient-table"
-                        key={patient.id}
+                        key={dataSource.id}
                         columns={columns}
                         dataSource={dataSource}
                         size="small"
