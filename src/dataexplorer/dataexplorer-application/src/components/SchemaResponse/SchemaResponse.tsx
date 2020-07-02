@@ -6,8 +6,7 @@ import dayjs from 'dayjs';
 import { IAnswer, IQuestion } from 'types/IQuestionAndAnswer';
 import Schemes from './Schemes/Schemes';
 
-const SchemaResponse = () => {
-    const questionnaireResponseId = '13';
+const SchemaResponse = (questionnaireResponseId: string) => {
     const schemaResponse = useFetch<fhir.QuestionnaireResponse>(
         'fhir/QuestionnaireResponse/' + questionnaireResponseId,
     );
