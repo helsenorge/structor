@@ -21,10 +21,8 @@ const Schemes = (props: SchemesProps) => {
     const [qAndA, setQAndA] = useState<IQuestionAndAnswer[]>([]);
     useEffect(() => {
         let hasAddedId = false;
-        // eslint-disable-next-line
-        props.questions.map((q) => {
-            // eslint-disable-next-line
-            props.answers.map((a) => {
+        props.questions.forEach((q) => {
+            props.answers.forEach((a) => {
                 if (q.id === a.id) {
                     hasAddedId = true;
                     setQAndA((qAndA) => [
@@ -81,7 +79,7 @@ const Schemes = (props: SchemesProps) => {
                                                     .answer[0] && (
                                                     <div
                                                         key={qaIndex}
-                                                        className="boarder"
+                                                        className="border"
                                                     >
                                                         <br></br>
                                                         <p className="questions">
@@ -91,7 +89,7 @@ const Schemes = (props: SchemesProps) => {
                                                                     .text
                                                             }
                                                         </p>
-                                                        <p className="inline">
+                                                        <p className="inline-answer-container">
                                                             Svar:
                                                         </p>
                                                         {props.questionnaireResource.map(
@@ -188,7 +186,7 @@ const Schemes = (props: SchemesProps) => {
                                                                     .text
                                                             }
                                                         </p>
-                                                        <p className="inline">
+                                                        <p className="inline-answer-container">
                                                             Subspørsmål Svar:
                                                         </p>
                                                         {props.questionnaireResource.map(

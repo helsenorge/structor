@@ -6,9 +6,9 @@ import dayjs from 'dayjs';
 import { IAnswer, IQuestion } from 'types/IQuestionAndAnswer';
 import Schemes from './Schemes/Schemes';
 
-const SchemaResponse = (questionnaireResponseId: string) => {
+const SchemaResponse = (props: { questionnaireResponseId: string }) => {
     const schemaResponse = useFetch<fhir.QuestionnaireResponse>(
-        'fhir/QuestionnaireResponse/' + questionnaireResponseId,
+        'fhir/QuestionnaireResponse/' + props.questionnaireResponseId,
     );
     const questionnaireUrl = schemaResponse.response?.questionnaire?.reference?.substr(
         schemaResponse.response?.questionnaire?.reference?.indexOf(
