@@ -72,15 +72,19 @@ const Schemes = (props: SchemesProps) => {
                                                 qa.answers?.answers.answer &&
                                                 qa.answers?.answers
                                                     .answer[0] && (
-                                                    <QuestionsAndAnswersDisplay
-                                                        questionAndAnswer={qa}
-                                                        questionnaireResource={
-                                                            props.questionnaireResource
-                                                        }
-                                                        questionAndAnswerIndex={
-                                                            qaIndex
-                                                        }
-                                                    />
+                                                    <div key={qaIndex}>
+                                                        <QuestionsAndAnswersDisplay
+                                                            questionAndAnswer={
+                                                                qa
+                                                            }
+                                                            questionnaireResource={
+                                                                props.questionnaireResource
+                                                            }
+                                                            questionAndAnswerIndex={
+                                                                qaIndex
+                                                            }
+                                                        />
+                                                    </div>
                                                 ),
                                         )}
 
@@ -92,15 +96,19 @@ const Schemes = (props: SchemesProps) => {
                                                 qa.answers?.answers.answer &&
                                                 qa.answers?.answers
                                                     .answer[0] && (
-                                                    <SubQuestionsAndAnswersDisplay
-                                                        questionAndAnswer={qa}
-                                                        questionnaireResource={
-                                                            props.questionnaireResource
-                                                        }
-                                                        questionAndAnswerIndex={
-                                                            qaIndex
-                                                        }
-                                                    />
+                                                    <div key={qaIndex}>
+                                                        <SubQuestionsAndAnswersDisplay
+                                                            questionAndAnswer={
+                                                                qa
+                                                            }
+                                                            questionnaireResource={
+                                                                props.questionnaireResource
+                                                            }
+                                                            questionAndAnswerIndex={
+                                                                qaIndex
+                                                            }
+                                                        />
+                                                    </div>
                                                 ),
                                         )}
                                     </Panel>
