@@ -4,7 +4,7 @@ import 'dayjs/locale/nb';
 import useFetch from 'utils/hooks/useFetch';
 import dayjs from 'dayjs';
 import { IAnswer, IQuestion } from 'types/IQuestionAndAnswer';
-import Schemes from 'components/Schemes/Schemes';
+import Schemes from './Schemes/Schemes';
 
 const SchemaResponse = () => {
     const questionnaireResponseId = '13';
