@@ -53,7 +53,6 @@ const Schemes = (props: SchemesProps) => {
             <Row justify="center">
                 <div className="card">
                     <h1 className="title">{props.title}</h1>
-                    {console.log()}
                     <Row justify="center">
                         {props.date.format('DD/MM/YYYY HH:mm')}
                     </Row>
