@@ -1,14 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { Radio } from 'antd';
 import './AnswerComponent.css';
-import IAnswer, { AnswerTypes } from '../../types/IAnswer';
-import { FormContext, updateAnswer } from '../../store/FormStore';
- 
-type booleanProps = {
-    questionId: string;
-};
- 
-function BooleanInput({ questionId }: booleanProps): JSX.Element {
+
+function BooleanInput(): JSX.Element {
     const radioStyle = {
         display: 'block',
         height: '30px',
@@ -16,8 +10,6 @@ function BooleanInput({ questionId }: booleanProps): JSX.Element {
         marginBottom: 10,
         width: '90%',
     };
- 
-    const { state, dispatch } = useContext(FormContext);
 
     return (
         <Radio.Group name="radiogroup">
@@ -40,5 +32,5 @@ function BooleanInput({ questionId }: booleanProps): JSX.Element {
         </Radio.Group>
     );
 }
- 
+
 export default BooleanInput;
