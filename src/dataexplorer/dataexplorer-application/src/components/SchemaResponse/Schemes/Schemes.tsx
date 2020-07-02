@@ -63,7 +63,7 @@ const Schemes = (props: SchemesProps) => {
                     >
                         {qAndA.map(
                             (section) =>
-                                section.id.match('^[^.]*$') && (
+                                section.id.split('.').length === 1 && (
                                     <Panel
                                         header={
                                             section.questions.questions.text
