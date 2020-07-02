@@ -20,6 +20,21 @@ function convertQuestions(
             item: new Array<fhir.QuestionnaireItem>(),
         };
         // TODO: Add section desctiption
+        if (section.description !== undefined) {
+            item._text = {
+                extension: [
+                    {
+                        url:
+                            'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                        valueMarkdown:
+                            '### ' +
+                            section.sectionTitle +
+                            '\r\n' +
+                            section.description,
+                    },
+                ],
+            };
+        }
         for (let j = 0; j < sections[sectionKey].questionOrder.length; j++) {
             const questionKey = sections[sectionKey].questionOrder[j];
             const question = questions[questionKey];
@@ -38,10 +53,7 @@ function convertQuestions(
                 };
             }
 
-            if (
-                question.description !== '' ||
-                question.description !== undefined
-            ) {
+            if (question.description !== undefined) {
                 subItem._text = {
                     extension: [
                         {
@@ -72,7 +84,12 @@ function convertAnswers(
     Object.values(questions).forEach((question: IQuestion) => {
         questionIndex++;
         const answer = question.answer;
-        if (answer.choices === undefined) return;
+        if (
+            getAnswerType(answer.type) !== 'choice' &&
+            getAnswerType(answer.type) !== 'open-choice'
+        ) {
+            return;
+        }
         const containPart: fhir.Resource = {
             resourceType: 'ValueSet',
             id: answer.id,
@@ -125,6 +142,7 @@ function convertToJSON(
         sections,
         questions,
     );
+    // TODO: fix questionnaire title and description binding
     const questionnaire: fhir.Questionnaire = {
         resourceType: 'Questionnaire',
         language: 'nb-NO',

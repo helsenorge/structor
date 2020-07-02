@@ -38,9 +38,9 @@ function Section({
 
     const section = state.sections[sectionId];
 
-    const [sectionTitle, setSectiontitle] = useState(
-        state.sections[sectionId].sectionTitle,
-    );
+    const [sectionTitle, setSectionTitle] = useState(section.sectionTitle);
+    const [sectionDesc, setSectionDesc] = useState(section.description);
+    
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (index + 1) + '...';
         setPlaceholder(placeholderString);
@@ -71,19 +71,25 @@ function Section({
         if (window.confirm('Vil du slette dette spørsmålet?'))
             dispatch(removeQuestion(questionIndex, section.id));
     }
-    function handleInput(e: ChangeEvent<HTMLTextAreaElement>) {
+
+    function handleInputDesc(e: ChangeEvent<HTMLTextAreaElement>) {
+        setPlaceholder(e.currentTarget.value);
+        if (section) {
+            const temp = { ...section };
+            temp.description = e.target.value;
+            dispatch(updateSection(temp));
+        }
+    }
+
+    function handleInputTitle(e: ChangeEvent<HTMLInputElement>) {
         setPlaceholder(e.currentTarget.value);
         if (section) {
             const temp = { ...section };
             temp.sectionTitle = e.target.value;
-            dispatch(updateSection(sectionId, temp));
+            dispatch(updateSection(temp));
         }
     }
 
-    function handleChange(value: string) {
-        setSectiontitle(value);
-        dispatch(updateSection(sectionId, value));
-    }
     return (
         <div
             style={{
@@ -103,6 +109,11 @@ function Section({
                                 placeholder={placeholder}
                                 className="input-question"
                                 size="large"
+                                value={sectionTitle}
+                                onChange={(e): void => {
+                                    setSectionTitle(e.target.value);
+                                }}
+                                onBlur={(e) => handleInputTitle(e)}
                             />
                         </Col>
                         <Col span={3}>
@@ -164,6 +175,11 @@ function Section({
                             <TextArea
                                 placeholder="Beskrivelse av seksjon..."
                                 className="input-question"
+                                value={sectionDesc}
+                                onChange={(e): void => {
+                                    setSectionDesc(e.target.value);
+                                }}
+                                onBlur={(e) => handleInputDesc(e)}
                             ></TextArea>
                         </Col>
                         <Col xs={0} lg={4}></Col>

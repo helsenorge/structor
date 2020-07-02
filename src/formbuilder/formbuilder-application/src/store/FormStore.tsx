@@ -89,15 +89,11 @@ export function swapSection(
     };
 }
 
-export function updateSection(
-    sectionId: string,
-    sectionTitle: string,
-): UpdateAction {
+export function updateSection(section: ISection): UpdateAction {
     return {
         type: UpdateActionTypes.UPDATE_SECTION,
         member: MemberTypes.UPDATE,
-        sectionId: sectionId,
-        sectionTitle: sectionTitle,
+        section: section,
     };
 }
 
