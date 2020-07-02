@@ -192,6 +192,7 @@ const displayPatientInfo = (
                         key={patient.id}
                         title={name}
                     >
+                        {console.log(patient)}
                         <div className="info-container">
                             <div className="info-left">
                                 <h4>Pnr:</h4>
@@ -213,13 +214,15 @@ const displayPatientInfo = (
                         </div>
                     </Card>
                     <PatientQuestionnaireResponses patientID={patient.id} />
+
                     <Table
                         className="patient-table"
-                        key={dataSource.id}
+                        key={'SchemaTable'}
+                        rowKey={(record) => record.id}
                         columns={columns}
                         dataSource={dataSource}
                         size="small"
-                        pagination={{ pageSize: 12 }}
+                        pagination={{ pageSize: 10 }}
                         onRow={(record) => {
                             return {
                                 onClick: () => {
