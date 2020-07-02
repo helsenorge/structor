@@ -193,7 +193,6 @@ const displayPatientInfo = (
                         key={patient.id}
                         title={name}
                     >
-                        {console.log(patient)}
                         <div className="info-container">
                             <div className="info-left">
                                 <h4>Pnr:</h4>
