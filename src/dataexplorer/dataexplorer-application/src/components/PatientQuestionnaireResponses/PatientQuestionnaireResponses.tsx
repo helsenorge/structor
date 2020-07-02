@@ -2,10 +2,10 @@ import React from 'react';
 import useFetch from 'utils/hooks/useFetch';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 
-const PatientQuestionnnaireResponses = ({ patientID }: any) => {
+const PatientQuestionnnaireResponses = (props: { patientID: string }) => {
     const { response: patientQuestionnaireResponses } = useFetch<
         IQuestionnaireResponse
-    >('fhir/QuestionnaireResponse?subject=Patient/' + patientID);
+    >('fhir/QuestionnaireResponse?subject=Patient/' + props.patientID);
     if (patientQuestionnaireResponses) {
         return (
             <h1>
