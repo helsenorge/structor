@@ -14,9 +14,8 @@ export default function UpdateActions(
             }
             break;
         case UpdateActionTypes.UPDATE_SECTION:
-            if (action.sectionId && action.sectionTitle) {
-                draft.sections[action.sectionId].sectionTitle =
-                    action.sectionTitle;
+            if (action.section) {
+                draft.sections[action.section.id] = action.section;
             }
             break;
         case UpdateActionTypes.REMOVE_SECTION:

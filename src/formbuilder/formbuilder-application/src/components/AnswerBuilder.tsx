@@ -21,9 +21,9 @@ function AnswerBuilder({ questionId }: AnswerProps): JSX.Element {
         [AnswerTypes.boolean]: (
             <BooleanInput questionId={questionId}></BooleanInput>
         ),
-        //[AnswerTypes.number]: <Number questionId={questionId}></Number>,
+        [AnswerTypes.number]: <Number questionId={questionId}></Number>,
         [AnswerTypes.text]: <Text questionId={questionId}></Text>,
-        // [AnswerTypes.time]: <Time questionId={questionId}></Time>,
+        [AnswerTypes.time]: <Time questionId={questionId}></Time>,
     };
 
     return (
