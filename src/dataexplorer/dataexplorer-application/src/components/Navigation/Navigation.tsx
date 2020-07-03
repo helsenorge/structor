@@ -47,7 +47,7 @@ const Navigation = () => {
                             <Route exact path="/" component={MyPatients} />
                             <Route
                                 exact
-                                path="/Pasient"
+                                path="/pasient"
                                 render={() => (
                                     <PatientInfo
                                         setName={setName}
@@ -58,7 +58,7 @@ const Navigation = () => {
                             />
                             <Route
                                 exact
-                                path="/Pasient/skjema"
+                                path="/pasient/skjema"
                                 render={() => (
                                     <SchemaResponse
                                         questionnaireResponseId={schemaNumber}

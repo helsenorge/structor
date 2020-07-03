@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import useFetch from 'utils/hooks/useFetch';
-import { IPatientIdentifier, IRecord } from 'types/IPatient';
+import { IPatientIdentifier, IRecord, IDataSource } from 'types/IPatient';
 import { Empty, Row, Spin } from 'antd';
 import './PatientInfo.style.scss';
 import DisplayPatientInfo from './DisplayPatientInfo';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import { useHistory } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 interface IPatientInfoProps {
     setName: (name: string) => void;
@@ -16,7 +17,7 @@ interface IPatientInfoProps {
 const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
     const history = useHistory();
     const [dataSource, setDataSource] = useState<fhir.ResourceBase[]>([]);
-    const [QRData, setQRData] = useState<fhir.ResourceBase[]>([]);
+    const [QRData, setQRData] = useState<IDataSource[]>([]);
     const [qResponse, setQResponse] = useState<string>();
     const { response: questionnaire } = useFetch<fhir.Questionnaire>(
         'fhir/' + qResponse,
@@ -37,7 +38,7 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
 
     const handleClick = (record: IRecord) => {
         setSchema(record.id);
-        history.push('/Pasient/skjema');
+        history.push('/pasient/skjema');
     };
 
     const catchQuestionaires = (item: fhir.QuestionnaireResponse) => {
@@ -47,7 +48,6 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
             ),
         );
     };
-
     useEffect(() => {
         if (questionnaireResponses && questionnaireResponses.total > 0) {
             questionnaireResponses.entry.forEach((item) => {
@@ -65,7 +65,6 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
             });
         }
     }, [questionnaireResponses]);
-
     useEffect(() => {
         if (questionnaireResponses && questionnaireResponses?.total > 0) {
             QRData.forEach((item) => {
@@ -74,7 +73,7 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
                     {
                         id: item.id,
                         schemaName: questionnaire?.title,
-                        submitted: item.meta?.lastUpdated?.split('T')[0],
+                        submitted: item.submitted,
                     },
                 ]);
             });

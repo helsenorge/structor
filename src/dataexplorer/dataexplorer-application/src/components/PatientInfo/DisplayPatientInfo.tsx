@@ -14,7 +14,7 @@ const DisplayPatientInfo = (props: {
         {
             title: 'Skjemanavn',
             dataIndex: 'schemaName',
-            key: 'skjemanavn',
+            key: 'schemaName',
         },
         {
             title: 'Innsendt',
@@ -27,6 +27,7 @@ const DisplayPatientInfo = (props: {
             key: 'id',
         },
     ];
+    console.log(props.patient);
 
     return (
         <>
@@ -58,8 +59,6 @@ const DisplayPatientInfo = (props: {
                                 <span>
                                     {props.patient?.telecom?.[0]?.value}
                                 </span>
-                                <h4>E-post: </h4>
-                                <span>eksempel@epost.no</span>
                             </div>
                         </div>
                     </Card>
