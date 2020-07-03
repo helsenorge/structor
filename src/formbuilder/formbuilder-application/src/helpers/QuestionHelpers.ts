@@ -87,7 +87,7 @@ function convertNumber(
             valueInteger: answer.minValue,
         });
     }
-    if (answer.hasDefaultValue) {
+    if (answer.hasDefault) {
         answer.isDecimal
             ? (subItem.initialDecimal = answer.defaultValue)
             : (subItem.initialInteger = answer.defaultValue);

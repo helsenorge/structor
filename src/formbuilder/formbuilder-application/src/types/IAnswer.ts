@@ -40,9 +40,9 @@ export interface INumber extends IAnswer {
     hasMin: boolean;
     hasUnit: boolean;
     isDecimal: boolean;
+    hasDefault: boolean;
     maxValue: number;
     minValue: number;
-    hasDefaultValue: boolean;
     defaultValue?: number;
     unit?: string;
 }
