@@ -126,7 +126,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
 
     type answerList = { [key: string]: JSX.Element };
 
-    const propsController: answerList = {
+   /*  const propsController: answerList = {
         [AnswerTypes.radio]: <div></div>,
         [AnswerTypes.boolean]: <div></div>,
         [AnswerTypes.decimal]: (
@@ -340,26 +340,23 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                 </Row>
             </div>
         ),
-    };
+    }; */
 
     const answerBuilder: answerList = {
-        [AnswerTypes.radio]: (
-            <RadioButton questionId={questionId}></RadioButton>
+        [AnswerTypes.choice]: (
+            <Choice questionId={questionId}></Choice>
         ),
-        [AnswerTypes.boolean]: <BooleanInput></BooleanInput>,
-        [AnswerTypes.decimal]: <Decimal></Decimal>,
+        [AnswerTypes.boolean]: <BooleanInput questionId={questionId}></BooleanInput>,
+        [AnswerTypes.number]: <Number questionId={questionId}></Number>,
         [AnswerTypes.text]: (
-            <TextInput
-                longAnswer={(answerMeta as IText).maxLength ? true : false}
-                maxLength={(answerMeta as IText).maxLength}
-                placeholder="Mottaker skriver svar her"
-            ></TextInput>
+            <Text
+            questionId={questionId}
+            ></Text>
         ),
-        [AnswerTypes.dateTime]: (
-            <DateTime
-                isDate={(answerMeta as IDateTime).isDate}
-                isTime={(answerMeta as IDateTime).isTime}
-            ></DateTime>
+        [AnswerTypes.time]: (
+            <Time
+                questionId={questionId}
+            ></Time>
         ),
     };
 
