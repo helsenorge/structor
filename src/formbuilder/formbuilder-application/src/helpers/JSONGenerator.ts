@@ -90,10 +90,6 @@ function convertAnswers(
 
 function getAnswerType(answerType: AnswerTypes): string {
     switch (answerType) {
-        case AnswerTypes.radio:
-            return 'choice';
-        case AnswerTypes.boolean:
-            return 'choice';
         default:
             return answerType.toString();
     }
