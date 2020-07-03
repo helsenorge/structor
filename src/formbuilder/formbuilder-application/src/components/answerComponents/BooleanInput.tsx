@@ -15,7 +15,6 @@ type BooleanInputProps = {
 
 function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
     const checkStyle = {
-        display: 'block',
         marginBottom: '10px',
     };
     const { state, dispatch } = useContext(FormContext);
@@ -29,9 +28,11 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
         updateStore?: boolean;
     }) {
         const temp = { ...localAnswer };
-        if (attribute.isChecked) temp.isChecked = attribute.isChecked;
+        if (attribute.isChecked !== undefined)
+            temp.isChecked = attribute.isChecked;
         if (attribute.label) temp.label = attribute.label;
         setLocalAnswer(temp);
+        console.log(attribute.isChecked);
         if (attribute.updateStore)
             dispatch(updateAnswer(questionId, localAnswer));
     }
@@ -41,8 +42,8 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
             <Checkbox
                 key={'Boolean' + questionId}
                 style={checkStyle}
-                value={() => localUpdate({ isChecked: true })}
                 disabled
+                checked={localAnswer.isChecked}
             >
                 <Input
                     type="text"
@@ -60,7 +61,16 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
                     }
                 ></Input>
             </Checkbox>
-            <Checkbox value={() => localUpdate({ updateStore: true })}>Skal være forhåndsvalgt.</Checkbox>
+            <Checkbox
+                onChange={(e) =>
+                    localUpdate({
+                        isChecked: e.target.checked,
+                        updateStore: true,
+                    })
+                }
+            >
+                Skal være forhåndsvalgt.
+            </Checkbox>
         </div>
     );
 }

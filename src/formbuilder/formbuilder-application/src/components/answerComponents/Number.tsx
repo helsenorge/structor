@@ -2,7 +2,10 @@ import React from 'react';
 import { InputNumber } from 'antd';
 import './AnswerComponent.css';
 
-function Number(): JSX.Element {
+type NumberProps = {
+    questionId: string;
+};
+function Number({ questionId }: NumberProps): JSX.Element {
     return (
         <div
             style={{

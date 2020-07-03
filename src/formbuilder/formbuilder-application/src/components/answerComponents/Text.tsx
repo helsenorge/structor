@@ -20,11 +20,11 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
         updateStore?: boolean;
     }) {
         const temp = { ...localAnswer };
-        if (attribute.isLong) temp.isLong = attribute.isLong;
+        if (attribute.isLong !== undefined) temp.isLong = attribute.isLong;
         if (attribute.maxLength) temp.maxLength = attribute.maxLength;
         setLocalAnswer(temp);
         if (attribute.updateStore)
-            dispatch(updateAnswer(questionId, localAnswer));
+            dispatch(updateAnswer(questionId, temp));
     }
 
     return (

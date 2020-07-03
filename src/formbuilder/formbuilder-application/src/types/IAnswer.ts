@@ -4,6 +4,7 @@ export enum AnswerTypes {
     number = 'number',
     time = 'time',
     text = 'text',
+    default = 'Trykk for å velge',
 }
 
 export interface IAnswer {
