@@ -1,62 +1,96 @@
 import React, { useState, useContext } from 'react';
-import { Radio, Button, Input, Tooltip } from 'antd';
-import { PlusCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import {
+    Radio,
+    Button,
+    Input,
+    Tooltip,
+    Checkbox,
+    Col,
+    Row,
+    Select,
+} from 'antd';
+import {
+    PlusCircleOutlined,
+    PlusSquareOutlined,
+    CloseOutlined,
+} from '@ant-design/icons';
 import './AnswerComponent.css';
 import { IChoice } from '../../types/IAnswer';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 
-type radioButtonProps = {
+const { Option } = Select;
+
+type choiceProps = {
     questionId: string;
 };
 
-function Choice({ questionId }: radioButtonProps): JSX.Element {
-    const radioStyle = {
+function Choice({ questionId }: choiceProps): JSX.Element {
+    const { state, dispatch } = useContext(FormContext);
+    const [localAnswer, setLocalAnswer] = useState(
+        state.questions[questionId].answer as IChoice,
+    );
+
+    function localUpdate(attribute: {
+        isMultiple?: boolean;
+        isOpen?: boolean;
+        hasDefault?: boolean;
+        updateStore?: boolean;
+        choices?: Array<string>;
+        defaultValue?: number;
+    }) {
+        const temp = { ...localAnswer };
+        if (attribute.isMultiple !== undefined)
+            temp.isMultiple = attribute.isMultiple;
+        if (attribute.isOpen !== undefined) temp.isOpen = attribute.isOpen;
+        if (attribute.hasDefault !== undefined)
+            temp.hasDefault = attribute.hasDefault;
+        if (attribute.choices !== undefined) temp.choices = attribute.choices;
+        if (attribute.defaultValue !== undefined) {
+            if (isNaN(attribute.defaultValue)) temp.defaultValue = undefined;
+            else temp.defaultValue = attribute.defaultValue;
+        }
+
+        setLocalAnswer(temp);
+        if (attribute.updateStore)
+            dispatch(updateAnswer(questionId, localAnswer));
+    }
+
+    const choiceStyle = { marginTop: '20px' };
+
+    const choiceButtonStyle = {
         display: 'block',
         height: '30px',
         lineHeight: '30px',
         marginBottom: 10,
         width: '90%',
     };
-    const { state, dispatch } = useContext(FormContext);
-    let choiceList = (state.questions[questionId].answer as IChoice).choices;
-    if (!choiceList) {
-        choiceList = [''];
-    }
-    const [buttonNames, setButtonNames] = useState(choiceList);
+
+    const choiceInputStyle = {
+        width: '250px',
+    };
 
     function addButtonClick() {
-        setButtonNames([...buttonNames, '']);
+        const tempChoices = [...localAnswer.choices, ''];
+        localUpdate({ updateStore: true, choices: tempChoices });
     }
 
     function deleteButton(id: number) {
-        const res = [...buttonNames];
-        res.splice(id, 1);
-        setButtonNames(res);
+        const tempChoices = { ...localAnswer.choices };
+        tempChoices.splice(id, 1);
+        localUpdate({ updateStore: true, choices: tempChoices });
     }
 
-    function handleInput() {
-        dispatch(
-            updateAnswer(
-                questionId as string,
-                {
-                    choices: buttonNames,
-                    id: questionId, // TODO
-                } as IChoice,
-            ),
-        );
+    function alterChoiceText(id: number, value: string) {
+        const tempChoices = [...localAnswer.choices];
+        tempChoices[id] = value;
+        localUpdate({ choices: tempChoices });
     }
 
-    function handleInputChange(choiceText: string, id: number){
-        const temp = buttonNames.slice();
-        temp[id] = choiceText;
-        setButtonNames(temp);
-    }
-
-    function createButton(id: number) {
+    function createRadioButton(id: number) {
         return (
             <Radio
-                key={'Radio' + questionId + id}
-                style={radioStyle}
+                key={'Radio_' + questionId + id}
+                style={choiceButtonStyle}
                 disabled={true}
                 value={id}
             >
@@ -64,15 +98,10 @@ function Choice({ questionId }: radioButtonProps): JSX.Element {
                     type="text"
                     className="input-question"
                     placeholder={'Skriv inn alternativ her'}
-                    value={buttonNames[id]}
-                    // onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                    //     const temp = buttonNames.slice();
-                    //     temp[id] = e.target.value;
-                    //     setButtonNames(temp);
-                    //     handleInput();
-                    // }}
-                    onChange={(e) => handleInputChange(e.target.value, id)}
-                    onBlur={() => handleInput()}
+                    value={localAnswer.choices[id]}
+                    style={choiceInputStyle}
+                    onChange={(e) => alterChoiceText(id, e.target.value)}
+                    onBlur={() => localUpdate({ updateStore: true })}
                 />
 
                 <Tooltip title="Fjern alternativ" placement="right">
@@ -87,20 +116,149 @@ function Choice({ questionId }: radioButtonProps): JSX.Element {
             </Radio>
         );
     }
-    return (
-        <Radio.Group name="radiogroup">
-            {buttonNames.map((name, id) => [createButton(id)])}
-            {
-                <Button
+
+    function createCheckbox(id: number) {
+        return (
+            <Checkbox
+                key={'Checkbox_' + questionId + id}
+                style={choiceButtonStyle}
+                disabled={true}
+                value={id}
+                checked={false}
+            >
+                <Input
                     type="text"
-                    icon={<PlusCircleOutlined />}
-                    onClick={addButtonClick}
-                    value="Add"
-                >
-                    Legg til alternativ
-                </Button>
-            }
-        </Radio.Group>
+                    className="input-question"
+                    placeholder={'Skriv inn alternativ her'}
+                    value={localAnswer.choices[id]}
+                    style={choiceInputStyle}
+                    onChange={(e) => alterChoiceText(id, e.target.value)}
+                    onBlur={() => localUpdate({ updateStore: true })}
+                />
+
+                <Tooltip title="Fjern alternativ" placement="right">
+                    <Button
+                        type="text"
+                        shape="circle"
+                        icon={<CloseOutlined />}
+                        onClick={() => deleteButton(id)}
+                        value="Delete"
+                    />
+                </Tooltip>
+            </Checkbox>
+        );
+    }
+
+    return (
+        <>
+            <Row>
+                <Col span={6}>
+                    <Checkbox
+                        checked={localAnswer.isMultiple}
+                        onChange={(e) =>
+                            localUpdate({
+                                updateStore: true,
+                                isMultiple: e.target.checked,
+                            })
+                        }
+                    >
+                        Flervalg
+                    </Checkbox>
+                </Col>
+                <Col span={6}>
+                    <Checkbox
+                        checked={localAnswer.isOpen}
+                        onChange={(e) =>
+                            localUpdate({
+                                updateStore: true,
+                                isOpen: e.target.checked,
+                            })
+                        }
+                    >
+                        La borger legge til svaralternativ
+                    </Checkbox>
+                </Col>
+                {!localAnswer.isMultiple && (
+                    <Col span={6}>
+                        <Checkbox
+                            checked={localAnswer.hasDefault}
+                            onChange={(e) =>
+                                localUpdate({
+                                    updateStore: true,
+                                    hasDefault: e.target.checked,
+                                })
+                            }
+                        >
+                            Default:
+                        </Checkbox>
+                    </Col>
+                )}
+                {localAnswer.hasDefault && !localAnswer.isMultiple && (
+                    <Col span={6}>
+                        <Select
+                            defaultValue={localAnswer.defaultValue}
+                            style={{ width: '200px' }}
+                            onSelect={(value) => {
+                                localUpdate({
+                                    updateStore: true,
+                                    defaultValue: value,
+                                });
+                            }}
+                            placeholder="Velg default"
+                        >
+                            {localAnswer.choices
+                                ? localAnswer.choices.map((name, id) => [
+                                      <Option key={'def' + id} value={id}>
+                                          {name}
+                                      </Option>,
+                                  ])
+                                : []}
+                        </Select>
+                    </Col>
+                )}
+                {!localAnswer.hasDefault &&
+                    localAnswer.defaultValue &&
+                    localUpdate({ updateStore: true, defaultValue: NaN })}
+            </Row>
+            {localAnswer.isMultiple ? (
+                <div className="question-component" style={choiceStyle}>
+                    <h4>Answers:</h4>
+                    {localAnswer.choices.map((name, id) => [
+                        createCheckbox(id),
+                    ])}
+                    <Button
+                        type="text"
+                        icon={<PlusSquareOutlined />}
+                        onClick={addButtonClick}
+                        value="Add"
+                    >
+                        Legg til alternativ
+                    </Button>
+                </div>
+            ) : (
+                <div className="question-component" style={choiceStyle}>
+                    <h4>Answers:</h4>
+                    <Radio.Group
+                        name="radiogroup"
+                        value={localAnswer.defaultValue}
+                    >
+                        {localAnswer.choices.map((name, id) => [
+                            createRadioButton(id),
+                        ])}
+                        {
+                            <Button
+                                type="text"
+                                icon={<PlusCircleOutlined />}
+                                onClick={addButtonClick}
+                                value="Add"
+                            >
+                                Legg til alternativ
+                            </Button>
+                        }
+                    </Radio.Group>
+                </div>
+            )}
+        </>
     );
 }
 
