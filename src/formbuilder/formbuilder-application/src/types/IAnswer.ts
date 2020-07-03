@@ -39,9 +39,9 @@ export interface ITime extends IAnswer {
     hasDefaultTime: boolean;
     hasStartTime: boolean;
     hasEndTime: boolean;
-    defaultTime?: string;
-    startTime?: string;
-    endTime?: string;
+    defaultTime?: number;
+    startTime?: number;
+    endTime?: number;
 }
 
 export interface IBoolean extends IAnswer {
