@@ -6,7 +6,6 @@ import './PatientInfo.style.scss';
 import DisplayPatientInfo from './DisplayPatientInfo';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import { useHistory } from 'react-router-dom';
-import dayjs from 'dayjs';
 
 interface IPatientInfoProps {
     setName: (name: string) => void;
