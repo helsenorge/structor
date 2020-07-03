@@ -36,6 +36,9 @@ export interface IText extends IAnswer {
 export interface ITime extends IAnswer {
     isTime: boolean;
     isDate: boolean;
+    hasDefaultTime: boolean;
+    hasStartTime: boolean;
+    hasEndTime: boolean;
     defaultTime?: string;
     startTime?: string;
     endTime?: string;
