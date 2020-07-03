@@ -14,6 +14,7 @@ export enum FhirAnswerTypes {
     dateTime = 'dateTime',
     time = 'time',
     choice = 'choice',
+    openChoice = 'open-choice',
     string = 'string',
     number = 'number',
     text = 'text',
@@ -28,6 +29,7 @@ export interface IChoice extends IAnswer {
     isMultiple: boolean;
     isOpen: boolean;
     choices: Array<string>;
+    hasDefaultValue: boolean;
     defaultValue?: number;
 }
 
@@ -38,6 +40,7 @@ export interface INumber extends IAnswer {
     isDecimal: boolean;
     maxValue: number;
     minValue: number;
+    hasDefaultValue: boolean;
     defaultValue?: number;
     unit?: string;
 }
@@ -50,6 +53,7 @@ export interface IText extends IAnswer {
 export interface ITime extends IAnswer {
     isTime: boolean;
     isDate: boolean;
+    hasDefaultTime: boolean;
     defaultTime?: string;
     startTime?: string;
     endTime?: string;
