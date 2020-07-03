@@ -9,7 +9,7 @@ type radioButtonProps = {
     questionId: string;
 };
 
-function RadioButton({ questionId }: radioButtonProps): JSX.Element {
+function Choice({ questionId }: radioButtonProps): JSX.Element {
     const radioStyle = {
         display: 'block',
         height: '30px',
@@ -104,4 +104,4 @@ function RadioButton({ questionId }: radioButtonProps): JSX.Element {
     );
 }
 
-export default RadioButton;
+export default Choice;

@@ -2,7 +2,7 @@ import React from 'react';
 import { InputNumber } from 'antd';
 import './AnswerComponent.css';
 
-function Decimal(): JSX.Element {
+function Number(): JSX.Element {
     return (
         <div
             style={{
@@ -16,4 +16,4 @@ function Decimal(): JSX.Element {
     );
 }
 
-export default Decimal;
+export default Number;

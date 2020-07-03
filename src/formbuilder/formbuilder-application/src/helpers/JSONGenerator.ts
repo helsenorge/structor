@@ -2,12 +2,6 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import { AnswerTypes, IChoice } from '../types/IAnswer';
 import IQuestion from '../types/IQuestion';
-import convertQuestion from './QuestionHelpers';
-
-export interface QuestionConverted {
-    type: AnswerTypes;
-    extension: Array<fhir.Extension>;
-}
 
 function convertQuestions(
     sectionOrder: Array<string>,
@@ -26,60 +20,27 @@ function convertQuestions(
             item: new Array<fhir.QuestionnaireItem>(),
         };
         // TODO: Add section desctiption
-        if (section.description !== undefined) {
-            item._text = {
-                extension: [
-                    {
-                        url:
-                            'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
-                        valueMarkdown:
-                            '### ' +
-                            section.sectionTitle +
-                            '\r\n' +
-                            section.description,
-                    },
-                ],
-            };
-        }
         for (let j = 0; j < sections[sectionKey].questionOrder.length; j++) {
             const questionKey = sections[sectionKey].questionOrder[j];
             const question = questions[questionKey];
             // Will be within 'item' and if in section another 'item' of type group
-            const convertedQuestion = convertQuestion(question);
             const subItem: fhir.QuestionnaireItem = {
                 linkId: i + 1 + '.' + (j + 1) + '00',
                 text: question.questionText,
-                type: convertedQuestion.type,
-                required: question.isRequired, // TODO: true | false
+                type: getAnswerType(question.answerType),
+                required: true, // TODO: true | false
                 repeats: false, // TODO
                 readOnly: false, // TODO
             };
-            if ((question.answer as IChoice).choices !== undefined) {
+            if (
+                (question.answer as IChoice).choices &&
+                (question.answer as IChoice).choices.length > 0
+            ) {
                 subItem.options = {
                     reference: '#' + question.answer.id,
                 };
             }
-
-            if (question.description !== undefined) {
-                subItem._text = {
-                    extension: [
-                        {
-                            url:
-                                'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
-                            valueMarkdown:
-                                '### ' +
-                                question.questionText +
-                                '\r\n' +
-                                question.description,
-                        },
-                    ],
-                };
-            }
-
-            if (convertedQuestion.extension !== undefined) {
-                subItem.extension = convertedQuestion.extension;
-            }
-
+            // TODO: if (question.description) add _text with extension.
             item.item?.push(subItem);
         }
         items.push(item);
@@ -129,8 +90,6 @@ function convertAnswers(
 
 function getAnswerType(answerType: AnswerTypes): string {
     switch (answerType) {
-        case AnswerTypes.radio:
-            return 'choice';
         default:
             return answerType.toString();
     }
@@ -147,7 +106,6 @@ function convertToJSON(
         sections,
         questions,
     );
-    // TODO: fix questionnaire title and description binding
     const questionnaire: fhir.Questionnaire = {
         resourceType: 'Questionnaire',
         language: 'nb-NO',

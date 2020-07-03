@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, ChangeEvent } from 'react';
 import { Row, Col, Button, Tooltip, Input } from 'antd';
 import { PlusOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
-import Question from './Question';
+import QuestionWrapper from './QuestionWrapper';
 import {
     FormContext,
     addNewQuestion,
@@ -220,7 +220,7 @@ function Section({
                                                             }
                                                             {...provided.draggableProps}
                                                         >
-                                                            <Question
+                                                            <QuestionWrapper
                                                                 key={
                                                                     question.id
                                                                 }

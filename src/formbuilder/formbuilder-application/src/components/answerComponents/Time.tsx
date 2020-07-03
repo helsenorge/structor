@@ -11,7 +11,7 @@ type DateProps = {
     isTime?: boolean;
 };
 // TODO: This component does not support having a range of datetime at the moment
-function DateTime({ isDate, isTime, isRange = false }: DateProps): JSX.Element {
+function Time({ isDate, isTime, isRange = false }: DateProps): JSX.Element {
     function dateType(): JSX.Element {
         switch (true) {
             case isDate && isTime:
@@ -66,4 +66,4 @@ function DateTime({ isDate, isTime, isRange = false }: DateProps): JSX.Element {
     return dateType();
 }
 
-export default DateTime;
+export default Time;

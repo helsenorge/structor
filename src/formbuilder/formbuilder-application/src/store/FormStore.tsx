@@ -8,9 +8,10 @@ import produce from 'immer';
 import {
     AnswerTypes,
     IChoice,
-    IDateTime,
+    ITime,
     INumber,
     IText,
+    IBoolean,
 } from '../types/IAnswer';
 import {
     UpdateAction,
@@ -110,7 +111,7 @@ export function addNewQuestion(sectionId: string): UpdateAction {
         sectionId: sectionId,
         questionText: '',
         answerType: AnswerTypes.boolean,
-        answer: { id: generateID(), choices: [''] },
+        answer: { id: generateID() },
         isRequired: true,
         hasDescription: false,
     };
@@ -176,7 +177,7 @@ export function updateQuestion(question: IQuestion): UpdateAction {
 
 export function updateAnswer(
     questionId: string,
-    answer: IChoice | INumber | IText | IDateTime,
+    answer: IChoice | INumber | IText | ITime | IBoolean,
 ): UpdateAction {
     console.log(answer);
     return {
