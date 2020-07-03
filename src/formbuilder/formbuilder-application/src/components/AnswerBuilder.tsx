@@ -16,7 +16,7 @@ function AnswerBuilder({ questionId }: AnswerProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
 
     const answerBuilder: answerList = {
-        // [AnswerTypes.choice]: <Choice questionId={questionId}></Choice>,
+        [AnswerTypes.choice]: <Choice questionId={questionId}></Choice>,
         // [AnswerTypes.boolean]: (
         //    <BooleanInput questionId={questionId}></BooleanInput>
         //),
@@ -25,7 +25,7 @@ function AnswerBuilder({ questionId }: AnswerProps): JSX.Element {
         // [AnswerTypes.time]: <Time questionId={questionId}></Time>,
     };
 
-    return <Text questionId={questionId} />;
+    return <Choice questionId={questionId} />;
 }
 
 export default AnswerBuilder;

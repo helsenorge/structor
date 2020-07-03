@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, ChangeEvent } from 'react';
 import { Row, Col, Button, Tooltip, Input } from 'antd';
 import { PlusOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import QuestionWrapper from './QuestionWrapper';
@@ -38,9 +38,9 @@ function Section({
 
     const section = state.sections[sectionId];
 
-    const [sectionTitle, setSectiontitle] = useState(
-        state.sections[sectionId].sectionTitle,
-    );
+    const [sectionTitle, setSectionTitle] = useState(section.sectionTitle);
+    const [sectionDesc, setSectionDesc] = useState(section.description);
+    
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (index + 1) + '...';
         setPlaceholder(placeholderString);
@@ -72,10 +72,24 @@ function Section({
             dispatch(removeQuestion(questionIndex, section.id));
     }
 
-    function handleChange(value: string) {
-        setSectiontitle(value);
-        dispatch(updateSection(sectionId, value));
+    function handleInputDesc(e: ChangeEvent<HTMLTextAreaElement>) {
+        setPlaceholder(e.currentTarget.value);
+        if (section) {
+            const temp = { ...section };
+            temp.description = e.target.value;
+            dispatch(updateSection(temp));
+        }
     }
+
+    function handleInputTitle(e: ChangeEvent<HTMLInputElement>) {
+        setPlaceholder(e.currentTarget.value);
+        if (section) {
+            const temp = { ...section };
+            temp.sectionTitle = e.target.value;
+            dispatch(updateSection(temp));
+        }
+    }
+
     return (
         <div
             style={{
@@ -95,6 +109,11 @@ function Section({
                                 placeholder={placeholder}
                                 className="input-question"
                                 size="large"
+                                value={sectionTitle}
+                                onChange={(e): void => {
+                                    setSectionTitle(e.target.value);
+                                }}
+                                onBlur={(e) => handleInputTitle(e)}
                             />
                         </Col>
                         <Col span={3}>
@@ -156,6 +175,11 @@ function Section({
                             <TextArea
                                 placeholder="Beskrivelse av seksjon..."
                                 className="input-question"
+                                value={sectionDesc}
+                                onChange={(e): void => {
+                                    setSectionDesc(e.target.value);
+                                }}
+                                onBlur={(e) => handleInputDesc(e)}
                             ></TextArea>
                         </Col>
                         <Col xs={0} lg={4}></Col>
