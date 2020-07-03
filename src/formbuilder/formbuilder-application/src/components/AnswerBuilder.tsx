@@ -3,6 +3,7 @@ import Choice from './answerComponents/Choice';
 import BooleanInput from './answerComponents/BooleanInput';
 import Time from './answerComponents/Time';
 import Text from './answerComponents/Text';
+import Number from './answerComponents/Number';
 import React, { useContext } from 'react';
 import { FormContext } from '../store/FormStore';
 import { Row, Col } from 'antd';
