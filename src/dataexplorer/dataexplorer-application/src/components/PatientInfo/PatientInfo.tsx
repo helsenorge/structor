@@ -1,7 +1,7 @@
 import React from 'react';
 import useFetch from 'utils/hooks/useFetch';
 import { IPatient, IPatientIdentifier, IRecord } from 'types/IPatient';
-import { Row, Col, Card, Table, message, Empty } from 'antd';
+import { Row, Col, Card, Table, message, Empty, Spin } from 'antd';
 import PatientQuestionnaireResponses from '../PatientQuestionnaireResponses/PatientQuestionnaireResponses';
 import './PatientInfo.style.scss';
 
@@ -17,7 +17,7 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
         setSchema(record.schemaName);
     };
     // The oid signifies that we are searching on social security number
-    const { response: patientData } = useFetch<IPatientIdentifier>(
+    const { response: patientData, error } = useFetch<IPatientIdentifier>(
         'fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' +
             patientID,
     );
@@ -39,13 +39,31 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
         }
     }
     return (
-        <div className="failed-container">
-            <Empty
-                description={
-                    <span>Fant ingen pasienter med dette personnummeret</span>
-                }
-            ></Empty>
-        </div>
+        <>
+            {!patientData && error.length === 0 && (
+                <Row justify="space-around" align="middle">
+                    <Spin size="large" />
+                </Row>
+            )}
+            {patientData?.total === 0 && (
+                <div className="failed-container">
+                    <Empty
+                        description={
+                            <span>
+                                Fant ingen pasienter med dette personnummeret
+                            </span>
+                        }
+                    ></Empty>
+                </div>
+            )}
+            {error.length > 0 && (
+                <Empty
+                    description={
+                        <span>Feil ved lasting av pasienter: {error}</span>
+                    }
+                ></Empty>
+            )}
+        </>
     );
 };
 

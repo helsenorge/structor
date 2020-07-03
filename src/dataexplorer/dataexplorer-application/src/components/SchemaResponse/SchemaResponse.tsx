@@ -10,14 +10,17 @@ const SchemaResponse = (props: { questionnaireResponseId: string }) => {
     const schemaResponse = useFetch<fhir.QuestionnaireResponse>(
         'fhir/QuestionnaireResponse/' + props.questionnaireResponseId,
     );
+
     const questionnaireUrl = schemaResponse.response?.questionnaire?.reference?.substr(
         schemaResponse.response?.questionnaire?.reference?.indexOf(
             'Questionnaire/',
         ),
     );
+
     const { response: questionnaire } = useFetch<fhir.Questionnaire>(
         'fhir/' + questionnaireUrl,
     );
+
     const [answers, setAnswers] = useState<IAnswer[]>([]);
 
     const [questions, setQuestions] = useState<IQuestion[]>([]);
@@ -100,7 +103,7 @@ const SchemaResponse = (props: { questionnaireResponseId: string }) => {
 
     return (
         <>
-            {schemaResponse && questionnaire && questionnaire.name ? (
+            {schemaResponse && questionnaire && questionnaire.name && (
                 <div>
                     <Schemes
                         questions={questions}
@@ -110,9 +113,15 @@ const SchemaResponse = (props: { questionnaireResponseId: string }) => {
                         title={questionnaire.name}
                     />
                 </div>
-            ) : (
-                <Row justify="center">
+            )}
+            {!schemaResponse.response && schemaResponse.error.length === 0 && (
+                <Row justify="space-around" align="middle">
                     <Spin size="large" />
+                </Row>
+            )}
+            {schemaResponse.error.length > 0 && (
+                <Row justify="center">
+                    Feil ved lasting av skjema: {schemaResponse.error}
                 </Row>
             )}
         </>

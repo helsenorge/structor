@@ -9,9 +9,8 @@ const PatientQuestionnnaireResponses = (props: { patientID: string }) => {
     if (patientQuestionnaireResponses) {
         return (
             <h1>
-                Pasienten har
-                {patientQuestionnaireResponses.entry.length}
-                utfylte skjemaer
+                Pasienten har {patientQuestionnaireResponses.total} utfylte
+                skjemaer
             </h1>
         );
     }
