@@ -1,7 +1,7 @@
 export interface IQuestionnaireResponse {
     entry: IEntry[];
     id: string;
-    total?: number;
+    total: number;
 }
 
 export interface IEntry {

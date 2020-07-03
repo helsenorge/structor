@@ -28,7 +28,7 @@ const MyPatients = (props: { history: History }) => {
                 </Col>
             </Row>
             {patientID &&
-                props.history.push({ pathname: 'Pasient', state: patientID })}
+                props.history.push({ pathname: 'pasient', state: patientID })}
         </>
     );
 };
