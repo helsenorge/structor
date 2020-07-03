@@ -1,22 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import useFetch from 'utils/hooks/useFetch';
-import { IPatient, dataSourceType } from 'types/IPatient';
-import { IQRIdentifier, IQRResource } from 'types/IQuestionnaireResponse';
+import React from 'react';
+import { IPatient } from 'types/IPatient';
 import { Row, Col, Card, Table } from 'antd';
 import './PatientInfo.style.scss';
 
-const DisplayPatientInfo = (props: { patient: IPatient; handleClick: any }) => {
+const DisplayPatientInfo = (props: {
+    patient: IPatient;
+    handleClick: any;
+    dataSource: fhir.ResourceBase[];
+}) => {
     const name =
         props.patient.name[0].given[0] + ' ' + props.patient.name[0].family;
-    const [dataSource, setDataSource] = useState<dataSourceType[]>([]);
-    const [QRData, setQRData] = useState<dataSourceType[]>([]);
-    const [qResponse, setQResponse] = useState<string>();
-    const { response: questionnaire } = useFetch<fhir.Questionnaire>(
-        'fhir/' + qResponse,
-    );
-    const { response: questionnaireResponses } = useFetch<IQRIdentifier>(
-        'fhir/QuestionnaireResponse?subject=Patient/' + props.patient.id,
-    );
     const columns = [
         {
             title: 'Skjemanavn',
@@ -34,61 +27,6 @@ const DisplayPatientInfo = (props: { patient: IPatient; handleClick: any }) => {
             key: 'id',
         },
     ];
-    useEffect(() => {
-        if (questionnaireResponses && questionnaireResponses.total > 0) {
-            questionnaireResponses.entry.map((item) => {
-                setQResponse(
-                    'fhir/' +
-                        item.resource?.questionnaire?.reference?.substr(
-                            item.resource?.questionnaire?.reference?.indexOf(
-                                'Questionnaire/',
-                            ),
-                        ),
-                );
-            });
-        }
-    }, [questionnaireResponses]);
-
-    function catchQuestionaires(item: IQRResource) {
-        setQResponse(
-            item.resource?.questionnaire?.reference?.substr(
-                item.resource?.questionnaire?.reference?.indexOf(
-                    'Questionnaire/',
-                ),
-            ),
-        );
-    }
-
-    useEffect(() => {
-        if (questionnaireResponses && questionnaireResponses.total > 0) {
-            questionnaireResponses.entry.map((item) => {
-                catchQuestionaires(item);
-                setQRData((QRData) => [
-                    ...QRData,
-                    {
-                        id: item.resource.id,
-                        schemaName: '',
-                        submitted: item.resource.meta.lastUpdated.split('T')[0],
-                    },
-                ]);
-            });
-        }
-    }, [questionnaireResponses]);
-
-    useEffect(() => {
-        if (questionnaireResponses && questionnaireResponses.total > 0) {
-            QRData.map((item) => {
-                setDataSource((dataSource) => [
-                    ...dataSource,
-                    {
-                        id: item.id,
-                        schemaName: questionnaire?.title,
-                        submitted: item.submitted,
-                    },
-                ]);
-            });
-        }
-    }, [questionnaire]);
 
     return (
         <>
@@ -104,36 +42,35 @@ const DisplayPatientInfo = (props: { patient: IPatient; handleClick: any }) => {
                         <div className="info-container">
                             <div className="info-left">
                                 <h4>Pnr:</h4>
-                                <p>{props.patient.id}</p>
-                                <p>
-                                    <h4>Kjønn:</h4> {props.patient.gender}
-                                </p>
-                                <p>
-                                    <h4>Fødselsdato:</h4>
-                                    {props.patient.birthDate}
-                                </p>
+                                <span>{props.patient.id}</span>
+                                <h4>Kjønn:</h4>
+                                <span>{props.patient.gender}</span>
+                                <h4>Fødselsdato:</h4>
+                                <span>{props.patient.birthDate}</span>
                             </div>
+
                             <div className="info-right">
-                                <p>
-                                    <h4>Addresse: </h4>
+                                <h4>Addresse: </h4>
+                                <span>
                                     {props.patient?.address?.[0]?.line?.[0]}
-                                </p>
-                                <p>
-                                    <h4>Telefon: </h4>
+                                </span>
+                                <h4>Telefon: </h4>
+                                <span>
                                     {props.patient?.telecom?.[0]?.value}
-                                </p>
-                                <p>
-                                    <h4>E-post: </h4>
-                                    eksempel@epost.no
-                                </p>
+                                </span>
+                                <h4>E-post: </h4>
+                                <span>eksempel@epost.no</span>
                             </div>
                         </div>
                     </Card>
                     <Table
                         className="patient-table"
-                        key={props.patient.id}
+                        key={'Patient Questionnaire Response Key'}
+                        rowKey={(record) =>
+                            record.id ? record.id : 'waiting for response'
+                        }
                         columns={columns}
-                        dataSource={dataSource}
+                        dataSource={props.dataSource}
                         size="small"
                         pagination={{ pageSize: 12 }}
                         onRow={(record) => {

@@ -7,6 +7,7 @@ import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
 import PatientInfo from '../PatientInfo/PatientInfo';
 import './Navigation.style.scss';
+import SchemaResponse from 'components/SchemaResponse/SchemaResponse';
 
 const { Header, Content } = Layout;
 const Navigation = () => {
@@ -52,6 +53,15 @@ const Navigation = () => {
                                         setName={setName}
                                         setSchema={setSchema}
                                         patientID={patientID}
+                                    />
+                                )}
+                            />
+                            <Route
+                                exact
+                                path="/Pasient/skjema"
+                                render={() => (
+                                    <SchemaResponse
+                                        questionnaireResponseId={schemaNumber}
                                     />
                                 )}
                             />

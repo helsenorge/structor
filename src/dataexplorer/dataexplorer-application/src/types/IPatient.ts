@@ -10,7 +10,7 @@ export interface IPatient {
 }
 
 export interface IRecord {
-    id: number;
+    id: string;
     schemaName: string;
 }
 export interface IPatientIdentifier {
@@ -35,10 +35,4 @@ export interface ITelecom {
     use: string;
     system: string;
     value: number;
-}
-
-export interface dataSourceType {
-    id: string;
-    schemaName: string | undefined;
-    submitted: string;
 }
