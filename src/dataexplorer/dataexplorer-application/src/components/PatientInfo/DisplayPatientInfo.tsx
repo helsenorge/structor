@@ -27,7 +27,6 @@ const DisplayPatientInfo = (props: {
             key: 'id',
         },
     ];
-    console.log(props.patient);
 
     return (
         <>
