@@ -81,10 +81,6 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
     }, [questionnaire]);
 
     if (patientData && patientData !== undefined && patientData.total !== 0) {
-        const name =
-            patientData.entry[0].resource.name[0].given[0] +
-            ' ' +
-            patientData.entry[0].resource.name[0].family;
         // Since the search uses social security number, which are
         // unique, the response will contain a maximum value of 1,
         // if the patient exists in the database.

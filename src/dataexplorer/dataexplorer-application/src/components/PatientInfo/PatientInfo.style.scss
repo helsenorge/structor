@@ -4,17 +4,23 @@
 
 .patient-card {
     margin-top: (1.875rem!important);
+    cursor: auto;
+
+    .ant-card-head-title {
+        h4 {
+            margin: 0;
+        }
+    }
 
     .info-container {
         display: flex;
         justify-content: space-between;
-
-        h1 {
-            font-style: italic;
+        span {
             font-weight: bold;
         }
         h4 {
-            font-weight: bold;
+            font-style: italic;
+            font-weight: 150;
             margin-bottom: 0;
             margin-top: 0.8125rem;
         }
@@ -23,4 +29,16 @@
 
 .patient-table {
     margin-top: 1.25rem;
+
+    .ant-table-thead {
+        th {
+            background-color: #f7fbff !important;
+        }
+    }
+    .ant-table-tbody {
+        .table-row-dark {
+            background-color: rgba(245, 241, 241, 0.523);
+        }
+        cursor: pointer;
+    }
 }
