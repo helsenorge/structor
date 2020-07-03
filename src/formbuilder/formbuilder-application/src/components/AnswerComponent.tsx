@@ -3,7 +3,7 @@ import { Row, Col, Select, Input, Checkbox, InputNumber, Button } from 'antd';
 import './answerComponents/AnswerComponent.css';
 import TextInput from './answerComponents/TextInput';
 import RadioButton from './answerComponents/RadioButton';
-import Decimal from './answerComponents/Decimal';
+import Number from './answerComponents/Number';
 import DateTime from './answerComponents/DateTime';
 import {
     AnswerTypes,
@@ -129,7 +129,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
     const propsController: answerList = {
         [AnswerTypes.radio]: <div></div>,
         [AnswerTypes.boolean]: <div></div>,
-        [AnswerTypes.decimal]: (
+        [AnswerTypes.integer]: (
             <div>
                 <Row>
                     <Col span={24} style={{ padding: '0 10px' }}>
@@ -347,7 +347,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
             <RadioButton questionId={questionId}></RadioButton>
         ),
         [AnswerTypes.boolean]: <BooleanInput></BooleanInput>,
-        [AnswerTypes.decimal]: <Decimal></Decimal>,
+        [AnswerTypes.integer]: <Number></Number>,
         [AnswerTypes.text]: (
             <TextInput
                 longAnswer={(answerMeta as IText).maxLength ? true : false}
@@ -413,7 +413,7 @@ function AnswerComponent({ questionId }: AnswerComponentProps): JSX.Element {
                             placeholder="Velg svartype"
                         >
                             <Option value={AnswerTypes.boolean}>Ja/nei</Option>
-                            <Option value={AnswerTypes.decimal}>Tall</Option>
+                            <Option value={AnswerTypes.integer}>Tall</Option>
                             <Option value={AnswerTypes.text}>Tekst</Option>
                             <Option value={AnswerTypes.dateTime}>
                                 Dato/tid

@@ -2,6 +2,12 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import { AnswerTypes, IChoice } from '../types/IAnswer';
 import IQuestion from '../types/IQuestion';
+import convertQuestion from './QuestionHelpers';
+
+export interface QuestionConverted {
+    type: AnswerTypes;
+    extension: Array<fhir.Extension>;
+}
 
 function convertQuestions(
     sectionOrder: Array<string>,
@@ -39,18 +45,16 @@ function convertQuestions(
             const questionKey = sections[sectionKey].questionOrder[j];
             const question = questions[questionKey];
             // Will be within 'item' and if in section another 'item' of type group
+            const convertedQuestion = convertQuestion(question);
             const subItem: fhir.QuestionnaireItem = {
                 linkId: i + 1 + '.' + (j + 1) + '00',
                 text: question.questionText,
-                type: getAnswerType(question.answerType),
-                required: true, // TODO: true | false
+                type: convertedQuestion.type,
+                required: question.isRequired, // TODO: true | false
                 repeats: false, // TODO
                 readOnly: false, // TODO
             };
-            if (
-                (question.answer as IChoice).choices &&
-                (question.answer as IChoice).choices.length > 0
-            ) {
+            if ((question.answer as IChoice).choices !== undefined) {
                 subItem.options = {
                     reference: '#' + question.answer.id,
                 };
@@ -71,6 +75,11 @@ function convertQuestions(
                     ],
                 };
             }
+
+            if (convertedQuestion.extension !== undefined) {
+                subItem.extension = convertedQuestion.extension;
+            }
+
             item.item?.push(subItem);
         }
         items.push(item);
@@ -87,16 +96,7 @@ function convertAnswers(
     Object.values(questions).forEach((question: IQuestion) => {
         questionIndex++;
         const answer = question.answer;
-<<<<<<< HEAD
-        if (
-            getAnswerType(answer.type) !== 'choice' &&
-            getAnswerType(answer.type) !== 'open-choice'
-        ) {
-            return;
-        }
-=======
         if ((answer as IChoice).choices === undefined) return;
->>>>>>> fb-dev
         const containPart: fhir.Resource = {
             resourceType: 'ValueSet',
             id: answer.id,
@@ -130,8 +130,6 @@ function convertAnswers(
 function getAnswerType(answerType: AnswerTypes): string {
     switch (answerType) {
         case AnswerTypes.radio:
-            return 'choice';
-        case AnswerTypes.boolean:
             return 'choice';
         default:
             return answerType.toString();

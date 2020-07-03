@@ -21,7 +21,7 @@ const Iframetest = () => {
   const onChangeQuestionnaire = (event) => {
     const value = event.target.value;
     if (document.getElementById("skjemaframe")) {
-      document.getElementById("skjemaframe").src = "../../iframe/index.html";
+      document.getElementById("skjemaframe").src = "https://raw.githack.com/helsenorge/structor/skjemautfyller-eksempel/skjemautfyller-eksempel/iframe/index.html";
     }
     setSelectedQuestionnaire(value);
   }
@@ -38,7 +38,7 @@ const Iframetest = () => {
         </select>
       </label>
       { selectedQuestionnaire !== "0" && (
-        <iframe id="skjemaframe" style={{ width: "100%", height: "25rem"}} onLoad={iframeLoaded} src="../../iframe/index.html"></iframe>
+        <iframe id="skjemaframe" style={{ width: "100%", height: "25rem"}} onLoad={iframeLoaded} src="https://raw.githack.com/helsenorge/structor/skjemautfyller-eksempel/skjemautfyller-eksempel/iframe/index.html"></iframe>
       )}
     </>
   );
