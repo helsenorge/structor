@@ -7,8 +7,12 @@ export interface IPatient {
     address: IAddress[];
     telecom: ITelecom[];
     url: string;
+    identifier: IIdentifier[];
 }
-
+export interface IIdentifier {
+    system: string;
+    value: number;
+}
 export interface IRecord {
     id: string;
     schemaName: string;
