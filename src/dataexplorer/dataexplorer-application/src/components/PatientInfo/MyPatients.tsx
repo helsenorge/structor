@@ -3,7 +3,6 @@ import Search from 'antd/lib/input/Search';
 import { History } from 'history';
 import { Row, Col } from 'antd';
 import './MyPatients.style.scss';
-import SchemaResponse from 'components/SchemaResponse/SchemaResponse';
 
 const MyPatients = (props: { history: History }) => {
     localStorage.clear();
@@ -30,7 +29,6 @@ const MyPatients = (props: { history: History }) => {
             </Row>
             {patientID &&
                 props.history.push({ pathname: 'Pasient', state: patientID })}
-            <SchemaResponse questionnaireResponseId={'10000'} />
         </>
     );
 };

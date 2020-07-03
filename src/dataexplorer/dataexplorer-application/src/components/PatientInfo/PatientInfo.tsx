@@ -45,7 +45,7 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
                     <Spin size="large" />
                 </Row>
             )}
-            {patientData?.total === 0 && error.length === 0 && (
+            {patientData?.total === 0 && (
                 <div className="failed-container">
                     <Empty
                         description={

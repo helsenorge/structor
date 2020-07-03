@@ -101,8 +101,6 @@ const SchemaResponse = (props: { questionnaireResponseId: string }) => {
         return;
     }, [questionnaire]);
 
-    console.log(schemaResponse);
-
     return (
         <>
             {schemaResponse && questionnaire && questionnaire.name && (
