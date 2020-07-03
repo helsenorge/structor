@@ -32,8 +32,8 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
 
     return (
         <div style={{ backgroundColor: 'var(--color-base-1)' }}>
-            <Row>
-                <Col span={10} style={{ padding: '0 10px' }}>
+            <Row justify="center">
+                <Col span={20} style={{ padding: '0 10px' }}>
                     <TextArea
                         rows={1}
                         placeholder={placeholder}

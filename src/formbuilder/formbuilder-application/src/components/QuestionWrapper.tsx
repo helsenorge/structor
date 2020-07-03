@@ -20,28 +20,35 @@ function QuestionWrapper({
 }: QuestionProps): JSX.Element {
     return (
         <div>
-            <Row>
-                <Col span={3}>
+            <Row justify="end">
+                <Col
+                    sm={12}
+                    style={{ display: 'flex', justifyContent: 'flex-end' }}
+                >
                     <Button
-                        style={{ zIndex: 1, color: 'var(--primary-1)' }}
+                        style={{
+                            zIndex: 1,
+                            color: 'var(--primary-1)',
+                            marginLeft: '10px',
+                        }}
                         icon={<CopyOutlined />}
                         type="default"
                         onClick={() => duplicateQuestion()}
                     >
                         Dupliser spørsmål
                     </Button>
-                </Col>
-                <Col span={3}>
                     <Button
-                        style={{ zIndex: 1, color: 'var(--primary-1)' }}
+                        style={{
+                            zIndex: 1,
+                            color: 'var(--primary-1)',
+                            marginLeft: '10px',
+                        }}
                         icon={<DeleteOutlined />}
                         type="default"
                         onClick={() => removeQuestion()}
                     >
                         Slett spørsmål
                     </Button>
-                </Col>
-                <Col span={1}>
                     <Tooltip title="Flytt spørsmål">
                         <Button
                             style={{ zIndex: 1, color: 'var(--primary-1)' }}
@@ -65,11 +72,15 @@ function QuestionWrapper({
                     </Tooltip>
                 </Col>
             </Row>
-            <Row>
-                <QuestionBuilder questionId={questionId}></QuestionBuilder>
+            <Row justify="center">
+                <Col span={20}>
+                    <QuestionBuilder questionId={questionId}></QuestionBuilder>
+                </Col>
             </Row>
             <Row>
-                <AnswerBuilder questionId={questionId}></AnswerBuilder>
+                <Col span={24}>
+                    <AnswerBuilder questionId={questionId}></AnswerBuilder>
+                </Col>
             </Row>
         </div>
     );
