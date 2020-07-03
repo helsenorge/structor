@@ -36,3 +36,9 @@ export interface ITelecom {
     system: string;
     value: number;
 }
+
+export interface dataSourceType {
+    id: string;
+    schemaName: string | undefined;
+    submitted: string;
+}
