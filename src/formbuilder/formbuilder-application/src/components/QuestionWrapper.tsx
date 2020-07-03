@@ -72,13 +72,15 @@ function QuestionWrapper({
                     </Tooltip>
                 </Col>
             </Row>
-            <Row justify="center">
-                <Col span={20}>
+            <Row>
+                <Col span={4}></Col>
+                <Col xl={16} md={20}>
                     <QuestionBuilder questionId={questionId}></QuestionBuilder>
                 </Col>
             </Row>
             <Row>
-                <Col span={24}>
+                <Col span={4}></Col>
+                <Col xl={16} md={20}>
                     <AnswerBuilder questionId={questionId}></AnswerBuilder>
                 </Col>
             </Row>

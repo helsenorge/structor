@@ -102,9 +102,16 @@ function Section({
         >
             {needsSections && (
                 <div>
-                    <Row justify="center" style={{ padding: '10px' }}>
-                        <Col span={4} />
-                        <Col span={13}>
+                    <Row style={{ padding: '0 10px 10px 10px'}}>
+                        <Col xs={0} lg={4}></Col>
+                        <Col
+                            xs={24}
+                            lg={13}
+                            span={13}
+                            style={{
+                                width: '100%',
+                            }}
+                        >
                             <Input
                                 placeholder={placeholder}
                                 className="input-question"
@@ -116,33 +123,37 @@ function Section({
                                 onBlur={(e) => handleInputTitle(e)}
                             />
                         </Col>
-                        <Col span={3}>
+                        <Col
+                            sm={7}
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'flex-end',
+                            }}
+                        >
                             <Button
                                 style={{
                                     zIndex: 1,
                                     color: 'var(--primary-1)',
-                                    margin: '0 10px',
+                                    marginLeft: '10px',
                                 }}
-                                size="large"
                                 icon={<CopyOutlined />}
                                 type="default"
                                 onClick={() => duplicateSection()}
                             >
                                 Dupliser seksjon
                             </Button>
-                        </Col>
-                        <Col span={3}>
                             <Button
-                                style={{ zIndex: 1, color: 'var(--primary-1)' }}
-                                size="large"
+                                style={{
+                                    zIndex: 1,
+                                    color: 'var(--primary-1)',
+                                    marginLeft: '10px',
+                                }}
                                 icon={<DeleteOutlined />}
                                 type="default"
                                 onClick={() => removeSection()}
                             >
                                 Slett seksjon
                             </Button>
-                        </Col>
-                        <Col span={1}>
                             <Tooltip title="Flytt seksjon">
                                 <Button
                                     {...provided.dragHandleProps}
@@ -169,7 +180,7 @@ function Section({
                             </Tooltip>
                         </Col>
                     </Row>
-                    <Row style={{ padding: '0 10px' }}>
+                    <Row style={{ padding: '0 10px'}}>
                         <Col xs={0} lg={4}></Col>
                         <Col xs={24} lg={13}>
                             <TextArea

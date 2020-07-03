@@ -110,7 +110,7 @@ export function addNewQuestion(sectionId: string): UpdateAction {
         id: questionId,
         sectionId: sectionId,
         questionText: '',
-        answerType: AnswerTypes.boolean,
+        answerType: AnswerTypes.default,
         answer: { id: generateID() },
         isRequired: true,
         hasDescription: false,
