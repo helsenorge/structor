@@ -1,35 +1,67 @@
-import React from 'react';
-import { Radio } from 'antd';
+import React, { useState, useContext } from 'react';
+import { Radio, Checkbox, Input } from 'antd';
+import { FormContext, updateAnswer } from '../../store/FormStore';
 import './AnswerComponent.css';
+import { IBoolean } from '../../types/IAnswer';
+/* 
+export interface IBoolean extends IAnswer {
+    isChecked: boolean;
+    label: string;
+}
+*/
+type BooleanInputProps = {
+    questionId: string;
+};
 
-function BooleanInput(): JSX.Element {
-    const radioStyle = {
+function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
+    const checkStyle = {
         display: 'block',
-        height: '30px',
-        lineHeight: '30px',
-        marginBottom: 10,
-        width: '90%',
+        marginBottom: '10px',
     };
+    const { state, dispatch } = useContext(FormContext);
+    const [localAnswer, setLocalAnswer] = useState(
+        state.questions[questionId].answer as IBoolean,
+    );
+
+    function localUpdate(attribute: {
+        isChecked?: boolean;
+        label?: string;
+        updateStore?: boolean;
+    }) {
+        const temp = { ...localAnswer };
+        if (attribute.isChecked) temp.isChecked = attribute.isChecked;
+        if (attribute.label) temp.label = attribute.label;
+        setLocalAnswer(temp);
+        if (attribute.updateStore)
+            dispatch(updateAnswer(questionId, localAnswer));
+    }
 
     return (
-        <Radio.Group name="radiogroup">
-            <Radio
-                key={'bool_true'}
-                style={radioStyle}
-                disabled={true}
-                value={true}
+        <div>
+            <Checkbox
+                key={'Boolean' + questionId}
+                style={checkStyle}
+                value={() => localUpdate({ isChecked: true })}
+                disabled
             >
-                Ja
-            </Radio>
-            <Radio
-                key={'bool_false'}
-                style={radioStyle}
-                disabled={true}
-                value={false}
-            >
-                Nei
-            </Radio>
-        </Radio.Group>
+                <Input
+                    type="text"
+                    className="input-question"
+                    placeholder={'Skriv inn påstand her.'}
+                    style={{
+                        width: '250px',
+                    }}
+                    onBlur={() => localUpdate({ updateStore: true })}
+                    onChange={(value) =>
+                        localUpdate({
+                            label: value.target.value,
+                            updateStore: false,
+                        })
+                    }
+                ></Input>
+            </Checkbox>
+            <Checkbox value={() => localUpdate({ updateStore: true })}>Skal være forhåndsvalgt.</Checkbox>
+        </div>
     );
 }
 
