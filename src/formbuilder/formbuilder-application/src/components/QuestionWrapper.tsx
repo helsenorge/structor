@@ -1,70 +1,26 @@
-import React, { useEffect, useState, ChangeEvent, useContext } from 'react';
-import { Input, Row, Col, Button, Tooltip } from 'antd';
-import { DeleteOutlined, CopyOutlined } from '@ant-design/icons';
-import './answerComponents/AnswerComponent.css';
-import AnswerComponent from './AnswerComponent';
+import React from 'react';
 import * as DND from 'react-beautiful-dnd';
-import { FormContext, updateQuestion } from '../store/FormStore';
-import IQuestion from '../types/IQuestion';
-
-const { TextArea } = Input;
+import { Row, Col, Button, Tooltip } from 'antd';
+import { DeleteOutlined, CopyOutlined } from '@ant-design/icons';
+import QuestionBuilder from './QuestionBuilder';
+import AnswerBuilder from './AnswerBuilder';
 
 type QuestionProps = {
     duplicateQuestion: () => void;
-    // question: IQuestion;
     questionId: string;
     removeQuestion: () => void;
     provided: DND.DraggableProvided;
 };
 
-function Question({
+function QuestionWrapper({
     duplicateQuestion,
     questionId,
     removeQuestion,
     provided,
 }: QuestionProps): JSX.Element {
-    const { state, dispatch } = useContext(FormContext);
-    const question = state.questions[questionId];
-    const [placeholder, setPlaceholder] = useState('Spørsmål 1...');
-    const [questionTitle, setQuestionTitle] = useState(question.questionText);
-    useEffect(() => {
-        findPlaceholder();
-    });
-    function findPlaceholder() {
-        setPlaceholder('Spørsmål ' + (questionId + 1) + '...');
-    }
-
-    function handleInput(e: ChangeEvent<HTMLTextAreaElement>) {
-        setPlaceholder(e.currentTarget.value);
-        if (question) {
-            const temp = { ...question };
-            temp.questionText = e.target.value;
-            dispatch(updateQuestion(temp));
-        }
-    }
-
     return (
-        <div style={{ backgroundColor: 'var(--color-base-1)' }}>
+        <div>
             <Row>
-                <Col
-                    span={7}
-                    className="controller"
-                    style={{ padding: '0px 10px 10px' }}
-                >
-                    <h3>Alternativer</h3>
-                </Col>
-                <Col span={10} style={{ padding: '0 10px' }}>
-                    <TextArea
-                        rows={1}
-                        placeholder={placeholder}
-                        className="input-question"
-                        value={questionTitle}
-                        onChange={(e): void => {
-                            setQuestionTitle(e.target.value);
-                        }}
-                        onBlur={(e) => handleInput(e)}
-                    />
-                </Col>
                 <Col span={3}>
                     <Button
                         style={{ zIndex: 1, color: 'var(--primary-1)' }}
@@ -109,13 +65,14 @@ function Question({
                     </Tooltip>
                 </Col>
             </Row>
-
-            <AnswerComponent
-                questionId={questionId}
-                key={'answer' + questionId}
-            />
+            <Row>
+                <QuestionBuilder questionId={questionId}></QuestionBuilder>
+            </Row>
+            <Row>
+                <AnswerBuilder questionId={questionId}></AnswerBuilder>
+            </Row>
         </div>
     );
 }
 
-export default Question;
+export default QuestionWrapper;
