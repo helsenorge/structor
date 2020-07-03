@@ -1,9 +1,19 @@
 import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
-import { AnswerTypes, IChoice } from '../types/IAnswer';
+import { AnswerTypes, IChoice, FhirAnswerTypes } from '../types/IAnswer';
 import IQuestion from '../types/IQuestion';
+import convertQuestion from './QuestionHelpers';
 
-function convertQuestions(
+export interface QuestionConverted {
+    type: FhirAnswerTypes;
+    extension?: Array<fhir.Extension>;
+}
+
+export type ValueSetMap = { [id: string]: string };
+
+const valueSetMap: ValueSetMap = {};
+
+function convertSections(
     sectionOrder: Array<string>,
     sections: SectionList,
     questions: QuestionList,
@@ -24,14 +34,11 @@ function convertQuestions(
             const questionKey = sections[sectionKey].questionOrder[j];
             const question = questions[questionKey];
             // Will be within 'item' and if in section another 'item' of type group
-            const subItem: fhir.QuestionnaireItem = {
-                linkId: i + 1 + '.' + (j + 1) + '00',
-                text: question.questionText,
-                type: getAnswerType(question.answerType),
-                required: true, // TODO: true | false
-                repeats: false, // TODO
-                readOnly: false, // TODO
-            };
+            const subItem = convertQuestion(
+                question,
+                i + 1 + '.' + (j + 1) + '00',
+                valueSetMap,
+            );
             if (
                 (question.answer as IChoice).choices &&
                 (question.answer as IChoice).choices.length > 0
@@ -40,7 +47,21 @@ function convertQuestions(
                     reference: '#' + question.answer.id,
                 };
             }
-            // TODO: if (question.description) add _text with extension.
+            if (question.description !== undefined) {
+                item._text = {
+                    extension: [
+                        {
+                            url:
+                                'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                            valueMarkdown:
+                                '### ' +
+                                question.questionText +
+                                '\r\n' +
+                                question.description,
+                        },
+                    ],
+                };
+            }
             item.item?.push(subItem);
         }
         items.push(item);
@@ -57,46 +78,41 @@ function convertAnswers(
     Object.values(questions).forEach((question: IQuestion) => {
         questionIndex++;
         const answer = question.answer;
-        if ((answer as IChoice).choices === undefined) return;
-        const containPart: fhir.Resource = {
-            resourceType: 'ValueSet',
-            id: answer.id,
-            name: 'NAME' + questionIndex, // TODO: CHECK THIS
-            title: 'TITLE' + questionIndex, // TODO: CHECK THIS
-            status: 'draft',
-            publisher: 'NHN',
-            compose: {
-                include: [
-                    {
-                        system: '', // TODO: FIX ME
-                        concept: new Array<
-                            fhir.ValueSetComposeIncludeConcept
-                        >(),
-                    },
-                ],
-            },
-        };
+        if (
+            (answer as IChoice).choices &&
+            (answer as IChoice).choices.length > 0
+        ) {
+            const system = 'system' + answer.id; // TODO
+            valueSetMap[answer.id] = system;
+            const containPart: fhir.Resource = {
+                resourceType: 'ValueSet',
+                id: answer.id,
+                name: 'NAME' + questionIndex, // TODO: CHECK THIS
+                title: 'TITLE' + questionIndex, // TODO: CHECK THIS
+                status: 'draft',
+                publisher: 'NHN',
+                compose: {
+                    include: [
+                        {
+                            system: system, // TODO: FIX ME
+                            concept: new Array<
+                                fhir.ValueSetComposeIncludeConcept
+                            >(),
+                        },
+                    ],
+                },
+            };
 
-        for (const k in (answer as IChoice).choices) {
-            containPart.compose?.include[0].concept?.push({
-                code: String(parseInt(k) + 1),
-                display: (answer as IChoice).choices[parseInt(k)],
-            });
+            for (const k in (answer as IChoice).choices) {
+                containPart.compose?.include[0].concept?.push({
+                    code: String(parseInt(k) + 1),
+                    display: (answer as IChoice).choices[parseInt(k)],
+                });
+            }
+            valueSets.push(containPart);
         }
-        valueSets.push(containPart);
     });
     return valueSets;
-}
-
-function getAnswerType(answerType: AnswerTypes): string {
-    switch (answerType) {
-        case AnswerTypes.radio:
-            return 'choice';
-        case AnswerTypes.boolean:
-            return 'choice';
-        default:
-            return answerType.toString();
-    }
 }
 
 function convertToJSON(
@@ -105,7 +121,7 @@ function convertToJSON(
     questions: QuestionList,
 ): fhir.Questionnaire {
     const valueSets = convertAnswers(sectionOrder, sections, questions);
-    const convertedQuestions = convertQuestions(
+    const convertedQuestions = convertSections(
         sectionOrder,
         sections,
         questions,
