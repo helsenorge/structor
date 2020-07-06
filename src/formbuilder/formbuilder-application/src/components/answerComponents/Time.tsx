@@ -39,7 +39,6 @@ function Time({ questionId }: TimeProps): JSX.Element {
         updateStore?: boolean;
     }) {
         const temp = { ...localAnswer };
-        console.log(attribute);
         if (attribute.isTime !== undefined) temp.isTime = attribute.isTime;
         if (attribute.isDate !== undefined) temp.isDate = attribute.isDate;
         if (attribute.defaultTime !== undefined)
@@ -147,6 +146,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                             localUpdate({
                                 isDate: true,
                                 isTime: false,
+                                updateStore: true,
                             })
                         }
                     >
@@ -162,6 +162,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                             localUpdate({
                                 isDate: false,
                                 isTime: true,
+                                updateStore: true,
                             })
                         }
                     >
@@ -177,6 +178,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                             localUpdate({
                                 isDate: true,
                                 isTime: true,
+                                updateStore: true,
                             })
                         }
                     >
