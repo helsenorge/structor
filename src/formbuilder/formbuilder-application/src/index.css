@@ -16,11 +16,12 @@ code {
 }
 
 :root {
-  --primary-1: #A61E7B;
-  --primary-2: #006D84;
-  --color-base-1: #FAFAFA;
-  --color-base-2: #C7C7C7C7;
-  --color-base-3: #B8B8B8;
+  --primary-1: #A61E7B;       /* Buttons */
+  --primary-2: #006D84;       /* Header color */
+  --color-base-1: #FAFAFA;    /* Box color */ 
+  --color-base-2: #E8E8E8;  /* Background of page */
+  --color-base-3: #ccdfdf;  /* Hover color #ccdfdf */
+  --color-base-4: #8AB5B5;  /* Title color */
 }
 
 .controller{

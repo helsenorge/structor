@@ -40,10 +40,14 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
             temp.isRequired = attribute.isRequired;
         if (attribute.hasDescription !== undefined)
             temp.hasDescription = attribute.hasDescription;
-        if (attribute.description) temp.description = attribute.description;
-        if (attribute.isDependent) temp.isDependent = attribute.isDependent;
-        if (attribute.dependentOf) temp.dependentOf = attribute.dependentOf;
-        if (attribute.questionText) temp.questionText = attribute.questionText;
+        if (attribute.description !== undefined)
+            temp.description = attribute.description;
+        if (attribute.isDependent !== undefined)
+            temp.isDependent = attribute.isDependent;
+        if (attribute.dependentOf !== undefined)
+            temp.dependentOf = attribute.dependentOf;
+        if (attribute.questionText !== undefined)
+            temp.questionText = attribute.questionText;
 
         if (attribute.answerType) {
             temp.answerType = attribute.answerType;
@@ -146,7 +150,7 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
                         Spørsmålet skal ha forklarende tekst.
                     </Checkbox>
                 </Col>
-                <Col span={8}>
+                {/* <Col span={8}>
                     <Checkbox
                         checked={localQuestion.isDependent}
                         onChange={(e) =>
@@ -158,42 +162,41 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
                     >
                         Dette spørmålet er avhengig av et annet.
                     </Checkbox>
-                    {localQuestion.isDependent && (
-                        <Select
-                            defaultValue={localQuestion.dependentOf}
-                            style={{ width: '200px' }}
-                            onSelect={(value) => {
-                                localUpdate({
-                                    updateStore: true,
-                                    dependentOf: value,
-                                });
-                            }}
-                            placeholder="Velg default"
-                        >
-                            {state.questions
-                                ? Object.keys(state.questions)
-                                      .filter((tempID) => {
-                                          return (
-                                              state.questions[tempID]
-                                                  .questionText.length > 1 &&
-                                              tempID !== questionId
-                                          );
-                                      })
-                                      .map((questionId, id) => [
-                                          <Option
-                                              key={'state' + questionId + id}
-                                              value={questionId}
-                                          >
-                                              {
-                                                  state.questions[questionId]
-                                                      .questionText
-                                              }
-                                          </Option>,
-                                      ])
-                                : []}
-                        </Select>
-                    )}
-                </Col>
+                    <Select
+                        defaultValue={localQuestion.dependentOf}
+                        disabled={!localQuestion.isDependent}
+                        style={{ width: '200px' }}
+                        onSelect={(value) => {
+                            localUpdate({
+                                updateStore: true,
+                                dependentOf: value,
+                            });
+                        }}
+                        placeholder="Velg default"
+                    >
+                        {state.questions
+                            ? Object.keys(state.questions)
+                                  .filter((tempID) => {
+                                      return (
+                                          state.questions[tempID].questionText
+                                              .length > 1 &&
+                                          tempID !== questionId
+                                      );
+                                  })
+                                  .map((questionId, id) => [
+                                      <Option
+                                          key={'state' + questionId + id}
+                                          value={questionId}
+                                      >
+                                          {
+                                              state.questions[questionId]
+                                                  .questionText
+                                          }
+                                      </Option>,
+                                  ])
+                            : []}
+                    </Select>
+                </Col> */}
             </Row>
             {localQuestion.hasDescription && (
                 <Row className="standard">
