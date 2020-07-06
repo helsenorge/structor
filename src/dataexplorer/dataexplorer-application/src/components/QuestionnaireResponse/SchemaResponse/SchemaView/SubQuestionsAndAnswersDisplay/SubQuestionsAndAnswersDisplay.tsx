@@ -1,15 +1,9 @@
 import React from 'react';
-import { IQuestionAndAnswer } from 'types/IQuestionAndAnswer';
+import { IQuestionsAndAnswersDisplayProps } from '../QuestionsAndAnswersDisplay/QuestionsAndAnswersDisplay';
 import { Popover, Button } from 'antd';
-import '../Schemes.style.scss';
+import '../SchemaView.style.scss';
 
-export interface IQuestionsAndAnswersDisplayProps {
-    questionAndAnswer: IQuestionAndAnswer;
-    questionnaireResource: fhir.ValueSet[];
-    questionAndAnswerIndex: number;
-}
-
-const QuestionsAndAnswersDisplay = (
+const SubQuestionsAndAnswersDisplay = (
     props: IQuestionsAndAnswersDisplayProps,
 ) => {
     const setContent = (data: fhir.ValueSetComposeIncludeConcept[]) => {
@@ -25,7 +19,7 @@ const QuestionsAndAnswersDisplay = (
             <p className="questions">
                 {props.questionAndAnswer.questions.questions.text}
             </p>
-            <p className="inline-answer-container">Svar:</p>
+            <p className="inline-answer-container">Subspørsmål Svar:</p>
             {props.questionnaireResource.map(
                 (qr) =>
                     qr.id ===
@@ -75,4 +69,4 @@ const QuestionsAndAnswersDisplay = (
     );
 };
 
-export default QuestionsAndAnswersDisplay;
+export default SubQuestionsAndAnswersDisplay;
