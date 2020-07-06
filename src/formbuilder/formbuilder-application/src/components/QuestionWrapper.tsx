@@ -45,7 +45,7 @@ function QuestionWrapper({
             input !== null && input.tagName === 'IFRAME';
 
         const questionnaireString = JSON.stringify(
-            JSONGenerator([tempSection.id], tempSectionList, fakeQuestionList),
+            JSONGenerator('', '', [tempSection.id], tempSectionList, fakeQuestionList),
         );
 
         const schemeDisplayer = document.getElementById('schemeFrame');
