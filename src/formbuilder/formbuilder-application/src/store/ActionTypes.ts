@@ -12,6 +12,7 @@ export enum UpdateActionTypes {
     UPDATE_ANSWER = 'UPDATE_ANSWER',
     UPDATE_QUESTION = 'UPDATE_QUESTION',
     UPDATE_SECTION = 'UPDATE_SECTION',
+    UPDATE_FORM_META = 'UPDATE_FORM_META',
 }
 
 export enum SwapActionTypes {
@@ -28,6 +29,14 @@ export enum MemberTypes {
     UPDATE = 'UPDATE',
     SWAP = 'SWAP',
     DUPLICATE = 'DUPLICATE',
+    FORM_META = 'FORM_META',
+}
+
+export interface UpdateFormMetaAction {
+    type: UpdateActionTypes;
+    member: MemberTypes.FORM_META;
+    title?: string;
+    description?: string;
 }
 
 export interface UpdateAction {

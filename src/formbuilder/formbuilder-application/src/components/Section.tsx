@@ -17,7 +17,7 @@ type SectionProps = {
     sectionId: string;
     duplicateSection: () => void;
     removeSection: () => void;
-    provided: DND.DraggableProvided;
+    provided?: DND.DraggableProvided;
     collapsed: boolean;
     index: number;
 };
@@ -40,7 +40,7 @@ function Section({
 
     const [sectionTitle, setSectionTitle] = useState(section.sectionTitle);
     const [sectionDesc, setSectionDesc] = useState(section.description);
-    
+
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (index + 1) + '...';
         setPlaceholder(placeholderString);
@@ -102,7 +102,7 @@ function Section({
         >
             {needsSections && (
                 <div>
-                    <Row style={{ padding: '0 10px 10px 10px'}}>
+                    <Row style={{ padding: '0 10px 10px 10px' }}>
                         <Col xs={0} lg={4}></Col>
                         <Col
                             xs={24}
@@ -155,32 +155,37 @@ function Section({
                                 Slett seksjon
                             </Button>
                             <Tooltip title="Flytt seksjon">
-                                <Button
-                                    {...provided.dragHandleProps}
-                                    style={{
-                                        zIndex: 1,
-                                        color: 'var(--primary-1)',
-                                    }}
-                                    size="large"
-                                    type="link"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        width="24"
+                                {provided && (
+                                    <Button
+                                        {...provided.dragHandleProps}
+                                        style={{
+                                            zIndex: 1,
+                                            color: 'var(--primary-1)',
+                                        }}
+                                        size="large"
+                                        type="link"
                                     >
-                                        <path d="M0 0h24v24H0V0z" fill="none" />
-                                        <path
-                                            fill="var(--primary-1)"
-                                            d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
-                                        />
-                                    </svg>
-                                </Button>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            width="24"
+                                        >
+                                            <path
+                                                d="M0 0h24v24H0V0z"
+                                                fill="none"
+                                            />
+                                            <path
+                                                fill="var(--primary-1)"
+                                                d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
+                                            />
+                                        </svg>
+                                    </Button>
+                                )}
                             </Tooltip>
                         </Col>
                     </Row>
-                    <Row style={{ padding: '0 10px'}}>
+                    <Row style={{ padding: '0 10px' }}>
                         <Col xs={0} lg={4}></Col>
                         <Col xs={24} lg={13}>
                             <TextArea

@@ -35,20 +35,20 @@ export interface IChoice extends IAnswer {
 }
 
 export interface INumber extends IAnswer {
-    hasMax: boolean;
-    hasMin: boolean;
-    hasUnit: boolean;
-    isDecimal: boolean;
-    hasDefault: boolean;
-    maxValue: number;
-    minValue: number;
+    hasMax?: boolean;
+    hasMin?: boolean;
+    hasUnit?: boolean;
+    isDecimal?: boolean;
+    hasDefault?: boolean;
+    maxValue?: number;
+    minValue?: number;
     defaultValue?: number;
     unit?: string;
 }
 
 export interface IText extends IAnswer {
-    isLong: boolean;
-    maxLength: number;
+    isLong?: boolean;
+    maxLength?: number;
 }
 
 export interface ITime extends IAnswer {
@@ -64,6 +64,6 @@ export interface ITime extends IAnswer {
 
 export interface IBoolean extends IAnswer {
     isChecked: boolean;
-    label: string;
+    label?: string;
 }
 export default AnswerTypes;

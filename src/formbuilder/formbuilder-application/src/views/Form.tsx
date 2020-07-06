@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Row, Col, Button } from 'antd';
 import NavBar from '../components/commonComponents/NavBar';
 import Section from '../components/Section';
-import TitleAndDescription from '../components/answerComponents/TitleAndDescription';
+import TitleAndDescription from '../components/TitleAndDescription';
 import {
     FormContext,
     addNewSection,
@@ -16,12 +16,14 @@ import './Form.css';
 import ISection from '../types/ISection';
 
 function CreateForm(): JSX.Element {
-    const [i, setI] = useState(0);
     const { state, dispatch } = useContext(FormContext);
-
-    const [dragIndex, setDragIndex] = useState(-1);
-
     const [collapsedSection, setCollapsedSection] = useState('A');
+
+    // Disabled because it's throwing warnings when it can't find the drag handle for the first section if it's only 1 section.
+    // Can't be fixed with conditional rendering, because it will display a warning for every new section we add if we display the component conditionally.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    window['__react-beautiful-dnd-disable-dev-warnings'] = true;
 
     function dispatchAddNewSection() {
         dispatch(addNewSection());
@@ -37,7 +39,6 @@ function CreateForm(): JSX.Element {
     }
 
     function onDragEnd(result: DND.DropResult) {
-        setDragIndex(-1);
         if (!result.destination) return;
         const sourceIndex = result.source.index;
         const destIndex = result.destination.index;
@@ -65,32 +66,6 @@ function CreateForm(): JSX.Element {
         }
         setCollapsedSection(startResponder.draggableId);
     }
-
-    type memoSection = {
-        sectionId: string;
-        index: number;
-        provided: DND.DraggableProvided;
-    };
-
-    function compareSections(
-        prevSection: memoSection,
-        nextSection: memoSection,
-    ) {
-        return prevSection.index === nextSection.index;
-    }
-
-    // const SectionMemo = React.memo((props: memoSection) => {
-    //     return (
-    //         <Section
-    //             key={props.sectionId}
-    //             sectionId={props.sectionId}
-    //             removeSection={() => dispatchRemoveSection(props.index)}
-    //             provided={props.provided}
-    //             collapsed={props.sectionId === collapsedSection}
-    //             index={props.index}
-    //         />
-    //     );
-    // }, compareSections);
 
     return (
         <div>
