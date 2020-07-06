@@ -31,7 +31,6 @@ export interface IChoice extends IAnswer {
     isOpen: boolean;
     hasDefault: boolean;
     choices: Array<string>;
-    hasDefaultValue: boolean;
     defaultValue?: number;
 }
 
@@ -48,8 +47,8 @@ export interface INumber extends IAnswer {
 }
 
 export interface IText extends IAnswer {
-    isLong: boolean;
-    maxLength: number;
+    isLong?: boolean;
+    maxLength?: number;
 }
 
 export interface ITime extends IAnswer {
@@ -65,6 +64,6 @@ export interface ITime extends IAnswer {
 
 export interface IBoolean extends IAnswer {
     isChecked: boolean;
-    label: string;
+    label?: string;
 }
 export default AnswerTypes;

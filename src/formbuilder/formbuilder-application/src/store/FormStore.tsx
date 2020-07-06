@@ -110,6 +110,7 @@ export function addNewQuestion(sectionId: string): UpdateAction {
         id: questionId,
         sectionId: sectionId,
         questionText: '',
+        isDependent: false,
         answerType: AnswerTypes.default,
         answer: { id: generateID() },
         isRequired: true,
@@ -168,6 +169,7 @@ export function swapQuestion(
 }
 
 export function updateQuestion(question: IQuestion): UpdateAction {
+    console.log(question);
     return {
         type: UpdateActionTypes.UPDATE_QUESTION,
         member: MemberTypes.UPDATE,

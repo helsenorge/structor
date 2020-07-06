@@ -3,7 +3,16 @@ import { Input, Row, Col, Button, Tooltip, Checkbox, Select } from 'antd';
 import './answerComponents/AnswerComponent.css';
 import { FormContext, updateQuestion } from '../store/FormStore';
 import IQuestion from '../types/IQuestion';
-import AnswerTypes from '../types/IAnswer';
+import AnswerTypes, {
+    IChoice,
+    INumber,
+    IText,
+    IBoolean,
+    ITime,
+    IAnswer,
+} from '../types/IAnswer';
+import Choice from './answerComponents/Choice';
+
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -40,6 +49,8 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
         answerType?: AnswerTypes;
         isRequired?: boolean;
         hasDescription?: boolean;
+        isDependent?: boolean;
+        dependentOf?: string;
         description?: string;
         updateStore?: boolean;
     }) {
@@ -50,6 +61,52 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
         if (attribute.hasDescription !== undefined)
             temp.hasDescription = attribute.hasDescription;
         if (attribute.description) temp.description = attribute.description;
+        if (attribute.isDependent) temp.isDependent = attribute.isDependent;
+        if (attribute.dependentOf) temp.dependentOf = attribute.dependentOf;
+
+        switch (attribute.answerType) {
+            case AnswerTypes.choice:
+                temp.answer = {
+                    id: questionId,
+                    choices: [''],
+                    isMultiple: false,
+                    isOpen: false,
+                    hasDefault: false,
+                } as IChoice;
+                break;
+            case AnswerTypes.number:
+                temp.answer = {
+                    id: questionId,
+                    hasMax: false,
+                    hasMin: false,
+                    hasUnit: false,
+                    isDecimal: true,
+                    hasDefault: false,
+                } as INumber;
+                break;
+            case AnswerTypes.text:
+                temp.answer = { id: questionId } as IText;
+                break;
+            case AnswerTypes.boolean:
+                temp.answer = { id: questionId, isChecked: false } as IBoolean;
+                break;
+            case AnswerTypes.time:
+                temp.answer = {
+                    id: questionId,
+                    isTime: false,
+                    isDate: false,
+                    hasDefaultTime: false,
+                    hasStartTime: false,
+                    hasEndTime: false,
+                } as ITime;
+                break;
+            default:
+                temp.answer = { id: questionId } as IAnswer;
+                console.log(
+                    'Missing answer type interface: ' + attribute.answerType,
+                );
+                break;
+        }
         setLocalQuestion(temp);
         if (attribute.updateStore) dispatch(updateQuestion(temp));
     }
@@ -70,7 +127,7 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
                 </Col>
             </Row>
             <Row className="standard">
-                <Col span={10}>
+                <Col span={8}>
                     <Checkbox
                         onChange={(e) =>
                             localUpdate({
@@ -82,7 +139,7 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
                         Spørsmålet skal være obligatorisk.
                     </Checkbox>
                 </Col>
-                <Col span={10}>
+                <Col span={8}>
                     <Checkbox
                         onChange={(e) =>
                             localUpdate({
@@ -93,6 +150,54 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
                     >
                         Spørsmålet skal ha forklarende tekst.
                     </Checkbox>
+                </Col>
+                <Col span={8}>
+                    <Checkbox
+                        onChange={(e) =>
+                            localUpdate({
+                                isDependent: e.target.checked,
+                                updateStore: true,
+                            })
+                        }
+                    >
+                        Dette spørmålet er avhengig av et annet.
+                    </Checkbox>
+                    {localQuestion.isDependent && (
+                        <Select
+                            defaultValue={localQuestion.dependentOf}
+                            style={{ width: '200px' }}
+                            onSelect={(value) => {
+                                localUpdate({
+                                    updateStore: true,
+                                    dependentOf: value,
+                                });
+                            }}
+                            placeholder="Velg default"
+                        >
+                            {console.log(Object.keys(state.questions))},
+                            {state.questions
+                                ? Object.keys(state.questions)
+                                      .filter((tempID) => {
+                                          return (
+                                              state.questions[tempID]
+                                                  .questionText.length > 1 &&
+                                              tempID !== questionId
+                                          );
+                                      })
+                                      .map((questionId, id) => [
+                                          <Option
+                                              key={'state' + questionId + id}
+                                              value={questionId}
+                                          >
+                                              {
+                                                  state.questions[questionId]
+                                                      .questionText
+                                              }
+                                          </Option>,
+                                      ])
+                                : []}
+                        </Select>
+                    )}
                 </Col>
             </Row>
             {localQuestion.hasDescription && (

@@ -75,7 +75,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
     }
 
     function deleteButton(id: number) {
-        const tempChoices = { ...localAnswer.choices };
+        const tempChoices = [...localAnswer.choices];
         tempChoices.splice(id, 1);
         localUpdate({ updateStore: true, choices: tempChoices });
     }
@@ -97,7 +97,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 <Input
                     type="text"
                     className="input-question"
-                    placeholder={'Skriv inn alternativ her'}
+                    placeholder={
+                        'Skriv inn alternativ nr. ' + (id + 1) + ' her'
+                    }
                     value={localAnswer.choices[id]}
                     style={choiceInputStyle}
                     onChange={(e) => alterChoiceText(id, e.target.value)}
@@ -208,8 +210,13 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         >
                             {localAnswer.choices
                                 ? localAnswer.choices.map((name, id) => [
-                                      <Option key={'def' + id} value={id}>
-                                          {name}
+                                      <Option
+                                          key={'def' + questionId + id}
+                                          value={id}
+                                      >
+                                          {name.length < 2
+                                              ? 'Alternativ ' + (id + 1)
+                                              : name}
                                       </Option>,
                                   ])
                                 : []}
