@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Search from 'antd/lib/input/Search';
 import { History } from 'history';
 import { Row, Col } from 'antd';
-import './MyPatients.style.scss';
+import './Dashboard.style.scss';
 
-const MyPatients = (props: { history: History }) => {
+const Dashboard = (props: { history: History }) => {
     localStorage.clear();
     const [patientID, setPatientID] = useState(
         localStorage.getItem('myData') || '',
@@ -32,4 +32,4 @@ const MyPatients = (props: { history: History }) => {
         </>
     );
 };
-export default MyPatients;
+export default Dashboard;

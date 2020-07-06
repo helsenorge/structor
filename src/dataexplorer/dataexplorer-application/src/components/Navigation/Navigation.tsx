@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Layout, Avatar } from 'antd';
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
-import MyPatients from '../PatientInfo/MyPatients';
+import 'antd/dist/antd.css';
+import Dashboard from '../Dashboard/Dashboard';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
-import PatientInfo from '../PatientInfo/PatientInfo';
+import Patient from '../Patient/Patient';
 import QuestionnaireResponse from 'components/QuestionnaireResponse/QuestionnaireResponse';
 import 'antd/dist/antd.css';
 import './Navigation.style.scss';
@@ -44,12 +45,12 @@ const Navigation = () => {
                 <Content>
                     <div className="content">
                         <Switch>
-                            <Route exact path="/" component={MyPatients} />
+                            <Route exact path="/" component={Dashboard} />
                             <Route
                                 exact
                                 path="/pasient"
                                 render={() => (
-                                    <PatientInfo
+                                    <Patient
                                         setSchema={setSchema}
                                         patientID={patientID}
                                     />

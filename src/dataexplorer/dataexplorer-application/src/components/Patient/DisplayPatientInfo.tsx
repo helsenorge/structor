@@ -10,13 +10,13 @@ const DisplayPatientInfo = (props: {
     dataSource: fhir.ResourceBase[];
 }) => {
     const calcAge = () => {
-        let birthday = props.patient.birthDate;
-        let patientYear = parseInt(birthday.substring(0, 4));
-        let patientMonth = dayjs(birthday.substring(5, 7))
+        const birthday = props.patient.birthDate;
+        const patientYear = parseInt(birthday.substring(0, 4));
+        const patientMonth = dayjs(birthday.substring(5, 7))
             .locale('nb')
             .format('MMMM');
-        let patientDay = parseInt(birthday.substring(8, 10));
-        let actualAge = dayjs().diff(birthday, 'year');
+        const patientDay = parseInt(birthday.substring(8, 10));
+        const actualAge = dayjs().diff(birthday, 'year');
 
         return (
             actualAge +
