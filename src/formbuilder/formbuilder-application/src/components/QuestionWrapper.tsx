@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import * as DND from 'react-beautiful-dnd';
-import { Row, Col, Button, Tooltip } from 'antd';
-import { DeleteOutlined, CopyOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Tooltip, Modal } from 'antd';
+import { DeleteOutlined, CopyOutlined, EyeOutlined } from '@ant-design/icons';
 import QuestionBuilder from './QuestionBuilder';
 import AnswerBuilder from './AnswerBuilder';
+import JSONGenerator from '../helpers/JSONGenerator';
+import { FormContext } from '../store/FormStore';
+import ISection from '../types/ISection';
+import SectionList from '../types/SectionList';
+import QuestionList from '../types/QuestionList';
 
 type QuestionProps = {
     duplicateQuestion: () => void;
@@ -18,8 +23,76 @@ function QuestionWrapper({
     removeQuestion,
     provided,
 }: QuestionProps): JSX.Element {
+    const [questionPreview, setQuestionPreview] = useState(false);
+    const { state } = useContext(FormContext);
+
+    function iFrameLoaded() {
+        const tempSection: ISection = {
+            id: 'PreviewSection',
+            questionOrder: [questionId],
+            sectionTitle: '',
+            description: '',
+        };
+        const tempSectionList: SectionList = {
+            [tempSection.id]: tempSection as ISection,
+        };
+        const fakeQuestionList: QuestionList = {
+            [questionId]: state.questions[questionId],
+        };
+        const isIFrame = (
+            input: HTMLElement | null,
+        ): input is HTMLIFrameElement =>
+            input !== null && input.tagName === 'IFRAME';
+
+        const questionnaireString = JSON.stringify(
+            JSONGenerator([tempSection.id], tempSectionList, fakeQuestionList),
+        );
+
+        const schemeDisplayer = document.getElementById('schemeFrame');
+        if (isIFrame(schemeDisplayer) && schemeDisplayer.contentWindow) {
+            console.log('Fant frame');
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            schemeDisplayer.contentWindow.postMessage(
+                {
+                    questionnaireString: questionnaireString,
+                },
+                '*',
+            );
+        }
+    }
+
     return (
         <div>
+            <Modal
+                title="Slik ser spørsmålet ut for utfyller"
+                visible={questionPreview}
+                onOk={() => setQuestionPreview(false)}
+                destroyOnClose={true}
+                width="90vw"
+                footer={[
+                    <Button
+                        key="submit"
+                        type="primary"
+                        onClick={() => setQuestionPreview(false)}
+                    >
+                        Lukk
+                    </Button>,
+                ]}
+                onCancel={() => setQuestionPreview(false)}
+            >
+                <div style={{ height: '100%', width: '100%' }}>
+                    <iframe
+                        id="schemeFrame"
+                        style={{
+                            width: '100%',
+                            height: '70vh',
+                        }}
+                        onLoad={iFrameLoaded}
+                        src="../../iframe/index.html"
+                    ></iframe>
+                </div>
+            </Modal>
             <Row justify="end">
                 <Col
                     sm={12}
@@ -48,6 +121,18 @@ function QuestionWrapper({
                         onClick={() => removeQuestion()}
                     >
                         Slett spørsmål
+                    </Button>
+                    <Button
+                        style={{
+                            zIndex: 1,
+                            color: 'var(--primary-1)',
+                            marginLeft: '10px',
+                        }}
+                        icon={<EyeOutlined />}
+                        type="default"
+                        onClick={() => setQuestionPreview(true)}
+                    >
+                        Forhåndsvis som utfyller
                     </Button>
                     <Tooltip title="Flytt spørsmål">
                         <Button
