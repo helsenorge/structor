@@ -12,7 +12,13 @@ function Preview(): JSX.Element {
 
     function iFrameLoaded() {
         const questionnaireString = JSON.stringify(
-            JSONGenerator(state.sectionOrder, state.sections, state.questions),
+            JSONGenerator(
+                state.title,
+                state.description,
+                state.sectionOrder,
+                state.sections,
+                state.questions,
+            ),
         );
         // const questionnaireString = JSON.stringify(koronaSkjema);
 

@@ -21,10 +21,12 @@ import {
     SwapAction,
     SwapActionTypes,
     MemberTypes,
+    UpdateFormMetaAction,
 } from './ActionTypes';
 import UpdateActions from './UpdateActions';
 import SwapActions from './SwapActions';
 import DuplicateActions from './DuplicateActions';
+import FormMetaActions from './FormMetaActions';
 
 const initSectionId = generateID();
 const initSection: ISection = {
@@ -36,15 +38,31 @@ const initSections: SectionList = {};
 initSections[initSectionId] = initSection;
 
 export const initialState: State = {
+    title: '',
+    description: '',
     sections: initSections,
     questions: {},
     sectionOrder: [initSectionId],
 };
 
 export interface State {
+    title: string;
+    description: string;
     sections: SectionList;
     questions: QuestionList;
     sectionOrder: Array<string>;
+}
+
+export function updateFormMeta(
+    title: string,
+    description?: string,
+): UpdateFormMetaAction {
+    return {
+        type: UpdateActionTypes.UPDATE_FORM_META,
+        member: MemberTypes.FORM_META,
+        title: title,
+        description: description,
+    };
 }
 
 export function addNewSection(): UpdateAction {
@@ -189,7 +207,14 @@ export function updateAnswer(
 }
 
 const reducer = produce(
-    (draft: State, action: UpdateAction | SwapAction | DuplicateAction) => {
+    (
+        draft: State,
+        action:
+            | UpdateAction
+            | SwapAction
+            | DuplicateAction
+            | UpdateFormMetaAction,
+    ) => {
         switch (action.member) {
             case MemberTypes.UPDATE:
                 UpdateActions(draft, action as UpdateAction);
@@ -200,13 +225,18 @@ const reducer = produce(
             case MemberTypes.DUPLICATE:
                 DuplicateActions(draft, action as DuplicateAction);
                 break;
+            case MemberTypes.FORM_META:
+                FormMetaActions(draft, action as UpdateFormMetaAction);
+                break;
         }
     },
 );
 
 export const FormContext = createContext<{
     state: State;
-    dispatch: Dispatch<UpdateAction | SwapAction | DuplicateAction>;
+    dispatch: Dispatch<
+        UpdateAction | SwapAction | DuplicateAction | UpdateFormMetaAction
+    >;
 }>({
     state: initialState,
     dispatch: () => null,
