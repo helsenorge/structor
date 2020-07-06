@@ -15,7 +15,7 @@ function TitleAndDescription(): JSX.Element {
             style={{
                 margin: '10px',
                 padding: '10px',
-                backgroundColor: 'var(--color-base-1)',
+                backgroundColor: 'var(--color-base-4)',
                 width: '95%',
                 display: 'inline-block',
             }}

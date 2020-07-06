@@ -94,15 +94,21 @@ function Section({
         <div
             style={{
                 margin: '10px',
-                padding: '10px',
                 backgroundColor: 'var(--color-base-1)',
                 width: '95%',
                 display: 'inline-block',
+                boxShadow: '0 4px 8px 0 #c7c7c7c7',
+                borderRadius: '2px',
             }}
         >
             {needsSections && (
-                <div>
-                    <Row style={{ padding: '0 10px 10px 10px' }}>
+                <div
+                    style={{
+                        padding: '10px',
+                        backgroundColor: 'var(--color-base-3',
+                    }}
+                >
+                    <Row style={{ margin: '0 10px 10px 10px' }}>
                         <Col xs={0} lg={4}></Col>
                         <Col
                             xs={24}
@@ -200,19 +206,19 @@ function Section({
                         </Col>
                         <Col xs={0} lg={4}></Col>
                     </Row>
-
-                    <Row>
-                        <hr
-                            key="hrTitle"
-                            style={{
-                                color: 'black',
-                                width: '100%',
-                                border: '0.2px solid var(--color-base-2)',
-                            }}
-                        />
-                    </Row>
                 </div>
             )}
+            <Row>
+                <hr
+                    key="hrTitle"
+                    style={{
+                        margin: 0,
+                        color: 'black',
+                        width: '100%',
+                        border: '0.2px solid var(--color-base-2)',
+                    }}
+                />
+            </Row>
             <Row>
                 <Col span={24}>
                     <DND.Droppable droppableId={sectionId} type={'question'}>
