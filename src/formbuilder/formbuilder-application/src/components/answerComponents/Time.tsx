@@ -39,7 +39,6 @@ function Time({ questionId }: TimeProps): JSX.Element {
         updateStore?: boolean;
     }) {
         const temp = { ...localAnswer };
-        console.log(attribute);
         if (attribute.isTime !== undefined) temp.isTime = attribute.isTime;
         if (attribute.isDate !== undefined) temp.isDate = attribute.isDate;
         if (attribute.defaultTime !== undefined)
