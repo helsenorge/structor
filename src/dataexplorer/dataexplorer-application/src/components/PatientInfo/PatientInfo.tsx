@@ -79,20 +79,18 @@ const PatientInfo = ({ patientID, setSchema }: IPatientInfoProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionnaire]);
 
-    if (patientData && patientData !== undefined && patientData.total !== 0) {
+    if (patientData !== undefined && patientData.total === 1) {
         // Since the search uses social security number, which are
         // unique, the response will contain a maximum value of 1,
         // if the patient exists in the database.
 
-        if (patientData.total === 1) {
-            return (
-                <DisplayPatientInfo
-                    patient={patientData.entry[0].resource}
-                    handleClick={handleClick}
-                    dataSource={dataSource}
-                />
-            );
-        }
+        return (
+            <DisplayPatientInfo
+                patient={patientData.entry[0].resource}
+                handleClick={handleClick}
+                dataSource={dataSource}
+            />
+        );
     }
     return (
         <>
