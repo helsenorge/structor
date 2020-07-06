@@ -115,6 +115,7 @@ export function addNewQuestion(sectionId: string): UpdateAction {
         answer: { id: generateID() },
         isRequired: true,
         hasDescription: false,
+        placeholder: 'Spørsmålstekst',
     };
     return {
         type: UpdateActionTypes.ADD_NEW_QUESTION,
