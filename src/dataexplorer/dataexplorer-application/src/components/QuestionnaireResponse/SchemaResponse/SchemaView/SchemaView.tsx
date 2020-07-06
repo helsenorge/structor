@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Collapse, Row } from 'antd';
-import './Schemes.style.scss';
+import './SchemaView.style.scss';
 import {
     IQuestionAndAnswer,
     IQuestion,
@@ -23,6 +23,7 @@ const Schemes = (props: SchemesProps) => {
     const [qAndA, setQAndA] = useState<IQuestionAndAnswer[]>([]);
     useEffect(() => {
         let hasAddedId = false;
+        setQAndA([]);
         props.questions.forEach((q) => {
             props.answers.forEach((a) => {
                 if (q.id === a.id) {

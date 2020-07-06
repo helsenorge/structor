@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Spin } from 'antd';
 import 'dayjs/locale/nb';
 import useFetch from 'utils/hooks/useFetch';
 import dayjs from 'dayjs';
 import { IAnswer, IQuestion } from 'types/IQuestionAndAnswer';
-import Schemes from './Schemes/Schemes';
+import SchemaView from './SchemaView/SchemaView';
 
-const SchemaResponse = (props: { questionnaireResponseId: string }) => {
-    const schemaResponse = useFetch<fhir.QuestionnaireResponse>(
-        'fhir/QuestionnaireResponse/' + props.questionnaireResponseId,
-    );
-
-    const questionnaireUrl = schemaResponse.response?.questionnaire?.reference?.substr(
-        schemaResponse.response?.questionnaire?.reference?.indexOf(
-            'Questionnaire/',
-        ),
-    );
-
+const SchemaResponse = (props: {
+    questionnaireUrl: string;
+    schemaResponse: fhir.QuestionnaireResponse;
+}) => {
     const { response: questionnaire } = useFetch<fhir.Questionnaire>(
-        'fhir/' + questionnaireUrl,
+        'fhir/' + props.questionnaireUrl,
     );
 
     const [answers, setAnswers] = useState<IAnswer[]>([]);
@@ -30,7 +22,10 @@ const SchemaResponse = (props: { questionnaireResponseId: string }) => {
     >([]);
 
     const updateAnswer = (update: fhir.QuestionnaireResponseItem) => {
-        const answerObject: IAnswer = { id: update.linkId, answers: update };
+        const answerObject: IAnswer = {
+            id: update.linkId,
+            answers: update,
+        };
         setAnswers((answer) => [...answer, answerObject]);
     };
 
@@ -63,13 +58,13 @@ const SchemaResponse = (props: { questionnaireResponseId: string }) => {
                     list.item.forEach((element) => findAnswer(element));
             }
         };
-        if (schemaResponse.response?.item) {
-            for (let a = 0; a < schemaResponse.response.item.length; a++) {
-                findAnswer(schemaResponse.response.item[a]);
+        if (props.schemaResponse.item) {
+            for (let a = 0; a < props.schemaResponse.item.length; a++) {
+                findAnswer(props.schemaResponse.item[a]);
             }
         }
         return;
-    }, [schemaResponse.response]);
+    }, [props]);
 
     useEffect(() => {
         const findQuestion = (list: fhir.QuestionnaireItem) => {
@@ -103,26 +98,16 @@ const SchemaResponse = (props: { questionnaireResponseId: string }) => {
 
     return (
         <>
-            {schemaResponse && questionnaire && questionnaire.name && (
+            {questionnaire && questionnaire.name && (
                 <div>
-                    <Schemes
+                    <SchemaView
                         questions={questions}
                         answers={answers}
                         questionnaireResource={questionnaireResource}
-                        date={dayjs(schemaResponse.response?.authored)}
+                        date={dayjs(props.schemaResponse.authored)}
                         title={questionnaire.name}
                     />
                 </div>
-            )}
-            {!schemaResponse.response && schemaResponse.error.length === 0 && (
-                <Row justify="space-around" align="middle">
-                    <Spin size="large" />
-                </Row>
-            )}
-            {schemaResponse.error.length > 0 && (
-                <Row justify="center">
-                    Feil ved lasting av skjema: {schemaResponse.error}
-                </Row>
             )}
         </>
     );
