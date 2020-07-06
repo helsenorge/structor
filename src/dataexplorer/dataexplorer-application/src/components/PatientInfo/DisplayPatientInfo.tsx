@@ -58,12 +58,6 @@ const DisplayPatientInfo = (props: {
                         key={props.patient.id}
                         className="patient-card"
                         title={<Title level={4}>{name}</Title>}
-                        headStyle={{
-                            backgroundColor: '#f7fbff',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            marginBottom: 0,
-                        }}
                         type="inner"
                         hoverable
                         bordered

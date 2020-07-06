@@ -6,15 +6,20 @@
     margin-top: (1.875rem!important);
     cursor: auto;
 
-    .ant-card-head-title {
+    .ant-card-head {
+        background-color: #f7fbff;
+        display: flex;
+        justify-content: center;
+
         h4 {
-            margin: 0;
+            margin-bottom: 0;
         }
     }
 
     .info-container {
         display: flex;
         justify-content: space-between;
+
         span {
             font-weight: bold;
         }
