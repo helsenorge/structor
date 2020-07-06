@@ -146,6 +146,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                             localUpdate({
                                 isDate: true,
                                 isTime: false,
+                                updateStore: true,
                             })
                         }
                     >
@@ -161,6 +162,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                             localUpdate({
                                 isDate: false,
                                 isTime: true,
+                                updateStore: true,
                             })
                         }
                     >
@@ -176,6 +178,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                             localUpdate({
                                 isDate: true,
                                 isTime: true,
+                                updateStore: true,
                             })
                         }
                     >

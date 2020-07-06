@@ -27,8 +27,7 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
             temp.isChecked = attribute.isChecked;
         if (attribute.label) temp.label = attribute.label;
         setLocalAnswer(temp);
-        if (attribute.updateStore)
-            dispatch(updateAnswer(questionId, localAnswer));
+        if (attribute.updateStore) dispatch(updateAnswer(questionId, temp));
     }
 
     return (
