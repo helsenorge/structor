@@ -1,24 +1,17 @@
 .site-collapse-custom-panel {
     background: white;
-    font-size: 1.5rem;
-    border-radius: 0rem;
+    font-size: 1rem;
     margin-bottom: 1.5rem;
-    border: 0rem;
     overflow: inherit;
-    padding-left: 0rem;
-    padding-right: 0rem;
     padding-top: 3.125rem;
 }
 
 .site-collapse-custom-collapse {
-    border-radius: 0rem;
     font-size: 0.625rem;
     background: white;
-    border: 0rem;
     overflow: inherit;
     margin-bottom: 1.5rem;
     padding-left: 6.25rem;
-    padding-right: 0rem;
 }
 
 p.answers {
@@ -44,7 +37,6 @@ div.card {
     box-shadow: 0 0.25rem 0.5rem 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     background: white;
-    width: 75rem;
 }
 
 h1.title {

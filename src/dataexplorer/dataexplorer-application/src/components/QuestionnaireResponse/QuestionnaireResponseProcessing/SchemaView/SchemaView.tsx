@@ -63,86 +63,103 @@ const Schemes = (props: SchemesProps) => {
         <>
             {defaultActive && (
                 <Row justify="center">
-                    <div className="card">
-                        <Col>
-                            <h1 className="title">{props.title}</h1>
-                        </Col>
-                        <Col>
-                            <p>{props.date.format('DD/MM/YYYY HH:mm')}</p>
-                        </Col>
-                        <Collapse
-                            bordered={false}
-                            style={{ width: 1000 }}
-                            className="site-collapse-custom-collapse"
-                            defaultActiveKey={defaultActive}
-                            onChange={callback}
-                        >
-                            {qAndA.map(
-                                (section) =>
-                                    section.id.split('.').length === 1 && (
-                                        <Panel
-                                            header={
-                                                section.questions.questions.text
-                                            }
-                                            key={section.id}
-                                            className="site-collapse-custom-panel"
-                                        >
-                                            {qAndA.map(
-                                                (qa, qaIndex) =>
-                                                    qa.id.split('.').length ===
-                                                        2 &&
-                                                    section.id ===
-                                                        qa.id.split('.')[0] &&
-                                                    qa.answers?.answers
-                                                        .answer &&
-                                                    qa.answers?.answers
-                                                        .answer[0] && (
-                                                        <div key={qaIndex}>
-                                                            <QuestionsAndAnswersDisplay
-                                                                questionAndAnswer={
-                                                                    qa
-                                                                }
-                                                                questionnaireResource={
-                                                                    props.questionnaireResource
-                                                                }
-                                                                questionAndAnswerIndex={
-                                                                    qaIndex
-                                                                }
-                                                            />
-                                                        </div>
-                                                    ),
-                                            )}
+                    <Col span={12}>
+                        <div className="card">
+                            <Col>
+                                <h1 className="title">{props.title}</h1>
+                            </Col>
+                            <Col>
+                                <p>{props.date.format('DD/MM/YYYY HH:mm')}</p>
+                            </Col>
+                            <Col span={18}>
+                                <Collapse
+                                    bordered={false}
+                                    className="site-collapse-custom-collapse"
+                                    defaultActiveKey={defaultActive}
+                                    onChange={callback}
+                                >
+                                    {qAndA.map(
+                                        (section) =>
+                                            section.id.split('.').length ===
+                                                1 && (
+                                                <Panel
+                                                    header={
+                                                        section.questions
+                                                            .questions.text
+                                                    }
+                                                    key={section.id}
+                                                    className="site-collapse-custom-panel"
+                                                >
+                                                    {qAndA.map(
+                                                        (qa, qaIndex) =>
+                                                            qa.id.split('.')
+                                                                .length === 2 &&
+                                                            section.id ===
+                                                                qa.id.split(
+                                                                    '.',
+                                                                )[0] &&
+                                                            qa.answers?.answers
+                                                                .answer &&
+                                                            qa.answers?.answers
+                                                                .answer[0] && (
+                                                                <div
+                                                                    key={
+                                                                        qaIndex
+                                                                    }
+                                                                >
+                                                                    <QuestionsAndAnswersDisplay
+                                                                        questionAndAnswer={
+                                                                            qa
+                                                                        }
+                                                                        questionnaireResource={
+                                                                            props.questionnaireResource
+                                                                        }
+                                                                        questionAndAnswerIndex={
+                                                                            qaIndex
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            ),
+                                                    )}
 
-                                            {qAndA.map(
-                                                (qa, qaIndex) =>
-                                                    qa.id.split('.').length ===
-                                                        3 &&
-                                                    qa.id.split('.')[0] ===
-                                                        section.id &&
-                                                    qa.answers?.answers
-                                                        .answer &&
-                                                    qa.answers?.answers
-                                                        .answer[0] && (
-                                                        <div key={qaIndex}>
-                                                            <SubQuestionsAndAnswersDisplay
-                                                                questionAndAnswer={
-                                                                    qa
-                                                                }
-                                                                questionnaireResource={
-                                                                    props.questionnaireResource
-                                                                }
-                                                                questionAndAnswerIndex={
-                                                                    qaIndex
-                                                                }
-                                                            />
-                                                        </div>
-                                                    ),
-                                            )}
-                                        </Panel>
-                                    ),
-                            )}
-                        </Collapse>
-                    </div>
+                                                    {qAndA.map(
+                                                        (qa, qaIndex) =>
+                                                            qa.id.split('.')
+                                                                .length === 3 &&
+                                                            qa.id.split(
+                                                                '.',
+                                                            )[0] ===
+                                                                section.id &&
+                                                            qa.answers?.answers
+                                                                .answer &&
+                                                            qa.answers?.answers
+                                                                .answer[0] && (
+                                                                <div
+                                                                    key={
+                                                                        qaIndex
+                                                                    }
+                                                                >
+                                                                    <SubQuestionsAndAnswersDisplay
+                                                                        questionAndAnswer={
+                                                                            qa
+                                                                        }
+                                                                        questionnaireResource={
+                                                                            props.questionnaireResource
+                                                                        }
+                                                                        questionAndAnswerIndex={
+                                                                            qaIndex
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            ),
+                                                    )}
+                                                </Panel>
+                                            ),
+                                    )}
+                                </Collapse>
+                            </Col>
+                        </div>
+                    </Col>
                 </Row>
             )}
         </>
