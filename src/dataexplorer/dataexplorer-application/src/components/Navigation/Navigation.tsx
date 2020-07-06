@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Layout, Avatar } from 'antd';
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
-import 'antd/dist/antd.css';
 import MyPatients from '../PatientInfo/MyPatients';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
 import PatientInfo from '../PatientInfo/PatientInfo';
-import './Navigation.style.scss';
 import QuestionnaireResponse from 'components/QuestionnaireResponse/QuestionnaireResponse';
+import 'antd/dist/antd.css';
+import './Navigation.style.scss';
 
 const { Header, Content } = Layout;
 const Navigation = () => {
