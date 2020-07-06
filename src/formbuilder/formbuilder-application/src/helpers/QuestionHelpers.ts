@@ -159,6 +159,8 @@ function convertBoolean(question: IQuestion, subItem: fhir.QuestionnaireItem) {
             valueString: 'Må hukes av',
         });
     subItem.text = answer.label;
+    subItem.type = FhirAnswerTypes.boolean;
+    if (answer.isChecked) subItem.initialBoolean = true;
     return subItem;
 }
 
