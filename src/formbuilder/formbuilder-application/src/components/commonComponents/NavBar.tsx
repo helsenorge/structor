@@ -14,6 +14,8 @@ function NavBar(): JSX.Element {
 
     function convertQuestions() {
         const questionnaire = JSONConverter(
+            state.title,
+            state.description,
             state.sectionOrder,
             state.sections,
             state.questions,

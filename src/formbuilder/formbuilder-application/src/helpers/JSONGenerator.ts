@@ -34,6 +34,11 @@ function convertSections(
             const questionKey = sections[sectionKey].questionOrder[j];
             const question = questions[questionKey];
             // Will be within 'item' and if in section another 'item' of type group
+            if (
+                question.questionText.length === 0 ||
+                question.answerType === AnswerTypes.default
+            )
+                continue;
             const subItem = convertQuestion(
                 question,
                 i + 1 + '.' + (j + 1) + '00',
@@ -116,6 +121,8 @@ function convertAnswers(
 }
 
 function convertToJSON(
+    title: string,
+    description: string,
     sectionOrder: Array<string>,
     sections: SectionList,
     questions: QuestionList,
@@ -130,10 +137,10 @@ function convertToJSON(
         resourceType: 'Questionnaire',
         language: 'nb-NO',
         name: 'hdir-NAVN', // TODO: FIX ME
-        title: 'TITLE', // TODO: FIX ME
+        title: title,
         status: 'draft',
         publisher: 'NHN',
-        description: 'Description', // TODO: FIX ME
+        description: description,
         meta: {
             profile: [
                 'http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire',
@@ -160,7 +167,7 @@ function convertToJSON(
                         {
                             system: 'uri',
                             code: '29',
-                            display: 'TITLE', // TODO: FIX ME
+                            display: title, // TODO: FIX ME
                         },
                     ],
                 },
