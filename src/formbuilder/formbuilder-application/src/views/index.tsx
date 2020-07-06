@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
+import convertFromJSON from '../helpers/FromJSONToForm';
 
 function Index(): JSX.Element {
     return (
@@ -25,7 +26,7 @@ function Index(): JSX.Element {
                             </Col>
                         </Row>
                         <Row align="middle" justify="center">
-                            <Col>
+                            <Col span={12}>
                                 <div
                                     style={{
                                         display: 'inline-block',
@@ -35,7 +36,8 @@ function Index(): JSX.Element {
                                     <Link to="create-form">
                                         <Button
                                             style={{
-                                                backgroundColor: 'var(--primary-1)',
+                                                backgroundColor:
+                                                    'var(--primary-1)',
                                                 color: 'var(--color-base-1)',
                                             }}
                                         >
@@ -43,6 +45,17 @@ function Index(): JSX.Element {
                                         </Button>
                                     </Link>
                                 </div>
+                            </Col>
+                            <Col span={12}>
+                                <Button
+                                    style={{
+                                        backgroundColor: 'var(--primary-1)',
+                                        color: 'var(--color-base-1)',
+                                    }}
+                                    onClick={convertFromJSON}
+                                >
+                                    Last opp JSON-fil
+                                </Button>
                             </Col>
                         </Row>
                     </Col>
