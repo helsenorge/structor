@@ -100,49 +100,23 @@ function QuestionWrapper({
                 </div>
             </Modal>
             <Row justify="end">
-                <Col
-                    sm={12}
-                    style={{ display: 'flex', justifyContent: 'flex-end' }}
-                >
+                <Col sm={24} style={{ display: 'block' }}>
                     <Button
                         style={{
                             zIndex: 1,
                             color: 'var(--primary-1)',
                             marginLeft: '10px',
-                        }}
-                        icon={<CopyOutlined />}
-                        type="default"
-                        onClick={() => duplicateQuestion()}
-                    >
-                        Dupliser spørsmål
-                    </Button>
-                    <Button
-                        style={{
-                            zIndex: 1,
-                            color: 'var(--primary-1)',
-                            marginLeft: '10px',
-                        }}
-                        icon={<DeleteOutlined />}
-                        type="default"
-                        onClick={() => removeQuestion()}
-                    >
-                        Slett spørsmål
-                    </Button>
-                    <Button
-                        style={{
-                            zIndex: 1,
-                            color: 'var(--primary-1)',
-                            marginLeft: '10px',
+                            float: 'left',
                         }}
                         icon={<EyeOutlined />}
                         type="default"
                         onClick={() => setQuestionPreview(true)}
                     >
-                        Forhåndsvis som utfyller
+                        Forhåndsvis spørsmål
                     </Button>
                     <Tooltip title="Flytt spørsmål">
                         <Button
-                            style={{ zIndex: 1, color: 'var(--primary-1)' }}
+                            style={{ zIndex: 1, color: 'var(--primary-1)' , float:'right'}}
                             size="large"
                             type="link"
                             {...provided.dragHandleProps}
@@ -161,6 +135,32 @@ function QuestionWrapper({
                             </svg>
                         </Button>
                     </Tooltip>
+                    <Button
+                        style={{
+                            zIndex: 1,
+                            color: 'var(--primary-1)',
+                            marginLeft: '10px',
+                            float: 'right',
+                        }}
+                        icon={<DeleteOutlined />}
+                        type="default"
+                        onClick={() => removeQuestion()}
+                    >
+                        Slett spørsmål
+                    </Button>
+                    <Button
+                        style={{
+                            zIndex: 1,
+                            color: 'var(--primary-1)',
+                            marginLeft: '10px',
+                            float: 'right',
+                        }}
+                        icon={<CopyOutlined />}
+                        type="default"
+                        onClick={() => duplicateQuestion()}
+                    >
+                        Dupliser spørsmål
+                    </Button>
                 </Col>
             </Row>
             <Row>
