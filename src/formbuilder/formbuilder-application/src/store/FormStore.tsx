@@ -188,7 +188,6 @@ export function swapQuestion(
 }
 
 export function updateQuestion(question: IQuestion): UpdateAction {
-    console.log(question);
     return {
         type: UpdateActionTypes.UPDATE_QUESTION,
         member: MemberTypes.UPDATE,
@@ -200,7 +199,6 @@ export function updateAnswer(
     questionId: string,
     answer: IChoice | INumber | IText | ITime | IBoolean,
 ): UpdateAction {
-    console.log(answer);
     return {
         type: UpdateActionTypes.UPDATE_ANSWER,
         member: MemberTypes.UPDATE,

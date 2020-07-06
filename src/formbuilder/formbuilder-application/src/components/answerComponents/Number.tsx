@@ -80,20 +80,19 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             </Checkbox>
                         </Col>
                         <Col span={12} className="standard">
-                            {localAnswer.hasDefault && (
-                                <InputNumber
-                                    value={localAnswer.defaultValue}
-                                    onChange={(value) =>
-                                        localUpdate({
-                                            updateStore: false,
-                                            defaultValue: value as number,
-                                        })
-                                    }
-                                    onBlur={() =>
-                                        localUpdate({ updateStore: true })
-                                    }
-                                ></InputNumber>
-                            )}
+                            <InputNumber
+                                value={localAnswer.defaultValue}
+                                onChange={(value) =>
+                                    localUpdate({
+                                        updateStore: false,
+                                        defaultValue: value as number,
+                                    })
+                                }
+                                onBlur={() =>
+                                    localUpdate({ updateStore: true })
+                                }
+                                disabled={!localAnswer.hasDefault}
+                            ></InputNumber>
                         </Col>
                     </Row>
 
@@ -112,20 +111,19 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             </Checkbox>
                         </Col>
                         <Col span={12} className="standard">
-                            {localAnswer.hasMin && (
-                                <InputNumber
-                                    value={localAnswer.minValue}
-                                    onChange={(value) =>
-                                        localUpdate({
-                                            updateStore: false,
-                                            minValue: value as number,
-                                        })
-                                    }
-                                    onBlur={() =>
-                                        localUpdate({ updateStore: true })
-                                    }
-                                ></InputNumber>
-                            )}
+                            <InputNumber
+                                value={localAnswer.minValue}
+                                onChange={(value) =>
+                                    localUpdate({
+                                        updateStore: false,
+                                        minValue: value as number,
+                                    })
+                                }
+                                onBlur={() =>
+                                    localUpdate({ updateStore: true })
+                                }
+                                disabled={!localAnswer.hasMin}
+                            ></InputNumber>
                         </Col>
                     </Row>
                     <Row>
@@ -143,20 +141,19 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             </Checkbox>
                         </Col>
                         <Col span={12} className="standard">
-                            {localAnswer.hasMax && (
-                                <InputNumber
-                                    value={localAnswer.maxValue}
-                                    onChange={(value) =>
-                                        localUpdate({
-                                            updateStore: false,
-                                            maxValue: value as number,
-                                        })
-                                    }
-                                    onBlur={() =>
-                                        localUpdate({ updateStore: true })
-                                    }
-                                ></InputNumber>
-                            )}
+                            <InputNumber
+                                value={localAnswer.maxValue}
+                                onChange={(value) =>
+                                    localUpdate({
+                                        updateStore: false,
+                                        maxValue: value as number,
+                                    })
+                                }
+                                onBlur={() =>
+                                    localUpdate({ updateStore: true })
+                                }
+                                disabled={!localAnswer.hasMax}
+                            ></InputNumber>
                         </Col>
                     </Row>
                     <Row>
@@ -174,21 +171,20 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             </Checkbox>
                         </Col>
                         <Col span={12} className="standard">
-                            {localAnswer.hasUnit && (
-                                <Input
-                                    style={{ width: '90px' }}
-                                    value={localAnswer.unit}
-                                    onChange={(e) =>
-                                        localUpdate({
-                                            updateStore: false,
-                                            unit: e.target.value as string,
-                                        })
-                                    }
-                                    onBlur={() =>
-                                        localUpdate({ updateStore: true })
-                                    }
-                                ></Input>
-                            )}
+                            <Input
+                                style={{ width: '90px' }}
+                                value={localAnswer.unit}
+                                onChange={(e) =>
+                                    localUpdate({
+                                        updateStore: false,
+                                        unit: e.target.value as string,
+                                    })
+                                }
+                                onBlur={() =>
+                                    localUpdate({ updateStore: true })
+                                }
+                                disabled={!localAnswer.hasUnit}
+                            ></Input>
                         </Col>
                     </Row>
                 </Col>
