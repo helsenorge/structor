@@ -116,7 +116,11 @@ function QuestionWrapper({
                     </Button>
                     <Tooltip title="Flytt spørsmål">
                         <Button
-                            style={{ zIndex: 1, color: 'var(--primary-1)' , float:'right'}}
+                            style={{
+                                zIndex: 1,
+                                color: 'var(--primary-1)',
+                                float: 'right',
+                            }}
                             size="large"
                             type="link"
                             {...provided.dragHandleProps}
