@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { InputNumber, Checkbox, Input, Row, Col } from 'antd';
-import './AnswerComponent.css';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { INumber } from '../../types/IAnswer';
+import './AnswerComponent.css';
 
 type NumberProps = {
     questionId: string;
@@ -49,9 +49,9 @@ function Number({ questionId }: NumberProps): JSX.Element {
     return (
         <>
             <Row>
-                <Col span={24} className="standard">
+                <Col span={12} className="standard">
                     <Row>
-                        <Col span={24} className="standard">
+                        <Col span={12} className="standard">
                             <Checkbox
                                 checked={localAnswer.isDecimal}
                                 onChange={(e) =>
@@ -61,12 +61,12 @@ function Number({ questionId }: NumberProps): JSX.Element {
                                     })
                                 }
                             >
-                                Decimal
+                                Desimaltall
                             </Checkbox>
                         </Col>
                     </Row>
                     <Row>
-                        <Col span={24} className="standard">
+                        <Col span={12} className="standard">
                             <Checkbox
                                 checked={localAnswer.hasDefault}
                                 onChange={(e) =>
@@ -76,8 +76,10 @@ function Number({ questionId }: NumberProps): JSX.Element {
                                     })
                                 }
                             >
-                                Default
+                                Forhåndsvalgt verdi
                             </Checkbox>
+                        </Col>
+                        <Col span={12} className="standard">
                             {localAnswer.hasDefault && (
                                 <InputNumber
                                     value={localAnswer.defaultValue}
@@ -94,37 +96,9 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             )}
                         </Col>
                     </Row>
+
                     <Row>
-                        <Col span={24} className="standard">
-                            <Checkbox
-                                checked={localAnswer.hasMax}
-                                onChange={(e) =>
-                                    localUpdate({
-                                        hasMax: e.target.checked,
-                                        updateStore: true,
-                                    })
-                                }
-                            >
-                                Max
-                            </Checkbox>
-                            {localAnswer.hasMax && (
-                                <InputNumber
-                                    value={localAnswer.maxValue}
-                                    onChange={(value) =>
-                                        localUpdate({
-                                            updateStore: false,
-                                            maxValue: value as number,
-                                        })
-                                    }
-                                    onBlur={() =>
-                                        localUpdate({ updateStore: true })
-                                    }
-                                ></InputNumber>
-                            )}
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={24} className="standard">
+                        <Col span={12} className="standard">
                             <Checkbox
                                 checked={localAnswer.hasMin}
                                 onChange={(e) =>
@@ -136,6 +110,8 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             >
                                 Min
                             </Checkbox>
+                        </Col>
+                        <Col span={12} className="standard">
                             {localAnswer.hasMin && (
                                 <InputNumber
                                     value={localAnswer.minValue}
@@ -153,7 +129,38 @@ function Number({ questionId }: NumberProps): JSX.Element {
                         </Col>
                     </Row>
                     <Row>
-                        <Col span={24} className="standard">
+                        <Col span={12} className="standard">
+                            <Checkbox
+                                checked={localAnswer.hasMax}
+                                onChange={(e) =>
+                                    localUpdate({
+                                        hasMax: e.target.checked,
+                                        updateStore: true,
+                                    })
+                                }
+                            >
+                                Max
+                            </Checkbox>
+                        </Col>
+                        <Col span={12} className="standard">
+                            {localAnswer.hasMax && (
+                                <InputNumber
+                                    value={localAnswer.maxValue}
+                                    onChange={(value) =>
+                                        localUpdate({
+                                            updateStore: false,
+                                            maxValue: value as number,
+                                        })
+                                    }
+                                    onBlur={() =>
+                                        localUpdate({ updateStore: true })
+                                    }
+                                ></InputNumber>
+                            )}
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={12} className="standard">
                             <Checkbox
                                 checked={localAnswer.hasUnit}
                                 onChange={(e) =>
@@ -163,11 +170,13 @@ function Number({ questionId }: NumberProps): JSX.Element {
                                     })
                                 }
                             >
-                                Unit
+                                Enhet
                             </Checkbox>
+                        </Col>
+                        <Col span={12} className="standard">
                             {localAnswer.hasUnit && (
                                 <Input
-                                    style={{ width: '50px' }}
+                                    style={{ width: '90px' }}
                                     value={localAnswer.unit}
                                     onChange={(e) =>
                                         localUpdate({

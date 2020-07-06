@@ -35,11 +35,11 @@ export interface IChoice extends IAnswer {
 }
 
 export interface INumber extends IAnswer {
-    hasMax: boolean;
-    hasMin: boolean;
-    hasUnit: boolean;
-    isDecimal: boolean;
-    hasDefault: boolean;
+    hasMax?: boolean;
+    hasMin?: boolean;
+    hasUnit?: boolean;
+    isDecimal?: boolean;
+    hasDefault?: boolean;
     maxValue?: number;
     minValue?: number;
     defaultValue?: number;
