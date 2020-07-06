@@ -29,7 +29,22 @@ function convertSections(
             repeats: false,
             item: new Array<fhir.QuestionnaireItem>(),
         };
-        // TODO: Add section desctiption
+        if (section.description && section.description.length > 0) {
+            item.item?.push({
+                linkId: i + 1 + '.' + 100,
+                text: section.description,
+                _text: {
+                    extension: [
+                        {
+                            url:
+                                'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                            valueMarkdown: section.description,
+                        },
+                    ],
+                },
+                type: 'display',
+            });
+        }
         for (let j = 0; j < sections[sectionKey].questionOrder.length; j++) {
             const questionKey = sections[sectionKey].questionOrder[j];
             const question = questions[questionKey];
@@ -41,7 +56,14 @@ function convertSections(
                 continue;
             const subItem = convertQuestion(
                 question,
-                i + 1 + '.' + (j + 1) + '00',
+                i +
+                    1 +
+                    '.' +
+                    (j +
+                        (section.description && section.description.length > 0
+                            ? 2
+                            : 1)) +
+                    '00',
                 valueSetMap,
             );
             if (
