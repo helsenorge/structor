@@ -36,7 +36,9 @@
         }
     }
 }
-
+.ant-row-center {
+    margin: 0 !important;
+}
 .breadcrumb-header {
     padding-top: 4.6875rem;
     margin-left: 1.25rem;
@@ -45,5 +47,4 @@
 
 .content {
     background-color: #f0f2f5;
-    height: 150%;
 }
