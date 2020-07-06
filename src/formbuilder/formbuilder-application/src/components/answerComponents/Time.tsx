@@ -39,6 +39,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
         updateStore?: boolean;
     }) {
         const temp = { ...localAnswer };
+        console.log(attribute);
         if (attribute.isTime !== undefined) temp.isTime = attribute.isTime;
         if (attribute.isDate !== undefined) temp.isDate = attribute.isDate;
         if (attribute.defaultTime !== undefined)
@@ -62,6 +63,18 @@ function Time({ questionId }: TimeProps): JSX.Element {
 
     function dateRenderer(key: string) {
         const updateObject = { updateStore: true };
+        let temp = '';
+        switch (key) {
+            case 'defaultTime':
+                temp = 'hasDefaultTime';
+                break;
+            case 'startTime':
+                temp = 'hasStartTime';
+                break;
+            case 'endTime':
+                temp = 'hasEndTime';
+                break;
+        }
         switch (getType()) {
             case 'time':
                 return (
@@ -77,6 +90,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                             updateObject[key] = moment(date).valueOf();
                             localUpdate(updateObject);
                         }}
+                        disabled={eval('!localAnswer.' + temp)}
                     />
                 );
             case 'dateTime':
@@ -94,6 +108,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                             localUpdate(updateObject);
                         }}
                         showTime={localAnswer.isTime}
+                        disabled={eval('!localAnswer.' + temp)}
                     />
                 );
             case 'date':
@@ -111,6 +126,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                             localUpdate(updateObject);
                         }}
                         showTime={localAnswer.isTime}
+                        disabled={eval('!localAnswer.' + temp)}
                     />
                 );
             default:
@@ -168,57 +184,58 @@ function Time({ questionId }: TimeProps): JSX.Element {
                     </Button>
                 </Col>
             </Row>
-            <Row className="standard">
-                <Col span={24} style={{ marginBottom: '10px' }}>
-                    <Checkbox
-                        checked={localAnswer.hasDefaultTime}
-                        onChange={(e) =>
-                            localUpdate({
-                                hasDefaultTime: e.target.checked,
-                                updateStore: true,
-                            })
-                        }
-                    >
-                        Forhåndsvalgt
-                    </Checkbox>
-                    {localAnswer.hasDefaultTime && dateRenderer('defaultTime')}
+            <Row>
+                <Col span={12}>
+                    <Row className="standard">
+                        <Col span={12} style={{ marginBottom: '10px' }}>
+                            <Checkbox
+                                checked={localAnswer.hasDefaultTime}
+                                onChange={(e) =>
+                                    localUpdate({
+                                        hasDefaultTime: e.target.checked,
+                                        updateStore: true,
+                                    })
+                                }
+                            >
+                                Forhåndsvalgt
+                            </Checkbox>
+                        </Col>
+                        <Col span={12}>{dateRenderer('defaultTime')}</Col>
+                    </Row>
+                    <Row className="standard">
+                        <Col span={12} style={{ marginBottom: '10px' }}>
+                            <Checkbox
+                                checked={localAnswer.hasStartTime}
+                                onChange={(e) =>
+                                    localUpdate({
+                                        hasStartTime: e.target.checked,
+                                        updateStore: true,
+                                    })
+                                }
+                            >
+                                Start
+                            </Checkbox>
+                        </Col>
+                        <Col span={12}>{dateRenderer('startTime')}</Col>
+                    </Row>
+                    <Row className="standard">
+                        <Col span={12} style={{ marginBottom: '10px' }}>
+                            <Checkbox
+                                checked={localAnswer.hasEndTime}
+                                onChange={(e) =>
+                                    localUpdate({
+                                        hasEndTime: e.target.checked,
+                                        updateStore: true,
+                                    })
+                                }
+                            >
+                                Slutt
+                            </Checkbox>
+                        </Col>
+                        <Col span={12}>{dateRenderer('endTime')}</Col>
+                    </Row>
                 </Col>
             </Row>
-            <Row className="standard">
-                <Col span={24} style={{ marginBottom: '10px' }}>
-                    <Checkbox
-                        checked={localAnswer.hasStartTime}
-                        onChange={(e) =>
-                            localUpdate({
-                                hasStartTime: e.target.checked,
-                                updateStore: true,
-                            })
-                        }
-                    >
-                        Start
-                    </Checkbox>
-                    {localAnswer.hasStartTime && dateRenderer('startTime')}
-                </Col>
-            </Row>
-            <Row className="standard">
-                <Col span={24} style={{ marginBottom: '10px' }}>
-                    <Checkbox
-                        checked={localAnswer.hasEndTime}
-                        onChange={(e) =>
-                            localUpdate({
-                                hasEndTime: e.target.checked,
-                                updateStore: true,
-                            })
-                        }
-                    >
-                        Slutt
-                    </Checkbox>
-                    {localAnswer.hasEndTime && dateRenderer('endTime')}
-                </Col>
-            </Row>
-            <Button onClick={() => console.log(localAnswer.defaultTime)}>
-                test
-            </Button>
         </>
     );
 }
