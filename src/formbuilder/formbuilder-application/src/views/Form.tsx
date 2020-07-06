@@ -163,6 +163,8 @@ function CreateForm(): JSX.Element {
                         style={{
                             margin: '10px',
                             display: 'inline-block',
+                            boxShadow: '0 4px 8px 0 #c7c7c7c7',
+                            borderRadius: '2px',
                         }}
                     >
                         <Button

@@ -69,7 +69,7 @@ function QuestionWrapper({
     }
 
     return (
-        <div>
+        <div style={{ marginTop: '10px' }}>
             <Modal
                 title="Slik ser spørsmålet ut for utfyller"
                 visible={questionPreview}
