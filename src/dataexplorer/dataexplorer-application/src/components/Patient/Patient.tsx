@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import useFetch from 'utils/hooks/useFetch';
-import { IPatientIdentifier, IRecord, IDataSource } from 'types/IPatient';
+import { IPatientIdentifier } from 'types/IPatient';
 import { Empty, Row, Spin } from 'antd';
-import './PatientInfo.style.scss';
-import DisplayPatientInfo from './DisplayPatientInfo';
-import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
-import { useHistory } from 'react-router-dom';
+import PatientQuestionnaireResponses from './PatientQuestionnaireResponses/PatientQuestionnaireResponses';
 
 interface IPatientProps {
     setSchema: (id: string) => void;
@@ -30,7 +27,7 @@ const Patient = ({ patientID, setSchema }: IPatientProps) => {
                 <Empty
                     description={
                         <span>
-                            Fant ingen pasienter med dette personnummeret
+                            Fant ingen pasienter med personnummer {patientID}
                         </span>
                     }
                 />
@@ -42,140 +39,14 @@ const Patient = ({ patientID, setSchema }: IPatientProps) => {
                     }
                 ></Empty>
             )}
-            {
-                // Since the search uses social security number, which are
-                //  unique, the response will contain a maximum value of 1,
-                // if the patient exists in the database.
-            }
+            {/*  Since the search uses social security number, which are
+                unique, the response will contain a maximum value of 1,
+                if the patient exists in the database. */}
             {patientData && patientData.total === 1 && (
                 <PatientQuestionnaireResponses
                     setSchema={setSchema}
                     patientData={patientData}
                 />
-            )}
-        </>
-    );
-};
-
-interface IPatientQuestionnaireResponsesProps {
-    patientData: IPatientIdentifier;
-    setSchema: (id: string) => void;
-}
-
-const PatientQuestionnaireResponses = ({
-    patientData,
-    setSchema,
-}: IPatientQuestionnaireResponsesProps) => {
-    const [questionnaireId, setQuestionnaireId] = useState<string>();
-    const [QRData, setQRData] = useState<IDataSource[]>([]);
-    const { response: questionnaireResponses } = useFetch<
-        IQuestionnaireResponse
-    >(
-        'fhir/QuestionnaireResponse?subject=Patient/' +
-            patientData.entry[0].resource.id,
-    );
-
-    useEffect(() => {
-        if (questionnaireResponses && questionnaireResponses.total > 0) {
-            questionnaireResponses.entry.forEach((i) => {
-                setQuestionnaireId(
-                    i.resource.questionnaire?.reference?.substr(
-                        i.resource.questionnaire?.reference?.indexOf(
-                            'Questionnaire/',
-                        ),
-                    ),
-                );
-                setQRData((QRData) => [
-                    ...QRData,
-                    {
-                        id: i.resource.id,
-                        schemaName: '',
-                        submitted: i.resource.meta?.lastUpdated?.split('T')[0],
-                    },
-                ]);
-            });
-        }
-    }, [questionnaireResponses]);
-    return (
-        <>
-            {questionnaireResponses && questionnaireId && (
-                <PatientInfo
-                    setSchema={setSchema}
-                    patientData={patientData}
-                    questionnaireResponses={questionnaireResponses}
-                    questionnaireId={questionnaireId}
-                    questionnaireResponseData={QRData}
-                />
-            )}
-            {!questionnaireId && !questionnaireResponses && (
-                <Row justify="center">
-                    <Spin size="large" />
-                </Row>
-            )}
-        </>
-    );
-};
-
-interface IPatientInfoProps {
-    setSchema: (id: string) => void;
-    patientData: IPatientIdentifier;
-    questionnaireResponses: IQuestionnaireResponse;
-    questionnaireId: string;
-    questionnaireResponseData: IDataSource[];
-}
-
-const PatientInfo = ({
-    patientData,
-    questionnaireResponses,
-    questionnaireId,
-    questionnaireResponseData,
-    setSchema,
-}: IPatientInfoProps) => {
-    const history = useHistory();
-    const [dataSource, setDataSource] = useState<fhir.ResourceBase[]>([]);
-
-    const { response: questionnaire } = useFetch<fhir.Questionnaire>(
-        'fhir/' + questionnaireId,
-    );
-
-    const handleClick = (record: IRecord) => {
-        setSchema(record.id);
-        history.push('/pasient/skjema');
-    };
-
-    useEffect(() => {
-        if (
-            questionnaire &&
-            questionnaireResponses &&
-            questionnaireResponses?.total > 0
-        ) {
-            questionnaireResponseData.forEach((item) => {
-                setDataSource((dataSource) => [
-                    ...dataSource,
-                    {
-                        id: item.id,
-                        schemaName: questionnaire?.title,
-                        submitted: item.submitted,
-                    },
-                ]);
-            });
-        }
-        // eslint-disable-next-line
-    }, [questionnaire]);
-
-    return (
-        <>
-            {questionnaire && (
-                <DisplayPatientInfo
-                    patient={patientData.entry[0].resource}
-                    handleClick={handleClick}
-                    dataSource={dataSource}
-                />
-            )}
-            {!questionnaire && !dataSource && (
-                <Row justify="space-around" align="middle">
-                    <Spin size="large" />
-                </Row>
             )}
         </>
     );

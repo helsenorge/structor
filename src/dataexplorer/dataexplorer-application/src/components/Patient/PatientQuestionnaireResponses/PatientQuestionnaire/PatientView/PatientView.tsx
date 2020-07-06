@@ -2,9 +2,9 @@ import React from 'react';
 import { IPatient } from 'types/IPatient';
 import { Row, Col, Card, Table, Typography } from 'antd';
 import dayjs from 'dayjs';
-import './PatientInfo.style.scss';
+import './PatientView.style.scss';
 
-const DisplayPatientInfo = (props: {
+const PatientView = (props: {
     patient: IPatient;
     handleClick: any;
     dataSource: fhir.ResourceBase[];
@@ -151,4 +151,4 @@ const DisplayPatientInfo = (props: {
     );
 };
 
-export default DisplayPatientInfo;
+export default PatientView;
