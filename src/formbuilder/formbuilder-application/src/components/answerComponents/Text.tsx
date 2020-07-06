@@ -38,6 +38,7 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
             </Checkbox>
             {localAnswer.isLong && (
                 <InputNumber
+                    value={localAnswer.maxLength}
                     onBlur={() => localUpdate({ updateStore: true })}
                     onChange={(value) =>
                         localUpdate({

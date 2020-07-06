@@ -1,14 +1,9 @@
 import React, { useState, useContext } from 'react';
-import { Radio, Checkbox, Input } from 'antd';
+import { Checkbox, Input } from 'antd';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import './AnswerComponent.css';
 import { IBoolean } from '../../types/IAnswer';
-/* 
-export interface IBoolean extends IAnswer {
-    isChecked: boolean;
-    label: string;
-}
-*/
+
 type BooleanInputProps = {
     questionId: string;
 };
@@ -32,7 +27,6 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
             temp.isChecked = attribute.isChecked;
         if (attribute.label) temp.label = attribute.label;
         setLocalAnswer(temp);
-        console.log(attribute.isChecked);
         if (attribute.updateStore)
             dispatch(updateAnswer(questionId, localAnswer));
     }
@@ -47,21 +41,23 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
             >
                 <Input
                     type="text"
+                    value={localAnswer.label}
                     className="input-question"
                     placeholder={'Skriv inn påstand her.'}
                     style={{
                         width: '250px',
                     }}
                     onBlur={() => localUpdate({ updateStore: true })}
-                    onChange={(value) =>
+                    onChange={(e) =>
                         localUpdate({
-                            label: value.target.value,
+                            label: e.target.value,
                             updateStore: false,
                         })
                     }
                 ></Input>
             </Checkbox>
             <Checkbox
+                checked={localAnswer.isChecked}
                 onChange={(e) =>
                     localUpdate({
                         isChecked: e.target.checked,

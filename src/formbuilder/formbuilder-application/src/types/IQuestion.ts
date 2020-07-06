@@ -19,4 +19,5 @@ export default interface IQuestion {
     isDependent: boolean;
     dependentOf?: string;
     description?: string;
+    placeholder?: string;
 }
