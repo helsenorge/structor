@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { IAnswer, IQuestion } from 'types/IQuestionAndAnswer';
 import SchemaView from './SchemaView/SchemaView';
 
-const SchemaResponse = (props: {
+const QuestionnaireResponseProcessing = (props: {
     questionnaireUrl: string;
     schemaResponse: fhir.QuestionnaireResponse;
 }) => {
@@ -113,4 +113,4 @@ const SchemaResponse = (props: {
     );
 };
 
-export default SchemaResponse;
+export default QuestionnaireResponseProcessing;

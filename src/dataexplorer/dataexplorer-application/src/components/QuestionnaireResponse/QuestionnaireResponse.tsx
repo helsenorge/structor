@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Spin } from 'antd';
 import 'dayjs/locale/nb';
 import useFetch from 'utils/hooks/useFetch';
-import SchemaResponse from './SchemaResponse/SchemaResponse';
+import QuestionnaireResponseProcessing from './QuestionnaireResponseProcessing/QuestionnaireResponseProcessing';
 
 const QuestionnaireResponse = (props: { questionnaireResponseId: string }) => {
     const { response: questionnaireResponse, error: qrError } = useFetch<
@@ -17,7 +17,7 @@ const QuestionnaireResponse = (props: { questionnaireResponseId: string }) => {
     return (
         <>
             {questionnaireResponse && questionnaireUrl && (
-                <SchemaResponse
+                <QuestionnaireResponseProcessing
                     questionnaireUrl={questionnaireUrl}
                     schemaResponse={questionnaireResponse}
                 />
