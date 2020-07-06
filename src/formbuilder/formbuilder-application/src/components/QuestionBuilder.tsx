@@ -1,9 +1,17 @@
-import React, { useEffect, useState, ChangeEvent, useContext } from 'react';
-import { Input, Row, Col, Button, Tooltip, Checkbox, Select } from 'antd';
+import React, { useState, useContext } from 'react';
+import { Input, Row, Col, Checkbox, Select } from 'antd';
 import './answerComponents/AnswerComponent.css';
 import { FormContext, updateQuestion } from '../store/FormStore';
 import IQuestion from '../types/IQuestion';
-import AnswerTypes from '../types/IAnswer';
+import AnswerTypes, {
+    IChoice,
+    INumber,
+    IText,
+    IBoolean,
+    ITime,
+    IAnswer,
+} from '../types/IAnswer';
+
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -13,25 +21,6 @@ type QuestionProps = {
 
 function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const question = state.questions[questionId];
-    const [placeholder, setPlaceholder] = useState('Spørsmål 1...');
-    const [questionTitle, setQuestionTitle] = useState(question.questionText);
-    useEffect(() => {
-        findPlaceholder();
-    });
-    function findPlaceholder() {
-        setPlaceholder('Spørsmål ' + (questionId + 1) + '...');
-    }
-
-    function handleInput(questionString: string) {
-        setPlaceholder(questionString);
-        if (question) {
-            const temp = { ...question };
-            temp.questionText = questionString;
-            dispatch(updateQuestion(temp));
-        }
-    }
-
     const [localQuestion, setLocalQuestion] = useState(
         state.questions[questionId] as IQuestion,
     );
@@ -40,16 +29,72 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
         answerType?: AnswerTypes;
         isRequired?: boolean;
         hasDescription?: boolean;
+        isDependent?: boolean;
+        questionText?: string;
+        dependentOf?: string;
         description?: string;
         updateStore?: boolean;
     }) {
         const temp = { ...localQuestion };
-        if (attribute.answerType) temp.answerType = attribute.answerType;
         if (attribute.isRequired !== undefined)
             temp.isRequired = attribute.isRequired;
         if (attribute.hasDescription !== undefined)
             temp.hasDescription = attribute.hasDescription;
         if (attribute.description) temp.description = attribute.description;
+        if (attribute.isDependent) temp.isDependent = attribute.isDependent;
+        if (attribute.dependentOf) temp.dependentOf = attribute.dependentOf;
+        if (attribute.questionText) temp.questionText = attribute.questionText;
+
+        if (attribute.answerType) {
+            temp.answerType = attribute.answerType;
+            switch (attribute.answerType) {
+                case AnswerTypes.choice:
+                    temp.answer = {
+                        id: questionId,
+                        choices: [''],
+                        isMultiple: false,
+                        isOpen: false,
+                        hasDefault: false,
+                    } as IChoice;
+                    break;
+                case AnswerTypes.number:
+                    temp.answer = {
+                        id: questionId,
+                        hasMax: false,
+                        hasMin: false,
+                        hasUnit: false,
+                        isDecimal: true,
+                        hasDefault: false,
+                    } as INumber;
+                    break;
+                case AnswerTypes.text:
+                    temp.answer = { id: questionId } as IText;
+                    break;
+                case AnswerTypes.boolean:
+                    temp.answer = {
+                        id: questionId,
+                        isChecked: false,
+                    } as IBoolean;
+                    break;
+                case AnswerTypes.time:
+                    temp.answer = {
+                        id: questionId,
+                        isTime: false,
+                        isDate: false,
+                        hasDefaultTime: false,
+                        hasStartTime: false,
+                        hasEndTime: false,
+                    } as ITime;
+                    break;
+                default:
+                    temp.answer = { id: questionId } as IAnswer;
+                    console.log(
+                        'Missing answer type interface: ' +
+                            attribute.answerType,
+                    );
+                    break;
+            }
+        }
         setLocalQuestion(temp);
         if (attribute.updateStore) dispatch(updateQuestion(temp));
     }
@@ -59,19 +104,25 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
             <Row style={{ padding: '0 23px 0 7px ' }}>
                 <Col span={20}>
                     <Input
-                        placeholder={placeholder}
+                        placeholder={localQuestion.placeholder}
                         className="input-question"
-                        value={questionTitle}
-                        onChange={(e): void => {
-                            setQuestionTitle(e.target.value);
-                        }}
-                        onBlur={(e) => handleInput(e.target.value)}
+                        defaultValue={localQuestion.questionText}
+                        onChange={(e) =>
+                            localUpdate({
+                                questionText:
+                                    e.target.value === undefined
+                                        ? ''
+                                        : e.target.value,
+                            })
+                        }
+                        onBlur={() => localUpdate({ updateStore: true })}
                     />
                 </Col>
             </Row>
             <Row className="standard">
-                <Col span={10}>
+                <Col span={8}>
                     <Checkbox
+                        checked={localQuestion.isRequired}
                         onChange={(e) =>
                             localUpdate({
                                 isRequired: e.target.checked,
@@ -82,8 +133,9 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
                         Spørsmålet skal være obligatorisk.
                     </Checkbox>
                 </Col>
-                <Col span={10}>
+                <Col span={8}>
                     <Checkbox
+                        checked={localQuestion.hasDescription}
                         onChange={(e) =>
                             localUpdate({
                                 hasDescription: e.target.checked,
@@ -94,11 +146,60 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
                         Spørsmålet skal ha forklarende tekst.
                     </Checkbox>
                 </Col>
+                <Col span={8}>
+                    <Checkbox
+                        checked={localQuestion.isDependent}
+                        onChange={(e) =>
+                            localUpdate({
+                                isDependent: e.target.checked,
+                                updateStore: true,
+                            })
+                        }
+                    >
+                        Dette spørmålet er avhengig av et annet.
+                    </Checkbox>
+                    {localQuestion.isDependent && (
+                        <Select
+                            defaultValue={localQuestion.dependentOf}
+                            style={{ width: '200px' }}
+                            onSelect={(value) => {
+                                localUpdate({
+                                    updateStore: true,
+                                    dependentOf: value,
+                                });
+                            }}
+                            placeholder="Velg default"
+                        >
+                            {state.questions
+                                ? Object.keys(state.questions)
+                                      .filter((tempID) => {
+                                          return (
+                                              state.questions[tempID]
+                                                  .questionText.length > 1 &&
+                                              tempID !== questionId
+                                          );
+                                      })
+                                      .map((questionId, id) => [
+                                          <Option
+                                              key={'state' + questionId + id}
+                                              value={questionId}
+                                          >
+                                              {
+                                                  state.questions[questionId]
+                                                      .questionText
+                                              }
+                                          </Option>,
+                                      ])
+                                : []}
+                        </Select>
+                    )}
+                </Col>
             </Row>
             {localQuestion.hasDescription && (
                 <Row className="standard">
                     <Col span={20}>
                         <TextArea
+                            defaultValue={localQuestion.description}
                             rows={3}
                             className="input-question"
                             placeholder={
@@ -122,7 +223,7 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
                         Velg type spørsmål:{' '}
                     </p>
                     <Select
-                        value={question.answerType}
+                        value={localQuestion.answerType}
                         style={{ width: '200px', float: 'left' }}
                         onSelect={(value) => {
                             localUpdate({

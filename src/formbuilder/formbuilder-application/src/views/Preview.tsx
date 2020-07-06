@@ -5,14 +5,20 @@ import JSONGenerator from '../helpers/JSONGenerator';
 import { Button } from 'antd';
 
 function Preview(): JSX.Element {
-    const { state, dispatch } = React.useContext(FormContext);
+    const { state } = React.useContext(FormContext);
 
     const isIFrame = (input: HTMLElement | null): input is HTMLIFrameElement =>
         input !== null && input.tagName === 'IFRAME';
 
     function iFrameLoaded() {
         const questionnaireString = JSON.stringify(
-            JSONGenerator(state.sectionOrder, state.sections, state.questions),
+            JSONGenerator(
+                state.title,
+                state.description,
+                state.sectionOrder,
+                state.sections,
+                state.questions,
+            ),
         );
         // const questionnaireString = JSON.stringify(koronaSkjema);
 
