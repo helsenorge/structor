@@ -1,3 +1,5 @@
+@import '../../variables';
+
 .search-container {
     margin-top: 10.625rem;
 
@@ -8,4 +10,19 @@
 
 p {
     margin-bottom: 0.4375rem;
+}
+.ant-input-affix-wrapper {
+    &:hover {
+        border-color: $header !important;
+    }
+    &:focus {
+        border-color: $header !important ;
+    }
+}
+.ant-input-affix-wrapper-focused {
+    box-shadow: 0 0 0 1px #3b6064c0 !important;
+    border-color: $header !important ;
+    &:focus {
+        border-color: $header !important ;
+    }
 }

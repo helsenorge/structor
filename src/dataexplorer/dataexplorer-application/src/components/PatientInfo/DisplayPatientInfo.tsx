@@ -53,7 +53,7 @@ const DisplayPatientInfo = (props: {
     return (
         <>
             <Row gutter={[1, 40]} justify="center">
-                <Col span={12}>
+                <Col span={8}>
                     <Card
                         key={props.patient.id}
                         className="patient-card"
@@ -115,6 +115,10 @@ const DisplayPatientInfo = (props: {
                             </div>
                         </div>
                     </Card>
+                </Col>
+            </Row>
+            <Row justify="center">
+                <Col span={12}>
                     <Table
                         key={'Patient Questionnaire Response Key'}
                         rowKey={(record) =>

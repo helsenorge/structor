@@ -1,13 +1,15 @@
+@import '../../variables';
+
 .failed-container {
     margin-top: 12.5rem;
 }
 
 .patient-card {
-    margin-top: (1.875rem!important);
-    cursor: auto;
+    margin-top: 1.875rem !important;
+    cursor: default;
 
     .ant-card-head {
-        background-color: #f7fbff !important;
+        background-color: $elementHeader !important;
         display: flex;
         justify-content: center;
 
@@ -37,13 +39,29 @@
 
     .ant-table-thead {
         th {
-            background-color: #f7fbff !important;
+            background-color: $elementHeader !important;
         }
     }
     .ant-table-tbody {
         .table-row-dark {
-            background-color: rgba(245, 241, 241, 0.523);
+            background-color: $rowColor;
         }
         cursor: pointer;
+    }
+
+    .mini {
+        .ant-pagination-item {
+            a {
+                &:hover {
+                    color: $elementHeader;
+                }
+            }
+        }
+        .ant-pagination-item-active {
+            border-color: $elementHeader;
+            a {
+                color: green;
+            }
+        }
     }
 }
