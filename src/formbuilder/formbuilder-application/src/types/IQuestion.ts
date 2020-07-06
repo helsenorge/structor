@@ -16,5 +16,7 @@ export default interface IQuestion {
     answer: IAnswer;
     hasDescription: boolean;
     isRequired: boolean;
+    isDependent: boolean;
+    dependentOf?: string;
     description?: string;
 }
