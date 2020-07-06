@@ -5,8 +5,10 @@ import AnswerTypes, {
     IText,
     IChoice,
     IBoolean,
+    ITime,
 } from '../types/IAnswer';
 import { ValueSetMap } from './JSONGenerator';
+import moment from 'moment';
 
 const standardValidationTextUrl =
     'http://ehelse.no/fhir/StructureDefinition/validationtext';
@@ -31,6 +33,10 @@ export default function convertQuestion(
             return convertText(question, subItem);
         case AnswerTypes.choice:
             return convertChoice(question, subItem, valueSetMap);
+        case AnswerTypes.boolean:
+            return convertBoolean(question, subItem);
+        case AnswerTypes.time:
+            return convertDate(question, subItem);
         default:
             return subItem;
     }
@@ -129,21 +135,19 @@ function convertChoice(
             system: valueSetMap[answer.id],
             code: String(answer.defaultValue ? answer.defaultValue : 1),
         };
-    if (answer.isMultiple) {
-        subItem.extension?.push({
-            url:
-                'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
-            valueCodeableConcept: {
-                coding: [
-                    {
-                        system:
-                            'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
-                        code: 'check-box',
-                    },
-                ],
-            },
-        });
-    }
+    subItem.extension?.push({
+        url:
+            'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
+        valueCodeableConcept: {
+            coding: [
+                {
+                    system:
+                        'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
+                    code: answer.isMultiple ? 'check-box' : 'radio-button',
+                },
+            ],
+        },
+    });
     return subItem;
 }
 
@@ -155,5 +159,90 @@ function convertBoolean(question: IQuestion, subItem: fhir.QuestionnaireItem) {
             valueString: 'Må hukes av',
         });
     subItem.text = answer.label;
+    subItem.type = FhirAnswerTypes.boolean;
+    if (answer.isChecked) subItem.initialBoolean = true;
     return subItem;
+}
+
+function convertDate(
+    question: IQuestion,
+    subItem: fhir.QuestionnaireItem,
+): fhir.QuestionnaireItem {
+    // TODO: Possibility for dynamic time
+    const answer = question.answer as ITime;
+    if (question.isRequired) {
+        subItem.extension?.push({
+            url: standardValidationTextUrl,
+            valueString:
+                'Velg dato, eller skriv dato på denne måten: dd.mm.åååå.',
+        });
+        subItem.extension?.push({
+            url: 'http://hl7.org/fhir/StructureDefinition/entryFormat',
+            valueString: 'dd.mm.åååå.',
+        });
+    }
+    if (answer.hasEndTime && answer.endTime) {
+        const endTime = convertUnixToFhirTime(
+            answer.isDate,
+            answer.isTime,
+            answer.endTime,
+        );
+        subItem.extension?.push({
+            url:
+                'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpathvalidation',
+            valueString: 'this.value <= ' + endTime,
+        });
+        subItem.extension?.push({
+            url: 'http://ehelse.no/fhir/StructureDefinition/sdf-maxvalue',
+            valueString: endTime,
+        });
+    }
+    if (answer.hasStartTime && answer.startTime) {
+        const startTime = convertUnixToFhirTime(
+            answer.isDate,
+            answer.isTime,
+            answer.startTime,
+        );
+        subItem.extension?.push({
+            url:
+                'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpathvalidation',
+            valueString: 'this.value >= ' + startTime,
+        });
+        subItem.extension?.push({
+            url: 'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue',
+            valueString: startTime,
+        });
+    }
+    subItem.type =
+        answer.isDate && answer.isTime
+            ? FhirAnswerTypes.dateTime
+            : answer.isDate
+            ? FhirAnswerTypes.date
+            : FhirAnswerTypes.time;
+    if (answer.defaultTime) {
+        const dateTime = convertUnixToFhirTime(
+            answer.isDate,
+            answer.isTime,
+            answer.defaultTime,
+        );
+        console.log(dateTime);
+        if (answer.isDate && answer.isTime) subItem.initialDateTime = dateTime;
+        else if (answer.isDate) subItem.initialDate = dateTime;
+        else subItem.initialTime = dateTime;
+    }
+    return subItem;
+}
+
+function convertUnixToFhirTime(
+    isDate: boolean,
+    isTime: boolean,
+    dateTime: number,
+): string {
+    if (isDate && isTime) {
+        const date = moment(dateTime).format('YYYY-MM-DD');
+        const time = moment(dateTime).format('HH:mm:ss');
+        return date + 'T' + time;
+    } else if (isDate) {
+        return moment(dateTime).format('YYYY-MM-DD');
+    } else return moment(dateTime).format('HH:mm:ss');
 }
