@@ -8,12 +8,11 @@ import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import { useHistory } from 'react-router-dom';
 
 interface IPatientInfoProps {
-    setName: (name: string) => void;
     setSchema: (id: string) => void;
     patientID?: string | null;
 }
 
-const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
+const PatientInfo = ({ patientID, setSchema }: IPatientInfoProps) => {
     const history = useHistory();
     const [dataSource, setDataSource] = useState<fhir.ResourceBase[]>([]);
     const [QRData, setQRData] = useState<IDataSource[]>([]);
@@ -86,7 +85,6 @@ const PatientInfo = ({ patientID, setName, setSchema }: IPatientInfoProps) => {
         // if the patient exists in the database.
 
         if (patientData.total === 1) {
-            setName(name);
             return (
                 <DisplayPatientInfo
                     patient={patientData.entry[0].resource}

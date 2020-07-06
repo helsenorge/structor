@@ -50,7 +50,6 @@ const Navigation = () => {
                                 path="/pasient"
                                 render={() => (
                                     <PatientInfo
-                                        setName={setName}
                                         setSchema={setSchema}
                                         patientID={patientID}
                                     />
