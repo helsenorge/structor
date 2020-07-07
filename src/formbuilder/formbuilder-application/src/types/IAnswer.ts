@@ -5,6 +5,7 @@ export enum AnswerTypes {
     time = 'time',
     text = 'text',
     default = 'Trykk for å velge',
+    info = 'info',
 }
 
 export enum FhirAnswerTypes {
@@ -20,6 +21,7 @@ export enum FhirAnswerTypes {
     number = 'number',
     text = 'text',
     radio = 'radio',
+    display = 'display',
 }
 
 export interface IAnswer {
@@ -66,4 +68,10 @@ export interface IBoolean extends IAnswer {
     isChecked: boolean;
     label?: string;
 }
+
+export interface IInfo extends IAnswer {
+    info: string;
+    hasInfo: boolean;
+}
+
 export default AnswerTypes;

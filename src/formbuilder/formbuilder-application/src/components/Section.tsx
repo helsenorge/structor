@@ -10,6 +10,7 @@ import {
     updateSection,
 } from '../store/FormStore';
 import * as DND from 'react-beautiful-dnd';
+import AnswerTypes from '../types/IAnswer';
 
 const { TextArea } = Input;
 
@@ -55,8 +56,8 @@ function Section({
         findPlaceholder();
     });
 
-    function dispatchAddQuestion() {
-        dispatch(addNewQuestion(sectionId));
+    function dispatchAddQuestion(isInfo: boolean) {
+        dispatch(addNewQuestion(sectionId, isInfo));
     }
 
     function dispatchDuplicateQuestion(
@@ -264,6 +265,10 @@ function Section({
                                                                 provided={
                                                                     provided
                                                                 }
+                                                                isInfo={
+                                                                    question.answerType ===
+                                                                    AnswerTypes.info
+                                                                }
                                                             />
                                                             <hr
                                                                 key={
@@ -291,18 +296,29 @@ function Section({
                     </DND.Droppable>
                 </Col>
             </Row>
-            <Row>
-                <Col span={24} style={{ margin: '10px' }}>
+            <Row justify="center">
+                <Col span={10} style={{ margin: '10px' }}>
                     <Button
                         style={{
                             backgroundColor: 'var(--primary-1)',
                             borderColor: 'var(--primary-1)',
+                            margin: '0 10px',
                         }}
                         type="primary"
                         icon={<PlusOutlined />}
-                        onClick={dispatchAddQuestion}
+                        onClick={() => dispatchAddQuestion(false)}
                     >
                         Legg til nytt spørsmål
+                    </Button>
+                    <Button
+                        style={{
+                            color: 'var(--primary-1)',
+                            margin: '0 10px',
+                        }}
+                        icon={<PlusOutlined />}
+                        onClick={() => dispatchAddQuestion(true)}
+                    >
+                        Legg til informasjon
                     </Button>
                 </Col>
             </Row>
