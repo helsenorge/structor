@@ -34,22 +34,20 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
                     localUpdate({ updateStore: true, isLong: e.target.checked })
                 }
             >
-                Langsvar?:
+                Langsvar av maks
             </Checkbox>
-            {localAnswer.isLong && (
-                <InputNumber
-                    value={localAnswer.maxLength}
-                    onBlur={() => localUpdate({ updateStore: true })}
-                    onChange={(value) =>
-                        localUpdate({
-                            maxLength: value as number,
-                            updateStore: false,
-                        })
-                    }
-                >
-                    Max length
-                </InputNumber>
-            )}
+            <InputNumber
+                disabled={!localAnswer.isLong}
+                value={localAnswer.maxLength}
+                onBlur={() => localUpdate({ updateStore: true })}
+                onChange={(value) =>
+                    localUpdate({
+                        maxLength: value as number,
+                        updateStore: false,
+                    })
+                }
+            ></InputNumber>
+            {' karakterer'}
         </>
     );
 }
