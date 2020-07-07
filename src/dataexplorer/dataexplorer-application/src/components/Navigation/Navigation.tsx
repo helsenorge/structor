@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Avatar } from 'antd';
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
-import 'antd/dist/antd.css';
 import Dashboard from '../Dashboard/Dashboard';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
