@@ -1,6 +1,6 @@
 import React from 'react';
 import { IQuestionAndAnswer } from 'types/IQuestionAndAnswer';
-import { Popover, Button, Tooltip } from 'antd';
+import { Popover } from 'antd';
 import '../SchemaView.style.scss';
 
 export interface IQuestionsAndAnswersDisplayProps {
@@ -14,7 +14,6 @@ const QuestionsAndAnswersDisplay = (
 ) => {
     const setContent = (data: fhir.ValueSetComposeIncludeConcept[]) => {
         if (data) {
-            console.log(data);
             return data.map((line) => <li key={line.code}>{line.display}</li>);
         }
         return;
@@ -32,7 +31,6 @@ const QuestionsAndAnswersDisplay = (
                 <p className="questions">
                     {props.questionAndAnswer.questions.questions.text}
                 </p>
-                {/* <p className="inline-answer-container">Svar:</p> */}
                 {props.questionnaireResource.map(
                     (qr) =>
                         qr.id ===
@@ -58,9 +56,9 @@ const QuestionsAndAnswersDisplay = (
                                                   </div>
                                               }
                                           >
-                                              <a className="alternatives">
+                                              <p className="alternatives">
                                                   (Vis alternativer)
-                                              </a>
+                                              </p>
                                           </Popover>
                                       ),
                               )

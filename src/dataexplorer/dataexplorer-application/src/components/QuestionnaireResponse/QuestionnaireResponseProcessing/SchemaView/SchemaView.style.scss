@@ -30,7 +30,7 @@ p.bold {
 
 p.questions {
     font-size: 0.9rem;
-    margin-bottom: 0rem;
+    margin-bottom: 0;
     display: inline;
 }
 
@@ -59,6 +59,8 @@ h1.title {
     padding-bottom: 0rem;
     font-size: 0.9rem;
     font-style: oblique;
+    cursor: pointer;
+    color: blue;
 }
 
 p.inline-answer-container {

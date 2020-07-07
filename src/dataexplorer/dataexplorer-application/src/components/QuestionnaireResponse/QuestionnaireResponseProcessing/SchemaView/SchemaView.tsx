@@ -141,9 +141,6 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                                 qaIndex
                                                                             }
                                                                         >
-                                                                            {console.log(
-                                                                                qa,
-                                                                            )}
                                                                             <SubQuestionsAndAnswersDisplay
                                                                                 questionAndAnswer={
                                                                                     qa
