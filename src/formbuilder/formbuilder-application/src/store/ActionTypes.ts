@@ -13,6 +13,7 @@ export enum UpdateActionTypes {
     UPDATE_QUESTION = 'UPDATE_QUESTION',
     UPDATE_SECTION = 'UPDATE_SECTION',
     UPDATE_FORM_META = 'UPDATE_FORM_META',
+    CLEAR_SECTIONS = 'CLEAR_SECTIONS',
 }
 
 export enum SwapActionTypes {

@@ -31,8 +31,8 @@ export interface IAnswer {
 export interface IChoice extends IAnswer {
     isMultiple: boolean;
     isOpen: boolean;
-    hasDefault: boolean;
     choices: Array<string>;
+    hasDefault: boolean;
     defaultValue?: number;
 }
 

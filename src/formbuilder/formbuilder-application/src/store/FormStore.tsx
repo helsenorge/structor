@@ -65,8 +65,19 @@ export function updateFormMeta(
     };
 }
 
-export function addNewSection(): UpdateAction {
+export function addNewSection(section?: ISection): UpdateAction {
     const sectionId = generateID();
+    if (section) {
+        return {
+            type: UpdateActionTypes.ADD_NEW_SECTION,
+            member: MemberTypes.UPDATE,
+            section: {
+                id: section.id,
+                questionOrder: section.questionOrder,
+                sectionTitle: section.sectionTitle,
+            },
+        };
+    }
     return {
         type: UpdateActionTypes.ADD_NEW_SECTION,
         member: MemberTypes.UPDATE,
@@ -75,6 +86,13 @@ export function addNewSection(): UpdateAction {
             questionOrder: [],
             sectionTitle: '',
         },
+    };
+}
+
+export function clearAllSections(): UpdateAction {
+    return {
+        type: UpdateActionTypes.CLEAR_SECTIONS,
+        member: MemberTypes.UPDATE,
     };
 }
 
@@ -115,6 +133,7 @@ export function swapSection(
 }
 
 export function updateSection(section: ISection): UpdateAction {
+    console.log('Section: ', section);
     return {
         type: UpdateActionTypes.UPDATE_SECTION,
         member: MemberTypes.UPDATE,

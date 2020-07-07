@@ -16,7 +16,7 @@ type AnswerProps = {
 type answerList = { [key: string]: JSX.Element };
 
 function AnswerBuilder({ questionId }: AnswerProps): JSX.Element {
-    const { state, dispatch } = useContext(FormContext);
+    const { state } = useContext(FormContext);
 
     const answerBuilder: answerList = {
         [AnswerTypes.choice]: <Choice questionId={questionId} />,

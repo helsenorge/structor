@@ -12,7 +12,6 @@ import AnswerTypes, {
     IAnswer,
 } from '../types/IAnswer';
 
-const { TextArea } = Input;
 const { Option } = Select;
 
 type QuestionProps = {

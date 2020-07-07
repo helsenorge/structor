@@ -13,7 +13,6 @@ import {
 } from '../store/FormStore';
 import * as DND from 'react-beautiful-dnd';
 import './Form.css';
-import ISection from '../types/ISection';
 
 function CreateForm(): JSX.Element {
     const { state, dispatch } = useContext(FormContext);

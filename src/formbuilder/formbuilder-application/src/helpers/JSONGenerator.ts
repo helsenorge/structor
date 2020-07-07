@@ -13,7 +13,7 @@ export type ValueSetMap = { [id: string]: string };
 
 const valueSetMap: ValueSetMap = {};
 
-function convertSections(
+function convertSections( 
     sectionOrder: Array<string>,
     sections: SectionList,
     questions: QuestionList,
