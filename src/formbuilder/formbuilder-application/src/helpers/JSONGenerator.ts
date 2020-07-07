@@ -33,7 +33,7 @@ function convertSections(
 
         if (section.description && section.description.length > 0) {
             item.item?.push({
-                linkId: i + 1 + '.' + 100,
+                linkId: i + 1 + '.' + 101,
                 text: section.description,
                 _text: {
                     extension: [
@@ -54,8 +54,10 @@ function convertSections(
             const question = questions[questionKey];
             // Will be within 'item' and if in section another 'item' of type group
             if (
-                question.questionText.length === 0 ||
-                question.answerType === AnswerTypes.default
+                ((question.questionText &&
+                    question.questionText.length === 0) ||
+                    question.answerType === AnswerTypes.default) &&
+                question.answerType !== AnswerTypes.info
             )
                 continue;
             const subItem = convertQuestion(
@@ -72,21 +74,6 @@ function convertSections(
                     reference: '#' + question.answer.id,
                 };
             }
-            // if (question.description !== undefined) {
-            //     subItem._text = {
-            //         extension: [
-            //             {
-            //                 url:
-            //                     'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
-            //                 valueMarkdown:
-            //                     '### ' +
-            //                     question.questionText +
-            //                     '\r\n' +
-            //                     question.description,
-            //             },
-            //         ],
-            //     };
-            // }
             item.item?.push(subItem);
         }
         items.push(item);
