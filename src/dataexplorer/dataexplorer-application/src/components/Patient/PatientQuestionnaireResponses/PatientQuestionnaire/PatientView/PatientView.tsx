@@ -1,14 +1,16 @@
 import React from 'react';
-import { IPatient } from 'types/IPatient';
+import { IPatient, IRecord } from 'types/IPatient';
 import { Row, Col, Card, Table, Typography } from 'antd';
 import dayjs from 'dayjs';
 import './PatientView.style.scss';
+import { useHistory } from 'react-router-dom';
 
 const PatientView = (props: {
     patient: IPatient;
-    handleClick: any;
     dataSource: fhir.ResourceBase[];
+    setSchema: (id: string) => void;
 }) => {
+    const history = useHistory();
     const calcAge = () => {
         const birthday = props.patient.birthDate;
         const patientYear = parseInt(birthday.substring(0, 4));
@@ -49,6 +51,11 @@ const PatientView = (props: {
             sorter: (a: any, b: any) => a.id - b.id,
         },
     ];
+
+    const handleClick = (record: IRecord) => {
+        props.setSchema(record.id);
+        history.push('/pasient/skjema');
+    };
 
     return (
         <>
@@ -131,7 +138,7 @@ const PatientView = (props: {
                         onRow={(record) => {
                             return {
                                 onClick: () => {
-                                    props.handleClick(record);
+                                    handleClick(record as IRecord);
                                 },
                             };
                         }}

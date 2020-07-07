@@ -4,6 +4,7 @@ import { IPatientIdentifier, IDataSource } from 'types/IPatient';
 import { Row, Spin } from 'antd';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import PatientQuestionnaire from './PatientQuestionnaire/PatientQuestionnaire';
+import PatientView from './PatientQuestionnaire/PatientView/PatientView';
 
 interface IPatientQuestionnaireResponsesProps {
     patientData: IPatientIdentifier;
@@ -16,6 +17,7 @@ const PatientQuestionnaireResponses = ({
 }: IPatientQuestionnaireResponsesProps) => {
     const [questionnaireId, setQuestionnaireId] = useState<string>();
     const [QRData, setQRData] = useState<IDataSource[]>([]);
+    const [responseExists, setResponseExists] = useState<boolean>(false);
     const { response: questionnaireResponses } = useFetch<
         IQuestionnaireResponse
     >(
@@ -25,6 +27,7 @@ const PatientQuestionnaireResponses = ({
 
     useEffect(() => {
         if (questionnaireResponses && questionnaireResponses.total > 0) {
+            setResponseExists(true);
             questionnaireResponses.entry.forEach((i) => {
                 setQuestionnaireId(
                     i.resource.questionnaire?.reference?.substr(
@@ -44,9 +47,10 @@ const PatientQuestionnaireResponses = ({
             });
         }
     }, [questionnaireResponses]);
+
     return (
         <>
-            {questionnaireResponses && questionnaireId && (
+            {questionnaireResponses && questionnaireId && responseExists && (
                 <PatientQuestionnaire
                     setSchema={setSchema}
                     patientData={patientData}
@@ -55,7 +59,15 @@ const PatientQuestionnaireResponses = ({
                     questionnaireResponseData={QRData}
                 />
             )}
-            {!questionnaireId && !questionnaireResponses && (
+            {/* Patients without QuestionnaireResponses do not need to fetch for Questionnaires*/}
+            {!responseExists && (
+                <PatientView
+                    patient={patientData.entry[0].resource}
+                    setSchema={setSchema}
+                    dataSource={QRData}
+                />
+            )}
+            {!questionnaireResponses && !questionnaireId && responseExists && (
                 <Row justify="center">
                     <Spin size="large" />
                 </Row>
