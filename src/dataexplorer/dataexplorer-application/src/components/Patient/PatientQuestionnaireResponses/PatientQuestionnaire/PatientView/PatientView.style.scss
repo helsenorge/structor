@@ -1,13 +1,15 @@
+@import '../../../../../variables';
+
 .failed-container {
     margin-top: 12.5rem;
 }
 
 .patient-card {
-    margin-top: (1.875rem!important);
-    cursor: auto;
+    margin-top: 1.875rem !important;
+    cursor: default;
 
     .ant-card-head {
-        background-color: #f7fbff !important;
+        background-color: $elementHeader !important;
         display: flex;
         justify-content: center;
 
@@ -19,15 +21,35 @@
     .info-container {
         display: flex;
         justify-content: space-between;
-
         span {
             font-weight: bold;
         }
         h4 {
             font-style: italic;
             font-weight: 150;
+            font-size: 1rem;
             margin-bottom: 0;
             margin-top: 0.8125rem;
+        }
+        .info-left {
+            p {
+                font-weight: bold;
+                margin-left: 1.25rem;
+            }
+        }
+        .info-right {
+            p {
+                font-weight: bold;
+                margin-left: 1.25rem;
+            }
+        }
+
+        .field-icon {
+            font-size: 0.875rem;
+            margin-right: 0.375rem;
+        }
+        .unavailable-content {
+            margin-left: 1.25rem;
         }
     }
 }
@@ -37,13 +59,29 @@
 
     .ant-table-thead {
         th {
-            background-color: #f7fbff !important;
+            background-color: $elementHeader !important;
         }
     }
     .ant-table-tbody {
         .table-row-dark {
-            background-color: rgba(245, 241, 241, 0.523);
+            background-color: $rowColor;
         }
         cursor: pointer;
+    }
+
+    .mini {
+        .ant-pagination-item {
+            a {
+                &:hover {
+                    color: $elementHeader;
+                }
+            }
+        }
+        .ant-pagination-item-active {
+            border-color: $elementHeader;
+            a {
+                color: green;
+            }
+        }
     }
 }

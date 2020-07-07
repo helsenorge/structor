@@ -1,3 +1,5 @@
+@import '../../variables';
+
 .site-layout-sub-header-background {
     position: fixed;
     z-index: 1;
@@ -7,13 +9,13 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: #3b6064;
-    border-bottom: solid lightgrey thin;
+    background-color: $header;
+    border-bottom: solid $borderColor thin;
 
     h1 {
         padding-right: 1.25rem;
         margin: 0;
-        border-right: solid lightgrey thin;
+        border-right: solid $borderColor thin;
         color: white;
         margin-bottom: 0;
     }
@@ -22,7 +24,7 @@
         color: white;
         display: flex;
         flex-direction: row;
-        border-left: solid lightgrey thin;
+        border-left: solid $borderColor thin;
 
         .header-avatar {
             margin-left: 1.25rem;
@@ -46,5 +48,5 @@
 }
 
 .content {
-    background-color: #f0f2f5;
+    background-color: $background;
 }
