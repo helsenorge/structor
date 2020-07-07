@@ -1,4 +1,4 @@
-import { test } from '../questionnaires/test';
+import { koronaSkjema } from '../questionnaires/koronaSkjema';
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
 import {
@@ -8,13 +8,14 @@ import {
     IText,
     INumber,
     ITime,
+    IInfo,
 } from '../types/IAnswer';
 import AnswerTypes from '../types/IAnswer';
 import moment from 'moment';
 import { generateID } from '../helpers/IDGenerator';
 
 function getQuestionnaire(): fhir.Questionnaire {
-    const questionnaireObj = test;
+    const questionnaireObj = koronaSkjema;
 
     console.log('Questionnaire object: ', questionnaireObj);
     return questionnaireObj;
@@ -25,23 +26,27 @@ function getChoices(
     valueSets: fhir.ValueSet[],
 ): IChoice {
     let valueSetReference = currentQuestion.options?.reference;
-    let isOpenChoice = false;
-    let isMultipleChoice = false;
-    let hasDefaultValue = false;
-    let defaultValue = 0;
+    const currentAnswer: IChoice = {
+        id: generateID(),
+        isMultiple: false,
+        isOpen: false,
+        choices: [],
+        hasDefault: false,
+        defaultValue: 0,
+    };
 
     // Find id of value set (Answer)
     if (valueSetReference?.charAt(0) === '#') {
-        valueSetReference = valueSetReference?.substr(1);
+        valueSetReference = valueSetReference.substr(1);
     }
 
     // Find if open-choice
     if (currentQuestion.type === 'open-choice') {
-        isOpenChoice = true;
+        currentAnswer.isOpen = true;
     }
 
     // Find if multiple-choice (if checkbox)
-    if (currentQuestion.extension !== undefined) {
+    if (currentQuestion.extension) {
         for (
             let extensionIndex = 0;
             extensionIndex < currentQuestion.extension.length;
@@ -54,10 +59,8 @@ function getChoices(
             ) {
                 if (
                     currentQuestion.extension[extensionIndex]
-                        .valueCodeableConcept !== undefined &&
-                    currentQuestion.extension[extensionIndex]
                         .valueCodeableConcept?.coding?.[codingIndex] !==
-                        undefined
+                    undefined
                 ) {
                     if (
                         currentQuestion.extension[
@@ -69,7 +72,7 @@ function getChoices(
                             .valueCodeableConcept?.coding?.[codingIndex]
                             .code === 'check-box'
                     ) {
-                        isMultipleChoice = true;
+                        currentAnswer.isMultiple = true;
                     }
                 }
             }
@@ -79,19 +82,11 @@ function getChoices(
     // Find array of answer options as strings
     const answers = [];
     for (let i = 0; i < valueSets?.length; i++) {
-        if (
-            valueSets[i].id === valueSetReference &&
-            valueSets[i].compose !== undefined &&
-            valueSets[i].compose?.include !== undefined &&
-            valueSets[i].compose?.include?.length !== undefined
-        ) {
+        if (valueSets[i].compose?.include?.length) {
             const valueSetLength = valueSets[i].compose?.include
                 ?.length as number;
             for (let j = 0; j < valueSetLength; j++) {
-                if (
-                    valueSets[i].compose !== undefined &&
-                    valueSets[i].compose?.include[j].concept !== undefined
-                ) {
+                if (valueSets[i].compose?.include[j].concept) {
                     const optionsLength = valueSets[i].compose?.include[j]
                         .concept?.length as number;
                     for (let k = 0; k < optionsLength; k++) {
@@ -107,56 +102,39 @@ function getChoices(
 
     // Find if has a default value
     if (currentQuestion.hasOwnProperty('initialCoding')) {
-        hasDefaultValue = true;
-        defaultValue = parseInt(currentQuestion.initialCoding?.code as string);
+        currentAnswer.hasDefault = true;
+        currentAnswer.defaultValue = parseInt(
+            currentQuestion.initialCoding?.code as string,
+        );
     }
 
-    const currentAnswer: IChoice = {
-        id: generateID(),
-        isMultiple: isMultipleChoice,
-        isOpen: isOpenChoice,
-        choices: answers,
-        hasDefault: hasDefaultValue,
-        defaultValue: defaultValue,
-    };
     return currentAnswer;
 }
 
 function getText(currentQuestion: fhir.QuestionnaireItem): IText {
-    if (currentQuestion.type === 'text' && currentQuestion.maxLength) {
-        const tempAnswer: IText = {
-            id: generateID(),
-            isLong: true,
-            maxLength: currentQuestion.maxLength,
-        };
-        return tempAnswer;
-    } else if (currentQuestion.type === 'text') {
-        const tempAnswer: IText = {
-            id: generateID(),
-            isLong: true,
-            maxLength: 1000,
-        };
-        return tempAnswer;
-    } else if (currentQuestion.type === 'string' && currentQuestion.maxLength) {
-        const tempAnswer: IText = {
-            id: generateID(),
-            isLong: false,
-            maxLength: currentQuestion.maxLength,
-        };
-        return tempAnswer;
-    } else if (currentQuestion.type === 'string') {
-        const tempAnswer: IText = {
-            id: generateID(),
-            isLong: false,
-            maxLength: 100,
-        };
-        return tempAnswer;
-    }
-    return {
+    const currentAnswer: IText = {
         id: generateID(),
         isLong: false,
-        maxLength: 100,
+        maxLength: currentQuestion.maxLength,
     };
+    if (currentQuestion.type === 'text' && currentQuestion.maxLength) {
+        currentAnswer.isLong = true;
+        currentAnswer.maxLength = currentQuestion.maxLength;
+        return currentAnswer;
+    } else if (currentQuestion.type === 'text') {
+        currentAnswer.isLong = true;
+        currentAnswer.maxLength = 1000;
+        return currentAnswer;
+    } else if (currentQuestion.type === 'string' && currentQuestion.maxLength) {
+        currentAnswer.isLong = false;
+        currentAnswer.maxLength = currentQuestion.maxLength;
+        return currentAnswer;
+    } else if (currentQuestion.type === 'string') {
+        currentAnswer.isLong = false;
+        currentAnswer.maxLength = 100;
+        return currentAnswer;
+    }
+    return currentAnswer;
 }
 
 function getBoolean(currentQuestion: fhir.QuestionnaireItem): IBoolean {
@@ -295,9 +273,15 @@ function getTime(currentQuestion: fhir.QuestionnaireItem): ITime {
     return tempAnswer;
 }
 
-// function getDisplay(currentQuestion: fhir.QuestionnaireItem): IInformation {
-//     // TODO
-// }
+function getDisplay(currentQuestion: fhir.QuestionnaireItem): IInfo {
+    console.log('komhit');
+    const tempAnswer: IInfo = {
+        id: generateID(),
+        info: currentQuestion.text as string,
+        hasInfo: true,
+    };
+    return tempAnswer;
+}
 
 function convertFhirTimeToUnix(
     isDate: boolean,
@@ -351,9 +335,7 @@ function convertFromJSON(): {
                             questionText: currentQuestion.text as string,
                             answerType: currentQuestion.type as AnswerTypes,
                             answer: tempAnswer as IAnswer,
-                            hasDescription: false,
                             isRequired: currentQuestion.required as boolean,
-                            description: '',
                         };
 
                         tempSection.questionOrder.push(tempQuestion.id);
@@ -390,20 +372,28 @@ function convertFromJSON(): {
                             tempAnswer = getTime(currentQuestion);
                             tempQuestion.answerType = AnswerTypes.time;
                         } else if (currentQuestion.type === 'display') {
-                            if (currentQuestion.linkId?.substr(2) === '101') {
+                            const dot = currentQuestion.linkId.indexOf('.');
+                            console.log('dot is at ', dot);
+                            console.log(
+                                'linkId before: ',
+                                currentQuestion.linkId,
+                                '. linkId after',
+                                currentQuestion.linkId.substr(dot + 1),
+                            );
+                            if (
+                                currentQuestion.linkId.substr(dot + 1) === '101'
+                            ) {
                                 tempSection.description = currentQuestion.text;
+                            } else {
+                                tempAnswer = getDisplay(currentQuestion);
+                                tempQuestion.answerType = AnswerTypes.info;
                             }
-                            //  else {
-                            //     tempAnswer = getDisplay(currentQuestion);
-                            // }
                         }
                         tempQuestion.answer = tempAnswer as IAnswer;
                         questionList.push(tempQuestion);
                     }
                 }
                 sectionList.push(tempSection);
-                //console.log('Section Answer: ', tempSection.questionOrder);
-                //console.log('Answers: ', answerList);
             }
         }
     }
