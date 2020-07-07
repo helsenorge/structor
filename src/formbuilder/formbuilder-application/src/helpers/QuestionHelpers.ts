@@ -50,7 +50,6 @@ export default function convertQuestion(
 
     const parentItem: fhir.QuestionnaireItem = {
         linkId: linkId,
-        text: question.questionText,
         type: 'group',
         repeats: false,
         item: [
@@ -63,7 +62,11 @@ export default function convertQuestion(
                         {
                             url:
                                 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
-                            valueMarkdown: question.description,
+                            valueMarkdown:
+                                '### ' +
+                                question.questionText +
+                                '\r\n' +
+                                question.description,
                         },
                     ],
                 },
