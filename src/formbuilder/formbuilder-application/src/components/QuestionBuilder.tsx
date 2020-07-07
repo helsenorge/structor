@@ -19,7 +19,9 @@ type QuestionProps = {
     questionId: string;
 };
 
-function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
+function QuestionBuilder({
+    questionId,
+}: QuestionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const [localQuestion, setLocalQuestion] = useState(
         state.questions[questionId] as IQuestion,
@@ -29,6 +31,7 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
         answerType?: AnswerTypes;
         isRequired?: boolean;
         hasDescription?: boolean;
+        collapsed?: boolean;
         isDependent?: boolean;
         questionText?: string;
         dependentOf?: string;
@@ -48,6 +51,8 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
             temp.dependentOf = attribute.dependentOf;
         if (attribute.questionText !== undefined)
             temp.questionText = attribute.questionText;
+        if (attribute.collapsed !== undefined)
+            temp.collapsed = attribute.collapsed;
 
         if (attribute.answerType) {
             temp.answerType = attribute.answerType;
@@ -123,127 +128,97 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
                     />
                 </Col>
             </Row>
-            <Row className="standard">
-                <Col span={8}>
-                    <Checkbox
-                        checked={localQuestion.isRequired}
-                        onChange={(e) =>
-                            localUpdate({
-                                isRequired: e.target.checked,
-                                updateStore: true,
-                            })
-                        }
-                    >
-                        Spørsmålet skal være obligatorisk.
-                    </Checkbox>
-                </Col>
-                <Col span={8}>
-                    <Checkbox
-                        checked={localQuestion.hasDescription}
-                        onChange={(e) =>
-                            localUpdate({
-                                hasDescription: e.target.checked,
-                                updateStore: true,
-                            })
-                        }
-                    >
-                        Spørsmålet skal ha forklarende tekst.
-                    </Checkbox>
-                </Col>
-                {/* <Col span={8}>
-                    <Checkbox
-                        checked={localQuestion.isDependent}
-                        onChange={(e) =>
-                            localUpdate({
-                                isDependent: e.target.checked,
-                                updateStore: true,
-                            })
-                        }
-                    >
-                        Dette spørmålet er avhengig av et annet.
-                    </Checkbox>
-                    <Select
-                        defaultValue={localQuestion.dependentOf}
-                        disabled={!localQuestion.isDependent}
-                        style={{ width: '200px' }}
-                        onSelect={(value) => {
-                            localUpdate({
-                                updateStore: true,
-                                dependentOf: value,
-                            });
-                        }}
-                        placeholder="Velg default"
-                    >
-                        {state.questions
-                            ? Object.keys(state.questions)
-                                  .filter((tempID) => {
-                                      return (
-                                          state.questions[tempID].questionText
-                                              .length > 1 &&
-                                          tempID !== questionId
-                                      );
-                                  })
-                                  .map((questionId, id) => [
-                                      <Option
-                                          key={'state' + questionId + id}
-                                          value={questionId}
-                                      >
-                                          {
-                                              state.questions[questionId]
-                                                  .questionText
-                                          }
-                                      </Option>,
-                                  ])
-                            : []}
-                    </Select>
-                </Col> */}
-            </Row>
-            {localQuestion.hasDescription && (
-                <Row className="standard">
-                    <Col span={20}>
-                        <TextArea
-                            defaultValue={localQuestion.description}
-                            rows={3}
-                            className="input-question"
-                            placeholder={
-                                'Skriv inn beskrivelse av spørsmål her.'
-                            }
-                            onBlur={() => localUpdate({ updateStore: true })}
-                            onChange={(value) =>
-                                localUpdate({
-                                    description: value.target.value,
-                                    updateStore: false,
-                                })
-                            }
-                        ></TextArea>
-                    </Col>
-                </Row>
+            {!state.questions[questionId].collapsed && (
+                <>
+                    <Row className="standard">
+                        <Col span={8}>
+                            <Checkbox
+                                checked={localQuestion.isRequired}
+                                onChange={(e) =>
+                                    localUpdate({
+                                        isRequired: e.target.checked,
+                                        updateStore: true,
+                                    })
+                                }
+                            >
+                                Spørsmålet skal være obligatorisk.
+                            </Checkbox>
+                        </Col>
+                        <Col span={8}>
+                            <Checkbox
+                                checked={localQuestion.hasDescription}
+                                onChange={(e) =>
+                                    localUpdate({
+                                        hasDescription: e.target.checked,
+                                        updateStore: true,
+                                    })
+                                }
+                            >
+                                Spørsmålet skal ha forklarende tekst.
+                            </Checkbox>
+                        </Col>
+                    </Row>
+                    {state.questions[questionId].hasDescription && (
+                        <Row className="standard">
+                            <Col span={20}>
+                                <TextArea
+                                    defaultValue={localQuestion.description}
+                                    rows={3}
+                                    className="input-question"
+                                    placeholder={
+                                        'Skriv inn beskrivelse av spørsmål her.'
+                                    }
+                                    onBlur={() =>
+                                        localUpdate({ updateStore: true })
+                                    }
+                                    onChange={(value) =>
+                                        localUpdate({
+                                            description: value.target.value,
+                                            updateStore: false,
+                                        })
+                                    }
+                                ></TextArea>
+                            </Col>
+                        </Row>
+                    )}
+                    <Row className="standard">
+                        <Col span={20}>
+                            {/* Answerdropdown*/}
+                            <p
+                                style={{
+                                    float: 'left',
+                                    padding: '5px 10px 0 0',
+                                }}
+                            >
+                                Velg type spørsmål:{' '}
+                            </p>
+                            <Select
+                                defaultValue={localQuestion.answerType}
+                                style={{ width: '200px', float: 'left' }}
+                                onSelect={(value) => {
+                                    localUpdate({
+                                        answerType: value,
+                                        updateStore: true,
+                                    });
+                                }}
+                                placeholder="Trykk for å velge"
+                            >
+                                <Option value={AnswerTypes.boolean}>
+                                    Samtykke
+                                </Option>
+                                <Option value={AnswerTypes.number}>Tall</Option>
+                                <Option value={AnswerTypes.text}>Tekst</Option>
+                                <Option value={AnswerTypes.time}>
+                                    Dato/tid
+                                </Option>
+                                <Option value={AnswerTypes.choice}>
+                                    Flervalg
+                                </Option>
+                            </Select>
+                        </Col>
+                    </Row>
+                </>
             )}
-            <Row className="standard">
-                <Col span={20}>
-                    {/* Answerdropdown*/}
-                    <p style={{ float: 'left', padding: '5px 10px 0 0' }}>
-                        Velg type spørsmål:{' '}
-                    </p>
-                    <Select
-                        value={localQuestion.answerType}
-                        style={{ width: '200px', float: 'left' }}
-                        onSelect={(value) => {
-                            localUpdate({
-                                answerType: value,
-                                updateStore: true,
-                            });
-                        }}
-                        placeholder="Trykk for å velge"
-                    >
-                        <Option value={AnswerTypes.boolean}>Samtykke</Option>
-                        <Option value={AnswerTypes.number}>Tall</Option>
-                        <Option value={AnswerTypes.text}>Tekst</Option>
-                        <Option value={AnswerTypes.time}>Dato/tid</Option>
-                        <Option value={AnswerTypes.choice}>Flervalg</Option>
-                    </Select>
-                </Col>
-            </Row>
         </div>
     );
 }

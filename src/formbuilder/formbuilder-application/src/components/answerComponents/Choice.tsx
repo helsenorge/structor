@@ -131,7 +131,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 <Input
                     type="text"
                     className="input-question"
-                    placeholder={'Skriv inn alternativ her'}
+                    placeholder={
+                        'Skriv inn alternativ nr. ' + (id + 1) + ' her'
+                    }
                     value={localAnswer.choices[id]}
                     style={choiceInputStyle}
                     onChange={(e) => alterChoiceText(id, e.target.value)}
@@ -156,7 +158,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
             <Row>
                 <Col span={6}>
                     <Checkbox
-                        checked={localAnswer.isMultiple}
+                        defaultChecked={localAnswer.isMultiple}
                         onChange={(e) =>
                             localUpdate({
                                 updateStore: true,
@@ -169,7 +171,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 </Col>
                 <Col span={6}>
                     <Checkbox
-                        checked={localAnswer.isOpen}
+                        defaultChecked={localAnswer.isOpen}
                         onChange={(e) =>
                             localUpdate({
                                 updateStore: true,
@@ -182,7 +184,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 </Col>
                 <Col span={6}>
                     <Checkbox
-                        checked={localAnswer.hasDefault}
+                        defaultChecked={localAnswer.hasDefault}
                         disabled={localAnswer.isMultiple}
                         onChange={(e) =>
                             localUpdate({
@@ -215,7 +217,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                       key={'def' + questionId + id}
                                       value={id}
                                   >
-                                      {name.length < 2
+                                      {name.length < 1
                                           ? 'Alternativ ' + (id + 1)
                                           : name}
                                   </Option>,

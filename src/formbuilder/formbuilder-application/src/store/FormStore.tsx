@@ -129,6 +129,7 @@ export function addNewQuestion(sectionId: string): UpdateAction {
         sectionId: sectionId,
         questionText: '',
         isDependent: false,
+        collapsed: false,
         answerType: AnswerTypes.default,
         answer: { id: generateID() },
         isRequired: true,

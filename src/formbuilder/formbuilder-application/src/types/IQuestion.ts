@@ -17,6 +17,7 @@ export default interface IQuestion {
     hasDescription: boolean;
     isRequired: boolean;
     isDependent: boolean;
+    collapsed: boolean;
     dependentOf?: string;
     description?: string;
     placeholder?: string;
