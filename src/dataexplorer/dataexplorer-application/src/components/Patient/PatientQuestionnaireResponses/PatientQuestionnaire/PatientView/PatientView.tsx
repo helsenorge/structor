@@ -4,6 +4,13 @@ import { Row, Col, Card, Table, Typography } from 'antd';
 import dayjs from 'dayjs';
 import './PatientView.style.scss';
 import { useHistory } from 'react-router-dom';
+import {
+    IdcardOutlined,
+    ManOutlined,
+    HourglassOutlined,
+    MobileOutlined,
+    HomeOutlined,
+} from '@ant-design/icons';
 
 const PatientView = (props: {
     patient: IPatient;
@@ -70,54 +77,83 @@ const PatientView = (props: {
                     >
                         <div className="info-container">
                             <div className="info-left">
-                                <h4>Personnummer:</h4>
-                                <span>{props.patient.identifier[0].value}</span>
-                                <h4>Kjønn:</h4>
-                                <span>
-                                    {props.patient.gender !== 'male' &&
-                                    props.patient.gender !== 'female'
-                                        ? props.patient.gender
-                                              .charAt(0)
-                                              .toUpperCase() +
-                                          props.patient.gender.slice(1)
-                                        : props.patient.gender === 'male'
-                                        ? 'Mann'
-                                        : 'Kvinne'}
-                                </span>
-                                <h4>Alder:</h4>
-                                <span>
-                                    {props.patient.birthDate !== undefined ? (
-                                        calcAge()
-                                    ) : (
-                                        <div>Ikke oppgitt</div>
-                                    )}
-                                </span>
+                                <div className="item-container">
+                                    <h4>
+                                        <IdcardOutlined className="field-icon" />
+                                        Personnummer:
+                                    </h4>
+
+                                    <p>{props.patient.identifier[0].value}</p>
+                                </div>
+                                <div className="item-container">
+                                    <h4>
+                                        <ManOutlined className="field-icon" />
+                                        Kjønn:
+                                    </h4>
+                                    <p>
+                                        {props.patient.gender !== 'male' &&
+                                        props.patient.gender !== 'female'
+                                            ? props.patient.gender
+                                                  .charAt(0)
+                                                  .toUpperCase() +
+                                              props.patient.gender.slice(1)
+                                            : props.patient.gender === 'male'
+                                            ? 'Mann'
+                                            : 'Kvinne'}
+                                    </p>
+                                </div>
+                                <div className="item-container">
+                                    <h4>
+                                        <HourglassOutlined className="field-icon" />
+                                        Alder:
+                                    </h4>
+                                    <p>
+                                        {props.patient.birthDate !==
+                                        undefined ? (
+                                            calcAge()
+                                        ) : (
+                                            <div>Ikke oppgitt</div>
+                                        )}
+                                    </p>
+                                </div>
                             </div>
-
+                            {console.log(props.patient)}
                             <div className="info-right">
-                                <h4>Adresse: </h4>
-
-                                {props.patient?.address?.[0]?.line !==
-                                undefined ? (
-                                    <span>
-                                        {props.patient?.address?.[0]?.line?.[0]}
-                                    </span>
-                                ) : (
-                                    <div className="unavailable-content">
-                                        Ikke oppgitt
-                                    </div>
-                                )}
-                                <h4>Telefon: </h4>
-                                {props.patient?.telecom?.[0]?.value !==
-                                undefined ? (
-                                    <span>
-                                        {props.patient?.telecom?.[0]?.value}
-                                    </span>
-                                ) : (
-                                    <div className="unavailable-content">
-                                        Ikke oppgitt
-                                    </div>
-                                )}
+                                <div className="item-container">
+                                    <h4>
+                                        <HomeOutlined className="field-icon" />
+                                        Adresse:
+                                    </h4>
+                                    {props.patient?.address?.[0]?.line !==
+                                    undefined ? (
+                                        <p>
+                                            {
+                                                props.patient?.address?.[0]
+                                                    ?.line?.[0]
+                                            }
+                                        </p>
+                                    ) : (
+                                        <div className="unavailable-content">
+                                            Ikke oppgitt
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="item-container">
+                                    <h4>
+                                        <MobileOutlined className="field-icon" />
+                                        Telefon:
+                                    </h4>
+                                    {props.patient?.telecom?.[0]?.value !==
+                                    undefined ? (
+                                        <p>
+                                            {props.patient?.telecom?.[0]?.value}
+                                        </p>
+                                    ) : (
+                                        <div className="unavailable-content">
+                                            Ikke oppgitt
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </Card>
