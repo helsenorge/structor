@@ -1,22 +1,24 @@
 import React from 'react';
-import { IPatient } from 'types/IPatient';
+import { IPatient, IRecord } from 'types/IPatient';
 import { Row, Col, Card, Table, Typography } from 'antd';
 import dayjs from 'dayjs';
-import './PatientInfo.style.scss';
+import './PatientView.style.scss';
+import { useHistory } from 'react-router-dom';
 
-const DisplayPatientInfo = (props: {
+const PatientView = (props: {
     patient: IPatient;
-    handleClick: any;
     dataSource: fhir.ResourceBase[];
+    setSchema: (id: string) => void;
 }) => {
+    const history = useHistory();
     const calcAge = () => {
-        let birthday = props.patient.birthDate;
-        let patientYear = parseInt(birthday.substring(0, 4));
-        let patientMonth = dayjs(birthday.substring(5, 7))
+        const birthday = props.patient.birthDate;
+        const patientYear = parseInt(birthday.substring(0, 4));
+        const patientMonth = dayjs(birthday.substring(5, 7))
             .locale('nb')
             .format('MMMM');
-        let patientDay = parseInt(birthday.substring(8, 10));
-        let actualAge = dayjs().diff(birthday, 'year');
+        const patientDay = parseInt(birthday.substring(8, 10));
+        const actualAge = dayjs().diff(birthday, 'year');
 
         return (
             actualAge +
@@ -49,6 +51,11 @@ const DisplayPatientInfo = (props: {
             key: 'submitted',
         },
     ];
+
+    const handleClick = (record: IRecord) => {
+        props.setSchema(record.id);
+        history.push('/pasient/skjema');
+    };
 
     return (
         <>
@@ -134,7 +141,7 @@ const DisplayPatientInfo = (props: {
                         onRow={(record) => {
                             return {
                                 onClick: () => {
-                                    props.handleClick(record);
+                                    handleClick(record as IRecord);
                                 },
                             };
                         }}
@@ -154,4 +161,4 @@ const DisplayPatientInfo = (props: {
     );
 };
 
-export default DisplayPatientInfo;
+export default PatientView;
