@@ -10,7 +10,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import QuestionsAndAnswersDisplay from './QuestionsAndAnswersDisplay/QuestionsAndAnswersDisplay';
 import SubQuestionsAndAnswersDisplay from './SubQuestionsAndAnswersDisplay/SubQuestionsAndAnswersDisplay';
 
-export interface SchemesProps {
+export interface SchemaViewProps {
     questions: IQuestion[];
     answers: IAnswer[];
     questionnaireResource: fhir.ValueSet[];
@@ -18,7 +18,7 @@ export interface SchemesProps {
     title: string;
 }
 
-const SchemaView = (props: SchemesProps) => {
+const SchemaView = (props: SchemaViewProps) => {
     dayjs.locale('nb');
     const [qAndA, setQAndA] = useState<IQuestionAndAnswer[]>([]);
     const [qAndAIDs, setQAndAIDs] = useState<string[]>([]);
