@@ -7,7 +7,8 @@ import { useHistory } from 'react-router-dom';
 import {
     IdcardOutlined,
     ManOutlined,
-    HourglassOutlined,
+    WomanOutlined,
+    CrownOutlined,
     MobileOutlined,
     HomeOutlined,
 } from '@ant-design/icons';
@@ -89,7 +90,11 @@ const PatientView = (props: {
                                 </div>
                                 <div className="item-container">
                                     <h4>
-                                        <ManOutlined className="field-icon" />
+                                        {props.patient.gender === 'male' ? (
+                                            <ManOutlined className="field-icon" />
+                                        ) : (
+                                            <WomanOutlined className="field-icon" />
+                                        )}
                                         Kjønn:
                                     </h4>
                                     <p>
@@ -106,7 +111,7 @@ const PatientView = (props: {
                                 </div>
                                 <div className="item-container">
                                     <h4>
-                                        <HourglassOutlined className="field-icon" />
+                                        <CrownOutlined className="field-icon" />
                                         Alder:
                                     </h4>
                                     <p>
@@ -114,12 +119,13 @@ const PatientView = (props: {
                                         undefined ? (
                                             calcAge()
                                         ) : (
-                                            <div>Ikke oppgitt</div>
+                                            <div className="unavailable-content">
+                                                Ikke oppgitt
+                                            </div>
                                         )}
                                     </p>
                                 </div>
                             </div>
-                            {console.log(props.patient)}
                             <div className="info-right">
                                 <div className="item-container">
                                     <h4>
