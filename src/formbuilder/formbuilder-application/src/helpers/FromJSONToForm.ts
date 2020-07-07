@@ -1,24 +1,32 @@
 import { koronaSkjema } from '../questionnaires/koronaSkjema';
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
-import { IAnswer, IChoice, IBoolean } from '../types/IAnswer';
+import {
+    IAnswer,
+    IChoice,
+    IBoolean,
+    IText,
+    INumber,
+    ITime,
+} from '../types/IAnswer';
 import AnswerTypes from '../types/IAnswer';
+import moment from 'moment';
+import { generateID } from '../helpers/IDGenerator';
 
 function getQuestionnaire(): fhir.Questionnaire {
     const questionnaireObj = koronaSkjema;
 
-    console.log('Test 1: ', questionnaireObj);
+    console.log('Questionnaire object: ', questionnaireObj);
     return questionnaireObj;
 }
 
 function getChoices(
     currentQuestion: fhir.QuestionnaireItem,
-    questionnaireObj: fhir.Questionnaire,
+    valueSets: fhir.ValueSet[],
 ): IChoice {
     let valueSetReference = currentQuestion.options?.reference;
     let isOpenChoice = false;
     let isMultipleChoice = false;
-    const valueSets = questionnaireObj.contained as fhir.ValueSet[];
     let hasDefaultValue = false;
     let defaultValue = 0;
 
@@ -48,20 +56,18 @@ function getChoices(
                     currentQuestion.extension[extensionIndex]
                         .valueCodeableConcept !== undefined &&
                     currentQuestion.extension[extensionIndex]
-                        .valueCodeableConcept?.coding !== undefined &&
-                    currentQuestion.extension[extensionIndex]
-                        .valueCodeableConcept?.coding![codingIndex] !==
+                        .valueCodeableConcept?.coding?.[codingIndex] !==
                         undefined
                 ) {
                     if (
                         currentQuestion.extension[
                             extensionIndex
-                        ].valueCodeableConcept?.coding![
+                        ].valueCodeableConcept?.coding?.[
                             codingIndex
                         ].hasOwnProperty('code') &&
                         currentQuestion.extension[extensionIndex]
-                            .valueCodeableConcept?.coding![codingIndex].code ===
-                            'check-box'
+                            .valueCodeableConcept?.coding?.[codingIndex]
+                            .code === 'check-box'
                     ) {
                         isMultipleChoice = true;
                     }
@@ -75,18 +81,22 @@ function getChoices(
     for (let i = 0; i < valueSets?.length; i++) {
         if (
             valueSets[i].id === valueSetReference &&
-            valueSets[i].compose &&
-            valueSets[i].compose?.include
+            valueSets[i].compose !== undefined &&
+            valueSets[i].compose?.include !== undefined &&
+            valueSets[i].compose?.include?.length !== undefined
         ) {
-            for (let j = 0; j < valueSets[i].compose!.include.length; j++) {
-                if (valueSets[i].compose!.include[j].concept !== undefined) {
-                    for (
-                        let k = 0;
-                        k < valueSets[i].compose!.include[j].concept!.length;
-                        k++
-                    ) {
+            const valueSetLength = valueSets[i].compose?.include
+                ?.length as number;
+            for (let j = 0; j < valueSetLength; j++) {
+                if (
+                    valueSets[i].compose !== undefined &&
+                    valueSets[i].compose?.include[j].concept !== undefined
+                ) {
+                    const optionsLength = valueSets[i].compose?.include[j]
+                        .concept?.length as number;
+                    for (let k = 0; k < optionsLength; k++) {
                         answers.push(
-                            valueSets[i].compose!.include[j].concept![k]
+                            valueSets[i].compose?.include[j].concept?.[k]
                                 .display as string,
                         );
                     }
@@ -102,7 +112,7 @@ function getChoices(
     }
 
     const currentAnswer: IChoice = {
-        id: valueSetReference as string,
+        id: generateID(),
         isMultiple: isMultipleChoice,
         isOpen: isOpenChoice,
         choices: answers,
@@ -112,65 +122,290 @@ function getChoices(
     return currentAnswer;
 }
 
-function convertFromJSON(): void {
-    const questionnaireObj = getQuestionnaire();
-    let sectionLength = 0;
-    const questionObjects = [];
-    const answerList = Array<IAnswer>();
-    if (questionnaireObj.item === undefined) return;
-    for (let i = 0; i < questionnaireObj.item?.length; i++) {
-        if (
-            questionnaireObj.item[i].type === 'group' &&
-            questionnaireObj.item[i] !== undefined &&
-            questionnaireObj.item[i].item !== undefined
-        ) {
-            const currentSection = questionnaireObj.item[i];
-            sectionLength = currentSection.item?.length as number;
-            const tempSection: ISection = {
-                id: currentSection.linkId,
-                questionOrder: [],
-                sectionTitle: currentSection.text as string,
-            };
+function getText(currentQuestion: fhir.QuestionnaireItem): IText {
+    if (currentQuestion.type === 'text' && currentQuestion.maxLength) {
+        const tempAnswer: IText = {
+            id: generateID(),
+            isLong: true,
+            maxLength: currentQuestion.maxLength,
+        };
+        return tempAnswer;
+    } else if (currentQuestion.type === 'text') {
+        const tempAnswer: IText = {
+            id: generateID(),
+            isLong: true,
+            maxLength: 1000,
+        };
+        return tempAnswer;
+    } else if (currentQuestion.type === 'string' && currentQuestion.maxLength) {
+        const tempAnswer: IText = {
+            id: generateID(),
+            isLong: false,
+            maxLength: currentQuestion.maxLength,
+        };
+        return tempAnswer;
+    } else if (currentQuestion.type === 'string') {
+        const tempAnswer: IText = {
+            id: generateID(),
+            isLong: false,
+            maxLength: 100,
+        };
+        return tempAnswer;
+    }
+    return {
+        id: generateID(),
+        isLong: false,
+        maxLength: 100,
+    };
+}
 
-            if (currentSection.item !== undefined) {
-                for (let j = 0; j < sectionLength; j++) {
-                    const currentQuestion = currentSection.item[j];
-                    tempSection.questionOrder.push(currentQuestion.linkId);
-                    if (
-                        currentQuestion.type === 'choice' ||
-                        currentQuestion.type === 'open-choice'
-                    ) {
-                        const tempAnswer: IChoice = getChoices(
-                            currentQuestion,
-                            questionnaireObj,
-                        );
-                        answerList.push(tempAnswer);
-                    } else if (currentQuestion.type === 'boolean') {
-                        // TODO Find IsChecked in JSON.
-                        const tempAnswer: IBoolean = {
-                            id: currentQuestion.linkId,
-                            isChecked: false, //TODO
-                            label: currentQuestion.text as string,
-                        };
-                        answerList.push(tempAnswer);
-                    } else if (currentQuestion.type === 'display') {
+function getBoolean(currentQuestion: fhir.QuestionnaireItem): IBoolean {
+    const tempAnswer: IBoolean = {
+        id: generateID(),
+        isChecked: false,
+        label: currentQuestion.text as string,
+    };
+    if (currentQuestion.initialBoolean) {
+        tempAnswer.isChecked = currentQuestion.initialBoolean;
+    }
+    return tempAnswer;
+}
 
-                    }
-                }
-            }
-            console.log('Answers: ', answerList);
-            /*const tempQuestion: IQuestion = {
-                    id: currentSection.item![j].linkId,
-                    sectionId: currentSection.linkId,
-                    questionText: currentSection.item![j].text as string,
-                    answerType: currentSection.item![j].type as AnswerTypes,
-                    answer: {};
-                    hasDescription: boolean;
-                    isRequired: boolean;
-                    description?: string;
-                } */
+function getNumber(currentQuestion: fhir.QuestionnaireItem): INumber {
+    const tempAnswer: INumber = {
+        id: generateID(),
+        hasMax: false,
+        hasMin: false,
+        hasUnit: false,
+        isDecimal: false,
+        hasDefault: false,
+    };
+
+    // Check if decimal and set initial value if exists.
+    if (currentQuestion.type === 'decimal') {
+        tempAnswer.isDecimal = true;
+        if (currentQuestion.initialDecimal) {
+            tempAnswer.hasDefault = true;
+            tempAnswer.defaultValue = currentQuestion.initialDecimal;
         }
     }
+
+    // Check if integer and set initial value if exists.
+    if (currentQuestion.type === 'integer') {
+        tempAnswer.isDecimal = false;
+        if (currentQuestion.initialInteger) {
+            tempAnswer.hasDefault = true;
+            tempAnswer.defaultValue = currentQuestion.initialInteger;
+        }
+    }
+
+    // Find max and min values if exist
+    if (currentQuestion.extension) {
+        for (let i = 0; i < currentQuestion.extension?.length; i++) {
+            if (
+                currentQuestion.extension[i].url ===
+                'http://hl7.org/fhir/StructureDefinition/maxValue'
+            ) {
+                tempAnswer.hasMax = true;
+                tempAnswer.maxValue = currentQuestion.extension[i].valueInteger;
+            }
+            if (
+                currentQuestion.extension[i].url ===
+                'http://hl7.org/fhir/StructureDefinition/minValue'
+            ) {
+                tempAnswer.hasMin = true;
+                tempAnswer.minValue = currentQuestion.extension[i].valueInteger;
+            }
+            // TODO unit
+        }
+    }
+
+    return tempAnswer;
+}
+
+function getTime(currentQuestion: fhir.QuestionnaireItem): ITime {
+    const tempAnswer: ITime = {
+        id: generateID(),
+        isTime: false,
+        isDate: false,
+        hasDefaultTime: false,
+        hasStartTime: false,
+        hasEndTime: false,
+    };
+
+    if (currentQuestion.type === 'date') {
+        tempAnswer.isDate = true;
+        if (currentQuestion.initialDate) {
+            tempAnswer.hasDefaultTime = true;
+            tempAnswer.defaultTime = convertFhirTimeToUnix(
+                true,
+                false,
+                currentQuestion.initialDate as string,
+            );
+        }
+    } else if (currentQuestion.type === 'time') {
+        tempAnswer.isTime = true;
+        if (currentQuestion.initialTime) {
+            tempAnswer.hasDefaultTime = true;
+            tempAnswer.defaultTime = convertFhirTimeToUnix(
+                false,
+                true,
+                currentQuestion.initialTime as string,
+            );
+        }
+    } else {
+        tempAnswer.isDate = true;
+        tempAnswer.isTime = true;
+        if (currentQuestion.initialDateTime) {
+            tempAnswer.hasDefaultTime = true;
+            tempAnswer.defaultTime = convertFhirTimeToUnix(
+                true,
+                true,
+                currentQuestion.initialDateTime as string,
+            );
+        }
+    }
+
+    if (currentQuestion.extension) {
+        for (let i = 0; i < currentQuestion.extension?.length; i++) {
+            if (
+                currentQuestion.extension[i].url ===
+                'http://ehelse.no/fhir/StructureDefinition/sdf-maxvalue'
+            ) {
+                tempAnswer.hasEndTime = true;
+                tempAnswer.endTime = convertFhirTimeToUnix(
+                    tempAnswer.isDate,
+                    tempAnswer.isTime,
+                    currentQuestion.extension[i].valueString as string,
+                );
+            }
+            if (
+                currentQuestion.extension[i].url ===
+                'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue'
+            ) {
+                tempAnswer.hasStartTime = true;
+                tempAnswer.endTime = convertFhirTimeToUnix(
+                    tempAnswer.isDate,
+                    tempAnswer.isTime,
+                    currentQuestion.extension[i].valueString as string,
+                );
+            }
+        }
+    }
+    return tempAnswer;
+}
+
+// function getDisplay(currentQuestion: fhir.QuestionnaireItem): IInformation {
+//     // TODO
+// }
+
+function convertFhirTimeToUnix(
+    isDate: boolean,
+    isTime: boolean,
+    dateTime: string,
+): number {
+    if (isDate && isTime) {
+        return moment(dateTime, 'YYYY-MM-DDTHH:mm:ss').valueOf();
+    } else if (isDate) {
+        return moment(dateTime, 'YYYY-MM-DD').valueOf();
+    } else return moment(dateTime, 'HH:mm').valueOf();
+}
+
+function convertFromJSON(): {
+    sections: Array<ISection>;
+    questions: Array<IQuestion>;
+} {
+    const questionnaireObj = getQuestionnaire();
+    const questionList = [];
+    const sectionList = [];
+    if (questionnaireObj.item !== undefined) {
+        for (let i = 0; i < questionnaireObj.item.length; i++) {
+            if (
+                questionnaireObj.item[i] !== undefined &&
+                questionnaireObj.item[i].type === 'group'
+            ) {
+                const currentSection = questionnaireObj.item[i];
+
+                const tempSection: ISection = {
+                    id: generateID(),
+                    questionOrder: [],
+                    sectionTitle: currentSection.text as string,
+                };
+
+                if (currentSection.item !== undefined) {
+                    for (let j = 0; j < currentSection.item.length; j++) {
+                        const currentQuestion = currentSection.item[j];
+
+                        let tempAnswer: IAnswer = {
+                            id: generateID(),
+                        };
+
+                        const tempQuestion: IQuestion = {
+                            id: generateID(),
+                            sectionId: tempSection.id,
+                            questionText: currentQuestion.text as string,
+                            answerType: currentQuestion.type as AnswerTypes,
+                            answer: tempAnswer as IAnswer,
+                            hasDescription: false,
+                            isRequired: currentQuestion.required as boolean,
+                            description: '',
+                        };
+
+                        tempSection.questionOrder.push(tempQuestion.id);
+
+                        if (
+                            currentQuestion.type === 'choice' ||
+                            currentQuestion.type === 'open-choice'
+                        ) {
+                            tempAnswer = getChoices(
+                                currentQuestion,
+                                questionnaireObj.contained as fhir.ValueSet[],
+                            );
+                            tempQuestion.answerType = AnswerTypes.choice;
+                        } else if (currentQuestion.type === 'boolean') {
+                            tempAnswer = getBoolean(currentQuestion);
+                            tempQuestion.answerType = AnswerTypes.boolean;
+                        } else if (
+                            currentQuestion.type === 'text' ||
+                            currentQuestion.type === 'string'
+                        ) {
+                            tempAnswer = getText(currentQuestion);
+                            tempQuestion.answerType = AnswerTypes.text;
+                        } else if (
+                            currentQuestion.type === 'decimal' ||
+                            currentQuestion.type === 'integer'
+                        ) {
+                            tempAnswer = getNumber(currentQuestion);
+                            tempQuestion.answerType = AnswerTypes.number;
+                        } else if (
+                            currentQuestion.type === 'date' ||
+                            currentQuestion.type === 'dateTime' ||
+                            currentQuestion.type === 'time'
+                        ) {
+                            tempAnswer = getTime(currentQuestion);
+                            tempQuestion.answerType = AnswerTypes.time;
+                        } else if (currentQuestion.type === 'display') {
+                            if (currentQuestion.linkId?.substr(1) === '101') {
+                                tempSection.description = currentQuestion.text;
+                            }
+                            //  else {
+                            //     tempAnswer = getDisplay(currentQuestion);
+                            // }
+                        }
+                        tempQuestion.answer = tempAnswer as IAnswer;
+                        questionList.push(tempQuestion);
+                    }
+                }
+                sectionList.push(tempSection);
+                //console.log('Section Answer: ', tempSection.questionOrder);
+                //console.log('Answers: ', answerList);
+            }
+        }
+    }
+    return {
+        sections: sectionList,
+        questions: questionList,
+    };
 }
 
 export default convertFromJSON;

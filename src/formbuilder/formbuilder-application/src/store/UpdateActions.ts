@@ -13,6 +13,12 @@ export default function UpdateActions(
                 draft.sectionOrder.push(action.section.id);
             }
             break;
+        case UpdateActionTypes.CLEAR_SECTIONS:
+
+                draft.sections = {};
+                draft.sectionOrder = [];
+            
+            break;
         case UpdateActionTypes.UPDATE_SECTION:
             if (action.section) {
                 draft.sections[action.section.id] = action.section;

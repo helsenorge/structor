@@ -11,11 +11,13 @@ export default function Routes(): JSX.Element {
     return (
         <Switch>
             <Route path="/" exact>
-                <Index />
+                <FormContextProvider>
+                    <Index />
+                </FormContextProvider>
             </Route>
             <Route path="/create-form" exact>
-                <FormContextProvider>
-                    <CreateForm />
+            <FormContextProvider>
+                <CreateForm />
                 </FormContextProvider>
             </Route>
             <Route path="/preview" exact>

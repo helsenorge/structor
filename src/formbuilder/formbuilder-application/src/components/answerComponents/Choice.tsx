@@ -38,9 +38,12 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         choices?: Array<string>;
         defaultValue?: number;
     }) {
+        console.log('her: ', attribute.isMultiple);
         const temp = { ...localAnswer };
-        if (attribute.isMultiple !== undefined)
+        if (attribute.isMultiple !== undefined) {
             temp.isMultiple = attribute.isMultiple;
+            console.log('her 2');
+        }
         if (attribute.isOpen !== undefined) temp.isOpen = attribute.isOpen;
         if (attribute.hasDefault !== undefined)
             temp.hasDefault = attribute.hasDefault;

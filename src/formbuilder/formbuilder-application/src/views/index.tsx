@@ -1,9 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import convertFromJSON from '../helpers/FromJSONToForm';
+import ISection from '../types/ISection';
+import IQuestion from '../types/IQuestion';
+import {
+    updateQuestion,
+    updateAnswer,
+    FormContext,
+    addNewSection,
+    clearAllSections,
+} from '../store/FormStore';
 
 function Index(): JSX.Element {
+    const { state, dispatch } = useContext(FormContext);
+    function reuploadJSONFile() {
+        dispatch(clearAllSections());
+        const oldJSON: {
+            sections: Array<ISection>;
+            questions: Array<IQuestion>;
+        } = convertFromJSON();
+        const sections = oldJSON.sections;
+        const questions = oldJSON.questions;
+
+        for (let i = 0; i < sections.length; i++) {
+            dispatch(addNewSection(sections[i]));
+        }
+
+        for (let i = 0; i < questions.length; i++) {
+            dispatch(updateQuestion(questions[i]));
+            if (questions[i].answer !== undefined) {
+                dispatch(updateAnswer(questions[i].id, questions[i].answer));
+            }
+        }
+    }
     return (
         <Row
             align="middle"
@@ -47,15 +77,17 @@ function Index(): JSX.Element {
                                 </div>
                             </Col>
                             <Col span={12}>
-                                <Button
-                                    style={{
-                                        backgroundColor: 'var(--primary-1)',
-                                        color: 'var(--color-base-1)',
-                                    }}
-                                    onClick={convertFromJSON}
-                                >
-                                    Last opp JSON-fil
-                                </Button>
+                                <Link to="create-form">
+                                    <Button
+                                        style={{
+                                            backgroundColor: 'var(--primary-1)',
+                                            color: 'var(--color-base-1)',
+                                        }}
+                                        onClick={reuploadJSONFile}
+                                    >
+                                        Last opp JSON-fil
+                                    </Button>
+                                </Link>
                             </Col>
                         </Row>
                     </Col>
