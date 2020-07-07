@@ -26,7 +26,6 @@ const SubQuestionsAndAnswersDisplay = (
                 {props.questionAndAnswer.id}
                 {props.questionAndAnswer.questions.questions.text}
             </p>
-            {/* <p className="inline-answer-container">{}</p> */}
             {props.questionnaireResource.map(
                 (qr) =>
                     qr.id ===
