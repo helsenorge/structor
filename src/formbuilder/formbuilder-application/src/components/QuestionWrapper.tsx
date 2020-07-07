@@ -16,6 +16,7 @@ type QuestionProps = {
     questionId: string;
     removeQuestion: () => void;
     provided: DND.DraggableProvided;
+    isInfo: boolean;
 };
 
 function QuestionWrapper({
@@ -23,6 +24,7 @@ function QuestionWrapper({
     questionId,
     removeQuestion,
     provided,
+    isInfo,
 }: QuestionProps): JSX.Element {
     const [questionPreview, setQuestionPreview] = useState(false);
     const { state } = useContext(FormContext);
@@ -72,7 +74,11 @@ function QuestionWrapper({
     return (
         <div style={{ marginTop: '10px' }}>
             <Modal
-                title="Slik ser spørsmålet ut for utfyller"
+                title={
+                    'Slik ser ' +
+                    (isInfo ? 'informasjonen' : 'spørsmålet') +
+                    ' ut for utfyller'
+                }
                 visible={questionPreview}
                 onOk={() => setQuestionPreview(false)}
                 destroyOnClose={true}
@@ -103,24 +109,28 @@ function QuestionWrapper({
             </Modal>
             <Row justify="end">
                 <Col sm={24} style={{ display: 'block' }}>
-                    {state.questions[questionId].questionText.length > 0 &&
+                    {((state.questions[questionId].questionText.length > 0 &&
                         state.questions[questionId].answerType !==
-                            AnswerTypes.default && (
-                            <Button
-                                style={{
-                                    zIndex: 1,
-                                    color: 'var(--primary-1)',
-                                    marginLeft: '10px',
-                                    float: 'left',
-                                }}
-                                icon={<EyeOutlined />}
-                                type="default"
-                                onClick={() => setQuestionPreview(true)}
-                            >
-                                Forhåndsvis spørsmål
-                            </Button>
-                        )}
-                    <Tooltip title="Flytt spørsmål">
+                            AnswerTypes.default) ||
+                        state.questions[questionId].answerType ===
+                            AnswerTypes.info) && (
+                        <Button
+                            style={{
+                                zIndex: 1,
+                                color: 'var(--primary-1)',
+                                marginLeft: '10px',
+                                float: 'left',
+                            }}
+                            icon={<EyeOutlined />}
+                            type="default"
+                            onClick={() => setQuestionPreview(true)}
+                        >
+                            Forhåndsvis {isInfo ? 'informasjon' : 'spørsmål'}
+                        </Button>
+                    )}
+                    <Tooltip
+                        title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}
+                    >
                         <Button
                             style={{
                                 zIndex: 1,
@@ -156,7 +166,7 @@ function QuestionWrapper({
                         type="default"
                         onClick={() => removeQuestion()}
                     >
-                        Slett spørsmål
+                        Slett {isInfo ? 'informasjon' : 'spørsmål'}
                     </Button>
                     <Button
                         style={{
@@ -169,16 +179,20 @@ function QuestionWrapper({
                         type="default"
                         onClick={() => duplicateQuestion()}
                     >
-                        Dupliser spørsmål
+                        Dupliser {isInfo ? 'informasjon' : 'spørsmål'}
                     </Button>
                 </Col>
             </Row>
-            <Row>
-                <Col span={4}></Col>
-                <Col xl={16} md={20}>
-                    <QuestionBuilder questionId={questionId}></QuestionBuilder>
-                </Col>
-            </Row>
+            {!isInfo && (
+                <Row>
+                    <Col span={4}></Col>
+                    <Col xl={16} md={20}>
+                        <QuestionBuilder
+                            questionId={questionId}
+                        ></QuestionBuilder>
+                    </Col>
+                </Row>
+            )}
             <Row>
                 <Col span={4}></Col>
                 <Col xl={16} md={20}>

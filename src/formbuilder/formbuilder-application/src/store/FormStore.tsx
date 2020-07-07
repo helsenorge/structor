@@ -122,14 +122,17 @@ export function updateSection(section: ISection): UpdateAction {
     };
 }
 
-export function addNewQuestion(sectionId: string): UpdateAction {
+export function addNewQuestion(
+    sectionId: string,
+    isInfo?: boolean,
+): UpdateAction {
     const questionId = generateID();
     const newQuestion: IQuestion = {
         id: questionId,
         sectionId: sectionId,
         questionText: '',
         isDependent: false,
-        answerType: AnswerTypes.default,
+        answerType: isInfo ? AnswerTypes.info : AnswerTypes.default,
         answer: { id: generateID() },
         isRequired: true,
         hasDescription: false,

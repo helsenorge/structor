@@ -14,10 +14,8 @@ export default interface IQuestion {
     questionText: string;
     answerType: AnswerTypes;
     answer: IAnswer;
-    hasDescription: boolean;
     isRequired: boolean;
     isDependent: boolean;
     dependentOf?: string;
-    description?: string;
     placeholder?: string;
 }
