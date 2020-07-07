@@ -25,24 +25,7 @@ export default function convertQuestion(
         required: question.isRequired,
         repeats: false, // TODO
         readOnly: false, // TODO
-        item: new Array<fhir.QuestionnaireItem>(),
     };
-    // if (question.hasDescription) {
-    //     subItem.item?.push({
-    //         linkId: linkId.substring(0, 4) + '001',
-    //         text: question.description,
-    //         _text: {
-    //             extension: [
-    //                 {
-    //                     url:
-    //                         'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
-    //                     valueMarkdown: question.description,
-    //                 },
-    //             ],
-    //         },
-    //         type: 'display',
-    //     });
-    // }
     switch (question.answerType) {
         case AnswerTypes.number:
             subItem = convertNumber(question, subItem);
@@ -60,33 +43,35 @@ export default function convertQuestion(
             subItem = convertDate(question, subItem);
             break;
     }
-    return subItem;
-    // if (!question.hasDescription || question.description?.length === 0) return subItem;
-    // subItem.linkId = linkId + '.2';
-    // const parentItem: fhir.QuestionnaireItem = {
-    //     linkId: linkId,
-    //     text: question.questionText,
-    //     type: 'group',
-    //     repeats: false,
-    //     item: [
-    //         {
-    //             linkId: linkId + '.1',
-    //             text: question.description,
-    //             type: 'display',
-    //             _text: {
-    //                 extension: [
-    //                     {
-    //                         url:
-    //                             'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
-    //                         valueMarkdown: question.description,
-    //                     },
-    //                 ],
-    //             },
-    //         },
-    //         subItem,
-    //     ],
-    // };
-    // return parentItem;
+    if (!question.hasDescription || question.description?.length === 0)
+        return subItem;
+
+    subItem.linkId = linkId + '.200';
+
+    const parentItem: fhir.QuestionnaireItem = {
+        linkId: linkId,
+        text: question.questionText,
+        type: 'group',
+        repeats: false,
+        item: [
+            {
+                linkId: linkId + '.100',
+                text: question.description,
+                type: 'display',
+                _text: {
+                    extension: [
+                        {
+                            url:
+                                'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                            valueMarkdown: question.description,
+                        },
+                    ],
+                },
+            },
+            subItem,
+        ],
+    };
+    return parentItem;
 }
 
 function convertNumber(
