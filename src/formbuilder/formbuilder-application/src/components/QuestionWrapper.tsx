@@ -77,6 +77,7 @@ function QuestionWrapper({
                 onOk={() => setQuestionPreview(false)}
                 destroyOnClose={true}
                 width="90vw"
+                style={{ top: '10px' }}
                 footer={[
                     <Button
                         key="submit"
