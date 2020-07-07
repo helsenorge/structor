@@ -18,28 +18,63 @@ export default function convertQuestion(
     linkId: string,
     valueSetMap: ValueSetMap,
 ): fhir.QuestionnaireItem {
-    const subItem: fhir.QuestionnaireItem = {
+    let subItem: fhir.QuestionnaireItem = {
         linkId: linkId,
         type: FhirAnswerTypes.text,
         text: question.questionText,
-        required: question.isRequired, // TODO: true | false
+        required: question.isRequired,
         repeats: false, // TODO
         readOnly: false, // TODO
     };
     switch (question.answerType) {
         case AnswerTypes.number:
-            return convertNumber(question, subItem);
+            subItem = convertNumber(question, subItem);
+            break;
         case AnswerTypes.text:
-            return convertText(question, subItem);
+            subItem = convertText(question, subItem);
+            break;
         case AnswerTypes.choice:
-            return convertChoice(question, subItem, valueSetMap);
+            subItem = convertChoice(question, subItem, valueSetMap);
+            break;
         case AnswerTypes.boolean:
-            return convertBoolean(question, subItem);
+            subItem = convertBoolean(question, subItem);
+            break;
         case AnswerTypes.time:
-            return convertDate(question, subItem);
-        default:
-            return subItem;
+            subItem = convertDate(question, subItem);
+            break;
     }
+    if (!question.hasDescription || question.description?.length === 0)
+        return subItem;
+
+    subItem.linkId = linkId + '.200';
+
+    const parentItem: fhir.QuestionnaireItem = {
+        linkId: linkId,
+        type: 'group',
+        repeats: false,
+        item: [
+            {
+                linkId: linkId + '.100',
+                text: question.description,
+                type: 'display',
+                _text: {
+                    extension: [
+                        {
+                            url:
+                                'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                            valueMarkdown:
+                                '### ' +
+                                question.questionText +
+                                '\r\n' +
+                                question.description,
+                        },
+                    ],
+                },
+            },
+            subItem,
+        ],
+    };
+    return parentItem;
 }
 
 function convertNumber(

@@ -183,52 +183,49 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         La borger legge til svaralternativ
                     </Checkbox>
                 </Col>
-                {!localAnswer.isMultiple && (
-                    <Col span={6}>
-                        <Checkbox
-                            checked={localAnswer.hasDefault}
-                            onChange={(e) =>
-                                localUpdate({
-                                    updateStore: true,
-                                    hasDefault: e.target.checked,
-                                })
-                            }
-                        >
-                            Default:
-                        </Checkbox>
-                    </Col>
-                )}
-                {localAnswer.hasDefault && !localAnswer.isMultiple && (
-                    <Col span={6}>
-                        <Select
-                            defaultValue={localAnswer.defaultValue}
-                            style={{ width: '200px' }}
-                            onSelect={(value) => {
-                                localUpdate({
-                                    updateStore: true,
-                                    defaultValue: value,
-                                });
-                            }}
-                            placeholder="Velg default"
-                        >
-                            {localAnswer.choices
-                                ? localAnswer.choices.map((name, id) => [
-                                      <Option
-                                          key={'def' + questionId + id}
-                                          value={id}
-                                      >
-                                          {name.length < 2
-                                              ? 'Alternativ ' + (id + 1)
-                                              : name}
-                                      </Option>,
-                                  ])
-                                : []}
-                        </Select>
-                    </Col>
-                )}
-                {!localAnswer.hasDefault &&
-                    localAnswer.defaultValue &&
-                    localUpdate({ updateStore: true, defaultValue: NaN })}
+                <Col span={6}>
+                    <Checkbox
+                        checked={localAnswer.hasDefault}
+                        disabled={localAnswer.isMultiple}
+                        onChange={(e) =>
+                            localUpdate({
+                                updateStore: true,
+                                hasDefault: e.target.checked,
+                            })
+                        }
+                    >
+                        Default:
+                    </Checkbox>
+                </Col>
+                <Col span={6}>
+                    <Select
+                        defaultValue={localAnswer.defaultValue}
+                        disabled={
+                            !(localAnswer.hasDefault && !localAnswer.isMultiple)
+                        }
+                        style={{ width: '200px' }}
+                        onSelect={(value) => {
+                            localUpdate({
+                                updateStore: true,
+                                defaultValue: value,
+                            });
+                        }}
+                        placeholder="Velg default"
+                    >
+                        {localAnswer.choices
+                            ? localAnswer.choices.map((name, id) => [
+                                  <Option
+                                      key={'def' + questionId + id}
+                                      value={id}
+                                  >
+                                      {name.length < 2
+                                          ? 'Alternativ ' + (id + 1)
+                                          : name}
+                                  </Option>,
+                              ])
+                            : []}
+                    </Select>
+                </Col>
             </Row>
             {localAnswer.isMultiple ? (
                 <div className="question-component" style={choiceStyle}>
@@ -250,7 +247,11 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     <h4>Answers:</h4>
                     <Radio.Group
                         name="radiogroup"
-                        value={localAnswer.defaultValue}
+                        value={
+                            localAnswer.hasDefault
+                                ? localAnswer.defaultValue
+                                : undefined
+                        }
                     >
                         {localAnswer.choices.map((name, id) => [
                             createRadioButton(id),

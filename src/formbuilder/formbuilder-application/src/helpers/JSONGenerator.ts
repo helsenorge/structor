@@ -29,7 +29,26 @@ function convertSections(
             repeats: false,
             item: new Array<fhir.QuestionnaireItem>(),
         };
-        // TODO: Add section desctiption
+        let currentLinkId = 100;
+
+        if (section.description && section.description.length > 0) {
+            item.item?.push({
+                linkId: i + 1 + '.' + 100,
+                text: section.description,
+                _text: {
+                    extension: [
+                        {
+                            url:
+                                'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                            valueMarkdown: section.description,
+                        },
+                    ],
+                },
+                type: 'display',
+            });
+            currentLinkId = 200;
+        }
+
         for (let j = 0; j < sections[sectionKey].questionOrder.length; j++) {
             const questionKey = sections[sectionKey].questionOrder[j];
             const question = questions[questionKey];
@@ -41,9 +60,10 @@ function convertSections(
                 continue;
             const subItem = convertQuestion(
                 question,
-                i + 1 + '.' + (j + 1) + '00',
+                i + 1 + '.' + currentLinkId,
                 valueSetMap,
             );
+            currentLinkId += 100;
             if (
                 (question.answer as IChoice).choices &&
                 (question.answer as IChoice).choices.length > 0
@@ -52,21 +72,21 @@ function convertSections(
                     reference: '#' + question.answer.id,
                 };
             }
-            if (question.description !== undefined) {
-                item._text = {
-                    extension: [
-                        {
-                            url:
-                                'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
-                            valueMarkdown:
-                                '### ' +
-                                question.questionText +
-                                '\r\n' +
-                                question.description,
-                        },
-                    ],
-                };
-            }
+            // if (question.description !== undefined) {
+            //     subItem._text = {
+            //         extension: [
+            //             {
+            //                 url:
+            //                     'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+            //                 valueMarkdown:
+            //                     '### ' +
+            //                     question.questionText +
+            //                     '\r\n' +
+            //                     question.description,
+            //             },
+            //         ],
+            //     };
+            // }
             item.item?.push(subItem);
         }
         items.push(item);

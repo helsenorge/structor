@@ -53,11 +53,12 @@ function NavBar(): JSX.Element {
     return (
         <div className="nav-bar">
             <Modal
-                title="Slik ser spørsmålet ut for utfyller"
+                title="Slik ser skjemaet ut for utfyller"
                 visible={formPreview}
                 onOk={() => setFormPreview(false)}
                 destroyOnClose={true}
                 width="90vw"
+                style={{ top: '10px' }}
                 footer={[
                     <Button
                         key="submit"
