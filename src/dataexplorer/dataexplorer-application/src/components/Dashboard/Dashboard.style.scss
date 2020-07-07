@@ -16,13 +16,13 @@ p {
         border-color: $header !important;
     }
     &:focus {
-        border-color: $header !important ;
+        border-color: $elementHeader !important ;
     }
 }
 .ant-input-affix-wrapper-focused {
-    box-shadow: 0 0 0 1px #3b6064c0 !important;
+    box-shadow: 0 0 0 2px $elementHeader !important;
     border-color: $header !important ;
     &:focus {
-        border-color: $header !important ;
+        border-color: $elementHeader !important ;
     }
 }

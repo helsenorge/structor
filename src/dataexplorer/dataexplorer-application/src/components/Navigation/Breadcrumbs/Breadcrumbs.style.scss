@@ -1,11 +1,20 @@
+@import '../../../variables';
+
 .breadcrumbs-container {
     display: flex;
     flex-direction: row;
     flex-grow: 2;
     position: fixed;
+    padding: 5px;
 
     .breadcrumbs-item {
         color: black;
         padding-left: 0.1875rem;
+        font-size: 1.2rem;
+    }
+    .bread-icon {
+        font-size: 1.2rem !important;
+        margin-right: 0.3125rem;
+        color: $accent;
     }
 }
