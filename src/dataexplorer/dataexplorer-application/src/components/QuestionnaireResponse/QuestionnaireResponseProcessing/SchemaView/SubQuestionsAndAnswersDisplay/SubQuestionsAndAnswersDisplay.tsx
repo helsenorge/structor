@@ -23,7 +23,6 @@ const SubQuestionsAndAnswersDisplay = (
         <div className="border">
             <br></br>
             <p className="questions">
-                {props.questionAndAnswer.id}
                 {props.questionAndAnswer.questions.questions.text}
             </p>
             {props.questionnaireResource.map(

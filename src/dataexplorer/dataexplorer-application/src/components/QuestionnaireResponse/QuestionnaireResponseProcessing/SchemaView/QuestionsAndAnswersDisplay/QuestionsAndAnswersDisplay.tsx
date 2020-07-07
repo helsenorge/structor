@@ -30,7 +30,6 @@ const QuestionsAndAnswersDisplay = (
         <div className="answer-container">
             <div className="question-container">
                 <p className="questions">
-                    {props.questionAndAnswer.id}
                     {props.questionAndAnswer.questions.questions.text}
                 </p>
                 {/* <p className="inline-answer-container">Svar:</p> */}
