@@ -1,9 +1,10 @@
 .site-collapse-custom-panel {
     background: white;
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin-bottom: 1.5rem;
     overflow: inherit;
-    padding-top: 3.125rem;
+    padding-top: 0rem;
+    padding-left: 0rem;
 }
 
 .site-collapse-custom-collapse {
@@ -11,53 +12,80 @@
     background: white;
     overflow: inherit;
     margin-bottom: 1.5rem;
-    padding-left: 6.25rem;
+    padding-left: 0rem;
+    padding-right: 0rem;
 }
 
 p.answers {
-    font-size: 1rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin: 0px;
     font-style: oblique;
 }
 
 p.bold {
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 p.questions {
-    font-size: 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 0rem;
+    display: inline;
 }
 
 div.border {
     border-bottom: double;
     border-bottom-color: #f0f2f5;
+    border-width: small;
 }
 
 div.card {
     box-shadow: 0 0.25rem 0.5rem 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     background: white;
+    padding-top: 2rem;
+    margin-top: 3rem;
 }
 
 h1.title {
     font-size: 2.125rem;
-    padding-left: 6.875rem;
-    padding-top: 5rem;
+    padding-left: 1rem;
+    padding-top: 3rem;
 }
 
-Button.nopadding {
-    padding-left: 0rem;
+.alternatives {
+    padding-left: 0.5rem;
     padding-top: 0rem;
+    padding-bottom: 0rem;
+    font-size: 0.9rem;
+    font-style: oblique;
 }
 
 p.inline-answer-container {
-    font-size: 1rem;
+    font-size: 0.8rem;
     display: inline;
-    font-weight: bold;
+    //font-weight: bold;
 }
 
 p.inline-date-container {
     font-size: 1rem;
     display: inline;
-    font-weight: bold;
+    //font-weight: bold;
+}
+
+.answer-container {
+    margin-bottom: 40px;
+    border: thin;
+    border-color: #f0f2f5;
+    border-width: small;
+    background-color: rgb(249, 249, 249);
+    padding: 5px;
+    box-shadow: 0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.question-container {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
 }
