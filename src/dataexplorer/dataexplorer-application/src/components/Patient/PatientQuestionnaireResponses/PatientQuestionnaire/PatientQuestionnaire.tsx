@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useFetch from 'utils/hooks/useFetch';
-import { IPatientIdentifier, IRecord, IDataSource } from 'types/IPatient';
-import { Row, Spin } from 'antd';
+import { IPatientIdentifier, IDataSource } from 'types/IPatient';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
-import { useHistory } from 'react-router-dom';
 import PatientView from './PatientView/PatientView';
 
 interface IPatientQuestionnaireProps {
@@ -21,17 +19,11 @@ const PatientQuestionnaire = ({
     questionnaireResponseData,
     setSchema,
 }: IPatientQuestionnaireProps) => {
-    const history = useHistory();
     const [dataSource, setDataSource] = useState<fhir.ResourceBase[]>([]);
 
     const { response: questionnaire } = useFetch<fhir.Questionnaire>(
         'fhir/' + questionnaireId,
     );
-
-    const handleClick = (record: IRecord) => {
-        setSchema(record.id);
-        history.push('/pasient/skjema');
-    };
 
     useEffect(() => {
         if (
@@ -58,14 +50,9 @@ const PatientQuestionnaire = ({
             {questionnaire && (
                 <PatientView
                     patient={patientData.entry[0].resource}
-                    handleClick={handleClick}
+                    setSchema={setSchema}
                     dataSource={dataSource}
                 />
-            )}
-            {!questionnaire && !dataSource && (
-                <Row justify="space-around" align="middle">
-                    <Spin size="large" />
-                </Row>
             )}
         </>
     );
