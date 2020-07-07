@@ -35,6 +35,12 @@ const PatientView = (props: {
         props.patient.name[0].given[0] + ' ' + props.patient.name[0].family;
     const columns = [
         {
+            title: 'ID',
+            dataIndex: 'id',
+            key: 'id',
+            sorter: (a: any, b: any) => a.id - b.id,
+        },
+        {
             title: 'Skjemanavn',
             dataIndex: 'schemaName',
             key: 'schemaName',
@@ -43,12 +49,8 @@ const PatientView = (props: {
             title: 'Innsendt',
             dataIndex: 'submitted',
             key: 'submitted',
-        },
-        {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
-            sorter: (a: any, b: any) => a.id - b.id,
+            sorter: (a: any, b: any) =>
+                dayjs(a.submitted).unix() - dayjs(b.submitted).unix(),
         },
     ];
 
