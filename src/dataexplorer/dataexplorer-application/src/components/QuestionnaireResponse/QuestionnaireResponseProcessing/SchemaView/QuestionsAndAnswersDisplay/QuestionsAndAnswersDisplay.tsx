@@ -14,15 +14,23 @@ const QuestionsAndAnswersDisplay = (
 ) => {
     const setContent = (data: fhir.ValueSetComposeIncludeConcept[]) => {
         if (data) {
+            console.log(data);
             return data.map((line) => <li key={line.code}>{line.display}</li>);
         }
         return;
+    };
+    const setCount = (data: fhir.ValueSetComposeIncludeConcept[]) => {
+        if (data.length > 6) {
+            return 'scroll';
+        }
+        return 'notscroll';
     };
 
     return (
         <div className="answer-container">
             <div className="question-container">
                 <p className="questions">
+                    {props.questionAndAnswer.id}
                     {props.questionAndAnswer.questions.questions.text}
                 </p>
                 {/* <p className="inline-answer-container">Svar:</p> */}
@@ -41,7 +49,15 @@ const QuestionsAndAnswersDisplay = (
                                               key={m.system}
                                               placement="rightTop"
                                               trigger="click"
-                                              content={setContent(m.concept)}
+                                              content={
+                                                  <div
+                                                      className={setCount(
+                                                          m.concept,
+                                                      )}
+                                                  >
+                                                      {setContent(m.concept)}
+                                                  </div>
+                                              }
                                           >
                                               <a className="alternatives">
                                                   (Vis alternativer)

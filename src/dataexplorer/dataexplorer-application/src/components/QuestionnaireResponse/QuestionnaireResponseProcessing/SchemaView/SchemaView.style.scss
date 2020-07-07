@@ -51,7 +51,6 @@ div.card {
 h1.title {
     font-size: 2.125rem;
     padding-left: 1rem;
-    padding-top: 3rem;
 }
 
 .alternatives {
@@ -88,4 +87,27 @@ p.inline-date-container {
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
+}
+.inner-schema-row {
+    display: flex !important;
+    flex-direction: column !important;
+
+    .DateCol {
+        align-self: flex-end !important;
+        margin-right: 40px !important;
+    }
+}
+
+.ant-popover-inner {
+    .scroll {
+        overflow: auto;
+        height: 150px;
+    }
+    .notscroll {
+        overflow: auto;
+        height: auto;
+    }
+}
+.dateCol {
+    align-self: flex-end;
 }

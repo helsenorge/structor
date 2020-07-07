@@ -47,7 +47,6 @@ const SchemaView = (props: SchemesProps) => {
             hasAddedId = false;
         });
     }, [props]);
-    console.log(qAndAIDs);
 
     const { Panel } = Collapse;
 
@@ -57,8 +56,8 @@ const SchemaView = (props: SchemesProps) => {
                 <Row justify="center">
                     <Col span={12}>
                         <div className="card">
-                            <Row>
-                                <Col span={8} offset={20}>
+                            <Row className="inner-schema-row">
+                                <Col span={8} className="DateCol">
                                     {props.date.format('DD/MM/YYYY HH:mm')}
                                 </Col>
                                 <Row justify="center">
@@ -142,6 +141,9 @@ const SchemaView = (props: SchemesProps) => {
                                                                                 qaIndex
                                                                             }
                                                                         >
+                                                                            {console.log(
+                                                                                qa,
+                                                                            )}
                                                                             <SubQuestionsAndAnswersDisplay
                                                                                 questionAndAnswer={
                                                                                     qa

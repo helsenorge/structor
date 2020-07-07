@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IQuestionsAndAnswersDisplayProps } from '../QuestionsAndAnswersDisplay/QuestionsAndAnswersDisplay';
 import { Popover, Button } from 'antd';
 import '../SchemaView.style.scss';
@@ -12,14 +12,21 @@ const SubQuestionsAndAnswersDisplay = (
         }
         return;
     };
+    const setCount = (data: fhir.ValueSetComposeIncludeConcept[]) => {
+        if (data.length > 8) {
+            return 'scroll';
+        }
+        return 'notscroll';
+    };
 
     return (
         <div className="border">
             <br></br>
             <p className="questions">
+                {props.questionAndAnswer.id}
                 {props.questionAndAnswer.questions.questions.text}
             </p>
-            <p className="inline-answer-container">Subspørsmål Svar:</p>
+            {/* <p className="inline-answer-container">{}</p> */}
             {props.questionnaireResource.map(
                 (qr) =>
                     qr.id ===
@@ -35,14 +42,19 @@ const SubQuestionsAndAnswersDisplay = (
                                           key={m.system}
                                           placement="rightTop"
                                           trigger="click"
-                                          content={setContent(m.concept)}
+                                          content={
+                                              <div
+                                                  className={setCount(
+                                                      m.concept,
+                                                  )}
+                                              >
+                                                  {setContent(m.concept)}
+                                              </div>
+                                          }
                                       >
-                                          <Button
-                                              className="nopadding"
-                                              type="link"
-                                          >
+                                          <a className="alternatives">
                                               (Vis alternativer)
-                                          </Button>
+                                          </a>
                                       </Popover>
                                   ),
                           )
