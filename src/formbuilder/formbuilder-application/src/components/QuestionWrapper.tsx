@@ -9,6 +9,7 @@ import { FormContext } from '../store/FormStore';
 import ISection from '../types/ISection';
 import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
+import AnswerTypes from '../types/IAnswer';
 
 type QuestionProps = {
     duplicateQuestion: () => void;
@@ -101,19 +102,23 @@ function QuestionWrapper({
             </Modal>
             <Row justify="end">
                 <Col sm={24} style={{ display: 'block' }}>
-                    <Button
-                        style={{
-                            zIndex: 1,
-                            color: 'var(--primary-1)',
-                            marginLeft: '10px',
-                            float: 'left',
-                        }}
-                        icon={<EyeOutlined />}
-                        type="default"
-                        onClick={() => setQuestionPreview(true)}
-                    >
-                        Forhåndsvis spørsmål
-                    </Button>
+                    {state.questions[questionId].questionText.length > 0 &&
+                        state.questions[questionId].answerType !==
+                            AnswerTypes.default && (
+                            <Button
+                                style={{
+                                    zIndex: 1,
+                                    color: 'var(--primary-1)',
+                                    marginLeft: '10px',
+                                    float: 'left',
+                                }}
+                                icon={<EyeOutlined />}
+                                type="default"
+                                onClick={() => setQuestionPreview(true)}
+                            >
+                                Forhåndsvis spørsmål
+                            </Button>
+                        )}
                     <Tooltip title="Flytt spørsmål">
                         <Button
                             style={{
