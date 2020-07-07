@@ -82,7 +82,10 @@ function getChoices(
     // Find array of answer options as strings
     const answers = [];
     for (let i = 0; i < valueSets?.length; i++) {
-        if (valueSets[i].compose?.include?.length) {
+        if (
+            valueSets[i].id === valueSetReference &&
+            valueSets[i].compose?.include?.length
+        ) {
             const valueSetLength = valueSets[i].compose?.include
                 ?.length as number;
             for (let j = 0; j < valueSetLength; j++) {
@@ -99,6 +102,7 @@ function getChoices(
             }
         }
     }
+    currentAnswer.choices = answers;
 
     // Find if has a default value
     if (currentQuestion.hasOwnProperty('initialCoding')) {
