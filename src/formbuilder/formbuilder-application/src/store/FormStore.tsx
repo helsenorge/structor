@@ -135,7 +135,6 @@ export function addNewQuestion(
         answerType: isInfo ? AnswerTypes.info : AnswerTypes.default,
         answer: { id: generateID() },
         isRequired: true,
-        hasDescription: false,
         placeholder: 'Spørsmålstekst',
     };
     return {

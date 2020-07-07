@@ -37,8 +37,6 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
         const temp = { ...localQuestion };
         if (attribute.isRequired !== undefined)
             temp.isRequired = attribute.isRequired;
-        if (attribute.description !== undefined)
-            temp.description = attribute.description;
         if (attribute.isDependent !== undefined)
             temp.isDependent = attribute.isDependent;
         if (attribute.dependentOf !== undefined)
