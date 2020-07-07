@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Row, Col, Button } from 'antd';
 import NavBar from '../components/commonComponents/NavBar';
 import Section from '../components/Section';
@@ -13,7 +13,6 @@ import {
 } from '../store/FormStore';
 import * as DND from 'react-beautiful-dnd';
 import './Form.css';
-import ISection from '../types/ISection';
 
 function CreateForm(): JSX.Element {
     const { state, dispatch } = useContext(FormContext);

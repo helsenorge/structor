@@ -14,10 +14,8 @@ export default function UpdateActions(
             }
             break;
         case UpdateActionTypes.CLEAR_SECTIONS:
-
-                draft.sections = {};
-                draft.sectionOrder = [];
-            
+            draft.sections = {};
+            draft.sectionOrder = [];
             break;
         case UpdateActionTypes.UPDATE_SECTION:
             if (action.section) {

@@ -10,18 +10,24 @@ import {
     FormContext,
     addNewSection,
     clearAllSections,
+    updateFormMeta,
 } from '../store/FormStore';
 
 function Index(): JSX.Element {
-    const { state, dispatch } = useContext(FormContext);
+    const { dispatch } = useContext(FormContext);
     function reuploadJSONFile() {
         dispatch(clearAllSections());
         const oldJSON: {
+            formMeta: { title: string; description?: string };
             sections: Array<ISection>;
             questions: Array<IQuestion>;
         } = convertFromJSON();
         const sections = oldJSON.sections;
         const questions = oldJSON.questions;
+        const formTitle = oldJSON.formMeta.title;
+        const formDesc = oldJSON.formMeta.description;
+
+        dispatch(updateFormMeta(formTitle, formDesc));
 
         for (let i = 0; i < sections.length; i++) {
             dispatch(addNewSection(sections[i]));

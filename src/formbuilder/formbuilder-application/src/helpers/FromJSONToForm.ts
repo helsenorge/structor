@@ -1,4 +1,4 @@
-import { koronaSkjema } from '../questionnaires/koronaSkjema';
+import { test } from '../questionnaires/test';
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
 import {
@@ -14,7 +14,7 @@ import moment from 'moment';
 import { generateID } from '../helpers/IDGenerator';
 
 function getQuestionnaire(): fhir.Questionnaire {
-    const questionnaireObj = koronaSkjema;
+    const questionnaireObj = test;
 
     console.log('Questionnaire object: ', questionnaireObj);
     return questionnaireObj;
@@ -312,12 +312,17 @@ function convertFhirTimeToUnix(
 }
 
 function convertFromJSON(): {
+    formMeta: { title: string; description?: string };
     sections: Array<ISection>;
     questions: Array<IQuestion>;
 } {
     const questionnaireObj = getQuestionnaire();
     const questionList = [];
     const sectionList = [];
+    const formMeta = {
+        title: questionnaireObj.title as string,
+        description: questionnaireObj.description as string,
+    };
     if (questionnaireObj.item !== undefined) {
         for (let i = 0; i < questionnaireObj.item.length; i++) {
             if (
@@ -385,7 +390,7 @@ function convertFromJSON(): {
                             tempAnswer = getTime(currentQuestion);
                             tempQuestion.answerType = AnswerTypes.time;
                         } else if (currentQuestion.type === 'display') {
-                            if (currentQuestion.linkId?.substr(1) === '101') {
+                            if (currentQuestion.linkId?.substr(2) === '101') {
                                 tempSection.description = currentQuestion.text;
                             }
                             //  else {
@@ -403,6 +408,7 @@ function convertFromJSON(): {
         }
     }
     return {
+        formMeta: formMeta,
         sections: sectionList,
         questions: questionList,
     };
