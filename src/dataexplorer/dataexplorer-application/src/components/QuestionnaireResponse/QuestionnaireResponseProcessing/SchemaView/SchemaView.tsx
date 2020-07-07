@@ -57,7 +57,7 @@ const SchemaView = (props: SchemaViewProps) => {
                     <Col span={12}>
                         <div className="card">
                             <Row className="inner-schema-row">
-                                <Col span={8} className="DateCol">
+                                <Col span={8} className="date-column">
                                     {props.date.format('DD/MM/YYYY HH:mm')}
                                 </Col>
                                 <Row justify="center">

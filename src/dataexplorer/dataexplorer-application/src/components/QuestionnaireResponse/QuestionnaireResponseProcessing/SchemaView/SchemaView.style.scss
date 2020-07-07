@@ -66,13 +66,11 @@ h1.title {
 p.inline-answer-container {
     font-size: 0.8rem;
     display: inline;
-    //font-weight: bold;
 }
 
 p.inline-date-container {
     font-size: 1rem;
     display: inline;
-    //font-weight: bold;
 }
 
 .answer-container {
@@ -94,7 +92,7 @@ p.inline-date-container {
     display: flex !important;
     flex-direction: column !important;
 
-    .DateCol {
+    .date-column {
         align-self: flex-end !important;
         margin-right: 40px !important;
     }
@@ -109,7 +107,4 @@ p.inline-date-container {
         overflow: auto;
         height: auto;
     }
-}
-.dateCol {
-    align-self: flex-end;
 }
