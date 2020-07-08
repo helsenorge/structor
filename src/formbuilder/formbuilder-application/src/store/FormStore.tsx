@@ -65,8 +65,19 @@ export function updateFormMeta(
     };
 }
 
-export function addNewSection(): UpdateAction {
+export function addNewSection(section?: ISection): UpdateAction {
     const sectionId = generateID();
+    if (section) {
+        return {
+            type: UpdateActionTypes.ADD_NEW_SECTION,
+            member: MemberTypes.UPDATE,
+            section: {
+                id: section.id,
+                questionOrder: section.questionOrder,
+                sectionTitle: section.sectionTitle,
+            },
+        };
+    }
     return {
         type: UpdateActionTypes.ADD_NEW_SECTION,
         member: MemberTypes.UPDATE,
@@ -75,6 +86,13 @@ export function addNewSection(): UpdateAction {
             questionOrder: [],
             sectionTitle: '',
         },
+    };
+}
+
+export function clearAllSections(): UpdateAction {
+    return {
+        type: UpdateActionTypes.CLEAR_SECTIONS,
+        member: MemberTypes.UPDATE,
     };
 }
 
@@ -115,6 +133,7 @@ export function swapSection(
 }
 
 export function updateSection(section: ISection): UpdateAction {
+    console.log('Section: ', section);
     return {
         type: UpdateActionTypes.UPDATE_SECTION,
         member: MemberTypes.UPDATE,
@@ -122,7 +141,10 @@ export function updateSection(section: ISection): UpdateAction {
     };
 }
 
-export function addNewQuestion(sectionId: string): UpdateAction {
+export function addNewQuestion(
+    sectionId: string,
+    isInfo?: boolean,
+): UpdateAction {
     const questionId = generateID();
     const newQuestion: IQuestion = {
         id: questionId,
@@ -130,10 +152,9 @@ export function addNewQuestion(sectionId: string): UpdateAction {
         questionText: '',
         isDependent: false,
         collapsed: false,
-        answerType: AnswerTypes.default,
+        answerType: isInfo ? AnswerTypes.info : AnswerTypes.default,
         answer: { id: generateID() },
         isRequired: true,
-        hasDescription: false,
         placeholder: 'Spørsmålstekst',
     };
     return {

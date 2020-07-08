@@ -12,16 +12,13 @@ import AnswerTypes, {
     IAnswer,
 } from '../types/IAnswer';
 
-const { TextArea } = Input;
 const { Option } = Select;
 
 type QuestionProps = {
     questionId: string;
 };
 
-function QuestionBuilder({
-    questionId,
-}: QuestionProps): JSX.Element {
+function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const [localQuestion, setLocalQuestion] = useState(
         state.questions[questionId] as IQuestion,
@@ -30,7 +27,6 @@ function QuestionBuilder({
     function localUpdate(attribute: {
         answerType?: AnswerTypes;
         isRequired?: boolean;
-        hasDescription?: boolean;
         collapsed?: boolean;
         isDependent?: boolean;
         questionText?: string;
@@ -41,10 +37,6 @@ function QuestionBuilder({
         const temp = { ...localQuestion };
         if (attribute.isRequired !== undefined)
             temp.isRequired = attribute.isRequired;
-        if (attribute.hasDescription !== undefined)
-            temp.hasDescription = attribute.hasDescription;
-        if (attribute.description !== undefined)
-            temp.description = attribute.description;
         if (attribute.isDependent !== undefined)
             temp.isDependent = attribute.isDependent;
         if (attribute.dependentOf !== undefined)
@@ -144,46 +136,9 @@ function QuestionBuilder({
                                 Spørsmålet skal være obligatorisk.
                             </Checkbox>
                         </Col>
-                        <Col span={8}>
-                            <Checkbox
-                                checked={localQuestion.hasDescription}
-                                onChange={(e) =>
-                                    localUpdate({
-                                        hasDescription: e.target.checked,
-                                        updateStore: true,
-                                    })
-                                }
-                            >
-                                Spørsmålet skal ha forklarende tekst.
-                            </Checkbox>
-                        </Col>
                     </Row>
-                    {state.questions[questionId].hasDescription && (
-                        <Row className="standard">
-                            <Col span={20}>
-                                <TextArea
-                                    defaultValue={localQuestion.description}
-                                    rows={3}
-                                    className="input-question"
-                                    placeholder={
-                                        'Skriv inn beskrivelse av spørsmål her.'
-                                    }
-                                    onBlur={() =>
-                                        localUpdate({ updateStore: true })
-                                    }
-                                    onChange={(value) =>
-                                        localUpdate({
-                                            description: value.target.value,
-                                            updateStore: false,
-                                        })
-                                    }
-                                ></TextArea>
-                            </Col>
-                        </Row>
-                    )}
                     <Row className="standard">
                         <Col span={20}>
-                            {/* Answerdropdown*/}
                             <p
                                 style={{
                                     float: 'left',
@@ -193,7 +148,7 @@ function QuestionBuilder({
                                 Velg type spørsmål:{' '}
                             </p>
                             <Select
-                                defaultValue={localQuestion.answerType}
+                                value={localQuestion.answerType}
                                 style={{ width: '200px', float: 'left' }}
                                 onSelect={(value) => {
                                     localUpdate({

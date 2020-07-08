@@ -38,9 +38,12 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         choices?: Array<string>;
         defaultValue?: number;
     }) {
+        console.log('her: ', attribute.isMultiple);
         const temp = { ...localAnswer };
-        if (attribute.isMultiple !== undefined)
+        if (attribute.isMultiple !== undefined) {
             temp.isMultiple = attribute.isMultiple;
+            console.log('her 2');
+        }
         if (attribute.isOpen !== undefined) temp.isOpen = attribute.isOpen;
         if (attribute.hasDefault !== undefined)
             temp.hasDefault = attribute.hasDefault;
@@ -55,7 +58,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
             dispatch(updateAnswer(questionId, localAnswer));
     }
 
-    const choiceStyle = { marginTop: '20px' };
+    const choiceStyle = { marginTop: '20px', marginLeft: 0 };
 
     const choiceButtonStyle = {
         display: 'block',
@@ -63,6 +66,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         lineHeight: '30px',
         marginBottom: 10,
         width: '90%',
+        marginLeft: 0,
     };
 
     const choiceInputStyle = {
@@ -166,7 +170,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                             })
                         }
                     >
-                        Flervalg
+                        La borger velge flere alternativ
                     </Checkbox>
                 </Col>
                 <Col span={6}>
@@ -182,49 +186,56 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         La borger legge til svaralternativ
                     </Checkbox>
                 </Col>
-                <Col span={6}>
-                    <Checkbox
-                        defaultChecked={localAnswer.hasDefault}
-                        disabled={localAnswer.isMultiple}
-                        onChange={(e) =>
-                            localUpdate({
-                                updateStore: true,
-                                hasDefault: e.target.checked,
-                            })
-                        }
-                    >
-                        Default:
-                    </Checkbox>
-                </Col>
-                <Col span={6}>
-                    <Select
-                        defaultValue={localAnswer.defaultValue}
-                        disabled={
-                            !(localAnswer.hasDefault && !localAnswer.isMultiple)
-                        }
-                        style={{ width: '200px' }}
-                        onSelect={(value) => {
-                            localUpdate({
-                                updateStore: true,
-                                defaultValue: value,
-                            });
-                        }}
-                        placeholder="Velg default"
-                    >
-                        {localAnswer.choices
-                            ? localAnswer.choices.map((name, id) => [
-                                  <Option
-                                      key={'def' + questionId + id}
-                                      value={id}
-                                  >
-                                      {name.length < 1
-                                          ? 'Alternativ ' + (id + 1)
-                                          : name}
-                                  </Option>,
-                              ])
-                            : []}
-                    </Select>
-                </Col>
+                {!localAnswer.isMultiple && (
+                    <>
+                        <Col span={6}>
+                            <Checkbox
+                                defaultChecked={localAnswer.hasDefault}
+                                disabled={localAnswer.isMultiple}
+                                onChange={(e) =>
+                                    localUpdate({
+                                        updateStore: true,
+                                        hasDefault: e.target.checked,
+                                    })
+                                }
+                            >
+                                Default:
+                            </Checkbox>
+                        </Col>
+                        <Col span={6}>
+                            <Select
+                                defaultValue={localAnswer.defaultValue}
+                                disabled={
+                                    !(
+                                        localAnswer.hasDefault &&
+                                        !localAnswer.isMultiple
+                                    )
+                                }
+                                style={{ width: '200px' }}
+                                onSelect={(value) => {
+                                    localUpdate({
+                                        updateStore: true,
+                                        defaultValue: value,
+                                    });
+                                }}
+                                placeholder="Velg default"
+                            >
+                                {localAnswer.choices
+                                    ? localAnswer.choices.map((name, id) => [
+                                          <Option
+                                              key={'def' + questionId + id}
+                                              value={id}
+                                          >
+                                              {name.length < 1
+                                                  ? 'Alternativ ' + (id + 1)
+                                                  : name}
+                                          </Option>,
+                                      ])
+                                    : []}
+                            </Select>
+                        </Col>
+                    </>
+                )}
             </Row>
             {localAnswer.isMultiple ? (
                 <div className="question-component" style={choiceStyle}>

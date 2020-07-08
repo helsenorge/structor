@@ -11,7 +11,7 @@ function NavBar(): JSX.Element {
     const [formPreview, setFormPreview] = useState(false);
     const { Title } = Typography;
 
-    function convertQuestions() {
+    function convertForm(): fhir.Questionnaire {
         const questionnaire = JSONConverter(
             state.title,
             state.description,
@@ -19,7 +19,7 @@ function NavBar(): JSX.Element {
             state.sections,
             state.questions,
         );
-        console.log(questionnaire);
+        return questionnaire;
     }
 
     const isIFrame = (input: HTMLElement | null): input is HTMLIFrameElement =>
@@ -50,14 +50,40 @@ function NavBar(): JSX.Element {
         }
     }
 
+    function exportToJsonAndDownload() {
+        const questionnaire = convertForm();
+        const filename = questionnaire.title + '.json';
+        const contentType = 'application/json;charset=utf-8;';
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            const blob = new Blob(
+                [decodeURIComponent(encodeURI(JSON.stringify(questionnaire)))],
+                { type: contentType },
+            );
+            navigator.msSaveOrOpenBlob(blob, filename);
+        } else {
+            const a = document.createElement('a');
+            a.download = filename;
+            a.href =
+                'data:' +
+                contentType +
+                ',' +
+                encodeURIComponent(JSON.stringify(questionnaire));
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    }
+
     return (
         <div className="nav-bar">
             <Modal
-                title="Slik ser spørsmålet ut for utfyller"
+                title="Slik ser skjemaet ut for utfyller"
                 visible={formPreview}
                 onOk={() => setFormPreview(false)}
                 destroyOnClose={true}
                 width="90vw"
+                style={{ top: '10px' }}
                 footer={[
                     <Button
                         key="submit"
@@ -72,6 +98,7 @@ function NavBar(): JSX.Element {
                 <div style={{ height: '100%', width: '100%' }}>
                     <iframe
                         id="schemeFrame"
+                        title="Forhåndsvis skjema"
                         style={{
                             width: '100%',
                             height: '70vh',
@@ -125,7 +152,7 @@ function NavBar(): JSX.Element {
                             size="large"
                             style={{ margin: '2px 10px' }}
                             key="saveForm"
-                            onClick={convertQuestions}
+                            onClick={exportToJsonAndDownload}
                         >
                             Lagre
                         </Button>

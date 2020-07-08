@@ -6,6 +6,7 @@ import AnswerTypes, {
     IChoice,
     IBoolean,
     ITime,
+    IInfo,
 } from '../types/IAnswer';
 import { ValueSetMap } from './JSONGenerator';
 import moment from 'moment';
@@ -18,75 +19,30 @@ export default function convertQuestion(
     linkId: string,
     valueSetMap: ValueSetMap,
 ): fhir.QuestionnaireItem {
-    let subItem: fhir.QuestionnaireItem = {
+    const subItem: fhir.QuestionnaireItem = {
         linkId: linkId,
         type: FhirAnswerTypes.text,
         text: question.questionText,
         required: question.isRequired,
         repeats: false, // TODO
         readOnly: false, // TODO
-        item: new Array<fhir.QuestionnaireItem>(),
     };
-    // if (question.hasDescription) {
-    //     subItem.item?.push({
-    //         linkId: linkId.substring(0, 4) + '001',
-    //         text: question.description,
-    //         _text: {
-    //             extension: [
-    //                 {
-    //                     url:
-    //                         'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
-    //                     valueMarkdown: question.description,
-    //                 },
-    //             ],
-    //         },
-    //         type: 'display',
-    //     });
-    // }
     switch (question.answerType) {
         case AnswerTypes.number:
-            subItem = convertNumber(question, subItem);
-            break;
+            return convertNumber(question, subItem);
         case AnswerTypes.text:
-            subItem = convertText(question, subItem);
-            break;
+            return convertText(question, subItem);
         case AnswerTypes.choice:
-            subItem = convertChoice(question, subItem, valueSetMap);
-            break;
+            return convertChoice(question, subItem, valueSetMap);
         case AnswerTypes.boolean:
-            subItem = convertBoolean(question, subItem);
-            break;
+            return convertBoolean(question, subItem);
         case AnswerTypes.time:
-            subItem = convertDate(question, subItem);
-            break;
+            return convertDate(question, subItem);
+        case AnswerTypes.info:
+            return convertInfo(question, subItem);
+        default:
+            return subItem;
     }
-    return subItem;
-    // if (!question.hasDescription || question.description?.length === 0) return subItem;
-    // subItem.linkId = linkId + '.2';
-    // const parentItem: fhir.QuestionnaireItem = {
-    //     linkId: linkId,
-    //     text: question.questionText,
-    //     type: 'group',
-    //     repeats: false,
-    //     item: [
-    //         {
-    //             linkId: linkId + '.1',
-    //             text: question.description,
-    //             type: 'display',
-    //             _text: {
-    //                 extension: [
-    //                     {
-    //                         url:
-    //                             'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
-    //                         valueMarkdown: question.description,
-    //                     },
-    //                 ],
-    //             },
-    //         },
-    //         subItem,
-    //     ],
-    // };
-    // return parentItem;
 }
 
 function convertNumber(
@@ -272,11 +228,33 @@ function convertDate(
             answer.isTime,
             answer.defaultTime,
         );
-        console.log(dateTime);
         if (answer.isDate && answer.isTime) subItem.initialDateTime = dateTime;
         else if (answer.isDate) subItem.initialDate = dateTime;
         else subItem.initialTime = dateTime;
     }
+    return subItem;
+}
+
+function convertInfo(
+    question: IQuestion,
+    subItem: fhir.QuestionnaireItem,
+): fhir.QuestionnaireItem {
+    subItem.readOnly = true;
+    subItem.type = FhirAnswerTypes.display;
+
+    const answer = question.answer as IInfo;
+
+    subItem.text = answer.info;
+    subItem._text = {
+        extension: [
+            {
+                url:
+                    'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                valueMarkdown: answer.info,
+            },
+        ],
+    };
+
     return subItem;
 }
 

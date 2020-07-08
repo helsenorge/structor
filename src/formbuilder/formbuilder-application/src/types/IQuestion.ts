@@ -1,12 +1,4 @@
-import {
-    AnswerTypes,
-    IChoice,
-    INumber,
-    IText,
-    ITime,
-    IBoolean,
-    IAnswer,
-} from './IAnswer';
+import { AnswerTypes, IAnswer } from './IAnswer';
 
 export default interface IQuestion {
     id: string;
@@ -14,11 +6,9 @@ export default interface IQuestion {
     questionText: string;
     answerType: AnswerTypes;
     answer: IAnswer;
-    hasDescription: boolean;
     isRequired: boolean;
     isDependent: boolean;
     collapsed: boolean;
     dependentOf?: string;
-    description?: string;
     placeholder?: string;
 }

@@ -24,6 +24,7 @@ type QuestionProps = {
     cronologicalID: Array<number>;
     removeQuestion: () => void;
     provided: DND.DraggableProvided;
+    isInfo: boolean;
 };
 
 function QuestionWrapper({
@@ -32,6 +33,7 @@ function QuestionWrapper({
     cronologicalID,
     removeQuestion,
     provided,
+    isInfo,
 }: QuestionProps): JSX.Element {
     const [questionPreview, setQuestionPreview] = useState(false);
     const { state, dispatch } = useContext(FormContext);
@@ -98,11 +100,16 @@ function QuestionWrapper({
     return (
         <div style={{ marginTop: '10px' }}>
             <Modal
-                title="Slik ser spørsmålet ut for utfyller"
+                title={
+                    'Slik ser ' +
+                    (isInfo ? 'informasjonen' : 'spørsmålet') +
+                    ' ut for utfyller'
+                }
                 visible={questionPreview}
                 onOk={() => setQuestionPreview(false)}
                 destroyOnClose={true}
                 width="90vw"
+                style={{ top: '10px' }}
                 footer={[
                     <Button
                         key="submit"
@@ -117,6 +124,7 @@ function QuestionWrapper({
                 <div style={{ height: '100%', width: '100%' }}>
                     <iframe
                         id="schemeFrame"
+                        title="Forhåndsvis spørsmål"
                         style={{
                             width: '100%',
                             height: '70vh',
@@ -127,12 +135,14 @@ function QuestionWrapper({
                 </div>
             </Modal>
             <Row justify="end">
-                <Col sm={1} style={{ display: 'block' }}>
+                <Col span={2} style={{ display: 'block' }}>
                     <Tooltip
                         title={
                             (state.questions[questionId] as IQuestion).collapsed
-                                ? 'Utvid spørsmål'
-                                : 'Kollaps spørsmål'
+                                ? 'Utvid ' +
+                                  (isInfo ? 'informasjon' : 'spørsmål')
+                                : 'Kollaps ' +
+                                  (isInfo ? 'informasjon' : 'spørsmål')
                         }
                     >
                         <Button
@@ -163,24 +173,29 @@ function QuestionWrapper({
                         />
                     </Tooltip>
                 </Col>
-                <Col sm={23} style={{ display: 'block' }}>
-                    {state.questions[questionId].questionText.length > 0 &&
+                <Col span={22} style={{ display: 'block' }}>
+                    {((state.questions[questionId].questionText.length > 0 &&
                         state.questions[questionId].answerType !==
-                            AnswerTypes.default && (
-                            <Button
-                                style={{
-                                    zIndex: 1,
-                                    color: 'var(--primary-1)',
-                                    float: 'left',
-                                }}
-                                icon={<EyeOutlined />}
-                                type="default"
-                                onClick={() => setQuestionPreview(true)}
-                            >
-                                Forhåndsvis spørsmål
-                            </Button>
-                        )}
-                    <Tooltip title="Flytt spørsmål">
+                            AnswerTypes.default) ||
+                        state.questions[questionId].answerType ===
+                            AnswerTypes.info) && (
+                        <Button
+                            style={{
+                                zIndex: 1,
+                                color: 'var(--primary-1)',
+                                marginLeft: '10px',
+                                float: 'left',
+                            }}
+                            icon={<EyeOutlined />}
+                            type="default"
+                            onClick={() => setQuestionPreview(true)}
+                        >
+                            Forhåndsvis {isInfo ? 'informasjon' : 'spørsmål'}
+                        </Button>
+                    )}
+                    <Tooltip
+                        title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}
+                    >
                         <Button
                             style={{
                                 zIndex: 1,
@@ -216,7 +231,7 @@ function QuestionWrapper({
                         type="default"
                         onClick={() => removeQuestion()}
                     >
-                        Slett spørsmål
+                        Slett {isInfo ? 'informasjon' : 'spørsmål'}
                     </Button>
                     <Button
                         style={{
@@ -229,21 +244,29 @@ function QuestionWrapper({
                         type="default"
                         onClick={() => duplicateQuestion()}
                     >
-                        Dupliser spørsmål
+                        Dupliser {isInfo ? 'informasjon' : 'spørsmål'}
                     </Button>
                 </Col>
             </Row>
-            <Row>
-                <Col span={4} style={{ float: 'left' }}>
-                    {String(cronologicalID.map((a) => a + 1))}
-                </Col>
-                <Col xl={16} md={20}>
-                    <QuestionBuilder questionId={questionId}></QuestionBuilder>
-                </Col>
-            </Row>
+            {!isInfo && (
+                <Row>
+                    <Col span={4} style={{ float: 'left' }}>
+                        {String(cronologicalID.map((a) => a + 1))}
+                    </Col>
+                    <Col xl={16} md={18}>
+                        <QuestionBuilder
+                            questionId={questionId}
+                        ></QuestionBuilder>
+                    </Col>
+                </Row>
+            )}
             {!state.questions[questionId].collapsed && (
                 <Row>
-                    <Col span={4}></Col>
+                    {isInfo && (
+                        <Col span={4} style={{ float: 'left' }}>
+                            {String(cronologicalID.map((a) => a + 1))}
+                        </Col>
+                    )}
                     <Col xl={16} md={20}>
                         <AnswerBuilder questionId={questionId}></AnswerBuilder>
                     </Col>
