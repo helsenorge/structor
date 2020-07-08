@@ -21,11 +21,11 @@ export interface SchemaViewProps {
 const SchemaView = (props: SchemaViewProps) => {
     dayjs.locale('nb');
     const [qAndA, setQAndA] = useState<IQuestionAndAnswer[]>([]);
-    const [qAndAIDs, setQAndAIDs] = useState<string[]>([]);
+    const [qAndAIds, setQAndAIds] = useState<string[]>([]);
     useEffect(() => {
         let hasAddedId = false;
         setQAndA([]);
-        setQAndAIDs([]);
+        setqAndAIds([]);
         props.questions.forEach((q) => {
             props.answers.forEach((a) => {
                 if (q.id === a.id) {
@@ -40,8 +40,8 @@ const SchemaView = (props: SchemaViewProps) => {
             hasAddedId === false &&
                 setQAndA((qAndA) => [...qAndA, { id: q.id, questions: q }]);
             q.id.split('.').length === 1 &&
-                setQAndAIDs((qAndAIDs) => [
-                    ...qAndAIDs,
+                setqAndAIds((qAndAIds) => [
+                    ...qAndAIds,
                     q.id.split('.')[0].toString(),
                 ]);
             hasAddedId = false;
@@ -52,12 +52,12 @@ const SchemaView = (props: SchemaViewProps) => {
 
     return (
         <>
-            {qAndAIDs.length > 0 && (
+            {qAndAIds.length > 0 && (
                 <Row justify="center">
                     <Col span={12}>
                         <div className="card">
                             <Row className="inner-schema-row">
-                                <Col span={8} className="DateCol">
+                                <Col span={8} className="date-column">
                                     {props.date.format('DD/MM/YYYY HH:mm')}
                                 </Col>
                                 <Row justify="center">
@@ -68,7 +68,7 @@ const SchemaView = (props: SchemaViewProps) => {
                                         <Collapse
                                             bordered={false}
                                             className="site-collapse-custom-collapse"
-                                            defaultActiveKey={qAndAIDs}
+                                            defaultActiveKey={qAndAIds}
                                         >
                                             {qAndA.map(
                                                 (section) =>
@@ -141,9 +141,6 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                                 qaIndex
                                                                             }
                                                                         >
-                                                                            {console.log(
-                                                                                qa,
-                                                                            )}
                                                                             <SubQuestionsAndAnswersDisplay
                                                                                 questionAndAnswer={
                                                                                     qa

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IQuestionsAndAnswersDisplayProps } from '../QuestionsAndAnswersDisplay/QuestionsAndAnswersDisplay';
-import { Popover, Button } from 'antd';
+import { Popover } from 'antd';
 import '../SchemaView.style.scss';
 
 const SubQuestionsAndAnswersDisplay = (
@@ -23,10 +23,8 @@ const SubQuestionsAndAnswersDisplay = (
         <div className="border">
             <br></br>
             <p className="questions">
-                {props.questionAndAnswer.id}
                 {props.questionAndAnswer.questions.questions.text}
             </p>
-            {/* <p className="inline-answer-container">{}</p> */}
             {props.questionnaireResource.map(
                 (qr) =>
                     qr.id ===
@@ -52,9 +50,9 @@ const SubQuestionsAndAnswersDisplay = (
                                               </div>
                                           }
                                       >
-                                          <a className="alternatives">
+                                          <p className="alternatives">
                                               (Vis alternativer)
-                                          </a>
+                                          </p>
                                       </Popover>
                                   ),
                           )
