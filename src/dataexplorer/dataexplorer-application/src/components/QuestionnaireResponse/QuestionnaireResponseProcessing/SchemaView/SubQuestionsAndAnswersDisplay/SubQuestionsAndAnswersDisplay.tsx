@@ -1,6 +1,6 @@
 import React from 'react';
 import { IQuestionsAndAnswersDisplayProps } from '../QuestionsAndAnswersDisplay/QuestionsAndAnswersDisplay';
-import { Popover, Button } from 'antd';
+import { Popover } from 'antd';
 import '../SchemaView.style.scss';
 
 const SubQuestionsAndAnswersDisplay = (
@@ -12,6 +12,12 @@ const SubQuestionsAndAnswersDisplay = (
         }
         return;
     };
+    const setCount = (data: fhir.ValueSetComposeIncludeConcept[]) => {
+        if (data.length > 8) {
+            return 'scroll';
+        }
+        return 'notscroll';
+    };
 
     return (
         <div className="border">
@@ -19,7 +25,6 @@ const SubQuestionsAndAnswersDisplay = (
             <p className="questions">
                 {props.questionAndAnswer.questions.questions.text}
             </p>
-            <p className="inline-answer-container">Subspørsmål Svar:</p>
             {props.questionnaireResource.map(
                 (qr) =>
                     qr.id ===
@@ -35,14 +40,19 @@ const SubQuestionsAndAnswersDisplay = (
                                           key={m.system}
                                           placement="rightTop"
                                           trigger="click"
-                                          content={setContent(m.concept)}
+                                          content={
+                                              <div
+                                                  className={setCount(
+                                                      m.concept,
+                                                  )}
+                                              >
+                                                  {setContent(m.concept)}
+                                              </div>
+                                          }
                                       >
-                                          <Button
-                                              className="nopadding"
-                                              type="link"
-                                          >
+                                          <p className="alternatives">
                                               (Vis alternativer)
-                                          </Button>
+                                          </p>
                                       </Popover>
                                   ),
                           )
