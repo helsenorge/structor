@@ -47,6 +47,8 @@ function Index(): JSX.Element {
 
     function createNewForm() {
         dispatch(clearAllSections());
+        dispatch(addNewSection());
+        dispatch(updateFormMeta('', ''));
         history.push('/create-form');
     }
 
@@ -61,12 +63,6 @@ function Index(): JSX.Element {
         const obj = JSON.parse(event.target.result);
         reuploadJSONFile(obj);
         history.push('/create-form');
-    }
-
-    function createNewForm() {
-        dispatch(clearAllSections());
-        dispatch(addNewSection());
-        dispatch(updateFormMeta('', ''));
     }
 
     return (
@@ -98,23 +94,6 @@ function Index(): JSX.Element {
                                         alignContent: 'center',
                                     }}
                                 >
-
-                                    <Link to="create-form">
-                                        <Button
-                                            style={{
-                                                backgroundColor:
-                                                    'var(--primary-1)',
-                                                color: 'var(--color-base-1)',
-                                            }}
-                                            onClick={createNewForm}
-                                        >
-                                            Lag nytt skjema
-                                        </Button>
-                                    </Link>
-                                </div>
-                            </Col>
-                            <Col span={12}>
-                                <Link to="create-form">
                                     <Button
                                         style={{
                                             backgroundColor: 'var(--primary-1)',
