@@ -344,7 +344,7 @@ function convertFromJSON(
                             isRequired: currentQuestion.required as boolean,
                         };
 
-                        tempSection.questionOrder.push(tempQuestion.id);
+                        let isSectionDescription = false;
 
                         if (
                             currentQuestion.type === 'choice' ||
@@ -382,6 +382,7 @@ function convertFromJSON(
                             if (
                                 currentQuestion.linkId.substr(dot + 1) === '101'
                             ) {
+                                isSectionDescription = true;
                                 tempSection.description = currentQuestion.text;
                             } else {
                                 tempAnswer = getDisplay(currentQuestion);
@@ -389,7 +390,10 @@ function convertFromJSON(
                             }
                         }
                         tempQuestion.answer = tempAnswer as IAnswer;
-                        questionList.push(tempQuestion);
+                        if (!isSectionDescription) {
+                            tempSection.questionOrder.push(tempQuestion.id);
+                            questionList.push(tempQuestion);
+                        }
                     }
                 }
                 sectionList.push(tempSection);
