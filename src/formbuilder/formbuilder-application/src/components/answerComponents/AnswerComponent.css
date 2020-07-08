@@ -25,7 +25,7 @@
     box-shadow: 0 0 0 2px rgba(166,30,123, .2) !important;
 }
 
-.ant-checkbox-inner, .ant-checkbox-checked::after, .ant-btn:hover, .ant-btn:focus, .input-question, .ant-select-selector, .ant-btn-default, .input-question:hover{
+.ant-input, .ant-input:hover, .ant-checkbox-inner, .ant-checkbox-checked::after, .ant-btn:hover, .ant-btn:focus, .input-question, .ant-select-selector, .ant-btn-default, .input-question:hover{
     border-color: var(--primary-1) !important;
 }
 

@@ -81,6 +81,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                         </Col>
                         <Col span={12} className="standard">
                             <InputNumber
+                                type="number"
                                 value={localAnswer.defaultValue}
                                 onChange={(value) =>
                                     localUpdate({
@@ -112,6 +113,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                         </Col>
                         <Col span={12} className="standard">
                             <InputNumber
+                                type="number"
                                 value={localAnswer.minValue}
                                 onChange={(value) =>
                                     localUpdate({
@@ -142,6 +144,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                         </Col>
                         <Col span={12} className="standard">
                             <InputNumber
+                                type="number"
                                 value={localAnswer.maxValue}
                                 onChange={(value) =>
                                     localUpdate({
@@ -172,6 +175,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                         </Col>
                         <Col span={12} className="standard">
                             <Input
+                                type="text"
                                 style={{ width: '90px' }}
                                 value={localAnswer.unit}
                                 onChange={(e) =>

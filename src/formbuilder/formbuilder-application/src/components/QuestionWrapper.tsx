@@ -39,7 +39,7 @@ function QuestionWrapper({
     const { state, dispatch } = useContext(FormContext);
 
     function localUpdate(attribute: { collapsed: boolean }) {
-        const temp = { ...(state.questions[questionId] as IQuestion) };
+        const temp = { ...state.questions[questionId] };
         temp.collapsed = attribute.collapsed;
         dispatch(updateQuestion(temp));
     }

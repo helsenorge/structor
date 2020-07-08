@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, ChangeEvent } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Row, Col, Button, Tooltip, Input } from 'antd';
 import { PlusOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import QuestionWrapper from './QuestionWrapper';
@@ -40,8 +40,6 @@ function Section({
 
     const { state, dispatch } = useContext(FormContext);
 
-    const [localSection, setLocalSection] = useState(state.sections[sectionId]);
-
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (sectionIndex + 1) + '...';
         setPlaceholder(placeholderString);
@@ -70,20 +68,21 @@ function Section({
 
     function dispatchRemoveQuestion(questionIndex: number) {
         if (window.confirm('Vil du slette dette spørsmålet?'))
-            dispatch(removeQuestion(questionIndex, localSection.id));
+            dispatch(
+                removeQuestion(questionIndex, state.sections[sectionId].id),
+            );
     }
 
     function localUpdate(attribute: {
-        updateState?: boolean;
         description?: string;
         sectionTitle?: string;
     }) {
-        const temp = { ...localSection };
-        if (attribute.description) temp.description = attribute.description;
-        if (attribute.sectionTitle) temp.sectionTitle = attribute.sectionTitle;
-
-        setLocalSection(temp);
-        if (attribute.updateState) dispatch(updateSection(localSection));
+        const temp = { ...state.sections[sectionId] };
+        if (attribute.description !== undefined)
+            temp.description = attribute.description;
+        if (attribute.sectionTitle !== undefined)
+            temp.sectionTitle = attribute.sectionTitle;
+        dispatch(updateSection(temp));
     }
 
     return (
@@ -149,14 +148,13 @@ function Section({
                                 placeholder={placeholder}
                                 className="input-question"
                                 size="large"
-                                value={localSection.sectionTitle}
-                                onChange={(e) => {
+                                defaultValue={
+                                    state.sections[sectionId].sectionTitle
+                                }
+                                onBlur={(e) =>
                                     localUpdate({
                                         sectionTitle: e.target.value,
-                                    });
-                                }}
-                                onBlur={() =>
-                                    localUpdate({ updateState: true })
+                                    })
                                 }
                             />
                         </Col>
@@ -228,14 +226,11 @@ function Section({
                             <TextArea
                                 placeholder="Beskrivelse av seksjon..."
                                 className="input-question"
-                                value={localSection.description}
-                                onChange={(e) => {
-                                    localUpdate({
-                                        description: e.target.value,
-                                    });
-                                }}
-                                onBlur={() =>
-                                    localUpdate({ updateState: true })
+                                defaultValue={
+                                    state.sections[sectionId].description
+                                }
+                                onBlur={(e) =>
+                                    localUpdate({ description: e.target.value })
                                 }
                             ></TextArea>
                         </Col>

@@ -133,7 +133,6 @@ export function swapSection(
 }
 
 export function updateSection(section: ISection): UpdateAction {
-    console.log('Section: ', section);
     return {
         type: UpdateActionTypes.UPDATE_SECTION,
         member: MemberTypes.UPDATE,
