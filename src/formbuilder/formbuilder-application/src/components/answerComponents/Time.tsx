@@ -56,8 +56,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
         if (attribute.hasEndTime !== undefined)
             temp.hasEndTime = attribute.hasEndTime;
         setLocalAnswer(temp);
-        if (attribute.updateStore !== undefined)
-            dispatch(updateAnswer(questionId, temp));
+        if (attribute.updateStore) dispatch(updateAnswer(questionId, temp));
     }
 
     function dateRenderer(key: string) {

@@ -28,7 +28,7 @@ function AnswerBuilder({ questionId }: AnswerProps): JSX.Element {
     };
 
     return (
-        <Row className="standard">
+        <Row justify="start">
             <Col span={20}>
                 {answerBuilder[state.questions[questionId].answerType]}
             </Col>

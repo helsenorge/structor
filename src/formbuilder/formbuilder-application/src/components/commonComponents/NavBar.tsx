@@ -43,6 +43,7 @@ function NavBar(): JSX.Element {
             schemeDisplayer.contentWindow.postMessage(
                 {
                     questionnaireString: questionnaireString,
+                    showFooter: false,
                 },
                 '*',
             );

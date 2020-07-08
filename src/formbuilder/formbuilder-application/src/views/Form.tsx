@@ -68,6 +68,10 @@ function CreateForm(): JSX.Element {
 
     return (
         <div>
+            <Button onClick={() => console.log(state.questions)}>
+                Print questions
+            </Button>
+
             <Row>
                 <Col span={24}>
                     <NavBar />
@@ -141,7 +145,9 @@ function CreateForm(): JSX.Element {
                                                                     sectionId ===
                                                                     collapsedSection
                                                                 }
-                                                                index={index}
+                                                                sectionIndex={
+                                                                    index
+                                                                }
                                                             />
                                                         </div>
                                                     )}

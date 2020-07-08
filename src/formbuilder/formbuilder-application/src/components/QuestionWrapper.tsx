@@ -1,19 +1,27 @@
 import React, { useState, useContext } from 'react';
 import * as DND from 'react-beautiful-dnd';
 import { Row, Col, Button, Tooltip, Modal } from 'antd';
-import { DeleteOutlined, CopyOutlined, EyeOutlined } from '@ant-design/icons';
+import {
+    DeleteOutlined,
+    CopyOutlined,
+    EyeOutlined,
+    UpOutlined,
+    DownOutlined,
+} from '@ant-design/icons';
 import QuestionBuilder from './QuestionBuilder';
 import AnswerBuilder from './AnswerBuilder';
 import JSONGenerator from '../helpers/JSONGenerator';
-import { FormContext } from '../store/FormStore';
+import { FormContext, updateQuestion } from '../store/FormStore';
 import ISection from '../types/ISection';
 import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import AnswerTypes from '../types/IAnswer';
+import IQuestion from '../types/IQuestion';
 
 type QuestionProps = {
     duplicateQuestion: () => void;
     questionId: string;
+    cronologicalID: Array<number>;
     removeQuestion: () => void;
     provided: DND.DraggableProvided;
     isInfo: boolean;
@@ -22,12 +30,30 @@ type QuestionProps = {
 function QuestionWrapper({
     duplicateQuestion,
     questionId,
+    cronologicalID,
     removeQuestion,
     provided,
     isInfo,
 }: QuestionProps): JSX.Element {
     const [questionPreview, setQuestionPreview] = useState(false);
-    const { state } = useContext(FormContext);
+    const { state, dispatch } = useContext(FormContext);
+
+    function localUpdate(attribute: { collapsed: boolean }) {
+        const temp = { ...(state.questions[questionId] as IQuestion) };
+        temp.collapsed = attribute.collapsed;
+        dispatch(updateQuestion(temp));
+    }
+
+    function collapseButton(collapsed: boolean) {
+        const collapseButton = document.getElementById(
+            'CollapseQuestionButton',
+        );
+        if (collapseButton) {
+            collapseButton.focus();
+        }
+
+        localUpdate({ collapsed: collapsed });
+    }
 
     function iFrameLoaded() {
         const tempSection: ISection = {
@@ -65,6 +91,7 @@ function QuestionWrapper({
             schemeDisplayer.contentWindow.postMessage(
                 {
                     questionnaireString: questionnaireString,
+                    showFooter: false,
                 },
                 '*',
             );
@@ -109,7 +136,45 @@ function QuestionWrapper({
                 </div>
             </Modal>
             <Row justify="end">
-                <Col sm={24} style={{ display: 'block' }}>
+                <Col span={2} style={{ display: 'block' }}>
+                    <Tooltip
+                        title={
+                            (state.questions[questionId] as IQuestion).collapsed
+                                ? 'Utvid ' +
+                                  (isInfo ? 'informasjon' : 'spørsmål')
+                                : 'Kollaps ' +
+                                  (isInfo ? 'informasjon' : 'spørsmål')
+                        }
+                    >
+                        <Button
+                            id="CollapseQuestionButton"
+                            style={{
+                                zIndex: 1,
+                                marginLeft: '10px',
+                                color: 'var(--primary-1)',
+                                float: 'left',
+                            }}
+                            size="small"
+                            type="link"
+                            shape="circle"
+                            icon={
+                                (state.questions[questionId] as IQuestion)
+                                    .collapsed ? (
+                                    <DownOutlined />
+                                ) : (
+                                    <UpOutlined />
+                                )
+                            }
+                            onClick={() =>
+                                collapseButton(
+                                    !(state.questions[questionId] as IQuestion)
+                                        .collapsed,
+                                )
+                            }
+                        />
+                    </Tooltip>
+                </Col>
+                <Col span={22} style={{ display: 'block' }}>
                     {((state.questions[questionId].questionText.length > 0 &&
                         state.questions[questionId].answerType !==
                             AnswerTypes.default) ||
@@ -186,20 +251,26 @@ function QuestionWrapper({
             </Row>
             {!isInfo && (
                 <Row>
-                    <Col span={4}></Col>
-                    <Col xl={16} md={20}>
+                    <Col span={4} style={{ float: 'left' }}>
+                        {String(cronologicalID.map((a) => a + 1))}
+                    </Col>
+                    <Col xl={16} md={18}>
                         <QuestionBuilder
                             questionId={questionId}
                         ></QuestionBuilder>
                     </Col>
                 </Row>
             )}
-            <Row>
-                <Col span={4}></Col>
-                <Col xl={16} md={20}>
-                    <AnswerBuilder questionId={questionId}></AnswerBuilder>
-                </Col>
-            </Row>
+            {!state.questions[questionId].collapsed && (
+                <Row>
+                    <Col span={4} style={{ float: 'left' }}>
+                        {isInfo && String(cronologicalID.map((a) => a + 1))}
+                    </Col>
+                    <Col xl={16} md={20}>
+                        <AnswerBuilder questionId={questionId}></AnswerBuilder>
+                    </Col>
+                </Row>
+            )}
         </div>
     );
 }

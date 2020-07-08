@@ -334,6 +334,8 @@ function convertFromJSON(): {
 
                         const tempQuestion: IQuestion = {
                             id: generateID(),
+                            collapsed: false,
+                            isDependent: false,
                             sectionId: tempSection.id,
                             questionText: currentQuestion.text as string,
                             answerType: currentQuestion.type as AnswerTypes,

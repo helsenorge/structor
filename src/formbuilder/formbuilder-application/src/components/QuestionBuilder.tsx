@@ -27,6 +27,7 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
     function localUpdate(attribute: {
         answerType?: AnswerTypes;
         isRequired?: boolean;
+        collapsed?: boolean;
         isDependent?: boolean;
         questionText?: string;
         dependentOf?: string;
@@ -42,6 +43,8 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
             temp.dependentOf = attribute.dependentOf;
         if (attribute.questionText !== undefined)
             temp.questionText = attribute.questionText;
+        if (attribute.collapsed !== undefined)
+            temp.collapsed = attribute.collapsed;
 
         if (attribute.answerType) {
             temp.answerType = attribute.answerType;
@@ -117,45 +120,60 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
                     />
                 </Col>
             </Row>
-            <Row className="standard">
-                <Col span={8}>
-                    <Checkbox
-                        checked={localQuestion.isRequired}
-                        onChange={(e) =>
-                            localUpdate({
-                                isRequired: e.target.checked,
-                                updateStore: true,
-                            })
-                        }
-                    >
-                        Spørsmålet skal være obligatorisk.
-                    </Checkbox>
-                </Col>
-            </Row>
-            <Row className="standard">
-                <Col span={20}>
-                    <p style={{ float: 'left', padding: '5px 10px 0 0' }}>
-                        Velg type spørsmål:{' '}
-                    </p>
-                    <Select
-                        value={localQuestion.answerType}
-                        style={{ width: '200px', float: 'left' }}
-                        onSelect={(value) => {
-                            localUpdate({
-                                answerType: value,
-                                updateStore: true,
-                            });
-                        }}
-                        placeholder="Trykk for å velge"
-                    >
-                        <Option value={AnswerTypes.boolean}>Samtykke</Option>
-                        <Option value={AnswerTypes.number}>Tall</Option>
-                        <Option value={AnswerTypes.text}>Tekst</Option>
-                        <Option value={AnswerTypes.time}>Dato/tid</Option>
-                        <Option value={AnswerTypes.choice}>Flervalg</Option>
-                    </Select>
-                </Col>
-            </Row>
+            {!state.questions[questionId].collapsed && (
+                <>
+                    <Row className="standard">
+                        <Col span={8}>
+                            <Checkbox
+                                checked={localQuestion.isRequired}
+                                onChange={(e) =>
+                                    localUpdate({
+                                        isRequired: e.target.checked,
+                                        updateStore: true,
+                                    })
+                                }
+                            >
+                                Spørsmålet skal være obligatorisk.
+                            </Checkbox>
+                        </Col>
+                    </Row>
+                    <Row className="standard">
+                        <Col span={20}>
+                            <p
+                                style={{
+                                    float: 'left',
+                                    padding: '5px 10px 0 0',
+                                }}
+                            >
+                                Velg type spørsmål:{' '}
+                            </p>
+                            <Select
+                                value={localQuestion.answerType}
+                                style={{ width: '200px', float: 'left' }}
+                                onSelect={(value) => {
+                                    localUpdate({
+                                        answerType: value,
+                                        updateStore: true,
+                                    });
+                                }}
+                                placeholder="Trykk for å velge"
+                            >
+                                <Option value={AnswerTypes.boolean}>
+                                    Samtykke
+                                </Option>
+                                <Option value={AnswerTypes.number}>Tall</Option>
+                                <Option value={AnswerTypes.text}>Tekst</Option>
+                                <Option value={AnswerTypes.time}>
+                                    Dato/tid
+                                </Option>
+                                <Option value={AnswerTypes.choice}>
+                                    Flervalg
+                                </Option>
+                            </Select>
+                        </Col>
+                    </Row>
+                </>
+            )}
         </div>
     );
 }
