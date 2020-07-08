@@ -3,6 +3,7 @@ import useFetch from 'utils/hooks/useFetch';
 import { IPatientIdentifier, IDataSource } from 'types/IPatient';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import PatientView from './PatientView/PatientView';
+import { Row, Spin } from 'antd';
 
 interface IPatientQuestionnaireProps {
     setSchema: (id: string) => void;
@@ -47,12 +48,18 @@ const PatientQuestionnaire = ({
 
     return (
         <>
-            {questionnaire && (
+            {questionnaire && dataSource && (
                 <PatientView
                     patient={patientData.entry[0].resource}
                     setSchema={setSchema}
                     dataSource={dataSource}
+                    hasQuestionnaireResponses={true}
                 />
+            )}
+            {!questionnaire && (
+                <Row justify="center">
+                    <Spin size="large" />
+                </Row>
             )}
         </>
     );
