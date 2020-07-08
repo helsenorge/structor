@@ -25,7 +25,7 @@ const SchemaView = (props: SchemaViewProps) => {
     useEffect(() => {
         let hasAddedId = false;
         setQAndA([]);
-        setqAndAIds([]);
+        setQAndAIds([]);
         props.questions.forEach((q) => {
             props.answers.forEach((a) => {
                 if (q.id === a.id) {
@@ -40,7 +40,7 @@ const SchemaView = (props: SchemaViewProps) => {
             hasAddedId === false &&
                 setQAndA((qAndA) => [...qAndA, { id: q.id, questions: q }]);
             q.id.split('.').length === 1 &&
-                setqAndAIds((qAndAIds) => [
+                setQAndAIds((qAndAIds) => [
                     ...qAndAIds,
                     q.id.split('.')[0].toString(),
                 ]);
