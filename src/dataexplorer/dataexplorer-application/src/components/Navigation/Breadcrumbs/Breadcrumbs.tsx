@@ -34,14 +34,14 @@ const Breadcrumbs = ({
                 <Breadcrumb>
                     <Breadcrumb.Item>
                         <Link to="/" onClick={() => fromSchemeToHome()}>
-                            <HomeOutlined />
+                            <HomeOutlined className="bread-icon" />
                             <span className="breadcrumbs-item">Hjem</span>
                         </Link>
                     </Breadcrumb.Item>
                     {name !== '' && (
                         <Breadcrumb.Item onClick={() => fromSchemeToPatient()}>
                             <Link to="/Pasient">
-                                <UserOutlined />
+                                <UserOutlined className="bread-icon" />
                                 <span className="breadcrumbs-item">
                                     <b>{name}</b>
                                 </span>
@@ -50,7 +50,7 @@ const Breadcrumbs = ({
                     )}
                     {schemaNumber !== '' && (
                         <Breadcrumb.Item>
-                            <FileTextOutlined />
+                            <FileTextOutlined className="bread-icon" />
                             <span className="breadcrumbs-item">
                                 Skjema - {schemaNumber}
                             </span>
