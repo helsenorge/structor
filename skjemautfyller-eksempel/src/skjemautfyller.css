@@ -592,3 +592,7 @@ fieldset {
 }
 
 /*# sourceMappingURL=skjemautfyller.cb8d6c86.css.map */
+
+.page_skjemautfyller__hidden-save-block .page_skjemautfyller__saveblock {
+  display: none;
+}

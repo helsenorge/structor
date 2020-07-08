@@ -15,9 +15,7 @@ type AnswerProps = {
 
 type answerList = { [key: string]: JSX.Element };
 
-function AnswerBuilder({
-    questionId,
-}: AnswerProps): JSX.Element {
+function AnswerBuilder({ questionId }: AnswerProps): JSX.Element {
     const { state } = useContext(FormContext);
 
     const answerBuilder: answerList = {

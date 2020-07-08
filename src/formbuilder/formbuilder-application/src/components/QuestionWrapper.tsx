@@ -91,6 +91,7 @@ function QuestionWrapper({
             schemeDisplayer.contentWindow.postMessage(
                 {
                     questionnaireString: questionnaireString,
+                    showFooter: false,
                 },
                 '*',
             );
@@ -262,11 +263,9 @@ function QuestionWrapper({
             )}
             {!state.questions[questionId].collapsed && (
                 <Row>
-                    {isInfo && (
-                        <Col span={4} style={{ float: 'left' }}>
-                            {String(cronologicalID.map((a) => a + 1))}
-                        </Col>
-                    )}
+                    <Col span={4} style={{ float: 'left' }}>
+                        {isInfo && String(cronologicalID.map((a) => a + 1))}
+                    </Col>
                     <Col xl={16} md={20}>
                         <AnswerBuilder questionId={questionId}></AnswerBuilder>
                     </Col>

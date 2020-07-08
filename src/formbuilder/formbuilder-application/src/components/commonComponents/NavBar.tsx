@@ -38,12 +38,12 @@ function NavBar(): JSX.Element {
 
         const schemeDisplayer = document.getElementById('schemeFrame');
         if (isIFrame(schemeDisplayer) && schemeDisplayer.contentWindow) {
-            console.log('Fant frame');
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             schemeDisplayer.contentWindow.postMessage(
                 {
                     questionnaireString: questionnaireString,
+                    showFooter: false,
                 },
                 '*',
             );
