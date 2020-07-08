@@ -151,6 +151,7 @@ export function addNewQuestion(
         sectionId: sectionId,
         questionText: '',
         isDependent: false,
+        collapsed: false,
         answerType: isInfo ? AnswerTypes.info : AnswerTypes.default,
         answer: { id: generateID() },
         isRequired: true,

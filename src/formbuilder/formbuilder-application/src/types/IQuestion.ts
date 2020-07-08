@@ -7,7 +7,8 @@ export default interface IQuestion {
     answerType: AnswerTypes;
     answer: IAnswer;
     isRequired: boolean;
-    isDependent?: boolean;
+    isDependent: boolean;
+    collapsed: boolean;
     dependentOf?: string;
     placeholder?: string;
 }

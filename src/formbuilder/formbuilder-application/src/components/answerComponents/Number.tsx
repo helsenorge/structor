@@ -42,7 +42,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
         if (attribute.defaultValue !== undefined)
             temp.defaultValue = attribute.defaultValue;
         setLocalAnswer(temp);
-        if (attribute.updateStore !== undefined)
+        if (attribute.updateStore !== undefined && attribute.updateStore)
             dispatch(updateAnswer(questionId, temp));
     }
 

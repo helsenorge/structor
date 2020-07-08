@@ -15,7 +15,9 @@ type AnswerProps = {
 
 type answerList = { [key: string]: JSX.Element };
 
-function AnswerBuilder({ questionId }: AnswerProps): JSX.Element {
+function AnswerBuilder({
+    questionId,
+}: AnswerProps): JSX.Element {
     const { state } = useContext(FormContext);
 
     const answerBuilder: answerList = {
@@ -28,7 +30,7 @@ function AnswerBuilder({ questionId }: AnswerProps): JSX.Element {
     };
 
     return (
-        <Row className="standard">
+        <Row justify="start">
             <Col span={20}>
                 {answerBuilder[state.questions[questionId].answerType]}
             </Col>

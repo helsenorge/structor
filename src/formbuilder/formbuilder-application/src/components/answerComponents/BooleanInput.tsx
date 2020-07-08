@@ -36,11 +36,11 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
                 key={'Boolean' + questionId}
                 style={checkStyle}
                 disabled
-                checked={localAnswer.isChecked}
+                defaultChecked={localAnswer.isChecked}
             >
                 <Input
                     type="text"
-                    value={localAnswer.label}
+                    defaultValue={localAnswer.label}
                     className="input-question"
                     placeholder={'Skriv inn påstand her.'}
                     style={{
@@ -56,7 +56,7 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
                 ></Input>
             </Checkbox>
             <Checkbox
-                checked={localAnswer.isChecked}
+                defaultChecked={localAnswer.isChecked}
                 onChange={(e) =>
                     localUpdate({
                         isChecked: e.target.checked,
