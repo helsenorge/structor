@@ -278,7 +278,6 @@ function getTime(currentQuestion: fhir.QuestionnaireItem): ITime {
 }
 
 function getDisplay(currentQuestion: fhir.QuestionnaireItem): IInfo {
-    console.log('komhit');
     const tempAnswer: IInfo = {
         id: generateID(),
         info: currentQuestion.text as string,
@@ -380,13 +379,6 @@ function convertFromJSON(
                             tempQuestion.answerType = AnswerTypes.time;
                         } else if (currentQuestion.type === 'display') {
                             const dot = currentQuestion.linkId.indexOf('.');
-                            console.log('dot is at ', dot);
-                            console.log(
-                                'linkId before: ',
-                                currentQuestion.linkId,
-                                '. linkId after',
-                                currentQuestion.linkId.substr(dot + 1),
-                            );
                             if (
                                 currentQuestion.linkId.substr(dot + 1) === '101'
                             ) {

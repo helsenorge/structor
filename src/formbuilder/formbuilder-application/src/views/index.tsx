@@ -63,6 +63,12 @@ function Index(): JSX.Element {
         history.push('/create-form');
     }
 
+    function createNewForm() {
+        dispatch(clearAllSections());
+        dispatch(addNewSection());
+        dispatch(updateFormMeta('', ''));
+    }
+
     return (
         <Row
             align="middle"
@@ -92,6 +98,23 @@ function Index(): JSX.Element {
                                         alignContent: 'center',
                                     }}
                                 >
+
+                                    <Link to="create-form">
+                                        <Button
+                                            style={{
+                                                backgroundColor:
+                                                    'var(--primary-1)',
+                                                color: 'var(--color-base-1)',
+                                            }}
+                                            onClick={createNewForm}
+                                        >
+                                            Lag nytt skjema
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </Col>
+                            <Col span={12}>
+                                <Link to="create-form">
                                     <Button
                                         style={{
                                             backgroundColor: 'var(--primary-1)',

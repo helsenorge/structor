@@ -26,6 +26,7 @@ export default function convertQuestion(
         required: question.isRequired,
         repeats: false, // TODO
         readOnly: false, // TODO
+        extension: [],
     };
     switch (question.answerType) {
         case AnswerTypes.number:
@@ -128,29 +129,31 @@ function convertChoice(
     subItem.type = answer.isOpen
         ? FhirAnswerTypes.openChoice
         : FhirAnswerTypes.choice;
-    if (question.isRequired)
-        subItem.extension?.push({
-            url: standardValidationTextUrl,
-            valueString: answer.isMultiple ? 'Velg minst én' : 'Velg en',
+    if (subItem.extension) {
+        if (question.isRequired)
+            subItem.extension.push({
+                url: standardValidationTextUrl,
+                valueString: answer.isMultiple ? 'Velg minst én' : 'Velg en',
+            });
+        if (answer.hasDefault)
+            subItem.initialCoding = {
+                system: valueSetMap[answer.id],
+                code: String(answer.defaultValue ? answer.defaultValue + 1 : 1),
+            };
+        subItem.extension.push({
+            url:
+                'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
+            valueCodeableConcept: {
+                coding: [
+                    {
+                        system:
+                            'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
+                        code: answer.isMultiple ? 'check-box' : 'radio-button',
+                    },
+                ],
+            },
         });
-    if (answer.hasDefault)
-        subItem.initialCoding = {
-            system: valueSetMap[answer.id],
-            code: String(answer.defaultValue ? answer.defaultValue : 1),
-        };
-    subItem.extension?.push({
-        url:
-            'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
-        valueCodeableConcept: {
-            coding: [
-                {
-                    system:
-                        'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
-                    code: answer.isMultiple ? 'check-box' : 'radio-button',
-                },
-            ],
-        },
-    });
+    }
     return subItem;
 }
 
