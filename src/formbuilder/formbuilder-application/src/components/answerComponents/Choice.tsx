@@ -38,12 +38,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         choices?: Array<string>;
         defaultValue?: number;
     }) {
-        console.log('her: ', attribute.isMultiple);
         const temp = { ...localAnswer };
-        if (attribute.isMultiple !== undefined) {
+        if (attribute.isMultiple !== undefined)
             temp.isMultiple = attribute.isMultiple;
-            console.log('her 2');
-        }
         if (attribute.isOpen !== undefined) temp.isOpen = attribute.isOpen;
         if (attribute.hasDefault !== undefined)
             temp.hasDefault = attribute.hasDefault;
@@ -52,10 +49,10 @@ function Choice({ questionId }: choiceProps): JSX.Element {
             if (isNaN(attribute.defaultValue)) temp.defaultValue = undefined;
             else temp.defaultValue = attribute.defaultValue;
         }
+        console.log('Default: ', temp.defaultValue);
 
         setLocalAnswer(temp);
-        if (attribute.updateStore)
-            dispatch(updateAnswer(questionId, localAnswer));
+        if (attribute.updateStore) dispatch(updateAnswer(questionId, temp));
     }
 
     const choiceStyle = { marginTop: '20px', marginLeft: 0 };
