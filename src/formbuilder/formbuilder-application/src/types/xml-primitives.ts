@@ -3,28 +3,28 @@
 //
 
 interface BaseType {
-  _exists: boolean;
-  _namespace: string;
+    _exists: boolean;
+    _namespace: string;
 }
 export interface _any extends BaseType {
-  content: any;
+    content: any;
 }
 
 export interface _boolean extends BaseType {
-  content: boolean;
+    content: boolean;
 }
 
 export interface _Date extends BaseType {
-  content: Date;
+    content: Date;
 }
 
 export interface _number extends BaseType {
-  content: number;
+    content: number;
 }
 
 export interface _string extends BaseType {
-  content: string;
+    content: string;
 }
 
-export interface document extends BaseType {}
+export type document = BaseType;
 export var document: document;

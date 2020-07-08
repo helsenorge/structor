@@ -13,7 +13,7 @@ export type ValueSetMap = { [id: string]: string };
 
 const valueSetMap: ValueSetMap = {};
 
-function convertSections(
+function convertSections( 
     sectionOrder: Array<string>,
     sections: SectionList,
     questions: QuestionList,
@@ -29,42 +29,49 @@ function convertSections(
             repeats: false,
             item: new Array<fhir.QuestionnaireItem>(),
         };
-        // TODO: Add section desctiption
+        let currentLinkId = 100;
+
+        if (section.description && section.description.length > 0) {
+            item.item?.push({
+                linkId: i + 1 + '.' + 101,
+                text: section.description,
+                _text: {
+                    extension: [
+                        {
+                            url:
+                                'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                            valueMarkdown: section.description,
+                        },
+                    ],
+                },
+                type: 'display',
+            });
+            currentLinkId = 200;
+        }
+
         for (let j = 0; j < sections[sectionKey].questionOrder.length; j++) {
             const questionKey = sections[sectionKey].questionOrder[j];
             const question = questions[questionKey];
             // Will be within 'item' and if in section another 'item' of type group
             if (
-                question.questionText.length === 0 ||
-                question.answerType === AnswerTypes.default
+                ((question.questionText &&
+                    question.questionText.length === 0) ||
+                    question.answerType === AnswerTypes.default) &&
+                question.answerType !== AnswerTypes.info
             )
                 continue;
             const subItem = convertQuestion(
                 question,
-                i + 1 + '.' + (j + 1) + '00',
+                i + 1 + '.' + currentLinkId,
                 valueSetMap,
             );
+            currentLinkId += 100;
             if (
                 (question.answer as IChoice).choices &&
                 (question.answer as IChoice).choices.length > 0
             ) {
                 subItem.options = {
                     reference: '#' + question.answer.id,
-                };
-            }
-            if (question.description !== undefined) {
-                item._text = {
-                    extension: [
-                        {
-                            url:
-                                'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
-                            valueMarkdown:
-                                '### ' +
-                                question.questionText +
-                                '\r\n' +
-                                question.description,
-                        },
-                    ],
                 };
             }
             item.item?.push(subItem);

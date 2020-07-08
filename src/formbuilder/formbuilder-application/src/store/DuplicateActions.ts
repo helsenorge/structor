@@ -18,8 +18,8 @@ export default function DuplicateActions(
                 sectionCopy.sectionTitle += sectionCopy.sectionTitle.endsWith(
                     '- Kopi',
                 )
-                    ? ' - Kopi'
-                    : '';
+                    ? ''
+                    : '- Kopi';
                 sectionCopy.id = action.newSectionId;
                 const newQuestionsOrder = new Array<string>();
                 sectionCopy.questionOrder.forEach((questionId: string) => {
@@ -28,8 +28,8 @@ export default function DuplicateActions(
                     tmpQuestion.questionText += tmpQuestion.questionText.endsWith(
                         '- Kopi',
                     )
-                        ? ' - Kopi'
-                        : '';
+                        ? ''
+                        : '- Kopi';
                     draft.questions[tmpQuestion.id] = tmpQuestion;
                     newQuestionsOrder.push(tmpQuestion.id);
                 });
@@ -52,7 +52,11 @@ export default function DuplicateActions(
                 const questionCopy = {
                     ...draft.questions[action.questionId],
                 };
-                questionCopy.questionText += ' - Kopi';
+                questionCopy.questionText += questionCopy.questionText.endsWith(
+                    '- Kopi',
+                )
+                    ? ''
+                    : ' - Kopi';
                 questionCopy.id = action.newQuestionId;
 
                 draft.questions[questionCopy.id] = questionCopy;
