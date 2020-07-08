@@ -149,7 +149,7 @@ function Section({
                                 placeholder={placeholder}
                                 className="input-question"
                                 size="large"
-                                value={localSection.sectionTitle}
+                                defaultValue={localSection.sectionTitle}
                                 onChange={(e) => {
                                     localUpdate({
                                         sectionTitle: e.target.value,
@@ -228,7 +228,7 @@ function Section({
                             <TextArea
                                 placeholder="Beskrivelse av seksjon..."
                                 className="input-question"
-                                value={localSection.description}
+                                defaultValue={localSection.description}
                                 onChange={(e) => {
                                     localUpdate({
                                         description: e.target.value,
