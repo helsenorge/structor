@@ -298,12 +298,13 @@ function convertFhirTimeToUnix(
     } else return moment(dateTime, 'HH:mm').valueOf();
 }
 
-function convertFromJSON(): {
+function convertFromJSON(
+    questionnaireObj: fhir.Questionnaire,
+): {
     formMeta: { title: string; description?: string };
     sections: Array<ISection>;
     questions: Array<IQuestion>;
 } {
-    const questionnaireObj = getQuestionnaire();
     const questionList = [];
     const sectionList = [];
     const formMeta = {
