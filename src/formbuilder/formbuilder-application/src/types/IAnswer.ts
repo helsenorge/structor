@@ -26,6 +26,7 @@ export enum FhirAnswerTypes {
 
 export interface IAnswer {
     id: string;
+    valid?: boolean;
 }
 
 export interface IChoice extends IAnswer {
