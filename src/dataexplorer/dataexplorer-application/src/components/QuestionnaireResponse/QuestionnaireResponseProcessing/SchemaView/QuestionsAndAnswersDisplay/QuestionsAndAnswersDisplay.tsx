@@ -26,46 +26,43 @@ const QuestionsAndAnswersDisplay = (
     };
 
     return (
-        <div className="answer-container">
-            <div className="question-container">
-                <p className="questions">
-                    {props.questionAndAnswer.questions.questions.text}
-                </p>
-                {props.questionnaireResource.map(
-                    (qr) =>
-                        qr.id ===
-                            props.questionAndAnswer.questions.questions.options?.reference?.slice(
-                                1,
-                            ) &&
-                        qr.compose &&
-                        (props.questionnaireResource.length > 0
-                            ? qr.compose.include.map(
-                                  (m) =>
-                                      m.concept && (
-                                          <Popover
-                                              key={m.system}
-                                              placement="rightTop"
-                                              trigger="click"
-                                              content={
-                                                  <div
-                                                      className={setCount(
-                                                          m.concept,
-                                                      )}
-                                                  >
-                                                      {setContent(m.concept)}
-                                                  </div>
-                                              }
-                                          >
-                                              <p className="alternatives">
-                                                  (Vis alternativer)
-                                              </p>
-                                          </Popover>
-                                      ),
-                              )
-                            : null),
-                )}
-            </div>
-
+        <>
+            <p className="questions">
+                {props.questionAndAnswer.questions.questions.text}
+            </p>
+            {props.questionnaireResource.map(
+                (qr) =>
+                    qr.id ===
+                        props.questionAndAnswer.questions.questions.options?.reference?.slice(
+                            1,
+                        ) &&
+                    qr.compose &&
+                    (props.questionnaireResource.length > 0
+                        ? qr.compose.include.map(
+                              (m) =>
+                                  m.concept && (
+                                      <Popover
+                                          key={m.system}
+                                          placement="rightTop"
+                                          trigger="click"
+                                          content={
+                                              <div
+                                                  className={setCount(
+                                                      m.concept,
+                                                  )}
+                                              >
+                                                  {setContent(m.concept)}
+                                              </div>
+                                          }
+                                      >
+                                          <p className="alternatives">
+                                              (Vis alternativer)
+                                          </p>
+                                      </Popover>
+                                  ),
+                          )
+                        : null),
+            )}
             {props.questionAndAnswer.answers?.answers.answer?.map((item) => (
                 <p
                     className="answers"
@@ -85,7 +82,7 @@ const QuestionsAndAnswersDisplay = (
                     {item.valueString}
                 </p>
             ))}
-        </div>
+        </>
     );
 };
 

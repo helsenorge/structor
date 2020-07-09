@@ -31,7 +31,7 @@ p.bold {
 p.questions {
     font-size: 0.9rem;
     margin-bottom: 0;
-    display: inline;
+    //display: inline;
 }
 
 div.border {
@@ -73,14 +73,10 @@ p.inline-date-container {
     display: inline;
 }
 
-.answer-container {
-    margin-bottom: 40px;
-    border: thin;
-    border-color: #f0f2f5;
-    border-width: small;
-    background-color: rgb(249, 249, 249);
+.qa-container {
+    margin-top: 40px;
     padding: 5px;
-    box-shadow: 0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.1);
+    border-bottom: lightgrey solid;
 }
 
 .question-container {
