@@ -24,7 +24,7 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
     return (
         <TextArea
             defaultValue={localAnswer.info}
-            rows={3}
+            rows={8}
             className="input-question"
             placeholder={'Skriv inn informasjon til sluttbruker her.'}
             onBlur={(value) =>
