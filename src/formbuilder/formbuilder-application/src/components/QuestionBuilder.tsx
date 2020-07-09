@@ -69,7 +69,7 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
                     } as INumber;
                     break;
                 case AnswerTypes.text:
-                    temp.answer = { id: questionId } as IText;
+                    temp.answer = { id: questionId, isLong: false } as IText;
                     break;
                 case AnswerTypes.boolean:
                     temp.answer = {
