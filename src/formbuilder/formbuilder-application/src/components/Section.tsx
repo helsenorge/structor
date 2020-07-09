@@ -114,7 +114,7 @@ function Section({
                                 }
                             >
                                 <Button
-                                    id="CollapseQuestionButton"
+                                    id="stealFocus"
                                     style={{
                                         zIndex: 1,
                                         color: 'var(--primary-1)',
@@ -192,6 +192,7 @@ function Section({
                             <Tooltip title="Flytt seksjon">
                                 {provided && (
                                     <Button
+                                        id="stealFocus"
                                         {...provided.dragHandleProps}
                                         style={{
                                             zIndex: 1,

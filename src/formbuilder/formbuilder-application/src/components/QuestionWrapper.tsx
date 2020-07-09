@@ -198,6 +198,7 @@ function QuestionWrapper({
                         title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}
                     >
                         <Button
+                            id="MoveButton"
                             style={{
                                 zIndex: 1,
                                 color: 'var(--primary-1)',
