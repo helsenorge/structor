@@ -24,6 +24,11 @@ export enum FhirAnswerTypes {
     display = 'display',
 }
 
+export enum TimeIntervalType {
+    FIXED = 'FIXED',
+    FLOATING = 'FLOATING',
+}
+
 export interface IAnswer {
     id: string;
 }
@@ -59,9 +64,11 @@ export interface ITime extends IAnswer {
     hasDefaultTime: boolean;
     hasStartTime: boolean;
     hasEndTime: boolean;
+    hasInterval?: boolean;
     defaultTime?: number;
     startTime?: number;
     endTime?: number;
+    timeIntervalType?: TimeIntervalType;
 }
 
 export interface IBoolean extends IAnswer {
