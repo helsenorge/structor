@@ -13,12 +13,10 @@ function TitleAndDescription(): JSX.Element {
     return (
         <div
             style={{
-                margin: '10px',
-                padding: '10px',
-                backgroundColor: 'var(--color-base-4)',
-                width: '95%',
-                display: 'inline-block',
+                padding: '20px',
+                backgroundColor: 'var(--primary-2)',
             }}
+            className="wrapper"
         >
             <Row style={{ padding: '10px' }}>
                 <Col xs={0} lg={4}></Col>
@@ -41,7 +39,7 @@ function TitleAndDescription(): JSX.Element {
                 </Col>
                 <Col xs={0} lg={4}></Col>
             </Row>
-            <Row style={{ padding: '0 10px' }}>
+            <Row style={{ padding: '0 10px 10px 10px' }}>
                 <Col xs={0} lg={4}></Col>
                 <Col xs={24} lg={16}>
                     <TextArea

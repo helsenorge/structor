@@ -39,9 +39,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         defaultValue?: number;
     }) {
         const temp = { ...localAnswer };
-        if (attribute.isMultiple !== undefined) {
+        if (attribute.isMultiple !== undefined)
             temp.isMultiple = attribute.isMultiple;
-        }
+
         if (attribute.isOpen !== undefined) temp.isOpen = attribute.isOpen;
         if (attribute.hasDefault !== undefined)
             temp.hasDefault = attribute.hasDefault;
@@ -82,10 +82,6 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         marginLeft: 0,
     };
 
-    const choiceInputStyle = {
-        width: '250px',
-    };
-
     function deleteButton(id: number): JSX.Element {
         return (
             <Tooltip title="Fjern alternativ" placement="right">
@@ -122,7 +118,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         'Skriv inn alternativ nr. ' + (id + 1) + ' her'
                     }
                     value={choices[id]}
-                    style={choiceInputStyle}
+                    style={{ width: '100%' }}
                     onChange={(e) =>
                         updateChoices({ id: id, value: e.target.value })
                     }
@@ -149,7 +145,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         'Skriv inn alternativ nr. ' + (id + 1) + ' her'
                     }
                     defaultValue={localAnswer.choices[id]}
-                    style={choiceInputStyle}
+                    style={{ width: '85%' }}
                     onChange={(e) =>
                         updateChoices({ id: id, value: e.target.value })
                     }
@@ -161,34 +157,42 @@ function Choice({ questionId }: choiceProps): JSX.Element {
     }
     return (
         <>
-            <Row>
-                <Col span={6}>
+            <Row
+                className="standard"
+                style={{ paddingLeft: '0px', paddingTop: '0px' }}
+            >
+                <Col span={24}>
                     <Checkbox
-                        defaultChecked={localAnswer.isMultiple}
+                        defaultChecked={localAnswer.isOpen}
                         onChange={(e) =>
                             localUpdate({
                                 isMultiple: e.target.checked,
                             })
                         }
                     >
-                        La borger velge flere alternativ
+                        La mottaker legge til svaralternativ
                     </Checkbox>
                 </Col>
-                <Col span={6}>
+            </Row>
+            <Row className="standard" style={{ paddingLeft: '0px' }}>
+                <Col span={24}>
                     <Checkbox
-                        defaultChecked={localAnswer.isOpen}
+                        defaultChecked={localAnswer.isMultiple}
                         onChange={(e) =>
                             localUpdate({
                                 isOpen: e.target.checked,
                             })
                         }
                     >
-                        La borger legge til svaralternativ
+                        La mottaker velge flere alternativ
                     </Checkbox>
                 </Col>
-                {!localAnswer.isMultiple && (
-                    <>
-                        <Col span={6}>
+            </Row>
+
+            {!localAnswer.isMultiple && (
+                <>
+                    <Row className="standard" style={{ paddingLeft: '0px' }}>
+                        <Col span={24}>
                             <Checkbox
                                 defaultChecked={localAnswer.hasDefault}
                                 disabled={localAnswer.isMultiple}
@@ -198,10 +202,8 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                     })
                                 }
                             >
-                                Default:
+                                Forhåndsvelg standardalternativ:
                             </Checkbox>
-                        </Col>
-                        <Col span={6}>
                             <Select
                                 defaultValue={localAnswer.defaultValue}
                                 disabled={
@@ -216,7 +218,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                         defaultValue: value,
                                     });
                                 }}
-                                placeholder="Velg default"
+                                placeholder="Velg standardalternativ"
                             >
                                 {choices
                                     ? choices.map((name, id) => [
@@ -232,12 +234,13 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                     : []}
                             </Select>
                         </Col>
-                    </>
-                )}
-            </Row>
+                    </Row>
+                </>
+            )}
+
             {localAnswer.isMultiple ? (
                 <div className="question-component" style={choiceStyle}>
-                    <h4>Answers:</h4>
+                    <h4>Skriv inn svaralternativer under::</h4>
                     {choices.map((name, id) => [createCheckbox(id)])}
                     <Button
                         type="text"
@@ -250,7 +253,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 </div>
             ) : (
                 <div className="question-component" style={choiceStyle}>
-                    <h4>Answers:</h4>
+                    <h4>Skriv inn svaralternativer under:</h4>
                     <Radio.Group
                         name="radiogroup"
                         value={

@@ -52,6 +52,7 @@ function NavBar(): JSX.Element {
 
     function exportToJsonAndDownload() {
         const questionnaire = convertForm();
+        console.log(questionnaire);
         const filename = questionnaire.title + '.json';
         const contentType = 'application/json;charset=utf-8;';
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
@@ -142,7 +143,7 @@ function NavBar(): JSX.Element {
                         />
                     </Tooltip>
                 </Col>
-                <Col span={17}>
+                <Col lg={17} md={12}>
                     <Title
                         level={2}
                         style={{ color: 'var(--color-base-1)', float: 'left' }}
@@ -150,7 +151,7 @@ function NavBar(): JSX.Element {
                         Skjemabygger
                     </Title>
                 </Col>
-                <Col span={6}>
+                <Col lg={6} md={11}>
                     <div style={{ float: 'right' }}>
                         {/* <Link to="preview"> */}
                         <Button

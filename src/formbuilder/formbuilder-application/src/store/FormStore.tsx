@@ -75,6 +75,7 @@ export function addNewSection(section?: ISection): UpdateAction {
                 id: section.id,
                 questionOrder: section.questionOrder,
                 sectionTitle: section.sectionTitle,
+                description: section.description ? section.description : '',
             },
         };
     }

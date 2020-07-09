@@ -1,9 +1,11 @@
+@import "/src/index.css";
+
 .section-button {
     color: var(--primary-1) !important;
     border-color: var(--primary-1) !important;
     background-color: var(--color-base-2) !important;
-    width: 95vw;
     height: 60px !important;
+    width: 100%;
 }
 
 .section-button:hover {
@@ -17,3 +19,4 @@
     -webkit-box-shadow: 0 0 0 2px rgba(250,250,250, .2) !important;
     box-shadow: 0 0 0 2px rgba(250,250,250, .2) !important;
 }
+

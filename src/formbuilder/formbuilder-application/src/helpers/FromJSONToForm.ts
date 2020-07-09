@@ -1,4 +1,3 @@
-import { koronaSkjema } from '../questionnaires/koronaSkjema';
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
 import {
@@ -13,13 +12,6 @@ import {
 import AnswerTypes from '../types/IAnswer';
 import moment from 'moment';
 import { generateID } from '../helpers/IDGenerator';
-
-function getQuestionnaire(): fhir.Questionnaire {
-    const questionnaireObj = koronaSkjema;
-
-    console.log('Questionnaire object: ', questionnaireObj);
-    return questionnaireObj;
-}
 
 function getChoices(
     currentQuestion: fhir.QuestionnaireItem,
@@ -278,7 +270,6 @@ function getTime(currentQuestion: fhir.QuestionnaireItem): ITime {
 }
 
 function getDisplay(currentQuestion: fhir.QuestionnaireItem): IInfo {
-    console.log('komhit');
     const tempAnswer: IInfo = {
         id: generateID(),
         info: currentQuestion.text as string,
@@ -299,12 +290,13 @@ function convertFhirTimeToUnix(
     } else return moment(dateTime, 'HH:mm').valueOf();
 }
 
-function convertFromJSON(): {
+function convertFromJSON(
+    questionnaireObj: fhir.Questionnaire,
+): {
     formMeta: { title: string; description?: string };
     sections: Array<ISection>;
     questions: Array<IQuestion>;
 } {
-    const questionnaireObj = getQuestionnaire();
     const questionList = [];
     const sectionList = [];
     const formMeta = {
@@ -344,7 +336,7 @@ function convertFromJSON(): {
                             isRequired: currentQuestion.required as boolean,
                         };
 
-                        tempSection.questionOrder.push(tempQuestion.id);
+                        let isSectionDescription = false;
 
                         if (
                             currentQuestion.type === 'choice' ||
@@ -379,16 +371,10 @@ function convertFromJSON(): {
                             tempQuestion.answerType = AnswerTypes.time;
                         } else if (currentQuestion.type === 'display') {
                             const dot = currentQuestion.linkId.indexOf('.');
-                            console.log('dot is at ', dot);
-                            console.log(
-                                'linkId before: ',
-                                currentQuestion.linkId,
-                                '. linkId after',
-                                currentQuestion.linkId.substr(dot + 1),
-                            );
                             if (
                                 currentQuestion.linkId.substr(dot + 1) === '101'
                             ) {
+                                isSectionDescription = true;
                                 tempSection.description = currentQuestion.text;
                             } else {
                                 tempAnswer = getDisplay(currentQuestion);
@@ -396,7 +382,10 @@ function convertFromJSON(): {
                             }
                         }
                         tempQuestion.answer = tempAnswer as IAnswer;
-                        questionList.push(tempQuestion);
+                        if (!isSectionDescription) {
+                            tempSection.questionOrder.push(tempQuestion.id);
+                            questionList.push(tempQuestion);
+                        }
                     }
                 }
                 sectionList.push(tempSection);

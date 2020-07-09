@@ -17,11 +17,12 @@ code {
 
 :root {
   --primary-1: #A61E7B;       /* Buttons */
-  --primary-2: #006D84;       /* Header color */
-  --color-base-1: #FAFAFA;    /* Box color */ 
-  --color-base-2: #E8E8E8;  /* Background of page */
-  --color-base-3: #ccdfdf;  /* Hover color #ccdfdf */
-  --color-base-4: #8AB5B5;  /* Title color */
+  --primary-2: #006D84;       /* Header color 006D84 */
+  --color-base-1: #FFFFFF;    /* Box color */ 
+  --color-base-2: #FAFAFA;    /* Background of page D8D8D8 */
+  --color-base-3: #E1E2E4;    /* Section header grey E1E2E4 EEEFF1 */
+  
+ /* --color-base-4: #8AB5B5;    Title color */
 }
 
 .controller{
@@ -35,4 +36,12 @@ p{
 .standard{
   padding: 10px;
   text-align: left;
+}
+
+.wrapper {
+  margin: 10px;
+  width: 95%;
+  box-shadow: 0 4px 8px 4px #c7c7c7c7;
+  border-radius: 2px;
+  display: inline-block;
 }

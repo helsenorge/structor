@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 import convertFromJSON from '../helpers/FromJSONToForm';
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
@@ -12,16 +12,19 @@ import {
     clearAllSections,
     updateFormMeta,
 } from '../store/FormStore';
+import { useHistory } from 'react-router-dom';
 
 function Index(): JSX.Element {
+    const history = useHistory();
+
     const { dispatch } = useContext(FormContext);
-    function reuploadJSONFile() {
+    function reuploadJSONFile(questionnaireObj: fhir.Questionnaire) {
         dispatch(clearAllSections());
         const oldJSON: {
             formMeta: { title: string; description?: string };
             sections: Array<ISection>;
             questions: Array<IQuestion>;
-        } = convertFromJSON();
+        } = convertFromJSON(questionnaireObj);
         const sections = oldJSON.sections;
         const questions = oldJSON.questions;
         const formTitle = oldJSON.formMeta.title;
@@ -40,6 +43,27 @@ function Index(): JSX.Element {
             }
         }
     }
+
+    function createNewForm() {
+        dispatch(clearAllSections());
+        dispatch(addNewSection());
+        dispatch(updateFormMeta('', ''));
+        history.push('/create-form');
+    }
+
+    function onChange(event: any) {
+        const reader = new FileReader();
+        reader.onload = onReaderLoad;
+        reader.readAsText(event.target.files[0]);
+    }
+
+    function onReaderLoad(event: any) {
+        console.log(event.target.result);
+        const obj = JSON.parse(event.target.result);
+        reuploadJSONFile(obj);
+        history.push('/create-form');
+    }
+
     return (
         <Row
             align="middle"
@@ -69,31 +93,36 @@ function Index(): JSX.Element {
                                         alignContent: 'center',
                                     }}
                                 >
-                                    <Link to="create-form">
-                                        <Button
-                                            style={{
-                                                backgroundColor:
-                                                    'var(--primary-1)',
-                                                color: 'var(--color-base-1)',
-                                            }}
-                                        >
-                                            Lag nytt skjema
-                                        </Button>
-                                    </Link>
-                                </div>
-                            </Col>
-                            <Col span={12}>
-                                <Link to="create-form">
                                     <Button
                                         style={{
                                             backgroundColor: 'var(--primary-1)',
                                             color: 'var(--color-base-1)',
                                         }}
-                                        onClick={reuploadJSONFile}
+                                        onClick={createNewForm}
                                     >
-                                        Last opp JSON-fil
+                                        Lag nytt skjema
                                     </Button>
-                                </Link>
+                                </div>
+                            </Col>
+                            <Col span={12}>
+                                <label
+                                    style={{
+                                        backgroundColor: 'var(--primary-1)',
+                                        color: 'var(--color-base-1)',
+                                        border: '1px solid #ccc',
+                                        display: 'inline-block',
+                                        padding: '6px 12px',
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    <input
+                                        type="file"
+                                        style={{ display: 'none' }}
+                                        onChange={onChange}
+                                    />
+                                    <UploadOutlined />
+                                    Last opp JSON-fil
+                                </label>
                             </Col>
                         </Row>
                     </Col>

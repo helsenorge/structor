@@ -13,6 +13,7 @@ import {
 } from '../store/FormStore';
 import * as DND from 'react-beautiful-dnd';
 import './Form.css';
+import '../index.css';
 
 function CreateForm(): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
@@ -73,19 +74,19 @@ function CreateForm(): JSX.Element {
                     <NavBar />
                 </Col>
             </Row>
-            <Row style={{ margin: '61px 0 0 0' }}>
-                <Col span={24}>
+            <Row style={{ margin: '61px 0 0 0' }} justify="center">
+                <Col xl={16} lg={18} md={20} xs={24}>
                     <TitleAndDescription />
                 </Col>
             </Row>
-            <Row>
+            <Row justify="center">
                 <DND.DragDropContext
                     onDragEnd={onDragEnd}
                     onBeforeCapture={onBeforeCapture}
                 >
                     <DND.Droppable droppableId="section" type="section">
                         {(provided, snapshot) => (
-                            <Col span={24}>
+                            <Col xl={16} lg={18} md={20} xs={24}>
                                 <div
                                     ref={provided.innerRef}
                                     style={{
@@ -158,16 +159,9 @@ function CreateForm(): JSX.Element {
                     </DND.Droppable>
                 </DND.DragDropContext>
             </Row>
-            <Row>
-                <Col span={24}>
-                    <div
-                        style={{
-                            margin: '10px',
-                            display: 'inline-block',
-                            boxShadow: '0 4px 8px 0 #c7c7c7c7',
-                            borderRadius: '2px',
-                        }}
-                    >
+            <Row justify="center">
+                <Col xl={16} lg={18} md={20} xs={24}>
+                    <div className="wrapper">
                         <Button
                             className="section-button"
                             type="dashed"
