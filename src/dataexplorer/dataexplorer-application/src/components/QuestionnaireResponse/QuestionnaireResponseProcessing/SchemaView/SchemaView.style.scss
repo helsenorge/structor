@@ -33,6 +33,11 @@ p.questions {
     margin-bottom: 0;
 }
 
+p.section-description {
+    font-size: 0.85rem;
+    margin: 0;
+}
+
 div.border {
     border-bottom: double;
     border-bottom-color: #f0f2f5;
@@ -83,6 +88,7 @@ p.inline-date-container {
     display: flex;
     justify-content: space-between;
 }
+
 .inner-schema-row {
     display: flex !important;
     flex-direction: column !important;
@@ -98,6 +104,7 @@ p.inline-date-container {
         overflow: auto;
         height: 150px;
     }
+
     .notscroll {
         overflow: auto;
         height: auto;
