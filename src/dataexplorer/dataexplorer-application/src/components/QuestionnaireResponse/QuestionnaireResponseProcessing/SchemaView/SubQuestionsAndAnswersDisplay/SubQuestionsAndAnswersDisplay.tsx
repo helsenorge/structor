@@ -68,9 +68,11 @@ const SubQuestionsAndAnswersDisplay = (
                             : props.questionAndAnswer.answers?.id
                     }
                 >
-                    {item.valueBoolean}
+                    {item.valueBoolean && <div>Sant</div>}
+                    {item.valueBoolean === false && <div>Usant</div>}
                     {item.valueCoding?.display}
                     {item.valueDate}
+                    {item.valueDateTime?.replace('T', ' ')}
                     {item.valueDecimal}
                     {item.valueString}
                 </p>
