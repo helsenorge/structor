@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Layout, Avatar } from 'antd';
+import { Layout } from 'antd';
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
 import Dashboard from '../Dashboard/Dashboard';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
-import { UserOutlined } from '@ant-design/icons';
 import Patient from '../Patient/Patient';
 import QuestionnaireResponse from 'components/QuestionnaireResponse/QuestionnaireResponse';
 import 'antd/dist/antd.css';
@@ -24,12 +23,6 @@ const Navigation = () => {
                     </Link>
 
                     <div className="avatar-container">
-                        <Avatar
-                            className="header-avatar"
-                            shape="square"
-                            size="large"
-                            icon={<UserOutlined />}
-                        />
                         <h1>Dr. Gregory House</h1>
                     </div>
                 </Header>

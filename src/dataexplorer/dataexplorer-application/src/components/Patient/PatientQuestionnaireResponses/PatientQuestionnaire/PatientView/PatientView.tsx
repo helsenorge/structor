@@ -4,14 +4,6 @@ import { Row, Col, Card, Table, Typography } from 'antd';
 import dayjs from 'dayjs';
 import './PatientView.style.scss';
 import { useHistory } from 'react-router-dom';
-import {
-    IdcardOutlined,
-    ManOutlined,
-    WomanOutlined,
-    CrownOutlined,
-    MobileOutlined,
-    HomeOutlined,
-} from '@ant-design/icons';
 
 const PatientView = (props: {
     patient: IPatient;
@@ -29,13 +21,15 @@ const PatientView = (props: {
         const actualAge = dayjs().diff(birthday, 'year');
 
         return (
-            actualAge +
-            ' år, født ' +
             patientDay +
-            '. ' +
+            '-' +
             patientMonth +
+            '-' +
+            patientYear +
             ' ' +
-            patientYear
+            '(' +
+            actualAge +
+            ')'
         );
     };
     const { Title } = Typography;
@@ -70,7 +64,7 @@ const PatientView = (props: {
     return (
         <>
             <Row gutter={[1, 40]} justify="center">
-                <Col span={8}>
+                <Col span={12}>
                     <Card
                         key={props.patient.id}
                         className="patient-card"
@@ -81,22 +75,12 @@ const PatientView = (props: {
                         <div className="info-container">
                             <div className="info-left">
                                 <div className="item-container">
-                                    <h4>
-                                        <IdcardOutlined className="field-icon" />
-                                        Personnummer:
-                                    </h4>
+                                    <h4>Personnummer</h4>
 
                                     <p>{props.patient.identifier[0].value}</p>
                                 </div>
                                 <div className="item-container">
-                                    <h4>
-                                        {props.patient.gender === 'male' ? (
-                                            <ManOutlined className="field-icon" />
-                                        ) : (
-                                            <WomanOutlined className="field-icon" />
-                                        )}
-                                        Kjønn:
-                                    </h4>
+                                    <h4>Kjønn</h4>
                                     <p>
                                         {props.patient.gender !== 'male' &&
                                         props.patient.gender !== 'female'
@@ -110,10 +94,7 @@ const PatientView = (props: {
                                     </p>
                                 </div>
                                 <div className="item-container">
-                                    <h4>
-                                        <CrownOutlined className="field-icon" />
-                                        Alder:
-                                    </h4>
+                                    <h4>Fødselsdato</h4>
                                     <p>
                                         {props.patient.birthDate !==
                                         undefined ? (
@@ -128,10 +109,7 @@ const PatientView = (props: {
                             </div>
                             <div className="info-right">
                                 <div className="item-container">
-                                    <h4>
-                                        <HomeOutlined className="field-icon" />
-                                        Adresse:
-                                    </h4>
+                                    <h4>Adresse</h4>
                                     {props.patient?.address?.[0]?.line !==
                                     undefined ? (
                                         <p>
@@ -147,10 +125,7 @@ const PatientView = (props: {
                                     )}
                                 </div>
                                 <div className="item-container">
-                                    <h4>
-                                        <MobileOutlined className="field-icon" />
-                                        Telefon:
-                                    </h4>
+                                    <h4>Telefon</h4>
                                     {props.patient?.telecom?.[0]?.value !==
                                     undefined ? (
                                         <p>

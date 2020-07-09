@@ -1,11 +1,6 @@
 import React from 'react';
 import Breadcrumb from 'antd/lib/breadcrumb';
 import { Link } from 'react-router-dom';
-import {
-    HomeOutlined,
-    UserOutlined,
-    FileTextOutlined,
-} from '@ant-design/icons';
 import './Breadcrumbs.style.scss';
 
 interface IBreadCrumbsProps {
@@ -31,17 +26,17 @@ const Breadcrumbs = ({
     return (
         <>
             <div className="breadcrumbs-container">
-                <Breadcrumb>
+                <Breadcrumb separator=">">
                     <Breadcrumb.Item>
                         <Link to="/" onClick={() => fromSchemeToHome()}>
-                            <HomeOutlined className="bread-icon" />
+                            {/* <HomeOutlined className="bread-icon" /> */}
                             <span className="breadcrumbs-item">Hjem</span>
                         </Link>
                     </Breadcrumb.Item>
                     {name !== '' && (
                         <Breadcrumb.Item onClick={() => fromSchemeToPatient()}>
                             <Link to="/Pasient">
-                                <UserOutlined className="bread-icon" />
+                                {/* <UserOutlined className="bread-icon" /> */}
                                 <span className="breadcrumbs-item">
                                     <b>{name}</b>
                                 </span>
@@ -50,9 +45,9 @@ const Breadcrumbs = ({
                     )}
                     {schemaNumber !== '' && (
                         <Breadcrumb.Item>
-                            <FileTextOutlined className="bread-icon" />
+                            {/* <FileTextOutlined className="bread-icon" /> */}
                             <span className="breadcrumbs-item">
-                                Skjema - {schemaNumber}
+                                <b>Skjema {schemaNumber}</b>
                             </span>
                         </Breadcrumb.Item>
                     )}
