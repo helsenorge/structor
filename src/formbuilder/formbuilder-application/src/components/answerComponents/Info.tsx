@@ -11,9 +11,10 @@ type TextInputProps = {
 
 function TextInput({ questionId }: TextInputProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
+    const localAnswer = { ...(state.questions[questionId].answer as IInfo) };
 
     function localUpdate(attribute: { info?: string; hasInfo?: boolean }) {
-        const temp = { ...(state.questions[questionId].answer as IInfo) };
+        const temp = { ...localAnswer };
         if (attribute.hasInfo) {
             temp.info = attribute.info ? attribute.info : '';
             temp.hasInfo = true;
@@ -25,9 +26,7 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
         <Row className="standard">
             <Col span={20}>
                 <TextArea
-                    defaultValue={
-                        (state.questions[questionId].answer as IInfo).info
-                    }
+                    defaultValue={localAnswer.info}
                     rows={3}
                     className="input-question"
                     placeholder={'Skriv inn informasjon til sluttbruker her.'}

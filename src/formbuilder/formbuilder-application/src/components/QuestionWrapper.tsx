@@ -147,7 +147,7 @@ function QuestionWrapper({
                         }
                     >
                         <Button
-                            id="CollapseQuestionButton"
+                            id="stealFocus"
                             style={{
                                 zIndex: 1,
                                 marginLeft: '10px',
@@ -198,7 +198,7 @@ function QuestionWrapper({
                         title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}
                     >
                         <Button
-                            id="MoveButton"
+                            id="stealFocus"
                             style={{
                                 zIndex: 1,
                                 color: 'var(--primary-1)',

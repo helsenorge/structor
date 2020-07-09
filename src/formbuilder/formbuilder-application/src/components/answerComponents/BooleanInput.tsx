@@ -13,9 +13,10 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
         marginBottom: '10px',
     };
     const { state, dispatch } = useContext(FormContext);
+    const localAnswer = { ...(state.questions[questionId].answer as IBoolean) };
 
     function localUpdate(attribute: { isChecked?: boolean; label?: string }) {
-        const temp = { ...(state.questions[questionId].answer as IBoolean) };
+        const temp = { ...localAnswer };
         if (attribute.isChecked !== undefined)
             temp.isChecked = attribute.isChecked;
         if (attribute.label) temp.label = attribute.label;
@@ -28,15 +29,11 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
                 key={'Boolean' + questionId}
                 style={checkStyle}
                 disabled
-                checked={
-                    (state.questions[questionId].answer as IBoolean).isChecked
-                }
+                checked={localAnswer.isChecked}
             >
                 <Input
                     type="text"
-                    defaultValue={
-                        (state.questions[questionId].answer as IBoolean).label
-                    }
+                    defaultValue={localAnswer.label}
                     className="input-question"
                     placeholder={'Skriv inn påstand her.'}
                     style={{
@@ -50,9 +47,7 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
                 ></Input>
             </Checkbox>
             <Checkbox
-                checked={
-                    (state.questions[questionId].answer as IBoolean).isChecked
-                }
+                checked={localAnswer.isChecked}
                 onChange={(e) =>
                     localUpdate({
                         isChecked: e.target.checked,

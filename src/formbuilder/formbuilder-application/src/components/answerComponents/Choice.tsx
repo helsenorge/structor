@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Radio,
     Button,
@@ -26,6 +26,10 @@ type choiceProps = {
 
 function Choice({ questionId }: choiceProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
+    const localAnswer = { ...(state.questions[questionId].answer as IChoice) };
+    const [choices, setChoices] = useState(
+        (state.questions[questionId].answer as IChoice).choices,
+    );
 
     function localUpdate(attribute: {
         isMultiple?: boolean;
@@ -34,7 +38,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         choices?: Array<string>;
         defaultValue?: number;
     }) {
-        const temp = { ...(state.questions[questionId].answer as IChoice) };
+        const temp = { ...localAnswer };
         if (attribute.isMultiple !== undefined) {
             temp.isMultiple = attribute.isMultiple;
         }
@@ -65,30 +69,61 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         width: '250px',
     };
 
-    function addButtonClick() {
-        const tempChoices = [
-            ...(state.questions[questionId].answer as IChoice).choices,
-            '',
-        ];
-        localUpdate({ choices: tempChoices });
+    function updateChoices(attribute: {
+        mode?: string;
+        value?: string;
+        id?: number;
+        updateState?: boolean;
+    }) {
+        let tempChoices = [...choices];
+
+        if (attribute.mode === 'add') tempChoices = [...choices, ''];
+
+        if (attribute.mode === 'delete' && attribute.id !== undefined)
+            tempChoices.splice(attribute.id, 1);
+        if (attribute.value !== undefined && attribute.id !== undefined)
+            tempChoices[attribute.id] = attribute.value;
+        setChoices(tempChoices);
+        if (attribute.updateState) localUpdate({ choices: tempChoices });
+    }
+
+    function deleteButton(id: number): JSX.Element {
+        return (
+            <Tooltip title="Fjern alternativ" placement="right">
+                <Button
+                    id="stealFocus"
+                    type="text"
+                    shape="circle"
+                    icon={<CloseOutlined />}
+                    onClick={() =>
+                        updateChoices({
+                            mode: 'delete',
+                            id: id,
+                            updateState: true,
+                        })
+                    }
+                    value="Delete"
+                />
+            </Tooltip>
+        );
+    }
+
+    /* function addButtonClick() {
+        const tempChoices = [...choices, ''];
+        setChoices(tempChoices);
     }
 
     function deleteButton(id: number) {
-        const tempChoices = [
-            ...(state.questions[questionId].answer as IChoice).choices,
-        ];
+        const tempChoices = { ...choices };
         tempChoices.splice(id, 1);
-        localUpdate({ choices: tempChoices });
+        setChoices(tempChoices);
     }
 
     function alterChoiceText(id: number, value: string) {
-        const tempChoices = [
-            ...(state.questions[questionId].answer as IChoice).choices,
-        ];
+        const tempChoices = { ...choices };
         tempChoices[id] = value;
-        localUpdate({ choices: tempChoices });
-        console.log(state.questions[questionId].answer);
-    }
+        setChoices(tempChoices); 
+    }*/
 
     function createRadioButton(id: number) {
         return (
@@ -104,24 +139,14 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     placeholder={
                         'Skriv inn alternativ nr. ' + (id + 1) + ' her'
                     }
-                    defaultValue={
-                        (state.questions[questionId].answer as IChoice).choices[
-                            id
-                        ]
-                    }
+                    value={choices[id]}
                     style={choiceInputStyle}
-                    onBlur={(e) => alterChoiceText(id, e.target.value)}
+                    onChange={(e) =>
+                        updateChoices({ id: id, value: e.target.value })
+                    }
+                    onBlur={() => updateChoices({ updateState: true })}
                 />
-
-                <Tooltip title="Fjern alternativ" placement="right">
-                    <Button
-                        type="text"
-                        shape="circle"
-                        icon={<CloseOutlined />}
-                        onClick={() => deleteButton(id)}
-                        value="Delete"
-                    />
-                </Tooltip>
+                {deleteButton(id)}
             </Radio>
         );
     }
@@ -141,37 +166,23 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     placeholder={
                         'Skriv inn alternativ nr. ' + (id + 1) + ' her'
                     }
-                    defaultValue={
-                        (state.questions[questionId].answer as IChoice).choices[
-                            id
-                        ]
-                    }
+                    defaultValue={localAnswer.choices[id]}
                     style={choiceInputStyle}
-                    onBlur={(e) => alterChoiceText(id, e.target.value)}
+                    onChange={(e) =>
+                        updateChoices({ id: id, value: e.target.value })
+                    }
+                    onBlur={() => updateChoices({ updateState: true })}
                 />
-
-                <Tooltip title="Fjern alternativ" placement="right">
-                    <Button
-                        type="text"
-                        shape="circle"
-                        icon={<CloseOutlined />}
-                        onClick={() => deleteButton(id)}
-                        value="Delete"
-                    />
-                </Tooltip>
+                {deleteButton(id)}
             </Checkbox>
         );
     }
-
     return (
         <>
             <Row>
                 <Col span={6}>
                     <Checkbox
-                        defaultChecked={
-                            (state.questions[questionId].answer as IChoice)
-                                .isMultiple
-                        }
+                        defaultChecked={localAnswer.isMultiple}
                         onChange={(e) =>
                             localUpdate({
                                 isMultiple: e.target.checked,
@@ -183,10 +194,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 </Col>
                 <Col span={6}>
                     <Checkbox
-                        defaultChecked={
-                            (state.questions[questionId].answer as IChoice)
-                                .isOpen
-                        }
+                        defaultChecked={localAnswer.isOpen}
                         onChange={(e) =>
                             localUpdate({
                                 isOpen: e.target.checked,
@@ -196,19 +204,12 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         La borger legge til svaralternativ
                     </Checkbox>
                 </Col>
-                {!(state.questions[questionId].answer as IChoice)
-                    .isMultiple && (
+                {!localAnswer.isMultiple && (
                     <>
                         <Col span={6}>
                             <Checkbox
-                                defaultChecked={
-                                    (state.questions[questionId]
-                                        .answer as IChoice).hasDefault
-                                }
-                                disabled={
-                                    (state.questions[questionId]
-                                        .answer as IChoice).isMultiple
-                                }
+                                defaultChecked={localAnswer.hasDefault}
+                                disabled={localAnswer.isMultiple}
                                 onChange={(e) =>
                                     localUpdate({
                                         hasDefault: e.target.checked,
@@ -220,16 +221,11 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         </Col>
                         <Col span={6}>
                             <Select
-                                defaultValue={
-                                    (state.questions[questionId]
-                                        .answer as IChoice).defaultValue
-                                }
+                                defaultValue={localAnswer.defaultValue}
                                 disabled={
                                     !(
-                                        (state.questions[questionId]
-                                            .answer as IChoice).hasDefault &&
-                                        !(state.questions[questionId]
-                                            .answer as IChoice).isMultiple
+                                        localAnswer.hasDefault &&
+                                        !localAnswer.isMultiple
                                     )
                                 }
                                 style={{ width: '200px' }}
@@ -240,38 +236,31 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                 }}
                                 placeholder="Velg default"
                             >
-                                {(state.questions[questionId].answer as IChoice)
-                                    .choices
-                                    ? (state.questions[questionId]
-                                          .answer as IChoice).choices.map(
-                                          (name, id) => [
-                                              <Option
-                                                  key={'def' + questionId + id}
-                                                  value={id}
-                                              >
-                                                  {name.length < 1
-                                                      ? 'Alternativ ' + (id + 1)
-                                                      : name}
-                                              </Option>,
-                                          ],
-                                      )
+                                {choices
+                                    ? choices.map((name, id) => [
+                                          <Option
+                                              key={'def' + questionId + id}
+                                              value={id}
+                                          >
+                                              {name.length < 1
+                                                  ? 'Alternativ ' + (id + 1)
+                                                  : name}
+                                          </Option>,
+                                      ])
                                     : []}
                             </Select>
                         </Col>
                     </>
                 )}
             </Row>
-            {(state.questions[questionId].answer as IChoice).isMultiple ? (
+            {localAnswer.isMultiple ? (
                 <div className="question-component" style={choiceStyle}>
-                    <h4>Alternativer:</h4>
-                    {(state.questions[questionId]
-                        .answer as IChoice).choices.map((name, id) => [
-                        createCheckbox(id),
-                    ])}
+                    <h4>Answers:</h4>
+                    {choices.map((name, id) => [createCheckbox(id)])}
                     <Button
                         type="text"
                         icon={<PlusSquareOutlined />}
-                        onClick={addButtonClick}
+                        onClick={() => updateChoices({ mode: 'add' })}
                         value="Add"
                     >
                         Legg til alternativ
@@ -279,26 +268,21 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 </div>
             ) : (
                 <div className="question-component" style={choiceStyle}>
-                    <h4>Flervalgsalternativer:</h4>
+                    <h4>Answers:</h4>
                     <Radio.Group
                         name="radiogroup"
                         value={
-                            (state.questions[questionId].answer as IChoice)
-                                .hasDefault
-                                ? (state.questions[questionId]
-                                      .answer as IChoice).defaultValue
+                            localAnswer.hasDefault
+                                ? localAnswer.defaultValue
                                 : undefined
                         }
                     >
-                        {(state.questions[questionId]
-                            .answer as IChoice).choices.map((name, id) => [
-                            createRadioButton(id),
-                        ])}
+                        {choices.map((name, id) => [createRadioButton(id)])}
                         {
                             <Button
                                 type="text"
                                 icon={<PlusCircleOutlined />}
-                                onClick={addButtonClick}
+                                onClick={() => updateChoices({ mode: 'add' })}
                                 value="Add"
                             >
                                 Legg til alternativ
