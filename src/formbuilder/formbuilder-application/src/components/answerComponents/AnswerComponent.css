@@ -48,7 +48,7 @@
     border-color: var(--primary-1) !important;
 }
 
-.ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-wrapper:hover .ant-checkbox-checked .ant-checkbox-inner {
+.ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-wrapper:hover .ant-checkbox-checked .ant-checkbox-inner .ant-radio-group .ant-radio-input .ant-radio .ant-radio-checked {
     background-color: var(--primary-1) !important;
     border-color: var(--primary-1) !important;
 }

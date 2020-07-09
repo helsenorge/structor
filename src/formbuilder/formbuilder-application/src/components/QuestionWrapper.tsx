@@ -87,6 +87,7 @@ function QuestionWrapper({
         const schemeDisplayer = document.getElementById('schemeFrame');
         if (isIFrame(schemeDisplayer) && schemeDisplayer.contentWindow) {
             console.log('Fant frame');
+            console.log(questionnaireString);
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             schemeDisplayer.contentWindow.postMessage(

@@ -7,6 +7,7 @@ import AnswerTypes, {
     IBoolean,
     ITime,
     IInfo,
+    TimeIntervalType,
 } from '../types/IAnswer';
 import { ValueSetMap } from './JSONGenerator';
 import moment from 'moment';
@@ -187,37 +188,173 @@ function convertDate(
             valueString: 'dd.mm.åååå.',
         });
     }
-    if (answer.hasEndTime && answer.endTime) {
-        const endTime = convertUnixToFhirTime(
-            answer.isDate,
-            answer.isTime,
-            answer.endTime,
-        );
-        subItem.extension?.push({
-            url:
-                'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpathvalidation',
-            valueString: 'this.value <= ' + endTime,
-        });
-        subItem.extension?.push({
-            url: 'http://ehelse.no/fhir/StructureDefinition/sdf-maxvalue',
-            valueString: endTime,
-        });
+    let addValidationText = true;
+    if (
+        answer.hasEndTime &&
+        answer.endTime &&
+        answer.hasStartTime &&
+        answer.startTime
+    ) {
+        addValidationText = false;
+        if (answer.timeIntervalType === TimeIntervalType.FLOATING) {
+            subItem.extension?.push({
+                url: 'http://ehelse.no/fhir/StructureDefinition/validationtext',
+                valueString:
+                    'Du kan velge en ' +
+                    convertTimeString(answer, false, false) +
+                    ' som er ' +
+                    answer.startTime +
+                    ' ' +
+                    convertTimeString(answer, true, false) +
+                    ' tilbake i tid, og ' +
+                    answer.endTime +
+                    ' ' +
+                    convertTimeString(answer, true, false) +
+                    ' fram i tid',
+            });
+        } else {
+            subItem.extension?.push({
+                url: 'http://ehelse.no/fhir/StructureDefinition/validationtext',
+                valueString:
+                    'Du kan velge en ' +
+                    convertTimeString(answer, false, false) +
+                    ' som er fra' +
+                    convertUnixToFhirTime(
+                        answer.isDate,
+                        answer.isTime,
+                        answer.startTime,
+                    ) +
+                    ' til ' +
+                    convertUnixToFhirTime(
+                        answer.isDate,
+                        answer.isTime,
+                        answer.endTime,
+                    ) +
+                    ' fram i tid. Dato skal ha format dd.mm.åååå.',
+            });
+        }
     }
-    if (answer.hasStartTime && answer.startTime) {
-        const startTime = convertUnixToFhirTime(
-            answer.isDate,
-            answer.isTime,
-            answer.startTime,
-        );
-        subItem.extension?.push({
-            url:
-                'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpathvalidation',
-            valueString: 'this.value >= ' + startTime,
-        });
-        subItem.extension?.push({
-            url: 'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue',
-            valueString: startTime,
-        });
+    if (answer.hasEndTime && answer.endTime !== undefined) {
+        if (answer.timeIntervalType === TimeIntervalType.FLOATING) {
+            if (addValidationText) {
+                subItem.extension?.push({
+                    url:
+                        'http://ehelse.no/fhir/StructureDefinition/validationtext',
+                    valueString:
+                        'Du kan velge en ' +
+                        convertTimeString(answer, false, false) +
+                        ' som er maksimum ' +
+                        answer.endTime +
+                        ' ' +
+                        convertTimeString(answer, true, false) +
+                        ' fram i tid',
+                });
+            }
+            subItem.extension?.push({
+                url:
+                    'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpathvalidation',
+                valueString:
+                    'this.value <= today() + ' +
+                    answer.endTime +
+                    ' ' +
+                    convertTimeString(answer, true, true),
+            });
+            subItem.extension?.push({
+                url: 'http://ehelse.no/fhir/StructureDefinition/sdf-maxvalue',
+                valueString:
+                    'today() + ' +
+                    answer.endTime +
+                    ' ' +
+                    convertTimeString(answer, true, true),
+            });
+        } else {
+            const convertedEndTimeToISO = convertUnixToFhirTime(
+                answer.isDate,
+                answer.isTime,
+                answer.endTime,
+            );
+            if (addValidationText) {
+                subItem.extension?.push({
+                    url:
+                        'http://ehelse.no/fhir/StructureDefinition/validationtext',
+                    valueString:
+                        'Du kan velge en ' +
+                        convertTimeString(answer, false, false) +
+                        ' som er tidligere enn ' +
+                        convertedEndTimeToISO,
+                });
+            }
+            subItem.extension?.push({
+                url:
+                    'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpathvalidation',
+                valueString: 'this.value <= ' + convertedEndTimeToISO,
+            });
+            subItem.extension?.push({
+                url: 'http://ehelse.no/fhir/StructureDefinition/sdf-maxvalue',
+                valueString: convertedEndTimeToISO,
+            });
+        }
+    }
+    if (answer.hasStartTime && answer.startTime !== undefined) {
+        if (answer.timeIntervalType === TimeIntervalType.FLOATING) {
+            if (addValidationText) {
+                subItem.extension?.push({
+                    url:
+                        'http://ehelse.no/fhir/StructureDefinition/validationtext',
+                    valueString:
+                        'Du kan velge en ' +
+                        convertTimeString(answer, false, false) +
+                        ' som er maksimum ' +
+                        answer.startTime +
+                        ' ' +
+                        convertTimeString(answer, true, false) +
+                        ' tilbake i tid',
+                });
+            }
+            subItem.extension?.push({
+                url:
+                    'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpathvalidation',
+                valueString:
+                    'this.value >= today() - ' +
+                    answer.startTime +
+                    ' ' +
+                    convertTimeString(answer, true, true),
+            });
+            subItem.extension?.push({
+                url: 'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue',
+                valueString:
+                    'today() - ' +
+                    answer.startTime +
+                    ' ' +
+                    convertTimeString(answer, true, true),
+            });
+        } else {
+            const convertedStartTimeToISO = convertUnixToFhirTime(
+                answer.isDate,
+                answer.isTime,
+                answer.startTime,
+            );
+            if (addValidationText) {
+                subItem.extension?.push({
+                    url:
+                        'http://ehelse.no/fhir/StructureDefinition/validationtext',
+                    valueString:
+                        'Du kan velge en ' +
+                        convertTimeString(answer, false, false) +
+                        ' som er senere enn ' +
+                        convertedStartTimeToISO,
+                });
+            }
+            subItem.extension?.push({
+                url:
+                    'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpathvalidation',
+                valueString: 'this.value >= ' + convertedStartTimeToISO,
+            });
+            subItem.extension?.push({
+                url: 'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue',
+                valueString: convertedStartTimeToISO,
+            });
+        }
     }
     subItem.type =
         answer.isDate && answer.isTime
@@ -225,6 +362,7 @@ function convertDate(
             : answer.isDate
             ? FhirAnswerTypes.date
             : FhirAnswerTypes.time;
+
     if (answer.defaultTime) {
         const dateTime = convertUnixToFhirTime(
             answer.isDate,
@@ -273,4 +411,36 @@ function convertUnixToFhirTime(
     } else if (isDate) {
         return moment(dateTime).format('YYYY-MM-DD');
     } else return moment(dateTime).format('HH:mm:ss');
+}
+
+function convertTimeString(
+    localAnswer: ITime,
+    plural: boolean,
+    english: boolean,
+) {
+    if (english) {
+        if (plural)
+            return localAnswer.isTime && localAnswer.isDate
+                ? 'days'
+                : localAnswer.isTime
+                ? 'hours'
+                : 'days';
+        return localAnswer.isTime && localAnswer.isDate
+            ? 'time'
+            : localAnswer.isTime
+            ? 'hour'
+            : 'date';
+    } else {
+        if (plural)
+            return localAnswer.isTime && localAnswer.isDate
+                ? 'dag(er)'
+                : localAnswer.isTime
+                ? 'timer'
+                : 'dag(er)';
+        return localAnswer.isTime && localAnswer.isDate
+            ? 'tid'
+            : localAnswer.isTime
+            ? 'time'
+            : 'dato';
+    }
 }
