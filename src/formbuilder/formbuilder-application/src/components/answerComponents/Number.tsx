@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { InputNumber, Checkbox, Input, Row, Col, Form } from 'antd';
+import React, { useContext, useState, useEffect } from 'react';
+import { InputNumber, Checkbox, Input, Row, Col, Form, Button } from 'antd';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { INumber } from '../../types/IAnswer';
 import './AnswerComponent.css';
@@ -12,7 +12,12 @@ type NumberProps = {
 function Number({ questionId }: NumberProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...state.questions[questionId].answer } as INumber;
-    const validityList = ['succes', 'succes', 'succes', 'succes'];
+    const [validationList, setValidationList] = useState([
+        true,
+        true,
+        true,
+        true,
+    ]);
     function updateStore(attribute: {
         hasMax?: boolean;
         hasMin?: boolean;
@@ -43,19 +48,31 @@ function Number({ questionId }: NumberProps): JSX.Element {
     }
 
     function validate(field: number, validity: ValidateStatus): ValidateStatus {
-        validityList[field] = validity;
-        validityList.every((validity) => {
-            return validity === 'success';
-        });
+        const tempValid = [...validationList];
         const temp = { ...state.questions[questionId].answer };
-        temp.valid = validityList.every((validity) => {
-            return validity === 'success';
-        });
+        if (validity === 'error' && validationList[field] !== false) {
+            tempValid[field] = false;
+            setValidationList(tempValid);
+            temp.valid = false;
+            dispatch(updateAnswer(questionId, temp));
+        } else if (validity === 'success' && validationList[field] !== true) {
+            tempValid[field] = true;
+            setValidationList(tempValid);
+            temp.valid = true;
+            dispatch(updateAnswer(questionId, temp));
+        }
         return validity;
     }
 
+    useEffect(() => {
+        const temp = {...state.questions[questionId].answer};
+        temp.valid = true;
+        dispatch(updateAnswer(questionId, temp));
+    }, []);
+
     return (
         <>
+            <Button onClick={() => console.log(validationList)}> x </Button>
             <Form>
                 <Row>
                     <Col span={12} className="standard">
