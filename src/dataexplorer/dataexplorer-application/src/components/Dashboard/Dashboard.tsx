@@ -28,7 +28,7 @@ const Dashboard = () => {
                     <Search
                         style={{ width: 400 }}
                         className="search-bar"
-                        placeholder="Søk etter en pasient!"
+                        placeholder="Søk med personnummer for å finne en pasient"
                         onSearch={(value: string) => handleClick(value)}
                         allowClear={true}
                     />
