@@ -10,7 +10,6 @@ import './Breadcrumbs.style.scss';
 import { BreadcrumbContext } from './BreadcrumbContext';
 
 const Breadcrumbs = () => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     const { name, schemaNumber } = useContext(BreadcrumbContext);
     return (
         <>
