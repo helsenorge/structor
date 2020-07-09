@@ -26,9 +26,7 @@ const Breadcrumbs = () => {
                         <Breadcrumb.Item>
                             <Link to="/pasient">
                                 <UserOutlined />
-                                <span className="breadcrumbs-item">
-                                    <b>{name}</b>
-                                </span>
+                                <span className="breadcrumbs-item">{name}</span>
                             </Link>
                         </Breadcrumb.Item>
                     )}
