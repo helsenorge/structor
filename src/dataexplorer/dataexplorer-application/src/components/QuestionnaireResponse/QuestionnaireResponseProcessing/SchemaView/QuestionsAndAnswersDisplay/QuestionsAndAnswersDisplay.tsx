@@ -73,8 +73,8 @@ const QuestionsAndAnswersDisplay = (
                             : props.questionAndAnswer.answers?.id
                     }
                 >
-                    {item.valueBoolean && <p>Sant</p>}
-                    {item.valueBoolean === false && <p>Usant</p>}
+                    {item.valueBoolean && <span>Sant</span>}
+                    {item.valueBoolean === false && <span>Usant</span>}
                     {item.valueCoding?.display}
                     {item.valueDate}
                     {item.valueDateTime?.replace('T', ' ')}

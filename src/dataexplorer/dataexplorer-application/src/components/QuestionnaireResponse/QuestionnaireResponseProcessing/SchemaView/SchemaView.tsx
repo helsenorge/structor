@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Collapse, Row, Col } from 'antd';
+import { Collapse, Row, Col, Button } from 'antd';
 import './SchemaView.style.scss';
 import {
     IQuestionAndAnswer,
@@ -21,6 +21,7 @@ const SchemaView = (props: SchemaViewProps) => {
     dayjs.locale('nb');
     const [qAndA, setQAndA] = useState<IQuestionAndAnswer[]>([]);
     const [qAndAIds, setQAndAIds] = useState<string[]>([]);
+    const [sectionDescription, setSectionDescription] = useState<string[]>([]);
 
     useEffect(() => {
         let hasAddedId = false;
@@ -49,7 +50,6 @@ const SchemaView = (props: SchemaViewProps) => {
     }, [props]);
 
     const { Panel } = Collapse;
-
     return (
         <>
             {qAndAIds.length > 0 && (
@@ -84,37 +84,110 @@ const SchemaView = (props: SchemaViewProps) => {
                                                             key={section.id}
                                                             className="site-collapse-custom-panel"
                                                         >
-                                                            {qAndA.map(
-                                                                (display) =>
-                                                                    display.id.split(
-                                                                        '.',
-                                                                    )[0] ===
-                                                                        section.id &&
-                                                                    display.id.split(
-                                                                        '.',
-                                                                    )[1] ===
-                                                                        '101' && (
-                                                                        <p
-                                                                            key={
-                                                                                display.id
+                                                            <Row>
+                                                                {qAndA.map(
+                                                                    (display) =>
+                                                                        display.id.split(
+                                                                            '.',
+                                                                        )[0] ===
+                                                                            section.id &&
+                                                                        display.id.split(
+                                                                            '.',
+                                                                        )[1] ===
+                                                                            '101' && (
+                                                                            <Col
+                                                                                span={
+                                                                                    18
+                                                                                }
+                                                                                order={
+                                                                                    1
+                                                                                }
+                                                                                key={
+                                                                                    display.id
+                                                                                }
+                                                                                className="section-description"
+                                                                            >
+                                                                                {
+                                                                                    display
+                                                                                        .questions
+                                                                                        .questions
+                                                                                        .text
+                                                                                }
+                                                                            </Col>
+                                                                        ),
+                                                                )}
+                                                                <Col
+                                                                    span={6}
+                                                                    order={2}
+                                                                    className="section-description"
+                                                                >
+                                                                    {!sectionDescription.includes(
+                                                                        section.id.split(
+                                                                            '.',
+                                                                        )[0],
+                                                                    ) && (
+                                                                        <Button
+                                                                            type="link"
+                                                                            value="small"
+                                                                            onClick={() =>
+                                                                                setSectionDescription(
+                                                                                    (
+                                                                                        sectionDescription,
+                                                                                    ) => [
+                                                                                        ...sectionDescription,
+                                                                                        section.id.split(
+                                                                                            '.',
+                                                                                        )[0],
+                                                                                    ],
+                                                                                )
                                                                             }
-                                                                            className="section-description"
                                                                         >
-                                                                            {
-                                                                                display
-                                                                                    .questions
-                                                                                    .questions
-                                                                                    .text
+                                                                            Vis
+                                                                            ekstra
+                                                                            info
+                                                                        </Button>
+                                                                    )}
+                                                                    {sectionDescription.includes(
+                                                                        section.id.split(
+                                                                            '.',
+                                                                        )[0],
+                                                                    ) && (
+                                                                        <Button
+                                                                            type="link"
+                                                                            value="small"
+                                                                            onClick={() =>
+                                                                                setSectionDescription(
+                                                                                    sectionDescription.filter(
+                                                                                        (
+                                                                                            list,
+                                                                                        ) =>
+                                                                                            list.replace(
+                                                                                                section.id.split(
+                                                                                                    '.',
+                                                                                                )[0],
+                                                                                                '',
+                                                                                            ),
+                                                                                    ),
+                                                                                )
                                                                             }
-                                                                        </p>
-                                                                    ),
-                                                            )}
+                                                                        >
+                                                                            Skjul
+                                                                            ekstra
+                                                                            info
+                                                                        </Button>
+                                                                    )}
+                                                                </Col>
+                                                            </Row>
                                                             {qAndA.map(
                                                                 (
                                                                     qa,
                                                                     qaIndex,
                                                                 ) => (
-                                                                    <>
+                                                                    <div
+                                                                        key={
+                                                                            qaIndex
+                                                                        }
+                                                                    >
                                                                         {qa.id.split(
                                                                             '.',
                                                                         )[0] ===
@@ -123,32 +196,59 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                                 '.',
                                                                             )
                                                                                 .length ===
-                                                                                2 &&
-                                                                            qa
-                                                                                .answers
-                                                                                ?.answers
-                                                                                .answer &&
-                                                                            qa
-                                                                                .answers
-                                                                                ?.answers
-                                                                                .answer[0] && (
+                                                                                2 && (
                                                                                 <div
-                                                                                    className="qa-container"
                                                                                     key={
                                                                                         qaIndex
                                                                                     }
                                                                                 >
-                                                                                    <QuestionsAndAnswersDisplay
-                                                                                        questionAndAnswer={
-                                                                                            qa
-                                                                                        }
-                                                                                        questionnaireResource={
-                                                                                            props.questionnaireResource
-                                                                                        }
-                                                                                        questionAndAnswerIndex={
-                                                                                            qaIndex
-                                                                                        }
-                                                                                    />
+                                                                                    {qa
+                                                                                        .questions
+                                                                                        .questions
+                                                                                        .type ===
+                                                                                        'display' &&
+                                                                                        qa.id.split(
+                                                                                            '.',
+                                                                                        )[1] !==
+                                                                                            '101' &&
+                                                                                        sectionDescription.includes(
+                                                                                            qa.id.split(
+                                                                                                '.',
+                                                                                            )[0],
+                                                                                        ) && (
+                                                                                            <div>
+                                                                                                <p className="section-description">
+                                                                                                    {
+                                                                                                        qa
+                                                                                                            .questions
+                                                                                                            .questions
+                                                                                                            .text
+                                                                                                    }
+                                                                                                </p>
+                                                                                            </div>
+                                                                                        )}
+                                                                                    {qa
+                                                                                        .answers
+                                                                                        ?.answers
+                                                                                        .answer &&
+                                                                                        qa
+                                                                                            .answers
+                                                                                            ?.answers
+                                                                                            .answer[0] && (
+                                                                                            <div className="qa-container">
+                                                                                                <QuestionsAndAnswersDisplay
+                                                                                                    questionAndAnswer={
+                                                                                                        qa
+                                                                                                    }
+                                                                                                    questionnaireResource={
+                                                                                                        props.questionnaireResource
+                                                                                                    }
+                                                                                                    questionAndAnswerIndex={
+                                                                                                        qaIndex
+                                                                                                    }
+                                                                                                />
+                                                                                            </div>
+                                                                                        )}
                                                                                     {qAndA.map(
                                                                                         (
                                                                                             subqa,
@@ -192,7 +292,7 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                                     )}
                                                                                 </div>
                                                                             )}
-                                                                    </>
+                                                                    </div>
                                                                 ),
                                                             )}
                                                         </Panel>
