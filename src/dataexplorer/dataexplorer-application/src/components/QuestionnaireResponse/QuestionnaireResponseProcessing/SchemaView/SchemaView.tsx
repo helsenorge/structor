@@ -86,15 +86,10 @@ const SchemaView = (props: SchemaViewProps) => {
                                                         >
                                                             {qAndA.map(
                                                                 (qa, qaIndex) =>
-                                                                    (qa.id.split(
+                                                                    qa.id.split(
                                                                         '.',
                                                                     ).length ===
-                                                                        2 ||
-                                                                        qa.id.split(
-                                                                            '.',
-                                                                        )
-                                                                            .length ===
-                                                                            3) &&
+                                                                        2 &&
                                                                     section.id ===
                                                                         qa.id.split(
                                                                             '.',
@@ -110,40 +105,53 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                                 qaIndex
                                                                             }
                                                                         >
-                                                                            {qa.id.split(
-                                                                                '.',
-                                                                            )
-                                                                                .length ===
-                                                                                2 && (
-                                                                                <QuestionsAndAnswersDisplay
-                                                                                    questionAndAnswer={
-                                                                                        qa
-                                                                                    }
-                                                                                    questionnaireResource={
-                                                                                        props.questionnaireResource
-                                                                                    }
-                                                                                    questionAndAnswerIndex={
-                                                                                        qaIndex
-                                                                                    }
-                                                                                />
-                                                                            )}
-                                                                            {qa.id.split(
-                                                                                '.',
-                                                                            )
-                                                                                .length ===
-                                                                                3 && (
-                                                                                <SubQuestionsAndAnswersDisplay
-                                                                                    questionAndAnswer={
-                                                                                        qa
-                                                                                    }
-                                                                                    questionnaireResource={
-                                                                                        props.questionnaireResource
-                                                                                    }
-                                                                                    questionAndAnswerIndex={
-                                                                                        qaIndex
-                                                                                    }
-                                                                                />
-                                                                            )}
+                                                                            <QuestionsAndAnswersDisplay
+                                                                                questionAndAnswer={
+                                                                                    qa
+                                                                                }
+                                                                                questionnaireResource={
+                                                                                    props.questionnaireResource
+                                                                                }
+                                                                                questionAndAnswerIndex={
+                                                                                    qaIndex
+                                                                                }
+                                                                            />
+                                                                        </div>
+                                                                    ),
+                                                            )}
+
+                                                            {qAndA.map(
+                                                                (qa, qaIndex) =>
+                                                                    qa.id.split(
+                                                                        '.',
+                                                                    ).length ===
+                                                                        3 &&
+                                                                    qa.id.split(
+                                                                        '.',
+                                                                    )[0] ===
+                                                                        section.id &&
+                                                                    qa.answers
+                                                                        ?.answers
+                                                                        .answer &&
+                                                                    qa.answers
+                                                                        ?.answers
+                                                                        .answer[0] && (
+                                                                        <div
+                                                                            key={
+                                                                                qaIndex
+                                                                            }
+                                                                        >
+                                                                            <SubQuestionsAndAnswersDisplay
+                                                                                questionAndAnswer={
+                                                                                    qa
+                                                                                }
+                                                                                questionnaireResource={
+                                                                                    props.questionnaireResource
+                                                                                }
+                                                                                questionAndAnswerIndex={
+                                                                                    qaIndex
+                                                                                }
+                                                                            />
                                                                         </div>
                                                                     ),
                                                             )}
