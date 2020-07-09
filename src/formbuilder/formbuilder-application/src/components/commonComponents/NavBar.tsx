@@ -75,6 +75,24 @@ function NavBar(): JSX.Element {
         }
     }
 
+    function validateForm(): boolean {
+        // if (state.description === '' || state.description === undefined)
+        //     return false;
+        // if (state.title === '' || state.title === undefined) return false;
+        for (const sectionId in state.sections) {
+            // if (!state.sections[key].valid) return false;
+            for (const questionId in state.questions) {
+                console.log(state.questions[questionId].answer.valid);
+                if (
+                    // !state.questions[questionId].valid ||
+                    !state.questions[questionId].answer.valid
+                )
+                    return false;
+            }
+        }
+        return true;
+    }
+
     return (
         <div className="nav-bar">
             <Modal
@@ -141,7 +159,13 @@ function NavBar(): JSX.Element {
                             size="large"
                             style={{ margin: '2px' }}
                             key="previewForm"
-                            onClick={() => setFormPreview(true)}
+                            onClick={() => {
+                                if (validateForm()) {
+                                    setFormPreview(true);
+                                } else {
+                                    alert('Vennligst fyll inn alle felt');
+                                }
+                            }}
                         >
                             Forhåndsvisning
                         </Button>
