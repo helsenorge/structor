@@ -68,10 +68,6 @@ function CreateForm(): JSX.Element {
 
     return (
         <div>
-            <Button onClick={() => console.log(state.questions)}>
-                Print questions
-            </Button>
-
             <Row>
                 <Col span={24}>
                     <NavBar />
