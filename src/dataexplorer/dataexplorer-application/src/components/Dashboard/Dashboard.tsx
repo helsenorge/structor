@@ -1,18 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Search from 'antd/lib/input/Search';
-import { History } from 'history';
 import { Row, Col } from 'antd';
 import './Dashboard.style.scss';
+import { useHistory } from 'react-router-dom';
+import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 
-const Dashboard = (props: { history: History }) => {
-    localStorage.clear();
-    const [patientID, setPatientID] = useState(
-        localStorage.getItem('myData') || '',
+const Dashboard = () => {
+    const { setPatientId, setName, setSchemanumber } = useContext(
+        BreadcrumbContext,
     );
-
+    const history = useHistory();
+    const handleClick = (value: string) => {
+        setPatientId(value);
+        history.push('/pasient');
+    };
     useEffect(() => {
-        localStorage.setItem('myData', patientID);
-    }, [patientID]);
+        setName('');
+        setPatientId('');
+        setSchemanumber('');
+    }, [setName, setPatientId, setSchemanumber]);
+
     return (
         <>
             <div className="search-container"></div>
@@ -21,14 +28,12 @@ const Dashboard = (props: { history: History }) => {
                     <Search
                         style={{ width: 400 }}
                         className="search-bar"
-                        placeholder="Søk med personnummer for å finne en pasient"
-                        onSearch={(value: string) => setPatientID(value)}
+                        placeholder="Søk etter en pasient!"
+                        onSearch={(value: string) => handleClick(value)}
                         allowClear={true}
                     />
                 </Col>
             </Row>
-            {patientID &&
-                props.history.push({ pathname: 'pasient', state: patientID })}
         </>
     );
 };

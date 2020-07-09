@@ -6,7 +6,6 @@ import PatientView from './PatientView/PatientView';
 import { Row, Spin } from 'antd';
 
 interface IPatientQuestionnaireProps {
-    setSchema: (id: string) => void;
     patientData: IPatientIdentifier;
     questionnaireResponses: IQuestionnaireResponse;
     questionnaireId: string;
@@ -18,7 +17,6 @@ const PatientQuestionnaire = ({
     questionnaireResponses,
     questionnaireId,
     questionnaireResponseData,
-    setSchema,
 }: IPatientQuestionnaireProps) => {
     const [dataSource, setDataSource] = useState<fhir.ResourceBase[]>([]);
 
@@ -51,7 +49,6 @@ const PatientQuestionnaire = ({
             {questionnaire && dataSource && (
                 <PatientView
                     patient={patientData.entry[0].resource}
-                    setSchema={setSchema}
                     dataSource={dataSource}
                     hasQuestionnaireResponses={true}
                 />

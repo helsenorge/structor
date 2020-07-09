@@ -6,15 +6,7 @@ import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import PatientQuestionnaire from './PatientQuestionnaire/PatientQuestionnaire';
 import PatientView from './PatientQuestionnaire/PatientView/PatientView';
 
-interface IPatientQuestionnaireResponsesProps {
-    patientData: IPatientIdentifier;
-    setSchema: (id: string) => void;
-}
-
-const PatientQuestionnaireResponses = ({
-    patientData,
-    setSchema,
-}: IPatientQuestionnaireResponsesProps) => {
+const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
     const [questionnaireId, setQuestionnaireId] = useState<string>();
     const [QRData, setQRData] = useState<IDataSource[]>([]);
     const [responseExists, setResponseExists] = useState<boolean>(true);
@@ -57,7 +49,6 @@ const PatientQuestionnaireResponses = ({
         <>
             {questionnaireResponses && questionnaireId && responseExists && (
                 <PatientQuestionnaire
-                    setSchema={setSchema}
                     patientData={patientData}
                     questionnaireResponses={questionnaireResponses}
                     questionnaireId={questionnaireId}
@@ -70,7 +61,6 @@ const PatientQuestionnaireResponses = ({
                 questionnaireResponses.total === 0 && (
                     <PatientView
                         patient={patientData.entry[0].resource}
-                        setSchema={setSchema}
                         dataSource={QRData}
                         hasQuestionnaireResponses={false}
                     />
