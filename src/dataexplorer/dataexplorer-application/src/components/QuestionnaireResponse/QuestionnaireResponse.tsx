@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Row, Spin } from 'antd';
 import 'dayjs/locale/nb';
 import useFetch from 'utils/hooks/useFetch';
 import QuestionnaireResponseProcessing from './QuestionnaireResponseProcessing/QuestionnaireResponseProcessing';
+import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 
-const QuestionnaireResponse = (props: { questionnaireResponseId: string }) => {
+const QuestionnaireResponse = () => {
+    const { schemaNumber } = useContext(BreadcrumbContext);
     const { response: questionnaireResponse, error: qrError } = useFetch<
         fhir.QuestionnaireResponse
-    >('fhir/QuestionnaireResponse/' + props.questionnaireResponseId);
+    >('fhir/QuestionnaireResponse/' + schemaNumber);
 
     const questionnaireUrl = questionnaireResponse?.questionnaire?.reference?.substr(
         questionnaireResponse?.questionnaire?.reference?.indexOf(

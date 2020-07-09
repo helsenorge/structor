@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Breadcrumb from 'antd/lib/breadcrumb';
 import { Link } from 'react-router-dom';
 import {
@@ -7,41 +7,25 @@ import {
     FileTextOutlined,
 } from '@ant-design/icons';
 import './Breadcrumbs.style.scss';
+import { BreadcrumbContext } from './BreadcrumbContext';
 
-interface IBreadCrumbsProps {
-    setName: (name: string) => void;
-    setSchemaNumber: (id: string) => void;
-    name: string;
-    schemaNumber: string;
-}
-
-const Breadcrumbs = ({
-    setName,
-    setSchemaNumber,
-    name,
-    schemaNumber,
-}: IBreadCrumbsProps) => {
-    function fromSchemeToHome() {
-        setSchemaNumber('');
-        setName('');
-    }
-    function fromSchemeToPatient() {
-        setSchemaNumber('');
-    }
+const Breadcrumbs = () => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    const { name, schemaNumber } = useContext(BreadcrumbContext);
     return (
         <>
             <div className="breadcrumbs-container">
                 <Breadcrumb>
                     <Breadcrumb.Item>
-                        <Link to="/" onClick={() => fromSchemeToHome()}>
-                            <HomeOutlined className="bread-icon" />
+                        <Link to="/">
+                            <HomeOutlined />
                             <span className="breadcrumbs-item">Hjem</span>
                         </Link>
                     </Breadcrumb.Item>
                     {name !== '' && (
-                        <Breadcrumb.Item onClick={() => fromSchemeToPatient()}>
-                            <Link to="/Pasient">
-                                <UserOutlined className="bread-icon" />
+                        <Breadcrumb.Item>
+                            <Link to="/pasient">
+                                <UserOutlined />
                                 <span className="breadcrumbs-item">
                                     <b>{name}</b>
                                 </span>

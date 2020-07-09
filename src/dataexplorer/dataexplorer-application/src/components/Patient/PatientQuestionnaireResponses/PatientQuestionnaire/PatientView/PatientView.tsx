@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { IPatient, IRecord } from 'types/IPatient';
 import { Row, Col, Card, Table, Typography, Spin } from 'antd';
 import dayjs from 'dayjs';
@@ -12,11 +12,11 @@ import {
     MobileOutlined,
     HomeOutlined,
 } from '@ant-design/icons';
+import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 
 const PatientView = (props: {
     patient: IPatient;
     dataSource: fhir.ResourceBase[];
-    setSchema: (id: string) => void;
     hasQuestionnaireResponses: boolean;
 }) => {
     const history = useHistory();
@@ -39,6 +39,7 @@ const PatientView = (props: {
             patientYear
         );
     };
+    const { setSchemanumber } = useContext(BreadcrumbContext);
     const { Title } = Typography;
     const name =
         props.patient.name[0].given[0] + ' ' + props.patient.name[0].family;
@@ -64,7 +65,7 @@ const PatientView = (props: {
     ];
 
     const handleClick = (record: IRecord) => {
-        props.setSchema(record.id);
+        setSchemanumber(record.id);
         history.push('/pasient/skjema');
     };
 
