@@ -1,4 +1,3 @@
-import { koronaSkjema } from '../questionnaires/koronaSkjema';
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
 import {
@@ -13,13 +12,6 @@ import {
 import AnswerTypes from '../types/IAnswer';
 import moment from 'moment';
 import { generateID } from '../helpers/IDGenerator';
-
-function getQuestionnaire(): fhir.Questionnaire {
-    const questionnaireObj = koronaSkjema;
-
-    console.log('Questionnaire object: ', questionnaireObj);
-    return questionnaireObj;
-}
 
 function getChoices(
     currentQuestion: fhir.QuestionnaireItem,

@@ -17,6 +17,7 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import AnswerTypes from '../types/IAnswer';
 import IQuestion from '../types/IQuestion';
+import Title from 'antd/lib/typography/Title';
 
 type QuestionProps = {
     duplicateQuestion: () => void;
@@ -99,8 +100,73 @@ function QuestionWrapper({
         }
     }
 
+    function buttons(): JSX.Element {
+        console.log('buttons');
+        return (
+            <>
+                <Row style={{ float: 'right', paddingTop: '10px' }}>
+                    <Button
+                        style={{
+                            zIndex: 1,
+                            color: 'var(--primary-1)',
+                            marginLeft: '10px',
+                            float: 'right',
+                        }}
+                        icon={<DeleteOutlined />}
+                        type="default"
+                        onClick={() => removeQuestion()}
+                    >
+                        Slett {isInfo ? 'informasjon' : 'spørsmål'}
+                    </Button>
+                </Row>
+                <Row style={{ float: 'right', paddingTop: '10px' }}>
+                    <Button
+                        style={{
+                            zIndex: 1,
+                            color: 'var(--primary-1)',
+                            marginLeft: '10px',
+                            float: 'right',
+                        }}
+                        icon={<CopyOutlined />}
+                        type="default"
+                        onClick={() => duplicateQuestion()}
+                    >
+                        Dupliser {isInfo ? 'informasjon' : 'spørsmål'}
+                    </Button>
+                </Row>
+                <Row style={{ float: 'right', paddingTop: '10px' }}>
+                    {((state.questions[questionId].questionText.length > 0 &&
+                        state.questions[questionId].answerType !==
+                            AnswerTypes.default) ||
+                        state.questions[questionId].answerType ===
+                            AnswerTypes.info) && (
+                        <Button
+                            style={{
+                                zIndex: 1,
+                                color: 'var(--primary-1)',
+                                marginLeft: '10px',
+                                float: 'left',
+                            }}
+                            icon={<EyeOutlined />}
+                            type="default"
+                            onClick={() => setQuestionPreview(true)}
+                        >
+                            Forhåndsvis
+                        </Button>
+                    )}
+                </Row>
+            </>
+        );
+    }
+
     return (
-        <div style={{ marginTop: '10px' }}>
+        <div
+            style={{
+                marginTop: '10px',
+                backgroundColor: 'var(--color-base-1)',
+                padding: '30px',
+            }}
+        >
             <Modal
                 title={
                     'Slik ser ' +
@@ -136,8 +202,8 @@ function QuestionWrapper({
                     ></iframe>
                 </div>
             </Modal>
-            <Row justify="end">
-                <Col span={2} style={{ display: 'block' }}>
+            <Row>
+                <Col span={1} style={{ display: 'block' }}>
                     <Tooltip
                         title={
                             (state.questions[questionId] as IQuestion).collapsed
@@ -151,11 +217,9 @@ function QuestionWrapper({
                             id="CollapseQuestionButton"
                             style={{
                                 zIndex: 1,
-                                marginLeft: '10px',
                                 color: 'var(--primary-1)',
                                 float: 'left',
                             }}
-                            size="small"
                             type="link"
                             shape="circle"
                             icon={
@@ -175,100 +239,105 @@ function QuestionWrapper({
                         />
                     </Tooltip>
                 </Col>
-                <Col span={22} style={{ display: 'block' }}>
-                    {((state.questions[questionId].questionText.length > 0 &&
-                        state.questions[questionId].answerType !==
-                            AnswerTypes.default) ||
-                        state.questions[questionId].answerType ===
-                            AnswerTypes.info) && (
-                        <Button
-                            style={{
-                                zIndex: 1,
-                                color: 'var(--primary-1)',
-                                marginLeft: '10px',
-                                float: 'left',
-                            }}
-                            icon={<EyeOutlined />}
-                            type="default"
-                            onClick={() => setQuestionPreview(true)}
-                        >
-                            Forhåndsvis {isInfo ? 'informasjon' : 'spørsmål'}
-                        </Button>
-                    )}
-                    <Tooltip
-                        title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}
-                    >
-                        <Button
-                            style={{
-                                zIndex: 1,
-                                color: 'var(--primary-1)',
-                                float: 'right',
-                            }}
-                            size="large"
-                            type="link"
-                            {...provided.dragHandleProps}
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                width="24"
+                {!isInfo && (
+                    <>
+                        <Col xs={0} lg={2}></Col>
+                        <Col span={1} style={{ float: 'right' }}>
+                            <Title
+                                level={4}
+                                style={{ color: 'var(--primary-1)' }}
                             >
-                                <path d="M0 0h24v24H0V0z" fill="none" />
-                                <path
-                                    fill="var(--primary-1)"
-                                    d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
-                                />
-                            </svg>
-                        </Button>
-                    </Tooltip>
-                    <Button
-                        style={{
-                            zIndex: 1,
-                            color: 'var(--primary-1)',
-                            marginLeft: '10px',
-                            float: 'right',
-                        }}
-                        icon={<DeleteOutlined />}
-                        type="default"
-                        onClick={() => removeQuestion()}
-                    >
-                        Slett {isInfo ? 'informasjon' : 'spørsmål'}
-                    </Button>
-                    <Button
-                        style={{
-                            zIndex: 1,
-                            color: 'var(--primary-1)',
-                            marginLeft: '10px',
-                            float: 'right',
-                        }}
-                        icon={<CopyOutlined />}
-                        type="default"
-                        onClick={() => duplicateQuestion()}
-                    >
-                        Dupliser {isInfo ? 'informasjon' : 'spørsmål'}
-                    </Button>
-                </Col>
+                                {String(cronologicalID.map((a) => a + 1))}
+                            </Title>
+                        </Col>
+                        <Col lg={20} xs={22} style={{ width: '100%' }}>
+                            <QuestionBuilder
+                                questionId={questionId}
+                                buttons={buttons}
+                                provided={provided}
+                                isInfo={isInfo}
+                            ></QuestionBuilder>
+                        </Col>
+                    </>
+                )}
+                {isInfo && !state.questions[questionId].collapsed && (
+                    <>
+                        <Col span={3} style={{ float: 'right' }}>
+                            <Title
+                                level={4}
+                                style={{ color: 'var(--primary-1)' }}
+                            >
+                                {String(cronologicalID.map((a) => a + 1))}
+                            </Title>
+                        </Col>
+                        <Col xs={12} lg={14}>
+                            <AnswerBuilder
+                                questionId={questionId}
+                            ></AnswerBuilder>
+                        </Col>
+                        <Col xs={8} lg={6}>
+                            <Row style={{ float: 'right' }}>
+                                <Tooltip
+                                    title={
+                                        isInfo
+                                            ? 'Flytt informasjon'
+                                            : 'Flytt spørsmål'
+                                    }
+                                >
+                                    <Button
+                                        style={{
+                                            zIndex: 1,
+                                            color: 'var(--primary-1)',
+                                            float: 'right',
+                                        }}
+                                        type="link"
+                                        shape="circle"
+                                        {...provided.dragHandleProps}
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            width="24"
+                                        >
+                                            <path
+                                                d="M0 0h24v24H0V0z"
+                                                fill="none"
+                                            />
+                                            <path
+                                                fill="var(--primary-1)"
+                                                d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
+                                            />
+                                        </svg>
+                                    </Button>
+                                </Tooltip>
+                            </Row>
+                            <Row style={{ float: 'right', display: 'block' }}>
+                                {buttons()}
+                            </Row>
+                        </Col>
+                    </>
+                )}
             </Row>
-            {!isInfo && (
-                <Row>
-                    <Col span={4} style={{ float: 'left' }}>
-                        {String(cronologicalID.map((a) => a + 1))}
-                    </Col>
-                    <Col xl={16} md={18}>
-                        <QuestionBuilder
-                            questionId={questionId}
-                        ></QuestionBuilder>
-                    </Col>
-                </Row>
-            )}
+
             {!state.questions[questionId].collapsed && (
                 <Row>
-                    <Col span={4} style={{ float: 'left' }}>
-                        {isInfo && String(cronologicalID.map((a) => a + 1))}
-                    </Col>
-                    <Col xl={16} md={20}>
-                        <AnswerBuilder questionId={questionId}></AnswerBuilder>
+                    <Col xs={1} lg={4}></Col>
+                    <Col
+                        xs={21}
+                        lg={14}
+                        style={{
+                            float: 'left',
+                            textAlign: 'left',
+                            padding: '0 10px 10px 10px',
+                            marginTop: '0',
+                        }}
+                    >
+                        {!isInfo && (
+                            <AnswerBuilder
+                                questionId={questionId}
+                            ></AnswerBuilder>
+                        )}
                     </Col>
                 </Row>
             )}

@@ -7,7 +7,6 @@ import Number from './answerComponents/Number';
 import Info from './answerComponents/Info';
 import React, { useContext } from 'react';
 import { FormContext } from '../store/FormStore';
-import { Row, Col } from 'antd';
 
 type AnswerProps = {
     questionId: string;
@@ -27,13 +26,7 @@ function AnswerBuilder({ questionId }: AnswerProps): JSX.Element {
         [AnswerTypes.info]: <Info questionId={questionId} />,
     };
 
-    return (
-        <Row justify="start">
-            <Col span={20}>
-                {answerBuilder[state.questions[questionId].answerType]}
-            </Col>
-        </Row>
-    );
+    return <>{answerBuilder[state.questions[questionId].answerType]}</>;
 }
 
 export default AnswerBuilder;
