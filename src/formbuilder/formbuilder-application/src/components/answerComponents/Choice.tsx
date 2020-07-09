@@ -54,21 +54,6 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         dispatch(updateAnswer(questionId, temp));
     }
 
-    const choiceStyle = { marginTop: '20px', marginLeft: 0 };
-
-    const choiceButtonStyle = {
-        display: 'block',
-        height: '30px',
-        lineHeight: '30px',
-        marginBottom: 10,
-        width: '90%',
-        marginLeft: 0,
-    };
-
-    const choiceInputStyle = {
-        width: '250px',
-    };
-
     function updateChoices(attribute: {
         mode?: string;
         value?: string;
@@ -86,6 +71,20 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         setChoices(tempChoices);
         if (attribute.updateState) localUpdate({ choices: tempChoices });
     }
+    const choiceStyle = { marginTop: '20px', marginLeft: 0 };
+
+    const choiceButtonStyle = {
+        display: 'block',
+        height: '30px',
+        lineHeight: '30px',
+        marginBottom: 10,
+        width: '90%',
+        marginLeft: 0,
+    };
+
+    const choiceInputStyle = {
+        width: '250px',
+    };
 
     function deleteButton(id: number): JSX.Element {
         return (
@@ -107,23 +106,6 @@ function Choice({ questionId }: choiceProps): JSX.Element {
             </Tooltip>
         );
     }
-
-    /* function addButtonClick() {
-        const tempChoices = [...choices, ''];
-        setChoices(tempChoices);
-    }
-
-    function deleteButton(id: number) {
-        const tempChoices = { ...choices };
-        tempChoices.splice(id, 1);
-        setChoices(tempChoices);
-    }
-
-    function alterChoiceText(id: number, value: string) {
-        const tempChoices = { ...choices };
-        tempChoices[id] = value;
-        setChoices(tempChoices); 
-    }*/
 
     function createRadioButton(id: number) {
         return (
