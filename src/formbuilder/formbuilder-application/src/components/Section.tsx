@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, ChangeEvent } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Row, Col, Button, Tooltip, Input } from 'antd';
 import { PlusOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import QuestionWrapper from './QuestionWrapper';
@@ -12,6 +12,7 @@ import {
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes from '../types/IAnswer';
+import Title from 'antd/lib/typography/Title';
 
 const { TextArea } = Input;
 
@@ -89,24 +90,19 @@ function Section({
     return (
         <div
             style={{
-                margin: '10px',
                 backgroundColor: 'var(--color-base-1)',
-                width: '95%',
-                display: 'inline-block',
-                boxShadow: '0 4px 8px 0 #c7c7c7c7',
-                borderRadius: '2px',
             }}
+            className="wrapper"
         >
             {needsSections && (
                 <div
                     style={{
-                        padding: '10px',
-                        backgroundColor: 'var(--color-base-3',
+                        padding: '30px',
+                        backgroundColor: 'var(--color-base-3)',
                     }}
                 >
-                    <Row style={{ margin: '0 10px 10px 10px' }}>
-                        <Col xs={0} lg={4}>
-                            {String(sectionIndex + 1)}
+                    <Row>
+                        <Col xs={1} lg={1}>
                             <Tooltip
                                 title={
                                     collapsedSection
@@ -121,7 +117,6 @@ function Section({
                                         color: 'var(--primary-1)',
                                         float: 'left',
                                     }}
-                                    size="small"
                                     type="link"
                                     shape="circle"
                                     icon={
@@ -137,10 +132,19 @@ function Section({
                                 />
                             </Tooltip>
                         </Col>
+                        <Col xs={0} lg={2}></Col>
+                        <Col span={1} style={{ paddingTop: '4px' }}>
+                            <Title
+                                style={{ color: 'var(--primary-1)' }}
+                                level={3}
+                            >
+                                {String(sectionIndex + 1)}
+                            </Title>
+                        </Col>
                         <Col
-                            xs={24}
-                            lg={13}
-                            span={13}
+                            xs={21}
+                            lg={14}
+                            span={14}
                             style={{
                                 width: '100%',
                             }}
@@ -160,37 +164,8 @@ function Section({
                                 }
                             />
                         </Col>
-                        <Col
-                            sm={7}
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'flex-end',
-                            }}
-                        >
-                            <Button
-                                style={{
-                                    zIndex: 1,
-                                    color: 'var(--primary-1)',
-                                    marginLeft: '10px',
-                                }}
-                                icon={<CopyOutlined />}
-                                type="default"
-                                onClick={() => duplicateSection()}
-                            >
-                                Dupliser seksjon
-                            </Button>
-                            <Button
-                                style={{
-                                    zIndex: 1,
-                                    color: 'var(--primary-1)',
-                                    marginLeft: '10px',
-                                }}
-                                icon={<DeleteOutlined />}
-                                type="default"
-                                onClick={() => removeSection()}
-                            >
-                                Slett seksjon
-                            </Button>
+                        <Col xs={0} lg={5}></Col>
+                        <Col xs={1} lg={1}>
                             <Tooltip title="Flytt seksjon">
                                 {provided && (
                                     <Button
@@ -198,9 +173,10 @@ function Section({
                                         style={{
                                             zIndex: 1,
                                             color: 'var(--primary-1)',
+                                            float: 'right',
                                         }}
-                                        size="large"
                                         type="link"
+                                        shape="circle"
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -222,9 +198,9 @@ function Section({
                             </Tooltip>
                         </Col>
                     </Row>
-                    <Row style={{ padding: '0 10px' }}>
+                    <Row style={{ paddingTop: '5px' }}>
                         <Col xs={0} lg={4}></Col>
-                        <Col xs={24} lg={13}>
+                        <Col xs={24} lg={14}>
                             <TextArea
                                 placeholder="Beskrivelse av seksjon..."
                                 className="input-question"
@@ -237,14 +213,43 @@ function Section({
                                 onBlur={() =>
                                     localUpdate({ updateState: true })
                                 }
+                                rows={3}
                             ></TextArea>
                         </Col>
-                        <Col xs={0} lg={4}></Col>
+                        <Col sm={6}>
+                            <Row style={{ float: 'right' }}>
+                                <Button
+                                    style={{
+                                        zIndex: 1,
+                                        color: 'var(--primary-1)',
+                                        marginLeft: '10px',
+                                        float: 'right',
+                                    }}
+                                    icon={<CopyOutlined />}
+                                    type="default"
+                                    onClick={() => duplicateSection()}
+                                >
+                                    Dupliser seksjon
+                                </Button>
+                            </Row>
+                            <Row style={{ float: 'right', paddingTop: '10px' }}>
+                                {' '}
+                                {/* Delete seksjon */}
+                                <Button
+                                    style={{
+                                        zIndex: 1,
+                                        color: 'var(--primary-1)',
+                                        marginLeft: '10px',
+                                    }}
+                                    icon={<DeleteOutlined />}
+                                    type="default"
+                                    onClick={() => removeSection()}
+                                >
+                                    Slett seksjon
+                                </Button>
+                            </Row>
+                        </Col>
                     </Row>
-                </div>
-            )}
-            {!collapsedSection && (
-                <>
                     <Row>
                         <hr
                             key="hrTitle"
@@ -252,10 +257,14 @@ function Section({
                                 margin: 0,
                                 color: 'black',
                                 width: '100%',
-                                border: '0.2px solid var(--color-base-2)',
+                                border: '0.2px solid var(--color-base-3)',
                             }}
                         />
                     </Row>
+                </div>
+            )}
+            {!collapsedSection && (
+                <>
                     <Row>
                         <Col span={24}>
                             <DND.Droppable
@@ -339,7 +348,7 @@ function Section({
                                                                             width:
                                                                                 '100%',
                                                                             border:
-                                                                                '0.2px solid var(--color-base-2)',
+                                                                                '0.2px solid var(--color-base-3)',
                                                                         }}
                                                                     />
                                                                 </div>
@@ -355,7 +364,10 @@ function Section({
                         </Col>
                     </Row>
                     <Row justify="center">
-                        <Col span={10} style={{ margin: '10px' }}>
+                        <Col
+                            span={24}
+                            style={{ margin: '10px', padding: '15px' }}
+                        >
                             <Button
                                 style={{
                                     backgroundColor: 'var(--primary-1)',

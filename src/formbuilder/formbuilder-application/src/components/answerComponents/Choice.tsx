@@ -66,10 +66,6 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         marginLeft: 0,
     };
 
-    const choiceInputStyle = {
-        width: '250px',
-    };
-
     function addButtonClick() {
         const tempChoices = [...localAnswer.choices, ''];
         localUpdate({ updateStore: true, choices: tempChoices });
@@ -98,11 +94,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 <Input
                     type="text"
                     className="input-question"
-                    placeholder={
-                        'Skriv inn alternativ nr. ' + (id + 1) + ' her'
-                    }
+                    placeholder={'Alternativ ' + (id + 1)}
                     value={localAnswer.choices[id]}
-                    style={choiceInputStyle}
+                    style={{ width: '100%' }}
                     onChange={(e) => alterChoiceText(id, e.target.value)}
                     onBlur={() => localUpdate({ updateStore: true })}
                 />
@@ -132,11 +126,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 <Input
                     type="text"
                     className="input-question"
-                    placeholder={
-                        'Skriv inn alternativ nr. ' + (id + 1) + ' her'
-                    }
+                    placeholder={'Alternativ ' + (id + 1)}
                     value={localAnswer.choices[id]}
-                    style={choiceInputStyle}
+                    style={{ width: '85%' }}
                     onChange={(e) => alterChoiceText(id, e.target.value)}
                     onBlur={() => localUpdate({ updateStore: true })}
                 />
@@ -156,21 +148,11 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     return (
         <>
-            <Row>
-                <Col span={6}>
-                    <Checkbox
-                        defaultChecked={localAnswer.isMultiple}
-                        onChange={(e) =>
-                            localUpdate({
-                                updateStore: true,
-                                isMultiple: e.target.checked,
-                            })
-                        }
-                    >
-                        La borger velge flere alternativ
-                    </Checkbox>
-                </Col>
-                <Col span={6}>
+            <Row
+                className="standard"
+                style={{ paddingLeft: '0px', paddingTop: '0px' }}
+            >
+                <Col span={24}>
                     <Checkbox
                         defaultChecked={localAnswer.isOpen}
                         onChange={(e) =>
@@ -180,12 +162,30 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                             })
                         }
                     >
-                        La borger legge til svaralternativ
+                        La mottaker legge til svaralternativ
                     </Checkbox>
                 </Col>
-                {!localAnswer.isMultiple && (
-                    <>
-                        <Col span={6}>
+            </Row>
+            <Row className="standard" style={{ paddingLeft: '0px' }}>
+                <Col span={24}>
+                    <Checkbox
+                        defaultChecked={localAnswer.isMultiple}
+                        onChange={(e) =>
+                            localUpdate({
+                                updateStore: true,
+                                isMultiple: e.target.checked,
+                            })
+                        }
+                    >
+                        La mottaker velge flere alternativ
+                    </Checkbox>
+                </Col>
+            </Row>
+
+            {!localAnswer.isMultiple && (
+                <>
+                    <Row className="standard" style={{ paddingLeft: '0px' }}>
+                        <Col span={24}>
                             <Checkbox
                                 defaultChecked={localAnswer.hasDefault}
                                 disabled={localAnswer.isMultiple}
@@ -196,10 +196,8 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                     })
                                 }
                             >
-                                Default:
+                                Forhåndsvelg standardalternativ:
                             </Checkbox>
-                        </Col>
-                        <Col span={6}>
                             <Select
                                 defaultValue={localAnswer.defaultValue}
                                 disabled={
@@ -215,7 +213,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                         defaultValue: value,
                                     });
                                 }}
-                                placeholder="Velg default"
+                                placeholder="Velg standardalternativ"
                             >
                                 {localAnswer.choices
                                     ? localAnswer.choices.map((name, id) => [
@@ -231,12 +229,13 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                     : []}
                             </Select>
                         </Col>
-                    </>
-                )}
-            </Row>
+                    </Row>
+                </>
+            )}
+
             {localAnswer.isMultiple ? (
                 <div className="question-component" style={choiceStyle}>
-                    <h4>Answers:</h4>
+                    <h4>Skriv inn svaralternativer under:</h4>
                     {localAnswer.choices.map((name, id) => [
                         createCheckbox(id),
                     ])}
@@ -251,7 +250,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 </div>
             ) : (
                 <div className="question-component" style={choiceStyle}>
-                    <h4>Answers:</h4>
+                    <h4>Skriv inn svaralternativer under:</h4>
                     <Radio.Group
                         name="radiogroup"
                         value={

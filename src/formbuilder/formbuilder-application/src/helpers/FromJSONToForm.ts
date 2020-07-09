@@ -1,4 +1,3 @@
-import { koronaSkjema } from '../questionnaires/koronaSkjema';
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
 import {
@@ -13,13 +12,6 @@ import {
 import AnswerTypes from '../types/IAnswer';
 import moment from 'moment';
 import { generateID } from '../helpers/IDGenerator';
-
-function getQuestionnaire(): fhir.Questionnaire {
-    const questionnaireObj = koronaSkjema;
-
-    console.log('Questionnaire object: ', questionnaireObj);
-    return questionnaireObj;
-}
 
 function getChoices(
     currentQuestion: fhir.QuestionnaireItem,
@@ -379,9 +371,7 @@ function convertFromJSON(
                             tempQuestion.answerType = AnswerTypes.time;
                         } else if (currentQuestion.type === 'display') {
                             const dot = currentQuestion.linkId.indexOf('.');
-                            if (
-                                currentQuestion.linkId.substr(dot + 1) === '101'
-                            ) {
+                            if (currentQuestion.linkId.substr(dot) === '101') {
                                 tempSection.description = currentQuestion.text;
                             } else {
                                 tempAnswer = getDisplay(currentQuestion);

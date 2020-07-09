@@ -49,144 +49,132 @@ function Number({ questionId }: NumberProps): JSX.Element {
     return (
         <>
             <Row>
-                <Col span={12} className="standard">
-                    <Row>
-                        <Col span={12} className="standard">
-                            <Checkbox
-                                checked={localAnswer.isDecimal}
-                                onChange={(e) =>
-                                    localUpdate({
-                                        isDecimal: e.target.checked,
-                                        updateStore: true,
-                                    })
-                                }
-                            >
-                                Desimaltall
-                            </Checkbox>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={12} className="standard">
-                            <Checkbox
-                                checked={localAnswer.hasDefault}
-                                onChange={(e) =>
-                                    localUpdate({
-                                        hasDefault: e.target.checked,
-                                        updateStore: true,
-                                    })
-                                }
-                            >
-                                Forhåndsvalgt verdi
-                            </Checkbox>
-                        </Col>
-                        <Col span={12} className="standard">
-                            <InputNumber
-                                value={localAnswer.defaultValue}
-                                onChange={(value) =>
-                                    localUpdate({
-                                        updateStore: false,
-                                        defaultValue: value as number,
-                                    })
-                                }
-                                onBlur={() =>
-                                    localUpdate({ updateStore: true })
-                                }
-                                disabled={!localAnswer.hasDefault}
-                            ></InputNumber>
-                        </Col>
-                    </Row>
+                <Col span={10} className="standard">
+                    <Checkbox
+                        checked={localAnswer.isDecimal}
+                        onChange={(e) =>
+                            localUpdate({
+                                isDecimal: e.target.checked,
+                                updateStore: true,
+                            })
+                        }
+                    >
+                        Desimaltall
+                    </Checkbox>
+                </Col>
+            </Row>
+            <Row>
+                <Col span={10} className="standard">
+                    <Checkbox
+                        checked={localAnswer.hasDefault}
+                        onChange={(e) =>
+                            localUpdate({
+                                hasDefault: e.target.checked,
+                                updateStore: true,
+                            })
+                        }
+                    >
+                        Forhåndsvalgt verdi
+                    </Checkbox>
+                </Col>
+                <Col span={10} className="standard">
+                    <InputNumber
+                        value={localAnswer.defaultValue}
+                        onChange={(value) =>
+                            localUpdate({
+                                updateStore: false,
+                                defaultValue: value as number,
+                            })
+                        }
+                        onBlur={() => localUpdate({ updateStore: true })}
+                        disabled={!localAnswer.hasDefault}
+                    ></InputNumber>
+                </Col>
+            </Row>
 
-                    <Row>
-                        <Col span={12} className="standard">
-                            <Checkbox
-                                checked={localAnswer.hasMin}
-                                onChange={(e) =>
-                                    localUpdate({
-                                        hasMin: e.target.checked,
-                                        updateStore: true,
-                                    })
-                                }
-                            >
-                                Min
-                            </Checkbox>
-                        </Col>
-                        <Col span={12} className="standard">
-                            <InputNumber
-                                value={localAnswer.minValue}
-                                onChange={(value) =>
-                                    localUpdate({
-                                        updateStore: false,
-                                        minValue: value as number,
-                                    })
-                                }
-                                onBlur={() =>
-                                    localUpdate({ updateStore: true })
-                                }
-                                disabled={!localAnswer.hasMin}
-                            ></InputNumber>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={12} className="standard">
-                            <Checkbox
-                                checked={localAnswer.hasMax}
-                                onChange={(e) =>
-                                    localUpdate({
-                                        hasMax: e.target.checked,
-                                        updateStore: true,
-                                    })
-                                }
-                            >
-                                Max
-                            </Checkbox>
-                        </Col>
-                        <Col span={12} className="standard">
-                            <InputNumber
-                                value={localAnswer.maxValue}
-                                onChange={(value) =>
-                                    localUpdate({
-                                        updateStore: false,
-                                        maxValue: value as number,
-                                    })
-                                }
-                                onBlur={() =>
-                                    localUpdate({ updateStore: true })
-                                }
-                                disabled={!localAnswer.hasMax}
-                            ></InputNumber>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={12} className="standard">
-                            <Checkbox
-                                checked={localAnswer.hasUnit}
-                                onChange={(e) =>
-                                    localUpdate({
-                                        hasUnit: e.target.checked,
-                                        updateStore: true,
-                                    })
-                                }
-                            >
-                                Enhet
-                            </Checkbox>
-                        </Col>
-                        <Col span={12} className="standard">
-                            <Input
-                                style={{ width: '90px' }}
-                                value={localAnswer.unit}
-                                onChange={(e) =>
-                                    localUpdate({
-                                        updateStore: false,
-                                        unit: e.target.value as string,
-                                    })
-                                }
-                                onBlur={() =>
-                                    localUpdate({ updateStore: true })
-                                }
-                                disabled={!localAnswer.hasUnit}
-                            ></Input>
-                        </Col>
-                    </Row>
+            <Row>
+                <Col span={10} className="standard">
+                    <Checkbox
+                        checked={localAnswer.hasMin}
+                        onChange={(e) =>
+                            localUpdate({
+                                hasMin: e.target.checked,
+                                updateStore: true,
+                            })
+                        }
+                    >
+                        Min
+                    </Checkbox>
+                </Col>
+                <Col span={10} className="standard">
+                    <InputNumber
+                        value={localAnswer.minValue}
+                        onChange={(value) =>
+                            localUpdate({
+                                updateStore: false,
+                                minValue: value as number,
+                            })
+                        }
+                        onBlur={() => localUpdate({ updateStore: true })}
+                        disabled={!localAnswer.hasMin}
+                    ></InputNumber>
+                </Col>
+            </Row>
+            <Row>
+                <Col span={10} className="standard">
+                    <Checkbox
+                        checked={localAnswer.hasMax}
+                        onChange={(e) =>
+                            localUpdate({
+                                hasMax: e.target.checked,
+                                updateStore: true,
+                            })
+                        }
+                    >
+                        Max
+                    </Checkbox>
+                </Col>
+                <Col span={10} className="standard">
+                    <InputNumber
+                        value={localAnswer.maxValue}
+                        onChange={(value) =>
+                            localUpdate({
+                                updateStore: false,
+                                maxValue: value as number,
+                            })
+                        }
+                        onBlur={() => localUpdate({ updateStore: true })}
+                        disabled={!localAnswer.hasMax}
+                    ></InputNumber>
+                </Col>
+            </Row>
+            <Row>
+                <Col span={10} className="standard">
+                    <Checkbox
+                        checked={localAnswer.hasUnit}
+                        onChange={(e) =>
+                            localUpdate({
+                                hasUnit: e.target.checked,
+                                updateStore: true,
+                            })
+                        }
+                    >
+                        Enhet
+                    </Checkbox>
+                </Col>
+                <Col span={12} className="standard">
+                    <Input
+                        style={{ width: '90px' }}
+                        value={localAnswer.unit}
+                        onChange={(e) =>
+                            localUpdate({
+                                updateStore: false,
+                                unit: e.target.value as string,
+                            })
+                        }
+                        onBlur={() => localUpdate({ updateStore: true })}
+                        disabled={!localAnswer.hasUnit}
+                    ></Input>
                 </Col>
             </Row>
         </>
