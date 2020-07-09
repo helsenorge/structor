@@ -10,11 +10,12 @@ type NumberProps = {
 
 function Number({ questionId }: NumberProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [localAnswer, setLocalAnswer] = useState(
-        state.questions[questionId].answer as INumber,
-    );
+    // const [localAnswer, setLocalAnswer] = useState(
+    //     state.questions[questionId].answer as INumber,
+    // );
+    const localAnswer = { ...state.questions[questionId].answer } as INumber;
 
-    function localUpdate(attribute: {
+    function updateStore(attribute: {
         hasMax?: boolean;
         hasMin?: boolean;
         hasUnit?: boolean;
@@ -24,9 +25,8 @@ function Number({ questionId }: NumberProps): JSX.Element {
         minValue?: number;
         defaultValue?: number;
         unit?: string;
-        updateStore?: boolean;
     }) {
-        const temp = { ...localAnswer };
+        const temp = { ...localAnswer } as INumber;
         if (attribute.hasMax !== undefined) temp.hasMax = attribute.hasMax;
         if (attribute.hasMin !== undefined) temp.hasMin = attribute.hasMin;
         if (attribute.hasUnit !== undefined) temp.hasUnit = attribute.hasUnit;
@@ -41,9 +41,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
             temp.minValue = attribute.minValue;
         if (attribute.defaultValue !== undefined)
             temp.defaultValue = attribute.defaultValue;
-        setLocalAnswer(temp);
-        if (attribute.updateStore !== undefined && attribute.updateStore)
-            dispatch(updateAnswer(questionId, temp));
+        dispatch(updateAnswer(questionId, temp));
     }
 
     return (
@@ -55,9 +53,8 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             <Checkbox
                                 checked={localAnswer.isDecimal}
                                 onChange={(e) =>
-                                    localUpdate({
+                                    updateStore({
                                         isDecimal: e.target.checked,
-                                        updateStore: true,
                                     })
                                 }
                             >
@@ -70,9 +67,8 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             <Checkbox
                                 checked={localAnswer.hasDefault}
                                 onChange={(e) =>
-                                    localUpdate({
+                                    updateStore({
                                         hasDefault: e.target.checked,
-                                        updateStore: true,
                                     })
                                 }
                             >
@@ -83,14 +79,17 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             <InputNumber
                                 type="number"
                                 value={localAnswer.defaultValue}
-                                onChange={(value) =>
-                                    localUpdate({
-                                        updateStore: false,
-                                        defaultValue: value as number,
+                                // onChange={(value) =>
+                                //     localUpdate({
+                                //         updateStore: false,
+                                //         defaultValue: value as number,
+                                //     })
+                                // }
+                                onBlur={(e) =>
+                                    updateStore({
+                                        defaultValue: (e.target
+                                            .value as unknown) as number,
                                     })
-                                }
-                                onBlur={() =>
-                                    localUpdate({ updateStore: true })
                                 }
                                 disabled={!localAnswer.hasDefault}
                             ></InputNumber>
@@ -102,9 +101,8 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             <Checkbox
                                 checked={localAnswer.hasMin}
                                 onChange={(e) =>
-                                    localUpdate({
+                                    updateStore({
                                         hasMin: e.target.checked,
-                                        updateStore: true,
                                     })
                                 }
                             >
@@ -115,14 +113,17 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             <InputNumber
                                 type="number"
                                 value={localAnswer.minValue}
-                                onChange={(value) =>
-                                    localUpdate({
-                                        updateStore: false,
-                                        minValue: value as number,
+                                // onChange={(value) =>
+                                //     localUpdate({
+                                //         updateStore: false,
+                                //         minValue: value as number,
+                                //     })
+                                // }
+                                onBlur={(e) =>
+                                    updateStore({
+                                        minValue: (e.target
+                                            .value as unknown) as number,
                                     })
-                                }
-                                onBlur={() =>
-                                    localUpdate({ updateStore: true })
                                 }
                                 disabled={!localAnswer.hasMin}
                             ></InputNumber>
@@ -133,9 +134,8 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             <Checkbox
                                 checked={localAnswer.hasMax}
                                 onChange={(e) =>
-                                    localUpdate({
+                                    updateStore({
                                         hasMax: e.target.checked,
-                                        updateStore: true,
                                     })
                                 }
                             >
@@ -146,14 +146,17 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             <InputNumber
                                 type="number"
                                 value={localAnswer.maxValue}
-                                onChange={(value) =>
-                                    localUpdate({
-                                        updateStore: false,
-                                        maxValue: value as number,
+                                // onChange={(value) =>
+                                //     localUpdate({
+                                //         updateStore: false,
+                                //         maxValue: value as number,
+                                //     })
+                                // }
+                                onBlur={(e) =>
+                                    updateStore({
+                                        maxValue: (e.target
+                                            .value as unknown) as number,
                                     })
-                                }
-                                onBlur={() =>
-                                    localUpdate({ updateStore: true })
                                 }
                                 disabled={!localAnswer.hasMax}
                             ></InputNumber>
@@ -164,9 +167,8 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             <Checkbox
                                 checked={localAnswer.hasUnit}
                                 onChange={(e) =>
-                                    localUpdate({
+                                    updateStore({
                                         hasUnit: e.target.checked,
-                                        updateStore: true,
                                     })
                                 }
                             >
@@ -178,14 +180,16 @@ function Number({ questionId }: NumberProps): JSX.Element {
                                 type="text"
                                 style={{ width: '90px' }}
                                 value={localAnswer.unit}
-                                onChange={(e) =>
-                                    localUpdate({
-                                        updateStore: false,
-                                        unit: e.target.value as string,
+                                // onChange={(e) =>
+                                //     localUpdate({
+                                //         updateStore: false,
+                                //         unit: e.target.value as string,
+                                //     })
+                                // }
+                                onBlur={(e) =>
+                                    updateStore({
+                                        unit: e.target.value,
                                     })
-                                }
-                                onBlur={() =>
-                                    localUpdate({ updateStore: true })
                                 }
                                 disabled={!localAnswer.hasUnit}
                             ></Input>
