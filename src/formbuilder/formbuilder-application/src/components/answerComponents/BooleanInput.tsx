@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Checkbox, Input } from 'antd';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import './AnswerComponent.css';
@@ -13,21 +13,13 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
         marginBottom: '10px',
     };
     const { state, dispatch } = useContext(FormContext);
-    const [localAnswer, setLocalAnswer] = useState(
-        state.questions[questionId].answer as IBoolean,
-    );
 
-    function localUpdate(attribute: {
-        isChecked?: boolean;
-        label?: string;
-        updateStore?: boolean;
-    }) {
-        const temp = { ...localAnswer };
+    function localUpdate(attribute: { isChecked?: boolean; label?: string }) {
+        const temp = { ...(state.questions[questionId].answer as IBoolean) };
         if (attribute.isChecked !== undefined)
             temp.isChecked = attribute.isChecked;
         if (attribute.label) temp.label = attribute.label;
-        setLocalAnswer(temp);
-        if (attribute.updateStore) dispatch(updateAnswer(questionId, temp));
+        dispatch(updateAnswer(questionId, temp));
     }
 
     return (
@@ -36,31 +28,34 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
                 key={'Boolean' + questionId}
                 style={checkStyle}
                 disabled
-                defaultChecked={localAnswer.isChecked}
+                checked={
+                    (state.questions[questionId].answer as IBoolean).isChecked
+                }
             >
                 <Input
                     type="text"
-                    defaultValue={localAnswer.label}
+                    defaultValue={
+                        (state.questions[questionId].answer as IBoolean).label
+                    }
                     className="input-question"
                     placeholder={'Skriv inn påstand her.'}
                     style={{
                         width: '250px',
                     }}
-                    onBlur={() => localUpdate({ updateStore: true })}
-                    onChange={(e) =>
+                    onBlur={(e) =>
                         localUpdate({
                             label: e.target.value,
-                            updateStore: false,
                         })
                     }
                 ></Input>
             </Checkbox>
             <Checkbox
-                defaultChecked={localAnswer.isChecked}
+                checked={
+                    (state.questions[questionId].answer as IBoolean).isChecked
+                }
                 onChange={(e) =>
                     localUpdate({
                         isChecked: e.target.checked,
-                        updateStore: true,
                     })
                 }
             >
