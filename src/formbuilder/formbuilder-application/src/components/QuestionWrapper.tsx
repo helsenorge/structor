@@ -261,8 +261,7 @@ function QuestionWrapper({
                 )}
                 {isInfo && !state.questions[questionId].collapsed && (
                     <>
-                        <Col xs={0} lg={2}></Col>
-                        <Col span={1} style={{ float: 'right' }}>
+                        <Col span={3} style={{ float: 'right' }}>
                             <Title
                                 level={4}
                                 style={{ color: 'var(--primary-1)' }}
@@ -270,12 +269,12 @@ function QuestionWrapper({
                                 {String(cronologicalID.map((a) => a + 1))}
                             </Title>
                         </Col>
-                        <Col xs={21} lg={14}>
+                        <Col xs={12} lg={14}>
                             <AnswerBuilder
                                 questionId={questionId}
                             ></AnswerBuilder>
                         </Col>
-                        <Col span={6}>
+                        <Col xs={8} lg={6}>
                             <Row style={{ float: 'right' }}>
                                 <Tooltip
                                     title={

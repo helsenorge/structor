@@ -75,7 +75,7 @@ function CreateForm(): JSX.Element {
                 </Col>
             </Row>
             <Row style={{ margin: '61px 0 0 0' }} justify="center">
-                <Col span={16}>
+                <Col xl={16} lg={18} md={20} xs={24}>
                     <TitleAndDescription />
                 </Col>
             </Row>
@@ -86,7 +86,7 @@ function CreateForm(): JSX.Element {
                 >
                     <DND.Droppable droppableId="section" type="section">
                         {(provided, snapshot) => (
-                            <Col span={16}>
+                            <Col xl={16} lg={18} md={20} xs={24}>
                                 <div
                                     ref={provided.innerRef}
                                     style={{
@@ -160,7 +160,7 @@ function CreateForm(): JSX.Element {
                 </DND.DragDropContext>
             </Row>
             <Row justify="center">
-                <Col span={16}>
+                <Col xl={16} lg={18} md={20} xs={24}>
                     <div className="wrapper">
                         <Button
                             className="section-button"

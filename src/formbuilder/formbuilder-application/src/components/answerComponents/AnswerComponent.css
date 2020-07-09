@@ -25,11 +25,23 @@
     box-shadow: 0 0 0 2px rgba(166,30,123, .2) !important;
 }
 
-.ant-checkbox-inner, .ant-checkbox-checked::after, .ant-btn:hover, .ant-btn:focus, .input-question, .ant-select-selector, .ant-btn-default, .input-question:hover{
+.ant-checkbox-checked::after, .ant-btn:hover, .ant-btn-default, .input-question:hover{
     border-color: var(--primary-1) !important;
 }
 
-.ant-checkbox-input:focus+.ant-checkbox-inner, .ant-btn:not([disabled]):hover, .ant-input-number, .ant-checkbox-wrapper:hover, .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-inner:active, .ant-select-selector:hover, .ant-select-focused.ant-select-single:not(.ant-select-customize-input) .ant-select-selector{
+.ant-picker-now-btn {
+    color: var(--primary-1) !important;
+}
+
+.ant-picker-ok .ant-btn-primary[disabled], .ant-picker-ok .ant-btn-primary[disabled]:hover {
+    color: grey !important;
+}
+
+.ant-btn-primary:hover {
+    color: white !important;
+}
+
+.ant-checkbox-input:focus+.ant-checkbox-inner, .ant-picker:hover, .ant-picker-focused, .input-question:hover, .ant-btn:not([disabled]):hover, .ant-input-number:hover, .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox-inner:hover, .ant-checkbox-input:focus, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-inner:active, .ant-select-selector:hover, .ant-select-focused.ant-select-single:not(.ant-select-customize-input) .ant-select-selector{
     outline: 0;
     -webkit-box-shadow: unset !important;
     box-shadow: unset !important;

@@ -132,19 +132,20 @@ function Section({
                                 />
                             </Tooltip>
                         </Col>
-                        <Col xs={0} lg={2}></Col>
-                        <Col span={1} style={{ paddingTop: '4px' }}>
+                        <Col xs={2} lg={3} style={{ paddingRight: '5px' }}>
                             <Title
-                                style={{ color: 'var(--primary-1)' }}
+                                style={{
+                                    color: 'var(--primary-1)',
+                                    float: 'right',
+                                }}
                                 level={3}
                             >
                                 {String(sectionIndex + 1)}
                             </Title>
                         </Col>
                         <Col
-                            xs={21}
+                            xs={20}
                             lg={14}
-                            span={14}
                             style={{
                                 width: '100%',
                             }}
@@ -164,8 +165,8 @@ function Section({
                                 }
                             />
                         </Col>
-                        <Col xs={0} lg={5}></Col>
-                        <Col xs={1} lg={1}>
+                        <Col md={0} lg={5}></Col>
+                        <Col span={1}>
                             <Tooltip title="Flytt seksjon">
                                 {provided && (
                                     <Button
@@ -199,8 +200,8 @@ function Section({
                         </Col>
                     </Row>
                     <Row style={{ paddingTop: '5px' }}>
-                        <Col xs={0} lg={4}></Col>
-                        <Col xs={24} lg={14}>
+                        <Col xs={3} lg={4}></Col>
+                        <Col xs={15} lg={14}>
                             <TextArea
                                 placeholder="Beskrivelse av seksjon..."
                                 className="input-question"
@@ -216,37 +217,45 @@ function Section({
                                 rows={3}
                             ></TextArea>
                         </Col>
-                        <Col sm={6}>
-                            <Row style={{ float: 'right' }}>
-                                <Button
-                                    style={{
-                                        zIndex: 1,
-                                        color: 'var(--primary-1)',
-                                        marginLeft: '10px',
-                                        float: 'right',
-                                    }}
-                                    icon={<CopyOutlined />}
-                                    type="default"
-                                    onClick={() => duplicateSection()}
-                                >
-                                    Dupliser seksjon
-                                </Button>
+                        <Col span={6}>
+                            <Row style={{ textAlign: 'right' }}>
+                                <Col span={24}>
+                                    <Button
+                                        style={{
+                                            zIndex: 1,
+                                            color: 'var(--primary-1)',
+                                            marginLeft: '10px',
+                                            float: 'right',
+                                        }}
+                                        icon={<CopyOutlined />}
+                                        type="default"
+                                        onClick={() => duplicateSection()}
+                                    >
+                                        Dupliser seksjon
+                                    </Button>
+                                </Col>
                             </Row>
-                            <Row style={{ float: 'right', paddingTop: '10px' }}>
-                                {' '}
-                                {/* Delete seksjon */}
-                                <Button
-                                    style={{
-                                        zIndex: 1,
-                                        color: 'var(--primary-1)',
-                                        marginLeft: '10px',
-                                    }}
-                                    icon={<DeleteOutlined />}
-                                    type="default"
-                                    onClick={() => removeSection()}
-                                >
-                                    Slett seksjon
-                                </Button>
+
+                            <Row
+                                style={{
+                                    textAlign: 'right',
+                                    paddingTop: '10px',
+                                }}
+                            >
+                                <Col span={24}>
+                                    <Button
+                                        style={{
+                                            zIndex: 1,
+                                            color: 'var(--primary-1)',
+                                            marginLeft: '10px',
+                                        }}
+                                        icon={<DeleteOutlined />}
+                                        type="default"
+                                        onClick={() => removeSection()}
+                                    >
+                                        Slett seksjon
+                                    </Button>
+                                </Col>
                             </Row>
                         </Col>
                     </Row>
