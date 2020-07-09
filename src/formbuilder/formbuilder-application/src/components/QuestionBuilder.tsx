@@ -34,7 +34,7 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
         description?: string;
         updateStore?: boolean;
     }) {
-        const temp = { ...localQuestion };
+        const temp = { ...state.questions[questionId] };
         if (attribute.isRequired !== undefined)
             temp.isRequired = attribute.isRequired;
         if (attribute.isDependent !== undefined)

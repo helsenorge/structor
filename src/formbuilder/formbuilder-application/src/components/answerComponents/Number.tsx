@@ -65,14 +65,13 @@ function Number({ questionId }: NumberProps): JSX.Element {
     }
 
     useEffect(() => {
-        const temp = {...state.questions[questionId].answer};
+        const temp = { ...state.questions[questionId].answer };
         temp.valid = true;
         dispatch(updateAnswer(questionId, temp));
     }, []);
 
     return (
         <>
-            <Button onClick={() => console.log(validationList)}> x </Button>
             <Form>
                 <Row>
                     <Col span={12} className="standard">
@@ -129,7 +128,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                                             String(localAnswer.defaultValue)
                                                 .length > 0)
                                             ? undefined
-                                            : 'Fyll for faen'
+                                            : 'Fyll inn forhåndsvalgt verdi'
                                     }
                                 >
                                     <Input
@@ -186,7 +185,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                                             String(localAnswer.minValue)
                                                 .length > 0)
                                             ? undefined
-                                            : 'Fyll for faen'
+                                            : 'Fyll inn min verdi'
                                     }
                                 >
                                     <Input
@@ -242,7 +241,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                                             String(localAnswer.maxValue)
                                                 .length > 0)
                                             ? undefined
-                                            : 'Fyll for faen'
+                                            : 'Fyll inn max verdi'
                                     }
                                 >
                                     <Input
@@ -294,7 +293,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                                             localAnswer.unit !== undefined &&
                                             String(localAnswer.unit).length > 0)
                                             ? undefined
-                                            : 'Fyll for faen'
+                                            : 'Fyll inn enhet'
                                     }
                                 >
                                     <Input
