@@ -85,6 +85,31 @@ const SchemaView = (props: SchemaViewProps) => {
                                                             className="site-collapse-custom-panel"
                                                         >
                                                             {qAndA.map(
+                                                                (display) =>
+                                                                    display.id.split(
+                                                                        '.',
+                                                                    )[0] ===
+                                                                        section.id &&
+                                                                    display.id.split(
+                                                                        '.',
+                                                                    )[1] ===
+                                                                        '101' && (
+                                                                        <p
+                                                                            key={
+                                                                                display.id
+                                                                            }
+                                                                            className="section-description"
+                                                                        >
+                                                                            {
+                                                                                display
+                                                                                    .questions
+                                                                                    .questions
+                                                                                    .text
+                                                                            }
+                                                                        </p>
+                                                                    ),
+                                                            )}
+                                                            {qAndA.map(
                                                                 (
                                                                     qa,
                                                                     qaIndex,
