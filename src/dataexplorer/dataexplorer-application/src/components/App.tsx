@@ -21,7 +21,6 @@ export const StoreProvider = ({ children }: IStoreProviderProps) => {
                 setSchemanumber,
             }}
         >
-            {' '}
             {children}
         </Provider>
     );
