@@ -75,6 +75,7 @@ function QuestionBuilder({ questionId }: QuestionProps): JSX.Element {
                     temp.answer = {
                         id: questionId,
                         isChecked: false,
+                        label: '',
                     } as IBoolean;
                     break;
                 case AnswerTypes.time:
