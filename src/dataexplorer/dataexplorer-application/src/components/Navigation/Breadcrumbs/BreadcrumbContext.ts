@@ -10,13 +10,10 @@ interface IBreadcrumbContextProps {
 }
 export const BreadcrumbContext = createContext<IBreadcrumbContextProps>({
     name: '',
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     setName: () => {},
     patientId: '',
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     setPatientId: () => {},
     schemaNumber: '',
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     setSchemanumber: () => {},
 });
 
