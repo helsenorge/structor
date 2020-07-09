@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { InputNumber, Checkbox } from 'antd';
 import './AnswerComponent.css';
 import { FormContext, updateAnswer } from '../../store/FormStore';

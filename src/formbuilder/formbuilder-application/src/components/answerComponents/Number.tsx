@@ -10,9 +10,6 @@ type NumberProps = {
 
 function Number({ questionId }: NumberProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    // const [localAnswer, setLocalAnswer] = useState(
-    //     state.questions[questionId].answer as INumber,
-    // );
     const localAnswer = { ...state.questions[questionId].answer } as INumber;
 
     function updateStore(attribute: {
@@ -78,13 +75,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                         <Col span={12} className="standard">
                             <InputNumber
                                 type="number"
-                                value={localAnswer.defaultValue}
-                                // onChange={(value) =>
-                                //     localUpdate({
-                                //         updateStore: false,
-                                //         defaultValue: value as number,
-                                //     })
-                                // }
+                                defaultValue={localAnswer.defaultValue}
                                 onBlur={(e) =>
                                     updateStore({
                                         defaultValue: (e.target
@@ -112,13 +103,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                         <Col span={12} className="standard">
                             <InputNumber
                                 type="number"
-                                value={localAnswer.minValue}
-                                // onChange={(value) =>
-                                //     localUpdate({
-                                //         updateStore: false,
-                                //         minValue: value as number,
-                                //     })
-                                // }
+                                defaultValue={localAnswer.minValue}
                                 onBlur={(e) =>
                                     updateStore({
                                         minValue: (e.target
@@ -145,13 +130,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                         <Col span={12} className="standard">
                             <InputNumber
                                 type="number"
-                                value={localAnswer.maxValue}
-                                // onChange={(value) =>
-                                //     localUpdate({
-                                //         updateStore: false,
-                                //         maxValue: value as number,
-                                //     })
-                                // }
+                                defaultValue={localAnswer.maxValue}
                                 onBlur={(e) =>
                                     updateStore({
                                         maxValue: (e.target
@@ -179,13 +158,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             <Input
                                 type="text"
                                 style={{ width: '90px' }}
-                                value={localAnswer.unit}
-                                // onChange={(e) =>
-                                //     localUpdate({
-                                //         updateStore: false,
-                                //         unit: e.target.value as string,
-                                //     })
-                                // }
+                                defaultValue={localAnswer.unit}
                                 onBlur={(e) =>
                                     updateStore({
                                         unit: e.target.value,
