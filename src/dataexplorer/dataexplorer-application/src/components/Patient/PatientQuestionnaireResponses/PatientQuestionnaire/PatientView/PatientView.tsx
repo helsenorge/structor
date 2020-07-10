@@ -15,21 +15,11 @@ const PatientView = (props: {
     const calcAge = () => {
         const birthday = props.patient.birthDate;
         const patientYear = parseInt(birthday.substring(0, 4));
-        const patientMonth = dayjs(birthday.substring(5, 7)).locale('nb').format('MMMM');
+        const patientMonth = parseInt(birthday.substring(5, 7));
         const patientDay = parseInt(birthday.substring(8, 10));
         const actualAge = dayjs().diff(birthday, 'year');
 
-        return (
-            patientDay.toString() +
-            '-' +
-            patientMonth +
-            '-' +
-            patientYear.toString() +
-            ' ' +
-            '(' +
-            actualAge.toString() +
-            ')'
-        );
+        return `${patientDay.toString()}.${patientMonth}.${patientYear.toString()} (${actualAge.toString()})`;
     };
     const { setSchemanumber } = useContext(BreadcrumbContext);
     const { Title } = Typography;
