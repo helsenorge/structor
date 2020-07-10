@@ -103,10 +103,17 @@ p.inline-date-container {
 }
 
 .ant-btn-primary {
-    background-color: $header !important;
-    border-color: $header !important;
+    background-color: white !important ;
+    border: none !important;
+    color: $elementHeader !important;
+
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
 }
 
+.ant-popover {
+    z-index: 1 !important;
+}
 .inner-schema-row {
     display: flex !important;
     flex-direction: column !important;
