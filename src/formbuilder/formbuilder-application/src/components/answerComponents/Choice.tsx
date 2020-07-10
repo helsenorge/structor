@@ -1,22 +1,10 @@
 import React, { useContext, useState } from 'react';
-import {
-    Radio,
-    Button,
-    Input,
-    Tooltip,
-    Checkbox,
-    Col,
-    Row,
-    Select,
-} from 'antd';
-import {
-    PlusCircleOutlined,
-    PlusSquareOutlined,
-    CloseOutlined,
-} from '@ant-design/icons';
+import { Radio, Button, Input, Tooltip, Checkbox, Col, Row, Select } from 'antd';
+import { PlusCircleOutlined, PlusSquareOutlined, CloseOutlined } from '@ant-design/icons';
 import './AnswerComponent.css';
 import { IChoice } from '../../types/IAnswer';
 import { FormContext, updateAnswer } from '../../store/FormStore';
+import { generateID } from '../../helpers/IDGenerator';
 
 const { Option } = Select;
 
@@ -27,9 +15,8 @@ type choiceProps = {
 function Choice({ questionId }: choiceProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...(state.questions[questionId].answer as IChoice) };
-    const [choices, setChoices] = useState(
-        (state.questions[questionId].answer as IChoice).choices,
-    );
+    const [choices, setChoices] = useState((state.questions[questionId].answer as IChoice).choices);
+    const [choiceID, setChoiceIDs] = useState(['']);
 
     function localUpdate(attribute: {
         isMultiple?: boolean;
@@ -39,12 +26,10 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         defaultValue?: number;
     }) {
         const temp = { ...localAnswer };
-        if (attribute.isMultiple !== undefined)
-            temp.isMultiple = attribute.isMultiple;
+        if (attribute.isMultiple !== undefined) temp.isMultiple = attribute.isMultiple;
 
         if (attribute.isOpen !== undefined) temp.isOpen = attribute.isOpen;
-        if (attribute.hasDefault !== undefined)
-            temp.hasDefault = attribute.hasDefault;
+        if (attribute.hasDefault !== undefined) temp.hasDefault = attribute.hasDefault;
         if (attribute.choices !== undefined) temp.choices = attribute.choices;
         if (attribute.defaultValue !== undefined) {
             if (isNaN(attribute.defaultValue)) temp.defaultValue = undefined;
@@ -54,20 +39,20 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         dispatch(updateAnswer(questionId, temp));
     }
 
-    function updateChoices(attribute: {
-        mode?: string;
-        value?: string;
-        id?: number;
-        updateState?: boolean;
-    }) {
+    function updateChoices(attribute: { mode?: string; value?: string; id?: number; updateState?: boolean }) {
         let tempChoices = [...choices];
+        let tempIDs = [...choiceID];
 
-        if (attribute.mode === 'add') tempChoices = [...choices, ''];
+        if (attribute.mode === 'add') {
+            tempChoices = [...choices, ''];
+            tempIDs = [...tempIDs, 'choice_' + questionId + generateID()];
+        }
 
-        if (attribute.mode === 'delete' && attribute.id !== undefined)
+        if (attribute.mode === 'delete' && attribute.id !== undefined) {
             tempChoices.splice(attribute.id, 1);
-        if (attribute.value !== undefined && attribute.id !== undefined)
-            tempChoices[attribute.id] = attribute.value;
+            tempIDs.splice(attribute.id, 1);
+        }
+        if (attribute.value !== undefined && attribute.id !== undefined) tempChoices[attribute.id] = attribute.value;
         setChoices(tempChoices);
         if (attribute.updateState) localUpdate({ choices: tempChoices });
     }
@@ -105,23 +90,15 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     function createRadioButton(id: number) {
         return (
-            <Radio
-                key={'Radio_' + questionId + id}
-                style={choiceButtonStyle}
-                disabled={true}
-                value={id}
-            >
+            <Radio key={choiceID[id]} style={choiceButtonStyle} disabled={true} value={id}>
                 <Input
+                    key={'input_' + choiceID[id]}
                     type="text"
                     className="input-question"
-                    placeholder={
-                        'Skriv inn alternativ nr. ' + (id + 1) + ' her'
-                    }
+                    placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
                     value={choices[id]}
                     style={{ width: '100%' }}
-                    onChange={(e) =>
-                        updateChoices({ id: id, value: e.target.value })
-                    }
+                    onChange={(e) => updateChoices({ id: id, value: e.target.value })}
                     onBlur={() => updateChoices({ updateState: true })}
                 />
                 {deleteButton(id)}
@@ -132,23 +109,20 @@ function Choice({ questionId }: choiceProps): JSX.Element {
     function createCheckbox(id: number) {
         return (
             <Checkbox
-                key={'Checkbox_' + questionId + id}
+                key={'Checkbox_' + choiceID[id]}
                 style={choiceButtonStyle}
                 disabled={true}
                 value={id}
                 checked={false}
             >
                 <Input
+                    key={'input_' + choiceID[id]}
                     type="text"
                     className="input-question"
-                    placeholder={
-                        'Skriv inn alternativ nr. ' + (id + 1) + ' her'
-                    }
+                    placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
                     defaultValue={localAnswer.choices[id]}
                     style={{ width: '85%' }}
-                    onChange={(e) =>
-                        updateChoices({ id: id, value: e.target.value })
-                    }
+                    onChange={(e) => updateChoices({ id: id, value: e.target.value })}
                     onBlur={() => updateChoices({ updateState: true })}
                 />
                 {deleteButton(id)}
@@ -157,10 +131,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
     }
     return (
         <>
-            <Row
-                className="standard"
-                style={{ paddingLeft: '0px', paddingTop: '0px' }}
-            >
+            <Row className="standard" style={{ paddingLeft: '0px', paddingTop: '0px' }}>
                 <Col span={24}>
                     <Checkbox
                         defaultChecked={localAnswer.isOpen}
@@ -206,12 +177,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                             </Checkbox>
                             <Select
                                 defaultValue={localAnswer.defaultValue}
-                                disabled={
-                                    !(
-                                        localAnswer.hasDefault &&
-                                        !localAnswer.isMultiple
-                                    )
-                                }
+                                disabled={!(localAnswer.hasDefault && !localAnswer.isMultiple)}
                                 style={{ width: '200px' }}
                                 onSelect={(value) => {
                                     localUpdate({
@@ -222,13 +188,8 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                             >
                                 {choices
                                     ? choices.map((name, id) => [
-                                          <Option
-                                              key={'def' + questionId + id}
-                                              value={id}
-                                          >
-                                              {name.length < 1
-                                                  ? 'Alternativ ' + (id + 1)
-                                                  : name}
+                                          <Option key={'def' + questionId + id} value={id}>
+                                              {name.length < 1 ? 'Alternativ ' + (id + 1) : name}
                                           </Option>,
                                       ])
                                     : []}
@@ -256,11 +217,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     <h4>Skriv inn svaralternativer under:</h4>
                     <Radio.Group
                         name="radiogroup"
-                        value={
-                            localAnswer.hasDefault
-                                ? localAnswer.defaultValue
-                                : undefined
-                        }
+                        value={localAnswer.hasDefault ? localAnswer.defaultValue : undefined}
                     >
                         {choices.map((name, id) => [createRadioButton(id)])}
                         {
