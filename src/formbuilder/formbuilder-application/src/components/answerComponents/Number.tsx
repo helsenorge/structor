@@ -12,12 +12,7 @@ type NumberProps = {
 function Number({ questionId }: NumberProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...state.questions[questionId].answer } as INumber;
-    const [validationList, setValidationList] = useState([
-        true,
-        true,
-        true,
-        true,
-    ]);
+    const [validationList, setValidationList] = useState([true, true, true, true]);
     function updateStore(attribute: {
         hasMax?: boolean;
         hasMin?: boolean;
@@ -33,17 +28,12 @@ function Number({ questionId }: NumberProps): JSX.Element {
         if (attribute.hasMax !== undefined) temp.hasMax = attribute.hasMax;
         if (attribute.hasMin !== undefined) temp.hasMin = attribute.hasMin;
         if (attribute.hasUnit !== undefined) temp.hasUnit = attribute.hasUnit;
-        if (attribute.hasDefault !== undefined)
-            temp.hasDefault = attribute.hasDefault;
-        if (attribute.isDecimal !== undefined)
-            temp.isDecimal = attribute.isDecimal;
-        if (attribute.maxValue !== undefined)
-            temp.maxValue = attribute.maxValue;
+        if (attribute.hasDefault !== undefined) temp.hasDefault = attribute.hasDefault;
+        if (attribute.isDecimal !== undefined) temp.isDecimal = attribute.isDecimal;
+        if (attribute.maxValue !== undefined) temp.maxValue = attribute.maxValue;
         if (attribute.unit !== undefined) temp.unit = attribute.unit;
-        if (attribute.minValue !== undefined)
-            temp.minValue = attribute.minValue;
-        if (attribute.defaultValue !== undefined)
-            temp.defaultValue = attribute.defaultValue;
+        if (attribute.minValue !== undefined) temp.minValue = attribute.minValue;
+        if (attribute.defaultValue !== undefined) temp.defaultValue = attribute.defaultValue;
         dispatch(updateAnswer(questionId, temp));
     }
 
@@ -124,8 +114,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                                 defaultValue={localAnswer.defaultValue}
                                 onBlur={(e) => {
                                     updateStore({
-                                        defaultValue: (e.currentTarget
-                                            .value as unknown) as number,
+                                        defaultValue: (e.currentTarget.value as unknown) as number,
                                     });
                                 }}
                                 disabled={!localAnswer.hasDefault}
@@ -171,8 +160,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                                 defaultValue={localAnswer.minValue}
                                 onBlur={(e) =>
                                     updateStore({
-                                        minValue: (e.target
-                                            .value as unknown) as number,
+                                        minValue: (e.target.value as unknown) as number,
                                     })
                                 }
                                 disabled={!localAnswer.hasMin}
@@ -217,8 +205,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                                 defaultValue={localAnswer.maxValue}
                                 onBlur={(e) =>
                                     updateStore({
-                                        maxValue: (e.target
-                                            .value as unknown) as number,
+                                        maxValue: (e.target.value as unknown) as number,
                                     })
                                 }
                                 disabled={!localAnswer.hasMax}
