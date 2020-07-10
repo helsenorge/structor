@@ -30,8 +30,6 @@ function Section({
     const [needsSections, setNeedsSections] = useState(false);
     const [collapsedSection, setCollapsedSection] = useState(false);
 
-    // const [count, setCount] = useState(0);
-
     const { state, dispatch } = useContext(FormContext);
 
     function findPlaceholder() {
@@ -234,11 +232,7 @@ function Section({
                     <Row>
                         <Col span={24}>
                             <DND.Droppable droppableId={sectionId} type={'question'}>
-<<<<<<< HEAD
-                                {(provided, snapshot) => (
-=======
                                 {(provided) => (
->>>>>>> fb-dev
                                     <div ref={provided.innerRef}>
                                         {!collapsed &&
                                             state.sections[sectionId].questionOrder.map(
@@ -250,11 +244,7 @@ function Section({
                                                             draggableId={questionId}
                                                             index={index}
                                                         >
-<<<<<<< HEAD
-                                                            {(provided, snapshot) => (
-=======
                                                             {(provided) => (
->>>>>>> fb-dev
                                                                 <div
                                                                     ref={provided.innerRef}
                                                                     {...provided.draggableProps}
