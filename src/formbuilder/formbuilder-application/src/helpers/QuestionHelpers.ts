@@ -97,6 +97,7 @@ function convertNumber(question: IQuestion, subItem: fhir.QuestionnaireItem): fh
             valueCoding: {
                 system: 'http://unitsofmeasure.org',
                 code: answer.unit,
+                display: answer.unit,
             },
         });
         subItem.type = FhirAnswerTypes.quantity;
