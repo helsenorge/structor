@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Layout } from 'antd';
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
 import Dashboard from '../Dashboard/Dashboard';
@@ -10,10 +10,6 @@ import './Navigation.style.scss';
 
 const { Header, Content } = Layout;
 const Navigation = () => {
-    const [name, setName] = useState('');
-    const [schemaNumber, setSchema] = useState('');
-    const patientID = localStorage.getItem('myData');
-
     return (
         <>
             <Layout>
@@ -27,35 +23,17 @@ const Navigation = () => {
                     </div>
                 </Header>
                 <div className="breadcrumb-header">
-                    <Breadcrumbs
-                        name={name}
-                        schemaNumber={schemaNumber}
-                        setName={setName}
-                        setSchemaNumber={setSchema}
-                    />
+                    <Breadcrumbs />
                 </div>
                 <Content>
                     <div className="content">
                         <Switch>
                             <Route exact path="/" component={Dashboard} />
-                            <Route
-                                exact
-                                path="/pasient"
-                                render={() => (
-                                    <Patient
-                                        setSchema={setSchema}
-                                        patientID={patientID}
-                                    />
-                                )}
-                            />
+                            <Route exact path="/pasient" component={Patient} />
                             <Route
                                 exact
                                 path="/pasient/skjema"
-                                render={() => (
-                                    <QuestionnaireResponse
-                                        questionnaireResponseId={schemaNumber}
-                                    />
-                                )}
+                                component={QuestionnaireResponse}
                             />
                         </Switch>
                     </div>

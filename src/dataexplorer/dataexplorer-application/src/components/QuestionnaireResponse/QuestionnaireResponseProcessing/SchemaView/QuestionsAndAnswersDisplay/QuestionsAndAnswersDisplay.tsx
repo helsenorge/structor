@@ -72,7 +72,7 @@ const QuestionsAndAnswersDisplay = (
             </div>
 
             {props.questionAndAnswer.answers?.answers.answer?.map((item) => (
-                <p
+                <div
                     className="answers"
                     key={
                         item.valueCoding?.display
@@ -88,7 +88,7 @@ const QuestionsAndAnswersDisplay = (
                     {item.valueDateTime?.replace('T', ' ')}
                     {item.valueDecimal}
                     {item.valueString}
-                </p>
+                </div>
             ))}
         </>
     );

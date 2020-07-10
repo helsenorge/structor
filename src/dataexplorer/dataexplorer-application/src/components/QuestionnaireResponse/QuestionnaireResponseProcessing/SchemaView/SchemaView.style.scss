@@ -26,10 +26,10 @@
     }
 }
 
-p.answers {
+div.answers {
     font-size: 1rem;
     font-weight: 500;
-    margin: 0rem;
+    margin: 0;
 }
 
 p.bold {
@@ -40,6 +40,11 @@ p.bold {
 p.questions {
     font-size: 0.9rem;
     display: inline;
+}
+
+p.section-description {
+    font-size: 0.85rem;
+    margin: 0;
 }
 
 div.border {
@@ -101,6 +106,7 @@ p.inline-date-container {
         border-bottom: none;
     }
 }
+
 .inner-schema-row {
     display: flex !important;
     flex-direction: column !important;
@@ -116,6 +122,7 @@ p.inline-date-container {
         overflow: auto;
         height: 9.375rem;
     }
+
     .notscroll {
         overflow: auto;
         height: auto;
