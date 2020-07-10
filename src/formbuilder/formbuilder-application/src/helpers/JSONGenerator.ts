@@ -38,8 +38,7 @@ function convertSections(
                 _text: {
                     extension: [
                         {
-                            url:
-                                'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                            url: 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
                             valueMarkdown: section.description,
                         },
                     ],
@@ -54,22 +53,14 @@ function convertSections(
             const question = questions[questionKey];
             // Will be within 'item' and if in section another 'item' of type group
             if (
-                ((question.questionText &&
-                    question.questionText.length === 0) ||
+                ((question.questionText && question.questionText.length === 0) ||
                     question.answerType === AnswerTypes.default) &&
                 question.answerType !== AnswerTypes.info
             )
                 continue;
-            const subItem = convertQuestion(
-                question,
-                i + 1 + '.' + currentLinkId,
-                valueSetMap,
-            );
+            const subItem = convertQuestion(question, i + 1 + '.' + currentLinkId, valueSetMap);
             currentLinkId += 100;
-            if (
-                (question.answer as IChoice).choices &&
-                (question.answer as IChoice).choices.length > 0
-            ) {
+            if ((question.answer as IChoice).choices && (question.answer as IChoice).choices.length > 0) {
                 subItem.options = {
                     reference: '#' + question.answer.id,
                 };
@@ -90,10 +81,7 @@ function convertAnswers(
     Object.values(questions).forEach((question: IQuestion) => {
         questionIndex++;
         const answer = question.answer;
-        if (
-            (answer as IChoice).choices &&
-            (answer as IChoice).choices.length > 0
-        ) {
+        if ((answer as IChoice).choices && (answer as IChoice).choices.length > 0) {
             const system = 'system' + answer.id; // TODO
             valueSetMap[answer.id] = system;
             const containPart: fhir.Resource = {
@@ -107,9 +95,7 @@ function convertAnswers(
                     include: [
                         {
                             system: system, // TODO: FIX ME
-                            concept: new Array<
-                                fhir.ValueSetComposeIncludeConcept
-                            >(),
+                            concept: new Array<fhir.ValueSetComposeIncludeConcept>(),
                         },
                     ],
                 },
@@ -135,11 +121,7 @@ function convertToJSON(
     questions: QuestionList,
 ): fhir.Questionnaire {
     const valueSets = convertAnswers(sectionOrder, sections, questions);
-    const convertedQuestions = convertSections(
-        sectionOrder,
-        sections,
-        questions,
-    );
+    const convertedQuestions = convertSections(sectionOrder, sections, questions);
     const questionnaire: fhir.Questionnaire = {
         resourceType: 'Questionnaire',
         language: 'nb-NO',
@@ -149,9 +131,7 @@ function convertToJSON(
         publisher: 'NHN',
         description: description,
         meta: {
-            profile: [
-                'http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire',
-            ],
+            profile: ['http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire'],
             tag: [
                 {
                     system: 'urn:ietf:bcp:47',

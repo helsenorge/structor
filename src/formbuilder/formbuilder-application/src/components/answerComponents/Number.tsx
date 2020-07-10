@@ -10,9 +10,7 @@ type NumberProps = {
 
 function Number({ questionId }: NumberProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [localAnswer, setLocalAnswer] = useState(
-        state.questions[questionId].answer as INumber,
-    );
+    const [localAnswer, setLocalAnswer] = useState(state.questions[questionId].answer as INumber);
 
     function localUpdate(attribute: {
         hasMax?: boolean;
@@ -30,20 +28,14 @@ function Number({ questionId }: NumberProps): JSX.Element {
         if (attribute.hasMax !== undefined) temp.hasMax = attribute.hasMax;
         if (attribute.hasMin !== undefined) temp.hasMin = attribute.hasMin;
         if (attribute.hasUnit !== undefined) temp.hasUnit = attribute.hasUnit;
-        if (attribute.hasDefault !== undefined)
-            temp.hasDefault = attribute.hasDefault;
-        if (attribute.isDecimal !== undefined)
-            temp.isDecimal = attribute.isDecimal;
-        if (attribute.maxValue !== undefined)
-            temp.maxValue = attribute.maxValue;
+        if (attribute.hasDefault !== undefined) temp.hasDefault = attribute.hasDefault;
+        if (attribute.isDecimal !== undefined) temp.isDecimal = attribute.isDecimal;
+        if (attribute.maxValue !== undefined) temp.maxValue = attribute.maxValue;
         if (attribute.unit !== undefined) temp.unit = attribute.unit;
-        if (attribute.minValue !== undefined)
-            temp.minValue = attribute.minValue;
-        if (attribute.defaultValue !== undefined)
-            temp.defaultValue = attribute.defaultValue;
+        if (attribute.minValue !== undefined) temp.minValue = attribute.minValue;
+        if (attribute.defaultValue !== undefined) temp.defaultValue = attribute.defaultValue;
         setLocalAnswer(temp);
-        if (attribute.updateStore !== undefined && attribute.updateStore)
-            dispatch(updateAnswer(questionId, temp));
+        if (attribute.updateStore !== undefined && attribute.updateStore) dispatch(updateAnswer(questionId, temp));
     }
 
     return (

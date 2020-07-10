@@ -28,12 +28,7 @@ function TitleAndDescription(): JSX.Element {
                         defaultValue={title}
                         onBlur={(e) => {
                             setTitle(e.currentTarget.value);
-                            dispatch(
-                                updateFormMeta(
-                                    e.currentTarget.value,
-                                    description,
-                                ),
-                            );
+                            dispatch(updateFormMeta(e.currentTarget.value, description));
                         }}
                     ></Input>
                 </Col>
@@ -48,9 +43,7 @@ function TitleAndDescription(): JSX.Element {
                         defaultValue={description}
                         onBlur={(e) => {
                             setDescription(e.currentTarget.value);
-                            dispatch(
-                                updateFormMeta(title, e.currentTarget.value),
-                            );
+                            dispatch(updateFormMeta(title, e.currentTarget.value));
                         }}
                     ></TextArea>
                 </Col>

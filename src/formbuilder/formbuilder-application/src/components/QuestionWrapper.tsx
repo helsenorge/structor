@@ -1,13 +1,7 @@
 import React, { useState, useContext } from 'react';
 import * as DND from 'react-beautiful-dnd';
 import { Row, Col, Button, Tooltip, Modal } from 'antd';
-import {
-    DeleteOutlined,
-    CopyOutlined,
-    EyeOutlined,
-    UpOutlined,
-    DownOutlined,
-} from '@ant-design/icons';
+import { DeleteOutlined, CopyOutlined, EyeOutlined, UpOutlined, DownOutlined } from '@ant-design/icons';
 import QuestionBuilder from './QuestionBuilder';
 import AnswerBuilder from './AnswerBuilder';
 import JSONGenerator from '../helpers/JSONGenerator';
@@ -46,9 +40,7 @@ function QuestionWrapper({
     }
 
     function collapseButton(collapsed: boolean) {
-        const collapseButton = document.getElementById(
-            'CollapseQuestionButton',
-        );
+        const collapseButton = document.getElementById('CollapseQuestionButton');
         if (collapseButton) {
             collapseButton.focus();
         }
@@ -69,19 +61,11 @@ function QuestionWrapper({
         const fakeQuestionList: QuestionList = {
             [questionId]: state.questions[questionId],
         };
-        const isIFrame = (
-            input: HTMLElement | null,
-        ): input is HTMLIFrameElement =>
+        const isIFrame = (input: HTMLElement | null): input is HTMLIFrameElement =>
             input !== null && input.tagName === 'IFRAME';
 
         const questionnaireString = JSON.stringify(
-            JSONGenerator(
-                '',
-                '',
-                [tempSection.id],
-                tempSectionList,
-                fakeQuestionList,
-            ),
+            JSONGenerator('', '', [tempSection.id], tempSectionList, fakeQuestionList),
         );
 
         const schemeDisplayer = document.getElementById('schemeFrame');
@@ -136,10 +120,8 @@ function QuestionWrapper({
                 </Row>
                 <Row style={{ float: 'right', paddingTop: '10px' }}>
                     {((state.questions[questionId].questionText.length > 0 &&
-                        state.questions[questionId].answerType !==
-                            AnswerTypes.default) ||
-                        state.questions[questionId].answerType ===
-                            AnswerTypes.info) && (
+                        state.questions[questionId].answerType !== AnswerTypes.default) ||
+                        state.questions[questionId].answerType === AnswerTypes.info) && (
                         <Button
                             style={{
                                 zIndex: 1,
@@ -168,22 +150,14 @@ function QuestionWrapper({
             }}
         >
             <Modal
-                title={
-                    'Slik ser ' +
-                    (isInfo ? 'informasjonen' : 'spørsmålet') +
-                    ' ut for utfyller'
-                }
+                title={'Slik ser ' + (isInfo ? 'informasjonen' : 'spørsmålet') + ' ut for utfyller'}
                 visible={questionPreview}
                 onOk={() => setQuestionPreview(false)}
                 destroyOnClose={true}
                 width="90vw"
                 style={{ top: '10px' }}
                 footer={[
-                    <Button
-                        key="submit"
-                        type="primary"
-                        onClick={() => setQuestionPreview(false)}
-                    >
+                    <Button key="submit" type="primary" onClick={() => setQuestionPreview(false)}>
                         Lukk
                     </Button>,
                 ]}
@@ -207,10 +181,8 @@ function QuestionWrapper({
                     <Tooltip
                         title={
                             (state.questions[questionId] as IQuestion).collapsed
-                                ? 'Utvid ' +
-                                  (isInfo ? 'informasjon' : 'spørsmål')
-                                : 'Kollaps ' +
-                                  (isInfo ? 'informasjon' : 'spørsmål')
+                                ? 'Utvid ' + (isInfo ? 'informasjon' : 'spørsmål')
+                                : 'Kollaps ' + (isInfo ? 'informasjon' : 'spørsmål')
                         }
                     >
                         <Button
@@ -223,19 +195,9 @@ function QuestionWrapper({
                             type="link"
                             shape="circle"
                             icon={
-                                (state.questions[questionId] as IQuestion)
-                                    .collapsed ? (
-                                    <DownOutlined />
-                                ) : (
-                                    <UpOutlined />
-                                )
+                                (state.questions[questionId] as IQuestion).collapsed ? <DownOutlined /> : <UpOutlined />
                             }
-                            onClick={() =>
-                                collapseButton(
-                                    !(state.questions[questionId] as IQuestion)
-                                        .collapsed,
-                                )
-                            }
+                            onClick={() => collapseButton(!(state.questions[questionId] as IQuestion).collapsed)}
                         />
                     </Tooltip>
                 </Col>
@@ -243,10 +205,7 @@ function QuestionWrapper({
                     <>
                         <Col xs={0} lg={2}></Col>
                         <Col span={1} style={{ float: 'right' }}>
-                            <Title
-                                level={4}
-                                style={{ color: 'var(--primary-1)' }}
-                            >
+                            <Title level={4} style={{ color: 'var(--primary-1)' }}>
                                 {String(cronologicalID.map((a) => a + 1))}
                             </Title>
                         </Col>
@@ -263,27 +222,16 @@ function QuestionWrapper({
                 {isInfo && !state.questions[questionId].collapsed && (
                     <>
                         <Col span={3} style={{ float: 'right' }}>
-                            <Title
-                                level={4}
-                                style={{ color: 'var(--primary-1)' }}
-                            >
+                            <Title level={4} style={{ color: 'var(--primary-1)' }}>
                                 {String(cronologicalID.map((a) => a + 1))}
                             </Title>
                         </Col>
                         <Col xs={12} lg={14}>
-                            <AnswerBuilder
-                                questionId={questionId}
-                            ></AnswerBuilder>
+                            <AnswerBuilder questionId={questionId}></AnswerBuilder>
                         </Col>
                         <Col xs={8} lg={6}>
                             <Row style={{ float: 'right' }}>
-                                <Tooltip
-                                    title={
-                                        isInfo
-                                            ? 'Flytt informasjon'
-                                            : 'Flytt spørsmål'
-                                    }
-                                >
+                                <Tooltip title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}>
                                     <Button
                                         style={{
                                             zIndex: 1,
@@ -300,10 +248,7 @@ function QuestionWrapper({
                                             viewBox="0 0 24 24"
                                             width="24"
                                         >
-                                            <path
-                                                d="M0 0h24v24H0V0z"
-                                                fill="none"
-                                            />
+                                            <path d="M0 0h24v24H0V0z" fill="none" />
                                             <path
                                                 fill="var(--primary-1)"
                                                 d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
@@ -312,9 +257,7 @@ function QuestionWrapper({
                                     </Button>
                                 </Tooltip>
                             </Row>
-                            <Row style={{ float: 'right', display: 'block' }}>
-                                {buttons()}
-                            </Row>
+                            <Row style={{ float: 'right', display: 'block' }}>{buttons()}</Row>
                         </Col>
                     </>
                 )}
@@ -333,11 +276,7 @@ function QuestionWrapper({
                             marginTop: '0',
                         }}
                     >
-                        {!isInfo && (
-                            <AnswerBuilder
-                                questionId={questionId}
-                            ></AnswerBuilder>
-                        )}
+                        {!isInfo && <AnswerBuilder questionId={questionId}></AnswerBuilder>}
                     </Col>
                 </Row>
             )}

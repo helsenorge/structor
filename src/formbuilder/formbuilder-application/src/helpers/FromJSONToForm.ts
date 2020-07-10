@@ -1,22 +1,11 @@
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
-import {
-    IAnswer,
-    IChoice,
-    IBoolean,
-    IText,
-    INumber,
-    ITime,
-    IInfo,
-} from '../types/IAnswer';
+import { IAnswer, IChoice, IBoolean, IText, INumber, ITime, IInfo } from '../types/IAnswer';
 import AnswerTypes from '../types/IAnswer';
 import moment from 'moment';
 import { generateID } from '../helpers/IDGenerator';
 
-function getChoices(
-    currentQuestion: fhir.QuestionnaireItem,
-    valueSets: fhir.ValueSet[],
-): IChoice {
+function getChoices(currentQuestion: fhir.QuestionnaireItem, valueSets: fhir.ValueSet[]): IChoice {
     let valueSetReference = currentQuestion.options?.reference;
     const currentAnswer: IChoice = {
         id: generateID(),
@@ -39,30 +28,17 @@ function getChoices(
 
     // Find if multiple-choice (if checkbox)
     if (currentQuestion.extension) {
-        for (
-            let extensionIndex = 0;
-            extensionIndex < currentQuestion.extension.length;
-            extensionIndex++
-        ) {
-            for (
-                let codingIndex = 0;
-                codingIndex < currentQuestion.extension.length;
-                codingIndex++
-            ) {
+        for (let extensionIndex = 0; extensionIndex < currentQuestion.extension.length; extensionIndex++) {
+            for (let codingIndex = 0; codingIndex < currentQuestion.extension.length; codingIndex++) {
                 if (
-                    currentQuestion.extension[extensionIndex]
-                        .valueCodeableConcept?.coding?.[codingIndex] !==
-                    undefined
+                    currentQuestion.extension[extensionIndex].valueCodeableConcept?.coding?.[codingIndex] !== undefined
                 ) {
                     if (
-                        currentQuestion.extension[
-                            extensionIndex
-                        ].valueCodeableConcept?.coding?.[
+                        currentQuestion.extension[extensionIndex].valueCodeableConcept?.coding?.[
                             codingIndex
                         ].hasOwnProperty('code') &&
-                        currentQuestion.extension[extensionIndex]
-                            .valueCodeableConcept?.coding?.[codingIndex]
-                            .code === 'check-box'
+                        currentQuestion.extension[extensionIndex].valueCodeableConcept?.coding?.[codingIndex].code ===
+                            'check-box'
                     ) {
                         currentAnswer.isMultiple = true;
                     }
@@ -74,21 +50,13 @@ function getChoices(
     // Find array of answer options as strings
     const answers = [];
     for (let i = 0; i < valueSets?.length; i++) {
-        if (
-            valueSets[i].id === valueSetReference &&
-            valueSets[i].compose?.include?.length
-        ) {
-            const valueSetLength = valueSets[i].compose?.include
-                ?.length as number;
+        if (valueSets[i].id === valueSetReference && valueSets[i].compose?.include?.length) {
+            const valueSetLength = valueSets[i].compose?.include?.length as number;
             for (let j = 0; j < valueSetLength; j++) {
                 if (valueSets[i].compose?.include[j].concept) {
-                    const optionsLength = valueSets[i].compose?.include[j]
-                        .concept?.length as number;
+                    const optionsLength = valueSets[i].compose?.include[j].concept?.length as number;
                     for (let k = 0; k < optionsLength; k++) {
-                        answers.push(
-                            valueSets[i].compose?.include[j].concept?.[k]
-                                .display as string,
-                        );
+                        answers.push(valueSets[i].compose?.include[j].concept?.[k].display as string);
                     }
                 }
             }
@@ -99,9 +67,7 @@ function getChoices(
     // Find if has a default value
     if (currentQuestion.hasOwnProperty('initialCoding')) {
         currentAnswer.hasDefault = true;
-        currentAnswer.defaultValue = parseInt(
-            currentQuestion.initialCoding?.code as string,
-        );
+        currentAnswer.defaultValue = parseInt(currentQuestion.initialCoding?.code as string);
     }
 
     return currentAnswer;
@@ -176,17 +142,11 @@ function getNumber(currentQuestion: fhir.QuestionnaireItem): INumber {
     // Find max and min values if exist
     if (currentQuestion.extension) {
         for (let i = 0; i < currentQuestion.extension?.length; i++) {
-            if (
-                currentQuestion.extension[i].url ===
-                'http://hl7.org/fhir/StructureDefinition/maxValue'
-            ) {
+            if (currentQuestion.extension[i].url === 'http://hl7.org/fhir/StructureDefinition/maxValue') {
                 tempAnswer.hasMax = true;
                 tempAnswer.maxValue = currentQuestion.extension[i].valueInteger;
             }
-            if (
-                currentQuestion.extension[i].url ===
-                'http://hl7.org/fhir/StructureDefinition/minValue'
-            ) {
+            if (currentQuestion.extension[i].url === 'http://hl7.org/fhir/StructureDefinition/minValue') {
                 tempAnswer.hasMin = true;
                 tempAnswer.minValue = currentQuestion.extension[i].valueInteger;
             }
@@ -211,41 +171,26 @@ function getTime(currentQuestion: fhir.QuestionnaireItem): ITime {
         tempAnswer.isDate = true;
         if (currentQuestion.initialDate) {
             tempAnswer.hasDefaultTime = true;
-            tempAnswer.defaultTime = convertFhirTimeToUnix(
-                true,
-                false,
-                currentQuestion.initialDate as string,
-            );
+            tempAnswer.defaultTime = convertFhirTimeToUnix(true, false, currentQuestion.initialDate as string);
         }
     } else if (currentQuestion.type === 'time') {
         tempAnswer.isTime = true;
         if (currentQuestion.initialTime) {
             tempAnswer.hasDefaultTime = true;
-            tempAnswer.defaultTime = convertFhirTimeToUnix(
-                false,
-                true,
-                currentQuestion.initialTime as string,
-            );
+            tempAnswer.defaultTime = convertFhirTimeToUnix(false, true, currentQuestion.initialTime as string);
         }
     } else {
         tempAnswer.isDate = true;
         tempAnswer.isTime = true;
         if (currentQuestion.initialDateTime) {
             tempAnswer.hasDefaultTime = true;
-            tempAnswer.defaultTime = convertFhirTimeToUnix(
-                true,
-                true,
-                currentQuestion.initialDateTime as string,
-            );
+            tempAnswer.defaultTime = convertFhirTimeToUnix(true, true, currentQuestion.initialDateTime as string);
         }
     }
 
     if (currentQuestion.extension) {
         for (let i = 0; i < currentQuestion.extension?.length; i++) {
-            if (
-                currentQuestion.extension[i].url ===
-                'http://ehelse.no/fhir/StructureDefinition/sdf-maxvalue'
-            ) {
+            if (currentQuestion.extension[i].url === 'http://ehelse.no/fhir/StructureDefinition/sdf-maxvalue') {
                 tempAnswer.hasEndTime = true;
                 tempAnswer.endTime = convertFhirTimeToUnix(
                     tempAnswer.isDate,
@@ -253,10 +198,7 @@ function getTime(currentQuestion: fhir.QuestionnaireItem): ITime {
                     currentQuestion.extension[i].valueString as string,
                 );
             }
-            if (
-                currentQuestion.extension[i].url ===
-                'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue'
-            ) {
+            if (currentQuestion.extension[i].url === 'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue') {
                 tempAnswer.hasStartTime = true;
                 tempAnswer.endTime = convertFhirTimeToUnix(
                     tempAnswer.isDate,
@@ -278,11 +220,7 @@ function getDisplay(currentQuestion: fhir.QuestionnaireItem): IInfo {
     return tempAnswer;
 }
 
-function convertFhirTimeToUnix(
-    isDate: boolean,
-    isTime: boolean,
-    dateTime: string,
-): number {
+function convertFhirTimeToUnix(isDate: boolean, isTime: boolean, dateTime: string): number {
     if (isDate && isTime) {
         return moment(dateTime, 'YYYY-MM-DDTHH:mm:ss').valueOf();
     } else if (isDate) {
@@ -305,10 +243,7 @@ function convertFromJSON(
     };
     if (questionnaireObj.item !== undefined) {
         for (let i = 0; i < questionnaireObj.item.length; i++) {
-            if (
-                questionnaireObj.item[i] !== undefined &&
-                questionnaireObj.item[i].type === 'group'
-            ) {
+            if (questionnaireObj.item[i] !== undefined && questionnaireObj.item[i].type === 'group') {
                 const currentSection = questionnaireObj.item[i];
 
                 const tempSection: ISection = {
@@ -338,28 +273,16 @@ function convertFromJSON(
 
                         let isSectionDescription = false;
 
-                        if (
-                            currentQuestion.type === 'choice' ||
-                            currentQuestion.type === 'open-choice'
-                        ) {
-                            tempAnswer = getChoices(
-                                currentQuestion,
-                                questionnaireObj.contained as fhir.ValueSet[],
-                            );
+                        if (currentQuestion.type === 'choice' || currentQuestion.type === 'open-choice') {
+                            tempAnswer = getChoices(currentQuestion, questionnaireObj.contained as fhir.ValueSet[]);
                             tempQuestion.answerType = AnswerTypes.choice;
                         } else if (currentQuestion.type === 'boolean') {
                             tempAnswer = getBoolean(currentQuestion);
                             tempQuestion.answerType = AnswerTypes.boolean;
-                        } else if (
-                            currentQuestion.type === 'text' ||
-                            currentQuestion.type === 'string'
-                        ) {
+                        } else if (currentQuestion.type === 'text' || currentQuestion.type === 'string') {
                             tempAnswer = getText(currentQuestion);
                             tempQuestion.answerType = AnswerTypes.text;
-                        } else if (
-                            currentQuestion.type === 'decimal' ||
-                            currentQuestion.type === 'integer'
-                        ) {
+                        } else if (currentQuestion.type === 'decimal' || currentQuestion.type === 'integer') {
                             tempAnswer = getNumber(currentQuestion);
                             tempQuestion.answerType = AnswerTypes.number;
                         } else if (
@@ -371,9 +294,7 @@ function convertFromJSON(
                             tempQuestion.answerType = AnswerTypes.time;
                         } else if (currentQuestion.type === 'display') {
                             const dot = currentQuestion.linkId.indexOf('.');
-                            if (
-                                currentQuestion.linkId.substr(dot + 1) === '101'
-                            ) {
+                            if (currentQuestion.linkId.substr(dot + 1) === '101') {
                                 isSectionDescription = true;
                                 tempSection.description = currentQuestion.text;
                             } else {

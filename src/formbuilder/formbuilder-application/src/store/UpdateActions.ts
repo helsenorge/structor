@@ -2,10 +2,7 @@ import { State } from './FormStore';
 import { UpdateAction, UpdateActionTypes } from './ActionTypes';
 import { IChoice } from '../types/IAnswer';
 
-export default function UpdateActions(
-    draft: State,
-    action: UpdateAction,
-): void {
+export default function UpdateActions(draft: State, action: UpdateAction): void {
     switch (action.type) {
         case UpdateActionTypes.ADD_NEW_SECTION:
             if (action.section) {
@@ -35,17 +32,13 @@ export default function UpdateActions(
             break;
         case UpdateActionTypes.ADD_NEW_QUESTION:
             if (action.question) {
-                draft.sections[action.question.sectionId].questionOrder.push(
-                    action.question.id,
-                );
+                draft.sections[action.question.sectionId].questionOrder.push(action.question.id);
                 draft.questions[action.question.id] = action.question;
             }
             break;
         case UpdateActionTypes.UPDATE_ANSWER:
             if (action.answer) {
-                draft.questions[
-                    action.questionId as string
-                ].answer = action.answer as IChoice;
+                draft.questions[action.questionId as string].answer = action.answer as IChoice;
             }
             break;
         case UpdateActionTypes.UPDATE_QUESTION:
@@ -54,18 +47,9 @@ export default function UpdateActions(
             }
             break;
         case UpdateActionTypes.REMOVE_QUESTION:
-            if (
-                action.questionIndex !== undefined &&
-                action.sectionId !== undefined
-            ) {
-                const questionId =
-                    draft.sections[action.sectionId].questionOrder[
-                        action.questionIndex
-                    ];
-                draft.sections[action.sectionId].questionOrder.splice(
-                    action.questionIndex,
-                    1,
-                );
+            if (action.questionIndex !== undefined && action.sectionId !== undefined) {
+                const questionId = draft.sections[action.sectionId].questionOrder[action.questionIndex];
+                draft.sections[action.sectionId].questionOrder.splice(action.questionIndex, 1);
                 delete draft.questions[questionId];
             }
             break;

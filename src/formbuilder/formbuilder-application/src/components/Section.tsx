@@ -2,13 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Row, Col, Button, Tooltip, Input } from 'antd';
 import { PlusOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import QuestionWrapper from './QuestionWrapper';
-import {
-    FormContext,
-    addNewQuestion,
-    removeQuestion,
-    duplicateQuestion,
-    updateSection,
-} from '../store/FormStore';
+import { FormContext, addNewQuestion, removeQuestion, duplicateQuestion, updateSection } from '../store/FormStore';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes from '../types/IAnswer';
@@ -61,24 +55,15 @@ function Section({
         dispatch(addNewQuestion(sectionId, isInfo));
     }
 
-    function dispatchDuplicateQuestion(
-        sectionId: string,
-        questionIndex: number,
-        questionId: string,
-    ) {
+    function dispatchDuplicateQuestion(sectionId: string, questionIndex: number, questionId: string) {
         dispatch(duplicateQuestion(sectionId, questionIndex, questionId));
     }
 
     function dispatchRemoveQuestion(questionIndex: number) {
-        if (window.confirm('Vil du slette dette spørsmålet?'))
-            dispatch(removeQuestion(questionIndex, localSection.id));
+        if (window.confirm('Vil du slette dette spørsmålet?')) dispatch(removeQuestion(questionIndex, localSection.id));
     }
 
-    function localUpdate(attribute: {
-        updateState?: boolean;
-        description?: string;
-        sectionTitle?: string;
-    }) {
+    function localUpdate(attribute: { updateState?: boolean; description?: string; sectionTitle?: string }) {
         const temp = { ...localSection };
         if (attribute.description) temp.description = attribute.description;
         if (attribute.sectionTitle) temp.sectionTitle = attribute.sectionTitle;
@@ -103,13 +88,7 @@ function Section({
                 >
                     <Row>
                         <Col xs={1} lg={1}>
-                            <Tooltip
-                                title={
-                                    collapsedSection
-                                        ? 'Utvid seksjon'
-                                        : 'Kollaps seksjon'
-                                }
-                            >
+                            <Tooltip title={collapsedSection ? 'Utvid seksjon' : 'Kollaps seksjon'}>
                                 <Button
                                     id="CollapseQuestionButton"
                                     style={{
@@ -119,16 +98,8 @@ function Section({
                                     }}
                                     type="link"
                                     shape="circle"
-                                    icon={
-                                        collapsedSection ? (
-                                            <DownOutlined />
-                                        ) : (
-                                            <UpOutlined />
-                                        )
-                                    }
-                                    onClick={() =>
-                                        setCollapsedSection(!collapsedSection)
-                                    }
+                                    icon={collapsedSection ? <DownOutlined /> : <UpOutlined />}
+                                    onClick={() => setCollapsedSection(!collapsedSection)}
                                 />
                             </Tooltip>
                         </Col>
@@ -160,9 +131,7 @@ function Section({
                                         sectionTitle: e.target.value,
                                     });
                                 }}
-                                onBlur={() =>
-                                    localUpdate({ updateState: true })
-                                }
+                                onBlur={() => localUpdate({ updateState: true })}
                             />
                         </Col>
                         <Col md={0} lg={5}></Col>
@@ -185,10 +154,7 @@ function Section({
                                             viewBox="0 0 24 24"
                                             width="24"
                                         >
-                                            <path
-                                                d="M0 0h24v24H0V0z"
-                                                fill="none"
-                                            />
+                                            <path d="M0 0h24v24H0V0z" fill="none" />
                                             <path
                                                 fill="var(--primary-1)"
                                                 d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
@@ -211,9 +177,7 @@ function Section({
                                         description: e.target.value,
                                     });
                                 }}
-                                onBlur={() =>
-                                    localUpdate({ updateState: true })
-                                }
+                                onBlur={() => localUpdate({ updateState: true })}
                                 rows={3}
                             ></TextArea>
                         </Col>
@@ -276,56 +240,28 @@ function Section({
                 <>
                     <Row>
                         <Col span={24}>
-                            <DND.Droppable
-                                droppableId={sectionId}
-                                type={'question'}
-                            >
+                            <DND.Droppable droppableId={sectionId} type={'question'}>
                                 {(provided, snapshot) => (
                                     <div ref={provided.innerRef}>
                                         {!collapsed &&
-                                            state.sections[
-                                                sectionId
-                                            ].questionOrder.map(
-                                                (
-                                                    questionId: string,
-                                                    index: number,
-                                                ) => {
-                                                    const question =
-                                                        state.questions[
-                                                            questionId
-                                                        ];
+                                            state.sections[sectionId].questionOrder.map(
+                                                (questionId: string, index: number) => {
+                                                    const question = state.questions[questionId];
                                                     return (
                                                         <DND.Draggable
-                                                            key={
-                                                                'drag' +
-                                                                questionId
-                                                            }
-                                                            draggableId={
-                                                                questionId
-                                                            }
+                                                            key={'drag' + questionId}
+                                                            draggableId={questionId}
                                                             index={index}
                                                         >
-                                                            {(
-                                                                provided,
-                                                                snapshot,
-                                                            ) => (
+                                                            {(provided, snapshot) => (
                                                                 <div
-                                                                    ref={
-                                                                        provided.innerRef
-                                                                    }
+                                                                    ref={provided.innerRef}
                                                                     {...provided.draggableProps}
                                                                 >
                                                                     <QuestionWrapper
-                                                                        key={
-                                                                            question.id
-                                                                        }
-                                                                        questionId={
-                                                                            question.id
-                                                                        }
-                                                                        cronologicalID={[
-                                                                            sectionIndex,
-                                                                            index,
-                                                                        ]}
+                                                                        key={question.id}
+                                                                        questionId={question.id}
+                                                                        cronologicalID={[sectionIndex, index]}
                                                                         duplicateQuestion={() =>
                                                                             dispatchDuplicateQuestion(
                                                                                 sectionId,
@@ -334,30 +270,19 @@ function Section({
                                                                             )
                                                                         }
                                                                         removeQuestion={() =>
-                                                                            dispatchRemoveQuestion(
-                                                                                index,
-                                                                            )
+                                                                            dispatchRemoveQuestion(index)
                                                                         }
-                                                                        provided={
-                                                                            provided
-                                                                        }
+                                                                        provided={provided}
                                                                         isInfo={
-                                                                            question.answerType ===
-                                                                            AnswerTypes.info
+                                                                            question.answerType === AnswerTypes.info
                                                                         }
                                                                     />
                                                                     <hr
-                                                                        key={
-                                                                            'hr' +
-                                                                            question.id
-                                                                        }
+                                                                        key={'hr' + question.id}
                                                                         style={{
-                                                                            color:
-                                                                                'black',
-                                                                            width:
-                                                                                '100%',
-                                                                            border:
-                                                                                '0.2px solid var(--color-base-3)',
+                                                                            color: 'black',
+                                                                            width: '100%',
+                                                                            border: '0.2px solid var(--color-base-3)',
                                                                         }}
                                                                     />
                                                                 </div>
@@ -373,10 +298,7 @@ function Section({
                         </Col>
                     </Row>
                     <Row justify="center">
-                        <Col
-                            span={24}
-                            style={{ margin: '10px', padding: '15px' }}
-                        >
+                        <Col span={24} style={{ margin: '10px', padding: '15px' }}>
                             <Button
                                 style={{
                                     backgroundColor: 'var(--primary-1)',

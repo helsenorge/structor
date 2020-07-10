@@ -65,11 +65,7 @@ function Index(): JSX.Element {
     }
 
     return (
-        <Row
-            align="middle"
-            justify="center"
-            style={{ backgroundColor: 'var(--primary-2)', height: '100vh' }}
-        >
+        <Row align="middle" justify="center" style={{ backgroundColor: 'var(--primary-2)', height: '100vh' }}>
             <Col
                 span={8}
                 style={{
@@ -115,11 +111,7 @@ function Index(): JSX.Element {
                                         cursor: 'pointer',
                                     }}
                                 >
-                                    <input
-                                        type="file"
-                                        style={{ display: 'none' }}
-                                        onChange={onChange}
-                                    />
+                                    <input type="file" style={{ display: 'none' }} onChange={onChange} />
                                     <UploadOutlined />
                                     Last opp JSON-fil
                                 </label>

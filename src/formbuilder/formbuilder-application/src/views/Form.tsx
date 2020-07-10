@@ -30,8 +30,7 @@ function CreateForm(): JSX.Element {
     }
 
     function dispatchRemoveSection(index: number) {
-        if (window.confirm('Vil du slette denne seksjonen?'))
-            dispatch(removeSection(index));
+        if (window.confirm('Vil du slette denne seksjonen?')) dispatch(removeSection(index));
     }
 
     function dispatchDuplicateSection(index: number, id: string) {
@@ -49,14 +48,7 @@ function CreateForm(): JSX.Element {
         } else if (result.type === 'question') {
             const sourceParentId = result.source.droppableId;
             const destParentId = result.destination.droppableId;
-            dispatch(
-                swapQuestion(
-                    sourceParentId,
-                    sourceIndex,
-                    destParentId,
-                    destIndex,
-                ),
-            );
+            dispatch(swapQuestion(sourceParentId, sourceIndex, destParentId, destIndex));
         }
     }
     function onBeforeCapture(startResponder: DND.BeforeCapture) {
@@ -80,10 +72,7 @@ function CreateForm(): JSX.Element {
                 </Col>
             </Row>
             <Row justify="center">
-                <DND.DragDropContext
-                    onDragEnd={onDragEnd}
-                    onBeforeCapture={onBeforeCapture}
-                >
+                <DND.DragDropContext onDragEnd={onDragEnd} onBeforeCapture={onBeforeCapture}>
                     <DND.Droppable droppableId="section" type="section">
                         {(provided, snapshot) => (
                             <Col xl={16} lg={18} md={20} xs={24}>
@@ -94,22 +83,16 @@ function CreateForm(): JSX.Element {
                                         position: 'relative',
                                     }}
                                 >
-                                    {state.sectionOrder.map(
-                                        (sectionId: string, index: number) => {
-                                            return (
-                                                <DND.Draggable
-                                                    key={'drag' + sectionId}
-                                                    draggableId={sectionId}
-                                                    index={index}
-                                                >
-                                                    {(provided, snapshot) => (
-                                                        <div
-                                                            ref={
-                                                                provided.innerRef
-                                                            }
-                                                            {...provided.draggableProps}
-                                                        >
-                                                            {/* <SectionMemo
+                                    {state.sectionOrder.map((sectionId: string, index: number) => {
+                                        return (
+                                            <DND.Draggable
+                                                key={'drag' + sectionId}
+                                                draggableId={sectionId}
+                                                index={index}
+                                            >
+                                                {(provided, snapshot) => (
+                                                    <div ref={provided.innerRef} {...provided.draggableProps}>
+                                                        {/* <SectionMemo
                                                                 key={sectionId}
                                                                 sectionId={
                                                                     sectionId
@@ -119,39 +102,22 @@ function CreateForm(): JSX.Element {
                                                                     provided
                                                                 }
                                                             /> */}
-                                                            <Section
-                                                                key={sectionId}
-                                                                sectionId={
-                                                                    sectionId
-                                                                }
-                                                                duplicateSection={() =>
-                                                                    dispatchDuplicateSection(
-                                                                        index,
-                                                                        sectionId,
-                                                                    )
-                                                                }
-                                                                removeSection={() =>
-                                                                    dispatchRemoveSection(
-                                                                        index,
-                                                                    )
-                                                                }
-                                                                provided={
-                                                                    provided
-                                                                }
-                                                                collapsed={
-                                                                    sectionId ===
-                                                                    collapsedSection
-                                                                }
-                                                                sectionIndex={
-                                                                    index
-                                                                }
-                                                            />
-                                                        </div>
-                                                    )}
-                                                </DND.Draggable>
-                                            );
-                                        },
-                                    )}
+                                                        <Section
+                                                            key={sectionId}
+                                                            sectionId={sectionId}
+                                                            duplicateSection={() =>
+                                                                dispatchDuplicateSection(index, sectionId)
+                                                            }
+                                                            removeSection={() => dispatchRemoveSection(index)}
+                                                            provided={provided}
+                                                            collapsed={sectionId === collapsedSection}
+                                                            sectionIndex={index}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </DND.Draggable>
+                                        );
+                                    })}
                                 </div>
                                 {provided.placeholder}
                             </Col>

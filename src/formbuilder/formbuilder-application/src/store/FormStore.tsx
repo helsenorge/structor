@@ -5,14 +5,7 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import { generateID } from '../helpers/IDGenerator';
 import produce from 'immer';
-import {
-    AnswerTypes,
-    IChoice,
-    ITime,
-    INumber,
-    IText,
-    IBoolean,
-} from '../types/IAnswer';
+import { AnswerTypes, IChoice, ITime, INumber, IText, IBoolean } from '../types/IAnswer';
 import {
     UpdateAction,
     UpdateActionTypes,
@@ -53,10 +46,7 @@ export interface State {
     sectionOrder: Array<string>;
 }
 
-export function updateFormMeta(
-    title: string,
-    description?: string,
-): UpdateFormMetaAction {
+export function updateFormMeta(title: string, description?: string): UpdateFormMetaAction {
     return {
         type: UpdateActionTypes.UPDATE_FORM_META,
         member: MemberTypes.FORM_META,
@@ -97,10 +87,7 @@ export function clearAllSections(): UpdateAction {
     };
 }
 
-export function duplicateSection(
-    sectionIndex: number,
-    sectionId: string,
-): DuplicateAction {
+export function duplicateSection(sectionIndex: number, sectionId: string): DuplicateAction {
     const newSectionId = generateID();
     const newSectionIndex = sectionIndex + 1;
     return {
@@ -121,10 +108,7 @@ export function removeSection(sectionIndex: number): UpdateAction {
     };
 }
 
-export function swapSection(
-    oldSectionIndex: number,
-    newSectionIndex: number,
-): SwapAction {
+export function swapSection(oldSectionIndex: number, newSectionIndex: number): SwapAction {
     return {
         type: SwapActionTypes.SWAP_SECTION,
         member: MemberTypes.SWAP,
@@ -142,10 +126,7 @@ export function updateSection(section: ISection): UpdateAction {
     };
 }
 
-export function addNewQuestion(
-    sectionId: string,
-    isInfo?: boolean,
-): UpdateAction {
+export function addNewQuestion(sectionId: string, isInfo?: boolean): UpdateAction {
     const questionId = generateID();
     const newQuestion: IQuestion = {
         id: questionId,
@@ -165,11 +146,7 @@ export function addNewQuestion(
     };
 }
 
-export function duplicateQuestion(
-    sectionId: string,
-    questionIndex: number,
-    questionId: string,
-): DuplicateAction {
+export function duplicateQuestion(sectionId: string, questionIndex: number, questionId: string): DuplicateAction {
     const newQuestionId = generateID();
     const newQuestionIndex = questionIndex + 1;
     return {
@@ -182,10 +159,7 @@ export function duplicateQuestion(
     };
 }
 
-export function removeQuestion(
-    questionIndex: number,
-    sectionId: string,
-): UpdateAction {
+export function removeQuestion(questionIndex: number, sectionId: string): UpdateAction {
     return {
         type: UpdateActionTypes.REMOVE_QUESTION,
         member: MemberTypes.UPDATE,
@@ -218,10 +192,7 @@ export function updateQuestion(question: IQuestion): UpdateAction {
     };
 }
 
-export function updateAnswer(
-    questionId: string,
-    answer: IChoice | INumber | IText | ITime | IBoolean,
-): UpdateAction {
+export function updateAnswer(questionId: string, answer: IChoice | INumber | IText | ITime | IBoolean): UpdateAction {
     return {
         type: UpdateActionTypes.UPDATE_ANSWER,
         member: MemberTypes.UPDATE,
@@ -230,51 +201,36 @@ export function updateAnswer(
     };
 }
 
-const reducer = produce(
-    (
-        draft: State,
-        action:
-            | UpdateAction
-            | SwapAction
-            | DuplicateAction
-            | UpdateFormMetaAction,
-    ) => {
-        switch (action.member) {
-            case MemberTypes.UPDATE:
-                UpdateActions(draft, action as UpdateAction);
-                break;
-            case MemberTypes.SWAP:
-                SwapActions(draft, action as SwapAction);
-                break;
-            case MemberTypes.DUPLICATE:
-                DuplicateActions(draft, action as DuplicateAction);
-                break;
-            case MemberTypes.FORM_META:
-                FormMetaActions(draft, action as UpdateFormMetaAction);
-                break;
-        }
-    },
-);
+const reducer = produce((draft: State, action: UpdateAction | SwapAction | DuplicateAction | UpdateFormMetaAction) => {
+    switch (action.member) {
+        case MemberTypes.UPDATE:
+            UpdateActions(draft, action as UpdateAction);
+            break;
+        case MemberTypes.SWAP:
+            SwapActions(draft, action as SwapAction);
+            break;
+        case MemberTypes.DUPLICATE:
+            DuplicateActions(draft, action as DuplicateAction);
+            break;
+        case MemberTypes.FORM_META:
+            FormMetaActions(draft, action as UpdateFormMetaAction);
+            break;
+    }
+});
 
 export const FormContext = createContext<{
     state: State;
-    dispatch: Dispatch<
-        UpdateAction | SwapAction | DuplicateAction | UpdateFormMetaAction
-    >;
+    dispatch: Dispatch<UpdateAction | SwapAction | DuplicateAction | UpdateFormMetaAction>;
 }>({
     state: initialState,
     dispatch: () => null,
 });
 
-export const FormContextProvider = (props: {
-    children: JSX.Element;
-}): JSX.Element => {
+export const FormContextProvider = (props: { children: JSX.Element }): JSX.Element => {
     const [state, dispatch] = useReducer(reducer, initialState);
     return (
         // eslint-disable-next-line
         // @ts-ignore
-        <FormContext.Provider value={{ state, dispatch }}>
-            {props.children}
-        </FormContext.Provider>
+        <FormContext.Provider value={{ state, dispatch }}>{props.children}</FormContext.Provider>
     );
 };

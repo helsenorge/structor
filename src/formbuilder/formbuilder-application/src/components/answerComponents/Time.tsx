@@ -1,14 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {
-    Col,
-    Row,
-    Button,
-    TimePicker,
-    DatePicker,
-    Checkbox,
-    Radio,
-    Input,
-} from 'antd';
+import { Col, Row, Button, TimePicker, DatePicker, Checkbox, Radio, Input } from 'antd';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { ITime, TimeIntervalType } from '../../types/IAnswer';
 import Moment from 'moment';
@@ -22,13 +13,10 @@ type TimeProps = {
 
 function Time({ questionId }: TimeProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [localAnswer, setLocalAnswer] = useState(
-        state.questions[questionId].answer as ITime,
-    );
+    const [localAnswer, setLocalAnswer] = useState(state.questions[questionId].answer as ITime);
 
     function getTimeFormat(): string {
-        if (localAnswer.isTime && localAnswer.isDate)
-            return 'DD.MM.YYYY  HH:mm';
+        if (localAnswer.isTime && localAnswer.isDate) return 'DD.MM.YYYY  HH:mm';
         else if (localAnswer.isDate) return 'DD.MM.YYYY';
         else return 'HH:mm';
     }
@@ -74,36 +62,16 @@ function Time({ questionId }: TimeProps): JSX.Element {
                 />
             );
         else if (localAnswer.isTime)
-            return (
-                <TimePicker
-                    value={value}
-                    format={'HH:mm'}
-                    onChange={updateTime}
-                    disabled={disabled}
-                />
-            );
+            return <TimePicker value={value} format={'HH:mm'} onChange={updateTime} disabled={disabled} />;
     }
 
     function typeToString() {
-        return localAnswer.isTime && localAnswer.isDate
-            ? 'dato/tid'
-            : localAnswer.isDate
-            ? 'dato'
-            : 'tid';
+        return localAnswer.isTime && localAnswer.isDate ? 'dato/tid' : localAnswer.isDate ? 'dato' : 'tid';
     }
 
     function timeDefToString(plural: boolean) {
-        if (plural)
-            return localAnswer.isTime && localAnswer.isDate
-                ? 'dager'
-                : localAnswer.isTime
-                ? 'timer'
-                : 'dager';
-        return localAnswer.isTime && localAnswer.isDate
-            ? 'tid'
-            : localAnswer.isTime
-            ? 'tid'
-            : 'dag';
+        if (plural) return localAnswer.isTime && localAnswer.isDate ? 'dager' : localAnswer.isTime ? 'timer' : 'dager';
+        return localAnswer.isTime && localAnswer.isDate ? 'tid' : localAnswer.isTime ? 'tid' : 'dag';
     }
 
     return (
@@ -111,31 +79,19 @@ function Time({ questionId }: TimeProps): JSX.Element {
             <Row className="standard">
                 <Col span={24} style={{ marginBottom: '10px' }}>
                     <Button
-                        type={
-                            localAnswer.isDate && !localAnswer.isTime
-                                ? 'primary'
-                                : undefined
-                        }
+                        type={localAnswer.isDate && !localAnswer.isTime ? 'primary' : undefined}
                         onClick={() => changeTimeType(true, false)}
                     >
                         Dato
                     </Button>
                     <Button
-                        type={
-                            !localAnswer.isDate && localAnswer.isTime
-                                ? 'primary'
-                                : undefined
-                        }
+                        type={!localAnswer.isDate && localAnswer.isTime ? 'primary' : undefined}
                         onClick={() => changeTimeType(false, true)}
                     >
                         Tid
                     </Button>
                     <Button
-                        type={
-                            localAnswer.isDate && localAnswer.isTime
-                                ? 'primary'
-                                : undefined
-                        }
+                        type={localAnswer.isDate && localAnswer.isTime ? 'primary' : undefined}
                         onClick={() => changeTimeType(true, true)}
                     >
                         Dato og Tid
@@ -198,62 +154,40 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                         value={localAnswer.timeIntervalType}
                                         onChange={(e: RadioChangeEvent) => {
                                             const tmp = { ...localAnswer };
-                                            tmp.timeIntervalType =
-                                                e.target.value;
+                                            tmp.timeIntervalType = e.target.value;
                                             tmp.endTime =
-                                                tmp.timeIntervalType ===
-                                                TimeIntervalType.FIXED
+                                                tmp.timeIntervalType === TimeIntervalType.FIXED
                                                     ? Moment().valueOf()
                                                     : 0;
                                             tmp.startTime =
-                                                tmp.timeIntervalType ===
-                                                TimeIntervalType.FIXED
+                                                tmp.timeIntervalType === TimeIntervalType.FIXED
                                                     ? Moment().valueOf()
                                                     : 0;
                                             localUpdate(tmp, true);
                                         }}
                                     >
                                         <Row style={{ marginBottom: '10px' }}>
-                                            <Radio
-                                                value={TimeIntervalType.FIXED}
-                                            >
-                                                Faste tidspunkt
-                                            </Radio>
+                                            <Radio value={TimeIntervalType.FIXED}>Faste tidspunkt</Radio>
                                         </Row>
                                         <Row>
-                                            <Radio
-                                                value={
-                                                    TimeIntervalType.FLOATING
-                                                }
-                                            >
-                                                I forhold til tidspunktet
-                                                skjemaet fylles ut
+                                            <Radio value={TimeIntervalType.FLOATING}>
+                                                I forhold til tidspunktet skjemaet fylles ut
                                             </Radio>
                                         </Row>
                                     </Radio.Group>
                                 </Col>
                             </Row>
-                            {localAnswer.timeIntervalType ===
-                            TimeIntervalType.FIXED ? (
+                            {localAnswer.timeIntervalType === TimeIntervalType.FIXED ? (
                                 <>
                                     <Row className="standard">
-                                        <Col
-                                            offset={2}
-                                            span={6}
-                                            style={{ marginBottom: '10px' }}
-                                        >
+                                        <Col offset={2} span={6} style={{ marginBottom: '10px' }}>
                                             <Checkbox
-                                                checked={
-                                                    localAnswer.hasStartTime
-                                                }
-                                                onChange={(
-                                                    e: CheckboxChangeEvent,
-                                                ) => {
+                                                checked={localAnswer.hasStartTime}
+                                                onChange={(e: CheckboxChangeEvent) => {
                                                     const tmp = {
                                                         ...localAnswer,
                                                     };
-                                                    tmp.hasStartTime =
-                                                        e.target.checked;
+                                                    tmp.hasStartTime = e.target.checked;
                                                     localUpdate(tmp, true);
                                                 }}
                                             >
@@ -264,9 +198,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                             {timePickerRenderer(
                                                 !localAnswer.hasStartTime,
                                                 Moment(
-                                                    localAnswer.startTime
-                                                        ? localAnswer.startTime
-                                                        : Moment().valueOf(),
+                                                    localAnswer.startTime ? localAnswer.startTime : Moment().valueOf(),
                                                 ),
                                                 (value) => {
                                                     const tmp = {
@@ -279,21 +211,14 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                         </Col>
                                     </Row>
                                     <Row className="standard">
-                                        <Col
-                                            offset={2}
-                                            span={6}
-                                            style={{ marginBottom: '10px' }}
-                                        >
+                                        <Col offset={2} span={6} style={{ marginBottom: '10px' }}>
                                             <Checkbox
                                                 checked={localAnswer.hasEndTime}
-                                                onChange={(
-                                                    e: CheckboxChangeEvent,
-                                                ) => {
+                                                onChange={(e: CheckboxChangeEvent) => {
                                                     const tmp = {
                                                         ...localAnswer,
                                                     };
-                                                    tmp.hasEndTime =
-                                                        e.target.checked;
+                                                    tmp.hasEndTime = e.target.checked;
                                                     localUpdate(tmp, true);
                                                 }}
                                             >
@@ -303,11 +228,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                         <Col span={6}>
                                             {timePickerRenderer(
                                                 !localAnswer.hasEndTime,
-                                                Moment(
-                                                    localAnswer.endTime
-                                                        ? localAnswer.endTime
-                                                        : Moment().valueOf(),
-                                                ),
+                                                Moment(localAnswer.endTime ? localAnswer.endTime : Moment().valueOf()),
                                                 (value) => {
                                                     const tmp = {
                                                         ...localAnswer,
@@ -319,106 +240,63 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                         </Col>
                                     </Row>
                                 </>
-                            ) : localAnswer.timeIntervalType ===
-                              TimeIntervalType.FLOATING ? (
+                            ) : localAnswer.timeIntervalType === TimeIntervalType.FLOATING ? (
                                 <>
                                     <Row className="standard">
-                                        <Col
-                                            offset={2}
-                                            span={6}
-                                            style={{ marginBottom: '10px' }}
-                                        >
+                                        <Col offset={2} span={6} style={{ marginBottom: '10px' }}>
                                             <Checkbox
-                                                checked={
-                                                    localAnswer.hasStartTime
-                                                }
-                                                onChange={(
-                                                    e: CheckboxChangeEvent,
-                                                ) => {
+                                                checked={localAnswer.hasStartTime}
+                                                onChange={(e: CheckboxChangeEvent) => {
                                                     const tmp = {
                                                         ...localAnswer,
                                                     };
-                                                    tmp.hasStartTime =
-                                                        e.target.checked;
+                                                    tmp.hasStartTime = e.target.checked;
                                                     localUpdate(tmp, true);
                                                 }}
                                             >
-                                                Antall {timeDefToString(true)}{' '}
-                                                før
+                                                Antall {timeDefToString(true)} før
                                             </Checkbox>
                                         </Col>
                                         <Col span={6}>
                                             <Input
-                                                defaultValue={
-                                                    localAnswer.startTime
-                                                }
-                                                onBlur={(
-                                                    e: React.FocusEvent<
-                                                        HTMLInputElement
-                                                    >,
-                                                ) => {
+                                                defaultValue={localAnswer.startTime}
+                                                onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
                                                     const tmp = {
                                                         ...localAnswer,
                                                     };
-                                                    tmp.startTime = parseInt(
-                                                        e.target.value
-                                                            ? e.target.value
-                                                            : '',
-                                                    );
+                                                    tmp.startTime = parseInt(e.target.value ? e.target.value : '');
                                                     localUpdate(tmp, true);
                                                 }}
-                                                disabled={
-                                                    !localAnswer.hasStartTime
-                                                }
+                                                disabled={!localAnswer.hasStartTime}
                                             ></Input>
                                         </Col>
                                     </Row>
                                     <Row className="standard">
-                                        <Col
-                                            span={6}
-                                            offset={2}
-                                            style={{ marginBottom: '10px' }}
-                                        >
+                                        <Col span={6} offset={2} style={{ marginBottom: '10px' }}>
                                             <Checkbox
                                                 checked={localAnswer.hasEndTime}
-                                                onChange={(
-                                                    e: CheckboxChangeEvent,
-                                                ) => {
+                                                onChange={(e: CheckboxChangeEvent) => {
                                                     const tmp = {
                                                         ...localAnswer,
                                                     };
-                                                    tmp.hasEndTime =
-                                                        e.target.checked;
+                                                    tmp.hasEndTime = e.target.checked;
                                                     localUpdate(tmp, true);
                                                 }}
                                             >
-                                                Antall {timeDefToString(true)}{' '}
-                                                etter
+                                                Antall {timeDefToString(true)} etter
                                             </Checkbox>
                                         </Col>
                                         <Col span={6}>
                                             <Input
-                                                defaultValue={
-                                                    localAnswer.endTime
-                                                }
-                                                onBlur={(
-                                                    e: React.FocusEvent<
-                                                        HTMLInputElement
-                                                    >,
-                                                ) => {
+                                                defaultValue={localAnswer.endTime}
+                                                onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
                                                     const tmp = {
                                                         ...localAnswer,
                                                     };
-                                                    tmp.endTime = parseInt(
-                                                        e.target.value
-                                                            ? e.target.value
-                                                            : '',
-                                                    );
+                                                    tmp.endTime = parseInt(e.target.value ? e.target.value : '');
                                                     localUpdate(tmp, true);
                                                 }}
-                                                disabled={
-                                                    !localAnswer.hasEndTime
-                                                }
+                                                disabled={!localAnswer.hasEndTime}
                                             ></Input>
                                         </Col>
                                     </Row>

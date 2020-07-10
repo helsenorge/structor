@@ -27,13 +27,7 @@ function NavBar(): JSX.Element {
 
     function iFrameLoaded() {
         const questionnaireString = JSON.stringify(
-            JSONGenerator(
-                state.title,
-                state.description,
-                state.sectionOrder,
-                state.sections,
-                state.questions,
-            ),
+            JSONGenerator(state.title, state.description, state.sectionOrder, state.sections, state.questions),
         );
 
         const schemeDisplayer = document.getElementById('schemeFrame');
@@ -56,19 +50,14 @@ function NavBar(): JSX.Element {
         const filename = questionnaire.title + '.json';
         const contentType = 'application/json;charset=utf-8;';
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            const blob = new Blob(
-                [decodeURIComponent(encodeURI(JSON.stringify(questionnaire)))],
-                { type: contentType },
-            );
+            const blob = new Blob([decodeURIComponent(encodeURI(JSON.stringify(questionnaire)))], {
+                type: contentType,
+            });
             navigator.msSaveOrOpenBlob(blob, filename);
         } else {
             const a = document.createElement('a');
             a.download = filename;
-            a.href =
-                'data:' +
-                contentType +
-                ',' +
-                encodeURIComponent(JSON.stringify(questionnaire));
+            a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(questionnaire));
             a.target = '_blank';
             document.body.appendChild(a);
             a.click();
@@ -86,11 +75,7 @@ function NavBar(): JSX.Element {
                 width="90vw"
                 style={{ top: '10px' }}
                 footer={[
-                    <Button
-                        key="submit"
-                        type="primary"
-                        onClick={() => setFormPreview(false)}
-                    >
+                    <Button key="submit" type="primary" onClick={() => setFormPreview(false)}>
                         Lukk
                     </Button>,
                 ]}
@@ -126,10 +111,7 @@ function NavBar(): JSX.Element {
                     </Tooltip>
                 </Col>
                 <Col lg={17} md={12}>
-                    <Title
-                        level={2}
-                        style={{ color: 'var(--color-base-1)', float: 'left' }}
-                    >
+                    <Title level={2} style={{ color: 'var(--color-base-1)', float: 'left' }}>
                         Skjemabygger
                     </Title>
                 </Col>

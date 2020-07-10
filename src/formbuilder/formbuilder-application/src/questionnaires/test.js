@@ -7,9 +7,7 @@ export const test = {
     publisher: 'NHN',
     description: 'Beskrivelsen av tittel',
     meta: {
-        profile: [
-            'http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire',
-        ],
+        profile: ['http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire'],
         tag: [
             {
                 system: 'urn:ietf:bcp:47',
@@ -48,8 +46,7 @@ export const test = {
                     _text: {
                         extension: [
                             {
-                                url:
-                                    'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                                url: 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
                                 valueMarkdown: 'Beskrivelse av seksjon 1',
                             },
                         ],
@@ -73,19 +70,15 @@ export const test = {
                     readOnly: false,
                     extension: [
                         {
-                            url:
-                                'http://ehelse.no/fhir/StructureDefinition/validationtext',
-                            valueString:
-                                'Fyll ut feltet med et tall mellom 0 og 100',
+                            url: 'http://ehelse.no/fhir/StructureDefinition/validationtext',
+                            valueString: 'Fyll ut feltet med et tall mellom 0 og 100',
                         },
                         {
-                            url:
-                                'http://hl7.org/fhir/StructureDefinition/maxValue',
+                            url: 'http://hl7.org/fhir/StructureDefinition/maxValue',
                             valueInteger: 100,
                         },
                         {
-                            url:
-                                'http://hl7.org/fhir/StructureDefinition/minValue',
+                            url: 'http://hl7.org/fhir/StructureDefinition/minValue',
                             valueInteger: 0,
                         },
                     ],
@@ -105,8 +98,7 @@ export const test = {
                     _text: {
                         extension: [
                             {
-                                url:
-                                    'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                                url: 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
                                 valueMarkdown: 'Beskrivelse av seksjon 2',
                             },
                         ],
@@ -127,8 +119,7 @@ export const test = {
                             _text: {
                                 extension: [
                                     {
-                                        url:
-                                            'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                                        url: 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
                                         valueMarkdown:
                                             '### Hva jobber du med? (Spørsmål med tekst)\r\nDette er forklaring på spørsmålet "hva jobber du med?". Dette kan ødelegge litt for dere hehe.',
                                     },

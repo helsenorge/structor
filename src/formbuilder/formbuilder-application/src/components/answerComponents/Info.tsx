@@ -10,15 +10,9 @@ type TextInputProps = {
 
 function TextInput({ questionId }: TextInputProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [localAnswer, setLocalAnswer] = useState(
-        state.questions[questionId].answer as IInfo,
-    );
+    const [localAnswer, setLocalAnswer] = useState(state.questions[questionId].answer as IInfo);
 
-    function localUpdate(attribute: {
-        info?: string;
-        hasInfo?: boolean;
-        updateStore: boolean;
-    }) {
+    function localUpdate(attribute: { info?: string; hasInfo?: boolean; updateStore: boolean }) {
         const temp = { ...localAnswer };
         if (attribute.hasInfo) {
             temp.info = attribute.info ? attribute.info : '';

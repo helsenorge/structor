@@ -1,19 +1,6 @@
 import React, { useState, useContext } from 'react';
-import {
-    Radio,
-    Button,
-    Input,
-    Tooltip,
-    Checkbox,
-    Col,
-    Row,
-    Select,
-} from 'antd';
-import {
-    PlusCircleOutlined,
-    PlusSquareOutlined,
-    CloseOutlined,
-} from '@ant-design/icons';
+import { Radio, Button, Input, Tooltip, Checkbox, Col, Row, Select } from 'antd';
+import { PlusCircleOutlined, PlusSquareOutlined, CloseOutlined } from '@ant-design/icons';
 import './AnswerComponent.css';
 import { IChoice } from '../../types/IAnswer';
 import { FormContext, updateAnswer } from '../../store/FormStore';
@@ -26,9 +13,7 @@ type choiceProps = {
 
 function Choice({ questionId }: choiceProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [localAnswer, setLocalAnswer] = useState(
-        state.questions[questionId].answer as IChoice,
-    );
+    const [localAnswer, setLocalAnswer] = useState(state.questions[questionId].answer as IChoice);
 
     function localUpdate(attribute: {
         isMultiple?: boolean;
@@ -39,11 +24,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         defaultValue?: number;
     }) {
         const temp = { ...localAnswer };
-        if (attribute.isMultiple !== undefined)
-            temp.isMultiple = attribute.isMultiple;
+        if (attribute.isMultiple !== undefined) temp.isMultiple = attribute.isMultiple;
         if (attribute.isOpen !== undefined) temp.isOpen = attribute.isOpen;
-        if (attribute.hasDefault !== undefined)
-            temp.hasDefault = attribute.hasDefault;
+        if (attribute.hasDefault !== undefined) temp.hasDefault = attribute.hasDefault;
         if (attribute.choices !== undefined) temp.choices = attribute.choices;
         if (attribute.defaultValue !== undefined) {
             if (isNaN(attribute.defaultValue)) temp.defaultValue = undefined;
@@ -85,12 +68,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     function createRadioButton(id: number) {
         return (
-            <Radio
-                key={'Radio_' + questionId + id}
-                style={choiceButtonStyle}
-                disabled={true}
-                value={id}
-            >
+            <Radio key={'Radio_' + questionId + id} style={choiceButtonStyle} disabled={true} value={id}>
                 <Input
                     type="text"
                     className="input-question"
@@ -148,10 +126,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     return (
         <>
-            <Row
-                className="standard"
-                style={{ paddingLeft: '0px', paddingTop: '0px' }}
-            >
+            <Row className="standard" style={{ paddingLeft: '0px', paddingTop: '0px' }}>
                 <Col span={24}>
                     <Checkbox
                         defaultChecked={localAnswer.isOpen}
@@ -200,12 +175,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                             </Checkbox>
                             <Select
                                 defaultValue={localAnswer.defaultValue}
-                                disabled={
-                                    !(
-                                        localAnswer.hasDefault &&
-                                        !localAnswer.isMultiple
-                                    )
-                                }
+                                disabled={!(localAnswer.hasDefault && !localAnswer.isMultiple)}
                                 style={{ width: '200px' }}
                                 onSelect={(value) => {
                                     localUpdate({
@@ -217,13 +187,8 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                             >
                                 {localAnswer.choices
                                     ? localAnswer.choices.map((name, id) => [
-                                          <Option
-                                              key={'def' + questionId + id}
-                                              value={id}
-                                          >
-                                              {name.length < 1
-                                                  ? 'Alternativ ' + (id + 1)
-                                                  : name}
+                                          <Option key={'def' + questionId + id} value={id}>
+                                              {name.length < 1 ? 'Alternativ ' + (id + 1) : name}
                                           </Option>,
                                       ])
                                     : []}
@@ -236,15 +201,8 @@ function Choice({ questionId }: choiceProps): JSX.Element {
             {localAnswer.isMultiple ? (
                 <div className="question-component" style={choiceStyle}>
                     <h4>Skriv inn svaralternativer under:</h4>
-                    {localAnswer.choices.map((name, id) => [
-                        createCheckbox(id),
-                    ])}
-                    <Button
-                        type="text"
-                        icon={<PlusSquareOutlined />}
-                        onClick={addButtonClick}
-                        value="Add"
-                    >
+                    {localAnswer.choices.map((name, id) => [createCheckbox(id)])}
+                    <Button type="text" icon={<PlusSquareOutlined />} onClick={addButtonClick} value="Add">
                         Legg til alternativ
                     </Button>
                 </div>
@@ -253,22 +211,11 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     <h4>Skriv inn svaralternativer under:</h4>
                     <Radio.Group
                         name="radiogroup"
-                        value={
-                            localAnswer.hasDefault
-                                ? localAnswer.defaultValue
-                                : undefined
-                        }
+                        value={localAnswer.hasDefault ? localAnswer.defaultValue : undefined}
                     >
-                        {localAnswer.choices.map((name, id) => [
-                            createRadioButton(id),
-                        ])}
+                        {localAnswer.choices.map((name, id) => [createRadioButton(id)])}
                         {
-                            <Button
-                                type="text"
-                                icon={<PlusCircleOutlined />}
-                                onClick={addButtonClick}
-                                value="Add"
-                            >
+                            <Button type="text" icon={<PlusCircleOutlined />} onClick={addButtonClick} value="Add">
                                 Legg til alternativ
                             </Button>
                         }
