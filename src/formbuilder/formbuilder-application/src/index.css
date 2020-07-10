@@ -10,6 +10,7 @@ body {
   height: 100%;
 }
 
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -20,9 +21,13 @@ code {
   --primary-2: #006D84;       /* Header color 006D84 */
   --color-base-1: #FFFFFF;    /* Box color */ 
   --color-base-2: #FAFAFA;    /* Background of page D8D8D8 */
-  --color-base-3: #E1E2E4;    /* Section header grey E1E2E4 EEEFF1 */
+  --color-base-3: #f0f0f0;    /* Section header grey E1E2E4 EEEFF1 */
   
  /* --color-base-4: #8AB5B5;    Title color */
+}
+
+html {
+  --antd-wave-shadow-color: var(--primary-1) !important;
 }
 
 .controller{

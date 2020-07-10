@@ -76,8 +76,10 @@ function NavBar(): JSX.Element {
                 if (
                     // !state.questions[questionId].valid ||
                     !state.questions[questionId].answer.valid
-                )
+                ) {
+                    console.log('Ikke rett: ', state.questions[questionId].questionText);
                     return false;
+                }
             }
         }
         return true;

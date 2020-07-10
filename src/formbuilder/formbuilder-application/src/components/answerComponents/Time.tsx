@@ -79,19 +79,19 @@ function Time({ questionId }: TimeProps): JSX.Element {
             <Row className="standard">
                 <Col span={24} style={{ marginBottom: '10px' }}>
                     <Button
-                        type={localAnswer.isDate && !localAnswer.isTime ? 'primary' : undefined}
+                        type={localAnswer.isDate && !localAnswer.isTime ? 'primary' : 'default'}
                         onClick={() => changeTimeType(true, false)}
                     >
                         Dato
                     </Button>
                     <Button
-                        type={!localAnswer.isDate && localAnswer.isTime ? 'primary' : undefined}
+                        type={!localAnswer.isDate && localAnswer.isTime ? 'primary' : 'default'}
                         onClick={() => changeTimeType(false, true)}
                     >
                         Tid
                     </Button>
                     <Button
-                        type={localAnswer.isDate && localAnswer.isTime ? 'primary' : undefined}
+                        type={localAnswer.isDate && localAnswer.isTime ? 'primary' : 'default'}
                         onClick={() => changeTimeType(true, true)}
                     >
                         Dato og Tid
