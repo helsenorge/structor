@@ -116,16 +116,18 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                             </Col>
                                                                         ),
                                                                 )}
-                                                                <Col
-                                                                    span={6}
-                                                                    order={2}
-                                                                    className="section-description"
-                                                                >
-                                                                    {!sectionDescription.includes(
-                                                                        section.id.split(
-                                                                            '.',
-                                                                        )[0],
-                                                                    ) && (
+                                                                {!sectionDescription.includes(
+                                                                    section.id.split(
+                                                                        '.',
+                                                                    )[0],
+                                                                ) && (
+                                                                    <Col
+                                                                        span={6}
+                                                                        order={
+                                                                            2
+                                                                        }
+                                                                        className="section-description"
+                                                                    >
                                                                         <Button
                                                                             type="link"
                                                                             value="small"
@@ -146,12 +148,20 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                             ekstra
                                                                             info
                                                                         </Button>
-                                                                    )}
-                                                                    {sectionDescription.includes(
-                                                                        section.id.split(
-                                                                            '.',
-                                                                        )[0],
-                                                                    ) && (
+                                                                    </Col>
+                                                                )}
+                                                                {sectionDescription.includes(
+                                                                    section.id.split(
+                                                                        '.',
+                                                                    )[0],
+                                                                ) && (
+                                                                    <Col
+                                                                        span={6}
+                                                                        order={
+                                                                            2
+                                                                        }
+                                                                        className="section-description"
+                                                                    >
                                                                         <Button
                                                                             type="link"
                                                                             value="small"
@@ -175,19 +185,15 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                             ekstra
                                                                             info
                                                                         </Button>
-                                                                    )}
-                                                                </Col>
+                                                                    </Col>
+                                                                )}
                                                             </Row>
                                                             {qAndA.map(
                                                                 (
                                                                     qa,
                                                                     qaIndex,
                                                                 ) => (
-                                                                    <div
-                                                                        key={
-                                                                            qaIndex
-                                                                        }
-                                                                    >
+                                                                    <>
                                                                         {qa.id.split(
                                                                             '.',
                                                                         )[0] ===
@@ -197,11 +203,7 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                             )
                                                                                 .length ===
                                                                                 2 && (
-                                                                                <div
-                                                                                    key={
-                                                                                        qaIndex
-                                                                                    }
-                                                                                >
+                                                                                <>
                                                                                     {qa
                                                                                         .questions
                                                                                         .questions
@@ -290,9 +292,9 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                                                 />
                                                                                             ),
                                                                                     )}
-                                                                                </div>
+                                                                                </>
                                                                             )}
-                                                                    </div>
+                                                                    </>
                                                                 ),
                                                             )}
                                                         </Panel>
