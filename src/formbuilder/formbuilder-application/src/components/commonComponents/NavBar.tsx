@@ -69,16 +69,17 @@ function NavBar(): JSX.Element {
         // if (state.description === '' || state.description === undefined)
         //     return false;
         // if (state.title === '' || state.title === undefined) return false;
-        for (const sectionId in state.sections) {
+        const questionArray = Object.values(state.questions);
+        for (let j = 0; j < state.sectionOrder.length; j++) {
             // if (!state.sections[key].valid) return false;
-            for (const questionId in state.questions) {
-                console.log(state.questions[questionId].answer.valid);
-                if (
-                    // !state.questions[questionId].valid ||
-                    !state.questions[questionId].answer.valid
-                )
-                    return false;
-            }
+        }
+        for (let i = 0; i < questionArray.length; i++) {
+            console.log(questionArray);
+            if (
+                // !state.questions[questionId].valid ||
+                !questionArray[i].answer.valid
+            )
+                return false;
         }
         return true;
     }
