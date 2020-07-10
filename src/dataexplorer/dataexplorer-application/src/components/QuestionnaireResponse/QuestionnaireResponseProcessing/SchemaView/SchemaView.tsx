@@ -18,6 +18,7 @@ const SchemaView = (props: SchemaViewProps) => {
     const [qAndA, setQAndA] = useState<IQuestionAndAnswer[]>([]);
     const [qAndAIds, setQAndAIds] = useState<string[]>([]);
     const [sectionDescription, setSectionDescription] = useState<string[]>([]);
+    const [containsDescription, setContainsDescription] = useState<string[]>([]);
 
     useEffect(() => {
         let hasAddedId = false;
@@ -37,7 +38,17 @@ const SchemaView = (props: SchemaViewProps) => {
         });
     }, [props]);
 
+    useEffect(() => {
+        qAndA.map(
+            (i) =>
+                i.questions.questions.type === 'display' &&
+                i.id.split('.')[1] !== '101' &&
+                setContainsDescription((containsDescription) => [...containsDescription, i.id.split('.')[0]]),
+        );
+    }, [qAndA]);
+
     const { Panel } = Collapse;
+
     return (
         <>
             {qAndAIds.length > 0 && (
@@ -81,55 +92,66 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                             </Col>
                                                                         ),
                                                                 )}
-                                                                {!sectionDescription.includes(
+                                                                {containsDescription.includes(
                                                                     section.id.split('.')[0],
                                                                 ) && (
-                                                                    <Col
-                                                                        span={6}
-                                                                        order={2}
-                                                                        className="section-description"
-                                                                    >
-                                                                        <Button
-                                                                            type="link"
-                                                                            value="small"
-                                                                            onClick={() =>
-                                                                                setSectionDescription(
-                                                                                    (sectionDescription) => [
-                                                                                        ...sectionDescription,
-                                                                                        section.id.split('.')[0],
-                                                                                    ],
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            Vis ekstra info
-                                                                        </Button>
-                                                                    </Col>
-                                                                )}
-                                                                {sectionDescription.includes(
-                                                                    section.id.split('.')[0],
-                                                                ) && (
-                                                                    <Col
-                                                                        span={6}
-                                                                        order={2}
-                                                                        className="section-description"
-                                                                    >
-                                                                        <Button
-                                                                            type="link"
-                                                                            value="small"
-                                                                            onClick={() =>
-                                                                                setSectionDescription(
-                                                                                    sectionDescription.filter((list) =>
-                                                                                        list.replace(
-                                                                                            section.id.split('.')[0],
-                                                                                            '',
-                                                                                        ),
-                                                                                    ),
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            Skjul ekstra info
-                                                                        </Button>
-                                                                    </Col>
+                                                                    <>
+                                                                        {!sectionDescription.includes(
+                                                                            section.id.split('.')[0],
+                                                                        ) && (
+                                                                            <Col
+                                                                                span={6}
+                                                                                order={2}
+                                                                                className="section-description"
+                                                                            >
+                                                                                <Button
+                                                                                    type="link"
+                                                                                    value="small"
+                                                                                    onClick={() =>
+                                                                                        setSectionDescription(
+                                                                                            (sectionDescription) => [
+                                                                                                ...sectionDescription,
+                                                                                                section.id.split(
+                                                                                                    '.',
+                                                                                                )[0],
+                                                                                            ],
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    Vis ekstra info
+                                                                                </Button>
+                                                                            </Col>
+                                                                        )}
+                                                                        {sectionDescription.includes(
+                                                                            section.id.split('.')[0],
+                                                                        ) && (
+                                                                            <Col
+                                                                                span={6}
+                                                                                order={2}
+                                                                                className="section-description"
+                                                                            >
+                                                                                <Button
+                                                                                    type="link"
+                                                                                    value="small"
+                                                                                    onClick={() =>
+                                                                                        setSectionDescription(
+                                                                                            sectionDescription.filter(
+                                                                                                (list) =>
+                                                                                                    list.replace(
+                                                                                                        section.id.split(
+                                                                                                            '.',
+                                                                                                        )[0],
+                                                                                                        '',
+                                                                                                    ),
+                                                                                            ),
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    Skjul ekstra info
+                                                                                </Button>
+                                                                            </Col>
+                                                                        )}
+                                                                    </>
                                                                 )}
                                                             </Row>
                                                             {qAndA.map((qa, qaIndex) => (
