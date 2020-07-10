@@ -233,7 +233,7 @@ function Section({
                     <Row>
                         <Col span={24}>
                             <DND.Droppable droppableId={sectionId} type={'question'}>
-                                {(provided, snapshot) => (
+                                {(provided) => (
                                     <div ref={provided.innerRef}>
                                         {!collapsed &&
                                             state.sections[sectionId].questionOrder.map(
@@ -245,7 +245,7 @@ function Section({
                                                             draggableId={questionId}
                                                             index={index}
                                                         >
-                                                            {(provided, snapshot) => (
+                                                            {(provided) => (
                                                                 <div
                                                                     ref={provided.innerRef}
                                                                     {...provided.draggableProps}

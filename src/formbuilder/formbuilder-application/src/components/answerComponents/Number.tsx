@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { InputNumber, Checkbox, Input, Row, Col, Form, Button } from 'antd';
+import { Checkbox, Input, Row, Col, Form } from 'antd';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { INumber } from '../../types/IAnswer';
 import './AnswerComponent.css';
