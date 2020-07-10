@@ -1,7 +1,8 @@
+@import '_variables';
+
 .site-collapse-custom-panel {
     background: white;
     font-size: 1.2rem;
-    margin-bottom: 1.5rem;
     overflow: inherit;
     padding-top: 0rem;
     padding-left: 0rem;
@@ -11,16 +12,24 @@
     font-size: 0.625rem;
     background: white;
     overflow: inherit;
-    margin-bottom: 1.5rem;
     padding-left: 0rem;
     padding-right: 0rem;
+    margin-bottom: 6.25rem;
 }
 
-div.answers {
-    font-size: 0.9rem;
-    font-weight: bold;
-    margin: 0px;
-    font-style: oblique;
+.ant-collapse {
+    :last-child {
+        border-bottom: none !important;
+    }
+}
+.ant-collapse-icon-position-left {
+    margin-bottom: 1.25rem !important;
+}
+
+.answers {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
 }
 
 p.bold {
@@ -30,7 +39,7 @@ p.bold {
 
 p.questions {
     font-size: 0.9rem;
-    margin-bottom: 0;
+    display: inline;
 }
 
 p.section-description {
@@ -50,21 +59,12 @@ div.card {
     background: white;
     padding-top: 2rem;
     margin-top: 3rem;
+    margin-bottom: 2.5rem;
 }
 
 h1.title {
     font-size: 2.125rem;
     padding-left: 1rem;
-}
-
-.alternatives {
-    padding-left: 0.5rem;
-    padding-top: 0rem;
-    padding-bottom: 0rem;
-    font-size: 0.9rem;
-    font-style: oblique;
-    cursor: pointer;
-    color: blue;
 }
 
 p.inline-answer-container {
@@ -78,15 +78,33 @@ p.inline-date-container {
 }
 
 .qa-container {
-    margin-top: 40px;
-    padding: 5px;
-    border-bottom: lightgrey solid;
+    padding-top: 0.625rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 0.0625rem solid lightgray;
+    border-bottom-width: thin;
 }
 
 .question-container {
-    margin-bottom: 10px;
+    margin-bottom: -0.9375rem;
     display: flex;
     justify-content: space-between;
+}
+
+.ant-collapse-content-box {
+    :last-child {
+        border-bottom: none;
+    }
+}
+
+.question-alternative-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: -0.9375rem;
+}
+
+.ant-btn-primary {
+    background-color: $header !important;
+    border-color: $header !important;
 }
 
 .inner-schema-row {
@@ -95,14 +113,14 @@ p.inline-date-container {
 
     .date-column {
         align-self: flex-end !important;
-        margin-right: 40px !important;
+        margin-right: 2.5rem !important;
     }
 }
 
 .ant-popover-inner {
     .scroll {
         overflow: auto;
-        height: 150px;
+        height: 9.375rem;
     }
 
     .notscroll {

@@ -3,5 +3,5 @@ module.exports = {
     trailingComma: 'all',
     singleQuote: true,
     tabWidth: 4,
-    "endOfLine":"auto"
+    endOfLine: 'auto',
 };
