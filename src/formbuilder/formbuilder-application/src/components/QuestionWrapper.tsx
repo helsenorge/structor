@@ -33,7 +33,7 @@ function QuestionWrapper({
     const [questionPreview, setQuestionPreview] = useState(false);
     const { state, dispatch } = useContext(FormContext);
 
-    function localUpdate(attribute: { collapsed: boolean }) {
+    function updateStore(attribute: { collapsed: boolean }) {
         const temp = { ...state.questions[questionId] };
         temp.collapsed = attribute.collapsed;
         dispatch(updateQuestion(temp));
@@ -45,7 +45,7 @@ function QuestionWrapper({
             collapseButton.focus();
         }
 
-        localUpdate({ collapsed: collapsed });
+        updateStore({ collapsed: collapsed });
     }
 
     function iFrameLoaded() {
@@ -58,14 +58,14 @@ function QuestionWrapper({
         const tempSectionList: SectionList = {
             [tempSection.id]: tempSection as ISection,
         };
-        const fakeQuestionList: QuestionList = {
+        const tempQuestionList: QuestionList = {
             [questionId]: state.questions[questionId],
         };
         const isIFrame = (input: HTMLElement | null): input is HTMLIFrameElement =>
             input !== null && input.tagName === 'IFRAME';
 
         const questionnaireString = JSON.stringify(
-            JSONGenerator('', '', [tempSection.id], tempSectionList, fakeQuestionList),
+            JSONGenerator('', '', [tempSection.id], tempSectionList, tempQuestionList),
         );
 
         const schemeDisplayer = document.getElementById('schemeFrame');
@@ -233,6 +233,7 @@ function QuestionWrapper({
                             <Row style={{ float: 'right' }}>
                                 <Tooltip title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}>
                                     <Button
+                                        id="stealFocus"
                                         style={{
                                             zIndex: 1,
                                             color: 'var(--primary-1)',

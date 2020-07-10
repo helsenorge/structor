@@ -91,10 +91,16 @@ function convertNumber(question: IQuestion, subItem: fhir.QuestionnaireItem): fh
             ? (subItem.initialDecimal = answer.defaultValue)
             : (subItem.initialInteger = answer.defaultValue);
     }
-    if (answer.hasUnit) {
+    if (answer.hasUnit && answer.unit !== undefined) {
         subItem.extension.push({
-            url: '',
+            url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
+            valueCoding: {
+                system: 'http://unitsofmeasure.org',
+                code: answer.unit,
+                display: answer.unit,
+            },
         });
+        subItem.type = FhirAnswerTypes.quantity;
     }
     return subItem;
 }
