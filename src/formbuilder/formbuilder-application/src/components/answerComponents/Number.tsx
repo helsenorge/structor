@@ -13,6 +13,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...state.questions[questionId].answer } as INumber;
     const [validationList, setValidationList] = useState([true, true, true, true]);
+
     function updateStore(attribute: {
         hasMax?: boolean;
         hasMin?: boolean;
@@ -44,21 +45,21 @@ function Number({ questionId }: NumberProps): JSX.Element {
             tempValid[field] = false;
             setValidationList(tempValid);
             temp.valid = false;
-            dispatch(updateAnswer(questionId, temp));
+            // dispatch(updateAnswer(questionId, temp));
         } else if (validity === 'success' && validationList[field] !== true) {
             tempValid[field] = true;
             setValidationList(tempValid);
             temp.valid = true;
-            dispatch(updateAnswer(questionId, temp));
+            // dispatch(updateAnswer(questionId, temp));
         }
         return validity;
     }
 
     useEffect(() => {
         const temp = { ...state.questions[questionId].answer };
-        temp.valid = true;
+        temp.valid = validationList.every((field) => field === true);
         dispatch(updateAnswer(questionId, temp));
-    }, []);
+    }, [validationList]);
 
     return (
         <>
