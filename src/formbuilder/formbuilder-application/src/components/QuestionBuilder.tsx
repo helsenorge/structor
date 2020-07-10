@@ -4,7 +4,14 @@ import './answerComponents/AnswerComponent.css';
 import { FormContext, updateQuestion } from '../store/FormStore';
 import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
-import AnswerTypes, { IChoice, INumber, IText, IBoolean, ITime, IAnswer } from '../types/IAnswer';
+import AnswerTypes, {
+    IChoice,
+    INumber,
+    IText,
+    IBoolean,
+    ITime,
+    IAnswer,
+} from '../types/IAnswer';
 
 const { Option } = Select;
 
@@ -15,9 +22,16 @@ type QuestionProps = {
     isInfo: boolean;
 };
 
-function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProps): JSX.Element {
+function QuestionBuilder({
+    questionId,
+    buttons,
+    provided,
+    isInfo,
+}: QuestionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [localQuestion, setLocalQuestion] = useState(state.questions[questionId] as IQuestion);
+    const [localQuestion, setLocalQuestion] = useState(
+        state.questions[questionId] as IQuestion,
+    );
 
     function localUpdate(attribute: {
         answerType?: AnswerTypes;
@@ -29,12 +43,17 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
         description?: string;
         updateStore?: boolean;
     }) {
-        const temp = { ...localQuestion };
-        if (attribute.isRequired !== undefined) temp.isRequired = attribute.isRequired;
-        if (attribute.isDependent !== undefined) temp.isDependent = attribute.isDependent;
-        if (attribute.dependentOf !== undefined) temp.dependentOf = attribute.dependentOf;
-        if (attribute.questionText !== undefined) temp.questionText = attribute.questionText;
-        if (attribute.collapsed !== undefined) temp.collapsed = attribute.collapsed;
+        const temp = { ...state.questions[questionId] };
+        if (attribute.isRequired !== undefined)
+            temp.isRequired = attribute.isRequired;
+        if (attribute.isDependent !== undefined)
+            temp.isDependent = attribute.isDependent;
+        if (attribute.dependentOf !== undefined)
+            temp.dependentOf = attribute.dependentOf;
+        if (attribute.questionText !== undefined)
+            temp.questionText = attribute.questionText;
+        if (attribute.collapsed !== undefined)
+            temp.collapsed = attribute.collapsed;
 
         if (attribute.answerType) {
             temp.answerType = attribute.answerType;
@@ -59,12 +78,13 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     } as INumber;
                     break;
                 case AnswerTypes.text:
-                    temp.answer = { id: questionId } as IText;
+                    temp.answer = { id: questionId, isLong: false } as IText;
                     break;
                 case AnswerTypes.boolean:
                     temp.answer = {
                         id: questionId,
                         isChecked: false,
+                        label: '',
                     } as IBoolean;
                     break;
                 case AnswerTypes.time:
@@ -79,7 +99,10 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     break;
                 default:
                     temp.answer = { id: questionId } as IAnswer;
-                    console.log('Missing answer type interface: ' + attribute.answerType);
+                    console.log(
+                        'Missing answer type interface: ' +
+                            attribute.answerType,
+                    );
                     break;
             }
         }
@@ -97,7 +120,10 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                         defaultValue={localQuestion.questionText}
                         onChange={(e) =>
                             localUpdate({
-                                questionText: e.target.value === undefined ? '' : e.target.value,
+                                questionText:
+                                    e.target.value === undefined
+                                        ? ''
+                                        : e.target.value,
                             })
                         }
                         onBlur={() => localUpdate({ updateStore: true })}
@@ -105,7 +131,9 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                 </Col>
                 <Col span={6}></Col>
                 <Col span={1} style={{ float: 'right' }}>
-                    <Tooltip title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}>
+                    <Tooltip
+                        title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}
+                    >
                         <Button
                             style={{
                                 zIndex: 1,
@@ -116,7 +144,12 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                             shape="circle"
                             {...provided.dragHandleProps}
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                            >
                                 <path d="M0 0h24v24H0V0z" fill="none" />
                                 <path
                                     fill="var(--primary-1)"
@@ -170,16 +203,29 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                         }}
                                         placeholder="Trykk for å velge"
                                     >
-                                        <Option value={AnswerTypes.boolean}>Samtykke</Option>
-                                        <Option value={AnswerTypes.number}>Tall</Option>
-                                        <Option value={AnswerTypes.text}>Tekst</Option>
-                                        <Option value={AnswerTypes.time}>Dato/tid</Option>
-                                        <Option value={AnswerTypes.choice}>Flervalg</Option>
+                                        <Option value={AnswerTypes.boolean}>
+                                            Samtykke
+                                        </Option>
+                                        <Option value={AnswerTypes.number}>
+                                            Tall
+                                        </Option>
+                                        <Option value={AnswerTypes.text}>
+                                            Tekst
+                                        </Option>
+                                        <Option value={AnswerTypes.time}>
+                                            Dato/tid
+                                        </Option>
+                                        <Option value={AnswerTypes.choice}>
+                                            Flervalg
+                                        </Option>
                                     </Select>
                                 </Col>
                             </Row>
                         </Col>
-                        <Col span={7} style={{ float: 'right', display: 'block' }}>
+                        <Col
+                            span={7}
+                            style={{ float: 'right', display: 'block' }}
+                        >
                             {buttons()}
                         </Col>
                     </Row>

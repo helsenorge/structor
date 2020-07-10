@@ -118,7 +118,6 @@ export function swapSection(oldSectionIndex: number, newSectionIndex: number): S
 }
 
 export function updateSection(section: ISection): UpdateAction {
-    console.log('Section: ', section);
     return {
         type: UpdateActionTypes.UPDATE_SECTION,
         member: MemberTypes.UPDATE,

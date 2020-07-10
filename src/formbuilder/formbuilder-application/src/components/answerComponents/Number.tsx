@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
-import { InputNumber, Checkbox, Input, Row, Col } from 'antd';
+import React, { useContext, useState, useEffect } from 'react';
+import { InputNumber, Checkbox, Input, Row, Col, Form, Button } from 'antd';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { INumber } from '../../types/IAnswer';
 import './AnswerComponent.css';
+import { ValidateStatus } from 'antd/lib/form/FormItem';
 
 type NumberProps = {
     questionId: string;
@@ -10,9 +11,14 @@ type NumberProps = {
 
 function Number({ questionId }: NumberProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [localAnswer, setLocalAnswer] = useState(state.questions[questionId].answer as INumber);
-
-    function localUpdate(attribute: {
+    const localAnswer = { ...state.questions[questionId].answer } as INumber;
+    const [validationList, setValidationList] = useState([
+        true,
+        true,
+        true,
+        true,
+    ]);
+    function updateStore(attribute: {
         hasMax?: boolean;
         hasMin?: boolean;
         hasUnit?: boolean;
@@ -22,153 +28,251 @@ function Number({ questionId }: NumberProps): JSX.Element {
         minValue?: number;
         defaultValue?: number;
         unit?: string;
-        updateStore?: boolean;
     }) {
-        const temp = { ...localAnswer };
+        const temp = { ...localAnswer } as INumber;
         if (attribute.hasMax !== undefined) temp.hasMax = attribute.hasMax;
         if (attribute.hasMin !== undefined) temp.hasMin = attribute.hasMin;
         if (attribute.hasUnit !== undefined) temp.hasUnit = attribute.hasUnit;
-        if (attribute.hasDefault !== undefined) temp.hasDefault = attribute.hasDefault;
-        if (attribute.isDecimal !== undefined) temp.isDecimal = attribute.isDecimal;
-        if (attribute.maxValue !== undefined) temp.maxValue = attribute.maxValue;
+        if (attribute.hasDefault !== undefined)
+            temp.hasDefault = attribute.hasDefault;
+        if (attribute.isDecimal !== undefined)
+            temp.isDecimal = attribute.isDecimal;
+        if (attribute.maxValue !== undefined)
+            temp.maxValue = attribute.maxValue;
         if (attribute.unit !== undefined) temp.unit = attribute.unit;
-        if (attribute.minValue !== undefined) temp.minValue = attribute.minValue;
-        if (attribute.defaultValue !== undefined) temp.defaultValue = attribute.defaultValue;
-        setLocalAnswer(temp);
-        if (attribute.updateStore !== undefined && attribute.updateStore) dispatch(updateAnswer(questionId, temp));
+        if (attribute.minValue !== undefined)
+            temp.minValue = attribute.minValue;
+        if (attribute.defaultValue !== undefined)
+            temp.defaultValue = attribute.defaultValue;
+        dispatch(updateAnswer(questionId, temp));
     }
+
+    function validate(field: number, validity: ValidateStatus): ValidateStatus {
+        const tempValid = [...validationList];
+        const temp = { ...state.questions[questionId].answer };
+        if (validity === 'error' && validationList[field] !== false) {
+            tempValid[field] = false;
+            setValidationList(tempValid);
+            temp.valid = false;
+            dispatch(updateAnswer(questionId, temp));
+        } else if (validity === 'success' && validationList[field] !== true) {
+            tempValid[field] = true;
+            setValidationList(tempValid);
+            temp.valid = true;
+            dispatch(updateAnswer(questionId, temp));
+        }
+        return validity;
+    }
+
+    useEffect(() => {
+        const temp = { ...state.questions[questionId].answer };
+        temp.valid = true;
+        dispatch(updateAnswer(questionId, temp));
+    }, []);
 
     return (
         <>
-            <Row>
-                <Col span={10} className="standard">
-                    <Checkbox
-                        checked={localAnswer.isDecimal}
-                        onChange={(e) =>
-                            localUpdate({
-                                isDecimal: e.target.checked,
-                                updateStore: true,
-                            })
-                        }
-                    >
-                        Desimaltall
-                    </Checkbox>
-                </Col>
-            </Row>
-            <Row>
-                <Col span={10} className="standard">
-                    <Checkbox
-                        checked={localAnswer.hasDefault}
-                        onChange={(e) =>
-                            localUpdate({
-                                hasDefault: e.target.checked,
-                                updateStore: true,
-                            })
-                        }
-                    >
-                        Forhåndsvalgt verdi
-                    </Checkbox>
-                </Col>
-                <Col span={10} className="standard">
-                    <InputNumber
-                        value={localAnswer.defaultValue}
-                        onChange={(value) =>
-                            localUpdate({
-                                updateStore: false,
-                                defaultValue: value as number,
-                            })
-                        }
-                        onBlur={() => localUpdate({ updateStore: true })}
-                        disabled={!localAnswer.hasDefault}
-                    ></InputNumber>
-                </Col>
-            </Row>
+            <Form>
+                <Row>
+                    <Col span={10} className="standard">
+                        <Checkbox
+                            checked={localAnswer.isDecimal}
+                            onChange={(e) =>
+                                updateStore({
+                                    isDecimal: e.target.checked,
+                                })
+                            }
+                        >
+                            Desimaltall
+                        </Checkbox>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={10} className="standard">
+                        <Checkbox
+                            checked={localAnswer.hasDefault}
+                            onChange={(e) =>
+                                updateStore({
+                                    hasDefault: e.target.checked,
+                                })
+                            }
+                        >
+                            Forhåndsvalgt verdi
+                        </Checkbox>
+                    </Col>
+                    <Col span={12} className="standard">
+                        <Form.Item
+                            validateStatus={
+                                localAnswer.hasDefault === false ||
+                                (localAnswer.hasDefault === true &&
+                                    localAnswer.defaultValue !== undefined &&
+                                    String(localAnswer.defaultValue).length > 0)
+                                    ? (validate(0, 'success') as ValidateStatus)
+                                    : (validate(0, 'error') as ValidateStatus)
+                            }
+                            help={
+                                localAnswer.hasDefault === false ||
+                                (localAnswer.hasDefault === true &&
+                                    localAnswer.defaultValue !== undefined &&
+                                    String(localAnswer.defaultValue).length > 0)
+                                    ? undefined
+                                    : 'Fyll inn forhåndsvalgt verdi'
+                            }
+                        >
+                            <Input
+                                type="number"
+                                defaultValue={localAnswer.defaultValue}
+                                onBlur={(e) => {
+                                    updateStore({
+                                        defaultValue: (e.currentTarget
+                                            .value as unknown) as number,
+                                    });
+                                }}
+                                disabled={!localAnswer.hasDefault}
+                            ></Input>
+                        </Form.Item>
+                    </Col>
+                </Row>
 
-            <Row>
-                <Col span={10} className="standard">
-                    <Checkbox
-                        checked={localAnswer.hasMin}
-                        onChange={(e) =>
-                            localUpdate({
-                                hasMin: e.target.checked,
-                                updateStore: true,
-                            })
-                        }
-                    >
-                        Min
-                    </Checkbox>
-                </Col>
-                <Col span={10} className="standard">
-                    <InputNumber
-                        value={localAnswer.minValue}
-                        onChange={(value) =>
-                            localUpdate({
-                                updateStore: false,
-                                minValue: value as number,
-                            })
-                        }
-                        onBlur={() => localUpdate({ updateStore: true })}
-                        disabled={!localAnswer.hasMin}
-                    ></InputNumber>
-                </Col>
-            </Row>
-            <Row>
-                <Col span={10} className="standard">
-                    <Checkbox
-                        checked={localAnswer.hasMax}
-                        onChange={(e) =>
-                            localUpdate({
-                                hasMax: e.target.checked,
-                                updateStore: true,
-                            })
-                        }
-                    >
-                        Max
-                    </Checkbox>
-                </Col>
-                <Col span={10} className="standard">
-                    <InputNumber
-                        value={localAnswer.maxValue}
-                        onChange={(value) =>
-                            localUpdate({
-                                updateStore: false,
-                                maxValue: value as number,
-                            })
-                        }
-                        onBlur={() => localUpdate({ updateStore: true })}
-                        disabled={!localAnswer.hasMax}
-                    ></InputNumber>
-                </Col>
-            </Row>
-            <Row>
-                <Col span={10} className="standard">
-                    <Checkbox
-                        checked={localAnswer.hasUnit}
-                        onChange={(e) =>
-                            localUpdate({
-                                hasUnit: e.target.checked,
-                                updateStore: true,
-                            })
-                        }
-                    >
-                        Enhet
-                    </Checkbox>
-                </Col>
-                <Col span={12} className="standard">
-                    <Input
-                        style={{ width: '90px' }}
-                        value={localAnswer.unit}
-                        onChange={(e) =>
-                            localUpdate({
-                                updateStore: false,
-                                unit: e.target.value as string,
-                            })
-                        }
-                        onBlur={() => localUpdate({ updateStore: true })}
-                        disabled={!localAnswer.hasUnit}
-                    ></Input>
-                </Col>
-            </Row>
+                <Row>
+                    <Col span={10} className="standard">
+                        <Checkbox
+                            checked={localAnswer.hasMin}
+                            onChange={(e) =>
+                                updateStore({
+                                    hasMin: e.target.checked,
+                                })
+                            }
+                        >
+                            Min
+                        </Checkbox>
+                    </Col>
+                    <Col span={10} className="standard">
+                        <Form.Item
+                            validateStatus={
+                                localAnswer.hasMin === false ||
+                                (localAnswer.hasMin === true &&
+                                    localAnswer.minValue !== undefined &&
+                                    String(localAnswer.minValue).length > 0)
+                                    ? (validate(1, 'success') as ValidateStatus)
+                                    : (validate(1, 'error') as ValidateStatus)
+                            }
+                            help={
+                                localAnswer.hasMin === false ||
+                                (localAnswer.hasMin === true &&
+                                    localAnswer.minValue !== undefined &&
+                                    String(localAnswer.minValue).length > 0)
+                                    ? undefined
+                                    : 'Fyll inn min verdi'
+                            }
+                        >
+                            <Input
+                                type="number"
+                                defaultValue={localAnswer.minValue}
+                                onBlur={(e) =>
+                                    updateStore({
+                                        minValue: (e.target
+                                            .value as unknown) as number,
+                                    })
+                                }
+                                disabled={!localAnswer.hasMin}
+                            ></Input>
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={10} className="standard">
+                        <Checkbox
+                            checked={localAnswer.hasMax}
+                            onChange={(e) =>
+                                updateStore({
+                                    hasMax: e.target.checked,
+                                })
+                            }
+                        >
+                            Max
+                        </Checkbox>
+                    </Col>
+                    <Col span={10} className="standard">
+                        <Form.Item
+                            validateStatus={
+                                localAnswer.hasMax === false ||
+                                (localAnswer.hasMax === true &&
+                                    localAnswer.maxValue !== undefined &&
+                                    String(localAnswer.maxValue).length > 0)
+                                    ? (validate(2, 'success') as ValidateStatus)
+                                    : (validate(2, 'error') as ValidateStatus)
+                            }
+                            help={
+                                localAnswer.hasMax === false ||
+                                (localAnswer.hasMax === true &&
+                                    localAnswer.maxValue !== undefined &&
+                                    String(localAnswer.maxValue).length > 0)
+                                    ? undefined
+                                    : 'Fyll inn max verdi'
+                            }
+                        >
+                            <Input
+                                type="number"
+                                defaultValue={localAnswer.maxValue}
+                                onBlur={(e) =>
+                                    updateStore({
+                                        maxValue: (e.target
+                                            .value as unknown) as number,
+                                    })
+                                }
+                                disabled={!localAnswer.hasMax}
+                            ></Input>
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={10} className="standard">
+                        <Checkbox
+                            checked={localAnswer.hasUnit}
+                            onChange={(e) =>
+                                updateStore({
+                                    hasUnit: e.target.checked,
+                                })
+                            }
+                        >
+                            Enhet
+                        </Checkbox>
+                    </Col>
+                    <Col span={10} className="standard">
+                        <Form.Item
+                            validateStatus={
+                                localAnswer.hasUnit === false ||
+                                (localAnswer.hasUnit === true &&
+                                    localAnswer.unit !== undefined &&
+                                    String(localAnswer.unit).length > 0)
+                                    ? (validate(3, 'success') as ValidateStatus)
+                                    : (validate(3, 'error') as ValidateStatus)
+                            }
+                            help={
+                                localAnswer.hasUnit === false ||
+                                (localAnswer.hasUnit === true &&
+                                    localAnswer.unit !== undefined &&
+                                    String(localAnswer.unit).length > 0)
+                                    ? undefined
+                                    : 'Fyll inn enhet'
+                            }
+                        >
+                            <Input
+                                type="text"
+                                style={{ width: '90px' }}
+                                defaultValue={localAnswer.unit}
+                                onBlur={(e) =>
+                                    updateStore({
+                                        unit: e.target.value,
+                                    })
+                                }
+                                disabled={!localAnswer.hasUnit}
+                            ></Input>
+                        </Form.Item>
+                    </Col>
+                </Row>
+            </Form>
         </>
     );
 }
