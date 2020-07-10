@@ -60,7 +60,7 @@ function CreateForm(): JSX.Element {
         }
     }
     function onBeforeCapture(startResponder: DND.BeforeCapture) {
-        const focusButton = document.getElementById('MoveSectionButton');
+        const focusButton = document.getElementById('stealFocus');
         if (focusButton) {
             focusButton.focus();
         }

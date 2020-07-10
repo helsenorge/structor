@@ -43,7 +43,7 @@ function QuestionBuilder({
         description?: string;
         updateStore?: boolean;
     }) {
-        const temp = { ...localQuestion };
+        const temp = { ...state.questions[questionId] };
         if (attribute.isRequired !== undefined)
             temp.isRequired = attribute.isRequired;
         if (attribute.isDependent !== undefined)
@@ -78,12 +78,13 @@ function QuestionBuilder({
                     } as INumber;
                     break;
                 case AnswerTypes.text:
-                    temp.answer = { id: questionId } as IText;
+                    temp.answer = { id: questionId, isLong: false } as IText;
                     break;
                 case AnswerTypes.boolean:
                     temp.answer = {
                         id: questionId,
                         isChecked: false,
+                        label: '',
                     } as IBoolean;
                     break;
                 case AnswerTypes.time:

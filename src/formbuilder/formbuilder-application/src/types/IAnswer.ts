@@ -31,6 +31,7 @@ export enum TimeIntervalType {
 
 export interface IAnswer {
     id: string;
+    valid?: boolean;
 }
 
 export interface IChoice extends IAnswer {
@@ -73,7 +74,7 @@ export interface ITime extends IAnswer {
 
 export interface IBoolean extends IAnswer {
     isChecked: boolean;
-    label?: string;
+    label: string;
 }
 
 export interface IInfo extends IAnswer {

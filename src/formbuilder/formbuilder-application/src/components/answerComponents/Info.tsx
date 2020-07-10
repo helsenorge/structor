@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import './AnswerComponent.css';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { IInfo } from '../../types/IAnswer';
@@ -10,22 +10,15 @@ type TextInputProps = {
 
 function TextInput({ questionId }: TextInputProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [localAnswer, setLocalAnswer] = useState(
-        state.questions[questionId].answer as IInfo,
-    );
+    const localAnswer = { ...(state.questions[questionId].answer as IInfo) };
 
-    function localUpdate(attribute: {
-        info?: string;
-        hasInfo?: boolean;
-        updateStore: boolean;
-    }) {
+    function localUpdate(attribute: { info?: string; hasInfo?: boolean }) {
         const temp = { ...localAnswer };
         if (attribute.hasInfo) {
             temp.info = attribute.info ? attribute.info : '';
             temp.hasInfo = true;
         }
-        setLocalAnswer(temp);
-        if (attribute.updateStore) dispatch(updateAnswer(questionId, temp));
+        dispatch(updateAnswer(questionId, temp));
     }
 
     return (
@@ -34,15 +27,12 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
             rows={8}
             className="input-question"
             placeholder={'Skriv inn informasjon til sluttbruker her.'}
-            onBlur={() => localUpdate({ updateStore: true })}
-            onChange={(value) =>
+            onBlur={(value) =>
                 localUpdate({
                     info: value.target.value,
                     hasInfo: true,
-                    updateStore: false,
                 })
             }
-            style={{ width: '100%' }}
         ></TextArea>
     );
 }
