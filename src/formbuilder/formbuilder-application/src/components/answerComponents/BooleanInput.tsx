@@ -46,55 +46,39 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
     return (
         <>
             <Form>
-                <Row>
-                    <Col span={24}>
-                        <Row>
-                            <Col span={8}>
-                                <Checkbox
-                                    key={'Boolean' + questionId}
-                                    style={checkStyle}
-                                    disabled
-                                    checked={localAnswer.isChecked}
-                                ></Checkbox>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item
-                                    validateStatus={
-                                        String(localAnswer.label).length > 0
-                                            ? (validate(0, 'success') as ValidateStatus)
-                                            : (validate(0, 'error') as ValidateStatus)
-                                    }
-                                    help={String(localAnswer.label).length > 0 ? undefined : 'Fyll inn påstand'}
-                                >
-                                    <Input
-                                        type="text"
-                                        defaultValue={localAnswer.label}
-                                        className="input-question"
-                                        placeholder={'Skriv inn påstand her.'}
-                                        style={{ width: '400px' }}
-                                        onBlur={(e) =>
-                                            localUpdate({
-                                                label: e.currentTarget.value,
-                                            })
-                                        }
-                                    ></Input>
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Checkbox
-                                    checked={localAnswer.isChecked}
-                                    onChange={(e) =>
-                                        localUpdate({
-                                            isChecked: e.target.checked,
-                                        })
-                                    }
-                                >
-                                    Skal være forhåndsvalgt.
-                                </Checkbox>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
+                <Checkbox key={'Boolean' + questionId} style={checkStyle} disabled checked={localAnswer.isChecked}>
+                    <Form.Item
+                        validateStatus={
+                            String(localAnswer.label).length > 0
+                                ? (validate(0, 'success') as ValidateStatus)
+                                : (validate(0, 'error') as ValidateStatus)
+                        }
+                        help={String(localAnswer.label).length > 0 ? undefined : 'Fyll inn påstand'}
+                    >
+                        <Input
+                            type="text"
+                            defaultValue={localAnswer.label}
+                            className="input-question"
+                            placeholder={'Skriv inn påstand her.'}
+                            style={{ width: '400px' }}
+                            onBlur={(e) =>
+                                localUpdate({
+                                    label: e.currentTarget.value,
+                                })
+                            }
+                        ></Input>
+                    </Form.Item>
+                    <Checkbox
+                        checked={localAnswer.isChecked}
+                        onChange={(e) =>
+                            localUpdate({
+                                isChecked: e.target.checked,
+                            })
+                        }
+                    >
+                        Skal være forhåndsvalgt.
+                    </Checkbox>
+                </Checkbox>
             </Form>
         </>
     );
