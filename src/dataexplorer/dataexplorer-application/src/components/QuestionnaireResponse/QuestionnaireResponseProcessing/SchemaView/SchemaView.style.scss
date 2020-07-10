@@ -15,15 +15,15 @@
     padding-left: 0rem;
     padding-right: 0rem;
     margin-bottom: 6.25rem;
-    :last-child {
-        border-bottom: none;
-    }
 }
-.ant-collapse-icon-position-left {
-    margin-bottom: 20px !important;
+
+.ant-collapse {
     :last-child {
         border-bottom: none !important;
     }
+}
+.ant-collapse-icon-position-left {
+    margin-bottom: 1.25rem !important;
 }
 
 .answers {
@@ -90,6 +90,12 @@ p.inline-date-container {
     justify-content: space-between;
 }
 
+.ant-collapse-content-box {
+    :last-child {
+        border-bottom: none;
+    }
+}
+
 .question-alternative-container {
     display: flex;
     justify-content: space-between;
@@ -99,12 +105,6 @@ p.inline-date-container {
 .ant-btn-primary {
     background-color: $header !important;
     border-color: $header !important;
-}
-
-.ant-collapse-content-box {
-    :last-child {
-        border-bottom: none;
-    }
 }
 
 .inner-schema-row {

@@ -24,8 +24,8 @@ const Breadcrumbs = () => {
                     )}
                     {schemaNumber !== '' && (
                         <Breadcrumb.Item>
-                            <span className="breadcrumbs-item">
-                                <b>Skjema {schemaNumber}</b>
+                            <span className="breadcrumbs-schema">
+                                Skjema {schemaNumber}
                             </span>
                         </Breadcrumb.Item>
                     )}

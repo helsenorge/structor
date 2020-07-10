@@ -91,16 +91,16 @@ const PatientView = (props: {
 
                                 <div className="item-container">
                                     <h4>Fødselsdato</h4>
-                                    <p>
+                                    <div className="age">
                                         {props.patient.birthDate !==
                                         undefined ? (
                                             calcAge()
                                         ) : (
-                                            <div className="unavailable-content">
+                                            <p className="unavailable-content">
                                                 Ikke oppgitt
-                                            </div>
+                                            </p>
                                         )}
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
                             <div className="info-right">
