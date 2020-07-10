@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { InputNumber, Checkbox, Form, Input, Row, Col } from 'antd';
+import { Checkbox, Form, Input, Row, Col } from 'antd';
 import './AnswerComponent.css';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { IText } from '../../types/IAnswer';
@@ -17,7 +17,7 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
     function updateStore(attribute: { isLong?: boolean; maxLength?: number }) {
         const temp = { ...localAnswer } as IText;
         if (attribute.isLong !== undefined) temp.isLong = attribute.isLong;
-        if (attribute.maxLength) temp.maxLength = attribute.maxLength;
+        if (attribute.maxLength !== undefined) temp.maxLength = attribute.maxLength;
         dispatch(updateAnswer(questionId, temp));
     }
 
@@ -25,24 +25,25 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
         const tempValid = [...validationList];
         const temp = { ...state.questions[questionId].answer };
         if (validity === 'error' && validationList[field] !== false) {
+            console.log('Error');
             tempValid[field] = false;
             setValidationList(tempValid);
             temp.valid = false;
-            dispatch(updateAnswer(questionId, temp));
+            // dispatch(updateAnswer(questionId, temp));
         } else if (validity === 'success' && validationList[field] !== true) {
             tempValid[field] = true;
             setValidationList(tempValid);
             temp.valid = true;
-            dispatch(updateAnswer(questionId, temp));
+            // dispatch(updateAnswer(questionId, temp));
         }
         return validity;
     }
 
     useEffect(() => {
         const temp = { ...state.questions[questionId].answer };
-        temp.valid = true;
+        temp.valid = validationList.every((field) => field === true);
         dispatch(updateAnswer(questionId, temp));
-    }, []);
+    }, [validationList]);
 
     return (
         <>
@@ -82,15 +83,15 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
                                     }
                                 >
                                     <Input
+                                        type="number"
+                                        width="100px"
                                         disabled={!localAnswer.isLong}
                                         defaultValue={localAnswer.maxLength}
                                         onBlur={(e) =>
                                             updateStore({
-                                                maxLength: (e.target.value as unknown) as number,
+                                                maxLength: (e.currentTarget.value as unknown) as number,
                                             })
                                         }
-                                        type="number"
-                                        width="100px"
                                     ></Input>
                                 </Form.Item>
                             </Col>
