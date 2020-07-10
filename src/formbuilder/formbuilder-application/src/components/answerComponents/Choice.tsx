@@ -83,6 +83,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         return (
             <Radio key={'Radio_' + questionId + id} style={choiceButtonStyle} disabled={true} value={id}>
                 <Input
+                    id={'Input_' + id}
                     type="text"
                     className="input-question"
                     placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
@@ -90,6 +91,15 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     style={{ width: '100%' }}
                     onChange={(e) => updateChoices({ id: id, value: e.target.value })}
                     onBlur={() => updateChoices({ updateState: true })}
+                    onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
+                        if (event.charCode === 13) {
+                            updateChoices({ mode: 'add' });
+                            setTimeout(() => {
+                                const nextRadio = document.getElementById('Input_' + (id + 1));
+                                if (nextRadio) nextRadio.focus();
+                            }, 50);
+                        }
+                    }}
                 />
                 {deleteButton(id)}
             </Radio>
@@ -106,6 +116,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 checked={false}
             >
                 <Input
+                    id={'Input_' + id}
                     type="text"
                     className="input-question"
                     placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
@@ -113,6 +124,15 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     style={{ width: '85%' }}
                     onChange={(e) => updateChoices({ id: id, value: e.target.value })}
                     onBlur={() => updateChoices({ updateState: true })}
+                    onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
+                        if (event.charCode === 13) {
+                            updateChoices({ mode: 'add' });
+                            setTimeout(() => {
+                                const nextRadio = document.getElementById('Input_' + (id + 1));
+                                if (nextRadio) nextRadio.focus();
+                            }, 50);
+                        }
+                    }}
                 />
                 {deleteButton(id)}
             </Checkbox>

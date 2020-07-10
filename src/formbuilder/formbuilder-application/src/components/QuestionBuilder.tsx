@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Input, Row, Col, Checkbox, Select, Tooltip, Button } from 'antd';
 import './answerComponents/AnswerComponent.css';
 import { FormContext, updateQuestion } from '../store/FormStore';
@@ -17,9 +17,10 @@ type QuestionProps = {
 
 function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [localQuestion, setLocalQuestion] = useState(state.questions[questionId] as IQuestion);
+    // const [localQuestion, setLocalQuestion] = useState(state.questions[questionId] as IQuestion);
+    const localQuestion = { ...state.questions[questionId] } as IQuestion;
 
-    function localUpdate(attribute: {
+    function updateStore(attribute: {
         answerType?: AnswerTypes;
         isRequired?: boolean;
         collapsed?: boolean;
@@ -27,7 +28,6 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
         questionText?: string;
         dependentOf?: string;
         description?: string;
-        updateStore?: boolean;
     }) {
         const temp = { ...state.questions[questionId] };
         if (attribute.isRequired !== undefined) temp.isRequired = attribute.isRequired;
@@ -41,6 +41,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
             switch (attribute.answerType) {
                 case AnswerTypes.choice:
                     temp.answer = {
+                        valid: true,
                         id: questionId,
                         choices: [''],
                         isMultiple: false,
@@ -50,6 +51,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     break;
                 case AnswerTypes.number:
                     temp.answer = {
+                        valid: true,
                         id: questionId,
                         hasMax: false,
                         hasMin: false,
@@ -59,10 +61,11 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     } as INumber;
                     break;
                 case AnswerTypes.text:
-                    temp.answer = { id: questionId, isLong: false } as IText;
+                    temp.answer = { id: questionId, isLong: false, valid: true } as IText;
                     break;
                 case AnswerTypes.boolean:
                     temp.answer = {
+                        valid: true,
                         id: questionId,
                         isChecked: false,
                         label: '',
@@ -70,6 +73,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     break;
                 case AnswerTypes.time:
                     temp.answer = {
+                        valid: true,
                         id: questionId,
                         isTime: false,
                         isDate: false,
@@ -84,8 +88,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     break;
             }
         }
-        setLocalQuestion(temp);
-        if (attribute.updateStore) dispatch(updateQuestion(temp));
+        dispatch(updateQuestion(temp));
     }
 
     return (
@@ -96,12 +99,16 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                         placeholder={localQuestion.placeholder}
                         className="input-question"
                         defaultValue={localQuestion.questionText}
+<<<<<<< HEAD
                         onChange={(e) =>
                             localUpdate({
+=======
+                        onBlur={(e) =>
+                            updateStore({
+>>>>>>> fb-dev
                                 questionText: e.target.value === undefined ? '' : e.target.value,
                             })
                         }
-                        onBlur={() => localUpdate({ updateStore: true })}
                     />
                 </Col>
                 <Col span={6}></Col>
@@ -137,9 +144,8 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                     <Checkbox
                                         checked={localQuestion.isRequired}
                                         onChange={(e) =>
-                                            localUpdate({
+                                            updateStore({
                                                 isRequired: e.target.checked,
-                                                updateStore: true,
                                             })
                                         }
                                     >
@@ -164,9 +170,8 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                             float: 'left',
                                         }}
                                         onSelect={(value) => {
-                                            localUpdate({
+                                            updateStore({
                                                 answerType: value,
-                                                updateStore: true,
                                             });
                                         }}
                                         placeholder="Trykk for å velge"

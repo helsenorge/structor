@@ -9,6 +9,7 @@ function getChoices(currentQuestion: fhir.QuestionnaireItem, valueSets: fhir.Val
     let valueSetReference = currentQuestion.options?.reference;
     const currentAnswer: IChoice = {
         id: generateID(),
+        valid: true,
         isMultiple: false,
         isOpen: false,
         choices: [],
@@ -76,6 +77,7 @@ function getChoices(currentQuestion: fhir.QuestionnaireItem, valueSets: fhir.Val
 function getText(currentQuestion: fhir.QuestionnaireItem): IText {
     const currentAnswer: IText = {
         id: generateID(),
+        valid: true,
         isLong: false,
         maxLength: currentQuestion.maxLength,
     };
@@ -102,6 +104,7 @@ function getText(currentQuestion: fhir.QuestionnaireItem): IText {
 function getBoolean(currentQuestion: fhir.QuestionnaireItem): IBoolean {
     const tempAnswer: IBoolean = {
         id: generateID(),
+        valid: true,
         isChecked: false,
         label: currentQuestion.text as string,
     };
@@ -114,6 +117,7 @@ function getBoolean(currentQuestion: fhir.QuestionnaireItem): IBoolean {
 function getNumber(currentQuestion: fhir.QuestionnaireItem): INumber {
     const tempAnswer: INumber = {
         id: generateID(),
+        valid: true,
         hasMax: false,
         hasMin: false,
         hasUnit: false,
@@ -160,6 +164,7 @@ function getNumber(currentQuestion: fhir.QuestionnaireItem): INumber {
 function getTime(currentQuestion: fhir.QuestionnaireItem): ITime {
     const tempAnswer: ITime = {
         id: generateID(),
+        valid: true,
         isTime: false,
         isDate: false,
         hasDefaultTime: false,
@@ -214,6 +219,7 @@ function getTime(currentQuestion: fhir.QuestionnaireItem): ITime {
 function getDisplay(currentQuestion: fhir.QuestionnaireItem): IInfo {
     const tempAnswer: IInfo = {
         id: generateID(),
+        valid: true,
         info: currentQuestion.text as string,
         hasInfo: true,
     };
@@ -248,6 +254,7 @@ function convertFromJSON(
 
                 const tempSection: ISection = {
                     id: generateID(),
+                    valid: true,
                     questionOrder: [],
                     sectionTitle: currentSection.text as string,
                 };
@@ -258,10 +265,12 @@ function convertFromJSON(
 
                         let tempAnswer: IAnswer = {
                             id: generateID(),
+                            valid: true,
                         };
 
                         const tempQuestion: IQuestion = {
                             id: generateID(),
+                            valid: true,
                             collapsed: false,
                             isDependent: false,
                             sectionId: tempSection.id,
