@@ -19,7 +19,17 @@ const PatientView = (props: {
         const patientDay = parseInt(birthday.substring(8, 10));
         const actualAge = dayjs().diff(birthday, 'year');
 
-        return patientDay + '-' + patientMonth + '-' + patientYear + ' ' + '(' + actualAge + ')';
+        return (
+            patientDay.toString() +
+            '-' +
+            patientMonth +
+            '-' +
+            patientYear.toString() +
+            ' ' +
+            '(' +
+            actualAge.toString() +
+            ')'
+        );
     };
     const { setSchemanumber } = useContext(BreadcrumbContext);
     const { Title } = Typography;
