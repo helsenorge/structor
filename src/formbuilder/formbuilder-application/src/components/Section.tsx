@@ -16,6 +16,7 @@ type SectionProps = {
     provided?: DND.DraggableProvided;
     collapsed: boolean;
     sectionIndex: number;
+    hasSections: boolean;
 };
 
 function Section({
@@ -25,9 +26,10 @@ function Section({
     provided,
     collapsed,
     sectionIndex,
+    hasSections,
 }: SectionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Tittel...');
-    const [needsSections, setNeedsSections] = useState(false);
+    //const [needsSections, setNeedsSections] = useState(false);
     const [collapsedSection, setCollapsedSection] = useState(false);
 
     // const [count, setCount] = useState(0);
@@ -37,11 +39,11 @@ function Section({
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (sectionIndex + 1) + '...';
         setPlaceholder(placeholderString);
-        if (Object.keys(state.sections).length > 1) {
-            setNeedsSections(true);
-        } else {
-            setNeedsSections(false);
-        }
+        // if (Object.keys(state.sections).length > 1) {
+        //     setNeedsSections(true);
+        // } else {
+        //     setNeedsSections(false);
+        // }
     }
 
     useEffect(() => {
@@ -74,7 +76,7 @@ function Section({
             }}
             className="wrapper"
         >
-            {needsSections && (
+            {hasSections && (
                 <div
                     style={{
                         padding: '30px',

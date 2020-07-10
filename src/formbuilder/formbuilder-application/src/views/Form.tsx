@@ -18,6 +18,7 @@ import '../index.css';
 function CreateForm(): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const [collapsedSection, setCollapsedSection] = useState('A');
+    const [hasSections, setHasSections] = useState(false);
 
     // Disabled because it's throwing warnings when it can't find the drag handle for the first section if it's only 1 section.
     // Can't be fixed with conditional rendering, because it will display a warning for every new section we add if we display the component conditionally.
@@ -26,6 +27,7 @@ function CreateForm(): JSX.Element {
     window['__react-beautiful-dnd-disable-dev-warnings'] = true;
 
     function dispatchAddNewSection() {
+        setHasSections(true);
         dispatch(addNewSection());
     }
 
@@ -112,6 +114,7 @@ function CreateForm(): JSX.Element {
                                                             provided={provided}
                                                             collapsed={sectionId === collapsedSection}
                                                             sectionIndex={index}
+                                                            hasSections={hasSections}
                                                         />
                                                     </div>
                                                 )}
@@ -128,15 +131,27 @@ function CreateForm(): JSX.Element {
             <Row justify="center">
                 <Col xl={16} lg={18} md={20} xs={24}>
                     <div className="wrapper">
-                        <Button
-                            className="section-button"
-                            type="dashed"
-                            ghost
-                            size="large"
-                            onClick={() => dispatchAddNewSection()}
-                        >
-                            Legg til ny seksjon
-                        </Button>
+                        {!hasSections ? (
+                            <Button
+                                className="section-button"
+                                type="dashed"
+                                ghost
+                                size="large"
+                                onClick={() => setHasSections(true)}
+                            >
+                                Del inn i seksjoner
+                            </Button>
+                        ) : (
+                            <Button
+                                className="section-button"
+                                type="dashed"
+                                ghost
+                                size="large"
+                                onClick={() => dispatchAddNewSection()}
+                            >
+                                Legg til ny seksjon
+                            </Button>
+                        )}
                     </div>
                 </Col>
             </Row>
