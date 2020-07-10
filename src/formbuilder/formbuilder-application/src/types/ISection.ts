@@ -3,4 +3,5 @@ export default interface ISection {
     questionOrder: Array<string>;
     sectionTitle: string;
     description?: string;
+    valid?: boolean;
 }
