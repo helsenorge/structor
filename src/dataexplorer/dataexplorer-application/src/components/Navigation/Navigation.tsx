@@ -30,11 +30,7 @@ const Navigation = () => {
                         <Switch>
                             <Route exact path="/" component={Dashboard} />
                             <Route exact path="/pasient" component={Patient} />
-                            <Route
-                                exact
-                                path="/pasient/skjema"
-                                component={QuestionnaireResponse}
-                            />
+                            <Route exact path="/pasient/skjema" component={QuestionnaireResponse} />
                         </Switch>
                     </div>
                 </Content>

@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Collapse, Row, Col, Button } from 'antd';
 import './SchemaView.style.scss';
-import {
-    IQuestionAndAnswer,
-    IQuestion,
-    IAnswer,
-} from 'types/IQuestionAndAnswer';
+import { IQuestionAndAnswer, IQuestion, IAnswer } from 'types/IQuestionAndAnswer';
 import dayjs, { Dayjs } from 'dayjs';
 import QuestionsAndAnswersDisplay from './QuestionsAndAnswersDisplay/QuestionsAndAnswersDisplay';
 
@@ -31,20 +27,12 @@ const SchemaView = (props: SchemaViewProps) => {
             props.answers.forEach((a) => {
                 if (q.id === a.id) {
                     hasAddedId = true;
-                    setQAndA((qAndA) => [
-                        ...qAndA,
-                        { id: q.id, questions: q, answers: a },
-                    ]);
+                    setQAndA((qAndA) => [...qAndA, { id: q.id, questions: q, answers: a }]);
                 }
             });
 
-            hasAddedId === false &&
-                setQAndA((qAndA) => [...qAndA, { id: q.id, questions: q }]);
-            q.id.split('.').length === 1 &&
-                setQAndAIds((qAndAIds) => [
-                    ...qAndAIds,
-                    q.id.split('.')[0].toString(),
-                ]);
+            hasAddedId === false && setQAndA((qAndA) => [...qAndA, { id: q.id, questions: q }]);
+            q.id.split('.').length === 1 && setQAndAIds((qAndAIds) => [...qAndAIds, q.id.split('.')[0].toString()]);
             hasAddedId = false;
         });
     }, [props]);
@@ -72,60 +60,33 @@ const SchemaView = (props: SchemaViewProps) => {
                                         >
                                             {qAndA.map(
                                                 (section) =>
-                                                    section.id.split('.')
-                                                        .length === 1 && (
+                                                    section.id.split('.').length === 1 && (
                                                         <Panel
-                                                            header={
-                                                                section
-                                                                    .questions
-                                                                    .questions
-                                                                    .text
-                                                            }
+                                                            header={section.questions.questions.text}
                                                             key={section.id}
                                                             className="site-collapse-custom-panel"
                                                         >
                                                             <Row>
                                                                 {qAndA.map(
                                                                     (display) =>
-                                                                        display.id.split(
-                                                                            '.',
-                                                                        )[0] ===
-                                                                            section.id &&
-                                                                        display.id.split(
-                                                                            '.',
-                                                                        )[1] ===
-                                                                            '101' && (
+                                                                        display.id.split('.')[0] === section.id &&
+                                                                        display.id.split('.')[1] === '101' && (
                                                                             <Col
-                                                                                span={
-                                                                                    18
-                                                                                }
-                                                                                order={
-                                                                                    1
-                                                                                }
-                                                                                key={
-                                                                                    display.id
-                                                                                }
+                                                                                span={18}
+                                                                                order={1}
+                                                                                key={display.id}
                                                                                 className="section-description"
                                                                             >
-                                                                                {
-                                                                                    display
-                                                                                        .questions
-                                                                                        .questions
-                                                                                        .text
-                                                                                }
+                                                                                {display.questions.questions.text}
                                                                             </Col>
                                                                         ),
                                                                 )}
                                                                 {!sectionDescription.includes(
-                                                                    section.id.split(
-                                                                        '.',
-                                                                    )[0],
+                                                                    section.id.split('.')[0],
                                                                 ) && (
                                                                     <Col
                                                                         span={6}
-                                                                        order={
-                                                                            2
-                                                                        }
+                                                                        order={2}
                                                                         className="section-description"
                                                                     >
                                                                         <Button
@@ -133,33 +94,23 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                             value="small"
                                                                             onClick={() =>
                                                                                 setSectionDescription(
-                                                                                    (
-                                                                                        sectionDescription,
-                                                                                    ) => [
+                                                                                    (sectionDescription) => [
                                                                                         ...sectionDescription,
-                                                                                        section.id.split(
-                                                                                            '.',
-                                                                                        )[0],
+                                                                                        section.id.split('.')[0],
                                                                                     ],
                                                                                 )
                                                                             }
                                                                         >
-                                                                            Vis
-                                                                            ekstra
-                                                                            info
+                                                                            Vis ekstra info
                                                                         </Button>
                                                                     </Col>
                                                                 )}
                                                                 {sectionDescription.includes(
-                                                                    section.id.split(
-                                                                        '.',
-                                                                    )[0],
+                                                                    section.id.split('.')[0],
                                                                 ) && (
                                                                     <Col
                                                                         span={6}
-                                                                        order={
-                                                                            2
-                                                                        }
+                                                                        order={2}
                                                                         className="section-description"
                                                                     >
                                                                         <Button
@@ -167,136 +118,82 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                             value="small"
                                                                             onClick={() =>
                                                                                 setSectionDescription(
-                                                                                    sectionDescription.filter(
-                                                                                        (
-                                                                                            list,
-                                                                                        ) =>
-                                                                                            list.replace(
-                                                                                                section.id.split(
-                                                                                                    '.',
-                                                                                                )[0],
-                                                                                                '',
-                                                                                            ),
+                                                                                    sectionDescription.filter((list) =>
+                                                                                        list.replace(
+                                                                                            section.id.split('.')[0],
+                                                                                            '',
+                                                                                        ),
                                                                                     ),
                                                                                 )
                                                                             }
                                                                         >
-                                                                            Skjul
-                                                                            ekstra
-                                                                            info
+                                                                            Skjul ekstra info
                                                                         </Button>
                                                                     </Col>
                                                                 )}
                                                             </Row>
-                                                            {qAndA.map(
-                                                                (
-                                                                    qa,
-                                                                    qaIndex,
-                                                                ) => (
-                                                                    <>
-                                                                        {qa.id.split(
-                                                                            '.',
-                                                                        )[0] ===
-                                                                            section.id &&
-                                                                            qa.id.split(
-                                                                                '.',
-                                                                            )
-                                                                                .length ===
-                                                                                2 && (
-                                                                                <>
-                                                                                    {qa
-                                                                                        .questions
-                                                                                        .questions
-                                                                                        .type ===
-                                                                                        'display' &&
-                                                                                        qa.id.split(
-                                                                                            '.',
-                                                                                        )[1] !==
-                                                                                            '101' &&
-                                                                                        sectionDescription.includes(
-                                                                                            qa.id.split(
-                                                                                                '.',
-                                                                                            )[0],
-                                                                                        ) && (
-                                                                                            <div>
-                                                                                                <p className="section-description">
-                                                                                                    {
-                                                                                                        qa
-                                                                                                            .questions
-                                                                                                            .questions
-                                                                                                            .text
-                                                                                                    }
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        )}
-                                                                                    {qa
-                                                                                        .answers
-                                                                                        ?.answers
-                                                                                        .answer &&
-                                                                                        qa
-                                                                                            .answers
-                                                                                            ?.answers
-                                                                                            .answer[0] && (
-                                                                                            <div className="qa-container">
-                                                                                                <QuestionsAndAnswersDisplay
-                                                                                                    questionAndAnswer={
-                                                                                                        qa
-                                                                                                    }
-                                                                                                    questionnaireResource={
-                                                                                                        props.questionnaireResource
-                                                                                                    }
-                                                                                                    questionAndAnswerIndex={
-                                                                                                        qaIndex
-                                                                                                    }
-                                                                                                />
-                                                                                            </div>
-                                                                                        )}
-                                                                                    {qAndA.map(
-                                                                                        (
-                                                                                            subqa,
-                                                                                            subqaIndex,
-                                                                                        ) =>
-                                                                                            subqa.id.split(
-                                                                                                '.',
-                                                                                            )[0] ===
-                                                                                                section.id &&
-                                                                                            subqa.id.split(
-                                                                                                '.',
-                                                                                            )[1] ===
-                                                                                                qa.id.split(
-                                                                                                    '.',
-                                                                                                )[1] &&
-                                                                                            subqa.id.split(
-                                                                                                '.',
-                                                                                            )
-                                                                                                .length ===
-                                                                                                3 &&
-                                                                                            subqa
-                                                                                                .answers
-                                                                                                ?.answers
-                                                                                                .answer &&
-                                                                                            subqa
-                                                                                                .answers
-                                                                                                ?.answers
-                                                                                                .answer[0] && (
-                                                                                                <QuestionsAndAnswersDisplay
-                                                                                                    questionAndAnswer={
-                                                                                                        subqa
-                                                                                                    }
-                                                                                                    questionnaireResource={
-                                                                                                        props.questionnaireResource
-                                                                                                    }
-                                                                                                    questionAndAnswerIndex={
-                                                                                                        subqaIndex
-                                                                                                    }
-                                                                                                />
-                                                                                            ),
+                                                            {qAndA.map((qa, qaIndex) => (
+                                                                <>
+                                                                    {qa.id.split('.')[0] === section.id &&
+                                                                        qa.id.split('.').length === 2 && (
+                                                                            <>
+                                                                                {qa.questions.questions.type ===
+                                                                                    'display' &&
+                                                                                    qa.id.split('.')[1] !== '101' &&
+                                                                                    sectionDescription.includes(
+                                                                                        qa.id.split('.')[0],
+                                                                                    ) && (
+                                                                                        <div>
+                                                                                            <p className="section-description">
+                                                                                                {
+                                                                                                    qa.questions
+                                                                                                        .questions.text
+                                                                                                }
+                                                                                            </p>
+                                                                                        </div>
                                                                                     )}
-                                                                                </>
-                                                                            )}
-                                                                    </>
-                                                                ),
-                                                            )}
+                                                                                {qa.answers?.answers.answer &&
+                                                                                    qa.answers?.answers.answer[0] && (
+                                                                                        <div className="qa-container">
+                                                                                            <QuestionsAndAnswersDisplay
+                                                                                                questionAndAnswer={qa}
+                                                                                                questionnaireResource={
+                                                                                                    props.questionnaireResource
+                                                                                                }
+                                                                                                questionAndAnswerIndex={
+                                                                                                    qaIndex
+                                                                                                }
+                                                                                            />
+                                                                                        </div>
+                                                                                    )}
+                                                                                {qAndA.map(
+                                                                                    (subqa, subqaIndex) =>
+                                                                                        subqa.id.split('.')[0] ===
+                                                                                            section.id &&
+                                                                                        subqa.id.split('.')[1] ===
+                                                                                            qa.id.split('.')[1] &&
+                                                                                        subqa.id.split('.').length ===
+                                                                                            3 &&
+                                                                                        subqa.answers?.answers.answer &&
+                                                                                        subqa.answers?.answers
+                                                                                            .answer[0] && (
+                                                                                            <QuestionsAndAnswersDisplay
+                                                                                                questionAndAnswer={
+                                                                                                    subqa
+                                                                                                }
+                                                                                                questionnaireResource={
+                                                                                                    props.questionnaireResource
+                                                                                                }
+                                                                                                questionAndAnswerIndex={
+                                                                                                    subqaIndex
+                                                                                                }
+                                                                                            />
+                                                                                        ),
+                                                                                )}
+                                                                            </>
+                                                                        )}
+                                                                </>
+                                                            ))}
                                                         </Panel>
                                                     ),
                                             )}

@@ -6,9 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 
 const Dashboard = () => {
-    const { setPatientId, setName, setSchemanumber } = useContext(
-        BreadcrumbContext,
-    );
+    const { setPatientId, setName, setSchemanumber } = useContext(BreadcrumbContext);
     const history = useHistory();
     const handleClick = (value: string) => {
         setPatientId(value);

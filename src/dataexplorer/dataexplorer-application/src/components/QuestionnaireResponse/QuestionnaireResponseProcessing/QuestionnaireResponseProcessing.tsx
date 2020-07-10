@@ -9,17 +9,13 @@ const QuestionnaireResponseProcessing = (props: {
     questionnaireUrl: string;
     schemaResponse: fhir.QuestionnaireResponse;
 }) => {
-    const { response: questionnaire } = useFetch<fhir.Questionnaire>(
-        'fhir/' + props.questionnaireUrl,
-    );
+    const { response: questionnaire } = useFetch<fhir.Questionnaire>('fhir/' + props.questionnaireUrl);
 
     const [answers, setAnswers] = useState<IAnswer[]>([]);
 
     const [questions, setQuestions] = useState<IQuestion[]>([]);
 
-    const [questionnaireResource, setQuestionnaireResource] = useState<
-        fhir.ValueSet[]
-    >([]);
+    const [questionnaireResource, setQuestionnaireResource] = useState<fhir.ValueSet[]>([]);
 
     const updateAnswer = (update: fhir.QuestionnaireResponseItem) => {
         const answerObject: IAnswer = {
@@ -48,14 +44,11 @@ const QuestionnaireResponseProcessing = (props: {
                     list.item.map((i) => findAnswer(i));
                 } else {
                     updateAnswer(list);
-                    list.answer.map(
-                        (i) => i.item && i.item.map((a) => updateAnswer(a)),
-                    );
+                    list.answer.map((i) => i.item && i.item.map((a) => updateAnswer(a)));
                 }
                 return;
             } else {
-                list.item &&
-                    list.item.forEach((element) => findAnswer(element));
+                list.item && list.item.forEach((element) => findAnswer(element));
             }
         };
         if (props.schemaResponse.item) {
@@ -80,8 +73,7 @@ const QuestionnaireResponseProcessing = (props: {
                 }
                 return;
             } else {
-                list.item &&
-                    list.item.forEach((element) => findQuestion(element));
+                list.item && list.item.forEach((element) => findQuestion(element));
             }
         };
         if (questionnaire?.item) {
@@ -89,10 +81,7 @@ const QuestionnaireResponseProcessing = (props: {
                 findQuestion(questionnaire.item[a]);
             }
         }
-        questionnaire?.contained &&
-            setQuestionnaireResource(
-                questionnaire.contained as fhir.ValueSet[],
-            );
+        questionnaire?.contained && setQuestionnaireResource(questionnaire.contained as fhir.ValueSet[]);
         return;
     }, [questionnaire]);
 

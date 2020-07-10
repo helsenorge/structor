@@ -9,9 +9,7 @@ export interface IQuestionsAndAnswersDisplayProps {
     questionAndAnswerIndex: number;
 }
 
-const QuestionsAndAnswersDisplay = (
-    props: IQuestionsAndAnswersDisplayProps,
-) => {
+const QuestionsAndAnswersDisplay = (props: IQuestionsAndAnswersDisplayProps) => {
     const setContent = (data: fhir.ValueSetComposeIncludeConcept[]) => {
         if (data) {
             return data.map((line) => <li key={line.code}>{line.display}</li>);
@@ -28,15 +26,10 @@ const QuestionsAndAnswersDisplay = (
     return (
         <>
             <div className="question-alternative-container">
-                <p className="questions">
-                    {props.questionAndAnswer.questions.questions.text}
-                </p>
+                <p className="questions">{props.questionAndAnswer.questions.questions.text}</p>
                 {props.questionnaireResource.map(
                     (qr) =>
-                        qr.id ===
-                            props.questionAndAnswer.questions.questions.options?.reference?.slice(
-                                1,
-                            ) &&
+                        qr.id === props.questionAndAnswer.questions.questions.options?.reference?.slice(1) &&
                         qr.compose &&
                         (props.questionnaireResource.length > 0
                             ? qr.compose.include.map(
@@ -47,22 +40,11 @@ const QuestionsAndAnswersDisplay = (
                                               placement="rightTop"
                                               trigger="click"
                                               content={
-                                                  <div
-                                                      className={setCount(
-                                                          m.concept,
-                                                      )}
-                                                  >
-                                                      {setContent(m.concept)}
-                                                  </div>
+                                                  <div className={setCount(m.concept)}>{setContent(m.concept)}</div>
                                               }
                                           >
-                                              <Button
-                                                  type="primary"
-                                                  size="small"
-                                              >
-                                                  <p className="alternatives">
-                                                      Alternativer
-                                                  </p>
+                                              <Button type="primary" size="small">
+                                                  <p className="alternatives">Alternativer</p>
                                               </Button>
                                           </Popover>
                                       ),
@@ -76,8 +58,7 @@ const QuestionsAndAnswersDisplay = (
                     className="answers"
                     key={
                         item.valueCoding?.display
-                            ? props.questionAndAnswer.answers?.id +
-                              item.valueCoding.display
+                            ? props.questionAndAnswer.answers?.id + item.valueCoding.display
                             : props.questionAndAnswer.answers?.id
                     }
                 >
