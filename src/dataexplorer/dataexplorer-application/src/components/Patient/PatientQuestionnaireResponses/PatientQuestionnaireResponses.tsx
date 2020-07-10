@@ -17,7 +17,7 @@ const PatientQuestionnaireResponses = ({
 }: IPatientQuestionnaireResponsesProps) => {
     const [questionnaireId, setQuestionnaireId] = useState<string>();
     const [QRData, setQRData] = useState<IDataSource[]>([]);
-    const [responseExists, setResponseExists] = useState<boolean>(false);
+    const [responseExists, setResponseExists] = useState<boolean>(true);
     const { response: questionnaireResponses } = useFetch<
         IQuestionnaireResponse
     >(
@@ -45,6 +45,11 @@ const PatientQuestionnaireResponses = ({
                     },
                 ]);
             });
+        } else if (
+            questionnaireResponses &&
+            questionnaireResponses.total === 0
+        ) {
+            setResponseExists(false);
         }
     }, [questionnaireResponses]);
 
@@ -60,14 +65,17 @@ const PatientQuestionnaireResponses = ({
                 />
             )}
             {/* Patients without QuestionnaireResponses do not need to fetch for Questionnaires*/}
-            {!responseExists && (
-                <PatientView
-                    patient={patientData.entry[0].resource}
-                    setSchema={setSchema}
-                    dataSource={QRData}
-                />
-            )}
-            {!questionnaireResponses && !questionnaireId && responseExists && (
+            {!responseExists &&
+                questionnaireResponses &&
+                questionnaireResponses.total === 0 && (
+                    <PatientView
+                        patient={patientData.entry[0].resource}
+                        setSchema={setSchema}
+                        dataSource={QRData}
+                        hasQuestionnaireResponses={false}
+                    />
+                )}
+            {!questionnaireResponses && responseExists && (
                 <Row justify="center">
                     <Spin size="large" />
                 </Row>

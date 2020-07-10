@@ -10,6 +10,8 @@
 
     .ant-card-head {
         background-color: $elementHeader !important;
+        border: 1px solid $elementHeader !important;
+        border-color: $elementHeader !important;
         display: flex;
         justify-content: left;
 

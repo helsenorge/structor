@@ -1,6 +1,6 @@
 import React from 'react';
 import { IQuestionAndAnswer } from 'types/IQuestionAndAnswer';
-import { Popover } from 'antd';
+import { Popover, Button } from 'antd';
 import '../SchemaView.style.scss';
 
 export interface IQuestionsAndAnswersDisplayProps {
@@ -26,8 +26,8 @@ const QuestionsAndAnswersDisplay = (
     };
 
     return (
-        <div className="answer-container">
-            <div className="question-container">
+        <>
+            <div className="question-alternative-container">
                 <p className="questions">
                     {props.questionAndAnswer.questions.questions.text}
                 </p>
@@ -56,9 +56,14 @@ const QuestionsAndAnswersDisplay = (
                                                   </div>
                                               }
                                           >
-                                              <p className="alternatives">
-                                                  (Vis alternativer)
-                                              </p>
+                                              <Button
+                                                  type="primary"
+                                                  size="small"
+                                              >
+                                                  <p className="alternatives">
+                                                      Alternativer
+                                                  </p>
+                                              </Button>
                                           </Popover>
                                       ),
                               )
@@ -76,14 +81,16 @@ const QuestionsAndAnswersDisplay = (
                             : props.questionAndAnswer.answers?.id
                     }
                 >
-                    {item.valueBoolean}
+                    {item.valueBoolean && <p>Sant</p>}
+                    {item.valueBoolean === false && <p>Usant</p>}
                     {item.valueCoding?.display}
                     {item.valueDate}
+                    {item.valueDateTime?.replace('T', ' ')}
                     {item.valueDecimal}
                     {item.valueString}
                 </p>
             ))}
-        </div>
+        </>
     );
 };
 

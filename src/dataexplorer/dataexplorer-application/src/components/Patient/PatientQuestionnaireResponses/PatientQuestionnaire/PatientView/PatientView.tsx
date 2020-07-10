@@ -1,6 +1,6 @@
 import React from 'react';
 import { IPatient, IRecord } from 'types/IPatient';
-import { Row, Col, Card, Table, Typography } from 'antd';
+import { Row, Col, Card, Table, Typography, Spin } from 'antd';
 import dayjs from 'dayjs';
 import './PatientView.style.scss';
 import { useHistory } from 'react-router-dom';
@@ -9,6 +9,7 @@ const PatientView = (props: {
     patient: IPatient;
     dataSource: fhir.ResourceBase[];
     setSchema: (id: string) => void;
+    hasQuestionnaireResponses: boolean;
 }) => {
     const history = useHistory();
     const calcAge = () => {
@@ -36,12 +37,6 @@ const PatientView = (props: {
     const name =
         props.patient.name[0].given[0] + ' ' + props.patient.name[0].family;
     const columns = [
-        {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
-            sorter: (a: any, b: any) => a.id - b.id,
-        },
         {
             title: 'Skjemanavn',
             dataIndex: 'schemaName',
@@ -76,7 +71,6 @@ const PatientView = (props: {
                             <div className="info-left">
                                 <div className="item-container">
                                     <h4>Personnummer</h4>
-
                                     <p>{props.patient.identifier[0].value}</p>
                                 </div>
                                 <div className="item-container">
@@ -93,6 +87,7 @@ const PatientView = (props: {
                                             : 'Kvinne'}
                                     </p>
                                 </div>
+
                                 <div className="item-container">
                                     <h4>Fødselsdato</h4>
                                     <p>
@@ -140,10 +135,6 @@ const PatientView = (props: {
                             </div>
                         </div>
                     </Card>
-                </Col>
-            </Row>
-            <Row justify="center">
-                <Col span={12}>
                     <Table
                         key={'Patient Questionnaire Response Key'}
                         rowKey={(record) =>
@@ -176,6 +167,11 @@ const PatientView = (props: {
                     />
                 </Col>
             </Row>
+            {props.dataSource.length === 0 && props.hasQuestionnaireResponses && (
+                <Row justify="center">
+                    <Spin size="large" />
+                </Row>
+            )}
         </>
     );
 };
