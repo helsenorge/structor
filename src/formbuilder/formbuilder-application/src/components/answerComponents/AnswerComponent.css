@@ -36,7 +36,7 @@
     float: right;
 }
 
- .ant-btn:focus, .ant-checkbox-checked::after, .ant-btn-default:hover, .ant-btn-default:active, .ant-btn-default:focus, .ant-button-primary:focus {
+.ant-checkbox-checked::after, .ant-btn-default:hover, .ant-btn-default:active, .ant-btn-default:focus, .ant-button-primary:focus {
     border-color: var(--primary-1) !important;
     color: var(--primary-1) !important;
 }

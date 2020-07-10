@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import * as DND from 'react-beautiful-dnd';
-import { Row, Col, Button, Tooltip, Modal, Popconfirm } from 'antd';
+import { Row, Col, Button, Tooltip, Modal, Popconfirm, Popover } from 'antd';
 import { DeleteOutlined, CopyOutlined, EyeOutlined, UpOutlined, DownOutlined } from '@ant-design/icons';
 import QuestionBuilder from './QuestionBuilder';
 import AnswerBuilder from './AnswerBuilder';
@@ -31,6 +31,15 @@ function QuestionWrapper({
 }: QuestionProps): JSX.Element {
     const [questionPreview, setQuestionPreview] = useState(false);
     const { state, dispatch } = useContext(FormContext);
+    const previewWarning = (
+        <div>
+            <p>
+                Spørsmålet er ikke ferdig utfylt. <br />
+                Fyll inn røde felt for å kunne <br/>
+                forhåndsvise.
+            </p>
+        </div>
+    );
 
     function updateStore(attribute: { collapsed: boolean }) {
         const temp = { ...state.questions[questionId] };
@@ -123,9 +132,29 @@ function QuestionWrapper({
                     </Button>
                 </Row>
                 <Row style={{ float: 'right', paddingTop: '10px' }}>
-                    {((state.questions[questionId].questionText.length > 0 &&
-                        state.questions[questionId].answerType !== AnswerTypes.default) ||
-                        state.questions[questionId].answerType === AnswerTypes.info) && (
+                    {!(
+                        // (state.questions[questionId].questionText.length > 0 &&
+                        //     state.questions[questionId].answerType !== AnswerTypes.default) ||
+                        // (state.questions[questionId].answerType === AnswerTypes.info &&
+                        //     
+                        state.questions[questionId].answer.valid /* && state.questions[questionId].valid */
+                    ) ? (
+                        <Popover content={previewWarning} title="Ingenting å forhåndsvise" placement="bottom">
+                            <Button
+                                style={{
+                                    zIndex: 1,
+                                    color: 'var(--primary-1)',
+                                    marginLeft: '10px',
+                                    float: 'left',
+                                }}
+                                icon={<EyeOutlined />}
+                                type="default"
+                                disabled
+                            >
+                                Forhåndsvis
+                            </Button>
+                        </Popover>
+                    ) : (
                         <Button
                             style={{
                                 zIndex: 1,
@@ -286,10 +315,10 @@ function QuestionWrapper({
                             </h4>
                         </Col>
                         <Col lg={16} xs={22} style={{ width: '100%' }}>
-                            {(state.questions[questionId].answer as IInfo).info.length > 0 ? (
+                            {(state.questions[questionId].answer as IInfo).info ? (
                                 getCollapsedInfoText()
                             ) : (
-                                <h3 style={{ float: 'left', padding: '3px' }}>Informasjonsfelt</h3>
+                                <p style={{ float: 'left', padding: '5px' }}>Tomt informasjonsfelt</p>
                             )}
                         </Col>
                     </>
