@@ -43,6 +43,7 @@ export default function UpdateActions(draft: State, action: UpdateAction): void 
             break;
         case UpdateActionTypes.UPDATE_QUESTION:
             if (action.question) {
+                console.log(action.question);
                 draft.questions[action.question.id] = action.question;
             }
             break;

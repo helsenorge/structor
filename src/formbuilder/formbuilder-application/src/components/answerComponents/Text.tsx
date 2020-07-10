@@ -67,26 +67,16 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
                                     validateStatus={
                                         localAnswer.isLong === false ||
                                         (localAnswer.isLong === true &&
-                                            localAnswer.maxLength !==
-                                                undefined &&
-                                            String(localAnswer.maxLength)
-                                                .length > 0)
-                                            ? (validate(
-                                                  0,
-                                                  'success',
-                                              ) as ValidateStatus)
-                                            : (validate(
-                                                  0,
-                                                  'error',
-                                              ) as ValidateStatus)
+                                            localAnswer.maxLength !== undefined &&
+                                            String(localAnswer.maxLength).length > 0)
+                                            ? (validate(0, 'success') as ValidateStatus)
+                                            : (validate(0, 'error') as ValidateStatus)
                                     }
                                     help={
                                         localAnswer.isLong === false ||
                                         (localAnswer.isLong === true &&
-                                            localAnswer.maxLength !==
-                                                undefined &&
-                                            String(localAnswer.maxLength)
-                                                .length > 0)
+                                            localAnswer.maxLength !== undefined &&
+                                            String(localAnswer.maxLength).length > 0)
                                             ? undefined
                                             : 'Fyll maks lengde'
                                     }
@@ -96,8 +86,7 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
                                         defaultValue={localAnswer.maxLength}
                                         onBlur={(e) =>
                                             updateStore({
-                                                maxLength: (e.target
-                                                    .value as unknown) as number,
+                                                maxLength: (e.target.value as unknown) as number,
                                             })
                                         }
                                         type="number"

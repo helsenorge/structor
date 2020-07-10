@@ -22,6 +22,7 @@ export enum FhirAnswerTypes {
     text = 'text',
     radio = 'radio',
     display = 'display',
+    quantity = 'quantitiy',
 }
 
 export enum TimeIntervalType {
