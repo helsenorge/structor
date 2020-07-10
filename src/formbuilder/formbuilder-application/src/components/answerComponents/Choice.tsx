@@ -146,7 +146,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         defaultChecked={localAnswer.isOpen}
                         onChange={(e) =>
                             localUpdate({
-                                isMultiple: e.target.checked,
+                                isOpen: e.target.checked,
                             })
                         }
                     >
@@ -160,7 +160,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         defaultChecked={localAnswer.isMultiple}
                         onChange={(e) =>
                             localUpdate({
-                                isOpen: e.target.checked,
+                                isMultiple: e.target.checked,
                             })
                         }
                     >
@@ -210,7 +210,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
             {localAnswer.isMultiple ? (
                 <div className="question-component" style={choiceStyle}>
-                    <h4>Skriv inn svaralternativer under::</h4>
+                    <h4>Skriv inn svaralternativer under:</h4>
                     {choices.map((name, id) => [createCheckbox(id)])}
                     <Button
                         type="text"

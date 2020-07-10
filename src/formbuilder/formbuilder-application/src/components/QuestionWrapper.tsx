@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import * as DND from 'react-beautiful-dnd';
-import { Row, Col, Button, Tooltip, Modal } from 'antd';
+import { Row, Col, Button, Tooltip, Modal, Popconfirm } from 'antd';
 import { DeleteOutlined, CopyOutlined, EyeOutlined, UpOutlined, DownOutlined } from '@ant-design/icons';
 import QuestionBuilder from './QuestionBuilder';
 import AnswerBuilder from './AnswerBuilder';
@@ -9,9 +9,8 @@ import { FormContext, updateQuestion } from '../store/FormStore';
 import ISection from '../types/ISection';
 import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
-import AnswerTypes from '../types/IAnswer';
+import AnswerTypes, { IInfo } from '../types/IAnswer';
 import IQuestion from '../types/IQuestion';
-import Title from 'antd/lib/typography/Title';
 
 type QuestionProps = {
     duplicateQuestion: () => void;
@@ -85,23 +84,28 @@ function QuestionWrapper({
     }
 
     function buttons(): JSX.Element {
-        console.log('buttons');
         return (
             <>
                 <Row style={{ float: 'right', paddingTop: '10px' }}>
-                    <Button
-                        style={{
-                            zIndex: 1,
-                            color: 'var(--primary-1)',
-                            marginLeft: '10px',
-                            float: 'right',
-                        }}
-                        icon={<DeleteOutlined />}
-                        type="default"
-                        onClick={() => removeQuestion()}
+                    <Popconfirm
+                        title={!isInfo ? 'Vil du slette dette spørsmålet?' : 'Vil du slette informasjonsfeltet?'}
+                        onConfirm={() => removeQuestion()}
+                        okText="Ja"
+                        cancelText="Nei"
                     >
-                        Slett {isInfo ? 'informasjon' : 'spørsmål'}
-                    </Button>
+                        <Button
+                            style={{
+                                zIndex: 1,
+                                color: 'var(--primary-1)',
+                                marginLeft: '10px',
+                                float: 'right',
+                            }}
+                            icon={<DeleteOutlined />}
+                            type="default"
+                        >
+                            Slett {isInfo ? 'informasjon' : 'spørsmål'}
+                        </Button>
+                    </Popconfirm>
                 </Row>
                 <Row style={{ float: 'right', paddingTop: '10px' }}>
                     <Button
@@ -139,6 +143,17 @@ function QuestionWrapper({
                 </Row>
             </>
         );
+    }
+
+    function getCollapsedInfoText(): JSX.Element {
+        const collapsedInfoText = (state.questions[questionId].answer as IInfo).info;
+        if ((state.questions[questionId].answer as IInfo).info.length > 130)
+            return (
+                <p style={{ float: 'left', padding: '5px', fontStyle: 'italic' }}>
+                    {collapsedInfoText.substring(0, 130) + '...'}
+                </p>
+            );
+        return <p style={{ float: 'left', padding: '5px', fontStyle: 'italic' }}> {collapsedInfoText} </p>;
     }
 
     return (
@@ -189,7 +204,7 @@ function QuestionWrapper({
                             id="stealFocus"
                             style={{
                                 zIndex: 1,
-                                color: 'var(--primary-1)',
+                                color: 'grey',
                                 float: 'left',
                             }}
                             type="link"
@@ -204,10 +219,10 @@ function QuestionWrapper({
                 {!isInfo && (
                     <>
                         <Col xs={0} lg={2}></Col>
-                        <Col span={1} style={{ float: 'right' }}>
-                            <Title level={4} style={{ color: 'var(--primary-1)' }}>
+                        <Col span={1} style={{ padding: '5px 10px' }}>
+                            <h4 style={{ float: 'right', color: 'grey' }}>
                                 {String(cronologicalID.map((a) => a + 1))}
-                            </Title>
+                            </h4>
                         </Col>
                         <Col lg={20} xs={22} style={{ width: '100%' }}>
                             <QuestionBuilder
@@ -221,10 +236,10 @@ function QuestionWrapper({
                 )}
                 {isInfo && !state.questions[questionId].collapsed && (
                     <>
-                        <Col span={3} style={{ float: 'right' }}>
-                            <Title level={4} style={{ color: 'var(--primary-1)' }}>
+                        <Col span={3} style={{ padding: '5px 10px' }}>
+                            <h4 style={{ float: 'right', color: 'grey' }}>
                                 {String(cronologicalID.map((a) => a + 1))}
-                            </Title>
+                            </h4>
                         </Col>
                         <Col xs={12} lg={14}>
                             <AnswerBuilder questionId={questionId}></AnswerBuilder>
@@ -259,6 +274,23 @@ function QuestionWrapper({
                                 </Tooltip>
                             </Row>
                             <Row style={{ float: 'right', display: 'block' }}>{buttons()}</Row>
+                        </Col>
+                    </>
+                )}
+                {isInfo && state.questions[questionId].collapsed && (
+                    <>
+                        <Col xs={0} lg={2}></Col>
+                        <Col span={1} style={{ padding: '5px 10px' }}>
+                            <h4 style={{ float: 'right', color: 'grey' }}>
+                                {String(cronologicalID.map((a) => a + 1))}
+                            </h4>
+                        </Col>
+                        <Col lg={16} xs={22} style={{ width: '100%' }}>
+                            {(state.questions[questionId].answer as IInfo).info.length > 0 ? (
+                                getCollapsedInfoText()
+                            ) : (
+                                <h3 style={{ float: 'left', padding: '3px' }}>Informasjonsfelt</h3>
+                            )}
                         </Col>
                     </>
                 )}

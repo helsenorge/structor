@@ -99,8 +99,13 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                         placeholder={localQuestion.placeholder}
                         className="input-question"
                         defaultValue={localQuestion.questionText}
+<<<<<<< HEAD
+                        onChange={(e) =>
+                            localUpdate({
+=======
                         onBlur={(e) =>
                             updateStore({
+>>>>>>> fb-dev
                                 questionText: e.target.value === undefined ? '' : e.target.value,
                             })
                         }

@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Row, Col, Button, Tooltip, Input } from 'antd';
+import { Row, Col, Button, Tooltip, Input, Popconfirm } from 'antd';
 import { PlusOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import QuestionWrapper from './QuestionWrapper';
 import { FormContext, addNewQuestion, removeQuestion, duplicateQuestion, updateSection } from '../store/FormStore';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes from '../types/IAnswer';
-import Title from 'antd/lib/typography/Title';
 
 const { TextArea } = Input;
 
@@ -58,7 +57,6 @@ function Section({
     }
 
     function dispatchRemoveQuestion(questionIndex: number) {
-        if (window.confirm('Vil du slette dette spørsmålet?'))
             dispatch(removeQuestion(questionIndex, state.sections[sectionId].id));
     }
 
@@ -90,7 +88,7 @@ function Section({
                                     id="stealFocus"
                                     style={{
                                         zIndex: 1,
-                                        color: 'var(--primary-1)',
+                                        color: 'grey',
                                         float: 'left',
                                     }}
                                     type="link"
@@ -100,16 +98,15 @@ function Section({
                                 />
                             </Tooltip>
                         </Col>
-                        <Col xs={2} lg={3} style={{ paddingRight: '5px' }}>
-                            <Title
+                        <Col xs={2} lg={3} style={{ padding: '5px 10px' }}>
+                            <h3
                                 style={{
-                                    color: 'var(--primary-1)',
                                     float: 'right',
+                                    color: 'grey',
                                 }}
-                                level={3}
                             >
                                 {String(sectionIndex + 1)}
-                            </Title>
+                            </h3>
                         </Col>
                         <Col
                             xs={20}
@@ -174,7 +171,33 @@ function Section({
                             ></TextArea>
                         </Col>
                         <Col span={6}>
-                            <Row style={{ textAlign: 'right' }}>
+                            <Row
+                                style={{
+                                    textAlign: 'right',
+                                }}
+                            >
+                                <Col span={24}>
+                                    <Popconfirm
+                                        title="Vil du slette denne seksjonen?"
+                                        onConfirm={() => removeSection()}
+                                        okText="Ja"
+                                        cancelText="Nei"
+                                    >
+                                        <Button
+                                            style={{
+                                                zIndex: 1,
+                                                color: 'var(--primary-1)',
+                                                marginLeft: '10px',
+                                            }}
+                                            icon={<DeleteOutlined />}
+                                            type="default"
+                                        >
+                                            Slett seksjon
+                                        </Button>
+                                    </Popconfirm>
+                                </Col>
+                            </Row>
+                            <Row style={{ textAlign: 'right', paddingTop: '10px' }}>
                                 <Col span={24}>
                                     <Button
                                         style={{
@@ -188,28 +211,6 @@ function Section({
                                         onClick={() => duplicateSection()}
                                     >
                                         Dupliser seksjon
-                                    </Button>
-                                </Col>
-                            </Row>
-
-                            <Row
-                                style={{
-                                    textAlign: 'right',
-                                    paddingTop: '10px',
-                                }}
-                            >
-                                <Col span={24}>
-                                    <Button
-                                        style={{
-                                            zIndex: 1,
-                                            color: 'var(--primary-1)',
-                                            marginLeft: '10px',
-                                        }}
-                                        icon={<DeleteOutlined />}
-                                        type="default"
-                                        onClick={() => removeSection()}
-                                    >
-                                        Slett seksjon
                                     </Button>
                                 </Col>
                             </Row>
@@ -233,7 +234,11 @@ function Section({
                     <Row>
                         <Col span={24}>
                             <DND.Droppable droppableId={sectionId} type={'question'}>
+<<<<<<< HEAD
+                                {(provided, snapshot) => (
+=======
                                 {(provided) => (
+>>>>>>> fb-dev
                                     <div ref={provided.innerRef}>
                                         {!collapsed &&
                                             state.sections[sectionId].questionOrder.map(
@@ -245,7 +250,11 @@ function Section({
                                                             draggableId={questionId}
                                                             index={index}
                                                         >
+<<<<<<< HEAD
+                                                            {(provided, snapshot) => (
+=======
                                                             {(provided) => (
+>>>>>>> fb-dev
                                                                 <div
                                                                     ref={provided.innerRef}
                                                                     {...provided.draggableProps}
@@ -310,6 +319,7 @@ function Section({
                                 }}
                                 icon={<PlusOutlined />}
                                 onClick={() => dispatchAddQuestion(true)}
+                                type="default"
                             >
                                 Legg til informasjon
                             </Button>

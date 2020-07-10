@@ -75,7 +75,7 @@ function NavBar(): JSX.Element {
         }
         for (let i = 0; i < questionArray.length; i++) {
             console.log(questionArray);
-            if (!questionArray[i].valid || !questionArray[i].answer.valid) {
+            if (/*!questionArray[i].valid ||*/ !questionArray[i].answer.valid) {
                 console.log(questionArray[i].answer.valid);
                 console.log(questionArray[i].questionText);
                 return false;

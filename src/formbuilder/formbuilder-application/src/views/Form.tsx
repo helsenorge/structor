@@ -30,7 +30,7 @@ function CreateForm(): JSX.Element {
     }
 
     function dispatchRemoveSection(index: number) {
-        if (window.confirm('Vil du slette denne seksjonen?')) dispatch(removeSection(index));
+        dispatch(removeSection(index));
     }
 
     function dispatchDuplicateSection(index: number, id: string) {
@@ -67,7 +67,7 @@ function CreateForm(): JSX.Element {
                 </Col>
             </Row>
             <Row style={{ margin: '61px 0 0 0' }} justify="center">
-                <Col xl={16} lg={18} md={20} xs={24}>
+                <Col xl={16} lg={18} md={22} xs={24}>
                     <TitleAndDescription />
                 </Col>
             </Row>
