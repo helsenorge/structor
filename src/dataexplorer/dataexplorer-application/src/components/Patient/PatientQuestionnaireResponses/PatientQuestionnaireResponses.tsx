@@ -10,11 +10,8 @@ const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
     const [questionnaireId, setQuestionnaireId] = useState<string>();
     const [QRData, setQRData] = useState<IDataSource[]>([]);
     const [responseExists, setResponseExists] = useState<boolean>(true);
-    const { response: questionnaireResponses } = useFetch<
-        IQuestionnaireResponse
-    >(
-        'fhir/QuestionnaireResponse?subject=Patient/' +
-            patientData.entry[0].resource.id,
+    const { response: questionnaireResponses } = useFetch<IQuestionnaireResponse>(
+        'fhir/QuestionnaireResponse?subject=Patient/' + patientData.entry[0].resource.id,
     );
 
     useEffect(() => {
@@ -23,9 +20,7 @@ const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
             questionnaireResponses.entry.forEach((i) => {
                 setQuestionnaireId(
                     i.resource.questionnaire?.reference?.substr(
-                        i.resource.questionnaire?.reference?.indexOf(
-                            'Questionnaire/',
-                        ),
+                        i.resource.questionnaire?.reference?.indexOf('Questionnaire/'),
                     ),
                 );
                 setQRData((QRData) => [
@@ -37,10 +32,7 @@ const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
                     },
                 ]);
             });
-        } else if (
-            questionnaireResponses &&
-            questionnaireResponses.total === 0
-        ) {
+        } else if (questionnaireResponses && questionnaireResponses.total === 0) {
             setResponseExists(false);
         }
     }, [questionnaireResponses]);
@@ -56,15 +48,13 @@ const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
                 />
             )}
             {/* Patients without QuestionnaireResponses do not need to fetch for Questionnaires*/}
-            {!responseExists &&
-                questionnaireResponses &&
-                questionnaireResponses.total === 0 && (
-                    <PatientView
-                        patient={patientData.entry[0].resource}
-                        dataSource={QRData}
-                        hasQuestionnaireResponses={false}
-                    />
-                )}
+            {!responseExists && questionnaireResponses && questionnaireResponses.total === 0 && (
+                <PatientView
+                    patient={patientData.entry[0].resource}
+                    dataSource={QRData}
+                    hasQuestionnaireResponses={false}
+                />
+            )}
             {!questionnaireResponses && responseExists && (
                 <Row justify="center">
                     <Spin size="large" />

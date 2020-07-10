@@ -7,14 +7,12 @@ import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbC
 
 const QuestionnaireResponse = () => {
     const { schemaNumber } = useContext(BreadcrumbContext);
-    const { response: questionnaireResponse, error: qrError } = useFetch<
-        fhir.QuestionnaireResponse
-    >('fhir/QuestionnaireResponse/' + schemaNumber);
+    const { response: questionnaireResponse, error: qrError } = useFetch<fhir.QuestionnaireResponse>(
+        'fhir/QuestionnaireResponse/' + schemaNumber,
+    );
 
     const questionnaireUrl = questionnaireResponse?.questionnaire?.reference?.substr(
-        questionnaireResponse?.questionnaire?.reference?.indexOf(
-            'Questionnaire/',
-        ),
+        questionnaireResponse?.questionnaire?.reference?.indexOf('Questionnaire/'),
     );
     return (
         <>
@@ -29,11 +27,7 @@ const QuestionnaireResponse = () => {
                     <Spin size="large" />
                 </Row>
             )}
-            {qrError.length > 0 && (
-                <Row justify="center">
-                    Feil ved lasting av skjema: {qrError}
-                </Row>
-            )}
+            {qrError.length > 0 && <Row justify="center">Feil ved lasting av skjema: {qrError}</Row>}
         </>
     );
 };

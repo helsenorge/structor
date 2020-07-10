@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useFetch = <T extends any>(
-    endpoint: string,
-    options: RequestInit = {},
-) => {
+const useFetch = <T extends any>(endpoint: string, options: RequestInit = {}) => {
     const [response, setResponse] = useState<T>();
     const [error, setError] = useState('');
 
