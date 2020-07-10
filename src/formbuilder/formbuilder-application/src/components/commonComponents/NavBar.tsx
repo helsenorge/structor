@@ -76,10 +76,13 @@ function NavBar(): JSX.Element {
         for (let i = 0; i < questionArray.length; i++) {
             console.log(questionArray);
             if (
-                // !state.questions[questionId].valid ||
+                !state.questions[questionId].valid ||
                 !questionArray[i].answer.valid
-            )
+            ) {
+                console.log(questionArray[i].answer.valid);
+                console.log(questionArray[i].questionText);
                 return false;
+            }
         }
         return true;
     }

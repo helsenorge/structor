@@ -41,6 +41,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
             switch (attribute.answerType) {
                 case AnswerTypes.choice:
                     temp.answer = {
+                        valid: true,
                         id: questionId,
                         choices: [''],
                         isMultiple: false,
@@ -50,6 +51,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     break;
                 case AnswerTypes.number:
                     temp.answer = {
+                        valid: true,
                         id: questionId,
                         hasMax: false,
                         hasMin: false,
@@ -59,10 +61,11 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     } as INumber;
                     break;
                 case AnswerTypes.text:
-                    temp.answer = { id: questionId, isLong: false } as IText;
+                    temp.answer = { id: questionId, isLong: false, valid: true } as IText;
                     break;
                 case AnswerTypes.boolean:
                     temp.answer = {
+                        valid: true,
                         id: questionId,
                         isChecked: false,
                         label: '',
@@ -70,6 +73,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     break;
                 case AnswerTypes.time:
                     temp.answer = {
+                        valid: true,
                         id: questionId,
                         isTime: false,
                         isDate: false,
