@@ -42,6 +42,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
     function updateChoices(attribute: { mode?: string; value?: string; id?: number; updateState?: boolean }) {
         let tempChoices = [...choices];
         let tempIDs = [...choiceID];
+        let tempDefault = undefined;
 
         if (attribute.mode === 'add') {
             tempChoices = [...choices, ''];
@@ -51,11 +52,17 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         if (attribute.mode === 'delete' && attribute.id !== undefined) {
             tempChoices.splice(attribute.id, 1);
             tempIDs.splice(attribute.id, 1);
+            if (attribute.id === localAnswer.defaultValue) tempDefault = NaN;
+            else if (localAnswer.defaultValue && attribute.id < localAnswer.defaultValue)
+                tempDefault = localAnswer.defaultValue - 1;
         }
+
         setChoiceIDs(tempIDs);
         if (attribute.value !== undefined && attribute.id !== undefined) tempChoices[attribute.id] = attribute.value;
         setChoices(tempChoices);
-        if (attribute.updateState) localUpdate({ choices: tempChoices });
+        if (attribute.updateState) {
+            localUpdate({ choices: tempChoices, defaultValue: tempDefault });
+        }
     }
     const choiceStyle = { marginTop: '20px', marginLeft: 0 };
 
@@ -65,13 +72,6 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         lineHeight: '30px',
         marginBottom: 10,
         width: '90%',
-        marginLeft: 0,
-    };
-
-    const checkboxStyle = {
-        height: '30px',
-        lineHeight: '30px',
-        marginBottom: 10,
         marginLeft: 0,
     };
 
@@ -190,7 +190,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     <Row className="standard" style={{ paddingLeft: '0px' }}>
                         <Col span={24}>
                             <Checkbox
-                                defaultChecked={localAnswer.hasDefault}
+                                checked={localAnswer.hasDefault}
                                 disabled={localAnswer.isMultiple}
                                 onChange={(e) =>
                                     localUpdate({
@@ -201,7 +201,8 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                 Forhåndsvelg standardalternativ:
                             </Checkbox>
                             <Select
-                                defaultValue={localAnswer.defaultValue}
+                                key="select_default_value"
+                                value={localAnswer.defaultValue}
                                 disabled={!(localAnswer.hasDefault && !localAnswer.isMultiple)}
                                 style={{ width: '200px' }}
                                 onSelect={(value) => {
@@ -242,13 +243,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     <h4>Skriv inn svaralternativer under:</h4>
                     <Radio.Group
                         name="radiogroup"
-                        value={
-                            localAnswer.hasDefault &&
-                            localAnswer.defaultValue &&
-                            localAnswer.defaultValue < localAnswer.choices.length
-                                ? localAnswer.defaultValue
-                                : undefined
-                        }
+                        value={localAnswer.hasDefault ? localAnswer.defaultValue : undefined}
                     >
                         {choices.map((name, id) => [createRadioButton(id)])}
                         {
