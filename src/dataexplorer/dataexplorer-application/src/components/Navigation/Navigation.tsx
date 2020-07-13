@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { Layout, Avatar } from 'antd';
+import React from 'react';
+import { Layout } from 'antd';
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
 import Dashboard from '../Dashboard/Dashboard';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
-import { UserOutlined } from '@ant-design/icons';
 import Patient from '../Patient/Patient';
 import QuestionnaireResponse from 'components/QuestionnaireResponse/QuestionnaireResponse';
 import 'antd/dist/antd.css';
@@ -11,10 +10,6 @@ import './Navigation.style.scss';
 
 const { Header, Content } = Layout;
 const Navigation = () => {
-    const [name, setName] = useState('');
-    const [schemaNumber, setSchema] = useState('');
-    const patientID = localStorage.getItem('myData');
-
     return (
         <>
             <Layout>
@@ -24,46 +19,18 @@ const Navigation = () => {
                     </Link>
 
                     <div className="avatar-container">
-                        <Avatar
-                            className="header-avatar"
-                            shape="square"
-                            size="large"
-                            icon={<UserOutlined />}
-                        />
                         <h1>Dr. Gregory House</h1>
                     </div>
                 </Header>
                 <div className="breadcrumb-header">
-                    <Breadcrumbs
-                        name={name}
-                        schemaNumber={schemaNumber}
-                        setName={setName}
-                        setSchemaNumber={setSchema}
-                    />
+                    <Breadcrumbs />
                 </div>
                 <Content>
                     <div className="content">
                         <Switch>
                             <Route exact path="/" component={Dashboard} />
-                            <Route
-                                exact
-                                path="/pasient"
-                                render={() => (
-                                    <Patient
-                                        setSchema={setSchema}
-                                        patientID={patientID}
-                                    />
-                                )}
-                            />
-                            <Route
-                                exact
-                                path="/pasient/skjema"
-                                render={() => (
-                                    <QuestionnaireResponse
-                                        questionnaireResponseId={schemaNumber}
-                                    />
-                                )}
-                            />
+                            <Route exact path="/pasient" component={Patient} />
+                            <Route exact path="/pasient/skjema" component={QuestionnaireResponse} />
                         </Switch>
                     </div>
                 </Content>

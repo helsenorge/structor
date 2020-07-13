@@ -6,7 +6,6 @@ import PatientView from './PatientView/PatientView';
 import { Row, Spin } from 'antd';
 
 interface IPatientQuestionnaireProps {
-    setSchema: (id: string) => void;
     patientData: IPatientIdentifier;
     questionnaireResponses: IQuestionnaireResponse;
     questionnaireId: string;
@@ -18,20 +17,13 @@ const PatientQuestionnaire = ({
     questionnaireResponses,
     questionnaireId,
     questionnaireResponseData,
-    setSchema,
 }: IPatientQuestionnaireProps) => {
     const [dataSource, setDataSource] = useState<fhir.ResourceBase[]>([]);
 
-    const { response: questionnaire } = useFetch<fhir.Questionnaire>(
-        'fhir/' + questionnaireId,
-    );
+    const { response: questionnaire } = useFetch<fhir.Questionnaire>('fhir/' + questionnaireId);
 
     useEffect(() => {
-        if (
-            questionnaire &&
-            questionnaireResponses &&
-            questionnaireResponses?.total > 0
-        ) {
+        if (questionnaire && questionnaireResponses && questionnaireResponses?.total > 0) {
             questionnaireResponseData.forEach((item) => {
                 setDataSource((dataSource) => [
                     ...dataSource,
@@ -51,7 +43,6 @@ const PatientQuestionnaire = ({
             {questionnaire && dataSource && (
                 <PatientView
                     patient={patientData.entry[0].resource}
-                    setSchema={setSchema}
                     dataSource={dataSource}
                     hasQuestionnaireResponses={true}
                 />
