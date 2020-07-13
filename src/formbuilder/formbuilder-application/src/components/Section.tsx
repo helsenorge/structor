@@ -31,8 +31,8 @@ function Section({
     const [needsSections, setNeedsSections] = useState(false);
     const [collapsedSection, setCollapsedSection] = useState(false);
     const { state, dispatch } = useContext(FormContext);
-    const [validationList, setValidationList] = useState([false]);
-    const [visitedfields, setVisitedField] = useState([false]);
+    const [validationList, setValidationList] = useState([false, false]);
+    const [visitedfields, setVisitedField] = useState([false, false]);
 
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (sectionIndex + 1) + '...';
@@ -147,6 +147,7 @@ function Section({
                                     validate(0, e.target.value);
                                 }}
                             />
+                            {showError(0) && <p style={{ color: 'red' }}> Fyll inn seksjonstittel</p>}
                         </Col>
                         <Col md={0} lg={5}></Col>
                         <Col span={1}>
@@ -185,11 +186,15 @@ function Section({
                         <Col xs={15} lg={14}>
                             <TextArea
                                 placeholder="Beskrivelse av seksjon..."
-                                className="input-question"
+                                className={showError(0) ? 'field-error' : 'input-question'}
                                 defaultValue={state.sections[sectionId].description}
-                                onBlur={(e) => localUpdate({ description: e.target.value })}
+                                onBlur={(e) => {
+                                    localUpdate({ description: e.target.value });
+                                    validate(1, e.currentTarget.value);
+                                }}
                                 rows={3}
                             ></TextArea>
+                            {showError(1) && <p style={{ color: 'red' }}> Fyll in seksjonsbeskrivelse</p>}
                         </Col>
                         <Col span={6}>
                             <Row
