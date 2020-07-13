@@ -50,7 +50,7 @@ const PatientQuestionnaire = ({
             )}
             {!questionnaire && (
                 <Row justify="center">
-                    <Spin size="large" />
+                    <Spin className="spin-container" size="large" />
                 </Row>
             )}
         </>

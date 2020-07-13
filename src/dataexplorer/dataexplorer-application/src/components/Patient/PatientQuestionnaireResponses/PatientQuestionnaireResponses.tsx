@@ -5,6 +5,7 @@ import { Row, Spin } from 'antd';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import PatientQuestionnaire from './PatientQuestionnaire/PatientQuestionnaire';
 import PatientView from './PatientQuestionnaire/PatientView/PatientView';
+import '../Patient-style.scss';
 
 const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
     const [questionnaireId, setQuestionnaireId] = useState<string>();
@@ -57,7 +58,7 @@ const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
             )}
             {!questionnaireResponses && responseExists && (
                 <Row justify="center">
-                    <Spin className="empty-container" size="large" />
+                    <Spin className="spin-container" size="large" />
                 </Row>
             )}
         </>

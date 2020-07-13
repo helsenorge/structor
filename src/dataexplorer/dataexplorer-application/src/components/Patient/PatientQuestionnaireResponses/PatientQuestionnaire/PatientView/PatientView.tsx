@@ -132,7 +132,7 @@ const PatientView = (props: {
             </Row>
             {props.dataSource.length === 0 && props.hasQuestionnaireResponses && (
                 <Row justify="center">
-                    <Spin className="empty-container" size="large" />
+                    <Spin className="spin-container" size="large" />
                 </Row>
             )}
         </>
