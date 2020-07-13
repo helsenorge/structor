@@ -110,6 +110,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                 <Col span={1} style={{ float: 'right' }}>
                     <Tooltip title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}>
                         <Button
+                            id={'stealFocus_' + questionId}
                             style={{
                                 zIndex: 1,
                                 color: 'var(--primary-1)',

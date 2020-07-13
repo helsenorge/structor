@@ -239,15 +239,15 @@ function getDisplay(currentQuestion: fhir.QuestionnaireItem): IInfo {
 function convertFhirTimeToUnix(isDate: boolean, isTime: boolean, dateTime: string): number {
     if (isDate && isTime) {
         const indexDays = dateTime.indexOf('days');
-        if (indexDays != -1) return parseInt(dateTime.substr(indexDays - 2, 1));
+        if (indexDays !== -1) return parseInt(dateTime.substr(indexDays - 2, 1));
         return moment(dateTime, 'YYYY-MM-DDTHH:mm:ss').valueOf();
     } else if (isDate) {
         const indexDays = dateTime.indexOf('days');
-        if (indexDays != -1) return parseInt(dateTime.substr(indexDays - 2, 1));
+        if (indexDays !== -1) return parseInt(dateTime.substr(indexDays - 2, 1));
         return moment(dateTime, 'YYYY-MM-DD').valueOf();
     } else {
         const indexHours = dateTime.indexOf('hours');
-        if (indexHours != -1) return parseInt(dateTime.substr(indexHours - 2, 1));
+        if (indexHours !== -1) return parseInt(dateTime.substr(indexHours - 2, 1));
         return moment(dateTime, 'HH:mm').valueOf();
     }
 }
