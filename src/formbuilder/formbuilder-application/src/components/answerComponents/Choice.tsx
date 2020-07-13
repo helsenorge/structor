@@ -4,6 +4,7 @@ import { PlusCircleOutlined, PlusSquareOutlined, CloseOutlined } from '@ant-desi
 import './AnswerComponent.css';
 import { IChoice } from '../../types/IAnswer';
 import { FormContext, updateAnswer } from '../../store/FormStore';
+import { generateID } from '../../helpers/IDGenerator';
 
 const { Option } = Select;
 
@@ -15,6 +16,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...(state.questions[questionId].answer as IChoice) };
     const [choices, setChoices] = useState((state.questions[questionId].answer as IChoice).choices);
+    const [choiceID, setChoiceIDs] = useState(['']);
 
     function localUpdate(attribute: {
         isMultiple?: boolean;
@@ -39,22 +41,37 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     function updateChoices(attribute: { mode?: string; value?: string; id?: number; updateState?: boolean }) {
         let tempChoices = [...choices];
+        let tempIDs = [...choiceID];
 
-        if (attribute.mode === 'add') tempChoices = [...choices, ''];
+        if (attribute.mode === 'add') {
+            tempChoices = [...choices, ''];
+            tempIDs = [...tempIDs, 'choice_' + questionId + generateID()];
+        }
 
-        if (attribute.mode === 'delete' && attribute.id !== undefined) tempChoices.splice(attribute.id, 1);
+        if (attribute.mode === 'delete' && attribute.id !== undefined) {
+            tempChoices.splice(attribute.id, 1);
+            tempIDs.splice(attribute.id, 1);
+        }
+        setChoiceIDs(tempIDs);
         if (attribute.value !== undefined && attribute.id !== undefined) tempChoices[attribute.id] = attribute.value;
         setChoices(tempChoices);
         if (attribute.updateState) localUpdate({ choices: tempChoices });
     }
     const choiceStyle = { marginTop: '20px', marginLeft: 0 };
 
-    const choiceButtonStyle = {
+    const radioButtonStyle = {
         display: 'block',
         height: '30px',
         lineHeight: '30px',
         marginBottom: 10,
         width: '90%',
+        marginLeft: 0,
+    };
+
+    const checkboxStyle = {
+        height: '30px',
+        lineHeight: '30px',
+        marginBottom: 10,
         marginLeft: 0,
     };
 
@@ -81,9 +98,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     function createRadioButton(id: number) {
         return (
-            <Radio key={'Radio_' + questionId + id} style={choiceButtonStyle} disabled={true} value={id}>
+            <Radio key={'Radio_' + choiceID[id]} style={radioButtonStyle} disabled={true} value={id}>
                 <Input
-                    id={'Input_' + id}
+                    key={'Input_' + choiceID[id]}
                     type="text"
                     className="input-question"
                     placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
@@ -108,36 +125,35 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     function createCheckbox(id: number) {
         return (
-            <Checkbox
-                key={'Checkbox_' + questionId + id}
-                style={choiceButtonStyle}
-                disabled={true}
-                value={id}
-                checked={false}
-            >
-                <Input
-                    id={'Input_' + id}
-                    type="text"
-                    className="input-question"
-                    placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
-                    defaultValue={localAnswer.choices[id]}
-                    style={{ width: '85%' }}
-                    onChange={(e) => updateChoices({ id: id, value: e.target.value })}
-                    onBlur={() => updateChoices({ updateState: true })}
-                    onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
-                        if (event.charCode === 13) {
-                            updateChoices({ mode: 'add' });
-                            setTimeout(() => {
-                                const nextRadio = document.getElementById('Input_' + (id + 1));
-                                if (nextRadio) nextRadio.focus();
-                            }, 50);
-                        }
-                    }}
-                />
-                {deleteButton(id)}
-            </Checkbox>
+            <Row style={{ width: '97.5%', height: '30px', lineHeight: '30px', marginBottom: 10, marginLeft: 0 }}>
+                <Col style={{ width: '5%' }}>
+                    <Checkbox key={'Checkbox_' + choiceID[id]} disabled={true} value={id} checked={false} />
+                </Col>
+                <Col style={{ width: '93%' }}>
+                    <Input
+                        key={'Input_' + choiceID[id]}
+                        type="text"
+                        className="input-question"
+                        placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
+                        defaultValue={localAnswer.choices[id]}
+                        onChange={(e) => updateChoices({ id: id, value: e.target.value })}
+                        onBlur={() => updateChoices({ updateState: true })}
+                        onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
+                            if (event.charCode === 13) {
+                                updateChoices({ mode: 'add' });
+                                setTimeout(() => {
+                                    const nextRadio = document.getElementById('Input_' + (id + 1));
+                                    if (nextRadio) nextRadio.focus();
+                                }, 50);
+                            }
+                        }}
+                    />
+                </Col>
+                <Col style={{ width: '2%' }}>{deleteButton(id)}</Col>
+            </Row>
         );
     }
+
     return (
         <>
             <Row className="standard" style={{ paddingLeft: '0px', paddingTop: '0px' }}>
@@ -226,7 +242,13 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     <h4>Skriv inn svaralternativer under:</h4>
                     <Radio.Group
                         name="radiogroup"
-                        value={localAnswer.hasDefault ? localAnswer.defaultValue : undefined}
+                        value={
+                            localAnswer.hasDefault &&
+                            localAnswer.defaultValue &&
+                            localAnswer.defaultValue < localAnswer.choices.length
+                                ? localAnswer.defaultValue
+                                : undefined
+                        }
                     >
                         {choices.map((name, id) => [createRadioButton(id)])}
                         {
