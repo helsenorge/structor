@@ -22,7 +22,8 @@ const Patient = () => {
 
     useEffect(() => {
         if (patientData && patientData.total === 1) {
-            patientData && setName(patientData?.entry[0].resource.name[0].given[0]);
+            const name = `${patientData?.entry[0].resource.name[0].given[0]} ${patientData?.entry[0].resource.name[0].family}`;
+            patientData && setName(name);
         }
     }, [patientData, setName]);
 
