@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { IPatient, IRecord } from 'types/IPatient';
-import { Row, Col, Card, Table, Typography, Spin } from 'antd';
+import React, { useContext, ReactText, useState } from 'react';
+import { IPatient, IDataSource } from 'types/IPatient';
+import { Row, Col, Card, Table, Typography, Spin, Button } from 'antd';
 import dayjs from 'dayjs';
 import { useHistory } from 'react-router-dom';
 import './PatientView.style.scss';
@@ -13,6 +13,8 @@ const PatientView = (props: {
     hasQuestionnaireResponses: boolean;
 }) => {
     const history = useHistory();
+    const [comparingQuestionnaires, setComparingQuestionnaires] = useState<ReactText[]>([]);
+    const [compareSchemes, setCompareSchemes] = useState<boolean>(false);
     const calcAge = () => {
         const birthday = props.patient.birthDate;
         const patientYear = parseInt(birthday.substring(0, 4));
@@ -22,7 +24,7 @@ const PatientView = (props: {
 
         return `${patientDay.toString()}.${patientMonth}.${patientYear.toString()} (${actualAge.toString()})`;
     };
-    const { setSchemanumber } = useContext(PatientContext);
+    const { setSchemanumber, setComparableSchemaNumbers } = useContext(PatientContext);
     const { Title } = Typography;
     const name = props.patient.name[0].given[0] + ' ' + props.patient.name[0].family;
     const columns = [
@@ -39,9 +41,14 @@ const PatientView = (props: {
         },
     ];
 
-    const handleClick = (record: IRecord) => {
-        setSchemanumber(record.id);
+    const handleClick = (record: IDataSource) => {
+        record.id && setSchemanumber(record.id);
         history.push('/pasient/skjema');
+    };
+
+    const handleCompareClick = () => {
+        setComparableSchemaNumbers(comparingQuestionnaires);
+        history.push('pasient/skjema-sammenligning');
     };
 
     return (
@@ -104,17 +111,21 @@ const PatientView = (props: {
                             </div>
                         </div>
                     </Card>
+                    <Button className="compare-button" block onClick={() => setCompareSchemes(!compareSchemes)}>
+                        {!compareSchemes && <p>Sammenlign flere skjema</p>}
+                        {compareSchemes && <p>Slå av sammenligning</p>}
+                    </Button>
                     <Table
                         key={'Patient Questionnaire Response Key'}
                         rowKey={(record) => (record.id ? record.id : 'waiting for response')}
                         className="patient-table"
-                        dataSource={props.dataSource}
+                        dataSource={props.dataSource as IDataSource[]}
                         columns={columns}
                         rowClassName={(record, index) => (index % 2 === 0 ? 'table-row-light' : 'table-row-dark')}
                         onRow={(record) => {
                             return {
                                 onClick: () => {
-                                    handleClick(record as IRecord);
+                                    handleClick(record);
                                 },
                             };
                         }}
@@ -127,7 +138,21 @@ const PatientView = (props: {
                             triggerAsc: 'Sorter i stigende rekkefølge',
                             triggerDesc: 'Sorter i synkende rekkefølge',
                         }}
+                        rowSelection={
+                            compareSchemes
+                                ? {
+                                      type: 'checkbox',
+                                      hideSelectAll: true,
+                                      onChange: (selectedRowKeys: ReactText[]) => {
+                                          setComparingQuestionnaires(selectedRowKeys);
+                                      },
+                                  }
+                                : undefined
+                        }
                     />
+                    {compareSchemes && comparingQuestionnaires.length > 1 && (
+                        <Button onClick={() => handleCompareClick()}>Sammenlign markerte skjemaer</Button>
+                    )}
                 </Col>
             </Row>
             {props.dataSource.length === 0 && props.hasQuestionnaireResponses && (
