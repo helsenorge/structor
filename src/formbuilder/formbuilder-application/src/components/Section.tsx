@@ -85,7 +85,7 @@ function Section({
                 >
                     <Row>
                         <Col xs={1} lg={1}>
-                            <Tooltip title={collapsedSection ? 'Utvid seksjon' : 'Kollaps seksjon'}>
+                            <Tooltip title={collapsedSection ? 'Utvid seksjon' : 'Minimer seksjon'}>
                                 <Button
                                     id={'stealFocus_' + sectionId}
                                     style={{
@@ -191,6 +191,8 @@ function Section({
                                                 zIndex: 1,
                                                 color: 'var(--primary-1)',
                                                 marginLeft: '10px',
+                                                float: 'right',
+                                                width: '150px',
                                             }}
                                             icon={<DeleteOutlined />}
                                             type="default"
@@ -208,6 +210,7 @@ function Section({
                                             color: 'var(--primary-1)',
                                             marginLeft: '10px',
                                             float: 'right',
+                                            width: '150px',
                                         }}
                                         icon={<CopyOutlined />}
                                         type="default"

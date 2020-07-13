@@ -106,7 +106,6 @@ function getBoolean(currentQuestion: fhir.QuestionnaireItem): IBoolean {
         id: generateID(),
         valid: true,
         isChecked: false,
-        label: currentQuestion.text as string,
     };
     if (currentQuestion.initialBoolean) {
         tempAnswer.isChecked = currentQuestion.initialBoolean;

@@ -96,7 +96,7 @@ function QuestionWrapper({
             <>
                 <Row style={{ float: 'right', paddingTop: '10px' }}>
                     <Popconfirm
-                        title={!isInfo ? 'Vil du slette dette spørsmålet?' : 'Vil du slette informasjonsfeltet?'}
+                        title={isInfo ? 'Vil du slette informasjonsfeltet?' : 'Vil du slette dette spørsmålet?'}
                         onConfirm={() => removeQuestion()}
                         okText="Ja"
                         cancelText="Nei"
@@ -107,11 +107,12 @@ function QuestionWrapper({
                                 color: 'var(--primary-1)',
                                 marginLeft: '10px',
                                 float: 'right',
+                                width: '125px',
                             }}
                             icon={<DeleteOutlined />}
                             type="default"
                         >
-                            Slett {isInfo ? 'informasjon' : 'spørsmål'}
+                            Slett
                         </Button>
                     </Popconfirm>
                 </Row>
@@ -122,12 +123,13 @@ function QuestionWrapper({
                             color: 'var(--primary-1)',
                             marginLeft: '10px',
                             float: 'right',
+                            width: '125px',
                         }}
                         icon={<CopyOutlined />}
                         type="default"
                         onClick={() => duplicateQuestion()}
                     >
-                        Dupliser {isInfo ? 'informasjon' : 'spørsmål'}
+                        Dupliser
                     </Button>
                 </Row>
                 <Row style={{ float: 'right', paddingTop: '10px' }}>
@@ -149,6 +151,7 @@ function QuestionWrapper({
                                     color: 'var(--primary-1)',
                                     marginLeft: '10px',
                                     float: 'left',
+                                    width: '125px',
                                 }}
                                 icon={<EyeOutlined />}
                                 type="default"
@@ -164,6 +167,7 @@ function QuestionWrapper({
                                 color: 'var(--primary-1)',
                                 marginLeft: '10px',
                                 float: 'left',
+                                width: '125px',
                             }}
                             icon={<EyeOutlined />}
                             type="default"
@@ -229,7 +233,7 @@ function QuestionWrapper({
                         title={
                             (state.questions[questionId] as IQuestion).collapsed
                                 ? 'Utvid ' + (isInfo ? 'informasjon' : 'spørsmål')
-                                : 'Kollaps ' + (isInfo ? 'informasjon' : 'spørsmål')
+                                : 'Minimer ' + (isInfo ? 'informasjon' : 'spørsmål')
                         }
                     >
                         <Button
@@ -250,13 +254,13 @@ function QuestionWrapper({
                 </Col>
                 {!isInfo && (
                     <>
-                        <Col xs={0} lg={2}></Col>
+                        <Col sm={0} lg={2}></Col>
                         <Col span={1} style={{ padding: '5px 10px' }}>
                             <h4 style={{ float: 'right', color: 'grey' }}>
                                 {String(cronologicalID.map((a) => a + 1))}
                             </h4>
                         </Col>
-                        <Col lg={20} xs={22} style={{ width: '100%' }}>
+                        <Col lg={20} sm={22} style={{ width: '100%' }}>
                             <QuestionBuilder
                                 questionId={questionId}
                                 buttons={buttons}
@@ -274,11 +278,11 @@ function QuestionWrapper({
                             </h4>
                         </Col>
                         {!state.questions[questionId].collapsed ? (
-                            <Col xs={12} lg={14}>
+                            <Col sm={13} lg={14}>
                                 <AnswerBuilder questionId={questionId}></AnswerBuilder>
                             </Col>
                         ) : (
-                            <Col lg={14} xs={22} style={{ width: '100%' }}>
+                            <Col lg={16} sm={22} style={{ width: '100%' }}>
                                 {(state.questions[questionId].answer as IInfo).info ? (
                                     getCollapsedInfoText()
                                 ) : (
@@ -286,7 +290,8 @@ function QuestionWrapper({
                                 )}
                             </Col>
                         )}
-                        <Col xs={8} lg={6}>
+                        <Col lg={2} sm={0} />
+                        <Col sm={7} lg={4}>
                             <Row style={{ float: 'right' }}>
                                 <Tooltip title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}>
                                     <Button
@@ -315,9 +320,7 @@ function QuestionWrapper({
                                     </Button>
                                 </Tooltip>
                             </Row>
-                            {!state.questions[questionId].collapsed && (
-                                <Row style={{ float: 'right', display: 'block' }}>{buttons()}</Row>
-                            )}
+                            {!state.questions[questionId].collapsed && buttons()}
                         </Col>
                     </>
                 )}
@@ -325,9 +328,9 @@ function QuestionWrapper({
 
             {!state.questions[questionId].collapsed && (
                 <Row>
-                    <Col xs={1} lg={4}></Col>
+                    <Col sm={1} lg={4}></Col>
                     <Col
-                        xs={21}
+                        sm={21}
                         lg={14}
                         style={{
                             float: 'left',
