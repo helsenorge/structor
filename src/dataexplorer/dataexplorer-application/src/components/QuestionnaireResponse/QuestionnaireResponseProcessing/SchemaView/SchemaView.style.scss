@@ -102,7 +102,7 @@ p.inline-date-container {
     border: none !important;
 
     text-shadow: none !important ;
-    margin-left: 20px !important;
+    margin-left: 1.25rem !important;
 }
 
 .ant-popover {
@@ -133,12 +133,12 @@ p.inline-date-container {
 .description-container {
     display: flex;
     justify-content: space-between;
-    margin-top: -10px;
+    margin-top: -0.625rem;
     padding-top: 0.625rem;
     padding-bottom: 1rem;
     border-bottom: 0.0625rem solid lightgray;
     border-bottom-width: thin;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: grey;
     font-style: italic;
 }

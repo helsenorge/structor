@@ -57,7 +57,7 @@ const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
             )}
             {!questionnaireResponses && responseExists && (
                 <Row justify="center">
-                    <Spin size="large" />
+                    <Spin className="empty-container" size="large" />
                 </Row>
             )}
         </>

@@ -2,9 +2,10 @@ import React, { useContext } from 'react';
 import { IPatient, IRecord } from 'types/IPatient';
 import { Row, Col, Card, Table, Typography, Spin } from 'antd';
 import dayjs from 'dayjs';
-import './PatientView.style.scss';
 import { useHistory } from 'react-router-dom';
 import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
+import './PatientView.style.scss';
+import '../../../Patient-style.scss';
 
 const PatientView = (props: {
     patient: IPatient;
@@ -131,7 +132,7 @@ const PatientView = (props: {
             </Row>
             {props.dataSource.length === 0 && props.hasQuestionnaireResponses && (
                 <Row justify="center">
-                    <Spin size="large" />
+                    <Spin className="empty-container" size="large" />
                 </Row>
             )}
         </>
