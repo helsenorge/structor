@@ -214,7 +214,7 @@ function QuestionWrapper({
                 ]}
                 onCancel={() => setQuestionPreview(false)}
             >
-                <div style={{ height: '100%', width: '100%' }}>
+                <div style={{ height: '100%', width: '100%' }} className="iframe-div">
                     <iframe
                         id="schemeFrame"
                         title="Forhåndsvis spørsmål"
