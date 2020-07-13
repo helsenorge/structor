@@ -6,6 +6,7 @@ import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import PatientQuestionnaire from './PatientQuestionnaire/PatientQuestionnaire';
 import PatientView from './PatientQuestionnaire/PatientView/PatientView';
 import '../Patient-style.scss';
+import dayjs from 'dayjs';
 
 const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
     const [questionnaireId, setQuestionnaireId] = useState<string>();
@@ -29,7 +30,7 @@ const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
                     {
                         id: i.resource.id,
                         schemaName: '',
-                        submitted: i.resource.meta?.lastUpdated?.split('T')[0],
+                        submitted: dayjs(i.resource.meta?.lastUpdated).format('DD.MM.YYYY - HH:mm').toString(),
                     },
                 ]);
             });
