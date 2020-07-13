@@ -5,13 +5,13 @@ import './Breadcrumbs.style.scss';
 import { BreadcrumbContext } from './BreadcrumbContext';
 
 const Breadcrumbs = () => {
-    const { name, schemaNumber } = useContext(BreadcrumbContext);
+    const { name, schemaNumber, setPatientId } = useContext(BreadcrumbContext);
     return (
         <>
             <div className="breadcrumbs-container">
                 <Breadcrumb separator=">">
                     <Breadcrumb.Item>
-                        <Link to="/">
+                        <Link to="/" onClick={() => setPatientId('')}>
                             <span id="breadcrumb-home" className="breadcrumbs-item">
                                 Hjem
                             </span>
