@@ -3,9 +3,8 @@ import useFetch from 'utils/hooks/useFetch';
 import { IPatientIdentifier, IDataSource } from 'types/IPatient';
 import { Row, Spin } from 'antd';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
-import PatientQuestionnaire from './PatientQuestionnaire/PatientQuestionnaire';
 import PatientView from './PatientQuestionnaire/PatientView/PatientView';
-import '../Patient-style.scss';
+import { IQuestionnaire } from 'types/IQuestionnaire';
 import dayjs from 'dayjs';
 
 export interface ITitleDict {
@@ -19,7 +18,6 @@ const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
         'fhir/QuestionnaireResponse?subject=Patient/' + patientData.entry[0].resource.id,
     );
     const { response: questionnaire } = useFetch<IQuestionnaire>('fhir/Questionnaire?_id=' + questionnaireId);
-    console.log(QRData);
     useEffect(() => {
         if (questionnaireResponses && questionnaireResponses.total > 0) {
             setResponseExists(true);
@@ -49,16 +47,23 @@ const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
                             ?.substr(k.resource.questionnaire?.reference?.indexOf('Questionnaire/'))
                             .split('/')[1],
                     ),
-                    submitted: k.resource.meta?.lastUpdated,
+                    submitted: dayjs(k.resource.meta?.lastUpdated).format('DD.MM.YYYY - HH:mm').toString(),
                 },
             ]);
         });
-        console.log(qdict);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionnaire]);
 
     return (
         <>
             {/* Patients without QuestionnaireResponses do not need to fetch for Questionnaires*/}
+            {responseExists && questionnaireResponses && questionnaireResponses.total > 0 && (
+                <PatientView
+                    patient={patientData.entry[0].resource}
+                    dataSource={QRData}
+                    hasQuestionnaireResponses={true}
+                />
+            )}
             {!responseExists && questionnaireResponses && questionnaireResponses.total === 0 && (
                 <PatientView
                     patient={patientData.entry[0].resource}
