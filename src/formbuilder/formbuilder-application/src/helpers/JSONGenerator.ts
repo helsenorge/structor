@@ -51,7 +51,6 @@ function convertSections(
         for (let j = 0; j < sections[sectionKey].questionOrder.length; j++) {
             const questionKey = sections[sectionKey].questionOrder[j];
             const question = questions[questionKey];
-            // Will be within 'item' and if in section another 'item' of type group
             if (
                 ((question.questionText && question.questionText.length === 0) ||
                     question.answerType === AnswerTypes.default) &&

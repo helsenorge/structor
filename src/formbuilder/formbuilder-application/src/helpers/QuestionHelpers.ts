@@ -201,7 +201,7 @@ function convertDate(question: IQuestion, subItem: fhir.QuestionnaireItem): fhir
                 valueString:
                     'Du kan velge en ' +
                     convertTimeString(answer, false, false) +
-                    ' som er fra' +
+                    ' som er fra ' +
                     convertUnixToFhirTime(answer.isDate, answer.isTime, answer.startTime) +
                     ' til ' +
                     convertUnixToFhirTime(answer.isDate, answer.isTime, answer.endTime) +

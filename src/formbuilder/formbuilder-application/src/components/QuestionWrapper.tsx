@@ -35,8 +35,7 @@ function QuestionWrapper({
         <div>
             <p>
                 Spørsmålet er ikke ferdig utfylt. <br />
-                Fyll inn røde felt for å kunne <br/>
-                forhåndsvise.
+                Fyll inn spørsmålstekst og røde felt.
             </p>
         </div>
     );
@@ -136,10 +135,14 @@ function QuestionWrapper({
                         // (state.questions[questionId].questionText.length > 0 &&
                         //     state.questions[questionId].answerType !== AnswerTypes.default) ||
                         // (state.questions[questionId].answerType === AnswerTypes.info &&
-                        //     
+                        //
                         state.questions[questionId].answer.valid /* && state.questions[questionId].valid */
                     ) ? (
-                        <Popover content={previewWarning} title="Ingenting å forhåndsvise" placement="bottom">
+                        <Popover
+                            content={!isInfo ? previewWarning : 'Fyll inn informasjonsfeltet.'}
+                            title="Ingenting å forhåndsvise"
+                            placement="bottom"
+                        >
                             <Button
                                 style={{
                                     zIndex: 1,
@@ -263,16 +266,26 @@ function QuestionWrapper({
                         </Col>
                     </>
                 )}
-                {isInfo && !state.questions[questionId].collapsed && (
+                {isInfo && (
                     <>
                         <Col span={3} style={{ padding: '5px 10px' }}>
                             <h4 style={{ float: 'right', color: 'grey' }}>
                                 {String(cronologicalID.map((a) => a + 1))}
                             </h4>
                         </Col>
-                        <Col xs={12} lg={14}>
-                            <AnswerBuilder questionId={questionId}></AnswerBuilder>
-                        </Col>
+                        {!state.questions[questionId].collapsed ? (
+                            <Col xs={12} lg={14}>
+                                <AnswerBuilder questionId={questionId}></AnswerBuilder>
+                            </Col>
+                        ) : (
+                            <Col lg={14} xs={22} style={{ width: '100%' }}>
+                                {(state.questions[questionId].answer as IInfo).info ? (
+                                    getCollapsedInfoText()
+                                ) : (
+                                    <p style={{ float: 'left', padding: '5px' }}>Tomt informasjonsfelt</p>
+                                )}
+                            </Col>
+                        )}
                         <Col xs={8} lg={6}>
                             <Row style={{ float: 'right' }}>
                                 <Tooltip title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}>
@@ -302,23 +315,8 @@ function QuestionWrapper({
                                     </Button>
                                 </Tooltip>
                             </Row>
-                            <Row style={{ float: 'right', display: 'block' }}>{buttons()}</Row>
-                        </Col>
-                    </>
-                )}
-                {isInfo && state.questions[questionId].collapsed && (
-                    <>
-                        <Col xs={0} lg={2}></Col>
-                        <Col span={1} style={{ padding: '5px 10px' }}>
-                            <h4 style={{ float: 'right', color: 'grey' }}>
-                                {String(cronologicalID.map((a) => a + 1))}
-                            </h4>
-                        </Col>
-                        <Col lg={16} xs={22} style={{ width: '100%' }}>
-                            {(state.questions[questionId].answer as IInfo).info ? (
-                                getCollapsedInfoText()
-                            ) : (
-                                <p style={{ float: 'left', padding: '5px' }}>Tomt informasjonsfelt</p>
+                            {!state.questions[questionId].collapsed && (
+                                <Row style={{ float: 'right', display: 'block' }}>{buttons()}</Row>
                             )}
                         </Col>
                     </>

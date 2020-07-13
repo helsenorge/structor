@@ -1,6 +1,6 @@
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
-import { IAnswer, IChoice, IBoolean, IText, INumber, ITime, IInfo } from '../types/IAnswer';
+import { IAnswer, IChoice, IBoolean, IText, INumber, ITime, IInfo, TimeIntervalType } from '../types/IAnswer';
 import AnswerTypes from '../types/IAnswer';
 import moment from 'moment';
 import { generateID } from '../helpers/IDGenerator';
@@ -154,7 +154,11 @@ function getNumber(currentQuestion: fhir.QuestionnaireItem): INumber {
                 tempAnswer.hasMin = true;
                 tempAnswer.minValue = currentQuestion.extension[i].valueInteger;
             }
-            // TODO unit
+            if (currentQuestion.extension[i].url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit') {
+                tempAnswer.hasUnit = true;
+                if (currentQuestion.extension[i].valueCoding)
+                    tempAnswer.unit = currentQuestion.extension[i].valueCoding?.code;
+            }
         }
     }
 
@@ -170,6 +174,8 @@ function getTime(currentQuestion: fhir.QuestionnaireItem): ITime {
         hasDefaultTime: false,
         hasStartTime: false,
         hasEndTime: false,
+        hasInterval: false,
+        timeIntervalType: TimeIntervalType.FIXED,
     };
 
     if (currentQuestion.type === 'date') {
@@ -197,6 +203,7 @@ function getTime(currentQuestion: fhir.QuestionnaireItem): ITime {
         for (let i = 0; i < currentQuestion.extension?.length; i++) {
             if (currentQuestion.extension[i].url === 'http://ehelse.no/fhir/StructureDefinition/sdf-maxvalue') {
                 tempAnswer.hasEndTime = true;
+                tempAnswer.hasInterval = true;
                 tempAnswer.endTime = convertFhirTimeToUnix(
                     tempAnswer.isDate,
                     tempAnswer.isTime,
@@ -205,11 +212,15 @@ function getTime(currentQuestion: fhir.QuestionnaireItem): ITime {
             }
             if (currentQuestion.extension[i].url === 'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue') {
                 tempAnswer.hasStartTime = true;
-                tempAnswer.endTime = convertFhirTimeToUnix(
+                tempAnswer.hasInterval = true;
+                tempAnswer.startTime = convertFhirTimeToUnix(
                     tempAnswer.isDate,
                     tempAnswer.isTime,
                     currentQuestion.extension[i].valueString as string,
                 );
+            }
+            if (currentQuestion.extension[i].valueString?.indexOf('today') !== -1) {
+                tempAnswer.timeIntervalType = TimeIntervalType.FLOATING;
             }
         }
     }
@@ -228,10 +239,18 @@ function getDisplay(currentQuestion: fhir.QuestionnaireItem): IInfo {
 
 function convertFhirTimeToUnix(isDate: boolean, isTime: boolean, dateTime: string): number {
     if (isDate && isTime) {
+        const indexDays = dateTime.indexOf('days');
+        if (indexDays != -1) return parseInt(dateTime.substr(indexDays - 2, 1));
         return moment(dateTime, 'YYYY-MM-DDTHH:mm:ss').valueOf();
     } else if (isDate) {
+        const indexDays = dateTime.indexOf('days');
+        if (indexDays != -1) return parseInt(dateTime.substr(indexDays - 2, 1));
         return moment(dateTime, 'YYYY-MM-DD').valueOf();
-    } else return moment(dateTime, 'HH:mm').valueOf();
+    } else {
+        const indexHours = dateTime.indexOf('hours');
+        if (indexHours != -1) return parseInt(dateTime.substr(indexHours - 2, 1));
+        return moment(dateTime, 'HH:mm').valueOf();
+    }
 }
 
 function convertFromJSON(
@@ -291,7 +310,11 @@ function convertFromJSON(
                         } else if (currentQuestion.type === 'text' || currentQuestion.type === 'string') {
                             tempAnswer = getText(currentQuestion);
                             tempQuestion.answerType = AnswerTypes.text;
-                        } else if (currentQuestion.type === 'decimal' || currentQuestion.type === 'integer') {
+                        } else if (
+                            currentQuestion.type === 'decimal' ||
+                            currentQuestion.type === 'integer' ||
+                            currentQuestion.type === 'quantity'
+                        ) {
                             tempAnswer = getNumber(currentQuestion);
                             tempQuestion.answerType = AnswerTypes.number;
                         } else if (
