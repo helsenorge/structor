@@ -27,6 +27,7 @@ const initSection: ISection = {
     valid: true,
     questionOrder: [],
     sectionTitle: '',
+    description: '',
 };
 const initSections: SectionList = {};
 initSections[initSectionId] = initSection;
@@ -89,6 +90,7 @@ export function addNewSection(section?: ISection): UpdateAction {
             valid: true,
             questionOrder: [],
             sectionTitle: '',
+            description: '',
         },
     };
 }

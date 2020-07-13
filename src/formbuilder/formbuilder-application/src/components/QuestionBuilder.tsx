@@ -107,6 +107,13 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
 
     useEffect(() => {
         const temp = { ...state.questions[questionId] };
+        setValidationList([temp.questionText.length > 0, temp.answerType !== AnswerTypes.default]);
+        temp.valid = temp.questionText.length > 0 && temp.answerType !== AnswerTypes.default;
+        dispatch(updateQuestion(temp));
+    }, []);
+
+    useEffect(() => {
+        const temp = { ...state.questions[questionId] };
         temp.valid = validationList.every((field) => field === true);
         dispatch(updateQuestion(temp));
     }, [validationList]);

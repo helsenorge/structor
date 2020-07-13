@@ -173,6 +173,16 @@ function Choice({ questionId }: choiceProps): JSX.Element {
     }
 
     useEffect(() => {
+        const temp = { ...state.questions[questionId].answer } as IChoice;
+        const validation = temp.choices.map((choice) => {
+            return choice.length > 0;
+        });
+        setValidationList(validation);
+        temp.valid = !validation.includes(false);
+        dispatch(updateAnswer(questionId, temp));
+    }, []);
+
+    useEffect(() => {
         const temp = { ...state.questions[questionId].answer };
         temp.valid = validationList.every((field) => field === true);
         dispatch(updateAnswer(questionId, temp));

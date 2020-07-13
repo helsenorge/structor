@@ -4,6 +4,7 @@ import { FormContext, updateAnswer } from '../../store/FormStore';
 import { INumber } from '../../types/IAnswer';
 import './AnswerComponent.css';
 import { ValidateStatus } from 'antd/lib/form/FormItem';
+import { tmpdir } from 'os';
 
 type NumberProps = {
     questionId: string;

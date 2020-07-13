@@ -59,6 +59,13 @@ function Section({
 
     useEffect(() => {
         const temp = { ...state.sections[sectionId] };
+        setValidationList([temp.sectionTitle.length > 0, temp.description?.length > 0]);
+        temp.valid = temp.sectionTitle.length > 0 && temp.description?.length > 0;
+        dispatch(updateSection(temp));
+    }, []);
+
+    useEffect(() => {
+        const temp = { ...state.sections[sectionId] };
         temp.valid = validationList.every((field) => field === true);
         dispatch(updateSection(temp));
     }, [validationList]);

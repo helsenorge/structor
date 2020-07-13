@@ -257,6 +257,7 @@ function convertFromJSON(
                     valid: true,
                     questionOrder: [],
                     sectionTitle: currentSection.text as string,
+                    description: '',
                 };
 
                 if (currentSection.item !== undefined) {
@@ -305,7 +306,7 @@ function convertFromJSON(
                             const dot = currentQuestion.linkId.indexOf('.');
                             if (currentQuestion.linkId.substr(dot + 1) === '101') {
                                 isSectionDescription = true;
-                                tempSection.description = currentQuestion.text;
+                                tempSection.description = currentQuestion.text ? currentQuestion.text : '';
                             } else {
                                 tempAnswer = getDisplay(currentQuestion);
                                 tempQuestion.answerType = AnswerTypes.info;
