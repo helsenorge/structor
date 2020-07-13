@@ -8,47 +8,56 @@ import PatientView from './PatientQuestionnaire/PatientView/PatientView';
 import '../Patient-style.scss';
 import dayjs from 'dayjs';
 
+export interface ITitleDict {
+    id: string;
+}
 const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
-    const [questionnaireId, setQuestionnaireId] = useState<string>();
+    const [questionnaireId, setQuestionnaireId] = useState<string>('');
     const [QRData, setQRData] = useState<IDataSource[]>([]);
     const [responseExists, setResponseExists] = useState<boolean>(true);
     const { response: questionnaireResponses } = useFetch<IQuestionnaireResponse>(
         'fhir/QuestionnaireResponse?subject=Patient/' + patientData.entry[0].resource.id,
     );
-
+    const { response: questionnaire } = useFetch<IQuestionnaire>('fhir/Questionnaire?_id=' + questionnaireId);
+    console.log(QRData);
     useEffect(() => {
         if (questionnaireResponses && questionnaireResponses.total > 0) {
             setResponseExists(true);
             questionnaireResponses.entry.forEach((i) => {
-                setQuestionnaireId(
-                    i.resource.questionnaire?.reference?.substr(
-                        i.resource.questionnaire?.reference?.indexOf('Questionnaire/'),
-                    ),
-                );
-                setQRData((QRData) => [
-                    ...QRData,
-                    {
-                        id: i.resource.id,
-                        schemaName: '',
-                        submitted: dayjs(i.resource.meta?.lastUpdated).format('DD.MM.YYYY - HH:mm').toString(),
-                    },
-                ]);
+                const q = i.resource.questionnaire?.reference
+                    ?.substr(i.resource.questionnaire?.reference?.indexOf('Questionnaire/'))
+                    .split('/')[1];
+                q && setQuestionnaireId((questionnaireId) => questionnaireId + q + ',');
             });
         } else if (questionnaireResponses && questionnaireResponses.total === 0) {
             setResponseExists(false);
         }
     }, [questionnaireResponses]);
 
+    useEffect(() => {
+        const qdict = new Map();
+        questionnaire?.entry.forEach((j) => {
+            qdict.set(j.resource?.id, j.resource?.title);
+        });
+        questionnaireResponses?.entry.forEach((k) => {
+            setQRData((QRData) => [
+                ...QRData,
+                {
+                    id: k.resource.id,
+                    schemaName: qdict.get(
+                        k.resource.questionnaire?.reference
+                            ?.substr(k.resource.questionnaire?.reference?.indexOf('Questionnaire/'))
+                            .split('/')[1],
+                    ),
+                    submitted: k.resource.meta?.lastUpdated,
+                },
+            ]);
+        });
+        console.log(qdict);
+    }, [questionnaire]);
+
     return (
         <>
-            {questionnaireResponses && questionnaireId && responseExists && (
-                <PatientQuestionnaire
-                    patientData={patientData}
-                    questionnaireResponses={questionnaireResponses}
-                    questionnaireId={questionnaireId}
-                    questionnaireResponseData={QRData}
-                />
-            )}
             {/* Patients without QuestionnaireResponses do not need to fetch for Questionnaires*/}
             {!responseExists && questionnaireResponses && questionnaireResponses.total === 0 && (
                 <PatientView

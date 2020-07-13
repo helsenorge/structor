@@ -6,12 +6,8 @@ import PatientView from './PatientView/PatientView';
 import { Row, Spin } from 'antd';
 import 'components/Patient/Patient-style.scss';
 
-interface IPatientQuestionnaireProps {
-    patientData: IPatientIdentifier;
-    questionnaireResponses: IQuestionnaireResponse;
-    questionnaireId: string;
-    questionnaireResponseData: IDataSource[];
-}
+const PatientQuestionnaire = (questionnaireIds: string) => {
+    const { response: questionnaire } = useFetch<fhir.Questionnaire>('fhir/' + questionnaireIds);
 
 const PatientQuestionnaire = ({
     patientData,
