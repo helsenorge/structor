@@ -2,15 +2,13 @@ import React, { useContext, useEffect } from 'react';
 import Search from 'antd/lib/input/Search';
 import { Row, Col } from 'antd';
 import './Dashboard.style.scss';
-import { useHistory } from 'react-router-dom';
 import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
+import PatientPreview from './PatientPreview/PatientPreview';
 
 const Dashboard = () => {
-    const { setPatientId, setName, setSchemanumber } = useContext(BreadcrumbContext);
-    const history = useHistory();
+    const { patientId, setPatientId, setName, setSchemanumber } = useContext(BreadcrumbContext);
     const handleClick = (value: string) => {
         setPatientId(value);
-        history.push('/pasient');
     };
     useEffect(() => {
         setName('');
@@ -32,6 +30,7 @@ const Dashboard = () => {
                     />
                 </Col>
             </Row>
+            {patientId !== '' && <PatientPreview />}
         </>
     );
 };
