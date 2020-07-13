@@ -4,6 +4,7 @@ import { IPatientIdentifier } from 'types/IPatient';
 import { Empty, Row, Spin } from 'antd';
 import PatientQuestionnaireResponses from './PatientQuestionnaireResponses/PatientQuestionnaireResponses';
 import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
+import './Patient-style.scss';
 
 interface IPatientProps {
     patientID: string | null;
@@ -21,7 +22,8 @@ const Patient = () => {
 
     useEffect(() => {
         if (patientData && patientData.total === 1) {
-            patientData && setName(patientData?.entry[0].resource.name[0].given[0]);
+            const name = `${patientData?.entry[0].resource.name[0].given[0]} ${patientData?.entry[0].resource.name[0].family}`;
+            setName(name);
         }
     }, [patientData, setName]);
 
@@ -29,13 +31,21 @@ const Patient = () => {
         <>
             {!patientData && (!error || error.length === 0) && (
                 <Row justify="center">
-                    <Spin size="large" />
+                    <Spin className="spin-container" size="large" />
                 </Row>
             )}
             {patientData?.total === 0 && (
-                <Empty description={<span>Fant ingen pasienter med personnummer {patientId}</span>} />
+                <Empty
+                    className="empty-container"
+                    description={<span>Fant ingen pasienter med personnummer {patientId}</span>}
+                />
             )}
-            {error.length > 0 && <Empty description={<span>Feil ved lasting av pasienter: {error}</span>}></Empty>}
+            {error.length > 0 && (
+                <Empty
+                    className="empty-container"
+                    description={<span>Feil ved lasting av pasienter: {error}</span>}
+                ></Empty>
+            )}
             {/*  Since the search uses social security number, which are
                 unique, the response will contain a maximum value of 1,
                 if the patient exists in the database. */}

@@ -5,6 +5,7 @@ import { Row, Spin } from 'antd';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import PatientQuestionnaire from './PatientQuestionnaire/PatientQuestionnaire';
 import PatientView from './PatientQuestionnaire/PatientView/PatientView';
+import '../Patient-style.scss';
 import dayjs from 'dayjs';
 
 const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
@@ -58,7 +59,7 @@ const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
             )}
             {!questionnaireResponses && responseExists && (
                 <Row justify="center">
-                    <Spin size="large" />
+                    <Spin className="spin-container" size="large" />
                 </Row>
             )}
         </>

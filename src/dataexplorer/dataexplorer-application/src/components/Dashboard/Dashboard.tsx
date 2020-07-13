@@ -1,12 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Search from 'antd/lib/input/Search';
 import { Row, Col } from 'antd';
 import './Dashboard.style.scss';
 import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 import PatientPreview from './PatientPreview/PatientPreview';
+import FloatLabel from './FloatLabel/FloatLabel';
+import './FloatLabel/FloatLabel.scss';
 
 const Dashboard = () => {
     const { patientId, setPatientId, setName, setSchemanumber } = useContext(BreadcrumbContext);
+    const [searchValue, setFirstName] = useState('');
     const handleClick = (value: string) => {
         setPatientId(value);
     };
@@ -21,13 +24,13 @@ const Dashboard = () => {
             <div className="search-container"></div>
             <Row gutter={[60, 40]} justify={'center'}>
                 <Col span={1000}>
-                    <Search
-                        style={{ width: 400 }}
-                        className="search-bar"
-                        placeholder="Søk med personnummer for å finne en pasient"
-                        onSearch={(value: string) => handleClick(value)}
-                        allowClear={true}
-                    />
+                    <FloatLabel label="Personnummer" name="searchfield" value={searchValue}>
+                        <Search
+                            placeholder={searchValue}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            onSearch={(value: string) => handleClick(value)}
+                        />
+                    </FloatLabel>
                 </Col>
             </Row>
             {patientId !== '' && <PatientPreview />}

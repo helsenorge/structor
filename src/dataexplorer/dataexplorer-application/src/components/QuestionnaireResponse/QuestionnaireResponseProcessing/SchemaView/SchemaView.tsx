@@ -77,19 +77,17 @@ const SchemaView = (props: SchemaViewProps) => {
                                                             key={section.id}
                                                             className="site-collapse-custom-panel"
                                                         >
-                                                            <Row>
+                                                            <div className="description-container">
                                                                 {qAndA.map(
                                                                     (display) =>
                                                                         display.id.split('.')[0] === section.id &&
                                                                         display.id.split('.')[1] === '101' && (
-                                                                            <Col
-                                                                                span={18}
-                                                                                order={1}
+                                                                            <div
                                                                                 key={display.id}
                                                                                 className="section-description"
                                                                             >
                                                                                 {display.questions.questions.text}
-                                                                            </Col>
+                                                                            </div>
                                                                         ),
                                                                 )}
                                                                 {containsDescription.includes(
@@ -99,14 +97,10 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                         {!sectionDescription.includes(
                                                                             section.id.split('.')[0],
                                                                         ) && (
-                                                                            <Col
-                                                                                span={6}
-                                                                                order={2}
-                                                                                className="section-description"
-                                                                            >
+                                                                            <div className="section-description">
                                                                                 <Button
-                                                                                    type="link"
-                                                                                    value="small"
+                                                                                    type="primary"
+                                                                                    size="small"
                                                                                     onClick={() =>
                                                                                         setSectionDescription(
                                                                                             (sectionDescription) => [
@@ -118,20 +112,16 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                                         )
                                                                                     }
                                                                                 >
-                                                                                    Vis ekstra info
+                                                                                    Vis Informasjon
                                                                                 </Button>
-                                                                            </Col>
+                                                                            </div>
                                                                         )}
                                                                         {sectionDescription.includes(
                                                                             section.id.split('.')[0],
                                                                         ) && (
-                                                                            <Col
-                                                                                span={6}
-                                                                                order={2}
-                                                                                className="section-description"
-                                                                            >
+                                                                            <div className="section-description">
                                                                                 <Button
-                                                                                    type="link"
+                                                                                    type="primary"
                                                                                     value="small"
                                                                                     onClick={() =>
                                                                                         setSectionDescription(
@@ -147,13 +137,13 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                                         )
                                                                                     }
                                                                                 >
-                                                                                    Skjul ekstra info
+                                                                                    Skjul Info
                                                                                 </Button>
-                                                                            </Col>
+                                                                            </div>
                                                                         )}
                                                                     </>
                                                                 )}
-                                                            </Row>
+                                                            </div>
                                                             {qAndA.map(
                                                                 (qa, qaIndex) =>
                                                                     qa.id.split('.')[0] === section.id &&

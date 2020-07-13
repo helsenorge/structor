@@ -12,19 +12,25 @@ const Breadcrumbs = () => {
                 <Breadcrumb separator=">">
                     <Breadcrumb.Item>
                         <Link to="/" onClick={() => setPatientId('')}>
-                            <span className="breadcrumbs-item">Hjem</span>
+                            <span id="breadcrumb-home" className="breadcrumbs-item">
+                                Hjem
+                            </span>
                         </Link>
                     </Breadcrumb.Item>
                     {name !== '' && (
                         <Breadcrumb.Item>
                             <Link to="/pasient">
-                                <span className="breadcrumbs-item">{name}</span>
+                                <span id="breadcrumb-name" className="breadcrumbs-item">
+                                    {name}
+                                </span>
                             </Link>
                         </Breadcrumb.Item>
                     )}
                     {schemaNumber !== '' && (
                         <Breadcrumb.Item>
-                            <span className="breadcrumbs-schema">Skjema {schemaNumber}</span>
+                            <span id="breadcrumb-schema" className="breadcrumbs-item">
+                                Skjema {schemaNumber}
+                            </span>
                         </Breadcrumb.Item>
                     )}
                 </Breadcrumb>

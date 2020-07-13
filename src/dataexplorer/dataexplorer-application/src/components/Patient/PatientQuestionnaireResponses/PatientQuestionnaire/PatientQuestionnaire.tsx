@@ -4,6 +4,7 @@ import { IPatientIdentifier, IDataSource } from 'types/IPatient';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import PatientView from './PatientView/PatientView';
 import { Row, Spin } from 'antd';
+import 'components/Patients/Patient-style.scss';
 
 interface IPatientQuestionnaireProps {
     patientData: IPatientIdentifier;
@@ -49,7 +50,7 @@ const PatientQuestionnaire = ({
             )}
             {!questionnaire && (
                 <Row justify="center">
-                    <Spin size="large" />
+                    <Spin className="spin-container" size="large" />
                 </Row>
             )}
         </>

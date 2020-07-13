@@ -44,7 +44,7 @@ const QuestionsAndAnswersDisplay = (props: IQuestionsAndAnswersDisplayProps) => 
                                               }
                                           >
                                               <Button type="primary" size="small">
-                                                  <p className="alternatives">Alternativer</p>
+                                                  <p className="alternatives"> Vis Alternativer</p>
                                               </Button>
                                           </Popover>
                                       ),

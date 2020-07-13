@@ -12,6 +12,7 @@ p {
     margin-bottom: 0.4375rem;
 }
 .ant-input-affix-wrapper {
+    padding: 1.25rem 1.25rem 0.3125rem 0.625rem !important;
     &:hover {
         border-color: $header !important;
     }
@@ -20,9 +21,20 @@ p {
     }
 }
 .ant-input-affix-wrapper-focused {
-    box-shadow: 0 0 0 2px $elementHeader !important;
+    box-shadow: 0 0 0 0.125rem $elementHeader !important;
     border-color: $header !important ;
     &:focus {
         border-color: $elementHeader !important ;
     }
+}
+
+.example {
+    margin: 0.75rem;
+}
+
+svg {
+    margin-bottom: 0.625rem;
+    margin-left: 0.3125rem;
+    margin-right: -0.625rem;
+    font-size: 1.25rem;
 }

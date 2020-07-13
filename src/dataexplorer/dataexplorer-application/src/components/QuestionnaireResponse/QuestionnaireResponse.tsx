@@ -24,7 +24,7 @@ const QuestionnaireResponse = () => {
             )}
             {!questionnaireResponse && qrError.length === 0 && (
                 <Row justify="space-around" align="middle">
-                    <Spin size="large" />
+                    <Spin className="spin-container" size="large" />
                 </Row>
             )}
             {qrError.length > 0 && <Row justify="center">Feil ved lasting av skjema: {qrError}</Row>}

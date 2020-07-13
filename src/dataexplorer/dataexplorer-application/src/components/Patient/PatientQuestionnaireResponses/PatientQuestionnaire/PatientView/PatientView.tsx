@@ -2,9 +2,10 @@ import React, { useContext } from 'react';
 import { IPatient, IRecord } from 'types/IPatient';
 import { Row, Col, Card, Table, Typography, Spin } from 'antd';
 import dayjs from 'dayjs';
-import './PatientView.style.scss';
 import { useHistory } from 'react-router-dom';
 import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
+import './PatientView.style.scss';
+import 'components/Patient/Patient-style.scss';
 
 const PatientView = (props: {
     patient: IPatient;
@@ -15,21 +16,11 @@ const PatientView = (props: {
     const calcAge = () => {
         const birthday = props.patient.birthDate;
         const patientYear = parseInt(birthday.substring(0, 4));
-        const patientMonth = dayjs(birthday.substring(5, 7)).locale('nb').format('MMMM');
+        const patientMonth = parseInt(birthday.substring(5, 7));
         const patientDay = parseInt(birthday.substring(8, 10));
         const actualAge = dayjs().diff(birthday, 'year');
 
-        return (
-            patientDay.toString() +
-            '-' +
-            patientMonth +
-            '-' +
-            patientYear.toString() +
-            ' ' +
-            '(' +
-            actualAge.toString() +
-            ')'
-        );
+        return `${patientDay.toString()}.${patientMonth}.${patientYear.toString()} (${actualAge.toString()})`;
     };
     const { setSchemanumber } = useContext(BreadcrumbContext);
     const { Title } = Typography;
@@ -141,7 +132,7 @@ const PatientView = (props: {
             </Row>
             {props.dataSource.length === 0 && props.hasQuestionnaireResponses && (
                 <Row justify="center">
-                    <Spin size="large" />
+                    <Spin className="spin-container" size="large" />
                 </Row>
             )}
         </>
