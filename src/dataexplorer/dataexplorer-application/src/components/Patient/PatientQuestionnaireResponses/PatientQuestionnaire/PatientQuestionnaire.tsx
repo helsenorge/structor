@@ -4,7 +4,7 @@ import { IPatientIdentifier, IDataSource } from 'types/IPatient';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import PatientView from './PatientView/PatientView';
 import { Row, Spin } from 'antd';
-import 'components/Patients/Patient-style.scss';
+import 'components/Patient/Patient-style.scss';
 
 interface IPatientQuestionnaireProps {
     patientData: IPatientIdentifier;
