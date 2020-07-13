@@ -1,11 +1,14 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Search from 'antd/lib/input/Search';
 import { Row, Col } from 'antd';
 import './Dashboard.style.scss';
 import { useHistory } from 'react-router-dom';
 import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
+import FloatLabel from './FloatLabel';
+import './FloatLabel.scss';
 
 const Dashboard = () => {
+    const [searchValue, setFirstName] = useState('');
     const { setPatientId, setName, setSchemanumber } = useContext(BreadcrumbContext);
     const history = useHistory();
     const handleClick = (value: string) => {
@@ -23,13 +26,13 @@ const Dashboard = () => {
             <div className="search-container"></div>
             <Row gutter={[60, 40]} justify={'center'}>
                 <Col span={1000}>
-                    <Search
-                        style={{ width: 400 }}
-                        className="search-bar"
-                        placeholder="Søk med personnummer for å finne en pasient"
-                        onSearch={(value: string) => handleClick(value)}
-                        allowClear={true}
-                    />
+                    <FloatLabel label="Personnummer" name="searchfield" value={searchValue}>
+                        <Search
+                            placeholder={searchValue}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            onSearch={(value: string) => handleClick(value)}
+                        />
+                    </FloatLabel>
                 </Col>
             </Row>
         </>
