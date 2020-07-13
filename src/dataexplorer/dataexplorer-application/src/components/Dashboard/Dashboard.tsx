@@ -4,8 +4,8 @@ import { Row, Col } from 'antd';
 import './Dashboard.style.scss';
 import { useHistory } from 'react-router-dom';
 import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
-import FloatLabel from './FloatLabel';
-import './FloatLabel.scss';
+import FloatLabel from './FloatLabel/FloatLabel';
+import './FloatLabel/FloatLabel.scss';
 
 const Dashboard = () => {
     const [searchValue, setFirstName] = useState('');
