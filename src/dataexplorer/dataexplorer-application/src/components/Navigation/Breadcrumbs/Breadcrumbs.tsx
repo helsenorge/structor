@@ -5,7 +5,7 @@ import './Breadcrumbs.style.scss';
 import { PatientContext } from 'components/Patient/PatientContext';
 
 const Breadcrumbs = () => {
-    const { name, schemaNumber, setPatientId } = useContext(PatientContext);
+    const { name, schemaNumber, setPatientId, comparableSchemaNumbers } = useContext(PatientContext);
     return (
         <>
             <div className="breadcrumbs-container">
@@ -30,6 +30,13 @@ const Breadcrumbs = () => {
                         <Breadcrumb.Item>
                             <span id="breadcrumb-schema" className="breadcrumbs-item">
                                 Skjema {schemaNumber}
+                            </span>
+                        </Breadcrumb.Item>
+                    )}
+                    {comparableSchemaNumbers.length !== 0 && (
+                        <Breadcrumb.Item>
+                            <span className="breadcrumbs-schema">
+                                Sammenligner skjemaene: {comparableSchemaNumbers[0]} og {comparableSchemaNumbers[1]}
                             </span>
                         </Breadcrumb.Item>
                     )}

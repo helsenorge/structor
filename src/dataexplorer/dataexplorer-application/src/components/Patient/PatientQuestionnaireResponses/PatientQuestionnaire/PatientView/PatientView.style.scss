@@ -19,29 +19,36 @@
             font-size: 1.125rem;
         }
     }
+
     .info-container {
         display: flex;
         justify-content: left;
+
         h4 {
             font-weight: 150;
             font-size: 0.875rem;
             margin-bottom: 0;
             margin-top: 0.8125rem;
         }
+
         .info-left {
             padding-right: 6.25rem;
+
             p {
                 font-size: 1rem;
                 font-weight: 500;
             }
+
             .unavailable-content {
                 margin-left: 0;
             }
+
             .age {
                 font-size: 1rem;
                 font-weight: 500;
             }
         }
+
         .info-right {
             p {
                 font-size: 1rem;
@@ -53,6 +60,7 @@
             font-size: 1rem;
             margin-right: 0.375rem;
         }
+
         .unavailable-content {
             font-size: 1rem;
             font-weight: 500;
@@ -76,10 +84,12 @@
             background-color: $elementHeader !important;
         }
     }
+
     .ant-table-tbody {
         .table-row-dark {
             background-color: $rowColor;
         }
+
         cursor: pointer;
     }
 
@@ -97,11 +107,19 @@
                 }
             }
         }
+
         .ant-pagination-item-active {
             border-color: $elementHeader;
+
             a {
                 color: green;
             }
         }
     }
+}
+
+.compare-button {
+    margin-top: 1rem;
+    border-color: $elementHeader;
+    border-width: 10px;
 }

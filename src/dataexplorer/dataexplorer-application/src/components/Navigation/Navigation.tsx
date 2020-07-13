@@ -7,6 +7,7 @@ import Patient from '../Patient/Patient';
 import QuestionnaireResponse from 'components/QuestionnaireResponse/QuestionnaireResponse';
 import 'antd/dist/antd.css';
 import './Navigation.style.scss';
+import CompareQuestionnaireresponses from 'components/CompareQuestionnaireResponses/CompareQuestionnaireResponses';
 
 const { Header, Content } = Layout;
 const Navigation = () => {
@@ -31,6 +32,11 @@ const Navigation = () => {
                             <Route exact path="/" component={Dashboard} />
                             <Route exact path="/pasient" component={Patient} />
                             <Route exact path="/pasient/skjema" component={QuestionnaireResponse} />
+                            <Route
+                                exact
+                                path="/pasient/skjema-sammenligning"
+                                component={CompareQuestionnaireresponses}
+                            />
                         </Switch>
                     </div>
                 </Content>

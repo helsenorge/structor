@@ -8,11 +8,12 @@ interface IPatientProps {
 }
 
 const Patient = () => {
-    const { patient: patientData, setSchemanumber, setName } = useContext(PatientContext);
+    const { patient: patientData, setSchemanumber, setName, setComparableSchemaNumbers } = useContext(PatientContext);
     // The oid signifies that we are searching on social security number
     useEffect(() => {
         setSchemanumber('');
-    }, [setSchemanumber]);
+        setComparableSchemaNumbers([]);
+    }, [setSchemanumber, setComparableSchemaNumbers]);
 
     useEffect(() => {
         if (patientData && patientData.total === 1) {

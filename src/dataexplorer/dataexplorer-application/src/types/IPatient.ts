@@ -9,14 +9,12 @@ export interface IPatient {
     url: string;
     identifier: IIdentifier[];
 }
+
 export interface IIdentifier {
     system: string;
     value: number;
 }
-export interface IRecord {
-    id: string;
-    schemaName: string;
-}
+
 export interface IPatientIdentifier {
     entry: IPatientResource[];
     total: number;

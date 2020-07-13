@@ -53,7 +53,7 @@ const SchemaView = (props: SchemaViewProps) => {
         <>
             {qAndAIds.length > 0 && (
                 <Row justify="center">
-                    <Col span={12}>
+                    <Col>
                         <div className="card">
                             <Row className="inner-schema-row">
                                 <Col span={8} className="date-column">
