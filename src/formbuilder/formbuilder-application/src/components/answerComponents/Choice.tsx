@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Radio, Button, Input, Tooltip, Checkbox, Col, Row, Select } from 'antd';
 import { PlusCircleOutlined, PlusSquareOutlined, CloseOutlined } from '@ant-design/icons';
 import './AnswerComponent.css';
@@ -15,6 +15,8 @@ function Choice({ questionId }: choiceProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...(state.questions[questionId].answer as IChoice) };
     const [choices, setChoices] = useState((state.questions[questionId].answer as IChoice).choices);
+    const [validationList, setValidationList] = useState(Array(choices.length).fill(false));
+    const [visitedfields, setVisitedField] = useState(Array(choices.length).fill(false));
 
     function localUpdate(attribute: {
         isMultiple?: boolean;
@@ -39,12 +41,24 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     function updateChoices(attribute: { mode?: string; value?: string; id?: number; updateState?: boolean }) {
         let tempChoices = [...choices];
+        let tempValidationList = [...validationList];
+        let tempVisitedfields = [...visitedfields];
 
-        if (attribute.mode === 'add') tempChoices = [...choices, ''];
+        if (attribute.mode === 'add') {
+            tempChoices = [...choices, ''];
+            tempValidationList = [...validationList, false];
+            tempVisitedfields = [...visitedfields, false];
+        }
 
-        if (attribute.mode === 'delete' && attribute.id !== undefined) tempChoices.splice(attribute.id, 1);
+        if (attribute.mode === 'delete' && attribute.id !== undefined) {
+            tempChoices.splice(attribute.id, 1);
+            tempValidationList.splice(attribute.id, 1);
+            tempVisitedfields.splice(attribute.id, 1);
+        }
         if (attribute.value !== undefined && attribute.id !== undefined) tempChoices[attribute.id] = attribute.value;
         setChoices(tempChoices);
+        setValidationList(tempValidationList);
+        setVisitedField(tempVisitedfields);
         if (attribute.updateState) localUpdate({ choices: tempChoices });
     }
     const choiceStyle = { marginTop: '20px', marginLeft: 0 };
@@ -85,12 +99,15 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 <Input
                     id={'Input_' + id}
                     type="text"
-                    className="input-question"
+                    className={showError(id) ? 'field-error' : 'input-question'}
                     placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
                     value={choices[id]}
                     style={{ width: '100%' }}
                     onChange={(e) => updateChoices({ id: id, value: e.target.value })}
-                    onBlur={() => updateChoices({ updateState: true })}
+                    onBlur={(e) => {
+                        updateChoices({ updateState: true });
+                        validate(id, e.currentTarget.value);
+                    }}
                     onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
                         if (event.charCode === 13) {
                             updateChoices({ mode: 'add' });
@@ -118,12 +135,15 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 <Input
                     id={'Input_' + id}
                     type="text"
-                    className="input-question"
+                    className={showError(id) ? 'field-error' : 'input-question'}
                     placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
                     defaultValue={localAnswer.choices[id]}
                     style={{ width: '85%' }}
                     onChange={(e) => updateChoices({ id: id, value: e.target.value })}
-                    onBlur={() => updateChoices({ updateState: true })}
+                    onBlur={(e) => {
+                        updateChoices({ updateState: true });
+                        validate(id, e.currentTarget.value);
+                    }}
                     onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
                         if (event.charCode === 13) {
                             updateChoices({ mode: 'add' });
@@ -138,6 +158,26 @@ function Choice({ questionId }: choiceProps): JSX.Element {
             </Checkbox>
         );
     }
+
+    function validate(field: number, value: string): void {
+        const tempValid = [...validationList];
+        const tempVisited = [...visitedfields];
+        value.length > 0 ? (tempValid[field] = true) : (tempValid[field] = false);
+        tempVisited[field] = true;
+        setVisitedField(tempVisited);
+        setValidationList(tempValid);
+    }
+
+    function showError(field: number): boolean {
+        return (state.validationFlag && !validationList[field]) || (!validationList[field] && visitedfields[field]);
+    }
+
+    useEffect(() => {
+        const temp = { ...state.questions[questionId].answer };
+        temp.valid = validationList.every((field) => field === true);
+        dispatch(updateAnswer(questionId, temp));
+    }, [validationList]);
+
     return (
         <>
             <Row className="standard" style={{ paddingLeft: '0px', paddingTop: '0px' }}>
@@ -185,6 +225,13 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                 Forhåndsvelg standardalternativ:
                             </Checkbox>
                             <Select
+                                className={
+                                    (state.questions[questionId].answer as IChoice).hasDefault &&
+                                    (state.questions[questionId].answer as IChoice).defaultValue === undefined &&
+                                    state.validationFlag
+                                        ? 'field-error'
+                                        : 'input-question'
+                                }
                                 defaultValue={localAnswer.defaultValue}
                                 disabled={!(localAnswer.hasDefault && !localAnswer.isMultiple)}
                                 style={{ width: '200px' }}
@@ -212,6 +259,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 <div className="question-component" style={choiceStyle}>
                     <h4>Skriv inn svaralternativer under:</h4>
                     {choices.map((name, id) => [createCheckbox(id)])}
+                    {validationList.includes(false) && state.validationFlag && (
+                        <p style={{ color: 'red' }}> Fyll ut alle alternativ</p>
+                    )}
                     <Button
                         type="text"
                         icon={<PlusSquareOutlined />}
@@ -229,6 +279,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         value={localAnswer.hasDefault ? localAnswer.defaultValue : undefined}
                     >
                         {choices.map((name, id) => [createRadioButton(id)])}
+                        {validationList.includes(false) && state.validationFlag && (
+                            <p style={{ color: 'red' }}> Fyll ut alle alternativ</p>
+                        )}
                         {
                             <Button
                                 type="text"
