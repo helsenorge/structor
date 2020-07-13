@@ -32,13 +32,8 @@
     margin: 0;
 }
 
-p.bold {
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-
 p.questions {
-    font-size: 0.9rem;
+    font-size: 1rem;
     display: inline;
 }
 
@@ -103,12 +98,11 @@ p.inline-date-container {
 }
 
 .ant-btn-primary {
-    background-color: white !important ;
+    background-color: $elementHeader !important ;
     border: none !important;
-    color: $elementHeader !important;
 
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
+    text-shadow: none !important ;
+    margin-left: 20px !important;
 }
 
 .ant-popover {
@@ -134,4 +128,17 @@ p.inline-date-container {
         overflow: auto;
         height: auto;
     }
+}
+
+.description-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -10px;
+    padding-top: 0.625rem;
+    padding-bottom: 1rem;
+    border-bottom: 0.0625rem solid lightgray;
+    border-bottom-width: thin;
+    font-size: 14px;
+    color: grey;
+    font-style: italic;
 }
