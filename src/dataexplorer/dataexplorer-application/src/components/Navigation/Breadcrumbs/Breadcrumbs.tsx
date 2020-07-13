@@ -6,20 +6,12 @@ import { BreadcrumbContext } from './BreadcrumbContext';
 
 const Breadcrumbs = () => {
     const { name, schemaNumber, setPatientId } = useContext(BreadcrumbContext);
-    const resetPatientId = () => {
-        setPatientId('');
-    };
     return (
         <>
             <div className="breadcrumbs-container">
                 <Breadcrumb separator=">">
                     <Breadcrumb.Item>
-                        <Link
-                            to="/"
-                            onClick={() => {
-                                resetPatientId();
-                            }}
-                        >
+                        <Link to="/" onClick={() => setPatientId('')}>
                             <span className="breadcrumbs-item">Hjem</span>
                         </Link>
                     </Breadcrumb.Item>
