@@ -20,12 +20,6 @@ function CreateForm(): JSX.Element {
     const [collapsedSection, setCollapsedSection] = useState('A');
     const [hasSections, setHasSections] = useState(false);
 
-    // Disabled because it's throwing warnings when it can't find the drag handle for the first section if it's only 1 section.
-    // Can't be fixed with conditional rendering, because it will display a warning for every new section we add if we display the component conditionally.
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    window['__react-beautiful-dnd-disable-dev-warnings'] = true;
-
     function dispatchAddNewSection() {
         setHasSections(true);
         dispatch(addNewSection());
@@ -54,7 +48,7 @@ function CreateForm(): JSX.Element {
         }
     }
     function onBeforeCapture(startResponder: DND.BeforeCapture) {
-        const focusButton = document.getElementById('stealFocus');
+        const focusButton = document.getElementById('stealFocus_' + startResponder.draggableId);
         if (focusButton) {
             focusButton.focus();
         }
@@ -94,16 +88,6 @@ function CreateForm(): JSX.Element {
                                             >
                                                 {(provided, snapshot) => (
                                                     <div ref={provided.innerRef} {...provided.draggableProps}>
-                                                        {/* <SectionMemo
-                                                                key={sectionId}
-                                                                sectionId={
-                                                                    sectionId
-                                                                }
-                                                                index={index}
-                                                                provided={
-                                                                    provided
-                                                                }
-                                                            /> */}
                                                         <Section
                                                             key={sectionId}
                                                             sectionId={sectionId}

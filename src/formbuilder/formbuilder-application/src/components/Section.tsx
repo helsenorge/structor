@@ -76,7 +76,7 @@ function Section({
             }}
             className="wrapper"
         >
-            {hasSections && (
+            {hasSections ? (
                 <div
                     style={{
                         padding: '30px',
@@ -87,7 +87,7 @@ function Section({
                         <Col xs={1} lg={1}>
                             <Tooltip title={collapsedSection ? 'Utvid seksjon' : 'Kollaps seksjon'}>
                                 <Button
-                                    id="stealFocus"
+                                    id={'stealFocus_' + sectionId}
                                     style={{
                                         zIndex: 1,
                                         color: 'grey',
@@ -143,6 +143,7 @@ function Section({
                                         }}
                                         type="link"
                                         shape="circle"
+                                        onClick={() => setCollapsedSection(true)}
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -230,6 +231,8 @@ function Section({
                         />
                     </Row>
                 </div>
+            ) : (
+                provided && <div {...provided.dragHandleProps} />
             )}
 
             <>

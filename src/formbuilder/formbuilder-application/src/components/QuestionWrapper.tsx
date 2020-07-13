@@ -290,7 +290,7 @@ function QuestionWrapper({
                             <Row style={{ float: 'right' }}>
                                 <Tooltip title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}>
                                     <Button
-                                        id="stealFocus"
+                                        id={'stealFocus_' + questionId}
                                         style={{
                                             zIndex: 1,
                                             color: 'var(--primary-1)',
