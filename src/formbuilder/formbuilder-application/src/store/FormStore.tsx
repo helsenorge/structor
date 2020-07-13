@@ -24,6 +24,7 @@ import FormMetaActions from './FormMetaActions';
 const initSectionId = generateID();
 const initSection: ISection = {
     id: initSectionId,
+    valid: true,
     questionOrder: [],
     sectionTitle: '',
 };
@@ -36,6 +37,7 @@ export const initialState: State = {
     sections: initSections,
     questions: {},
     sectionOrder: [initSectionId],
+    validationFlag: false,
 };
 
 export interface State {
@@ -44,6 +46,15 @@ export interface State {
     sections: SectionList;
     questions: QuestionList;
     sectionOrder: Array<string>;
+    validationFlag: boolean;
+}
+
+export function updateValidationFlag(validationFlag: boolean): UpdateAction {
+    return {
+        type: UpdateActionTypes.UPDATE_VALIDATION,
+        member: MemberTypes.UPDATE,
+        validationFlag: validationFlag,
+    };
 }
 
 export function updateFormMeta(title: string, description?: string): UpdateFormMetaAction {
@@ -63,6 +74,7 @@ export function addNewSection(section?: ISection): UpdateAction {
             member: MemberTypes.UPDATE,
             section: {
                 id: section.id,
+                valid: true,
                 questionOrder: section.questionOrder,
                 sectionTitle: section.sectionTitle,
                 description: section.description ? section.description : '',
@@ -74,6 +86,7 @@ export function addNewSection(section?: ISection): UpdateAction {
         member: MemberTypes.UPDATE,
         section: {
             id: sectionId,
+            valid: true,
             questionOrder: [],
             sectionTitle: '',
         },

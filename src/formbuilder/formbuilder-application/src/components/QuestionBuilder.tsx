@@ -5,7 +5,6 @@ import { FormContext, updateQuestion } from '../store/FormStore';
 import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes, { IChoice, INumber, IText, IBoolean, ITime, IAnswer } from '../types/IAnswer';
-import { ValidateStatus } from 'antd/lib/form/FormItem';
 
 const { Option } = Select;
 
@@ -18,7 +17,8 @@ type QuestionProps = {
 
 function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [validationList, setValidationList] = useState([true]);
+    const [validationList, setValidationList] = useState([false, false]);
+    const [visitedfields, setVisitedField] = useState([false, false]);
     const localQuestion = { ...state.questions[questionId] } as IQuestion;
 
     function updateStore(attribute: {
@@ -92,16 +92,17 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
         dispatch(updateQuestion(temp));
     }
 
-    function validate(field: number, validity: ValidateStatus): ValidateStatus {
+    function validate(field: number, value: string): void {
         const tempValid = [...validationList];
-        if (validity === 'error' && validationList[field] !== false) {
-            tempValid[field] = false;
-            setValidationList(tempValid);
-        } else if (validity === 'success' && validationList[field] !== true) {
-            tempValid[field] = true;
-            setValidationList(tempValid);
-        }
-        return validity;
+        const tempVisited = [...visitedfields];
+        value.length > 0 ? (tempValid[field] = true) : (tempValid[field] = false);
+        tempVisited[field] = true;
+        setVisitedField(tempVisited);
+        setValidationList(tempValid);
+    }
+
+    function showError(field: number): boolean {
+        return (state.validationFlag && !validationList[field]) || (!validationList[field] && visitedfields[field]);
     }
 
     useEffect(() => {
@@ -115,29 +116,18 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
             <Form>
                 <Row>
                     <Col span={17} style={{ paddingRight: '5px' }}>
-                        <Form.Item
-                            validateStatus={
-                                String(localQuestion.questionText).length > 0
-                                    ? (validate(0, 'success') as ValidateStatus)
-                                    : (validate(0, 'error') as ValidateStatus)
-                            }
-                            help={
-                                String(localQuestion.questionText).length > 0
-                                    ? undefined
-                                    : 'Fyll inn spørsmålstekst verdi'
-                            }
-                        >
-                            <Input
-                                placeholder={localQuestion.placeholder}
-                                className="input-question"
-                                defaultValue={localQuestion.questionText}
-                                onBlur={(e) =>
-                                    updateStore({
-                                        questionText: e.target.value === undefined ? '' : e.target.value,
-                                    })
-                                }
-                            />
-                        </Form.Item>
+                        <Input
+                            className={showError(0) ? 'field-error' : 'input-question'}
+                            placeholder={localQuestion.placeholder}
+                            defaultValue={localQuestion.questionText}
+                            onBlur={(e) => {
+                                updateStore({
+                                    questionText: e.target.value === undefined ? '' : e.target.value,
+                                });
+                                validate(0, e.currentTarget.value);
+                            }}
+                        />
+                        {showError(0) && <p style={{ color: 'red' }}> Fyll inn tekst her </p>}
                     </Col>
                     <Col span={6}></Col>
                     <Col span={1} style={{ float: 'right' }}>
@@ -192,7 +182,8 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                             Velg type spørsmål:{' '}
                                         </p>
                                         <Select
-                                            value={localQuestion.answerType}
+                                            className={showError(1) ? 'field-error' : ''}
+                                            defaultValue={localQuestion.answerType}
                                             style={{
                                                 width: '200px',
                                                 float: 'left',
@@ -201,6 +192,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                                 updateStore({
                                                     answerType: value,
                                                 });
+                                                validate(1, value);
                                             }}
                                             placeholder="Trykk for å velge"
                                         >
@@ -210,6 +202,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                             <Option value={AnswerTypes.time}>Dato/tid</Option>
                                             <Option value={AnswerTypes.choice}>Flervalg</Option>
                                         </Select>
+                                        {showError(1) && <p style={{ color: 'red' }}> Velg et svar alternativ</p>}
                                     </Col>
                                 </Row>
                             </Col>

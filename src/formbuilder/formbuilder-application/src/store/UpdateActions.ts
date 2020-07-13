@@ -41,9 +41,13 @@ export default function UpdateActions(draft: State, action: UpdateAction): void 
                 draft.questions[action.questionId as string].answer = action.answer as IChoice;
             }
             break;
+        case UpdateActionTypes.UPDATE_VALIDATION:
+            if (action.validationFlag !== undefined) {
+                draft.validationFlag = action.validationFlag;
+            }
+            break;
         case UpdateActionTypes.UPDATE_QUESTION:
             if (action.question) {
-                console.log(action.question);
                 draft.questions[action.question.id] = action.question;
             }
             break;

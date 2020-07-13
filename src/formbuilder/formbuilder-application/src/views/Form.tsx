@@ -105,6 +105,7 @@ function CreateForm(): JSX.Element {
                                                         <Section
                                                             key={sectionId}
                                                             sectionId={sectionId}
+                                                            valid={true}
                                                             duplicateSection={() =>
                                                                 dispatchDuplicateSection(index, sectionId)
                                                             }

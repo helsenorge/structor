@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Row, Col, Button, Tooltip, Input, Popconfirm } from 'antd';
+import { Row, Col, Button, Tooltip, Input, Popconfirm, Form } from 'antd';
 import { PlusOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import QuestionWrapper from './QuestionWrapper';
 import { FormContext, addNewQuestion, removeQuestion, duplicateQuestion, updateSection } from '../store/FormStore';
@@ -16,6 +16,7 @@ type SectionProps = {
     provided?: DND.DraggableProvided;
     collapsed: boolean;
     sectionIndex: number;
+    valid: boolean;
 };
 
 function Section({
@@ -29,8 +30,9 @@ function Section({
     const [placeholder, setPlaceholder] = useState('Tittel...');
     const [needsSections, setNeedsSections] = useState(false);
     const [collapsedSection, setCollapsedSection] = useState(false);
-
     const { state, dispatch } = useContext(FormContext);
+    const [validationList, setValidationList] = useState([false]);
+    const [visitedfields, setVisitedField] = useState([false]);
 
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (sectionIndex + 1) + '...';
@@ -41,6 +43,25 @@ function Section({
             setNeedsSections(false);
         }
     }
+
+    function validate(field: number, value: string): void {
+        const tempValid = [...validationList];
+        const tempVisited = [...visitedfields];
+        value.length > 0 ? (tempValid[field] = true) : (tempValid[field] = false);
+        tempVisited[field] = true;
+        setVisitedField(tempVisited);
+        setValidationList(tempValid);
+    }
+
+    function showError(field: number): boolean {
+        return (state.validationFlag && !validationList[field]) || (!validationList[field] && visitedfields[field]);
+    }
+
+    useEffect(() => {
+        const temp = { ...state.sections[sectionId] };
+        temp.valid = validationList.every((field) => field === true);
+        dispatch(updateSection(temp));
+    }, [validationList]);
 
     useEffect(() => {
         findPlaceholder();
@@ -55,7 +76,7 @@ function Section({
     }
 
     function dispatchRemoveQuestion(questionIndex: number) {
-            dispatch(removeQuestion(questionIndex, state.sections[sectionId].id));
+        dispatch(removeQuestion(questionIndex, state.sections[sectionId].id));
     }
 
     function localUpdate(attribute: { description?: string; sectionTitle?: string }) {
@@ -72,6 +93,7 @@ function Section({
             }}
             className="wrapper"
         >
+            {' '}
             {needsSections && (
                 <div
                     style={{
@@ -115,14 +137,15 @@ function Section({
                         >
                             <Input
                                 placeholder={placeholder}
-                                className="input-question"
+                                className={showError(0) ? 'field-error' : 'input-question'}
                                 size="large"
                                 defaultValue={state.sections[sectionId].sectionTitle}
-                                onBlur={(e) =>
+                                onBlur={(e) => {
                                     localUpdate({
                                         sectionTitle: e.target.value,
-                                    })
-                                }
+                                    });
+                                    validate(0, e.target.value);
+                                }}
                             />
                         </Col>
                         <Col md={0} lg={5}></Col>

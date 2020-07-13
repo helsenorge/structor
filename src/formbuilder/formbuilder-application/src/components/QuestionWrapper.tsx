@@ -50,6 +50,7 @@ function QuestionWrapper({
     function iFrameLoaded() {
         const tempSection: ISection = {
             id: 'PreviewSection',
+            valid: true,
             questionOrder: [questionId],
             sectionTitle: '',
             description: '',
