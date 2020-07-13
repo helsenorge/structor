@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { useHistory } from 'react-router-dom';
 import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 import './PatientView.style.scss';
-import '../../../Patient-style.scss';
+import 'components/Patient/Patient-style.scss';
 
 const PatientView = (props: {
     patient: IPatient;
