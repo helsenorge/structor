@@ -59,7 +59,7 @@ function Section({
     }
 
     function dispatchRemoveQuestion(questionIndex: number) {
-            dispatch(removeQuestion(questionIndex, state.sections[sectionId].id));
+        dispatch(removeQuestion(questionIndex, state.sections[sectionId].id));
     }
 
     function localUpdate(attribute: { description?: string; sectionTitle?: string }) {
@@ -231,96 +231,89 @@ function Section({
                     </Row>
                 </div>
             )}
-            {!collapsedSection && (
-                <>
-                    <Row>
-                        <Col span={24}>
-                            <DND.Droppable droppableId={sectionId} type={'question'}>
-                                {(provided) => (
-                                    <div ref={provided.innerRef}>
-                                        {!collapsed &&
-                                            state.sections[sectionId].questionOrder.map(
-                                                (questionId: string, index: number) => {
-                                                    const question = state.questions[questionId];
-                                                    return (
-                                                        <DND.Draggable
-                                                            key={'drag' + questionId}
-                                                            draggableId={questionId}
-                                                            index={index}
-                                                        >
-                                                            {(provided) => (
-                                                                <div
-                                                                    ref={provided.innerRef}
-                                                                    {...provided.draggableProps}
-                                                                >
-                                                                    <QuestionWrapper
-                                                                        key={question.id}
-                                                                        questionId={question.id}
-                                                                        cronologicalID={[sectionIndex, index]}
-                                                                        duplicateQuestion={() =>
-                                                                            dispatchDuplicateQuestion(
-                                                                                sectionId,
-                                                                                index,
-                                                                                questionId,
-                                                                            )
-                                                                        }
-                                                                        removeQuestion={() =>
-                                                                            dispatchRemoveQuestion(index)
-                                                                        }
-                                                                        provided={provided}
-                                                                        isInfo={
-                                                                            question.answerType === AnswerTypes.info
-                                                                        }
-                                                                    />
-                                                                    <hr
-                                                                        key={'hr' + question.id}
-                                                                        style={{
-                                                                            color: 'black',
-                                                                            width: '100%',
-                                                                            border: '0.2px solid var(--color-base-3)',
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            )}
-                                                        </DND.Draggable>
-                                                    );
-                                                },
-                                            )}
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </DND.Droppable>
-                        </Col>
-                    </Row>
-                    <Row justify="center">
-                        <Col span={24} style={{ margin: '10px', padding: '15px' }}>
-                            <Button
-                                style={{
-                                    backgroundColor: 'var(--primary-1)',
-                                    borderColor: 'var(--primary-1)',
-                                    margin: '0 10px',
-                                }}
-                                type="primary"
-                                icon={<PlusOutlined />}
-                                onClick={() => dispatchAddQuestion(false)}
-                            >
-                                Legg til nytt spørsmål
-                            </Button>
-                            <Button
-                                style={{
-                                    color: 'var(--primary-1)',
-                                    margin: '0 10px',
-                                }}
-                                icon={<PlusOutlined />}
-                                onClick={() => dispatchAddQuestion(true)}
-                                type="default"
-                            >
-                                Legg til informasjon
-                            </Button>
-                        </Col>
-                    </Row>
-                </>
-            )}
+
+            <>
+                <Row>
+                    <Col span={24}>
+                        <DND.Droppable droppableId={sectionId} type={'question'}>
+                            {(provided) => (
+                                <div ref={provided.innerRef}>
+                                    {!collapsed &&
+                                        !collapsedSection &&
+                                        state.sections[sectionId].questionOrder.map(
+                                            (questionId: string, index: number) => {
+                                                const question = state.questions[questionId];
+                                                return (
+                                                    <DND.Draggable
+                                                        key={'drag' + questionId}
+                                                        draggableId={questionId}
+                                                        index={index}
+                                                    >
+                                                        {(provided) => (
+                                                            <div ref={provided.innerRef} {...provided.draggableProps}>
+                                                                <QuestionWrapper
+                                                                    key={question.id}
+                                                                    questionId={question.id}
+                                                                    cronologicalID={[sectionIndex, index]}
+                                                                    duplicateQuestion={() =>
+                                                                        dispatchDuplicateQuestion(
+                                                                            sectionId,
+                                                                            index,
+                                                                            questionId,
+                                                                        )
+                                                                    }
+                                                                    removeQuestion={() => dispatchRemoveQuestion(index)}
+                                                                    provided={provided}
+                                                                    isInfo={question.answerType === AnswerTypes.info}
+                                                                />
+                                                                <hr
+                                                                    key={'hr' + question.id}
+                                                                    style={{
+                                                                        color: 'black',
+                                                                        width: '100%',
+                                                                        border: '0.2px solid var(--color-base-3)',
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        )}
+                                                    </DND.Draggable>
+                                                );
+                                            },
+                                        )}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </DND.Droppable>
+                    </Col>
+                </Row>
+                <Row justify="center">
+                    <Col span={24} style={{ margin: '10px', padding: '15px' }}>
+                        <Button
+                            style={{
+                                backgroundColor: 'var(--primary-1)',
+                                borderColor: 'var(--primary-1)',
+                                margin: '0 10px',
+                            }}
+                            type="primary"
+                            icon={<PlusOutlined />}
+                            onClick={() => dispatchAddQuestion(false)}
+                        >
+                            Legg til nytt spørsmål
+                        </Button>
+                        <Button
+                            style={{
+                                color: 'var(--primary-1)',
+                                margin: '0 10px',
+                            }}
+                            icon={<PlusOutlined />}
+                            onClick={() => dispatchAddQuestion(true)}
+                            type="default"
+                        >
+                            Legg til informasjon
+                        </Button>
+                    </Col>
+                </Row>
+            </>
         </div>
     );
 }
