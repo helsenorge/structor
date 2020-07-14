@@ -14,6 +14,11 @@ type TimeProps = {
 function Time({ questionId }: TimeProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const [localAnswer, setLocalAnswer] = useState(state.questions[questionId].answer as ITime);
+    const inputStyle = {
+        width: '100px',
+        padding: '8px',
+        lineHeight: '1', 
+    };
 
     function getTimeFormat(): string {
         if (localAnswer.isTime && localAnswer.isDate) return 'DD.MM.YYYY  HH:mm';
@@ -96,8 +101,8 @@ function Time({ questionId }: TimeProps): JSX.Element {
             </Row>
             {(localAnswer.isDate || localAnswer.isTime) && (
                 <>
-                    <Row className="standard">
-                        <Col span={12} style={{ marginBottom: '10px' }}>
+                    <Row>
+                        <Col span={12} className="standard">
                             <Checkbox
                                 checked={localAnswer.hasDefaultTime}
                                 onChange={(e: CheckboxChangeEvent) => {
@@ -109,7 +114,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                 Forhåndsvalgt
                             </Checkbox>
                         </Col>
-                        <Col span={12}>
+                        <Col span={12} style={{ paddingTop: '8px' }}>
                             {timePickerRenderer(
                                 !localAnswer.hasDefaultTime,
                                 Moment(localAnswer.defaultTime),
@@ -122,8 +127,8 @@ function Time({ questionId }: TimeProps): JSX.Element {
                             )}
                         </Col>
                     </Row>
-                    <Row className="standard">
-                        <Col span={16} style={{ marginBottom: '10px' }}>
+                    <Row>
+                        <Col span={24} className="standard">
                             <Checkbox
                                 checked={localAnswer.hasInterval}
                                 onChange={(e: CheckboxChangeEvent) => {
@@ -175,8 +180,8 @@ function Time({ questionId }: TimeProps): JSX.Element {
                             </Row>
                             {localAnswer.timeIntervalType === TimeIntervalType.FIXED ? (
                                 <>
-                                    <Row className="standard">
-                                        <Col offset={2} span={6} style={{ marginBottom: '10px' }}>
+                                    <Row>
+                                        <Col offset={2} md={10} lg={6} className="standard">
                                             <Checkbox
                                                 checked={localAnswer.hasStartTime}
                                                 onChange={(e: CheckboxChangeEvent) => {
@@ -190,7 +195,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                                 Start {timeDefToString(false)}
                                             </Checkbox>
                                         </Col>
-                                        <Col span={6}>
+                                        <Col span={10} style={{ paddingTop: '8px' }}>
                                             {timePickerRenderer(
                                                 !localAnswer.hasStartTime,
                                                 Moment(
@@ -206,8 +211,8 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                             )}
                                         </Col>
                                     </Row>
-                                    <Row className="standard">
-                                        <Col offset={2} span={6} style={{ marginBottom: '10px' }}>
+                                    <Row>
+                                        <Col offset={2} md={10} lg={6} className="standard">
                                             <Checkbox
                                                 checked={localAnswer.hasEndTime}
                                                 onChange={(e: CheckboxChangeEvent) => {
@@ -221,7 +226,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                                 Slutt {timeDefToString(false)}
                                             </Checkbox>
                                         </Col>
-                                        <Col span={6}>
+                                        <Col span={10} style={{ paddingTop: '8px' }}>
                                             {timePickerRenderer(
                                                 !localAnswer.hasEndTime,
                                                 Moment(localAnswer.endTime ? localAnswer.endTime : Moment().valueOf()),
@@ -238,8 +243,8 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                 </>
                             ) : localAnswer.timeIntervalType === TimeIntervalType.FLOATING ? (
                                 <>
-                                    <Row className="standard">
-                                        <Col offset={2} span={6} style={{ marginBottom: '10px' }}>
+                                    <Row>
+                                        <Col offset={2} md={14} lg={8} className="standard">
                                             <Checkbox
                                                 checked={localAnswer.hasStartTime}
                                                 onChange={(e: CheckboxChangeEvent) => {
@@ -250,7 +255,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                                     localUpdate(tmp, true);
                                                 }}
                                             >
-                                                Antall {timeDefToString(true)} før
+                                                Antall {timeDefToString(true)} før:
                                             </Checkbox>
                                         </Col>
                                         <Col span={6}>
@@ -264,11 +269,12 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                                     localUpdate(tmp, true);
                                                 }}
                                                 disabled={!localAnswer.hasStartTime}
+                                                style={inputStyle}
                                             ></Input>
                                         </Col>
                                     </Row>
-                                    <Row className="standard">
-                                        <Col span={6} offset={2} style={{ marginBottom: '10px' }}>
+                                    <Row>
+                                        <Col offset={2} md={14} lg={8} className="standard">
                                             <Checkbox
                                                 checked={localAnswer.hasEndTime}
                                                 onChange={(e: CheckboxChangeEvent) => {
@@ -279,7 +285,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                                     localUpdate(tmp, true);
                                                 }}
                                             >
-                                                Antall {timeDefToString(true)} etter
+                                                Antall {timeDefToString(true)} etter:
                                             </Checkbox>
                                         </Col>
                                         <Col span={6}>
@@ -293,6 +299,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                                     localUpdate(tmp, true);
                                                 }}
                                                 disabled={!localAnswer.hasEndTime}
+                                                style={inputStyle}
                                             ></Input>
                                         </Col>
                                     </Row>

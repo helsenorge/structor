@@ -49,53 +49,50 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
         <>
             <Form>
                 <Row>
-                    <Col span={12}>
-                        <Row>
-                            <Col span={12}>
-                                <Checkbox
-                                    checked={localAnswer.isLong}
-                                    onChange={(e) =>
-                                        updateStore({
-                                            isLong: e.target.checked,
-                                        })
-                                    }
-                                >
-                                    Langsvar av maks
-                                </Checkbox>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item
-                                    validateStatus={
-                                        localAnswer.isLong === false ||
-                                        (localAnswer.isLong === true &&
-                                            localAnswer.maxLength !== undefined &&
-                                            String(localAnswer.maxLength).length > 0)
-                                            ? (validate(0, 'success') as ValidateStatus)
-                                            : (validate(0, 'error') as ValidateStatus)
-                                    }
-                                    help={
-                                        localAnswer.isLong === false ||
-                                        (localAnswer.isLong === true &&
-                                            localAnswer.maxLength !== undefined &&
-                                            String(localAnswer.maxLength).length > 0)
-                                            ? undefined
-                                            : 'Fyll maks lengde'
-                                    }
-                                >
-                                    <Input
-                                        type="number"
-                                        width="100px"
-                                        disabled={!localAnswer.isLong}
-                                        defaultValue={localAnswer.maxLength}
-                                        onBlur={(e) =>
-                                            updateStore({
-                                                maxLength: (e.currentTarget.value as unknown) as number,
-                                            })
-                                        }
-                                    ></Input>
-                                </Form.Item>
-                            </Col>
-                        </Row>
+                    <Col span={16}>
+                        <Checkbox
+                            checked={localAnswer.isLong}
+                            onChange={(e) =>
+                                updateStore({
+                                    isLong: e.target.checked,
+                                })
+                            }
+                        >
+                            Langsvar med maks lengde:
+                        </Checkbox>
+                    </Col>
+                    <Col span={6}>
+                        <Form.Item
+                            validateStatus={
+                                localAnswer.isLong === false ||
+                                (localAnswer.isLong === true &&
+                                    localAnswer.maxLength !== undefined &&
+                                    String(localAnswer.maxLength).length > 0)
+                                    ? (validate(0, 'success') as ValidateStatus)
+                                    : (validate(0, 'error') as ValidateStatus)
+                            }
+                            help={
+                                localAnswer.isLong === false ||
+                                (localAnswer.isLong === true &&
+                                    localAnswer.maxLength !== undefined &&
+                                    String(localAnswer.maxLength).length > 0)
+                                    ? undefined
+                                    : 'Fyll maks lengde'
+                            }
+                        >
+                            <Input
+                                type="number"
+                                width="100px"
+                                style={{ width: '100px' }}
+                                disabled={!localAnswer.isLong}
+                                defaultValue={localAnswer.maxLength}
+                                onBlur={(e) =>
+                                    updateStore({
+                                        maxLength: (e.currentTarget.value as unknown) as number,
+                                    })
+                                }
+                            ></Input>
+                        </Form.Item>
                     </Col>
                 </Row>
             </Form>

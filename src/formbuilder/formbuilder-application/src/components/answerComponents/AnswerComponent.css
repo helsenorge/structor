@@ -18,10 +18,10 @@
       display: inline !important;
   }
 
-  .ant-radio-checked .ant-radio-inner, .ant-radio-checked::after, .ant-radio:hover .ant-radio-inner, .ant-radio:hover .ant-radio-inner, .ant-radio-wrapper:hover .ant-radio, .input-question:hover, .ant-input:hover, .ant-input:focus {
+  .ant-radio-checked .ant-radio-inner, .ant-radio-checked::after, .ant-radio:hover .ant-radio-inner, .ant-radio:hover .ant-radio-inner, .ant-radio-wrapper:hover .ant-radio, .input-question:hover, .ant-input:hover, .ant-input:focus, .ant-input:focus, .ant-input-focused {
       border-color: var(--primary-1) !important;
-      -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
-      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+      -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045) !important;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045) !important;
   }
 
 .input-question:focus {
