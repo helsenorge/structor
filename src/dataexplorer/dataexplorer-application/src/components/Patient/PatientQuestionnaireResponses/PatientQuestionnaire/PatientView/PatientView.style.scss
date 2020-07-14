@@ -66,6 +66,9 @@
     box-shadow: 0.0625rem 0.0625rem 0.0625rem 0.0625rem rgba(0, 0, 0, 0.2);
     background-color: white;
 
+    svg {
+        margin: 0;
+    }
     .ant-table-thead {
         th {
             background-color: $elementHeader !important;
