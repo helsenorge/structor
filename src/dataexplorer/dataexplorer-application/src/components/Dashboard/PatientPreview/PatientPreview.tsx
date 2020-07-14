@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 import { IPatientIdentifier } from 'types/IPatient';
 import useFetch from 'utils/hooks/useFetch';
@@ -8,17 +8,10 @@ import './PatientPreview.style.scss';
 
 const PatientPreview = () => {
     const { patientId } = useContext(BreadcrumbContext);
-    const [visible, setVisible] = useState<boolean>();
     const { response: patientData } = useFetch<IPatientIdentifier>(
         'fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' + patientId,
     );
-    const showDrawer = () => {
-        setVisible(true);
-    };
 
-    const onClose = () => {
-        setVisible(false);
-    };
     return (
         <>
             {!patientData && (
