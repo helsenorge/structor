@@ -63,8 +63,8 @@
 .patient-table {
     margin-top: 1.25rem;
     .ant-table {
-        border-bottom: 1px solid lightgrey;
-        border-right: 1px solid lightgray;
+        border-bottom: 0.0625rem solid lightgrey;
+        border-right: 0.0625rem solid lightgray;
         border-width: thin;
     }
 
@@ -85,9 +85,9 @@
 
     .mini {
         margin: 0 !important;
-        padding: 16px 0;
+        padding: 1rem 0;
         background-color: white;
-        border: 1px solid lightgrey;
+        border: 0.0625rem solid lightgrey;
         border-top: none;
 
         .ant-pagination-item {
