@@ -1,38 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import useFetch from 'utils/hooks/useFetch';
-import { IPatientIdentifier, IDataSource } from 'types/IPatient';
+import { IPatientIdentifier } from 'types/IPatient';
 import { Row, Spin } from 'antd';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
-import PatientQuestionnaire from './PatientQuestionnaire/PatientQuestionnaire';
 import PatientView from './PatientQuestionnaire/PatientView/PatientView';
-import '../Patient-style.scss';
-import dayjs from 'dayjs';
+import PatientQuestionnaire from './PatientQuestionnaire/PatientQuestionnaire';
 
 const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
-    const [questionnaireId, setQuestionnaireId] = useState<string>();
-    const [QRData, setQRData] = useState<IDataSource[]>([]);
+    const [questionnaireId, setQuestionnaireId] = useState<string>('');
     const [responseExists, setResponseExists] = useState<boolean>(true);
     const { response: questionnaireResponses } = useFetch<IQuestionnaireResponse>(
         'fhir/QuestionnaireResponse?subject=Patient/' + patientData.entry[0].resource.id,
     );
-
     useEffect(() => {
         if (questionnaireResponses && questionnaireResponses.total > 0) {
             setResponseExists(true);
             questionnaireResponses.entry.forEach((i) => {
-                setQuestionnaireId(
-                    i.resource.questionnaire?.reference?.substr(
-                        i.resource.questionnaire?.reference?.indexOf('Questionnaire/'),
-                    ),
-                );
-                setQRData((QRData) => [
-                    ...QRData,
-                    {
-                        id: i.resource.id,
-                        schemaName: '',
-                        submitted: dayjs(i.resource.meta?.lastUpdated).format('DD.MM.YYYY - HH:mm').toString(),
-                    },
-                ]);
+                const q = i.resource.questionnaire?.reference
+                    ?.substr(i.resource.questionnaire?.reference?.indexOf('Questionnaire/'))
+                    .split('/')[1];
+                q && setQuestionnaireId((questionnaireId) => questionnaireId + q + ',');
             });
         } else if (questionnaireResponses && questionnaireResponses.total === 0) {
             setResponseExists(false);
@@ -46,14 +33,13 @@ const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
                     patientData={patientData}
                     questionnaireResponses={questionnaireResponses}
                     questionnaireId={questionnaireId}
-                    questionnaireResponseData={QRData}
                 />
             )}
             {/* Patients without QuestionnaireResponses do not need to fetch for Questionnaires*/}
             {!responseExists && questionnaireResponses && questionnaireResponses.total === 0 && (
                 <PatientView
                     patient={patientData.entry[0].resource}
-                    dataSource={QRData}
+                    dataSource={[]}
                     hasQuestionnaireResponses={false}
                 />
             )}
