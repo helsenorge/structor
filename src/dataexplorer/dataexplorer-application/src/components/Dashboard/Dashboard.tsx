@@ -31,9 +31,9 @@ const Dashboard = () => {
                             onSearch={(value: string) => handleClick(value)}
                         />
                     </FloatLabel>
+                    {patientId !== '' && <PatientPreview />}
                 </Col>
             </Row>
-            {patientId !== '' && <PatientPreview />}
         </>
     );
 };
