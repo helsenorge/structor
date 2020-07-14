@@ -21,6 +21,9 @@
     :last-child {
         border-bottom: none !important;
     }
+    svg {
+        margin: 0;
+    }
 }
 .ant-collapse-icon-position-left {
     margin-bottom: 1.25rem !important;
