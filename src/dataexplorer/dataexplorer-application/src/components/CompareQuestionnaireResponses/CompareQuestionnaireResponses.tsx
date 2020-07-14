@@ -3,7 +3,7 @@ import { Row } from 'antd';
 import FecthSingleQuestionnaireResponses from './FetchSingleQuestionnaireResponses';
 import { PatientContext } from 'components/Patient/PatientContext';
 
-const CompareQuestionnaireresponses = () => {
+const CompareQuestionnaireResponses = () => {
     const { comparableSchemaNumbers } = useContext(PatientContext);
 
     return (
@@ -18,4 +18,4 @@ const CompareQuestionnaireresponses = () => {
     );
 };
 
-export default CompareQuestionnaireresponses;
+export default CompareQuestionnaireResponses;
