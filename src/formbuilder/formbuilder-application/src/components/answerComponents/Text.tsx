@@ -3,6 +3,14 @@ import { Checkbox, Form, Input, Row, Col } from 'antd';
 import './AnswerComponent.css';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { IText } from '../../types/IAnswer';
+import {
+    setVisitedField,
+    setValidateNumber,
+    setCheckedField,
+    IValidation,
+    checkErrorFields,
+    validateNumber,
+} from '../../helpers/ValidationHelpers';
 
 type TextInputProps = {
     questionId: string;
@@ -11,42 +19,28 @@ type TextInputProps = {
 function TextInput({ questionId }: TextInputProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = state.questions[questionId].answer as IText;
-    const [validationList, setValidationList] = useState([false]);
-    const [visitedfields, setVisitedField] = useState([false]);
+    const [errorList, setErrorList] = useState([false]);
+    const [validationObject, setValidationObject] = useState({
+        checkedList: [localAnswer.isLong],
+        visitedFields: [localAnswer.maxLength !== undefined],
+        validationList: [validateNumber(localAnswer.maxLength)],
+    } as IValidation);
 
-    function updateStore(attribute: { isLong?: boolean; maxLength?: number }) {
+    function updateStore(attribute: { isLong?: boolean; maxLength?: string }) {
         const temp = { ...localAnswer } as IText;
         if (attribute.isLong !== undefined) temp.isLong = attribute.isLong;
-        if (attribute.maxLength !== undefined) temp.maxLength = attribute.maxLength;
+        if (attribute.maxLength !== undefined)
+            temp.maxLength = attribute.maxLength.length > 0 ? parseInt(attribute.maxLength) : undefined;
         dispatch(updateAnswer(questionId, temp));
-    }
-
-    function validate(field: number, value: string): void {
-        const tempValid = [...validationList];
-        const tempVisited = [...visitedfields];
-        value.length > 0 ? (tempValid[field] = true) : (tempValid[field] = false);
-        tempVisited[field] = true;
-        setVisitedField(tempVisited);
-        setValidationList(tempValid);
-    }
-
-    function showError(field: number): boolean {
-        return (state.validationFlag && !validationList[field]) || (!validationList[field] && visitedfields[field]);
     }
 
     useEffect(() => {
-        const temp = { ...state.questions[questionId].answer } as IText;
-        const validation = [temp.isLong ? (temp.maxLength && temp.maxLength > 0 ? true : false) : true];
-        setValidationList(validation);
-        temp.valid = !validation.includes(false);
-        dispatch(updateAnswer(questionId, temp));
-    }, []);
-
-    useEffect(() => {
-        const temp = { ...state.questions[questionId].answer };
-        temp.valid = validationList.every((field) => field === true);
-        dispatch(updateAnswer(questionId, temp));
-    }, [validationList]);
+        const tempAnswer = { ...state.questions[questionId].answer };
+        console.log(validationObject);
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList);
+        tempAnswer.valid = !validationObject.validationList.includes(false);
+        dispatch(updateAnswer(questionId, tempAnswer));
+    }, [validationObject, state.validationFlag]);
 
     return (
         <>
@@ -60,7 +54,8 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
                                     updateStore({
                                         isLong: e.target.checked,
                                     });
-                                    updateCheckedList(0, e.target.checked);
+                                    setCheckedField(0, e.target.checked, validationObject, setValidationObject);
+                                    setValidateNumber(0, validationObject, setValidationObject, localAnswer.maxLength);
                                 }}
                             >
                                 Langsvar av maks
@@ -70,18 +65,24 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
                             <Input
                                 type="number"
                                 width="100px"
-                                className={showError(0) ? 'field-error' : ''}
+                                className={errorList[0] ? 'field-error' : ''}
                                 disabled={!localAnswer.isLong}
                                 defaultValue={localAnswer.maxLength}
                                 min={0}
                                 onBlur={(e) => {
                                     updateStore({
-                                        maxLength: (e.currentTarget.value as unknown) as number,
+                                        maxLength: e.currentTarget.value,
                                     });
-                                    validate(0, e.target.value);
+                                    setVisitedField(0, validationObject, setValidationObject);
+                                    setValidateNumber(
+                                        0,
+                                        validationObject,
+                                        setValidationObject,
+                                        parseInt(e.currentTarget.value),
+                                    );
                                 }}
                             />
-                            {showError(0) && <p style={{ color: 'red' }}> Fyll inn antall karakterer</p>}
+                            {errorList[0] && <p style={{ color: 'red' }}> Fyll inn antall karakterer</p>}
                         </Col>
                     </Row>
                 </Col>

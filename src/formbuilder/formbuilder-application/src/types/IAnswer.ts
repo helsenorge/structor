@@ -56,7 +56,7 @@ export interface INumber extends IAnswer {
 }
 
 export interface IText extends IAnswer {
-    isLong?: boolean;
+    isLong: boolean;
     maxLength?: number;
 }
 
@@ -75,7 +75,6 @@ export interface ITime extends IAnswer {
 
 export interface IBoolean extends IAnswer {
     isChecked: boolean;
-    label: string;
 }
 
 export interface IInfo extends IAnswer {

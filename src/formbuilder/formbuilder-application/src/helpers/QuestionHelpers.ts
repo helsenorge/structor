@@ -157,7 +157,6 @@ function convertBoolean(question: IQuestion, subItem: fhir.QuestionnaireItem) {
             url: standardValidationTextUrl,
             valueString: 'Må hukes av',
         });
-    subItem.text = answer.label;
     subItem.type = FhirAnswerTypes.boolean;
     if (answer.isChecked) subItem.initialBoolean = true;
     return subItem;
@@ -201,7 +200,7 @@ function convertDate(question: IQuestion, subItem: fhir.QuestionnaireItem): fhir
                 valueString:
                     'Du kan velge en ' +
                     convertTimeString(answer, false, false) +
-                    ' som er fra' +
+                    ' som er fra ' +
                     convertUnixToFhirTime(answer.isDate, answer.isTime, answer.startTime) +
                     ' til ' +
                     convertUnixToFhirTime(answer.isDate, answer.isTime, answer.endTime) +

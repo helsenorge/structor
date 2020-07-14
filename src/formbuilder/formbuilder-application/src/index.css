@@ -54,3 +54,7 @@ p{
   border-radius: 2px;
   display: inline-block;
 }
+
+.iframe-div {
+  background:url(./images/loader.gif) center center no-repeat;
+}

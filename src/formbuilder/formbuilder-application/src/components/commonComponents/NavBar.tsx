@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Button, Tooltip, Row, Col, Typography, Modal } from 'antd';
+import { Button, Tooltip, Row, Col, Typography, Modal, message } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 import { FormContext, updateValidationFlag } from '../../store/FormStore';
 import './NavBar.css';
@@ -112,7 +112,7 @@ function NavBar(): JSX.Element {
                 ]}
                 onCancel={() => setFormPreview(false)}
             >
-                <div style={{ height: '100%', width: '100%' }}>
+                <div style={{ height: '100%', width: '100%' }} className="iframe-div">
                     <iframe
                         id="schemeFrame"
                         title="Forhåndsvis skjema"
@@ -148,7 +148,6 @@ function NavBar(): JSX.Element {
                 </Col>
                 <Col lg={6} md={11}>
                     <div style={{ float: 'right' }}>
-                        {/* <Link to="preview"> */}
                         <Button
                             className="nav-button"
                             type="link"
@@ -159,20 +158,29 @@ function NavBar(): JSX.Element {
                                 if (validateForm()) {
                                     setFormPreview(true);
                                 } else {
-                                    alert('Vennligst fyll inn alle felt');
+                                    message.error({
+                                        content: 'Fyll inn alle røde felter for å forhåndsvise.',
+                                    });
                                 }
                             }}
                         >
                             Forhåndsvisning
                         </Button>
-                        {/* </Link> */}
                         <Button
                             className="nav-button"
                             type="link"
                             size="large"
                             style={{ margin: '2px 10px' }}
                             key="saveForm"
-                            onClick={exportToJsonAndDownload}
+                            onClick={() => {
+                                if (validateForm()) {
+                                    exportToJsonAndDownload();
+                                } else {
+                                    message.error({
+                                        content: 'Fyll inn alle røde felter for å lagre.',
+                                    });
+                                }
+                            }}
                         >
                             Lagre
                         </Button>

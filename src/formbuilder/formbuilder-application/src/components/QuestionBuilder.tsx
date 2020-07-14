@@ -114,112 +114,111 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
 
     useEffect(() => {
         const temp = { ...state.questions[questionId] };
-        temp.valid = validationList.every((field) => field === true);
+        temp.valid = !validationList.includes(false);
         dispatch(updateQuestion(temp));
     }, [validationList]);
 
     return (
         <div style={{ backgroundColor: 'var(--color-base-1)' }}>
-            <Form>
-                <Row>
-                    <Col span={17} style={{ paddingRight: '5px' }}>
-                        <Input
-                            className={showError(0) ? 'field-error' : 'input-question'}
-                            placeholder={localQuestion.placeholder}
-                            defaultValue={localQuestion.questionText}
-                            onBlur={(e) => {
-                                updateStore({
-                                    questionText: e.target.value === undefined ? '' : e.target.value,
-                                });
-                                validate(0, e.currentTarget.value);
+            <Row>
+                <Col span={17} style={{ paddingRight: '5px' }}>
+                    <Input
+                        placeholder={localQuestion.placeholder}
+                        className={showError(0) ? 'field-error' : 'input-question'}
+                        defaultValue={localQuestion.questionText}
+                        onBlur={(e) => {
+                            updateStore({
+                                questionText: e.target.value === undefined ? '' : e.target.value,
+                            });
+                            validate(0, e.currentTarget.value);
+                        }}
+                    />
+                </Col>
+                <Col span={6}></Col>
+                <Col span={1} style={{ float: 'right' }}>
+                    <Tooltip title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}>
+                        <Button
+                            id={'stealFocus_' + questionId}
+                            style={{
+                                zIndex: 1,
+                                color: 'var(--primary-1)',
+                                float: 'right',
                             }}
-                        />
-                        {showError(0) && <p style={{ color: 'red' }}> Fyll inn tekst her </p>}
-                    </Col>
-                    <Col span={6}></Col>
-                    <Col span={1} style={{ float: 'right' }}>
-                        <Tooltip title={isInfo ? 'Flytt informasjon' : 'Flytt spørsmål'}>
-                            <Button
-                                style={{
-                                    zIndex: 1,
-                                    color: 'var(--primary-1)',
-                                    float: 'right',
-                                }}
-                                type="link"
-                                shape="circle"
-                                {...provided.dragHandleProps}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                                    <path d="M0 0h24v24H0V0z" fill="none" />
-                                    <path
-                                        fill="var(--primary-1)"
-                                        d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
-                                    />
-                                </svg>
-                            </Button>
-                        </Tooltip>
-                    </Col>
-                </Row>
-                {!state.questions[questionId].collapsed && (
-                    <>
-                        <Row>
-                            <Col span={17} style={{ padding: '12px 0' }}>
-                                <Row className="standard">
-                                    <Col span={24}>
-                                        <Checkbox
-                                            checked={localQuestion.isRequired}
-                                            onChange={(e) =>
-                                                updateStore({
-                                                    isRequired: e.target.checked,
-                                                })
-                                            }
-                                        >
-                                            Spørsmålet skal være obligatorisk.
-                                        </Checkbox>
-                                    </Col>
-                                </Row>
-                                <Row className="standard">
-                                    <Col span={24}>
-                                        <p
-                                            style={{
-                                                float: 'left',
-                                                padding: '5px 10px 0 0',
-                                            }}
-                                        >
-                                            Velg type spørsmål:{' '}
-                                        </p>
-                                        <Select
-                                            className={showError(1) ? 'field-error' : ''}
-                                            defaultValue={localQuestion.answerType}
-                                            style={{
-                                                width: '200px',
-                                                float: 'left',
-                                            }}
-                                            onSelect={(value) => {
-                                                updateStore({
-                                                    answerType: value,
-                                                });
-                                                validate(1, value);
-                                            }}
-                                            placeholder="Trykk for å velge"
-                                        >
-                                            <Option value={AnswerTypes.boolean}>Samtykke</Option>
-                                            <Option value={AnswerTypes.number}>Tall</Option>
-                                            <Option value={AnswerTypes.text}>Tekst</Option>
-                                            <Option value={AnswerTypes.time}>Dato/tid</Option>
-                                            <Option value={AnswerTypes.choice}>Flervalg</Option>
-                                        </Select>
-                                        {showError(1) && <p style={{ color: 'red' }}> Velg et svar alternativ</p>}
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col span={7} style={{ float: 'right', display: 'block' }}>
-                                {buttons()}
-                            </Col>
-                        </Row>
-                    </>
-                )}
-            </Form>
+                            type="link"
+                            shape="circle"
+                            {...provided.dragHandleProps}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                                <path d="M0 0h24v24H0V0z" fill="none" />
+                                <path
+                                    fill="var(--primary-1)"
+                                    d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
+                                />
+                            </svg>
+                        </Button>
+                    </Tooltip>
+                    {showError(0) && <p style={{ color: 'red' }}> Fyll inn tekst her </p>}
+                </Col>
+            </Row>
+            {!state.questions[questionId].collapsed && (
+                <>
+                    <Row>
+                        <Col span={17} style={{ padding: '12px 0' }}>
+                            <Row className="standard">
+                                <Col span={24}>
+                                    <Checkbox
+                                        checked={localQuestion.isRequired}
+                                        onChange={(e) =>
+                                            updateStore({
+                                                isRequired: e.target.checked,
+                                            })
+                                        }
+                                    >
+                                        Spørsmålet skal være obligatorisk.
+                                    </Checkbox>
+                                </Col>
+                            </Row>
+                            <Row className="standard">
+                                <Col span={24}>
+                                    <p
+                                        style={{
+                                            float: 'left',
+                                            padding: '5px 10px 0 0',
+                                        }}
+                                    >
+                                        Velg type spørsmål:{' '}
+                                    </p>
+                                    <Select
+                                        className={showError(1) ? 'field-error' : ''}
+                                        defaultValue={localQuestion.answerType}
+                                        style={{
+                                            width: '200px',
+                                            float: 'left',
+                                        }}
+                                        onSelect={(value) => {
+                                            updateStore({
+                                                answerType: value,
+                                            });
+                                            validate(1, value);
+                                        }}
+                                        placeholder="Trykk for å velge"
+                                    >
+                                        <Option value={AnswerTypes.boolean}>Samtykke</Option>
+                                        <Option value={AnswerTypes.number}>Tall</Option>
+                                        <Option value={AnswerTypes.text}>Tekst</Option>
+                                        <Option value={AnswerTypes.time}>Dato/tid</Option>
+                                        <Option value={AnswerTypes.choice}>Flervalg</Option>
+                                    </Select>
+                                    {showError(1) && <p style={{ color: 'red' }}> Velg et svar alternativ</p>}
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col span={7} style={{ float: 'right', display: 'block' }}>
+                            {buttons()}
+                        </Col>
+                    </Row>
+                </>
+            )}
         </div>
     );
 }

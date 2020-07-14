@@ -18,8 +18,10 @@
       display: inline !important;
   }
 
-  .ant-radio-checked .ant-radio-inner, .ant-radio:hover .ant-radio-inner, .ant-radio:hover .ant-radio-inner, .ant-radio-wrapper:hover .ant-radio, .input-question:hover, .field-error:hover {
+  .ant-radio-checked .ant-radio-inner, .ant-radio-checked::after, .ant-radio:hover .ant-radio-inner, .ant-radio:hover .ant-radio-inner, .ant-radio-wrapper:hover .ant-radio, .input-question:hover, .ant-input:hover, .ant-input:focus, .field-error:hover {
       border-color: var(--primary-1) !important;
+      -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
   }
 
 .input-question:focus, .field-error:focus {
@@ -36,7 +38,7 @@
     float: right;
 }
 
- .ant-btn:focus, .ant-checkbox-checked::after, .ant-btn-default:hover, .ant-btn-default:active, .ant-btn-default:focus, .ant-button-primary:focus {
+.ant-checkbox-checked::after, .ant-btn-default:hover, .ant-btn-default:active, .ant-btn-default:focus, .ant-button-primary:focus {
     border-color: var(--primary-1) !important;
     color: var(--primary-1) !important;
 }
