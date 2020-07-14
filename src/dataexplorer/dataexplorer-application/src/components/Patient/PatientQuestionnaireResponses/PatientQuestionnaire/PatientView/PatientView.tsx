@@ -193,7 +193,7 @@ const PatientView = (props: {
                                           if (selectedRowKeys.length <= MAX_VALUE) {
                                               setComparingSchemesIds(selectedRowKeys);
                                               setReachedMaxValue(false);
-                                          } else if (selectedRowKeys.length > MAX_VALUE) setReachedMaxValue(true);
+                                          } else setReachedMaxValue(true);
                                       },
                                       selectedRowKeys: comparingSchemesIds,
                                   }
