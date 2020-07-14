@@ -1,6 +1,6 @@
-import React, { useContext, ReactText, useState } from 'react';
+import React, { useContext, ReactText, useState, useEffect } from 'react';
 import { IPatient, IDataSource } from 'types/IPatient';
-import { Row, Col, Card, Table, Typography, Spin, Button } from 'antd';
+import { Row, Col, Card, Table, Typography, Spin, Button, message } from 'antd';
 import dayjs from 'dayjs';
 import { useHistory } from 'react-router-dom';
 import './PatientView.style.scss';
@@ -15,6 +15,9 @@ const PatientView = (props: {
     const history = useHistory();
     const [comparingQuestionnaires, setComparingQuestionnaires] = useState<ReactText[]>([]);
     const [compareSchemes, setCompareSchemes] = useState<boolean>(false);
+    const [reachedMaxValue, setReachedMaxValue] = useState<boolean>(false);
+    const MAX_VALUE = 2;
+
     const calcAge = () => {
         const birthday = props.patient.birthDate;
         const patientYear = parseInt(birthday.substring(0, 4));
@@ -50,6 +53,15 @@ const PatientView = (props: {
         setComparableSchemaNumbers(comparingQuestionnaires);
         history.push('pasient/skjema-sammenligning');
     };
+
+    const addComparingSchemeOnRowClick = (id: ReactText) => {
+        setReachedMaxValue(false);
+        setComparingQuestionnaires((comparingQuestionnaires) => [...comparingQuestionnaires, id]);
+    };
+
+    useEffect(() => {
+        if (reachedMaxValue && comparingQuestionnaires.length === 2) message.warning('Du kan kun velge to skjemaer');
+    }, [reachedMaxValue, comparingQuestionnaires.length]);
 
     return (
         <>
@@ -111,10 +123,25 @@ const PatientView = (props: {
                             </div>
                         </div>
                     </Card>
-                    <Button className="compare-button" block onClick={() => setCompareSchemes(!compareSchemes)}>
-                        {!compareSchemes && <p>Sammenlign flere skjema</p>}
-                        {compareSchemes && <p>Slå av sammenligning</p>}
-                    </Button>
+                    <Row>
+                        <Col span={12}>
+                            <Button className="compare-button" block onClick={() => setCompareSchemes(!compareSchemes)}>
+                                {!compareSchemes && <p>Sammenlign to skjemaer</p>}
+                                {compareSchemes && <p>Slå av sammenligning</p>}
+                            </Button>
+                        </Col>
+                        <Col span={12}>
+                            {compareSchemes && comparingQuestionnaires.length === 2 ? (
+                                <Button className="compare-button" block onClick={() => handleCompareClick()}>
+                                    Sammenlign markerte skjemaer
+                                </Button>
+                            ) : (
+                                <Button disabled className="compare-button" id="disabled" block>
+                                    Sammenlign markerte skjemaer
+                                </Button>
+                            )}
+                        </Col>
+                    </Row>
                     <Table
                         key={'Patient Questionnaire Response Key'}
                         rowKey={(record) => (record.id ? record.id : 'waiting for response')}
@@ -123,11 +150,28 @@ const PatientView = (props: {
                         columns={columns}
                         rowClassName={(record, index) => (index % 2 === 0 ? 'table-row-light' : 'table-row-dark')}
                         onRow={(record) => {
-                            return {
-                                onClick: () => {
-                                    handleClick(record);
-                                },
-                            };
+                            if (compareSchemes && !comparingQuestionnaires.includes(record.id as ReactText)) {
+                                if (comparingQuestionnaires.length < MAX_VALUE) {
+                                    return {
+                                        onClick: () => addComparingSchemeOnRowClick(record.id as ReactText),
+                                    };
+                                } else
+                                    return {
+                                        onClick: () => setReachedMaxValue(true),
+                                    };
+                            } else if (compareSchemes && comparingQuestionnaires.includes(record.id as ReactText)) {
+                                return {
+                                    onClick: () =>
+                                        setComparingQuestionnaires(
+                                            comparingQuestionnaires.filter((i) => i !== record.id),
+                                        ),
+                                };
+                            } else
+                                return {
+                                    onClick: () => {
+                                        handleClick(record);
+                                    },
+                                };
                         }}
                         pagination={{ pageSize: 10 }}
                         size="small"
@@ -144,15 +188,22 @@ const PatientView = (props: {
                                       type: 'checkbox',
                                       hideSelectAll: true,
                                       onChange: (selectedRowKeys: ReactText[]) => {
-                                          setComparingQuestionnaires(selectedRowKeys);
+                                          if (selectedRowKeys.length <= MAX_VALUE)
+                                              setComparingQuestionnaires(selectedRowKeys);
+                                          else setReachedMaxValue(true);
                                       },
+                                      selectedRowKeys: comparingQuestionnaires,
                                   }
-                                : undefined
+                                : {
+                                      type: 'checkbox',
+                                      hideSelectAll: true,
+                                      getCheckboxProps: () => ({
+                                          disabled: true,
+                                      }),
+                                      selectedRowKeys: undefined,
+                                  }
                         }
                     />
-                    {compareSchemes && comparingQuestionnaires.length > 1 && (
-                        <Button onClick={() => handleCompareClick()}>Sammenlign markerte skjemaer</Button>
-                    )}
                 </Col>
             </Row>
             {props.dataSource.length === 0 && props.hasQuestionnaireResponses && (

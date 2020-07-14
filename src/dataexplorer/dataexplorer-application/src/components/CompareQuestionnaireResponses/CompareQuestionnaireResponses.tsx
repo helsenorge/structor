@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 import { Row } from 'antd';
-import './CompareQuestionnaireResponses.style.scss';
 import FecthSingleQuestionnaireResponses from './FetchSingleQuestionnaireResponses';
 
 const CompareQuestionnaireresponses = () => {

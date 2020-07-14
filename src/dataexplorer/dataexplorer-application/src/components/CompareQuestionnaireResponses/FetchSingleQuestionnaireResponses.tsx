@@ -2,7 +2,7 @@ import useFetch from 'utils/hooks/useFetch';
 import React, { ReactText } from 'react';
 import QuestionnaireResponseProcessing from 'components/QuestionnaireResponse/QuestionnaireResponseProcessing/QuestionnaireResponseProcessing';
 import { Row, Col, Spin } from 'antd';
-import './CompareQuestionnaireResponses.style.scss';
+import './FetchSingleQuestionnaireResponses.style.scss';
 
 const FecthSingleQuestionnaireResponses = (props: { questionnaireResponseId: ReactText }) => {
     const { response: questionnaireResponse, error: qrError } = useFetch<fhir.QuestionnaireResponse>(
@@ -16,7 +16,7 @@ const FecthSingleQuestionnaireResponses = (props: { questionnaireResponseId: Rea
     return (
         <>
             {questionnaireResponse && questionnaireUrl && (
-                <Col span={12} className="schemes-position" key={questionnaireResponse?.id}>
+                <Col span={12} className="schemes-position scroll-box" key={questionnaireResponse?.id}>
                     <QuestionnaireResponseProcessing
                         questionnaireUrl={questionnaireUrl}
                         schemaResponse={questionnaireResponse}
