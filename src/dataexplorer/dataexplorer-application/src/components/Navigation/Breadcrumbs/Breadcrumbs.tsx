@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import Breadcrumb from 'antd/lib/breadcrumb';
 import { Link } from 'react-router-dom';
 import './Breadcrumbs.style.scss';
-import { BreadcrumbContext } from './BreadcrumbContext';
+import { PatientContext } from 'components/Patient/PatientContext';
 
 const Breadcrumbs = () => {
-    const { name, schemaNumber, setPatientId } = useContext(BreadcrumbContext);
+    const { name, schemaNumber, setPatientId } = useContext(PatientContext);
     return (
         <>
             <div className="breadcrumbs-container">

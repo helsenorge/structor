@@ -3,15 +3,15 @@ import useFetch from 'utils/hooks/useFetch';
 import { IPatientIdentifier } from 'types/IPatient';
 import { Empty, Row, Spin } from 'antd';
 import PatientQuestionnaireResponses from './PatientQuestionnaireResponses/PatientQuestionnaireResponses';
-import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 import './Patient-style.scss';
+import { PatientContext } from './PatientContext';
 
 interface IPatientProps {
     patientID: string | null;
 }
 
 const Patient = () => {
-    const { patientId, setSchemanumber, setName } = useContext(BreadcrumbContext);
+    const { patientId, setSchemanumber, setName } = useContext(PatientContext);
     // The oid signifies that we are searching on social security number
     const { response: patientData, error } = useFetch<IPatientIdentifier>(
         'fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' + patientId,

@@ -3,10 +3,10 @@ import { Row, Spin } from 'antd';
 import 'dayjs/locale/nb';
 import useFetch from 'utils/hooks/useFetch';
 import QuestionnaireResponseProcessing from './QuestionnaireResponseProcessing/QuestionnaireResponseProcessing';
-import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
+import { PatientContext } from 'components/Patient/PatientContext';
 
 const QuestionnaireResponse = () => {
-    const { schemaNumber } = useContext(BreadcrumbContext);
+    const { schemaNumber } = useContext(PatientContext);
     const { response: questionnaireResponse, error: qrError } = useFetch<fhir.QuestionnaireResponse>(
         'fhir/QuestionnaireResponse/' + schemaNumber,
     );
