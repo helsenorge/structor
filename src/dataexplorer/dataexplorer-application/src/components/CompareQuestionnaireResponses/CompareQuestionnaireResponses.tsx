@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 import { Row } from 'antd';
 import FecthSingleQuestionnaireResponses from './FetchSingleQuestionnaireResponses';
+import { PatientContext } from 'components/Patient/PatientContext';
 
 const CompareQuestionnaireresponses = () => {
-    const { comparableSchemaNumbers } = useContext(BreadcrumbContext);
+    const { comparableSchemaNumbers } = useContext(PatientContext);
 
     return (
         <>
