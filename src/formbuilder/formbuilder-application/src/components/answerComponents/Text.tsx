@@ -44,7 +44,7 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
     return (
         <>
             <Row>
-                <Col span={12}>
+                <Col span={18}>
                     <Row>
                         <Col span={16}>
                             <Checkbox
@@ -60,7 +60,7 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
                                 Langsvar med maks lengde:
                             </Checkbox>
                         </Col>
-                        <Col span={6}>
+                        <Col span={8}>
                             <Input
                                 type="number"
                                 width="100px"
