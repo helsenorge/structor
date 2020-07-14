@@ -46,7 +46,7 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
             <Row>
                 <Col span={12}>
                     <Row>
-                        <Col span={12}>
+                        <Col span={16}>
                             <Checkbox
                                 checked={localAnswer.isLong}
                                 onChange={(e) => {
@@ -57,10 +57,10 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
                                     setValidateNumber(0, validationObject, setValidationObject, localAnswer.maxLength);
                                 }}
                             >
-                                Langsvar av maks
+                                Langsvar med maks lengde:
                             </Checkbox>
                         </Col>
-                        <Col span={12}>
+                        <Col span={6}>
                             <Input
                                 type="number"
                                 width="100px"

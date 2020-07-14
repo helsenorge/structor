@@ -62,7 +62,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                         hasMax: false,
                         hasMin: false,
                         hasUnit: false,
-                        isDecimal: true,
+                        isDecimal: false,
                         hasDefault: false,
                     } as INumber;
                     break;
@@ -148,7 +148,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
             {!state.questions[questionId].collapsed && (
                 <>
                     <Row>
-                        <Col span={17} style={{ padding: '12px 0' }}>
+                        <Col span={18} style={{ padding: '12px 0' }}>
                             <Row className="standard">
                                 <Col span={24}>
                                     <Checkbox
@@ -202,7 +202,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                 </Col>
                             </Row>
                         </Col>
-                        <Col span={7} style={{ float: 'right', display: 'block' }}>
+                        <Col span={6} style={{ float: 'right', display: 'block' }}>
                             {buttons()}
                         </Col>
                     </Row>

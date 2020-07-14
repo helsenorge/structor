@@ -36,10 +36,6 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
             >
                 Skal være forhåndsvalgt.
             </Checkbox>
-            <p style={{ fontStyle: 'italic', fontSize: 'small' }}>
-                En samtykkekomponent vil dukke opp for brukeren som et avhukningsfelt. Brukeren må huke av dette feltet
-                for å sende inn skjemaet.
-            </p>
         </>
     );
 }

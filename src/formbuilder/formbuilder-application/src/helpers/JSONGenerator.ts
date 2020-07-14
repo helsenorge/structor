@@ -81,19 +81,19 @@ function convertAnswers(
         questionIndex++;
         const answer = question.answer;
         if ((answer as IChoice).choices && (answer as IChoice).choices.length > 0) {
-            const system = 'system' + answer.id; // TODO
+            const system = 'system' + answer.id; 
             valueSetMap[answer.id] = system;
             const containPart: fhir.Resource = {
                 resourceType: 'ValueSet',
                 id: answer.id,
-                name: 'NAME' + questionIndex, // TODO: CHECK THIS
-                title: 'TITLE' + questionIndex, // TODO: CHECK THIS
+                name: 'valueset' + questionIndex,
+                title: 'valueset' + questionIndex,
                 status: 'draft',
                 publisher: 'NHN',
                 compose: {
                     include: [
                         {
-                            system: system, // TODO: FIX ME
+                            system: system,
                             concept: new Array<fhir.ValueSetComposeIncludeConcept>(),
                         },
                     ],
@@ -124,7 +124,7 @@ function convertToJSON(
     const questionnaire: fhir.Questionnaire = {
         resourceType: 'Questionnaire',
         language: 'nb-NO',
-        name: 'hdir-NAVN', // TODO: FIX ME
+        name: 'hdir-' + title,
         title: title,
         status: 'draft',
         publisher: 'NHN',
@@ -141,19 +141,18 @@ function convertToJSON(
         },
         contained: valueSets,
         useContext: [
-            // TODO: FIX USECONTEXT
             {
                 code: {
-                    system: 'uri', // TODO: FIX ME
+                    system: 'uri', // TODO
                     code: 'focus',
                     display: 'Clinical focus',
                 },
                 valueCodeableConcept: {
                     coding: [
                         {
-                            system: 'uri',
+                            system: 'uri', // TODO
                             code: '29',
-                            display: title, // TODO: FIX ME
+                            display: title,
                         },
                     ],
                 },
@@ -161,7 +160,7 @@ function convertToJSON(
         ],
         contact: [
             {
-                name: 'https://fhi.no/', // TODO: FIX ME
+                name: 'https://fhi.no/',
             },
         ],
         subjectType: ['Patient'],
