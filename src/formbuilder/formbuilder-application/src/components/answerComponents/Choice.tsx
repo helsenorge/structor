@@ -79,9 +79,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
     };
 
     useEffect(() => {
-        const tempIDs = [''];
+        const tempIDs = ['choice_' + questionId + generateID()];
 
-        localAnswer.choices.forEach((choice) => {
+        localAnswer.choices.forEach(() => {
             tempIDs.push('choice_' + questionId + generateID());
         });
         setChoiceIDs(tempIDs);
