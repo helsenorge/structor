@@ -21,7 +21,7 @@ const Dashboard = () => {
     const handleSearch = (value: string) => {
         value.length === 11
             ? setPatientId(value)
-            : message.warning(`Personnummeret du har skrevet er ugyldig, og mangler ${11 - value.length} siffer.`, 10);
+            : message.warning(`Personnummeret du har skrevet er ugyldig, og mangler ${11 - value.length} siffer.`, 3.5);
     };
 
     useEffect(() => {
