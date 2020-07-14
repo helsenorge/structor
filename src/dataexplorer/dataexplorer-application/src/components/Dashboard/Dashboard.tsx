@@ -10,11 +10,9 @@ import { IPatientIdentifier } from 'types/IPatient';
 
 const Dashboard = () => {
     const { patientId, setPatientId, setName, setSchemanumber, setPatient } = useContext(PatientContext);
-    const [searchValue, setSearchValue] = useState('');
-    const handleChange = (e: any) => {
-        isNaN(e.target.value)
-            ? message.warning('Du har tastet en bokstav. Vennligst benytt siffer.')
-            : setSearchValue(e.target.value);
+    const [searchValue, setSearchValue] = useState<number>();
+    const handleChange = (e: number) => {
+        isNaN(e) ? message.warning('Du har tastet en bokstav. Vennligst benytt siffer.') : setSearchValue(e);
     };
 
     message.config({ maxCount: 1 });
@@ -39,8 +37,7 @@ const Dashboard = () => {
                     <FloatLabel label="Personnummer" name="searchfield" value={searchValue}>
                         <Search
                             maxLength={11}
-                            placeholder={searchValue}
-                            onChange={(e) => handleChange(e)}
+                            onChange={(e) => handleChange((e.target.value as unknown) as number)}
                             onSearch={(value) => handleSearch(value)}
                             value={searchValue}
                         />
