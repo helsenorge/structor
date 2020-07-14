@@ -1,18 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Search from 'antd/lib/input/Search';
-import { Row, Col } from 'antd';
-import './Dashboard.style.scss';
+import { Row, Col, message } from 'antd';
 import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 import PatientPreview from './PatientPreview/PatientPreview';
 import FloatLabel from './FloatLabel/FloatLabel';
+import './Dashboard.style.scss';
 import './FloatLabel/FloatLabel.scss';
 
 const Dashboard = () => {
     const { patientId, setPatientId, setName, setSchemanumber } = useContext(BreadcrumbContext);
-    const [searchValue, setFirstName] = useState('');
-    const handleClick = (value: string) => {
-        setPatientId(value);
+    const [searchValue, setSearchValue] = useState('');
+    const handleChange = (e: any) => {
+        isNaN(e.target.value)
+            ? message.warning('Du har tastet en bokstav. Vennligst benytt siffer.')
+            : setSearchValue(e.target.value);
     };
+
+    message.config({ maxCount: 1 });
+    const handleSearch = (value: string) => {
+        value.length === 11
+            ? setPatientId(value)
+            : message.warning(`Personnummeret du har skrevet er ugyldig, og mangler ${11 - value.length} siffer.`, 10);
+    };
+
     useEffect(() => {
         setName('');
         setPatientId('');
@@ -26,9 +36,11 @@ const Dashboard = () => {
                 <Col span={1000}>
                     <FloatLabel label="Personnummer" name="searchfield" value={searchValue}>
                         <Search
+                            maxLength={11}
                             placeholder={searchValue}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            onSearch={(value: string) => handleClick(value)}
+                            onChange={(e) => handleChange(e)}
+                            onSearch={(value) => handleSearch(value)}
+                            value={searchValue}
                         />
                     </FloatLabel>
                     {patientId !== '' && <PatientPreview />}

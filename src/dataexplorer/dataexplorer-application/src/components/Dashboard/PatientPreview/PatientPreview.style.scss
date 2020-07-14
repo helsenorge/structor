@@ -1,3 +1,4 @@
+@import '_variables';
 .drawer-container {
     padding: 1.25rem;
     background-color: lightgray;
@@ -8,10 +9,12 @@
     line-height: 0;
 
     &:hover {
-        border-color: #3b6064;
+        border-color: $header;
     }
     p {
         margin: 0;
+        color: $header;
+        font-weight: bold;
         margin-left: -0.625rem;
     }
 }
