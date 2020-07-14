@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Search from 'antd/lib/input/Search';
 import { Row, Col, message } from 'antd';
-import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 import PatientPreview from './PatientPreview/PatientPreview';
 import FloatLabel from './FloatLabel/FloatLabel';
 import './Dashboard.style.scss';
 import './FloatLabel/FloatLabel.scss';
+import { PatientContext } from 'components/Patient/PatientContext';
+import { IPatientIdentifier } from 'types/IPatient';
 
 const Dashboard = () => {
-    const { patientId, setPatientId, setName, setSchemanumber } = useContext(BreadcrumbContext);
+    const { patientId, setPatientId, setName, setSchemanumber, setPatient } = useContext(PatientContext);
     const [searchValue, setSearchValue] = useState('');
     const handleChange = (e: any) => {
         isNaN(e.target.value)
@@ -27,7 +28,8 @@ const Dashboard = () => {
         setName('');
         setPatientId('');
         setSchemanumber('');
-    }, [setName, setPatientId, setSchemanumber]);
+        setPatient({} as IPatientIdentifier);
+    }, [setName, setPatientId, setSchemanumber, setPatient]);
 
     return (
         <>

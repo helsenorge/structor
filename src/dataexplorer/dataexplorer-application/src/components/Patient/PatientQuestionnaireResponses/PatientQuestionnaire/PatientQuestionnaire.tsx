@@ -1,42 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import useFetch from 'utils/hooks/useFetch';
-import { IPatientIdentifier, IDataSource } from 'types/IPatient';
+import { IPatientIdentifier } from 'types/IPatient';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import PatientView from './PatientView/PatientView';
 import { Row, Spin } from 'antd';
-import 'components/Patient/Patient-style.scss';
+import dayjs from 'dayjs';
+import { IQuestionnaire } from 'types/IQuestionnaire';
 
 interface IPatientQuestionnaireProps {
     patientData: IPatientIdentifier;
     questionnaireResponses: IQuestionnaireResponse;
     questionnaireId: string;
-    questionnaireResponseData: IDataSource[];
 }
 
-const PatientQuestionnaire = ({
-    patientData,
-    questionnaireResponses,
-    questionnaireId,
-    questionnaireResponseData,
-}: IPatientQuestionnaireProps) => {
+const PatientQuestionnaire = ({ patientData, questionnaireResponses, questionnaireId }: IPatientQuestionnaireProps) => {
     const [dataSource, setDataSource] = useState<fhir.ResourceBase[]>([]);
 
-    const { response: questionnaire } = useFetch<fhir.Questionnaire>('fhir/' + questionnaireId);
+    const { response: questionnaire } = useFetch<IQuestionnaire>('fhir/Questionnaire?_id=' + questionnaireId);
 
     useEffect(() => {
-        if (questionnaire && questionnaireResponses && questionnaireResponses?.total > 0) {
-            questionnaireResponseData.forEach((item) => {
-                setDataSource((dataSource) => [
-                    ...dataSource,
-                    {
-                        id: item.id,
-                        schemaName: questionnaire?.title,
-                        submitted: item.submitted,
-                    },
-                ]);
-            });
-        }
-        // eslint-disable-next-line
+        const qdict = new Map();
+        questionnaire?.entry.forEach((j) => {
+            qdict.set(j.resource?.id, j.resource?.title);
+        });
+        setDataSource([]);
+        questionnaireResponses.entry.forEach((item) => {
+            setDataSource((dataSource) => [
+                ...dataSource,
+                {
+                    id: item.resource.id,
+                    schemaName: qdict.get(
+                        item.resource.questionnaire?.reference
+                            ?.substr(item.resource.questionnaire?.reference?.indexOf('Questionnaire/'))
+                            .split('/')[1],
+                    ),
+                    submitted: dayjs(item.resource.meta?.lastUpdated).format('DD.MM.YYYY - HH:mm').toString(),
+                },
+            ]);
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionnaire]);
 
     return (

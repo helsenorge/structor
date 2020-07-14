@@ -1,22 +1,27 @@
-import React, { useContext } from 'react';
-import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
+import React, { useContext, useEffect } from 'react';
 import { IPatientIdentifier } from 'types/IPatient';
 import useFetch from 'utils/hooks/useFetch';
 import { Row, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import './PatientPreview.style.scss';
+import { PatientContext } from 'components/Patient/PatientContext';
 
 const PatientPreview = () => {
-    const { patientId } = useContext(BreadcrumbContext);
+    const { patientId, setPatient } = useContext(PatientContext);
     const { response: patientData } = useFetch<IPatientIdentifier>(
+        // The oid signifies that we are searching on social security number
         'fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' + patientId,
     );
+
+    useEffect(() => {
+        patientData && patientData?.total === 1 && setPatient(patientData);
+    }, [patientData, setPatient]);
 
     return (
         <>
             {!patientData && (
                 <Row justify="center">
-                    <Spin spin-container size="large" />
+                    <Spin className="spin-container" size="large" />
                 </Row>
             )}
             {patientId !== '' && patientData && patientData.total === 0 && (

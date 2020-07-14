@@ -3,9 +3,9 @@ import { IPatient, IRecord } from 'types/IPatient';
 import { Row, Col, Card, Table, Typography, Spin } from 'antd';
 import dayjs from 'dayjs';
 import { useHistory } from 'react-router-dom';
-import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 import './PatientView.style.scss';
 import 'components/Patient/Patient-style.scss';
+import { PatientContext } from 'components/Patient/PatientContext';
 
 const PatientView = (props: {
     patient: IPatient;
@@ -22,7 +22,7 @@ const PatientView = (props: {
 
         return `${patientDay.toString()}.${patientMonth}.${patientYear.toString()} (${actualAge.toString()})`;
     };
-    const { setSchemanumber } = useContext(BreadcrumbContext);
+    const { setSchemanumber } = useContext(PatientContext);
     const { Title } = Typography;
     const name = props.patient.name[0].given[0] + ' ' + props.patient.name[0].family;
     const columns = [
