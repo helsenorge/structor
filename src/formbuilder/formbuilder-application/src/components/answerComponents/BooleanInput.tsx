@@ -39,14 +39,11 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
     }
 
     useEffect(() => {
-        console.log('Running validation on JSON');
         const temp = { ...(state.questions[questionId].answer as IBoolean) };
         const validation = [...validationList];
         if (temp.label.length > 0) validation[0] = true;
         setValidationList(validation);
         !validation.includes(false) ? (temp.valid = true) : (temp.valid = false);
-        console.log(temp.valid);
-        console.log(validation);
     }, []);
 
     useEffect(() => {
