@@ -6,9 +6,6 @@ import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import PatientView from './PatientQuestionnaire/PatientView/PatientView';
 import PatientQuestionnaire from './PatientQuestionnaire/PatientQuestionnaire';
 
-export interface ITitleDict {
-    id: string;
-}
 const PatientQuestionnaireResponses = (patientData: IPatientIdentifier) => {
     const [questionnaireId, setQuestionnaireId] = useState<string>('');
     const [responseExists, setResponseExists] = useState<boolean>(true);
