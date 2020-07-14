@@ -6,6 +6,14 @@ import { FormContext, addNewQuestion, removeQuestion, duplicateQuestion, updateS
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes from '../types/IAnswer';
+import {
+    IValidation,
+    validateText,
+    checkErrorFields,
+    setVisitedField,
+    setValidateNumber,
+    setValidateText,
+} from '../helpers/ValidationHelpers';
 
 const { TextArea } = Input;
 
@@ -32,39 +40,24 @@ function Section({
     const [placeholder, setPlaceholder] = useState('Tittel...');
     const [collapsedSection, setCollapsedSection] = useState(false);
     const { state, dispatch } = useContext(FormContext);
-    const [validationList, setValidationList] = useState([false, false]);
-    const [visitedfields, setVisitedField] = useState([false, false]);
+    const section = state.sections[sectionId];
+    const [errorList, setErrorList] = useState([false, false]);
+    const [validationObject, setValidationObject] = useState({
+        checkedList: [true, true],
+        visitedFields: [section.sectionTitle.length > 0, section.description.length > 0],
+        validationList: [validateText(section.sectionTitle), validateText(section.description)],
+    } as IValidation);
 
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (sectionIndex + 1) + '...';
         setPlaceholder(placeholderString);
     }
 
-    function validate(field: number, value: string): void {
-        const tempValid = [...validationList];
-        const tempVisited = [...visitedfields];
-        value.length > 0 ? (tempValid[field] = true) : (tempValid[field] = false);
-        tempVisited[field] = true;
-        setVisitedField(tempVisited);
-        setValidationList(tempValid);
-    }
-
-    function showError(field: number): boolean {
-        return (state.validationFlag && !validationList[field]) || (!validationList[field] && visitedfields[field]);
-    }
-
     useEffect(() => {
         const temp = { ...state.sections[sectionId] };
-        setValidationList([temp.sectionTitle.length > 0, temp.description?.length > 0]);
-        temp.valid = temp.sectionTitle.length > 0 && temp.description?.length > 0;
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList);
         dispatch(updateSection(temp));
-    }, []);
-
-    useEffect(() => {
-        const temp = { ...state.sections[sectionId] };
-        temp.valid = validationList.every((field) => field === true);
-        dispatch(updateSection(temp));
-    }, [validationList]);
+    }, [validationObject, state.validationFlag]);
 
     useEffect(() => {
         findPlaceholder();
@@ -139,17 +132,18 @@ function Section({
                         >
                             <Input
                                 placeholder={placeholder}
-                                className={showError(0) ? 'field-error' : 'input-question'}
+                                className={errorList[0] ? 'field-error' : 'input-question'}
                                 size="large"
                                 defaultValue={state.sections[sectionId].sectionTitle}
                                 onBlur={(e) => {
                                     localUpdate({
                                         sectionTitle: e.target.value,
                                     });
-                                    validate(0, e.target.value);
+                                    setVisitedField(0, validationObject, setValidationObject);
+                                    setValidateText(0, validationObject, setValidationObject, e.currentTarget.value);
                                 }}
                             />
-                            {showError(0) && <p style={{ color: 'red' }}> Fyll inn seksjonstittel</p>}
+                            {errorList[0] && <p style={{ color: 'red' }}> Fyll inn seksjonstittel</p>}
                         </Col>
                         <Col md={0} lg={5}></Col>
                         <Col span={1}>
@@ -189,15 +183,16 @@ function Section({
                         <Col xs={15} lg={14}>
                             <TextArea
                                 placeholder="Beskrivelse av seksjon..."
-                                className={showError(0) ? 'field-error' : 'input-question'}
+                                className={errorList[1] ? 'field-error' : 'input-question'}
                                 defaultValue={state.sections[sectionId].description}
                                 onBlur={(e) => {
                                     localUpdate({ description: e.target.value });
-                                    validate(1, e.currentTarget.value);
+                                    setVisitedField(1, validationObject, setValidationObject);
+                                    setValidateText(1, validationObject, setValidationObject, e.currentTarget.value);
                                 }}
                                 rows={3}
                             ></TextArea>
-                            {showError(1) && <p style={{ color: 'red' }}> Fyll in seksjonsbeskrivelse</p>}
+                            {errorList[1] && <p style={{ color: 'red' }}> Fyll in seksjonsbeskrivelse</p>}
                         </Col>
                         <Col span={6}>
                             <Row
