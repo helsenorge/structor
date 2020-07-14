@@ -40,3 +40,9 @@ export interface ITelecom {
     system: string;
     value: number;
 }
+
+export interface IDataSource {
+    id?: string;
+    schemaName: string;
+    submitted?: string;
+}
