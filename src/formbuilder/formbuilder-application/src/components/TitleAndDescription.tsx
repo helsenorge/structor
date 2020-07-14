@@ -24,6 +24,13 @@ function TitleAndDescription(): JSX.Element {
         return (state.validationFlag && !validationList[field]) || (!validationList[field] && visitedfields[field]);
     }
 
+    useEffect(() => {
+        const validation = [...validationList];
+        if (state.title.length > 0) validation[0] = true;
+        if (state.description.length > 0) validation[1] = true;
+        setValidationList(validation);
+    }, []);
+
     return (
         <div
             style={{
