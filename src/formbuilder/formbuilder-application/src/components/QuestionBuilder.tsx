@@ -84,7 +84,6 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     break;
                 default:
                     temp.answer = { id: questionId } as IAnswer;
-                    console.log('Missing answer type interface: ' + attribute.answerType);
                     break;
             }
         }
@@ -172,7 +171,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                         }}
                                         placeholder="Trykk for å velge"
                                     >
-                                        <Option value={AnswerTypes.boolean}>Samtykke</Option>
+                                        <Option value={AnswerTypes.boolean}>Avkrysningsboks</Option>
                                         <Option value={AnswerTypes.number}>Tall</Option>
                                         <Option value={AnswerTypes.text}>Tekst</Option>
                                         <Option value={AnswerTypes.time}>Dato/tid</Option>

@@ -237,17 +237,21 @@ function getDisplay(currentQuestion: fhir.QuestionnaireItem): IInfo {
 }
 
 function convertFhirTimeToUnix(isDate: boolean, isTime: boolean, dateTime: string): number {
+    console.log(isDate, isTime, dateTime);
+    const indexDays = dateTime.indexOf('days');
+    const indexHours = dateTime.indexOf('hours');
+    const indexToday = dateTime.indexOf('today');
     if (isDate && isTime) {
-        const indexDays = dateTime.indexOf('days');
-        if (indexDays !== -1) return parseInt(dateTime.substr(indexDays - 2, 1));
+        if (indexDays !== -1) return parseInt(dateTime.substr(indexDays - 2, 1)); 
+        else if (indexToday !== -1) return 0;
         return moment(dateTime, 'YYYY-MM-DDTHH:mm:ss').valueOf();
     } else if (isDate) {
-        const indexDays = dateTime.indexOf('days');
         if (indexDays !== -1) return parseInt(dateTime.substr(indexDays - 2, 1));
+        else if (indexToday !== -1) return 0;
         return moment(dateTime, 'YYYY-MM-DD').valueOf();
     } else {
-        const indexHours = dateTime.indexOf('hours');
         if (indexHours !== -1) return parseInt(dateTime.substr(indexHours - 2, 1));
+        else if (indexToday !== -1) return 0;
         return moment(dateTime, 'HH:mm').valueOf();
     }
 }
@@ -265,6 +269,7 @@ function convertFromJSON(
         title: questionnaireObj.title as string,
         description: questionnaireObj.description as string,
     };
+    console.log(questionnaireObj);
     if (questionnaireObj.item !== undefined) {
         for (let i = 0; i < questionnaireObj.item.length; i++) {
             if (questionnaireObj.item[i] !== undefined && questionnaireObj.item[i].type === 'group') {

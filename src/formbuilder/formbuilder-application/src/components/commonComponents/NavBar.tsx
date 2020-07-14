@@ -46,7 +46,6 @@ function NavBar(): JSX.Element {
 
     function exportToJsonAndDownload() {
         const questionnaire = convertForm();
-        console.log(questionnaire);
         const filename = questionnaire.title + '.json';
         const contentType = 'application/json;charset=utf-8;';
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
@@ -74,10 +73,7 @@ function NavBar(): JSX.Element {
             // if (!state.sections[key].valid) return false;
         }
         for (let i = 0; i < questionArray.length; i++) {
-            console.log(questionArray);
             if (/*!questionArray[i].valid ||*/ !questionArray[i].answer.valid) {
-                console.log(questionArray[i].answer.valid);
-                console.log(questionArray[i].questionText);
                 return false;
             }
         }

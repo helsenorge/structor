@@ -29,21 +29,13 @@ function Section({
     hasSections,
 }: SectionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Tittel...');
-    //const [needsSections, setNeedsSections] = useState(false);
     const [collapsedSection, setCollapsedSection] = useState(false);
-
-    // const [count, setCount] = useState(0);
 
     const { state, dispatch } = useContext(FormContext);
 
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (sectionIndex + 1) + '...';
         setPlaceholder(placeholderString);
-        // if (Object.keys(state.sections).length > 1) {
-        //     setNeedsSections(true);
-        // } else {
-        //     setNeedsSections(false);
-        // }
     }
 
     useEffect(() => {
