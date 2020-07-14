@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Row, Col, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Row, Col } from 'antd';
+import { UploadOutlined, EditOutlined } from '@ant-design/icons';
 import convertFromJSON from '../helpers/FromJSONToForm';
 import ISection from '../types/ISection';
 import IQuestion from '../types/IQuestion';
@@ -58,7 +58,6 @@ function Index(): JSX.Element {
     }
 
     function onReaderLoad(event: any) {
-        console.log(event.target.result);
         const obj = JSON.parse(event.target.result);
         reuploadJSONFile(obj);
         history.push('/create-form');
@@ -67,7 +66,10 @@ function Index(): JSX.Element {
     return (
         <Row align="middle" justify="center" style={{ backgroundColor: 'var(--primary-2)', height: '100vh' }}>
             <Col
-                span={8}
+                xl={8}
+                lg={10}
+                md={10}
+                sm={15}
                 style={{
                     backgroundColor: 'var(--color-base-1)',
                     height: '33vh',
@@ -89,30 +91,16 @@ function Index(): JSX.Element {
                                         alignContent: 'center',
                                     }}
                                 >
-                                    <Button
-                                        style={{
-                                            backgroundColor: 'var(--primary-1)',
-                                            color: 'var(--color-base-1)',
-                                        }}
-                                        onClick={createNewForm}
-                                    >
+                                    <label className="index-buttons" onClick={createNewForm}>
+                                        <EditOutlined style={{ paddingRight: '5px' }} />
                                         Lag nytt skjema
-                                    </Button>
+                                    </label>
                                 </div>
                             </Col>
                             <Col span={12}>
-                                <label
-                                    style={{
-                                        backgroundColor: 'var(--primary-1)',
-                                        color: 'var(--color-base-1)',
-                                        border: '1px solid #ccc',
-                                        display: 'inline-block',
-                                        padding: '6px 12px',
-                                        cursor: 'pointer',
-                                    }}
-                                >
+                                <label className="index-buttons">
                                     <input type="file" style={{ display: 'none' }} onChange={onChange} />
-                                    <UploadOutlined />
+                                    <UploadOutlined style={{ paddingRight: '5px' }} />
                                     Last opp JSON-fil
                                 </label>
                             </Col>

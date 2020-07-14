@@ -18,6 +18,12 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
         dispatch(updateAnswer(questionId, temp));
     }
 
+    useEffect(() => {
+        const temp = { ...state.questions[questionId].answer };
+        temp.valid = true;
+        dispatch(updateAnswer(questionId, temp));
+    }, []);
+
     return (
         <>
             <Checkbox

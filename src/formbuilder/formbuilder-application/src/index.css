@@ -57,4 +57,18 @@ p{
 
 .iframe-div {
   background:url(./images/loader.gif) center center no-repeat;
+<<<<<<< HEAD
+=======
+}
+
+.index-buttons {
+  background-color: var(--primary-1);
+  color: var(--color-base-1);
+  cursor: pointer;
+  border: 1px solid var(--primary-1);
+  display: inline-block;
+  height: 45px;
+  width: 160px;
+  padding: 9px 12px;
+>>>>>>> origin/fb-dev
 }
