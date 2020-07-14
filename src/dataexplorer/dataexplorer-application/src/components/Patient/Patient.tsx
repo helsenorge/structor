@@ -1,7 +1,4 @@
 import React, { useContext, useEffect } from 'react';
-import useFetch from 'utils/hooks/useFetch';
-import { IPatientIdentifier } from 'types/IPatient';
-import { Empty, Row, Spin } from 'antd';
 import PatientQuestionnaireResponses from './PatientQuestionnaireResponses/PatientQuestionnaireResponses';
 import './Patient-style.scss';
 import { PatientContext } from './PatientContext';
@@ -11,11 +8,8 @@ interface IPatientProps {
 }
 
 const Patient = () => {
-    const { patientId, setSchemanumber, setName } = useContext(PatientContext);
+    const { patient: patientData, setSchemanumber, setName } = useContext(PatientContext);
     // The oid signifies that we are searching on social security number
-    const { response: patientData, error } = useFetch<IPatientIdentifier>(
-        'fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' + patientId,
-    );
     useEffect(() => {
         setSchemanumber('');
     }, [setSchemanumber]);
@@ -27,31 +21,7 @@ const Patient = () => {
         }
     }, [patientData, setName]);
 
-    return (
-        <>
-            {!patientData && (!error || error.length === 0) && (
-                <Row justify="center">
-                    <Spin className="spin-container" size="large" />
-                </Row>
-            )}
-            {patientData?.total === 0 && (
-                <Empty
-                    className="empty-container"
-                    description={<span>Fant ingen pasienter med personnummer {patientId}</span>}
-                />
-            )}
-            {error.length > 0 && (
-                <Empty
-                    className="empty-container"
-                    description={<span>Feil ved lasting av pasienter: {error}</span>}
-                ></Empty>
-            )}
-            {/*  Since the search uses social security number, which are
-                unique, the response will contain a maximum value of 1,
-                if the patient exists in the database. */}
-            {patientData && patientData.total === 1 && <PatientQuestionnaireResponses {...patientData} />}
-        </>
-    );
+    return <>{patientData && patientData.total === 1 && <PatientQuestionnaireResponses {...patientData} />}</>;
 };
 
 export default Patient;

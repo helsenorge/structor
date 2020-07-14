@@ -6,9 +6,10 @@ import PatientPreview from './PatientPreview/PatientPreview';
 import FloatLabel from './FloatLabel/FloatLabel';
 import './FloatLabel/FloatLabel.scss';
 import { PatientContext } from 'components/Patient/PatientContext';
+import { IPatientIdentifier } from 'types/IPatient';
 
 const Dashboard = () => {
-    const { patientId, setPatientId, setName, setSchemanumber } = useContext(PatientContext);
+    const { patientId, setPatientId, setName, setSchemanumber, setPatient } = useContext(PatientContext);
     const [searchValue, setFirstName] = useState('');
     const handleClick = (value: string) => {
         setPatientId(value);
@@ -17,7 +18,8 @@ const Dashboard = () => {
         setName('');
         setPatientId('');
         setSchemanumber('');
-    }, [setName, setPatientId, setSchemanumber]);
+        setPatient({} as IPatientIdentifier);
+    }, [setName, setPatientId, setSchemanumber, setPatient]);
 
     return (
         <>
