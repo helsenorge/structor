@@ -1,18 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Checkbox, Input, Row, Col, Form } from 'antd';
+import React, { useContext, useEffect } from 'react';
+import { Checkbox } from 'antd';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import './AnswerComponent.css';
 import { IBoolean } from '../../types/IAnswer';
-import { ValidateStatus } from 'antd/lib/form/FormItem';
 
 type BooleanInputProps = {
     questionId: string;
 };
 
 function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
-    const checkStyle = {
-        marginBottom: '10px',
-    };
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...(state.questions[questionId].answer as IBoolean) };
 

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Button, Tooltip, Row, Col, Typography, Modal, message, Spin } from 'antd';
+import { Button, Tooltip, Row, Col, Typography, Modal, message } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 import { FormContext } from '../../store/FormStore';
 import './NavBar.css';
@@ -136,7 +136,6 @@ function NavBar(): JSX.Element {
                 </Col>
                 <Col lg={6} md={11}>
                     <div style={{ float: 'right' }}>
-                        {/* <Link to="preview"> */}
                         <Button
                             className="nav-button"
                             type="link"
@@ -155,7 +154,6 @@ function NavBar(): JSX.Element {
                         >
                             Forhåndsvisning
                         </Button>
-                        {/* </Link> */}
                         <Button
                             className="nav-button"
                             type="link"

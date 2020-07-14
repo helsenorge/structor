@@ -9,7 +9,7 @@ import { FormContext, updateQuestion } from '../store/FormStore';
 import ISection from '../types/ISection';
 import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
-import AnswerTypes, { IInfo } from '../types/IAnswer';
+import { IInfo } from '../types/IAnswer';
 import IQuestion from '../types/IQuestion';
 
 type QuestionProps = {

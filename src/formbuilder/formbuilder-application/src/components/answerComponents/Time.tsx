@@ -65,10 +65,6 @@ function Time({ questionId }: TimeProps): JSX.Element {
             return <TimePicker value={value} format={'HH:mm'} onChange={updateTime} disabled={disabled} />;
     }
 
-    function typeToString() {
-        return localAnswer.isTime && localAnswer.isDate ? 'dato/tid' : localAnswer.isDate ? 'dato' : 'tid';
-    }
-
     function timeDefToString(plural: boolean) {
         if (plural) return localAnswer.isTime && localAnswer.isDate ? 'dager' : localAnswer.isTime ? 'timer' : 'dager';
         return localAnswer.isTime && localAnswer.isDate ? 'tid' : localAnswer.isTime ? 'tid' : 'dag';
