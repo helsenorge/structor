@@ -7,7 +7,6 @@
 .patient-card {
     margin-top: 1.875rem !important;
     cursor: default;
-
     .ant-card-head {
         background-color: $elementHeader !important;
         border: 0.0625rem solid $elementHeader !important;
@@ -63,8 +62,11 @@
 
 .patient-table {
     margin-top: 1.25rem;
-    box-shadow: 0.0625rem 0.0625rem 0.0625rem 0.0625rem rgba(0, 0, 0, 0.2);
-    background-color: white;
+    .ant-table {
+        border-bottom: 1px solid lightgrey;
+        border-right: 1px solid lightgray;
+        border-width: thin;
+    }
 
     svg {
         margin: 0;
@@ -82,6 +84,12 @@
     }
 
     .mini {
+        margin: 0 !important;
+        padding: 16px 0;
+        background-color: white;
+        border: 1px solid lightgrey;
+        border-top: none;
+
         .ant-pagination-item {
             a {
                 &:hover {
