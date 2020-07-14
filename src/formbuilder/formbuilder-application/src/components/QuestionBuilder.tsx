@@ -1,10 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Input, Row, Col, Checkbox, Select, Tooltip, Button, Form } from 'antd';
 import './answerComponents/AnswerComponent.css';
-import { FormContext, updateQuestion } from '../store/FormStore';
+import { FormContext, updateQuestion, updateSection } from '../store/FormStore';
 import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes, { IChoice, INumber, IText, IBoolean, ITime, IAnswer } from '../types/IAnswer';
+import { validateText, IValidation, checkErrorFields, setVisitedField, setValidateText } from '../helpers/ValidationHelpers';
 
 const { Option } = Select;
 
@@ -17,9 +18,13 @@ type QuestionProps = {
 
 function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [validationList, setValidationList] = useState([false, false]);
-    const [visitedfields, setVisitedField] = useState([false, false]);
     const localQuestion = { ...state.questions[questionId] } as IQuestion;
+    const [errorList, setErrorList] = useState([false, false]);
+    const [validationObject, setValidationObject] = useState({
+        checkedList: [true, true],
+        visitedFields: [localQuestion.questionText.length > 0, localQuestion.answerType !== AnswerTypes.default],
+        validationList: [validateText(localQuestion.questionText), localQuestion.answerType !== AnswerTypes.default],
+    } as IValidation);
 
     function updateStore(attribute: {
         answerType?: AnswerTypes;
@@ -91,31 +96,11 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
         dispatch(updateQuestion(temp));
     }
 
-    function validate(field: number, value: string): void {
-        const tempValid = [...validationList];
-        const tempVisited = [...visitedfields];
-        value.length > 0 ? (tempValid[field] = true) : (tempValid[field] = false);
-        tempVisited[field] = true;
-        setVisitedField(tempVisited);
-        setValidationList(tempValid);
-    }
-
-    function showError(field: number): boolean {
-        return (state.validationFlag && !validationList[field]) || (!validationList[field] && visitedfields[field]);
-    }
-
     useEffect(() => {
         const temp = { ...state.questions[questionId] };
-        setValidationList([temp.questionText.length > 0, temp.answerType !== AnswerTypes.default]);
-        temp.valid = temp.questionText.length > 0 && temp.answerType !== AnswerTypes.default;
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList);
         dispatch(updateQuestion(temp));
-    }, []);
-
-    useEffect(() => {
-        const temp = { ...state.questions[questionId] };
-        temp.valid = !validationList.includes(false);
-        dispatch(updateQuestion(temp));
-    }, [validationList]);
+    }, [validationObject, state.validationFlag]);
 
     return (
         <div style={{ backgroundColor: 'var(--color-base-1)' }}>
@@ -123,15 +108,17 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                 <Col span={17} style={{ paddingRight: '5px' }}>
                     <Input
                         placeholder={localQuestion.placeholder}
-                        className={showError(0) ? 'field-error' : 'input-question'}
+                        className={errorList[0] ? 'field-error' : 'input-question'}
                         defaultValue={localQuestion.questionText}
                         onBlur={(e) => {
                             updateStore({
                                 questionText: e.target.value === undefined ? '' : e.target.value,
                             });
-                            validate(0, e.currentTarget.value);
+                            setVisitedField(0, validationObject, setValidationObject);
+                            setValidateText(0, validationObject, setValidationObject, e.currentTarget.value);
                         }}
                     />
+                    {errorList[0] && <p style={{ color: 'red' }}> Fyll inn tekst her </p>}
                 </Col>
                 <Col span={6}></Col>
                 <Col span={1} style={{ float: 'right' }}>
@@ -156,7 +143,6 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                             </svg>
                         </Button>
                     </Tooltip>
-                    {showError(0) && <p style={{ color: 'red' }}> Fyll inn tekst her </p>}
                 </Col>
             </Row>
             {!state.questions[questionId].collapsed && (
@@ -188,7 +174,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                         Velg type spørsmål:{' '}
                                     </p>
                                     <Select
-                                        className={showError(1) ? 'field-error' : ''}
+                                        className={errorList[1] ? 'field-error' : ''}
                                         defaultValue={localQuestion.answerType}
                                         style={{
                                             width: '200px',
@@ -198,7 +184,11 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                             updateStore({
                                                 answerType: value,
                                             });
-                                            validate(1, value);
+                                            if (value !== AnswerTypes.default) {
+                                                const tmpObject = { ...validationObject };
+                                                tmpObject.validationList[1] = true;
+                                                tmpObject.visitedFields[1] = true;
+                                            }
                                         }}
                                         placeholder="Trykk for å velge"
                                     >
@@ -208,7 +198,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                         <Option value={AnswerTypes.time}>Dato/tid</Option>
                                         <Option value={AnswerTypes.choice}>Flervalg</Option>
                                     </Select>
-                                    {showError(1) && <p style={{ color: 'red' }}> Velg et svar alternativ</p>}
+                                    {errorList[1] && <p style={{ color: 'red' }}> Velg et svar alternativ</p>}
                                 </Col>
                             </Row>
                         </Col>

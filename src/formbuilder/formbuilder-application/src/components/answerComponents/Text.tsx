@@ -36,7 +36,6 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
 
     useEffect(() => {
         const tempAnswer = { ...state.questions[questionId].answer };
-        console.log(validationObject);
         checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList);
         tempAnswer.valid = !validationObject.validationList.includes(false);
         dispatch(updateAnswer(questionId, tempAnswer));
