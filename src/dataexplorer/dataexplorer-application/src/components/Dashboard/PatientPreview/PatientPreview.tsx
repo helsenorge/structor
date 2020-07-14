@@ -21,7 +21,7 @@ const PatientPreview = () => {
         <>
             {!patientData && (
                 <Row justify="center">
-                    <Spin spin-container="true" size="large" />
+                    <Spin className="spin-container" size="large" />
                 </Row>
             )}
             {patientId !== '' && patientData && patientData.total === 0 && (
