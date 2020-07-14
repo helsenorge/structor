@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import Search from 'antd/lib/input/Search';
 import { Row, Col } from 'antd';
 import './Dashboard.style.scss';
-import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 import PatientPreview from './PatientPreview/PatientPreview';
 import FloatLabel from './FloatLabel/FloatLabel';
 import './FloatLabel/FloatLabel.scss';
+import { PatientContext } from 'components/Patient/PatientContext';
 
 const Dashboard = () => {
-    const { patientId, setPatientId, setName, setSchemanumber } = useContext(BreadcrumbContext);
+    const { patientId, setPatientId, setName, setSchemanumber } = useContext(PatientContext);
     const [searchValue, setFirstName] = useState('');
     const handleClick = (value: string) => {
         setPatientId(value);

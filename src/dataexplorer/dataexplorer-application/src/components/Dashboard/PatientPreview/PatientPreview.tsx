@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
-import { BreadcrumbContext } from 'components/Navigation/Breadcrumbs/BreadcrumbContext';
 import { IPatientIdentifier } from 'types/IPatient';
 import useFetch from 'utils/hooks/useFetch';
 import { Row, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import './PatientPreview.style.scss';
+import { PatientContext } from 'components/Patient/PatientContext';
 
 const PatientPreview = () => {
-    const { patientId } = useContext(BreadcrumbContext);
+    const { patientId } = useContext(PatientContext);
     const { response: patientData } = useFetch<IPatientIdentifier>(
         'fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' + patientId,
     );
