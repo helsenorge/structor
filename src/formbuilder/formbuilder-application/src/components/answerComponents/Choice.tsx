@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Radio, Button, Input, Tooltip, Checkbox, Col, Row, Select } from 'antd';
 import { PlusCircleOutlined, PlusSquareOutlined, CloseOutlined } from '@ant-design/icons';
 import './AnswerComponent.css';
@@ -16,7 +16,10 @@ function Choice({ questionId }: choiceProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...(state.questions[questionId].answer as IChoice) };
     const [choices, setChoices] = useState((state.questions[questionId].answer as IChoice).choices);
-    const [choiceID, setChoiceIDs] = useState(['']);
+    const [choiceID, setChoiceIDs] = useState([
+        'choice_' + questionId + generateID(),
+        'choice_' + questionId + generateID(),
+    ]);
 
     function localUpdate(attribute: {
         isMultiple?: boolean;
@@ -75,6 +78,15 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         marginLeft: 0,
     };
 
+    useEffect(() => {
+        const tempIDs = [''];
+
+        localAnswer.choices.forEach((choice) => {
+            tempIDs.push('choice_' + questionId + generateID());
+        });
+        setChoiceIDs(tempIDs);
+    }, []);
+
     function deleteButton(id: number): JSX.Element {
         return (
             <Tooltip title="Fjern alternativ" placement="right">
@@ -101,6 +113,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
             <Radio key={'Radio_' + choiceID[id]} style={radioButtonStyle} disabled={true} value={id}>
                 <Input
                     key={'Input_' + choiceID[id]}
+                    id={'Input_' + choiceID[id]}
                     type="text"
                     className="input-question"
                     placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
@@ -112,7 +125,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         if (event.charCode === 13) {
                             updateChoices({ mode: 'add' });
                             setTimeout(() => {
-                                const nextRadio = document.getElementById('Input_' + (id + 1));
+                                const nextRadio = document.getElementById('Input_' + choiceID[id + 1]);
                                 if (nextRadio) nextRadio.focus();
                             }, 50);
                         }
@@ -132,6 +145,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 <Col style={{ width: '93%' }}>
                     <Input
                         key={'Input_' + choiceID[id]}
+                        id={'Input_' + choiceID[id]}
                         type="text"
                         className="input-question"
                         placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
@@ -142,7 +156,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                             if (event.charCode === 13) {
                                 updateChoices({ mode: 'add' });
                                 setTimeout(() => {
-                                    const nextRadio = document.getElementById('Input_' + (id + 1));
+                                    const nextRadio = document.getElementById('Input_' + choiceID[id + 1]);
                                     if (nextRadio) nextRadio.focus();
                                 }, 50);
                             }
