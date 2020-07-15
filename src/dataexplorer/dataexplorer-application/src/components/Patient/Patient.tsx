@@ -4,10 +4,6 @@ import './Patient-style.scss';
 import FetchQuestionnaireResponses from 'components/QuestionnaireResponse/FetchQuestionnaireResponses';
 import { GlobalContext } from 'context/GlobalContext';
 
-interface IPatientProps {
-    patientID: string | null;
-}
-
 const Patient = () => {
     const {
         patient: patientData,
