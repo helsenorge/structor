@@ -93,7 +93,7 @@ const QuestionnaireResponseProcessing = (props: {
                         questions={questions}
                         answers={answers}
                         questionnaireResource={questionnaireResource}
-                        date={dayjs(props.schemaResponse.authored)}
+                        date={dayjs(props.schemaResponse.meta?.lastUpdated)}
                         title={questionnaire.title ? questionnaire.title : 'Tittel mangler'}
                     />
                 </div>
