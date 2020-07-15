@@ -3,6 +3,7 @@ import PatientQuestionnaireResponses from './PatientQuestionnaireResponses/Patie
 import './Patient-style.scss';
 import FetchQuestionnaireResponses from 'components/QuestionnaireResponse/FetchQuestionnaireResponses';
 import { GlobalContext } from 'context/GlobalContext';
+import { useHistory } from 'react-router-dom';
 
 const Patient = () => {
     const {
@@ -18,6 +19,7 @@ const Patient = () => {
         setSchemanumber('');
         setComparableSchemaNumbers([]);
     }, [setSchemanumber, setComparableSchemaNumbers]);
+    const history = useHistory();
 
     useEffect(() => {
         if (patientData && patientData.total === 1) {
@@ -25,6 +27,11 @@ const Patient = () => {
             setName(name);
         }
     }, [patientData, setName]);
+    if (patientData.entry === undefined) {
+        history.push('/');
+        return <></>;
+    }
+    console.log(patientData);
     if (
         questionnaireResponse.total === undefined ||
         (questionnaire.entry === undefined && questionnaireResponse.total !== 0)
