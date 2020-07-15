@@ -29,6 +29,9 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
             >
                 Skal være forhåndsvalgt.
             </Checkbox>
+            <p style={{ fontStyle: 'italic', fontSize: 'small' }}>
+                En avkrysningskomponent vil dukke opp for brukeren. Denne kan brukes til f.eks samtykke.
+            </p>
         </>
     );
 }
