@@ -11,6 +11,7 @@ import {
     addNewSection,
     clearAllSections,
     updateFormMeta,
+    updateValidationFlag,
 } from '../store/FormStore';
 import { useHistory } from 'react-router-dom';
 
@@ -31,6 +32,7 @@ function Index(): JSX.Element {
         const formDesc = oldJSON.formMeta.description;
 
         dispatch(updateFormMeta(formTitle, formDesc));
+        dispatch(updateValidationFlag(0));
 
         for (let i = 0; i < sections.length; i++) {
             dispatch(addNewSection(sections[i]));

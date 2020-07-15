@@ -49,8 +49,8 @@ export function setVisitedField(
     validationObject: IValidation,
     setValidationObject: (value: React.SetStateAction<IValidation>) => void,
 ): void {
-    console.log('visited');
     const tempObject = { ...validationObject };
+    console.log(tempObject.visitedFields);
     tempObject.visitedFields[field] = moment().valueOf();
     setValidationObject(tempObject);
 }
@@ -63,7 +63,7 @@ export function setCheckedField(
 ): void {
     const tempObject = { ...validationObject };
     tempObject.checkedList[field] = value;
-    if (!value) tempObject.visitedFields[field] = moment().valueOf();
+    if (!value) tempObject.visitedFields[field] = 0;
     setValidationObject(tempObject);
 }
 
@@ -78,16 +78,16 @@ export function checkErrorFields(
     const tempError = [...errorList];
     const tempObject = { ...validationObject };
     if (overrideFlag) {
-        console.log('ov: ', overrideFlag);
         for (let i = 0; i < tempObject.visitedFields.length; i++) {
             tempObject.visitedFields[i] = validationFlag;
         }
         setValidationObject(tempObject);
     }
-
     for (let i = 0; i < tempError.length; i++) {
         tempError[i] = setError(validationFlag, i, tempObject.validationList, tempObject.visitedFields);
     }
+    console.log(tempObject.visitedFields);
+    console.log(tempError);
     setErrorList(tempError);
 }
 function setError(
@@ -96,7 +96,5 @@ function setError(
     validationList: Array<boolean>,
     visitedFields: Array<number>,
 ): boolean {
-    console.log('valdiationfuck: ', validationFlag, '\b visiteddddfuck: ', visitedFields[field], ' sist ', validationList[field]);
-    console.log('komhit', !validationList[field] && validationFlag > visitedFields[field]);
-    return !validationList[field] && validationFlag >= visitedFields[field];
+    return !validationList[field] && validationFlag <= visitedFields[field];
 }

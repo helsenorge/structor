@@ -56,13 +56,13 @@ function Section({
     }
 
     useEffect(() => {
-        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, true, setValidationObject);
+        console.log(state.validationFlag);
+        if (state.validationFlag > 0) checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, true, setValidationObject);
     }, [state.validationFlag]);
 
     useEffect(() => {
-        const temp = { ...state.sections[sectionId] };
         checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, false, setValidationObject);
-        dispatch(updateSection(temp));
+        console.log(validationObject.visitedFields);
     }, [validationObject]);
 
     useEffect(() => {
@@ -146,7 +146,6 @@ function Section({
                                         sectionTitle: e.target.value,
                                     });
                                     setValidateText(0, validationObject, setValidationObject, e.currentTarget.value);
-
                                     setVisitedField(0, validationObject, setValidationObject);
                                 }}
                             />

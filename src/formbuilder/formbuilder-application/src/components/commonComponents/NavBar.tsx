@@ -66,6 +66,7 @@ function NavBar(): JSX.Element {
     }
 
     function validateForm(): boolean {
+        console.log('Validerer');
         if (state.description.length === 0 || state.description === undefined) {
             console.log(state.description);
             dispatch(updateValidationFlag(moment().valueOf()));
