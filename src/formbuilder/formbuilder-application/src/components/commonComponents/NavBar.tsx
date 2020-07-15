@@ -82,7 +82,10 @@ function NavBar(): JSX.Element {
         }
         const questionArray = Object.values(state.questions);
         for (let i = 0; i < questionArray.length; i++) {
-            if (!questionArray[i].questionText || questionArray[i].answerType === AnswerTypes.default) {
+            if (
+                (!questionArray[i].questionText && questionArray[i].answerType !== AnswerTypes.info) ||
+                questionArray[i].answerType === AnswerTypes.default
+            ) {
                 return false;
             }
         }
