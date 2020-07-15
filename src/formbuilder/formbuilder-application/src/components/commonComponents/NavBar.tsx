@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Button, Tooltip, Row, Col, Typography, Modal, message } from 'antd';
-import { LeftOutlined } from '@ant-design/icons';
+import { LeftOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { FormContext } from '../../store/FormStore';
 import './NavBar.css';
 import JSONConverter from '../../helpers/JSONGenerator';
@@ -79,6 +79,9 @@ function NavBar(): JSX.Element {
         }
         return true;
     }
+    function confirmPreview() {
+        setFormPreview(true);
+    }
 
     return (
         <div className="nav-bar">
@@ -142,8 +145,13 @@ function NavBar(): JSX.Element {
                                 if (validateForm()) {
                                     setFormPreview(true);
                                 } else {
-                                    message.error({
-                                        content: 'Fyll inn alle røde felter for å forhåndsvise.',
+                                    Modal.confirm({
+                                        content: 'Er du sikker på at du vil forhåndsvise?',
+                                        icon: <ExclamationCircleOutlined />,
+                                        title: 'Ikke alle felter er fylt ut.',
+                                        okText: 'Ja',
+                                        cancelText: 'Avbryt',
+                                        onOk: confirmPreview,
                                     });
                                 }
                             }}
@@ -158,10 +166,18 @@ function NavBar(): JSX.Element {
                             key="saveForm"
                             onClick={() => {
                                 if (validateForm()) {
+                                    message.success({
+                                        content: 'Skjemaet ble lastet ned.',
+                                    });
                                     exportToJsonAndDownload();
                                 } else {
-                                    message.error({
-                                        content: 'Fyll inn alle røde felter for å lagre.',
+                                    Modal.confirm({
+                                        content: 'Er du sikker på at du vil lagre?',
+                                        icon: <ExclamationCircleOutlined />,
+                                        title: 'Ikke alle felter er fylt ut.',
+                                        okText: 'Ja',
+                                        cancelText: 'Avbryt',
+                                        onOk: exportToJsonAndDownload,
                                     });
                                 }
                             }}
