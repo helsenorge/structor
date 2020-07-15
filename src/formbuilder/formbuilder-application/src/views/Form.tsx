@@ -58,7 +58,7 @@ function CreateForm(): JSX.Element {
 
     useEffect(() => {
         if (state.sectionOrder.length > 1) setHasSections(true);
-    });
+    }, [state.sectionOrder.length]);
 
     return (
         <div>

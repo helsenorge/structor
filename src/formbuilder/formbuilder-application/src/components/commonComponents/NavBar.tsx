@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { Button, Tooltip, Row, Col, Typography, Modal, message } from 'antd';
-import { LeftOutlined } from '@ant-design/icons';
-import { FormContext, updateValidationFlag } from '../../store/FormStore';
+import { LeftOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { FormContext } from '../../store/FormStore';
 import './NavBar.css';
 import JSONConverter from '../../helpers/JSONGenerator';
 import JSONGenerator from '../../helpers/JSONGenerator';
 
 function NavBar(): JSX.Element {
-    const { state, dispatch } = useContext(FormContext);
+    const { state } = useContext(FormContext);
     const [formPreview, setFormPreview] = useState(false);
     const { Title } = Typography;
 
@@ -65,34 +65,22 @@ function NavBar(): JSX.Element {
     }
 
     function validateForm(): boolean {
-        if (state.description.length === 0 || state.description === undefined) {
-            console.log(state.description);
-            dispatch(updateValidationFlag(true));
-            return false;
-        }
-        if (state.title === '' || state.title === undefined) {
-            dispatch(updateValidationFlag(true));
-            return false;
-        }
-        const sectionArray = Object.values(state.sections);
-        if (sectionArray.length > 1) {
-            for (let j = 0; j < sectionArray.length; j++) {
-                if (!sectionArray[j].valid) {
-                    dispatch(updateValidationFlag(true));
-                    return false;
-                }
-            }
-        }
+        // if (state.description === '' || state.description === undefined)
+        //     return false;
+        // if (state.title === '' || state.title === undefined) return false;
         const questionArray = Object.values(state.questions);
+        for (let j = 0; j < state.sectionOrder.length; j++) {
+            // if (!state.sections[key].valid) return false;
+        }
         for (let i = 0; i < questionArray.length; i++) {
-            console.log(questionArray);
-            if (!questionArray[i].valid || !questionArray[i].answer.valid) {
-                dispatch(updateValidationFlag(true));
+            if (/*!questionArray[i].valid ||*/ !questionArray[i].answer.valid) {
                 return false;
             }
         }
-        dispatch(updateValidationFlag(false));
         return true;
+    }
+    function confirmPreview() {
+        setFormPreview(true);
     }
 
     return (
@@ -157,8 +145,13 @@ function NavBar(): JSX.Element {
                                 if (validateForm()) {
                                     setFormPreview(true);
                                 } else {
-                                    message.error({
-                                        content: 'Fyll inn alle røde felter for å forhåndsvise.',
+                                    Modal.confirm({
+                                        content: 'Er du sikker på at du vil forhåndsvise?',
+                                        icon: <ExclamationCircleOutlined />,
+                                        title: 'Ikke alle felter er fylt ut.',
+                                        okText: 'Ja',
+                                        cancelText: 'Avbryt',
+                                        onOk: confirmPreview,
                                     });
                                 }
                             }}
@@ -173,10 +166,18 @@ function NavBar(): JSX.Element {
                             key="saveForm"
                             onClick={() => {
                                 if (validateForm()) {
+                                    message.success({
+                                        content: 'Skjemaet ble lastet ned.',
+                                    });
                                     exportToJsonAndDownload();
                                 } else {
-                                    message.error({
-                                        content: 'Fyll inn alle røde felter for å lagre.',
+                                    Modal.confirm({
+                                        content: 'Er du sikker på at du vil lagre?',
+                                        icon: <ExclamationCircleOutlined />,
+                                        title: 'Ikke alle felter er fylt ut.',
+                                        okText: 'Ja',
+                                        cancelText: 'Avbryt',
+                                        onOk: exportToJsonAndDownload,
                                     });
                                 }
                             }}
