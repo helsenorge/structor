@@ -80,6 +80,7 @@
 
     svg {
         margin: 0;
+        font-size: 0.7rem;
     }
 
     .ant-table-thead {
@@ -94,6 +95,14 @@
         }
 
         cursor: pointer;
+    }
+
+    .ant-table-column-sorter {
+        color: whitesmoke;
+        size: 0.0625rem;
+    }
+    .ant-table-column-sort {
+        background-color: inherit;
     }
 
     .mini {

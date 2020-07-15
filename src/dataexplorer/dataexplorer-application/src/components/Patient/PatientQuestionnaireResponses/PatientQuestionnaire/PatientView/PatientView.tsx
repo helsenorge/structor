@@ -26,6 +26,16 @@ const PatientView = (props: { dataSource: fhir.ResourceBase[]; hasQuestionnaireR
 
         return `${patientDay.toString()}.${patientMonth}.${patientYear.toString()} (${actualAge.toString()})`;
     };
+    const convertToNorwegianDate = (enDate: string) => {
+        const norDate =
+            enDate.split(' ')[0].split('.')[1] +
+            enDate.split(' ')[0].split('.')[0] +
+            enDate.split(' ')[0].split('.')[2] +
+            ' ' +
+            enDate.split(' ')[1];
+        return norDate;
+    };
+    const { setSchemanumber } = useContext(BreadcrumbContext);
     const { Title } = Typography;
     const name = patient.name[0].given[0] + ' ' + patient.name[0].family;
     const columns = [
@@ -33,12 +43,14 @@ const PatientView = (props: { dataSource: fhir.ResourceBase[]; hasQuestionnaireR
             title: 'Skjemanavn',
             dataIndex: 'schemaName',
             key: 'schemaName',
+            sorter: (a: any, b: any) => a.schemaName.localeCompare(b.schemaName),
         },
         {
             title: 'Innsendt',
             dataIndex: 'submitted',
             key: 'submitted',
-            sorter: (a: any, b: any) => dayjs(a.submitted).unix() - dayjs(b.submitted).unix(),
+            sorter: (a: any, b: any) =>
+                dayjs(convertToNorwegianDate(a.submitted)).unix() - dayjs(convertToNorwegianDate(b.submitted)).unix(),
         },
     ];
 
