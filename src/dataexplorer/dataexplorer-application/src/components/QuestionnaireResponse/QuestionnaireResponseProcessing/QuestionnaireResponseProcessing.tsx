@@ -87,14 +87,14 @@ const QuestionnaireResponseProcessing = (props: {
 
     return (
         <>
-            {questionnaire && questionnaire.name && (
+            {questionnaire && (
                 <div>
                     <SchemaView
                         questions={questions}
                         answers={answers}
                         questionnaireResource={questionnaireResource}
                         date={dayjs(props.schemaResponse.authored)}
-                        title={questionnaire.name}
+                        title={questionnaire.title ? questionnaire.title : 'Tittel mangler'}
                     />
                 </div>
             )}

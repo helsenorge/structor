@@ -62,8 +62,8 @@ const QuestionsAndAnswersDisplay = (props: IQuestionsAndAnswersDisplayProps) => 
                             : props.questionAndAnswer.answers?.id
                     }
                 >
-                    {item.valueBoolean && <p>Sant</p>}
-                    {item.valueBoolean === false && <p>Usant</p>}
+                    {item.valueBoolean && <p>Valgt</p>}
+                    {item.valueBoolean === false && <p>Ikke valgt</p>}
                     {item.valueCoding?.display}
                     {item.valueDate}
                     {item.valueDateTime?.replace('T', ' ')}
