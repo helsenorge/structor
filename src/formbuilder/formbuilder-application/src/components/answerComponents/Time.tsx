@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Col, Row, Button, TimePicker, DatePicker, Checkbox, Radio, Input } from 'antd';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { ITime, TimeIntervalType } from '../../types/IAnswer';
@@ -119,8 +119,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                             {timePickerRenderer(
                                 !localAnswer.hasDefaultTime,
                                 Moment(localAnswer.defaultTime),
-                                (value, valueString) => {
-                                    console.log(valueString);
+                                (value) => {
                                     const tmp = { ...localAnswer };
                                     tmp.defaultTime = value?.valueOf();
                                     localUpdate(tmp, true);

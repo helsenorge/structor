@@ -1,11 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Input, Row, Col, Checkbox, Select, Tooltip, Button, Form } from 'antd';
+import React, { useContext } from 'react';
+import { Input, Row, Col, Checkbox, Select, Tooltip, Button } from 'antd';
 import './answerComponents/AnswerComponent.css';
-import { FormContext, updateQuestion, updateSection } from '../store/FormStore';
+import { FormContext, updateQuestion } from '../store/FormStore';
 import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes, { IChoice, INumber, IText, IBoolean, ITime, IAnswer } from '../types/IAnswer';
-import moment from 'moment';
 
 const { Option } = Select;
 

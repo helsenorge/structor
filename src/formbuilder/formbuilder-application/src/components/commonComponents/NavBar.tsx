@@ -8,7 +8,7 @@ import JSONGenerator from '../../helpers/JSONGenerator';
 import AnswerTypes from '../../types/IAnswer';
 
 function NavBar(): JSX.Element {
-    const { state, dispatch } = useContext(FormContext);
+    const { state } = useContext(FormContext);
     const [formPreview, setFormPreview] = useState(false);
     const { Title } = Typography;
 
@@ -66,7 +66,6 @@ function NavBar(): JSX.Element {
     }
 
     function validateForm(): boolean {
-        console.log('Validerer');
         if (state.description.length === 0 || state.description === undefined) {
             return false;
         }
@@ -83,7 +82,6 @@ function NavBar(): JSX.Element {
         }
         const questionArray = Object.values(state.questions);
         for (let i = 0; i < questionArray.length; i++) {
-            console.log(questionArray);
             if (!questionArray[i].questionText || questionArray[i].answerType === AnswerTypes.default) {
                 return false;
             }

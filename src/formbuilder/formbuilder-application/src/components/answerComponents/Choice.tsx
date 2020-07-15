@@ -120,7 +120,6 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     defaultValue={choices[id]}
                     style={{ width: '100%' }}
                     onBlur={(e) => {
-                        console.log('Blur');
                         updateChoices({ id: id, value: e.target.value, updateState: true });
                     }}
                     onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {

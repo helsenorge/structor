@@ -1,9 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Checkbox, Form, Input, Row, Col } from 'antd';
+import React, { useContext } from 'react';
+import { Checkbox, Input, Row, Col } from 'antd';
 import './AnswerComponent.css';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { IText } from '../../types/IAnswer';
-import moment from 'moment';
 
 type TextInputProps = {
     questionId: string;

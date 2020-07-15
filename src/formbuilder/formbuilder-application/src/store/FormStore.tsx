@@ -20,7 +20,6 @@ import UpdateActions from './UpdateActions';
 import SwapActions from './SwapActions';
 import DuplicateActions from './DuplicateActions';
 import FormMetaActions from './FormMetaActions';
-import moment from 'moment';
 
 const initSectionId = generateID();
 const initSection: ISection = {

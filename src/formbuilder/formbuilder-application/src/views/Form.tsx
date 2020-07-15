@@ -50,7 +50,6 @@ function CreateForm(): JSX.Element {
     function onBeforeCapture(startResponder: DND.BeforeCapture) {
         const focusButton = document.getElementById('stealFocus_' + startResponder.draggableId);
         if (focusButton) {
-            console.log('Fant fokus');
             focusButton.focus();
         }
         setCollapsedSection(startResponder.draggableId);
@@ -75,7 +74,7 @@ function CreateForm(): JSX.Element {
             <Row justify="center">
                 <DND.DragDropContext onDragEnd={onDragEnd} onBeforeCapture={onBeforeCapture}>
                     <DND.Droppable droppableId="section" type="section">
-                        {(provided, snapshot) => (
+                        {(provided) => (
                             <Col xl={16} lg={18} md={22} xs={24}>
                                 <div
                                     ref={provided.innerRef}
@@ -91,7 +90,7 @@ function CreateForm(): JSX.Element {
                                                 draggableId={sectionId}
                                                 index={index}
                                             >
-                                                {(provided, snapshot) => (
+                                                {(provided) => (
                                                     <div ref={provided.innerRef} {...provided.draggableProps}>
                                                         <Section
                                                             key={sectionId}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Row, Col, Button, Tooltip, Input, Popconfirm, Form } from 'antd';
+import { Row, Col, Button, Tooltip, Input, Popconfirm } from 'antd';
 import { PlusOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import QuestionWrapper from './QuestionWrapper';
 import { FormContext, addNewQuestion, removeQuestion, duplicateQuestion, updateSection } from '../store/FormStore';
@@ -32,7 +32,6 @@ function Section({
     const [placeholder, setPlaceholder] = useState('Tittel...');
     const [collapsedSection, setCollapsedSection] = useState(false);
     const { state, dispatch } = useContext(FormContext);
-    const section = state.sections[sectionId];
 
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (sectionIndex + 1) + '...';

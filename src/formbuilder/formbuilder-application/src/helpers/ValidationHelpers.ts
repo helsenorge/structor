@@ -50,7 +50,6 @@ export function setVisitedField(
     setValidationObject: (value: React.SetStateAction<IValidation>) => void,
 ): void {
     const tempObject = { ...validationObject };
-    console.log(tempObject.visitedFields);
     tempObject.visitedFields[field] = moment().valueOf();
     setValidationObject(tempObject);
 }
@@ -86,8 +85,6 @@ export function checkErrorFields(
     for (let i = 0; i < tempError.length; i++) {
         tempError[i] = setError(validationFlag, i, tempObject.validationList, tempObject.visitedFields);
     }
-    console.log(tempObject.visitedFields);
-    console.log(tempError);
     setErrorList(tempError);
 }
 function setError(

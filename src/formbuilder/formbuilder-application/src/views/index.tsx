@@ -51,16 +51,18 @@ function Index(): JSX.Element {
         history.push('/create-form');
     }
 
-    function onChange(event: any) {
+    function onChange(event: React.ChangeEvent<HTMLInputElement>) {
         const reader = new FileReader();
         reader.onload = onReaderLoad;
-        reader.readAsText(event.target.files[0]);
+        if (event.target.files && event.target.files[0]) reader.readAsText(event.target.files[0]);
     }
 
-    function onReaderLoad(event: any) {
-        const obj = JSON.parse(event.target.result);
-        reuploadJSONFile(obj);
-        history.push('/create-form');
+    function onReaderLoad(event: ProgressEvent<FileReader>) {
+        if (event.target && event.target.result) {
+            const obj = JSON.parse(event.target.result as string);
+            reuploadJSONFile(obj);
+            history.push('/create-form');
+        }
     }
 
     return (
