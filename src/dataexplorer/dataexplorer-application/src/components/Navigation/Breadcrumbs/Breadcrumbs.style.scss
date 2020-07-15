@@ -13,9 +13,12 @@
         font-size: 1rem;
     }
     #breadcrumb-name {
+        font-weight: normal;
+    }
+    #breadcrumb-name-focus {
         font-weight: bold;
     }
-    .breadcrumbs-schema {
+    #breadcrumb-schema-focus {
         font-weight: bold;
     }
 }
