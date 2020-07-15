@@ -208,7 +208,7 @@ const PatientView = (props: {
                                       getCheckboxProps: () => ({
                                           disabled: true,
                                       }),
-                                      selectedRowKeys: undefined,
+                                      selectedRowKeys: [],
                                   }
                         }
                     />
