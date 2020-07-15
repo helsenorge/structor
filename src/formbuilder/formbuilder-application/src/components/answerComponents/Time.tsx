@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Col, Row, Button, TimePicker, DatePicker, Checkbox, Radio, Input } from 'antd';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { ITime, TimeIntervalType } from '../../types/IAnswer';
@@ -6,19 +6,51 @@ import Moment from 'moment';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import './AnswerComponent.css';
+import { validateNumber, IValidation, checkErrorFields } from '../../helpers/ValidationHelpers';
 
 type TimeProps = {
     questionId: string;
 };
 
+const inputStyle = {
+    width: '100px',
+    padding: '8px',
+    lineHeight: '1',
+};
+
 function Time({ questionId }: TimeProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const [localAnswer, setLocalAnswer] = useState(state.questions[questionId].answer as ITime);
-    const inputStyle = {
-        width: '100px',
-        padding: '8px',
-        lineHeight: '1', 
-    };
+    const [errorList, setErrorList] = useState([false]);
+    const [validationObject, setValidationObject] = useState({
+        checkedList: [
+            localAnswer.isDate || localAnswer.isTime,
+            localAnswer.hasDefaultTime,
+            localAnswer.hasInterval,
+            localAnswer.timeIntervalType === TimeIntervalType.FIXED ||
+                localAnswer.timeIntervalType === TimeIntervalType.FLOATING,
+            localAnswer.hasStartTime,
+            localAnswer.hasEndTime,
+        ],
+        visitedFields: [
+            localAnswer.isDate || localAnswer.isTime,
+            localAnswer.defaultTime !== undefined,
+            localAnswer.hasInterval,
+            localAnswer.timeIntervalType === TimeIntervalType.FIXED ||
+                localAnswer.timeIntervalType === TimeIntervalType.FLOATING,
+            localAnswer.startTime !== undefined,
+            localAnswer.endTime !== undefined,
+        ],
+        validationList: [
+            localAnswer.isDate || localAnswer.isTime,
+            validateNumber(localAnswer.defaultTime),
+            localAnswer.hasInterval,
+            localAnswer.timeIntervalType === TimeIntervalType.FIXED ||
+                localAnswer.timeIntervalType === TimeIntervalType.FLOATING,
+            validateNumber(localAnswer.startTime),
+            validateNumber(localAnswer.endTime),
+        ],
+    } as IValidation);
 
     function getTimeFormat(): string {
         if (localAnswer.isTime && localAnswer.isDate) return 'DD.MM.YYYY  HH:mm';
@@ -40,6 +72,13 @@ function Time({ questionId }: TimeProps): JSX.Element {
         setLocalAnswer(tmp);
         dispatch(updateAnswer(questionId, tmp));
     }
+
+    useEffect(() => {
+        const tempAnswer = { ...state.questions[questionId].answer };
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList);
+        tempAnswer.valid = !validationObject.validationList.includes(false);
+        dispatch(updateAnswer(questionId, tempAnswer));
+    }, [validationObject, state.validationFlag]);
 
     function timePickerRenderer(
         disabled: boolean,
@@ -98,6 +137,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                         Dato og Tid
                     </Button>
                 </Col>
+                {errorList[0] && <p style={{ color: 'red' }}> Velg type</p>}
             </Row>
             {(localAnswer.isDate || localAnswer.isTime) && (
                 <>
