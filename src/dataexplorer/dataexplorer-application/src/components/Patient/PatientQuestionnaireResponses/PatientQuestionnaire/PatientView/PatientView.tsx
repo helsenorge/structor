@@ -1,6 +1,6 @@
 import React, { useContext, ReactText, useState, useEffect } from 'react';
 import { IPatient, IDataSource } from 'types/IPatient';
-import { Row, Col, Card, Table, Typography, Spin, Button, message } from 'antd';
+import { Row, Col, Card, Table, Typography, Spin, Button, message, Empty } from 'antd';
 import dayjs from 'dayjs';
 import { useHistory } from 'react-router-dom';
 import './PatientView.style.scss';
@@ -129,29 +129,31 @@ const PatientView = (props: {
                             </div>
                         </div>
                     </Card>
-                    <Row>
-                        <Col span={12}>
-                            <Button
-                                className="compare-button"
-                                block
-                                onClick={() => setCompareSchemesMode(!compareSchemesMode)}
-                            >
-                                {!compareSchemesMode && <p>Sammenlign to skjemaer</p>}
-                                {compareSchemesMode && <p>Slå av sammenligning</p>}
-                            </Button>
-                        </Col>
-                        <Col span={12}>
-                            {compareSchemesMode && comparingSchemesIds.length === 2 ? (
-                                <Button className="compare-button" block onClick={() => handleCompareClick()}>
-                                    Sammenlign markerte skjemaer
+                    {props.dataSource.length > 1 && (
+                        <Row>
+                            <Col span={12}>
+                                <Button
+                                    className="compare-button"
+                                    block
+                                    onClick={() => setCompareSchemesMode(!compareSchemesMode)}
+                                >
+                                    {!compareSchemesMode && <p>Sammenlign to skjemaer</p>}
+                                    {compareSchemesMode && <p>Slå av sammenligning</p>}
                                 </Button>
-                            ) : (
-                                <Button disabled className="compare-button" id="disabled" block>
-                                    Sammenlign markerte skjemaer
-                                </Button>
-                            )}
-                        </Col>
-                    </Row>
+                            </Col>
+                            <Col span={12}>
+                                {compareSchemesMode && comparingSchemesIds.length === 2 ? (
+                                    <Button className="compare-button" block onClick={() => handleCompareClick()}>
+                                        Sammenlign markerte skjemaer
+                                    </Button>
+                                ) : (
+                                    <Button disabled className="compare-button" id="disabled" block>
+                                        Sammenlign markerte skjemaer
+                                    </Button>
+                                )}
+                            </Col>
+                        </Row>
+                    )}
                     <Table
                         key={'Patient Questionnaire Response Key'}
                         rowKey={(record) => (record.id ? record.id : 'waiting for response')}
@@ -188,28 +190,31 @@ const PatientView = (props: {
                             cancelSort: 'Nullstill sortering',
                             triggerAsc: 'Sorter i stigende rekkefølge',
                             triggerDesc: 'Sorter i synkende rekkefølge',
+                            emptyText: <Empty description={'Pasienten har ingen skjemabesvarelser'} />,
                         }}
                         rowSelection={
-                            compareSchemesMode
-                                ? {
-                                      type: 'checkbox',
-                                      hideSelectAll: true,
-                                      onChange: (selectedRowKeys: ReactText[]) => {
-                                          if (selectedRowKeys.length <= MAX_VALUE) {
-                                              setComparingSchemesIds(selectedRowKeys);
-                                              setReachedMaxValue(false);
-                                          } else setReachedMaxValue(true);
-                                      },
-                                      selectedRowKeys: comparingSchemesIds,
-                                  }
-                                : {
-                                      type: 'checkbox',
-                                      hideSelectAll: true,
-                                      getCheckboxProps: () => ({
-                                          disabled: true,
-                                      }),
-                                      selectedRowKeys: [],
-                                  }
+                            props.dataSource.length > 1
+                                ? compareSchemesMode
+                                    ? {
+                                          type: 'checkbox',
+                                          hideSelectAll: true,
+                                          onChange: (selectedRowKeys: ReactText[]) => {
+                                              if (selectedRowKeys.length <= MAX_VALUE) {
+                                                  setComparingSchemesIds(selectedRowKeys);
+                                                  setReachedMaxValue(false);
+                                              } else setReachedMaxValue(true);
+                                          },
+                                          selectedRowKeys: comparingSchemesIds,
+                                      }
+                                    : {
+                                          type: 'checkbox',
+                                          hideSelectAll: true,
+                                          getCheckboxProps: () => ({
+                                              disabled: true,
+                                          }),
+                                          selectedRowKeys: [],
+                                      }
+                                : undefined
                         }
                     />
                 </Col>
