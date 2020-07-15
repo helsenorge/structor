@@ -23,9 +23,10 @@ const Navigation = () => {
                         <h1>Dr. Gregory House</h1>
                     </div>
                 </Header>
-                <div className="breadcrumb-header">
+                <Header>
                     <Breadcrumbs />
-                </div>
+                </Header>
+
                 <Content>
                     <div className="content">
                         <Switch>

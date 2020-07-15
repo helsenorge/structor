@@ -1,16 +1,20 @@
 @import '_variables';
 
 .breadcrumbs-container {
+    position: fixed;
+    z-index: 4;
+    width: 100%;
+    margin-top: 64px;
+    padding: 0.3125rem;
     display: flex;
     flex-direction: row;
     flex-grow: 2;
-    position: fixed;
-    padding: 0.3125rem;
+    background-color: $background;
 
     .breadcrumbs-item {
-        color: black;
         padding-left: 0.1875rem;
         font-size: 1rem;
+        color: black;
     }
     #breadcrumb-name {
         font-weight: bold;
