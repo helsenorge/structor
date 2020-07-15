@@ -4,7 +4,7 @@ import './answerComponents/AnswerComponent.css';
 import { FormContext, updateQuestion } from '../store/FormStore';
 import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
-import AnswerTypes, { IChoice, INumber, IText, IBoolean, ITime, IAnswer } from '../types/IAnswer';
+import AnswerTypes, { IChoice, INumber, IText, IBoolean, ITime, IAnswer, IInfo } from '../types/IAnswer';
 
 const { Option } = Select;
 
@@ -40,7 +40,6 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
             switch (attribute.answerType) {
                 case AnswerTypes.choice:
                     temp.answer = {
-                        valid: true,
                         id: questionId,
                         choices: [''],
                         isMultiple: false,
@@ -50,7 +49,6 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     break;
                 case AnswerTypes.number:
                     temp.answer = {
-                        valid: true,
                         id: questionId,
                         hasMax: false,
                         hasMin: false,
@@ -60,11 +58,10 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     } as INumber;
                     break;
                 case AnswerTypes.text:
-                    temp.answer = { id: questionId, isLong: false, valid: true } as IText;
+                    temp.answer = { id: questionId, isLong: false } as IText;
                     break;
                 case AnswerTypes.boolean:
                     temp.answer = {
-                        valid: true,
                         id: questionId,
                         isChecked: false,
                         label: '',
@@ -72,7 +69,6 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                     break;
                 case AnswerTypes.time:
                     temp.answer = {
-                        valid: true,
                         id: questionId,
                         isTime: false,
                         isDate: false,
@@ -80,6 +76,13 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                         hasStartTime: false,
                         hasEndTime: false,
                     } as ITime;
+                    break;
+                case AnswerTypes.info:
+                    temp.answer = {
+                        id: questionId,
+                        info: '',
+                        hasInfo: false,
+                    } as IInfo;
                     break;
                 default:
                     temp.answer = { id: questionId } as IAnswer;

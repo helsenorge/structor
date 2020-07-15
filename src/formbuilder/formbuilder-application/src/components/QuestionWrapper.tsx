@@ -55,6 +55,18 @@ function QuestionWrapper({
         updateStore({ collapsed: collapsed });
     }
 
+    function disableButtons(): boolean {
+        return (
+            (state.questions[questionId].questionText.length === 0 &&
+                state.questions[questionId].answerType !== AnswerTypes.info) ||
+            state.questions[questionId].answerType === AnswerTypes.default ||
+            (state.questions[questionId].answerType === AnswerTypes.info &&
+                (state.questions[questionId].answer as IInfo).info === undefined) ||
+            ((state.questions[questionId].answer as IInfo).info !== undefined &&
+                (state.questions[questionId].answer as IInfo).info.length === 0)
+        );
+    }
+
     function iFrameLoaded() {
         const tempSection: ISection = {
             id: 'PreviewSection',
@@ -118,27 +130,48 @@ function QuestionWrapper({
                 </Row>
                 <Row style={{ float: 'right', paddingTop: '10px' }}>
                     <Col span={24}>
-                        <Button
-                            style={{
-                                zIndex: 1,
-                                color: 'var(--primary-1)',
-                                marginLeft: '10px',
-                                float: 'right',
-                                width: '125px',
-                            }}
-                            icon={<CopyOutlined />}
-                            type="default"
-                            onClick={() => duplicateQuestion()}
-                        >
-                            Dupliser
-                        </Button>
+                        {disableButtons() ? (
+                            <Popover
+                                content={!isInfo ? previewWarning : 'Fyll inn informasjonsfeltet.'}
+                                title="Ingenting å duplisere"
+                                placement="bottom"
+                            >
+                                <Button
+                                    style={{
+                                        zIndex: 1,
+                                        color: 'var(--primary-1)',
+                                        marginLeft: '10px',
+                                        float: 'left',
+                                        width: '125px',
+                                    }}
+                                    icon={<EyeOutlined />}
+                                    type="default"
+                                    disabled
+                                >
+                                    Dupliser
+                                </Button>
+                            </Popover>
+                        ) : (
+                            <Button
+                                style={{
+                                    zIndex: 1,
+                                    color: 'var(--primary-1)',
+                                    marginLeft: '10px',
+                                    float: 'right',
+                                    width: '125px',
+                                }}
+                                icon={<CopyOutlined />}
+                                type="default"
+                                onClick={() => duplicateQuestion()}
+                            >
+                                Dupliser
+                            </Button>
+                        )}
                     </Col>
                 </Row>
                 <Row style={{ float: 'right', paddingTop: '10px' }}>
                     <Col span={24}>
-                        {(state.questions[questionId].questionText.length === 0 &&
-                            state.questions[questionId].answerType !== AnswerTypes.info) ||
-                        state.questions[questionId].answerType === AnswerTypes.default ? (
+                        {disableButtons() ? (
                             <Popover
                                 content={!isInfo ? previewWarning : 'Fyll inn informasjonsfeltet.'}
                                 title="Ingenting å forhåndsvise"
@@ -256,7 +289,7 @@ function QuestionWrapper({
                     <>
                         <Col span={3} style={{ padding: '5px 10px' }}>
                             <h4 style={{ float: 'right', color: 'grey' }}>
-                                {String(cronologicalID.map((a) => a + 1))}
+                                {String(cronologicalID.map((a) => a + 1)).replace(',', '.')}
                             </h4>
                         </Col>
                         <Col span={20} style={{ width: '100%' }}>
@@ -273,7 +306,7 @@ function QuestionWrapper({
                     <>
                         <Col span={3} style={{ padding: '5px 10px' }}>
                             <h4 style={{ float: 'right', color: 'grey' }}>
-                                {String(cronologicalID.map((a) => a + 1))}
+                                {String(cronologicalID.map((a) => a + 1)).replace(',', '.')}
                             </h4>
                         </Col>
                         {!state.questions[questionId].collapsed ? (

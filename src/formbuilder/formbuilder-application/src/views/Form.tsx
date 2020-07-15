@@ -126,7 +126,10 @@ function CreateForm(): JSX.Element {
                                 type="dashed"
                                 ghost
                                 size="large"
-                                onClick={() => setHasSections(true)}
+                                onClick={() => {
+                                    setHasSections(true);
+                                    window.scrollTo(0, 0);
+                                }}
                             >
                                 Del inn i seksjoner
                             </Button>
