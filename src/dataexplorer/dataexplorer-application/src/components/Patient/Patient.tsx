@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import PatientQuestionnaireResponses from './PatientQuestionnaireResponses/PatientQuestionnaireResponses';
 import './Patient-style.scss';
-import { PatientContext } from './PatientContext';
 import FetchQuestionnaireResponses from 'components/QuestionnaireResponse/FetchQuestionnaireResponses';
+import { GlobalContext } from 'context/GlobalContext';
 
 interface IPatientProps {
     patientID: string | null;
@@ -16,7 +16,7 @@ const Patient = () => {
         setComparableSchemaNumbers,
         questionnaireResponse,
         questionnaire,
-    } = useContext(PatientContext);
+    } = useContext(GlobalContext);
     // The oid signifies that we are searching on social security number
     useEffect(() => {
         setSchemanumber('');

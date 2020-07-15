@@ -2,12 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import PatientView from './PatientView/PatientView';
 import { Row, Spin } from 'antd';
 import dayjs from 'dayjs';
-import { PatientContext } from 'components/Patient/PatientContext';
+import { GlobalContext } from 'context/GlobalContext';
 
 const PatientQuestionnaire = () => {
     const [dataSource, setDataSource] = useState<fhir.ResourceBase[]>([]);
 
-    const { questionnaire, questionnaireResponse: questionnaireResponses } = useContext(PatientContext);
+    const { questionnaire, questionnaireResponse: questionnaireResponses } = useContext(GlobalContext);
 
     useEffect(() => {
         const qdict = new Map();

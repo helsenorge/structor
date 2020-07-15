@@ -3,7 +3,7 @@ import { IPatientIdentifier } from 'types/IPatient';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import { IQuestionnaire } from 'types/IQuestionnaire';
 
-interface IPatientContext {
+interface IGlobalContext {
     name: string;
     setName: Dispatch<SetStateAction<string>>;
     patientId: string;
@@ -19,7 +19,7 @@ interface IPatientContext {
     questionnaireResponse: IQuestionnaireResponse;
     setQuestionnaireResponse: Dispatch<SetStateAction<IQuestionnaireResponse>>;
 }
-export const PatientContext = createContext<IPatientContext>({
+export const GlobalContext = createContext<IGlobalContext>({
     name: '',
     setName: () => {},
     patientId: '',
@@ -36,4 +36,4 @@ export const PatientContext = createContext<IPatientContext>({
     setQuestionnaireResponse: () => {},
 });
 
-export const { Provider } = PatientContext;
+export const { Provider } = GlobalContext;

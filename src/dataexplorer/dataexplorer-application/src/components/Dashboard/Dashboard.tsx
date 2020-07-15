@@ -5,10 +5,10 @@ import PatientPreview from './PatientPreview/PatientPreview';
 import FloatLabel from './FloatLabel/FloatLabel';
 import './Dashboard.style.scss';
 import './FloatLabel/FloatLabel.scss';
-import { PatientContext } from 'components/Patient/PatientContext';
 import { IPatientIdentifier } from 'types/IPatient';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import { IQuestionnaire } from 'types/IQuestionnaire';
+import { GlobalContext } from 'context/GlobalContext';
 
 const Dashboard = () => {
     const [searchValue, setSearchValue] = useState<number>();
@@ -23,7 +23,7 @@ const Dashboard = () => {
         setPatient,
         setQuestionnaireResponse,
         setQuestionnaire,
-    } = useContext(PatientContext);
+    } = useContext(GlobalContext);
 
     message.config({ maxCount: 1 });
     const handleSearch = (value: string) => {
