@@ -4,8 +4,8 @@ import { IQuestionnaire } from 'types/IQuestionnaire';
 import { Row, Spin } from 'antd';
 import { GlobalContext } from 'context/GlobalContext';
 
-const FetchQuestionnaires = ({ questionnaireId }: any) => {
-    const { response: questionnaire } = useFetch<IQuestionnaire>('fhir/Questionnaire?_id=' + questionnaireId);
+const FetchQuestionnaires = (props: { questionnaireId: string }) => {
+    const { response: questionnaire } = useFetch<IQuestionnaire>('fhir/Questionnaire?_id=' + props.questionnaireId);
     const { setQuestionnaire } = useContext(GlobalContext);
 
     useEffect(() => {
