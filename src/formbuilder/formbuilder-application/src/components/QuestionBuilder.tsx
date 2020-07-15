@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
-import { Input, Row, Col, Checkbox, Select, Tooltip, Button } from 'antd';
+import React, { useContext, useState, useEffect } from 'react';
+import { Input, Row, Col, Checkbox, Select, Tooltip, Button, Form } from 'antd';
 import './answerComponents/AnswerComponent.css';
-import { FormContext, updateQuestion } from '../store/FormStore';
+import { FormContext, updateQuestion, updateSection } from '../store/FormStore';
 import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes, { IChoice, INumber, IText, IBoolean, ITime, IAnswer } from '../types/IAnswer';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -17,7 +18,6 @@ type QuestionProps = {
 
 function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    // const [localQuestion, setLocalQuestion] = useState(state.questions[questionId] as IQuestion);
     const localQuestion = { ...state.questions[questionId] } as IQuestion;
 
     function updateStore(attribute: {
@@ -96,13 +96,12 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                 <Col span={17} style={{ paddingRight: '5px' }}>
                     <Input
                         placeholder={localQuestion.placeholder}
-                        className="input-question"
                         defaultValue={localQuestion.questionText}
-                        onBlur={(e) =>
+                        onBlur={(e) => {
                             updateStore({
                                 questionText: e.target.value === undefined ? '' : e.target.value,
-                            })
-                        }
+                            });
+                        }}
                     />
                 </Col>
                 <Col span={6}></Col>
@@ -159,7 +158,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                         Velg type spørsmål:{' '}
                                     </p>
                                     <Select
-                                        value={localQuestion.answerType}
+                                        defaultValue={localQuestion.answerType}
                                         style={{
                                             width: '200px',
                                             float: 'left',

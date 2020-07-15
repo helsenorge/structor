@@ -89,8 +89,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     function deleteButton(id: number): JSX.Element {
         return (
-            <Tooltip title="Fjern alternativ" placement="right">
+            <Tooltip key={'delete_tooltip_' + choiceID[id]} title="Fjern alternativ" placement="right">
                 <Button
+                    key={'delete_' + choiceID[id]}
                     id="stealFocus"
                     type="text"
                     shape="circle"
@@ -115,12 +116,13 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     key={'Input_' + choiceID[id]}
                     id={'Input_' + choiceID[id]}
                     type="text"
-                    className="input-question"
                     placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
-                    value={choices[id]}
+                    defaultValue={choices[id]}
                     style={{ width: '100%' }}
-                    onChange={(e) => updateChoices({ id: id, value: e.target.value })}
-                    onBlur={() => updateChoices({ updateState: true })}
+                    onBlur={(e) => {
+                        console.log('Blur');
+                        updateChoices({ id: id, value: e.target.value, updateState: true });
+                    }}
                     onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
                         if (event.charCode === 13) {
                             updateChoices({ mode: 'add' });
@@ -138,20 +140,23 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     function createCheckbox(id: number) {
         return (
-            <Row style={{ width: '97.5%', height: '30px', lineHeight: '30px', marginBottom: 10, marginLeft: 0 }}>
+            <Row
+                key={'checkbox_row' + choiceID[id]}
+                style={{ width: '97.5%', height: '30px', lineHeight: '30px', marginBottom: 10, marginLeft: 0 }}
+            >
                 <Col style={{ width: '5%' }}>
-                    <Checkbox key={'Checkbox_' + choiceID[id]} disabled={true} value={id} checked={false} />
+                    <Checkbox disabled={true} value={id} checked={false} />
                 </Col>
                 <Col style={{ width: '93%' }}>
                     <Input
-                        key={'Input_' + choiceID[id]}
                         id={'Input_' + choiceID[id]}
                         type="text"
                         className="input-question"
                         placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
                         defaultValue={localAnswer.choices[id]}
-                        onChange={(e) => updateChoices({ id: id, value: e.target.value })}
-                        onBlur={() => updateChoices({ updateState: true })}
+                        onBlur={(e) => {
+                            updateChoices({ id: id, value: e.target.value, updateState: true });
+                        }}
                         onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
                             if (event.charCode === 13) {
                                 updateChoices({ mode: 'add' });
@@ -215,8 +220,9 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                 Forhåndsvelg standardalternativ:
                             </Checkbox>
                             <Select
+                                className="input-question"
                                 key="select_default_value"
-                                value={localAnswer.defaultValue}
+                                defaultValue={localAnswer.defaultValue}
                                 disabled={!(localAnswer.hasDefault && !localAnswer.isMultiple)}
                                 style={{ width: '200px' }}
                                 onSelect={(value) => {
@@ -240,7 +246,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
             )}
 
             {localAnswer.isMultiple ? (
-                <div className="question-component" style={choiceStyle}>
+                <div key={'choice_add_multiple'} className="question-component" style={choiceStyle}>
                     <h4>Skriv inn svaralternativer under:</h4>
                     {choices.map((name, id) => [createCheckbox(id)])}
                     <Button
@@ -253,7 +259,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     </Button>
                 </div>
             ) : (
-                <div className="question-component" style={choiceStyle}>
+                <div key={'choice_add_radio'} className="question-component" style={choiceStyle}>
                     <h4>Skriv inn svaralternativer under:</h4>
                     <Radio.Group
                         name="radiogroup"

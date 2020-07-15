@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Col, Row, Button, TimePicker, DatePicker, Checkbox, Radio, Input } from 'antd';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { ITime, TimeIntervalType } from '../../types/IAnswer';
@@ -11,14 +11,15 @@ type TimeProps = {
     questionId: string;
 };
 
+const inputStyle = {
+    width: '100px',
+    padding: '8px',
+    lineHeight: '1',
+};
+
 function Time({ questionId }: TimeProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const [localAnswer, setLocalAnswer] = useState(state.questions[questionId].answer as ITime);
-    const inputStyle = {
-        width: '100px',
-        padding: '8px',
-        lineHeight: '1', 
-    };
 
     function getTimeFormat(): string {
         if (localAnswer.isTime && localAnswer.isDate) return 'DD.MM.YYYY  HH:mm';

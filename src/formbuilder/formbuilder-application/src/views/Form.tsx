@@ -50,6 +50,7 @@ function CreateForm(): JSX.Element {
     function onBeforeCapture(startResponder: DND.BeforeCapture) {
         const focusButton = document.getElementById('stealFocus_' + startResponder.draggableId);
         if (focusButton) {
+            console.log('Fant fokus');
             focusButton.focus();
         }
         setCollapsedSection(startResponder.draggableId);
@@ -95,6 +96,7 @@ function CreateForm(): JSX.Element {
                                                         <Section
                                                             key={sectionId}
                                                             sectionId={sectionId}
+                                                            valid={true}
                                                             duplicateSection={() =>
                                                                 dispatchDuplicateSection(index, sectionId)
                                                             }

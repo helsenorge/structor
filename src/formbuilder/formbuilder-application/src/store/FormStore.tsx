@@ -20,12 +20,14 @@ import UpdateActions from './UpdateActions';
 import SwapActions from './SwapActions';
 import DuplicateActions from './DuplicateActions';
 import FormMetaActions from './FormMetaActions';
+import moment from 'moment';
 
 const initSectionId = generateID();
 const initSection: ISection = {
     id: initSectionId,
     questionOrder: [],
     sectionTitle: '',
+    description: '',
 };
 const initSections: SectionList = {};
 initSections[initSectionId] = initSection;
@@ -76,6 +78,7 @@ export function addNewSection(section?: ISection): UpdateAction {
             id: sectionId,
             questionOrder: [],
             sectionTitle: '',
+            description: '',
         },
     };
 }

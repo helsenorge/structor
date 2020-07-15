@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Row, Col, Button, Tooltip, Input, Popconfirm } from 'antd';
+import { Row, Col, Button, Tooltip, Input, Popconfirm, Form } from 'antd';
 import { PlusOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import QuestionWrapper from './QuestionWrapper';
 import { FormContext, addNewQuestion, removeQuestion, duplicateQuestion, updateSection } from '../store/FormStore';
@@ -16,6 +16,7 @@ type SectionProps = {
     provided?: DND.DraggableProvided;
     collapsed: boolean;
     sectionIndex: number;
+    valid: boolean;
     hasSections: boolean;
 };
 
@@ -30,8 +31,8 @@ function Section({
 }: SectionProps): JSX.Element {
     const [placeholder, setPlaceholder] = useState('Tittel...');
     const [collapsedSection, setCollapsedSection] = useState(false);
-
     const { state, dispatch } = useContext(FormContext);
+    const section = state.sections[sectionId];
 
     function findPlaceholder() {
         const placeholderString = 'Seksjon ' + (sectionIndex + 1) + '...';
@@ -111,14 +112,13 @@ function Section({
                         >
                             <Input
                                 placeholder={placeholder}
-                                className="input-question"
                                 size="large"
                                 defaultValue={state.sections[sectionId].sectionTitle}
-                                onBlur={(e) =>
+                                onBlur={(e) => {
                                     localUpdate({
                                         sectionTitle: e.target.value,
-                                    })
-                                }
+                                    });
+                                }}
                             />
                         </Col>
                         <Col md={0} lg={5}></Col>
@@ -159,9 +159,10 @@ function Section({
                         <Col xs={15} lg={14}>
                             <TextArea
                                 placeholder="Beskrivelse av seksjon..."
-                                className="input-question"
                                 defaultValue={state.sections[sectionId].description}
-                                onBlur={(e) => localUpdate({ description: e.target.value })}
+                                onBlur={(e) => {
+                                    localUpdate({ description: e.target.value });
+                                }}
                                 rows={3}
                             ></TextArea>
                         </Col>
@@ -229,7 +230,6 @@ function Section({
             ) : (
                 provided && <div {...provided.dragHandleProps} />
             )}
-
             <>
                 <Row>
                     <Col span={24}>

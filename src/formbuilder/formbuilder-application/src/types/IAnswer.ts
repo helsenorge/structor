@@ -32,7 +32,6 @@ export enum TimeIntervalType {
 
 export interface IAnswer {
     id: string;
-    valid?: boolean;
 }
 
 export interface IChoice extends IAnswer {
@@ -56,7 +55,7 @@ export interface INumber extends IAnswer {
 }
 
 export interface IText extends IAnswer {
-    isLong?: boolean;
+    isLong: boolean;
     maxLength?: number;
 }
 

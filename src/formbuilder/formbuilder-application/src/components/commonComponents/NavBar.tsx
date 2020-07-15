@@ -5,9 +5,10 @@ import { FormContext } from '../../store/FormStore';
 import './NavBar.css';
 import JSONConverter from '../../helpers/JSONGenerator';
 import JSONGenerator from '../../helpers/JSONGenerator';
+import AnswerTypes from '../../types/IAnswer';
 
 function NavBar(): JSX.Element {
-    const { state } = useContext(FormContext);
+    const { state, dispatch } = useContext(FormContext);
     const [formPreview, setFormPreview] = useState(false);
     const { Title } = Typography;
 
@@ -65,15 +66,25 @@ function NavBar(): JSX.Element {
     }
 
     function validateForm(): boolean {
-        // if (state.description === '' || state.description === undefined)
-        //     return false;
-        // if (state.title === '' || state.title === undefined) return false;
-        const questionArray = Object.values(state.questions);
-        for (let j = 0; j < state.sectionOrder.length; j++) {
-            // if (!state.sections[key].valid) return false;
+        console.log('Validerer');
+        if (state.description.length === 0 || state.description === undefined) {
+            return false;
         }
+        if (state.title === '' || state.title === undefined) {
+            return false;
+        }
+        const sectionArray = Object.values(state.sections);
+        if (sectionArray.length > 1) {
+            for (let j = 0; j < sectionArray.length; j++) {
+                if (!sectionArray[j].sectionTitle) {
+                    return false;
+                }
+            }
+        }
+        const questionArray = Object.values(state.questions);
         for (let i = 0; i < questionArray.length; i++) {
-            if (/*!questionArray[i].valid ||*/ !questionArray[i].answer.valid) {
+            console.log(questionArray);
+            if (!questionArray[i].questionText || questionArray[i].answerType === AnswerTypes.default) {
                 return false;
             }
         }

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Input, Row, Col } from 'antd';
 import { FormContext, updateFormMeta } from '../store/FormStore';
 
@@ -6,7 +6,6 @@ const { TextArea } = Input;
 
 function TitleAndDescription(): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-
     const [title, setTitle] = useState(state.title);
     const [description, setDescription] = useState(state.description);
 

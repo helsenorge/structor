@@ -14,6 +14,7 @@ export enum UpdateActionTypes {
     UPDATE_SECTION = 'UPDATE_SECTION',
     UPDATE_FORM_META = 'UPDATE_FORM_META',
     CLEAR_SECTIONS = 'CLEAR_SECTIONS',
+    UPDATE_VALIDATION = 'UPDATE_VALIDATION',
 }
 
 export enum SwapActionTypes {
@@ -51,6 +52,7 @@ export interface UpdateAction {
     question?: IQuestion;
     answer?: IText | IChoice | ITime | INumber | IBoolean;
     sectionTitle?: string;
+    validationFlag?: number;
 }
 
 export interface SwapAction {
