@@ -1,4 +1,4 @@
-import React, { useContext, useState, dispatch } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Tooltip, Row, Col, Typography, Modal, message } from 'antd';
 import { LeftOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { FormContext, updateValidationFlag } from '../../store/FormStore';
@@ -7,7 +7,7 @@ import JSONConverter from '../../helpers/JSONGenerator';
 import JSONGenerator from '../../helpers/JSONGenerator';
 
 function NavBar(): JSX.Element {
-    const { state } = useContext(FormContext);
+    const { state, dispatch } = useContext(FormContext);
     const [formPreview, setFormPreview] = useState(false);
     const { Title } = Typography;
 
