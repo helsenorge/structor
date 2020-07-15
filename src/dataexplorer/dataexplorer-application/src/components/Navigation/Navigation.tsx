@@ -24,7 +24,9 @@ const Navigation = () => {
                     </div>
                 </Header>
                 <Header>
-                    <Breadcrumbs />
+                    <div className="breadcrumb-container">
+                        <Breadcrumbs />
+                    </div>
                 </Header>
 
                 <Content>
