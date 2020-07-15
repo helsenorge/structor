@@ -13,6 +13,7 @@ const PatientView = (props: {
     hasQuestionnaireResponses: boolean;
 }) => {
     const history = useHistory();
+    const { setSchemanumber, setComparableSchemaNumbers } = useContext(PatientContext);
     const [comparingSchemesIds, setComparingSchemesIds] = useState<ReactText[]>([]);
     const [compareSchemesMode, setCompareSchemesMode] = useState<boolean>(false);
     const [reachedMaxValue, setReachedMaxValue] = useState<boolean>(false);
@@ -27,7 +28,7 @@ const PatientView = (props: {
 
         return `${patientDay.toString()}.${patientMonth}.${patientYear.toString()} (${actualAge.toString()})`;
     };
-    const { setSchemanumber, setComparableSchemaNumbers } = useContext(PatientContext);
+
     const { Title } = Typography;
     const name = props.patient.name[0].given[0] + ' ' + props.patient.name[0].family;
     const columns = [
@@ -59,8 +60,13 @@ const PatientView = (props: {
         setComparingSchemesIds((comparingQuestionnaires) => [...comparingQuestionnaires, id]);
     };
 
+    const removeComparingSchemeOnRowClick = (id: ReactText) => {
+        setReachedMaxValue(false);
+        setComparingSchemesIds(comparingSchemesIds.filter((i) => i !== id));
+    };
+
     useEffect(() => {
-        if (reachedMaxValue && comparingSchemesIds.length === 2) message.warning('Maximum to skjemaer', 5);
+        if (reachedMaxValue) message.warning('Maximum to skjemaer', 3.5);
     }, [reachedMaxValue, comparingSchemesIds.length]);
 
     return (
@@ -165,8 +171,7 @@ const PatientView = (props: {
                                     };
                             } else if (compareSchemesMode && comparingSchemesIds.includes(record.id as ReactText)) {
                                 return {
-                                    onClick: () =>
-                                        setComparingSchemesIds(comparingSchemesIds.filter((i) => i !== record.id)),
+                                    onClick: () => removeComparingSchemeOnRowClick(record.id as ReactText),
                                 };
                             } else
                                 return {
