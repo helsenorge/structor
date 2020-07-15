@@ -11,6 +11,7 @@ import {
     checkErrorFields,
     validateNumber,
 } from '../../helpers/ValidationHelpers';
+import moment from 'moment';
 
 type TextInputProps = {
     questionId: string;
@@ -22,7 +23,7 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
     const [errorList, setErrorList] = useState([false]);
     const [validationObject, setValidationObject] = useState({
         checkedList: [localAnswer.isLong],
-        visitedFields: [localAnswer.maxLength !== undefined],
+        visitedFields: [localAnswer.maxLength === undefined ? 0 : moment().valueOf()],
         validationList: [validateNumber(localAnswer.maxLength)],
     } as IValidation);
 
@@ -36,10 +37,14 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
 
     useEffect(() => {
         const tempAnswer = { ...state.questions[questionId].answer };
-        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList);
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, false, setValidationObject);
         tempAnswer.valid = !validationObject.validationList.includes(false);
         dispatch(updateAnswer(questionId, tempAnswer));
-    }, [validationObject, state.validationFlag]);
+    }, [validationObject]);
+
+    useEffect(() => {
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, true, setValidationObject);
+    }, [state.validationFlag]);
 
     return (
         <>

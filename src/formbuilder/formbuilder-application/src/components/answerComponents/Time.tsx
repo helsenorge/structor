@@ -7,6 +7,7 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import './AnswerComponent.css';
 import { validateNumber, IValidation, checkErrorFields } from '../../helpers/ValidationHelpers';
+import moment from 'moment';
 
 type TimeProps = {
     questionId: string;
@@ -22,6 +23,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const [localAnswer, setLocalAnswer] = useState(state.questions[questionId].answer as ITime);
     const [errorList, setErrorList] = useState([false]);
+    const initTime = moment().valueOf();
     const [validationObject, setValidationObject] = useState({
         checkedList: [
             localAnswer.isDate || localAnswer.isTime,
@@ -33,13 +35,15 @@ function Time({ questionId }: TimeProps): JSX.Element {
             localAnswer.hasEndTime,
         ],
         visitedFields: [
-            localAnswer.isDate || localAnswer.isTime,
-            localAnswer.defaultTime !== undefined,
-            localAnswer.hasInterval,
+            localAnswer.isDate || localAnswer.isTime ? 0 : initTime,
+            localAnswer.defaultTime === undefined ? 0 : initTime,
+            !localAnswer.hasInterval ? 0 : initTime,
             localAnswer.timeIntervalType === TimeIntervalType.FIXED ||
-                localAnswer.timeIntervalType === TimeIntervalType.FLOATING,
-            localAnswer.startTime !== undefined,
-            localAnswer.endTime !== undefined,
+            localAnswer.timeIntervalType === TimeIntervalType.FLOATING
+                ? 0
+                : initTime,
+            localAnswer.startTime === undefined ? 0 : initTime,
+            localAnswer.endTime === undefined ? 0 : initTime,
         ],
         validationList: [
             localAnswer.isDate || localAnswer.isTime,
@@ -75,10 +79,14 @@ function Time({ questionId }: TimeProps): JSX.Element {
 
     useEffect(() => {
         const tempAnswer = { ...state.questions[questionId].answer };
-        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList);
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, false, setValidationObject);
         tempAnswer.valid = !validationObject.validationList.includes(false);
         dispatch(updateAnswer(questionId, tempAnswer));
-    }, [validationObject, state.validationFlag]);
+    }, [validationObject]);
+
+    useEffect(() => {
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, true, setValidationObject);
+    }, [state.validationFlag]);
 
     function timePickerRenderer(
         disabled: boolean,

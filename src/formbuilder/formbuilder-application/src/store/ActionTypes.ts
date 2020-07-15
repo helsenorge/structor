@@ -52,7 +52,7 @@ export interface UpdateAction {
     question?: IQuestion;
     answer?: IText | IChoice | ITime | INumber | IBoolean;
     sectionTitle?: string;
-    validationFlag?: boolean;
+    validationFlag?: number;
 }
 
 export interface SwapAction {

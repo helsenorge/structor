@@ -1,6 +1,8 @@
+import moment from 'moment';
+
 export interface IValidation {
     validationList: Array<boolean>;
-    visitedFields: Array<boolean>;
+    visitedFields: Array<number>;
     checkedList: Array<boolean>;
 }
 
@@ -47,8 +49,9 @@ export function setVisitedField(
     validationObject: IValidation,
     setValidationObject: (value: React.SetStateAction<IValidation>) => void,
 ): void {
+    console.log('visited');
     const tempObject = { ...validationObject };
-    tempObject.visitedFields[field] = true;
+    tempObject.visitedFields[field] = moment().valueOf();
     setValidationObject(tempObject);
 }
 
@@ -60,27 +63,40 @@ export function setCheckedField(
 ): void {
     const tempObject = { ...validationObject };
     tempObject.checkedList[field] = value;
-    if (!value) tempObject.visitedFields[field] = false;
+    if (!value) tempObject.visitedFields[field] = moment().valueOf();
     setValidationObject(tempObject);
 }
 
 export function checkErrorFields(
-    validationFlag: boolean,
+    validationFlag: number,
     validationObject: IValidation,
     errorList: Array<boolean>,
     setErrorList: (value: React.SetStateAction<boolean[]>) => void,
+    overrideFlag: boolean,
+    setValidationObject: (value: React.SetStateAction<IValidation>) => void,
 ): void {
     const tempError = [...errorList];
+    const tempObject = { ...validationObject };
+    if (overrideFlag) {
+        console.log('ov: ', overrideFlag);
+        for (let i = 0; i < tempObject.visitedFields.length; i++) {
+            tempObject.visitedFields[i] = validationFlag;
+        }
+        setValidationObject(tempObject);
+    }
+
     for (let i = 0; i < tempError.length; i++) {
-        tempError[i] = setError(validationFlag, i, validationObject.validationList, validationObject.visitedFields);
+        tempError[i] = setError(validationFlag, i, tempObject.validationList, tempObject.visitedFields);
     }
     setErrorList(tempError);
 }
 function setError(
-    validationFlag: boolean,
+    validationFlag: number,
     field: number,
     validationList: Array<boolean>,
-    visitedFields: Array<boolean>,
+    visitedFields: Array<number>,
 ): boolean {
-    return !validationList[field] && (validationFlag || visitedFields[field]);
+    console.log('valdiationfuck: ', validationFlag, '\b visiteddddfuck: ', visitedFields[field], ' sist ', validationList[field]);
+    console.log('komhit', !validationList[field] && validationFlag > visitedFields[field]);
+    return !validationList[field] && validationFlag >= visitedFields[field];
 }

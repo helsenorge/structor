@@ -13,6 +13,7 @@ import {
     setValidateText,
     IValidation,
 } from '../../helpers/ValidationHelpers';
+import moment from 'moment';
 
 type NumberProps = {
     questionId: string;
@@ -22,13 +23,14 @@ function Number({ questionId }: NumberProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...state.questions[questionId].answer } as INumber;
     const [errorList, setErrorList] = useState([false, false, false, false]);
+    const initTime = moment().valueOf();
     const [validationObject, setValidationObject] = useState({
         checkedList: [localAnswer.hasDefault, localAnswer.hasUnit, localAnswer.hasMin, localAnswer.hasMax],
         visitedFields: [
-            localAnswer.defaultValue !== undefined,
-            localAnswer.unit !== undefined,
-            localAnswer.minValue !== undefined,
-            localAnswer.maxValue !== undefined,
+            localAnswer.defaultValue === undefined ? 0 : initTime,
+            localAnswer.unit === undefined ? 0 : initTime,
+            localAnswer.minValue === undefined ? 0 : initTime,
+            localAnswer.maxValue === undefined ? 0 : initTime,
         ],
         validationList: [
             validateNumber(localAnswer.defaultValue),
@@ -71,10 +73,14 @@ function Number({ questionId }: NumberProps): JSX.Element {
 
     useEffect(() => {
         const tempAnswer = { ...state.questions[questionId].answer };
-        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList);
+        checkErrorFields(moment().valueOf(), validationObject, errorList, setErrorList, false, setValidationObject);
         tempAnswer.valid = !validationObject.validationList.includes(false);
         dispatch(updateAnswer(questionId, tempAnswer));
-    }, [validationObject, state.validationFlag]);
+    }, [validationObject]);
+
+    useEffect(() => {
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, true, setValidationObject);
+    }, [state.validationFlag]);
 
     return (
         <>
@@ -93,7 +99,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                 </Col>
             </Row>
             <Row>
-                <Col sm={14} xl={7} className="standard">
+                <Col sm={14} lg={14} className="standard">
                     <Checkbox
                         checked={localAnswer.hasDefault}
                         onChange={(e) => {
@@ -131,7 +137,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                 </Col>
             </Row>
             <Row>
-                <Col sm={14} xl={7} className="standard">
+                <Col sm={14} lg={14} className="standard">
                     <Checkbox
                         checked={localAnswer.hasUnit}
                         onChange={(e) => {
@@ -169,7 +175,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                 </Col>
             </Row>
             <Row>
-                <Col sm={10} xl={7} className="standard">
+                <Col sm={10} lg={10} className="standard">
                     <Checkbox
                         checked={localAnswer.hasMin}
                         onChange={(e) => {
@@ -207,7 +213,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                 </Col>
             </Row>
             <Row>
-                <Col sm={10} xl={7} className="standard">
+                <Col sm={10} lg={10} className="standard">
                     <Checkbox
                         checked={localAnswer.hasMax}
                         onChange={(e) => {

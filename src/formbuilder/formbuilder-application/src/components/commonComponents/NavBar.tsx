@@ -5,6 +5,7 @@ import { FormContext, updateValidationFlag } from '../../store/FormStore';
 import './NavBar.css';
 import JSONConverter from '../../helpers/JSONGenerator';
 import JSONGenerator from '../../helpers/JSONGenerator';
+import moment from 'moment';
 
 function NavBar(): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
@@ -67,18 +68,18 @@ function NavBar(): JSX.Element {
     function validateForm(): boolean {
         if (state.description.length === 0 || state.description === undefined) {
             console.log(state.description);
-            dispatch(updateValidationFlag(true));
+            dispatch(updateValidationFlag(moment().valueOf()));
             return false;
         }
         if (state.title === '' || state.title === undefined) {
-            dispatch(updateValidationFlag(true));
+            dispatch(updateValidationFlag(moment().valueOf()));
             return false;
         }
         const sectionArray = Object.values(state.sections);
         if (sectionArray.length > 1) {
             for (let j = 0; j < sectionArray.length; j++) {
                 if (!sectionArray[j].valid) {
-                    dispatch(updateValidationFlag(true));
+                    dispatch(updateValidationFlag(moment().valueOf()));
                     return false;
                 }
             }
@@ -87,11 +88,11 @@ function NavBar(): JSX.Element {
         for (let i = 0; i < questionArray.length; i++) {
             console.log(questionArray);
             if (!questionArray[i].valid || !questionArray[i].answer.valid) {
-                dispatch(updateValidationFlag(true));
+                dispatch(updateValidationFlag(moment().valueOf()));
                 return false;
             }
         }
-        dispatch(updateValidationFlag(false));
+        dispatch(updateValidationFlag(moment().valueOf()));
         return true;
     }
     function confirmPreview() {

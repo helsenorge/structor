@@ -20,6 +20,7 @@ import UpdateActions from './UpdateActions';
 import SwapActions from './SwapActions';
 import DuplicateActions from './DuplicateActions';
 import FormMetaActions from './FormMetaActions';
+import moment from 'moment';
 
 const initSectionId = generateID();
 const initSection: ISection = {
@@ -38,7 +39,7 @@ export const initialState: State = {
     sections: initSections,
     questions: {},
     sectionOrder: [initSectionId],
-    validationFlag: false,
+    validationFlag: moment().valueOf(),
 };
 
 export interface State {
@@ -47,10 +48,10 @@ export interface State {
     sections: SectionList;
     questions: QuestionList;
     sectionOrder: Array<string>;
-    validationFlag: boolean;
+    validationFlag: number;
 }
 
-export function updateValidationFlag(validationFlag: boolean): UpdateAction {
+export function updateValidationFlag(validationFlag: number): UpdateAction {
     return {
         type: UpdateActionTypes.UPDATE_VALIDATION,
         member: MemberTypes.UPDATE,

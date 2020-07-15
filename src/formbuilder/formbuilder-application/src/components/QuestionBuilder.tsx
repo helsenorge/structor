@@ -5,7 +5,14 @@ import { FormContext, updateQuestion, updateSection } from '../store/FormStore';
 import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes, { IChoice, INumber, IText, IBoolean, ITime, IAnswer } from '../types/IAnswer';
-import { validateText, IValidation, checkErrorFields, setVisitedField, setValidateText } from '../helpers/ValidationHelpers';
+import {
+    validateText,
+    IValidation,
+    checkErrorFields,
+    setVisitedField,
+    setValidateText,
+} from '../helpers/ValidationHelpers';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -20,9 +27,13 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
     const { state, dispatch } = useContext(FormContext);
     const localQuestion = { ...state.questions[questionId] } as IQuestion;
     const [errorList, setErrorList] = useState([false, false]);
+    const initTime = moment().valueOf();
     const [validationObject, setValidationObject] = useState({
         checkedList: [true, true],
-        visitedFields: [localQuestion.questionText.length > 0, localQuestion.answerType !== AnswerTypes.default],
+        visitedFields: [
+            localQuestion.questionText.length > 0 ? initTime : 0,
+            localQuestion.answerType !== AnswerTypes.default ? initTime : 0,
+        ],
         validationList: [validateText(localQuestion.questionText), localQuestion.answerType !== AnswerTypes.default],
     } as IValidation);
 
@@ -97,10 +108,14 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
     }
 
     useEffect(() => {
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, true, setValidationObject);
+    }, [state.validationFlag]);
+
+    useEffect(() => {
         const temp = { ...state.questions[questionId] };
-        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList);
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, false, setValidationObject);
         dispatch(updateQuestion(temp));
-    }, [validationObject, state.validationFlag]);
+    }, [validationObject]);
 
     return (
         <div style={{ backgroundColor: 'var(--color-base-1)' }}>
@@ -187,7 +202,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                             if (value !== AnswerTypes.default) {
                                                 const tmpObject = { ...validationObject };
                                                 tmpObject.validationList[1] = true;
-                                                tmpObject.visitedFields[1] = true;
+                                                tmpObject.visitedFields[1] = moment().valueOf();
                                             }
                                         }}
                                         placeholder="Trykk for å velge"

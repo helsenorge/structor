@@ -14,6 +14,7 @@ import {
     setValidateNumber,
     setValidateText,
 } from '../helpers/ValidationHelpers';
+import moment from 'moment';
 
 const { TextArea } = Input;
 
@@ -42,9 +43,10 @@ function Section({
     const { state, dispatch } = useContext(FormContext);
     const section = state.sections[sectionId];
     const [errorList, setErrorList] = useState([false, false]);
+    const initTime = moment().valueOf();
     const [validationObject, setValidationObject] = useState({
         checkedList: [true, true],
-        visitedFields: [section.sectionTitle.length > 0, section.description.length > 0],
+        visitedFields: [section.sectionTitle.length > 0 ? initTime : 0, section.description.length > 0 ? initTime : 0],
         validationList: [validateText(section.sectionTitle), validateText(section.description)],
     } as IValidation);
 
@@ -54,10 +56,14 @@ function Section({
     }
 
     useEffect(() => {
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, true, setValidationObject);
+    }, [state.validationFlag]);
+
+    useEffect(() => {
         const temp = { ...state.sections[sectionId] };
-        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList);
+        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, false, setValidationObject);
         dispatch(updateSection(temp));
-    }, [validationObject, state.validationFlag]);
+    }, [validationObject]);
 
     useEffect(() => {
         findPlaceholder();
@@ -139,8 +145,9 @@ function Section({
                                     localUpdate({
                                         sectionTitle: e.target.value,
                                     });
-                                    setVisitedField(0, validationObject, setValidationObject);
                                     setValidateText(0, validationObject, setValidationObject, e.currentTarget.value);
+
+                                    setVisitedField(0, validationObject, setValidationObject);
                                 }}
                             />
                             {errorList[0] && <p style={{ color: 'red' }}> Fyll inn seksjonstittel</p>}
