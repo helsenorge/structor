@@ -27,11 +27,7 @@ const PatientView = (props: { dataSource: fhir.ResourceBase[]; hasQuestionnaireR
         return `${patientDay.toString()}.${patientMonth}.${patientYear.toString()} (${actualAge.toString()})`;
     };
     const { Title } = Typography;
-<<<<<<< HEAD
     const name = patient.name[0].given[0] + ' ' + patient.name[0].family;
-=======
-    const name = props.patient.name[0].given[0] + ' ' + props.patient.name[0].family;
->>>>>>> 81e578b... Remove comment
     const columns = [
         {
             title: 'Skjemanavn',
