@@ -25,7 +25,7 @@ const PatientQuestionnaire = () => {
                 ...dataSource,
                 {
                     id: item.resource.id,
-                    schemaName: name ? name : 'Udefinert',
+                    schemaName: name ? name : 'Tittel mangler',
                     submitted: dayjs(item.resource.meta?.lastUpdated).format('DD.MM.YYYY HH:mm'),
                 },
             ]);
