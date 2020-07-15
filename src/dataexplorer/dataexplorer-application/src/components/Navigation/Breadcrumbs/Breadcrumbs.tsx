@@ -7,7 +7,6 @@ import { GlobalContext } from 'context/GlobalContext';
 const Breadcrumbs = () => {
     const { name, schemaNumber, setPatientId, comparableSchemaNumbers } = useContext(GlobalContext);
     const location = useLocation();
-    console.log(location.pathname);
     return (
         <>
             <div className="breadcrumbs-container">
