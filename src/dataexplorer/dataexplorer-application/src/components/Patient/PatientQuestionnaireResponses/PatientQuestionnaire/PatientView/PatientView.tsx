@@ -35,7 +35,6 @@ const PatientView = (props: { dataSource: fhir.ResourceBase[]; hasQuestionnaireR
             enDate.split(' ')[1];
         return norDate;
     };
-    const { setSchemanumber } = useContext(BreadcrumbContext);
     const { Title } = Typography;
     const name = patient.name[0].given[0] + ' ' + patient.name[0].family;
     const columns = [
