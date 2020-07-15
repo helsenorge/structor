@@ -31,7 +31,6 @@ const Patient = () => {
         history.push('/');
         return <></>;
     }
-    console.log(patientData);
     if (
         questionnaireResponse.total === undefined ||
         (questionnaire.entry === undefined && questionnaireResponse.total !== 0)
