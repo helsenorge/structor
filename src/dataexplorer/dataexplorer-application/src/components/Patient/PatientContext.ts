@@ -1,5 +1,7 @@
 import { createContext, Dispatch, SetStateAction, ReactText } from 'react';
 import { IPatientIdentifier } from 'types/IPatient';
+import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
+import { IQuestionnaire } from 'types/IQuestionnaire';
 
 interface IPatientContext {
     name: string;
@@ -12,6 +14,10 @@ interface IPatientContext {
     setPatient: Dispatch<SetStateAction<IPatientIdentifier>>;
     comparableSchemaNumbers: ReactText[];
     setComparableSchemaNumbers: Dispatch<SetStateAction<ReactText[]>>;
+    questionnaire: IQuestionnaire;
+    setQuestionnaire: Dispatch<SetStateAction<IQuestionnaire>>;
+    questionnaireResponse: IQuestionnaireResponse;
+    setQuestionnaireResponse: Dispatch<SetStateAction<IQuestionnaireResponse>>;
 }
 export const PatientContext = createContext<IPatientContext>({
     name: '',
@@ -24,6 +30,10 @@ export const PatientContext = createContext<IPatientContext>({
     setPatient: () => {},
     comparableSchemaNumbers: [],
     setComparableSchemaNumbers: () => {},
+    questionnaire: {} as IQuestionnaire,
+    setQuestionnaire: () => {},
+    questionnaireResponse: {} as IQuestionnaireResponse,
+    setQuestionnaireResponse: () => {},
 });
 
 export const { Provider } = PatientContext;

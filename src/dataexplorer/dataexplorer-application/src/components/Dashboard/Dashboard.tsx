@@ -7,13 +7,23 @@ import './Dashboard.style.scss';
 import './FloatLabel/FloatLabel.scss';
 import { PatientContext } from 'components/Patient/PatientContext';
 import { IPatientIdentifier } from 'types/IPatient';
+import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
+import { IQuestionnaire } from 'types/IQuestionnaire';
 
 const Dashboard = () => {
-    const { patientId, setPatientId, setName, setSchemanumber, setPatient } = useContext(PatientContext);
     const [searchValue, setSearchValue] = useState<number>();
     const handleChange = (e: number) => {
         isNaN(e) ? message.warning('Du har tastet en bokstav. Vennligst benytt siffer.') : setSearchValue(e);
     };
+    const {
+        patientId,
+        setPatientId,
+        setName,
+        setSchemanumber,
+        setPatient,
+        setQuestionnaireResponse,
+        setQuestionnaire,
+    } = useContext(PatientContext);
 
     message.config({ maxCount: 1 });
     const handleSearch = (value: string) => {
@@ -27,7 +37,9 @@ const Dashboard = () => {
         setPatientId('');
         setSchemanumber('');
         setPatient({} as IPatientIdentifier);
-    }, [setName, setPatientId, setSchemanumber, setPatient]);
+        setQuestionnaire({} as IQuestionnaire);
+        setQuestionnaireResponse({} as IQuestionnaireResponse);
+    }, [setName, setPatientId, setSchemanumber, setPatient, setQuestionnaire, setQuestionnaireResponse]);
 
     return (
         <>

@@ -1,26 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import useFetch from 'utils/hooks/useFetch';
-import { IPatientIdentifier } from 'types/IPatient';
-import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
+import React, { useState, useEffect, useContext } from 'react';
 import PatientView from './PatientView/PatientView';
 import { Row, Spin } from 'antd';
 import dayjs from 'dayjs';
-import { IQuestionnaire } from 'types/IQuestionnaire';
+import { PatientContext } from 'components/Patient/PatientContext';
 
-interface IPatientQuestionnaireProps {
-    patientData: IPatientIdentifier;
-    questionnaireResponses: IQuestionnaireResponse;
-    questionnaireId: string;
-}
-
-const PatientQuestionnaire = ({ patientData, questionnaireResponses, questionnaireId }: IPatientQuestionnaireProps) => {
+const PatientQuestionnaire = () => {
     const [dataSource, setDataSource] = useState<fhir.ResourceBase[]>([]);
 
-    const { response: questionnaire } = useFetch<IQuestionnaire>('fhir/Questionnaire?_id=' + questionnaireId);
+    const { questionnaire, questionnaireResponse: questionnaireResponses } = useContext(PatientContext);
 
     useEffect(() => {
         const qdict = new Map();
-        questionnaire?.entry.forEach((j) => {
+        questionnaire.entry.forEach((j) => {
             qdict.set(j.resource?.id, j.resource?.title);
         });
         setDataSource([]);
@@ -38,18 +29,11 @@ const PatientQuestionnaire = ({ patientData, questionnaireResponses, questionnai
                 },
             ]);
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [questionnaire]);
+    }, [questionnaire, questionnaireResponses]);
 
     return (
         <>
-            {questionnaire && dataSource && (
-                <PatientView
-                    patient={patientData.entry[0].resource}
-                    dataSource={dataSource}
-                    hasQuestionnaireResponses={true}
-                />
-            )}
+            {questionnaire && dataSource && <PatientView dataSource={dataSource} hasQuestionnaireResponses={true} />}
             {!questionnaire && (
                 <Row justify="center">
                     <Spin className="spin-container" size="large" />

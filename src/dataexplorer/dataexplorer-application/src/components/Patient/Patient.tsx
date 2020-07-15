@@ -2,13 +2,21 @@ import React, { useContext, useEffect } from 'react';
 import PatientQuestionnaireResponses from './PatientQuestionnaireResponses/PatientQuestionnaireResponses';
 import './Patient-style.scss';
 import { PatientContext } from './PatientContext';
+import FetchQuestionnaireResponses from 'components/QuestionnaireResponse/FetchQuestionnaireResponses';
 
 interface IPatientProps {
     patientID: string | null;
 }
 
 const Patient = () => {
-    const { patient: patientData, setSchemanumber, setName, setComparableSchemaNumbers } = useContext(PatientContext);
+    const {
+        patient: patientData,
+        setSchemanumber,
+        setName,
+        setComparableSchemaNumbers,
+        questionnaireResponse,
+        questionnaire,
+    } = useContext(PatientContext);
     // The oid signifies that we are searching on social security number
     useEffect(() => {
         setSchemanumber('');
@@ -21,8 +29,18 @@ const Patient = () => {
             setName(name);
         }
     }, [patientData, setName]);
+    if (
+        questionnaireResponse.total === undefined ||
+        (questionnaire.entry === undefined && questionnaireResponse.total !== 0)
+    ) {
+        return (
+            <>
+                <FetchQuestionnaireResponses {...patientData} />
+            </>
+        );
+    }
 
-    return <>{patientData && patientData.total === 1 && <PatientQuestionnaireResponses {...patientData} />}</>;
+    return <>{patientData && patientData.total === 1 && <PatientQuestionnaireResponses />}</>;
 };
 
 export default Patient;

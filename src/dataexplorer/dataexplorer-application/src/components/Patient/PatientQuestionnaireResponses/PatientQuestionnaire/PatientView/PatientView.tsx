@@ -1,5 +1,5 @@
 import React, { useContext, ReactText, useState, useEffect } from 'react';
-import { IPatient, IDataSource } from 'types/IPatient';
+import { IDataSource } from 'types/IPatient';
 import { Row, Col, Card, Table, Typography, Spin, Button, message, Empty } from 'antd';
 import dayjs from 'dayjs';
 import { useHistory } from 'react-router-dom';
@@ -7,11 +7,7 @@ import './PatientView.style.scss';
 import 'components/Patient/Patient-style.scss';
 import { PatientContext } from 'components/Patient/PatientContext';
 
-const PatientView = (props: {
-    patient: IPatient;
-    dataSource: fhir.ResourceBase[];
-    hasQuestionnaireResponses: boolean;
-}) => {
+const PatientView = (props: { dataSource: fhir.ResourceBase[]; hasQuestionnaireResponses: boolean }) => {
     const history = useHistory();
     const { setSchemanumber, setComparableSchemaNumbers } = useContext(PatientContext);
     const [comparingSchemesIds, setComparingSchemesIds] = useState<ReactText[]>([]);
@@ -19,8 +15,10 @@ const PatientView = (props: {
     const [reachedMaxValue, setReachedMaxValue] = useState<boolean>(false);
     const MAX_VALUE = 2;
 
+    const { patient: patientData } = useContext(PatientContext);
+    const patient = patientData.entry[0].resource;
     const calcAge = () => {
-        const birthday = props.patient.birthDate;
+        const birthday = patient.birthDate;
         const patientYear = parseInt(birthday.substring(0, 4));
         const patientMonth = parseInt(birthday.substring(5, 7));
         const patientDay = parseInt(birthday.substring(8, 10));
@@ -30,7 +28,7 @@ const PatientView = (props: {
     };
 
     const { Title } = Typography;
-    const name = props.patient.name[0].given[0] + ' ' + props.patient.name[0].family;
+    const name = patient.name[0].given[0] + ' ' + patient.name[0].family;
     const columns = [
         {
             title: 'Skjemanavn',
@@ -74,7 +72,7 @@ const PatientView = (props: {
             <Row gutter={[1, 40]} justify="center">
                 <Col span={12}>
                     <Card
-                        key={props.patient.id}
+                        key={patient.id}
                         className="patient-card"
                         title={<Title level={4}>{name}</Title>}
                         type="inner"
@@ -84,15 +82,14 @@ const PatientView = (props: {
                             <div className="info-left">
                                 <div className="item-container">
                                     <h4>Personnummer</h4>
-                                    <p>{props.patient.identifier[0].value}</p>
+                                    <p>{patient.identifier[0].value}</p>
                                 </div>
                                 <div className="item-container">
                                     <h4>Kjønn</h4>
                                     <p>
-                                        {props.patient.gender !== 'male' && props.patient.gender !== 'female'
-                                            ? props.patient.gender.charAt(0).toUpperCase() +
-                                              props.patient.gender.slice(1)
-                                            : props.patient.gender === 'male'
+                                        {patient.gender !== 'male' && patient.gender !== 'female'
+                                            ? patient.gender.charAt(0).toUpperCase() + patient.gender.slice(1)
+                                            : patient.gender === 'male'
                                             ? 'Mann'
                                             : 'Kvinne'}
                                     </p>
@@ -101,7 +98,7 @@ const PatientView = (props: {
                                 <div className="item-container">
                                     <h4>Fødselsdato</h4>
                                     <div className="age">
-                                        {props.patient.birthDate !== undefined ? (
+                                        {patient.birthDate !== undefined ? (
                                             calcAge()
                                         ) : (
                                             <p className="unavailable-content">Ikke oppgitt</p>
@@ -112,16 +109,16 @@ const PatientView = (props: {
                             <div className="info-right">
                                 <div className="item-container">
                                     <h4>Adresse</h4>
-                                    {props.patient?.address?.[0]?.line !== undefined ? (
-                                        <p>{props.patient?.address?.[0]?.line?.[0]}</p>
+                                    {patient?.address?.[0]?.line !== undefined ? (
+                                        <p>{patient?.address?.[0]?.line?.[0]}</p>
                                     ) : (
                                         <div className="unavailable-content">Ikke oppgitt</div>
                                     )}
                                 </div>
                                 <div className="item-container">
                                     <h4>Telefon</h4>
-                                    {props.patient?.telecom?.[0]?.value !== undefined ? (
-                                        <p>{props.patient?.telecom?.[0]?.value}</p>
+                                    {patient?.telecom?.[0]?.value !== undefined ? (
+                                        <p>{patient?.telecom?.[0]?.value}</p>
                                     ) : (
                                         <div className="unavailable-content">Ikke oppgitt</div>
                                     )}
