@@ -3,14 +3,6 @@ import { Checkbox, Form, Input, Row, Col } from 'antd';
 import './AnswerComponent.css';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { IText } from '../../types/IAnswer';
-import {
-    setVisitedField,
-    setValidateNumber,
-    setCheckedField,
-    IValidation,
-    checkErrorFields,
-    validateNumber,
-} from '../../helpers/ValidationHelpers';
 import moment from 'moment';
 
 type TextInputProps = {
@@ -20,12 +12,6 @@ type TextInputProps = {
 function TextInput({ questionId }: TextInputProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = state.questions[questionId].answer as IText;
-    const [errorList, setErrorList] = useState([false]);
-    const [validationObject, setValidationObject] = useState({
-        checkedList: [localAnswer.isLong],
-        visitedFields: [localAnswer.maxLength === undefined ? 0 : moment().valueOf()],
-        validationList: [validateNumber(localAnswer.maxLength)],
-    } as IValidation);
 
     function updateStore(attribute: { isLong?: boolean; maxLength?: string }) {
         const temp = { ...localAnswer } as IText;
@@ -34,17 +20,6 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
             temp.maxLength = attribute.maxLength.length > 0 ? parseInt(attribute.maxLength) : undefined;
         dispatch(updateAnswer(questionId, temp));
     }
-
-    useEffect(() => {
-        const tempAnswer = { ...state.questions[questionId].answer };
-        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, false, setValidationObject);
-        tempAnswer.valid = !validationObject.validationList.includes(false);
-        dispatch(updateAnswer(questionId, tempAnswer));
-    }, [validationObject]);
-
-    useEffect(() => {
-        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, true, setValidationObject);
-    }, [state.validationFlag]);
 
     return (
         <>
@@ -58,8 +33,6 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
                                     updateStore({
                                         isLong: e.target.checked,
                                     });
-                                    setCheckedField(0, e.target.checked, validationObject, setValidationObject);
-                                    setValidateNumber(0, validationObject, setValidationObject, localAnswer.maxLength);
                                 }}
                             >
                                 Langsvar med maks lengde:
@@ -69,7 +42,6 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
                             <Input
                                 type="number"
                                 width="100px"
-                                className={errorList[0] ? 'field-error' : ''}
                                 disabled={!localAnswer.isLong}
                                 defaultValue={localAnswer.maxLength}
                                 min={0}
@@ -77,16 +49,8 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
                                     updateStore({
                                         maxLength: e.currentTarget.value,
                                     });
-                                    setVisitedField(0, validationObject, setValidationObject);
-                                    setValidateNumber(
-                                        0,
-                                        validationObject,
-                                        setValidationObject,
-                                        parseInt(e.currentTarget.value),
-                                    );
                                 }}
                             />
-                            {errorList[0] && <p style={{ color: 'red' }}> Fyll inn antall karakterer</p>}
                         </Col>
                     </Row>
                 </Col>

@@ -9,7 +9,7 @@ import { FormContext, updateQuestion } from '../store/FormStore';
 import ISection from '../types/ISection';
 import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
-import { IInfo } from '../types/IAnswer';
+import AnswerTypes, { IInfo } from '../types/IAnswer';
 import IQuestion from '../types/IQuestion';
 
 type QuestionProps = {
@@ -35,7 +35,7 @@ function QuestionWrapper({
         <div>
             <p>
                 Spørsmålet er ikke ferdig utfylt. <br />
-                Fyll inn spørsmålstekst og røde felt.
+                Fyll inn spørsmålstekst og velg type.
             </p>
         </div>
     );
@@ -58,7 +58,6 @@ function QuestionWrapper({
     function iFrameLoaded() {
         const tempSection: ISection = {
             id: 'PreviewSection',
-            valid: true,
             questionOrder: [questionId],
             sectionTitle: '',
             description: '',
@@ -137,13 +136,9 @@ function QuestionWrapper({
                 </Row>
                 <Row style={{ float: 'right', paddingTop: '10px' }}>
                     <Col span={24}>
-                        {!(
-                            // (state.questions[questionId].questionText.length > 0 &&
-                            //     state.questions[questionId].answerType !== AnswerTypes.default) ||
-                            // (state.questions[questionId].answerType === AnswerTypes.info &&
-                            //
-                            state.questions[questionId].answer.valid /* && state.questions[questionId].valid */
-                        ) ? (
+                        {(state.questions[questionId].questionText.length === 0 &&
+                            state.questions[questionId].answerType !== AnswerTypes.info) ||
+                        state.questions[questionId].answerType === AnswerTypes.default ? (
                             <Popover
                                 content={!isInfo ? previewWarning : 'Fyll inn informasjonsfeltet.'}
                                 title="Ingenting å forhåndsvise"

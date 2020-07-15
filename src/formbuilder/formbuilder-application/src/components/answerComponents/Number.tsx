@@ -3,17 +3,6 @@ import { Checkbox, Input, Row, Col } from 'antd';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { INumber } from '../../types/IAnswer';
 import './AnswerComponent.css';
-import {
-    validateNumber,
-    validateText,
-    checkErrorFields,
-    setCheckedField,
-    setValidateNumber,
-    setVisitedField,
-    setValidateText,
-    IValidation,
-} from '../../helpers/ValidationHelpers';
-import moment from 'moment';
 
 type NumberProps = {
     questionId: string;
@@ -22,23 +11,7 @@ type NumberProps = {
 function Number({ questionId }: NumberProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...state.questions[questionId].answer } as INumber;
-    const [errorList, setErrorList] = useState([false, false, false, false]);
-    const initTime = moment().valueOf();
-    const [validationObject, setValidationObject] = useState({
-        checkedList: [localAnswer.hasDefault, localAnswer.hasUnit, localAnswer.hasMin, localAnswer.hasMax],
-        visitedFields: [
-            localAnswer.defaultValue === undefined ? 0 : initTime,
-            localAnswer.unit === undefined ? 0 : initTime,
-            localAnswer.minValue === undefined ? 0 : initTime,
-            localAnswer.maxValue === undefined ? 0 : initTime,
-        ],
-        validationList: [
-            validateNumber(localAnswer.defaultValue),
-            validateText(localAnswer.unit),
-            validateNumber(localAnswer.minValue),
-            validateNumber(localAnswer.maxValue),
-        ],
-    } as IValidation);
+
     const inputStyle = {
         width: '100px',
         paddingTop: '8px',
@@ -71,17 +44,6 @@ function Number({ questionId }: NumberProps): JSX.Element {
         dispatch(updateAnswer(questionId, temp));
     }
 
-    useEffect(() => {
-        const tempAnswer = { ...state.questions[questionId].answer };
-        checkErrorFields(moment().valueOf(), validationObject, errorList, setErrorList, false, setValidationObject);
-        tempAnswer.valid = !validationObject.validationList.includes(false);
-        dispatch(updateAnswer(questionId, tempAnswer));
-    }, [validationObject]);
-
-    useEffect(() => {
-        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, true, setValidationObject);
-    }, [state.validationFlag]);
-
     return (
         <>
             <Row>
@@ -106,8 +68,6 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             updateStore({
                                 hasDefault: e.target.checked,
                             });
-                            setCheckedField(0, e.target.checked, validationObject, setValidationObject);
-                            setValidateNumber(0, validationObject, setValidationObject, localAnswer.defaultValue);
                         }}
                     >
                         Forhåndsvelg en verdi:
@@ -116,24 +76,15 @@ function Number({ questionId }: NumberProps): JSX.Element {
                 <Col span={10}>
                     <Input
                         type="number"
-                        className={errorList[0] ? 'field-error' : ''}
                         defaultValue={localAnswer.defaultValue}
                         onBlur={(e) => {
                             updateStore({
                                 defaultValue: e.currentTarget.value,
                             });
-                            setVisitedField(0, validationObject, setValidationObject);
-                            setValidateNumber(
-                                0,
-                                validationObject,
-                                setValidationObject,
-                                parseInt(e.currentTarget.value),
-                            );
                         }}
                         disabled={!localAnswer.hasDefault}
                         style={inputStyle}
                     ></Input>
-                    {errorList[0] && <p style={{ color: 'red' }}> Fyll inn standardverdi</p>}
                 </Col>
             </Row>
             <Row>
@@ -144,8 +95,6 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             updateStore({
                                 hasUnit: e.target.checked,
                             });
-                            setCheckedField(1, e.target.checked, validationObject, setValidationObject);
-                            setValidateText(1, validationObject, setValidationObject, localAnswer.unit);
                         }}
                     >
                         Enhet:
@@ -154,19 +103,15 @@ function Number({ questionId }: NumberProps): JSX.Element {
                 <Col span={10}>
                     <Input
                         type="text"
-                        className={errorList[1] ? 'field-error' : ''}
                         defaultValue={localAnswer.unit}
                         onBlur={(e) => {
                             updateStore({
                                 unit: e.target.value,
                             });
-                            setVisitedField(1, validationObject, setValidationObject);
-                            setValidateText(1, validationObject, setValidationObject, e.currentTarget.value);
                         }}
                         disabled={!localAnswer.hasUnit}
                         style={inputStyle}
                     ></Input>
-                    {errorList[1] && <p style={{ color: 'red' }}> Fyll inn enhet</p>}
                 </Col>
             </Row>
             <Row>
@@ -182,8 +127,6 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             updateStore({
                                 hasMin: e.target.checked,
                             });
-                            setCheckedField(2, e.target.checked, validationObject, setValidationObject);
-                            setValidateNumber(2, validationObject, setValidationObject, localAnswer.minValue);
                         }}
                     >
                         Minimum:
@@ -192,24 +135,15 @@ function Number({ questionId }: NumberProps): JSX.Element {
                 <Col span={10}>
                     <Input
                         type="number"
-                        className={errorList[2] ? 'field-error' : ''}
                         defaultValue={localAnswer.minValue}
                         onBlur={(e) => {
                             updateStore({
                                 minValue: e.target.value,
                             });
-                            setVisitedField(2, validationObject, setValidationObject);
-                            setValidateNumber(
-                                2,
-                                validationObject,
-                                setValidationObject,
-                                parseInt(e.currentTarget.value),
-                            );
                         }}
                         disabled={!localAnswer.hasMin}
                         style={inputStyle}
                     ></Input>
-                    {errorList[2] && <p style={{ color: 'red' }}> Fyll inn minimum</p>}
                 </Col>
             </Row>
             <Row>
@@ -220,8 +154,6 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             updateStore({
                                 hasMax: e.target.checked,
                             });
-                            setCheckedField(3, e.target.checked, validationObject, setValidationObject);
-                            setValidateNumber(3, validationObject, setValidationObject, localAnswer.maxValue);
                         }}
                     >
                         Maksimum:
@@ -230,24 +162,15 @@ function Number({ questionId }: NumberProps): JSX.Element {
                 <Col span={12}>
                     <Input
                         type="number"
-                        className={errorList[3] ? 'field-error' : ''}
                         defaultValue={localAnswer.maxValue}
                         onBlur={(e) => {
                             updateStore({
                                 maxValue: e.target.value,
                             });
-                            setVisitedField(3, validationObject, setValidationObject);
-                            setValidateNumber(
-                                3,
-                                validationObject,
-                                setValidationObject,
-                                parseInt(e.currentTarget.value),
-                            );
                         }}
                         disabled={!localAnswer.hasMax}
                         style={inputStyle}
                     ></Input>
-                    {errorList[3] && <p style={{ color: 'red' }}> Fyll inn maksimum</p>}
                 </Col>
             </Row>
         </>

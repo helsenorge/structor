@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { Button, Tooltip, Row, Col, Typography, Modal, message } from 'antd';
 import { LeftOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { FormContext, updateValidationFlag } from '../../store/FormStore';
+import { FormContext } from '../../store/FormStore';
 import './NavBar.css';
 import JSONConverter from '../../helpers/JSONGenerator';
 import JSONGenerator from '../../helpers/JSONGenerator';
-import moment from 'moment';
+import AnswerTypes from '../../types/IAnswer';
 
 function NavBar(): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
@@ -68,19 +68,15 @@ function NavBar(): JSX.Element {
     function validateForm(): boolean {
         console.log('Validerer');
         if (state.description.length === 0 || state.description === undefined) {
-            console.log(state.description);
-            dispatch(updateValidationFlag(moment().valueOf()));
             return false;
         }
         if (state.title === '' || state.title === undefined) {
-            dispatch(updateValidationFlag(moment().valueOf()));
             return false;
         }
         const sectionArray = Object.values(state.sections);
         if (sectionArray.length > 1) {
             for (let j = 0; j < sectionArray.length; j++) {
-                if (!sectionArray[j].valid) {
-                    dispatch(updateValidationFlag(moment().valueOf()));
+                if (!sectionArray[j].sectionTitle) {
                     return false;
                 }
             }
@@ -88,12 +84,10 @@ function NavBar(): JSX.Element {
         const questionArray = Object.values(state.questions);
         for (let i = 0; i < questionArray.length; i++) {
             console.log(questionArray);
-            if (!questionArray[i].valid || !questionArray[i].answer.valid) {
-                dispatch(updateValidationFlag(moment().valueOf()));
+            if (!questionArray[i].questionText || questionArray[i].answerType === AnswerTypes.default) {
                 return false;
             }
         }
-        dispatch(updateValidationFlag(moment().valueOf()));
         return true;
     }
     function confirmPreview() {

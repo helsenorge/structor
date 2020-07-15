@@ -17,13 +17,6 @@ function BooleanInput({ questionId }: BooleanInputProps): JSX.Element {
         if (attribute.isChecked !== undefined) temp.isChecked = attribute.isChecked;
         dispatch(updateAnswer(questionId, temp));
     }
-
-    useEffect(() => {
-        const temp = { ...state.questions[questionId].answer };
-        temp.valid = true;
-        dispatch(updateAnswer(questionId, temp));
-    }, []);
-
     return (
         <>
             <Checkbox

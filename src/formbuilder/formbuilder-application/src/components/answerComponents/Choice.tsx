@@ -16,8 +16,6 @@ function Choice({ questionId }: choiceProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...(state.questions[questionId].answer as IChoice) };
     const [choices, setChoices] = useState((state.questions[questionId].answer as IChoice).choices);
-    const [validationList, setValidationList] = useState(Array(choices.length).fill(false));
-    const [visitedfields, setVisitedField] = useState(Array(choices.length).fill(false));
     const [choiceID, setChoiceIDs] = useState([
         'choice_' + questionId + generateID(),
         'choice_' + questionId + generateID(),
@@ -48,21 +46,15 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         let tempChoices = [...choices];
         let tempIDs = [...choiceID];
         let tempDefault = undefined;
-        let tempValidationList = [...validationList];
-        let tempVisitedfields = [...visitedfields];
 
         if (attribute.mode === 'add') {
             tempChoices = [...choices, ''];
             tempIDs = [...tempIDs, 'choice_' + questionId + generateID()];
-            tempValidationList = [...validationList, false];
-            tempVisitedfields = [...visitedfields, false];
         }
 
         if (attribute.mode === 'delete' && attribute.id !== undefined) {
             tempChoices.splice(attribute.id, 1);
             tempIDs.splice(attribute.id, 1);
-            tempValidationList.splice(attribute.id, 1);
-            tempVisitedfields.splice(attribute.id, 1);
             if (attribute.id === localAnswer.defaultValue) tempDefault = NaN;
             else if (localAnswer.defaultValue && attribute.id < localAnswer.defaultValue)
                 tempDefault = localAnswer.defaultValue - 1;
@@ -71,8 +63,6 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         setChoiceIDs(tempIDs);
         if (attribute.value !== undefined && attribute.id !== undefined) tempChoices[attribute.id] = attribute.value;
         setChoices(tempChoices);
-        setValidationList(tempValidationList);
-        setVisitedField(tempVisitedfields);
         if (attribute.updateState) {
             localUpdate({ choices: tempChoices, defaultValue: tempDefault });
         }
@@ -126,15 +116,12 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     key={'Input_' + choiceID[id]}
                     id={'Input_' + choiceID[id]}
                     type="text"
-                    className={showError(id) ? 'field-error' : 'input-question'}
                     placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
                     defaultValue={choices[id]}
                     style={{ width: '100%' }}
-                    // onChange={(e) => updateChoices({ id: id, value: e.target.value })}
                     onBlur={(e) => {
                         console.log('Blur');
                         updateChoices({ id: id, value: e.target.value, updateState: true });
-                        validate(id, e.currentTarget.value);
                     }}
                     onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
                         if (event.charCode === 13) {
@@ -153,7 +140,10 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     function createCheckbox(id: number) {
         return (
-            <Row key={'checkbox_row' + choiceID[id]} style={{ width: '97.5%', height: '30px', lineHeight: '30px', marginBottom: 10, marginLeft: 0 }}>
+            <Row
+                key={'checkbox_row' + choiceID[id]}
+                style={{ width: '97.5%', height: '30px', lineHeight: '30px', marginBottom: 10, marginLeft: 0 }}
+            >
                 <Col style={{ width: '5%' }}>
                     <Checkbox disabled={true} value={id} checked={false} />
                 </Col>
@@ -161,14 +151,11 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     <Input
                         id={'Input_' + choiceID[id]}
                         type="text"
-                        className={showError(id) ? 'field-error' : 'input-question'}
+                        className="input-question"
                         placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
                         defaultValue={localAnswer.choices[id]}
-                        // onChange={(e) => updateChoices({ id: id, value: e.target.value })}
                         onBlur={(e) => {
-                            console.log('Blur');
                             updateChoices({ id: id, value: e.target.value, updateState: true });
-                            validate(id, e.currentTarget.value);
                         }}
                         onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
                             if (event.charCode === 13) {
@@ -185,34 +172,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
             </Row>
         );
     }
-    function validate(field: number, value: string): void {
-        const tempValid = [...validationList];
-        const tempVisited = [...visitedfields];
-        value.length > 0 ? (tempValid[field] = true) : (tempValid[field] = false);
-        tempVisited[field] = true;
-        setVisitedField(tempVisited);
-        setValidationList(tempValid);
-    }
 
-    function showError(field: number): boolean {
-        return (state.validationFlag && !validationList[field]) || (!validationList[field] && visitedfields[field]);
-    }
-
-    useEffect(() => {
-        const temp = { ...state.questions[questionId].answer } as IChoice;
-        const validation = temp.choices.map((choice) => {
-            return choice.length > 0;
-        });
-        setValidationList(validation);
-        temp.valid = !validation.includes(false);
-        dispatch(updateAnswer(questionId, temp));
-    }, []);
-
-    useEffect(() => {
-        const temp = { ...state.questions[questionId].answer };
-        temp.valid = validationList.every((field) => field === true);
-        dispatch(updateAnswer(questionId, temp));
-    }, [validationList]);
     return (
         <>
             <Row className="standard" style={{ paddingLeft: '0px', paddingTop: '0px' }}>
@@ -260,13 +220,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                 Forhåndsvelg standardalternativ:
                             </Checkbox>
                             <Select
-                                className={
-                                    (state.questions[questionId].answer as IChoice).hasDefault &&
-                                    (state.questions[questionId].answer as IChoice).defaultValue === undefined &&
-                                    state.validationFlag
-                                        ? 'field-error'
-                                        : 'input-question'
-                                }
+                                className="input-question"
                                 key="select_default_value"
                                 defaultValue={localAnswer.defaultValue}
                                 disabled={!(localAnswer.hasDefault && !localAnswer.isMultiple)}
@@ -295,9 +249,6 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                 <div key={'choice_add_multiple'} className="question-component" style={choiceStyle}>
                     <h4>Skriv inn svaralternativer under:</h4>
                     {choices.map((name, id) => [createCheckbox(id)])}
-                    {validationList.includes(false) && state.validationFlag && (
-                        <p style={{ color: 'red' }}> Fyll ut alle alternativ</p>
-                    )}
                     <Button
                         type="text"
                         icon={<PlusSquareOutlined />}
@@ -315,9 +266,6 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         value={localAnswer.hasDefault ? localAnswer.defaultValue : undefined}
                     >
                         {choices.map((name, id) => [createRadioButton(id)])}
-                        {validationList.includes(false) && state.validationFlag && (
-                            <p style={{ color: 'red' }}> Fyll ut alle alternativ</p>
-                        )}
                         {
                             <Button
                                 type="text"

@@ -5,13 +5,6 @@ import { FormContext, updateQuestion, updateSection } from '../store/FormStore';
 import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes, { IChoice, INumber, IText, IBoolean, ITime, IAnswer } from '../types/IAnswer';
-import {
-    validateText,
-    IValidation,
-    checkErrorFields,
-    setVisitedField,
-    setValidateText,
-} from '../helpers/ValidationHelpers';
 import moment from 'moment';
 
 const { Option } = Select;
@@ -26,16 +19,6 @@ type QuestionProps = {
 function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localQuestion = { ...state.questions[questionId] } as IQuestion;
-    const [errorList, setErrorList] = useState([false, false]);
-    const initTime = moment().valueOf();
-    const [validationObject, setValidationObject] = useState({
-        checkedList: [true, true],
-        visitedFields: [
-            localQuestion.questionText.length > 0 ? initTime : 0,
-            localQuestion.answerType !== AnswerTypes.default ? initTime : 0,
-        ],
-        validationList: [validateText(localQuestion.questionText), localQuestion.answerType !== AnswerTypes.default],
-    } as IValidation);
 
     function updateStore(attribute: {
         answerType?: AnswerTypes;
@@ -107,33 +90,19 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
         dispatch(updateQuestion(temp));
     }
 
-    useEffect(() => {
-        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, true, setValidationObject);
-    }, [state.validationFlag]);
-
-    useEffect(() => {
-        const temp = { ...state.questions[questionId] };
-        checkErrorFields(state.validationFlag, validationObject, errorList, setErrorList, false, setValidationObject);
-        dispatch(updateQuestion(temp));
-    }, [validationObject]);
-
     return (
         <div style={{ backgroundColor: 'var(--color-base-1)' }}>
             <Row>
                 <Col span={17} style={{ paddingRight: '5px' }}>
                     <Input
                         placeholder={localQuestion.placeholder}
-                        className={errorList[0] ? 'field-error' : 'input-question'}
                         defaultValue={localQuestion.questionText}
                         onBlur={(e) => {
                             updateStore({
                                 questionText: e.target.value === undefined ? '' : e.target.value,
                             });
-                            setVisitedField(0, validationObject, setValidationObject);
-                            setValidateText(0, validationObject, setValidationObject, e.currentTarget.value);
                         }}
                     />
-                    {errorList[0] && <p style={{ color: 'red' }}> Fyll inn tekst her </p>}
                 </Col>
                 <Col span={6}></Col>
                 <Col span={1} style={{ float: 'right' }}>
@@ -189,7 +158,6 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                         Velg type spørsmål:{' '}
                                     </p>
                                     <Select
-                                        className={errorList[1] ? 'field-error' : ''}
                                         defaultValue={localQuestion.answerType}
                                         style={{
                                             width: '200px',
@@ -199,11 +167,6 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                             updateStore({
                                                 answerType: value,
                                             });
-                                            if (value !== AnswerTypes.default) {
-                                                const tmpObject = { ...validationObject };
-                                                tmpObject.validationList[1] = true;
-                                                tmpObject.visitedFields[1] = moment().valueOf();
-                                            }
                                         }}
                                         placeholder="Trykk for å velge"
                                     >
@@ -213,7 +176,6 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                         <Option value={AnswerTypes.time}>Dato/tid</Option>
                                         <Option value={AnswerTypes.choice}>Flervalg</Option>
                                     </Select>
-                                    {errorList[1] && <p style={{ color: 'red' }}> Velg et svar alternativ</p>}
                                 </Col>
                             </Row>
                         </Col>

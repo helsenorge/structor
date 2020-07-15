@@ -6,30 +6,8 @@ const { TextArea } = Input;
 
 function TitleAndDescription(): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
-    const [validationList, setValidationList] = useState([false, false]);
-    const [visitedfields, setVisitedField] = useState([false, false]);
     const [title, setTitle] = useState(state.title);
     const [description, setDescription] = useState(state.description);
-
-    function validate(field: number, value: string): void {
-        const tempValid = [...validationList];
-        const tempVisited = [...visitedfields];
-        value.length > 0 ? (tempValid[field] = true) : (tempValid[field] = false);
-        tempVisited[field] = true;
-        setVisitedField(tempVisited);
-        setValidationList(tempValid);
-    }
-
-    function showError(field: number): boolean {
-        return (state.validationFlag && !validationList[field]) || (!validationList[field] && visitedfields[field]);
-    }
-
-    useEffect(() => {
-        const validation = [...validationList];
-        if (state.title.length > 0) validation[0] = true;
-        if (state.description.length > 0) validation[1] = true;
-        setValidationList(validation);
-    }, []);
 
     return (
         <div
@@ -44,16 +22,14 @@ function TitleAndDescription(): JSX.Element {
                 <Col xs={24} lg={16}>
                     <Input
                         placeholder="Skjematittel..."
-                        className={showError(0) ? 'field-error' : 'input-question'}
+                        className="input-question"
                         size="large"
                         defaultValue={title}
                         onBlur={(e) => {
                             setTitle(e.currentTarget.value);
                             dispatch(updateFormMeta(e.currentTarget.value, description));
-                            validate(0, e.currentTarget.value);
                         }}
                     ></Input>
-                    {showError(0) && <p style={{ color: 'red' }}> Fyll inn skjema tittel</p>}
                 </Col>
                 <Col xs={0} lg={4}></Col>
             </Row>
@@ -62,15 +38,13 @@ function TitleAndDescription(): JSX.Element {
                 <Col xs={24} lg={16}>
                     <TextArea
                         placeholder="Beskrivelse av skjema..."
-                        className={showError(1) ? 'field-error' : 'input-question'}
+                        className="input-question"
                         defaultValue={description}
                         onBlur={(e) => {
                             setDescription(e.currentTarget.value);
                             dispatch(updateFormMeta(title, e.currentTarget.value));
-                            validate(1, e.currentTarget.value);
                         }}
                     ></TextArea>
-                    {showError(1) && <p style={{ color: 'red' }}> Fyll inn skjema beskrivelse</p>}
                 </Col>
                 <Col xs={0} lg={4}></Col>
             </Row>
