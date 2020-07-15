@@ -1,12 +1,12 @@
 import React, { useEffect, useContext } from 'react';
 import useFetch from 'utils/hooks/useFetch';
-import { PatientContext } from 'components/Patient/PatientContext';
 import { IQuestionnaire } from 'types/IQuestionnaire';
 import { Row, Spin } from 'antd';
+import { GlobalContext } from 'context/GlobalContext';
 
 const FetchQuestionnaires = ({ questionnaireId }: any) => {
     const { response: questionnaire } = useFetch<IQuestionnaire>('fhir/Questionnaire?_id=' + questionnaireId);
-    const { setQuestionnaire } = useContext(PatientContext);
+    const { setQuestionnaire } = useContext(GlobalContext);
 
     useEffect(() => {
         questionnaire && setQuestionnaire(questionnaire);

@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Row } from 'antd';
 import FecthSingleQuestionnaireResponses from './FetchSingleQuestionnaireResponses';
-import { PatientContext } from 'components/Patient/PatientContext';
+import { GlobalContext } from 'context/GlobalContext';
 
 const CompareQuestionnaireResponses = () => {
-    const { comparableSchemaNumbers } = useContext(PatientContext);
+    const { comparableSchemaNumbers } = useContext(GlobalContext);
 
     return (
         <>

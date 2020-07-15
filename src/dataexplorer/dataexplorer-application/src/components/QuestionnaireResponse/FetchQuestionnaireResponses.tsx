@@ -2,17 +2,17 @@ import React, { useEffect, useContext, useState } from 'react';
 import useFetch from 'utils/hooks/useFetch';
 import { IPatientIdentifier } from 'types/IPatient';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
-import { PatientContext } from 'components/Patient/PatientContext';
 import PatientQuestionnaire from 'components/Patient/PatientQuestionnaireResponses/PatientQuestionnaire/PatientQuestionnaire';
 import { Spin, Row } from 'antd';
 import FetchQuestionnaires from './FetchQuestionnaires';
+import { GlobalContext } from 'context/GlobalContext';
 
 const FetchQuestionnaireResponses = (patientData: IPatientIdentifier) => {
     const { response: questionnaireResponses } = useFetch<IQuestionnaireResponse>(
         'fhir/QuestionnaireResponse?subject=Patient/' + patientData.entry[0].resource.id,
     );
     const [questionnaireId, setQuestionnaireId] = useState<string>('');
-    const { questionnaire, setQuestionnaireResponse } = useContext(PatientContext);
+    const { questionnaire, setQuestionnaireResponse } = useContext(GlobalContext);
 
     useEffect(() => {
         if (questionnaireResponses) {

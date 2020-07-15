@@ -1,7 +1,7 @@
 import React, { useState, ReactNode, ReactText } from 'react';
 import Navigation from './Navigation/Navigation';
 import { IPatientIdentifier } from 'types/IPatient';
-import { Provider } from './Patient/PatientContext';
+import { Provider } from 'context/GlobalContext';
 import { IQuestionnaireResponse } from 'types/IQuestionnaireResponse';
 import { IQuestionnaire } from 'types/IQuestionnaire';
 

@@ -4,10 +4,10 @@ import useFetch from 'utils/hooks/useFetch';
 import { Row, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import './PatientPreview.style.scss';
-import { PatientContext } from 'components/Patient/PatientContext';
+import { GlobalContext } from 'context/GlobalContext';
 
 const PatientPreview = () => {
-    const { patientId, setPatient } = useContext(PatientContext);
+    const { patientId, setPatient } = useContext(GlobalContext);
     const { response: patientData } = useFetch<IPatientIdentifier>(
         // The oid signifies that we are searching on social security number
         'fhir/Patient?identifier=urn:oid:2.16.840.1.113883.2.4.6.3|' + patientId,

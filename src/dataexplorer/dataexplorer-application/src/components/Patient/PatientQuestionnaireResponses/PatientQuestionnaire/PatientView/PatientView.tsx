@@ -5,17 +5,17 @@ import dayjs from 'dayjs';
 import { useHistory } from 'react-router-dom';
 import './PatientView.style.scss';
 import 'components/Patient/Patient-style.scss';
-import { PatientContext } from 'components/Patient/PatientContext';
+import { GlobalContext } from 'context/GlobalContext';
 
 const PatientView = (props: { dataSource: fhir.ResourceBase[]; hasQuestionnaireResponses: boolean }) => {
     const history = useHistory();
-    const { setSchemanumber, setComparableSchemaNumbers } = useContext(PatientContext);
+    const { setSchemanumber, setComparableSchemaNumbers } = useContext(GlobalContext);
     const [comparingSchemesIds, setComparingSchemesIds] = useState<ReactText[]>([]);
     const [compareSchemesMode, setCompareSchemesMode] = useState<boolean>(false);
     const [reachedMaxValue, setReachedMaxValue] = useState<boolean>(false);
     const MAX_VALUE = 2;
 
-    const { patient: patientData } = useContext(PatientContext);
+    const { patient: patientData } = useContext(GlobalContext);
     const patient = patientData.entry[0].resource;
     const calcAge = () => {
         const birthday = patient.birthDate;
@@ -26,7 +26,6 @@ const PatientView = (props: { dataSource: fhir.ResourceBase[]; hasQuestionnaireR
 
         return `${patientDay.toString()}.${patientMonth}.${patientYear.toString()} (${actualAge.toString()})`;
     };
-
     const { Title } = Typography;
     const name = patient.name[0].given[0] + ' ' + patient.name[0].family;
     const columns = [

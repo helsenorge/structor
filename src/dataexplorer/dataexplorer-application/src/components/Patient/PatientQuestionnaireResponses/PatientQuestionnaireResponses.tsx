@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import { Row, Spin } from 'antd';
 import PatientView from './PatientQuestionnaire/PatientView/PatientView';
 import PatientQuestionnaire from './PatientQuestionnaire/PatientQuestionnaire';
-import { PatientContext } from '../PatientContext';
+import { GlobalContext } from 'context/GlobalContext';
 
 const PatientQuestionnaireResponses = () => {
-    const { questionnaireResponse: questionnaireResponses, questionnaire } = useContext(PatientContext);
+    const { questionnaireResponse: questionnaireResponses, questionnaire } = useContext(GlobalContext);
     return (
         <>
             {questionnaireResponses.entry !== undefined && questionnaire.entry !== undefined && (
