@@ -16,16 +16,17 @@ const PatientQuestionnaire = () => {
         });
         setDataSource([]);
         questionnaireResponses.entry.forEach((item) => {
+            const name = qdict.get(
+                item.resource.questionnaire?.reference
+                    ?.substr(item.resource.questionnaire?.reference?.indexOf('Questionnaire/'))
+                    .split('/')[1],
+            );
             setDataSource((dataSource) => [
                 ...dataSource,
                 {
                     id: item.resource.id,
-                    schemaName: qdict.get(
-                        item.resource.questionnaire?.reference
-                            ?.substr(item.resource.questionnaire?.reference?.indexOf('Questionnaire/'))
-                            .split('/')[1],
-                    ),
-                    submitted: dayjs(item.resource.meta?.lastUpdated).format('DD.MM.YYYY - HH:mm').toString(),
+                    schemaName: name ? name : 'Udefinert',
+                    submitted: dayjs(item.resource.meta?.lastUpdated).format('DD.MM.YYYY HH:mm'),
                 },
             ]);
         });

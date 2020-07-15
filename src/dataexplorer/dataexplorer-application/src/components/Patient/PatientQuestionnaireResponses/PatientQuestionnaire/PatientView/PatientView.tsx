@@ -33,12 +33,27 @@ const PatientView = (props: { dataSource: fhir.ResourceBase[]; hasQuestionnaireR
             title: 'Skjemanavn',
             dataIndex: 'schemaName',
             key: 'schemaName',
+            sorter: (a: any, b: any) => a.schemaName.localeCompare(b.schemaName),
         },
         {
             title: 'Innsendt',
             dataIndex: 'submitted',
             key: 'submitted',
-            sorter: (a: any, b: any) => dayjs(a.submitted).unix() - dayjs(b.submitted).unix(),
+            sorter: (a: any, b: any) =>
+                dayjs(
+                    a.submitted.split(' ')[0].split('.')[1] +
+                        a.submitted.split(' ')[0].split('.')[0] +
+                        a.submitted.split(' ')[0].split('.')[2] +
+                        ' ' +
+                        a.submitted.split(' ')[1],
+                ).unix() -
+                dayjs(
+                    b.submitted.split(' ')[0].split('.')[1] +
+                        b.submitted.split(' ')[0].split('.')[0] +
+                        b.submitted.split(' ')[0].split('.')[2] +
+                        ' ' +
+                        b.submitted.split(' ')[1],
+                ).unix(),
         },
     ];
 
