@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, ReactText } from 'react';
 import Search from 'antd/lib/input/Search';
 import { Row, Col, message } from 'antd';
 import PatientPreview from './PatientPreview/PatientPreview';
@@ -23,6 +23,7 @@ const Dashboard = () => {
         setPatient,
         setQuestionnaireResponse,
         setQuestionnaire,
+        setComparableSchemaNumbers,
     } = useContext(GlobalContext);
 
     message.config({ maxCount: 1 });
@@ -39,6 +40,7 @@ const Dashboard = () => {
         setPatient({} as IPatientIdentifier);
         setQuestionnaire({} as IQuestionnaire);
         setQuestionnaireResponse({} as IQuestionnaireResponse);
+        setComparableSchemaNumbers({} as ReactText[]);
     }, [setName, setPatientId, setSchemanumber, setPatient, setQuestionnaire, setQuestionnaireResponse]);
 
     return (

@@ -48,7 +48,7 @@ const Breadcrumbs = () => {
                             )}
                         </Breadcrumb.Item>
                     )}
-                    {comparableSchemaNumbers.length !== 0 && (
+                    {comparableSchemaNumbers.length !== undefined && comparableSchemaNumbers.length !== 0 && (
                         <Breadcrumb.Item>
                             <span id="breadcrumb-focus" className="breadcrumbs-item">
                                 Sammenligner skjemaene: {comparableSchemaNumbers[0]} og {comparableSchemaNumbers[1]}
