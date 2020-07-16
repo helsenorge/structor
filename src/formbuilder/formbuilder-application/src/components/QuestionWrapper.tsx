@@ -11,6 +11,7 @@ import SectionList from '../types/SectionList';
 import QuestionList from '../types/QuestionList';
 import AnswerTypes, { IInfo } from '../types/IAnswer';
 import IQuestion from '../types/IQuestion';
+import './answerComponents/AnswerComponent.css';
 
 type QuestionProps = {
     duplicateQuestion: () => void;
@@ -282,6 +283,7 @@ function QuestionWrapper({
                                 (state.questions[questionId] as IQuestion).collapsed ? <DownOutlined /> : <UpOutlined />
                             }
                             onClick={() => collapseButton(!(state.questions[questionId] as IQuestion).collapsed)}
+                            className="icon-buttons"
                         />
                     </Tooltip>
                 </Col>
@@ -337,6 +339,7 @@ function QuestionWrapper({
                                             type="link"
                                             shape="circle"
                                             {...provided.dragHandleProps}
+                                            className="icon-buttons"
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"

@@ -79,6 +79,10 @@
     z-index: 1 !important;
 }
 
+.icon-buttons {
+    background-color: var(--color-base-2);
+} 
+
 .ant-popover-buttons .ant-btn:hover {
     border-color: var(--primary-1) !important;
     color: rgba(0, 0, 0, 0.65);

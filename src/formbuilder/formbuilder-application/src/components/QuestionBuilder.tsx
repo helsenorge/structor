@@ -119,6 +119,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                             type="link"
                             shape="circle"
                             {...provided.dragHandleProps}
+                            className="icon-buttons"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                                 <path d="M0 0h24v24H0V0z" fill="none" />

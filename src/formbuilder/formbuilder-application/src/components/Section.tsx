@@ -6,6 +6,7 @@ import { FormContext, addNewQuestion, removeQuestion, duplicateQuestion, updateS
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes from '../types/IAnswer';
+import './answerComponents/AnswerComponent.css';
 
 const { TextArea } = Input;
 
@@ -89,6 +90,7 @@ function Section({
                                     shape="circle"
                                     icon={collapsedSection ? <DownOutlined /> : <UpOutlined />}
                                     onClick={() => setCollapsedSection(!collapsedSection)}
+                                    className="icon-buttons"
                                 />
                             </Tooltip>
                         </Col>
@@ -135,6 +137,7 @@ function Section({
                                         type="link"
                                         shape="circle"
                                         onClick={() => setCollapsedSection(true)}
+                                        className="icon-buttons"
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"

@@ -104,6 +104,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         })
                     }
                     value="Delete"
+                    className="icon-buttons"
                 />
             </Tooltip>
         );
@@ -116,7 +117,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                     key={'Input_' + choiceID[id]}
                     id={'Input_' + choiceID[id]}
                     type="text"
-                    placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
+                    placeholder={'Alternativ ' + (id + 1)}
                     defaultValue={choices[id]}
                     style={{ width: '100%' }}
                     onBlur={(e) => {
@@ -151,7 +152,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         id={'Input_' + choiceID[id]}
                         type="text"
                         className="input-question"
-                        placeholder={'Skriv inn alternativ nr. ' + (id + 1) + ' her'}
+                        placeholder={'Alternativ ' + (id + 1)}
                         defaultValue={localAnswer.choices[id]}
                         onBlur={(e) => {
                             updateChoices({ id: id, value: e.target.value, updateState: true });
@@ -174,21 +175,45 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     return (
         <>
-            <Row className="standard" style={{ paddingLeft: '0px', paddingTop: '0px' }}>
-                <Col span={24}>
-                    <Checkbox
-                        defaultChecked={localAnswer.isOpen}
-                        onChange={(e) =>
-                            localUpdate({
-                                isOpen: e.target.checked,
-                            })
-                        }
+            
+            
+
+            {localAnswer.isMultiple ? (
+                <div key={'choice_add_multiple'} className="question-component" style={choiceStyle}>
+                    <p>Skriv inn svaralternativer under:</p>
+                    {choices.map((name, id) => [createCheckbox(id)])}
+                    <Button
+                        type="text"
+                        icon={<PlusSquareOutlined />}
+                        onClick={() => updateChoices({ mode: 'add' })}
+                        value="Add"
                     >
-                        La mottaker legge til svaralternativ
-                    </Checkbox>
-                </Col>
-            </Row>
-            <Row className="standard" style={{ paddingLeft: '0px' }}>
+                        Legg til alternativ
+                    </Button>
+                </div>
+            ) : (
+                <div key={'choice_add_radio'} className="question-component" style={choiceStyle}>
+                    <p>Skriv inn svaralternativer under:</p>
+                    <Radio.Group
+                        name="radiogroup"
+                        value={localAnswer.hasDefault ? localAnswer.defaultValue : undefined}
+                    >
+                        {choices.map((name, id) => [createRadioButton(id)])}
+                        {
+                            <Button
+                                type="text"
+                                icon={<PlusCircleOutlined />}
+                                onClick={() => updateChoices({ mode: 'add' })}
+                                value="Add"
+                                className="icon-buttons"
+                            >
+                                Legg til alternativ
+                            </Button>
+                        }
+                    </Radio.Group>
+                </div>
+            )}
+            <Row className="standard" style={{ paddingLeft: '0px', paddingTop: '30px' }}>
                 <Col span={24}>
                     <Checkbox
                         defaultChecked={localAnswer.isMultiple}
@@ -198,11 +223,24 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                             })
                         }
                     >
-                        La mottaker velge flere alternativ
+                        La mottaker velge flere alternativ.
                     </Checkbox>
                 </Col>
             </Row>
-
+            <Row className="standard" style={{ paddingLeft: '0px' }}>
+                <Col span={24}>
+                    <Checkbox
+                        defaultChecked={localAnswer.isOpen}
+                        onChange={(e) =>
+                            localUpdate({
+                                isOpen: e.target.checked,
+                            })
+                        }
+                    >
+                        La mottaker legge til annet svaralternativ.
+                    </Checkbox>
+                </Col>
+            </Row>
             {!localAnswer.isMultiple && (
                 <>
                     <Row className="standard" style={{ paddingLeft: '0px' }}>
@@ -223,7 +261,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                 key="select_default_value"
                                 defaultValue={localAnswer.defaultValue}
                                 disabled={!(localAnswer.hasDefault && !localAnswer.isMultiple)}
-                                style={{ width: '200px' }}
+                                style={{ width: '200px', paddingTop: '6px' }}
                                 onSelect={(value) => {
                                     localUpdate({
                                         defaultValue: value,
@@ -242,41 +280,6 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         </Col>
                     </Row>
                 </>
-            )}
-
-            {localAnswer.isMultiple ? (
-                <div key={'choice_add_multiple'} className="question-component" style={choiceStyle}>
-                    <h4>Skriv inn svaralternativer under:</h4>
-                    {choices.map((name, id) => [createCheckbox(id)])}
-                    <Button
-                        type="text"
-                        icon={<PlusSquareOutlined />}
-                        onClick={() => updateChoices({ mode: 'add' })}
-                        value="Add"
-                    >
-                        Legg til alternativ
-                    </Button>
-                </div>
-            ) : (
-                <div key={'choice_add_radio'} className="question-component" style={choiceStyle}>
-                    <h4>Skriv inn svaralternativer under:</h4>
-                    <Radio.Group
-                        name="radiogroup"
-                        value={localAnswer.hasDefault ? localAnswer.defaultValue : undefined}
-                    >
-                        {choices.map((name, id) => [createRadioButton(id)])}
-                        {
-                            <Button
-                                type="text"
-                                icon={<PlusCircleOutlined />}
-                                onClick={() => updateChoices({ mode: 'add' })}
-                                value="Add"
-                            >
-                                Legg til alternativ
-                            </Button>
-                        }
-                    </Radio.Group>
-                </div>
             )}
         </>
     );

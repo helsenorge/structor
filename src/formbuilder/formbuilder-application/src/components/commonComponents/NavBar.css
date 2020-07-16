@@ -16,3 +16,7 @@
     background-color: var(--primary-2);
 
 }
+
+.back-button:hover {
+    background-color: #0188a3 !important;
+}
