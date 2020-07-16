@@ -70,3 +70,6 @@ p{
   padding: 9px 12px;
 }
 
+.icon-buttons:hover {
+  background-color: #e0e0e0 !important;
+} 

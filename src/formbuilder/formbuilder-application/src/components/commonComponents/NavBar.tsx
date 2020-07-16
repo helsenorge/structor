@@ -49,6 +49,7 @@ function NavBar(): JSX.Element {
         const questionnaire = convertForm();
         const filename = questionnaire.title + '.json';
         const contentType = 'application/json;charset=utf-8;';
+
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
             const blob = new Blob([decodeURIComponent(encodeURI(JSON.stringify(questionnaire)))], {
                 type: contentType,
@@ -133,6 +134,7 @@ function NavBar(): JSX.Element {
                                 float: 'left',
                                 color: 'var(--color-base-1)',
                             }}
+                            className="back-button"
                             type="link"
                             shape="circle"
                             icon={<LeftOutlined />}
