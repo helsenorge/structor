@@ -145,7 +145,7 @@ function QuestionWrapper({
                                         float: 'left',
                                         width: '125px',
                                     }}
-                                    icon={<EyeOutlined />}
+                                    icon={<CopyOutlined />}
                                     type="default"
                                     disabled
                                 >

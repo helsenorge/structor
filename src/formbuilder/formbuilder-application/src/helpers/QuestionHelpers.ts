@@ -23,6 +23,14 @@ export default function convertQuestion(
         linkId: linkId,
         type: FhirAnswerTypes.text,
         text: question.questionText,
+        _text: {
+            extension: [
+                {
+                    url: 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+                    valueMarkdown: '#### ' + question.questionText,
+                },
+            ],
+        },
         required: question.isRequired,
         repeats: false, // TODO
         readOnly: false, // TODO

@@ -19,6 +19,9 @@ export default function DuplicateActions(draft: State, action: DuplicateAction):
                     const tmpQuestion = { ...draft.questions[questionId] };
                     tmpQuestion.id = generateID();
                     tmpQuestion.questionText += tmpQuestion.questionText.endsWith('- Kopi') ? '' : '- Kopi';
+                    const answerCopy = { ...tmpQuestion.answer };
+                    answerCopy.id = generateID();
+                    tmpQuestion.answer = answerCopy;
                     draft.questions[tmpQuestion.id] = tmpQuestion;
                     newQuestionsOrder.push(tmpQuestion.id);
                 });
@@ -39,7 +42,9 @@ export default function DuplicateActions(draft: State, action: DuplicateAction):
                 };
                 questionCopy.questionText += questionCopy.questionText.endsWith('- Kopi') ? '' : ' - Kopi';
                 questionCopy.id = action.newQuestionId;
-
+                const answerCopy = { ...questionCopy.answer };
+                answerCopy.id = generateID();
+                questionCopy.answer = answerCopy;
                 draft.questions[questionCopy.id] = questionCopy;
                 draft.sections[action.sectionId].questionOrder.splice(action.newQuestionIndex, 0, questionCopy.id);
             }
