@@ -11,22 +11,24 @@ const Breadcrumbs = () => {
         <>
             <div className="breadcrumbs-container">
                 <Breadcrumb separator=">">
-                    <Breadcrumb.Item>
-                        <Link to="/" onClick={() => setPatientId('')}>
-                            <span id="breadcrumb-home" className="breadcrumbs-item">
-                                Hjem
-                            </span>
-                        </Link>
-                    </Breadcrumb.Item>
+                    {name !== '' && (
+                        <Breadcrumb.Item>
+                            <Link to="/" onClick={() => setPatientId('')}>
+                                <span id="breadcrumb-home" className="breadcrumbs-item">
+                                    Hjem
+                                </span>
+                            </Link>
+                        </Breadcrumb.Item>
+                    )}
                     {name !== '' && (
                         <Breadcrumb.Item>
                             <Link to="/pasient">
                                 {location.pathname === '/pasient' ? (
-                                    <span id="breadcrumb-name-focus" className="breadcrumbs-item">
+                                    <span id="breadcrumb-focus" className="breadcrumbs-item">
                                         {name}
                                     </span>
                                 ) : (
-                                    <span id="breadcrumb-name" className="breadcrumbs-item">
+                                    <span id="breadcrumb" className="breadcrumbs-item">
                                         {name}
                                     </span>
                                 )}
@@ -36,11 +38,11 @@ const Breadcrumbs = () => {
                     {schemaNumber !== '' && (
                         <Breadcrumb.Item>
                             {location.pathname === '/pasient/skjema' ? (
-                                <span id="breadcrumb-schema-focus" className="breadcrumbs-item">
+                                <span id="breadcrumb-focus" className="breadcrumbs-item">
                                     Skjema {schemaNumber}
                                 </span>
                             ) : (
-                                <span id="breadcrumb-schema" className="breadcrumbs-item">
+                                <span id="breadcrumb" className="breadcrumbs-item">
                                     Skjema {schemaNumber}
                                 </span>
                             )}
@@ -48,7 +50,7 @@ const Breadcrumbs = () => {
                     )}
                     {comparableSchemaNumbers.length !== 0 && (
                         <Breadcrumb.Item>
-                            <span id="breadcrumb-schema-focus" className="breadcrumbs-item">
+                            <span id="breadcrumb-focus" className="breadcrumbs-item">
                                 Sammenligner skjemaene: {comparableSchemaNumbers[0]} og {comparableSchemaNumbers[1]}
                             </span>
                         </Breadcrumb.Item>
