@@ -41,7 +41,15 @@ const Dashboard = () => {
         setQuestionnaire({} as IQuestionnaire);
         setQuestionnaireResponse({} as IQuestionnaireResponse);
         setComparableSchemaNumbers({} as ReactText[]);
-    }, [setName, setPatientId, setSchemanumber, setPatient, setQuestionnaire, setQuestionnaireResponse]);
+    }, [
+        setName,
+        setPatientId,
+        setSchemanumber,
+        setPatient,
+        setQuestionnaire,
+        setQuestionnaireResponse,
+        setComparableSchemaNumbers,
+    ]);
 
     return (
         <>
