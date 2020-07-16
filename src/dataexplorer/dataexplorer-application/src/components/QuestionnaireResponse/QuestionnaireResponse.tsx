@@ -16,7 +16,6 @@ const QuestionnaireResponse = () => {
     const questionnaireUrl = questionnaireResponse?.questionnaire?.reference?.substr(
         questionnaireResponse?.questionnaire?.reference?.indexOf('Questionnaire/'),
     );
-    console.log(schemaNumber);
     if (!schemaNumber) {
         history.push('/');
         return <></>;
