@@ -22,6 +22,14 @@
             align-self: flex-end !important;
             margin-right: 2.5rem !important;
         }
+
+        .schema-description {
+            margin-top: 0.5rem;
+            font-style: italic;
+            padding-left: 1rem;
+            font-size: 1rem;
+        }
+
         .ant-collapse {
             font-size: 0.625rem;
             background: white;
@@ -75,6 +83,10 @@
                     .answers {
                         font-size: 1rem;
                         font-weight: 700;
+                        margin: 0;
+                    }
+                    #patients-alternative {
+                        font-weight: 500;
                         margin: 0;
                     }
                 }

@@ -11,6 +11,7 @@ export interface SchemaViewProps {
     questionnaireResource: fhir.ValueSet[];
     date: Dayjs;
     title: string;
+    description?: string;
 }
 
 const SchemaView = (props: SchemaViewProps) => {
@@ -63,6 +64,11 @@ const SchemaView = (props: SchemaViewProps) => {
                                     <Col span={21}>
                                         <h1 className="title">{props.title}</h1>
                                     </Col>
+                                    {props.description && (
+                                        <Col span={21}>
+                                            <div className="schema-description">{props.description}</div>
+                                        </Col>
+                                    )}
                                     <Col span={21}>
                                         <Collapse
                                             bordered={false}

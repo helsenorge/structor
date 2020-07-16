@@ -64,11 +64,17 @@ const QuestionsAndAnswersDisplay = (props: IQuestionsAndAnswersDisplayProps) => 
                 >
                     {item.valueBoolean && <p>Valgt</p>}
                     {item.valueBoolean === false && <p>Ikke valgt</p>}
-                    {item.valueCoding?.display}
+                    {/* Checking the valuecoding code to see if the alternative is created by the patient */}
+                    {item.valueCoding?.code === '933ee59a-54bc-4ca1-a5a9-331ecd446b49' ? (
+                        <p id="patients-alternative">Eget svaralternativ:</p>
+                    ) : (
+                        item.valueCoding?.display
+                    )}
                     {item.valueDate}
                     {item.valueDateTime?.replace('T', ' ')}
                     {item.valueDecimal}
                     {item.valueString}
+                    {item.valueInteger}
                 </div>
             ))}
         </>
