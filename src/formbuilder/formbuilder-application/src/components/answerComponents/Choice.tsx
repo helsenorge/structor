@@ -29,7 +29,10 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         defaultValue?: number;
     }) {
         const temp = { ...localAnswer };
-        if (attribute.isMultiple !== undefined) temp.isMultiple = attribute.isMultiple;
+        if (attribute.isMultiple !== undefined) {
+            temp.isMultiple = attribute.isMultiple;
+            if (!attribute.isMultiple) temp.hasDefault = false;
+        }
 
         if (attribute.isOpen !== undefined) temp.isOpen = attribute.isOpen;
         if (attribute.hasDefault !== undefined) temp.hasDefault = attribute.hasDefault;

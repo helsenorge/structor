@@ -67,7 +67,7 @@ function getChoices(currentQuestion: fhir.QuestionnaireItem, valueSets: fhir.Val
     // Find if has a default value
     if (currentQuestion.hasOwnProperty('initialCoding')) {
         currentAnswer.hasDefault = true;
-        currentAnswer.defaultValue = parseInt(currentQuestion.initialCoding?.code as string);
+        currentAnswer.defaultValue = parseInt(currentQuestion.initialCoding?.code as string)-1;
     }
 
     return currentAnswer;

@@ -130,7 +130,7 @@ function convertChoice(
                 url: standardValidationTextUrl,
                 valueString: answer.isMultiple ? 'Velg minst én' : 'Velg en',
             });
-        if (answer.hasDefault)
+        if (answer.hasDefault && !answer.isMultiple)
             subItem.initialCoding = {
                 system: valueSetMap[answer.id],
                 code: String(answer.defaultValue ? answer.defaultValue + 1 : 1),
