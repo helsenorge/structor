@@ -4,16 +4,23 @@ import 'dayjs/locale/nb';
 import useFetch from 'utils/hooks/useFetch';
 import QuestionnaireResponseProcessing from './QuestionnaireResponseProcessing/QuestionnaireResponseProcessing';
 import { GlobalContext } from 'context/GlobalContext';
+import { useHistory } from 'react-router-dom';
 
 const QuestionnaireResponse = () => {
     const { schemaNumber } = useContext(GlobalContext);
     const { response: questionnaireResponse, error: qrError } = useFetch<fhir.QuestionnaireResponse>(
         'fhir/QuestionnaireResponse/' + schemaNumber,
     );
+    const history = useHistory();
 
     const questionnaireUrl = questionnaireResponse?.questionnaire?.reference?.substr(
         questionnaireResponse?.questionnaire?.reference?.indexOf('Questionnaire/'),
     );
+    console.log(schemaNumber);
+    if (!schemaNumber) {
+        history.push('/');
+        return <></>;
+    }
     return (
         <>
             {questionnaireResponse && questionnaireUrl && (
