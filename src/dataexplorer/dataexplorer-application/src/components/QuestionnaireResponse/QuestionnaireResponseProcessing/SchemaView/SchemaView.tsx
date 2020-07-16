@@ -82,64 +82,66 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                     (display) =>
                                                                         display.id.split('.')[0] === section.id &&
                                                                         display.id.split('.')[1] === '101' && (
-                                                                            <div
+                                                                            <p
                                                                                 key={display.id}
                                                                                 className="section-description"
                                                                             >
                                                                                 {display.questions.questions.text}
-                                                                            </div>
+                                                                            </p>
                                                                         ),
                                                                 )}
+                                                                <span className="counteract-onlychild"></span>
                                                                 {containsDescription.includes(
                                                                     section.id.split('.')[0],
                                                                 ) && (
                                                                     <>
+                                                                        <span className="counteract-onlychild"></span>
                                                                         {!sectionDescription.includes(
                                                                             section.id.split('.')[0],
                                                                         ) && (
-                                                                            <div className="section-description">
-                                                                                <Button
-                                                                                    type="primary"
-                                                                                    size="small"
-                                                                                    onClick={() =>
-                                                                                        setSectionDescription(
-                                                                                            (sectionDescription) => [
-                                                                                                ...sectionDescription,
-                                                                                                section.id.split(
-                                                                                                    '.',
-                                                                                                )[0],
-                                                                                            ],
-                                                                                        )
-                                                                                    }
-                                                                                >
-                                                                                    Vis Informasjon
-                                                                                </Button>
-                                                                            </div>
+                                                                            <Button
+                                                                                type="primary"
+                                                                                size="small"
+                                                                                onClick={() =>
+                                                                                    setSectionDescription(
+                                                                                        (sectionDescription) => [
+                                                                                            ...sectionDescription,
+                                                                                            section.id.split('.')[0],
+                                                                                        ],
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <p className="information">
+                                                                                    Vis informasjon
+                                                                                </p>
+                                                                                <span className="counteract-onlychild"></span>
+                                                                            </Button>
                                                                         )}
                                                                         {sectionDescription.includes(
                                                                             section.id.split('.')[0],
                                                                         ) && (
-                                                                            <div className="section-description">
-                                                                                <Button
-                                                                                    type="primary"
-                                                                                    value="small"
-                                                                                    onClick={() =>
-                                                                                        setSectionDescription(
-                                                                                            sectionDescription.filter(
-                                                                                                (list) =>
-                                                                                                    list.replace(
-                                                                                                        section.id.split(
-                                                                                                            '.',
-                                                                                                        )[0],
-                                                                                                        '',
-                                                                                                    ),
-                                                                                            ),
-                                                                                        )
-                                                                                    }
-                                                                                >
-                                                                                    Skjul Info
-                                                                                </Button>
-                                                                            </div>
+                                                                            <Button
+                                                                                type="primary"
+                                                                                size="small"
+                                                                                onClick={() =>
+                                                                                    setSectionDescription(
+                                                                                        sectionDescription.filter(
+                                                                                            (list) =>
+                                                                                                list.replace(
+                                                                                                    section.id.split(
+                                                                                                        '.',
+                                                                                                    )[0],
+                                                                                                    '',
+                                                                                                ),
+                                                                                        ),
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <p className="information">
+                                                                                    Skjul Informasjon
+                                                                                </p>
+                                                                                <span className="counteract-onlychild"></span>
+                                                                            </Button>
                                                                         )}
                                                                     </>
                                                                 )}
@@ -155,13 +157,14 @@ const SchemaView = (props: SchemaViewProps) => {
                                                                                 sectionDescription.includes(
                                                                                     qa.id.split('.')[0],
                                                                                 ) && (
-                                                                                    <div>
+                                                                                    <div className="description-container">
                                                                                         <p className="section-description">
                                                                                             {
                                                                                                 qa.questions.questions
                                                                                                     .text
                                                                                             }
                                                                                         </p>
+                                                                                        <span className="counteract-onlychild"></span>
                                                                                     </div>
                                                                                 )}
                                                                             {qa.answers?.answers.answer &&
