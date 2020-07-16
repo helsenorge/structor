@@ -110,3 +110,9 @@
     text-shadow: none !important ;
     margin-left: 1.25rem !important;
 }
+
+.description-container {
+    :only-child {
+        margin-left: 735px !important;
+    }
+}
