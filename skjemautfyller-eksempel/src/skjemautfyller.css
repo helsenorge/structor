@@ -1,0 +1,598 @@
+.legend,.nested-fieldset .legend,fieldset .legend,fieldset .nested-fieldset .legend,fieldset legend,legend {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.666666;
+  color: #000;
+  padding: .5rem 0;
+  white-space: normal;
+  width: 100%
+}
+
+@media only screen and (min-width: 59rem) {
+  .legend,.nested-fieldset .legend,fieldset .legend,fieldset .nested-fieldset .legend,fieldset legend,legend {
+      padding-bottom:.75rem
+  }
+}
+
+.legend em,.nested-fieldset .legend em,fieldset .legend em,fieldset .nested-fieldset .legend em,legend em {
+  font-weight: 500;
+  color: #4e5355
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  min-width: inherit
+}
+
+.nested-fieldset,fieldset fieldset {
+  padding-left: 2.5rem
+}
+
+@media only screen and (min-width: 59rem) {
+  .nested-fieldset,fieldset fieldset {
+      padding-left:2.6rem
+  }
+}
+
+.nested-fieldset:before,fieldset fieldset:before {
+  content: "";
+  position: absolute;
+  top: 1.25rem;
+  left: .5rem;
+  bottom: 0;
+  border-left: 4px solid #d3d3d3
+}
+
+.nested-fieldset .nested-fieldset--label,.nested-fieldset fieldset .legend,.nested-fieldset legend,fieldset .nested-fieldset .legend,fieldset .nested-fieldset fieldset .legend,fieldset fieldset .legend,fieldset fieldset .nested-fieldset--label,fieldset fieldset .nested-fieldset .legend,fieldset fieldset legend {
+  padding-top: 1.25rem;
+  font-size: 18px;
+  font-weight: 500
+}
+
+.nested-fieldset label:first-of-type,fieldset fieldset label:first-of-type {
+  position: relative
+}
+
+.nested-fieldset .legend:before,.nested-fieldset label:first-of-type:before,fieldset fieldset .legend:before,fieldset fieldset label:first-of-type:before {
+  content: "";
+  position: absolute;
+  top: .5rem;
+  left: -2rem;
+  height: 1.5rem;
+  border-left: 4px solid #d3d3d3
+}
+
+@media only screen and (min-width: 59rem) {
+  .nested-fieldset .legend:before,.nested-fieldset label:first-of-type:before,fieldset fieldset .legend:before,fieldset fieldset label:first-of-type:before {
+      left:-2.1rem
+  }
+}
+
+.nested-fieldset .nested-fieldset,.nested-fieldset fieldset,fieldset fieldset .nested-fieldset,fieldset fieldset fieldset {
+  padding-left: 0
+}
+
+.nested-fieldset .nested-fieldset:before,.nested-fieldset fieldset:before,fieldset fieldset .nested-fieldset:before,fieldset fieldset fieldset:before {
+  content: none
+}
+
+.nested-fieldset {
+  position: relative;
+  overflow: inherit
+}
+
+.nested-fieldset--full-height:before {
+  top: 0
+}
+
+.nested-fieldset label:first-of-type:before {
+  content: none
+}
+
+.atom_inline-functionbutton {
+  display: inline-block;
+  position: relative;
+  border: 0;
+  background: #c7dfe5;
+  cursor: pointer;
+  overflow: hidden;
+  font-family: Roboto,arial,helvetica,sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  height: 34px;
+  width: 36px;
+  border-radius: 50%;
+  background-color: #dcd5e9;
+  vertical-align: middle
+}
+
+.atom_inline-functionbutton[aria-expanded=true] {
+  background-color: #61469a
+}
+
+:root .atom_inline-functionbutton,_::-webkit-full-page-media,_:future {
+  top: unset;
+  bottom: .5rem
+}
+
+.atom_inline-functionbutton:before {
+  content: "?";
+  display: block;
+  position: absolute;
+  top: .3rem;
+  left: 6px;
+  height: 24px;
+  width: 24px;
+  background-size: contain;
+  background-color: #61469a;
+  color: #fff;
+  border-radius: 50%
+}
+
+.atom_inline-functionbutton:focus,.atom_inline-functionbutton:hover {
+  -webkit-box-shadow: 0 0 0 4px #adadad;
+  box-shadow: 0 0 0 4px #adadad
+}
+
+.atom_inline-functionbutton:focus {
+  outline: none
+}
+
+.page_skjemautfyller__formtitle+.atom_languageselectorlocal {
+  margin-top: -2.5rem
+}
+
+@media screen and (min-width: 59rem) {
+  .page_skjemautfyller__formtitle+.atom_languageselectorlocal {
+      margin-top:-2rem
+  }
+}
+
+.page_skjemautfyller__formtitle+.atom_languageselectorlocal+div>form>div:first-child>p {
+  margin-top: 1rem
+}
+
+.page_skjemautfyller .nested-fieldset .atom_fieldset>legend,.page_skjemautfyller .nested-fieldset fieldset .atom_fieldset>.legend,.page_skjemautfyller .nested-fieldset fieldset .atom_fieldset>legend,.page_skjemautfyller fieldset .legend,.page_skjemautfyller fieldset .nested-fieldset .atom_fieldset>.legend,.page_skjemautfyller label,.page_skjemautfyller legend,fieldset .page_skjemautfyller .legend,fieldset .page_skjemautfyller .nested-fieldset .atom_fieldset>.legend {
+  padding-top: 0
+}
+
+.page_skjemautfyller p {
+  padding: 0
+}
+
+.page_skjemautfyller form.mol_form {
+  margin-top: 1rem
+}
+
+.page_skjemautfyller br+br {
+  display: none
+}
+
+.page_skjemautfyller h5 {
+  text-transform: none
+}
+
+.page_skjemautfyller .atom_label label {
+  display: inline-block;
+  padding: .625rem 0
+}
+
+.page_skjemautfyller .page_skjemautfyller__component_boolean>.mol_validation,.page_skjemautfyller .page_skjemautfyller__component_time fieldset {
+  display: block
+}
+
+.page_skjemautfyller .page_skjemautfyller__component_readonlytext {
+  white-space: pre-line
+}
+
+.page_skjemautfyller .atom_label fieldset .legend,.page_skjemautfyller .atom_label legend,.page_skjemautfyller .page_skjemautfyller__heading,fieldset .page_skjemautfyller .atom_label .legend {
+  display: inline-block
+}
+
+.page_skjemautfyller .page_skjemautfyller__helpComponent {
+  background-color: #dcd5e9;
+  padding: 25px;
+  margin-bottom: 20px;
+  visibility: hidden
+}
+
+.page_skjemautfyller .page_skjemautfyller__helpComponent--open {
+  visibility: visible
+}
+
+.page_skjemautfyller .page_skjemautfyller__helpButton {
+  margin-left: 1rem
+}
+
+.page_skjemautfyller .page__skjemautfyller_anonymouslightbox button.login {
+  display: inline;
+  margin-right: 1rem
+}
+
+.page_skjemautfyller .page_skjemautfyller__messagebox h2 {
+  margin-top: 1rem
+}
+
+.page_skjemautfyller .page_skjemautfyller__markdown p {
+  padding: .5rem 0
+}
+
+.page_skjemautfyller .page_skjemautfyller__messagebox+.page_skjemautfyller__messagebox {
+  margin-top: 1rem
+}
+
+.page_skjemautfyller .page_skjemautfyller__messagebox h2 {
+  margin: inherit
+}
+
+.page_skjemautfyller .page_skjemautfyller__messageboxes .page_skjemautfyller__messagebox:last-of-type {
+  margin-bottom: 4rem
+}
+
+.page_skjemautfyller .page_skjemautfyller__representationlist {
+  padding: 0 0 0 20px;
+  margin: 0
+}
+
+.page_skjemautfyller .mol_validation {
+  margin-top: 0;
+  margin-bottom: 0
+}
+
+.page_skjemautfyller .nested-fieldset {
+  margin-top: 1rem
+}
+
+.page_skjemautfyller .nested-fieldset:empty {
+  margin-top: 0
+}
+
+.page_skjemautfyller .nested-fieldset .nested-fieldset {
+  margin-top: 2rem
+}
+
+.page_skjemautfyller .nested-fieldset .nested-fieldset:empty {
+  margin-top: 0
+}
+
+.page_skjemautfyller section section+.page_skjemautfyller__component,.page_skjemautfyller section section+section {
+  margin-top: 2rem
+}
+
+@supports (-ms-ime-align:auto) {
+  .page_skjemautfyller section section+section:last-of-type {
+      padding-bottom: 6rem
+  }
+}
+
+.page_skjemautfyller .page_skjemautfyller__component:last-of-type {
+  margin-bottom: 0
+}
+
+.page_skjemautfyller .page_skjemautfyller__component:last-of-type+section {
+  margin-top: 1.5rem
+}
+
+.page_skjemautfyller .lastOppElement__uploadButton {
+  margin-right: 1rem
+}
+
+.page_skjemautfyller h2 {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem
+}
+
+.page_skjemautfyller section h2 {
+  margin-top: 0
+}
+
+.page_skjemautfyller.page_skjemautfyller__markdown h2 {
+  margin-bottom: 1rem;
+  margin-top: 1.5rem
+}
+
+.page_skjemautfyller.page_skjemautfyller h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem
+}
+
+.page_skjemautfyller.page_skjemautfyller__markdown h3 {
+  margin-top: .8rem
+}
+
+.page_skjemautfyller.page_skjemautfyller .page_skjemautfyller__component section h4.page_skjemautfyller__heading,.page_skjemautfyller.page_skjemautfyller h4 {
+  margin-top: 0;
+  margin-bottom: 1rem
+}
+
+.page_skjemautfyller.page_skjemautfyller__markdown h4 {
+  margin-top: .8rem
+}
+
+.page_skjemautfyller.page_skjemautfyller .page_skjemautfyller__component+section>h4,.page_skjemautfyller.page_skjemautfyller .page_skjemautfyller__repeatbutton+section>h4,.page_skjemautfyller.page_skjemautfyller section+section>h4 {
+  margin-top: 2.5rem
+}
+
+.page_skjemautfyller .nested-fieldset h3,.page_skjemautfyller .nested-fieldset h4 {
+  font-size: 1.125rem
+}
+
+.page_skjemautfyller .page_skjemautfyller__repeatbutton {
+  margin: 1rem 1rem 1rem 0
+}
+
+.page_skjemautfyller .page_skjemautfyller__deletebutton-wrapper+.page_skjemautfyller__repeatbutton-wrapper {
+  margin-top: 2rem
+}
+
+.page_skjemautfyller .page_skjemautfyller__deletebutton--margin-top {
+  margin-top: 1rem;
+  margin-right: 1rem
+}
+
+.page_skjemautfyller__content {
+  min-height: 12rem
+}
+
+@media only screen and (min-width: 40rem) {
+  .page_skjemautfyller__content {
+      min-height:20rem
+  }
+}
+
+.page_skjemautfyller__formtitle {
+  margin: 3rem 0 2rem
+}
+
+@media only screen and (min-width: 59rem) {
+  .page_skjemautfyller__formtitle {
+      margin:3.75rem 0 3rem
+  }
+}
+
+.page_skjemautfyller__component {
+  padding: 1rem;
+  background-color: #f4f4f4;
+  border: 1px solid #e1e1e1;
+  margin-bottom: 1rem
+}
+
+@media only screen and (min-width: 59rem) {
+  .page_skjemautfyller__component {
+      padding:1.75rem 2rem
+  }
+}
+
+@media only screen and (min-width: 79rem) {
+  .page_skjemautfyller__component {
+      padding-right:17rem
+  }
+}
+
+.page_skjemautfyller__component .page_skjemautfyller__component {
+  background: 0;
+  border: 0;
+  padding: 0;
+  margin-bottom: 2rem
+}
+
+.page_skjemautfyller__component input {
+  max-width: 30rem
+}
+
+.page_skjemautfyller__repeatedgroup {
+  -webkit-animation: fadein .5s;
+  animation: fadein .5s
+}
+
+.page_skjemautfyller .char-counter {
+  background: 0;
+  margin-right: .5rem;
+  max-width: 36rem
+}
+
+.page_skjemautfyller .atom_textarea {
+  max-width: 36rem
+}
+
+.page_skjemautfyller .mol_datetime .mol_datetime__date {
+  margin-right: 2rem
+}
+
+.page_skjemautfyller__hidden_buttons {
+  display: none
+}
+
+.page_skjemautfyller__saveblock {
+  position: relative;
+  background-color: #e1e1e1;
+  border: 1px solid #d3d3d3;
+  padding: 1rem
+}
+
+.page_skjemautfyller__saveblock.sticky {
+  z-index: 2
+}
+
+.page_skjemautfyller__saveblock.sticky .atom_spinner.local {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: inherit
+}
+
+@media only screen and (min-width: 59rem) {
+  .page_skjemautfyller__saveblock.sticky {
+      float:right
+  }
+}
+
+@media screen and (max-width: 28.5rem) {
+  .page_skjemautfyller__saveblock.sticky {
+      position:fixed;
+      bottom: 0;
+      right: 0;
+      left: 0
+  }
+
+  .page_skjemautfyller__saveblock.sticky>div>.atom_actionbutton {
+      -ms-flex: 1 1;
+      flex: 1 1;
+      white-space: nowrap;
+      margin: .5rem .25rem;
+      padding: .65rem 1rem .55rem
+  }
+}
+
+@media screen and (-ms-high-contrast:none) {
+  .page_skjemautfyller__saveblock.sticky {
+      margin-top: 3rem
+  }
+}
+
+@media only screen and (min-width: 59rem) {
+  .page_skjemautfyller__saveblock {
+      padding:2rem 4rem 1.5rem
+  }
+}
+
+.page_skjemautfyller__saveblock .atom_actionbutton {
+  margin-bottom: 1.5rem
+}
+
+@media only screen and (min-width: 40rem) {
+  .page_skjemautfyller__saveblock .atom_actionbutton {
+      margin-bottom:0
+  }
+}
+
+.page_skjemautfyller__saveblock>div {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -ms-flex-align: baseline;
+  align-items: baseline
+}
+
+@media only screen and (min-width: 40rem) {
+  .page_skjemautfyller__pausebutton {
+      margin-left:auto
+  }
+}
+
+.page_skjemautfyller .mol_validation-summary {
+  margin-bottom: 2rem;
+  margin-top: 2rem
+}
+
+.page_skjemautfyller .nested-fieldset .mol_validation:before {
+  left: -2rem
+}
+
+@media screen and (min-width: 59rem) {
+  .page_skjemautfyller .nested-fieldset .mol_validation:before {
+      left:calc(-2rem - 2px)
+  }
+}
+
+.page_skjemautfyller .nested-fieldset .mol_validation:after {
+  left: calc(-2rem + 4px);
+  width: calc(2rem - 4px)
+}
+
+@media screen and (min-width: 59rem) {
+  .page_skjemautfyller .nested-fieldset .mol_validation:after {
+      left:calc(-2rem + 2px);
+      width: calc(2rem - 2px)
+  }
+}
+
+.page_skjemautfyller .org_footer--simple {
+  margin-top: 2rem
+}
+
+@media only screen and (min-width: 59rem) {
+  .page_skjemautfyller .org_footer--simple {
+      margin-top:7.5rem
+  }
+}
+
+.page_skjemautfyller__spinnerspacing {
+  height: 12rem;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center
+}
+
+@media only screen and (min-width: 40rem) {
+  .page_skjemautfyller__spinnerspacing {
+      height:20rem
+  }
+}
+
+.page_skjemautfyller .page_skjemautfyller__quantity.page_skjemautfyller__quantity {
+  display: inline-block
+}
+
+.page_skjemautfyller__unit {
+  margin-left: 1rem;
+  vertical-align: bottom
+}
+
+.page_skjemautfyller .page_skjemautfyller__delete-component-button {
+  display: inline-block
+}
+
+.page_skjemautfyller .mol_timepicker__resetbutton,.page_skjemautfyller .page_skjemautfyller__input {
+  margin-right: 1rem
+}
+
+.page_skjemautfyller .mol_timepicker__resetbutton+.page_skjemautfyller__deletebutton {
+  margin-top: 6px
+}
+
+.page_skjemautfyller .page_skjemautfyller__grid--cell>div:first-child>div:first-child label,.page_skjemautfyller .page_skjemautfyller__grid--cell>section:first-child>.page_skjemautfyller__heading {
+  display: none
+}
+
+.page_skjemautfyller .page_skjemautfyller__grid--cell>.page_skjemautfyller__component:first-child {
+  padding: 0
+}
+
+@-webkit-keyframes fadein {
+  0% {
+      opacity: 0
+  }
+
+  to {
+      opacity: 1
+  }
+}
+
+@keyframes fadein {
+  0% {
+      opacity: 0
+  }
+
+  to {
+      opacity: 1
+  }
+}
+
+/*# sourceMappingURL=skjemautfyller.cb8d6c86.css.map */
+
+.page_skjemautfyller__hidden-save-block .page_skjemautfyller__saveblock {
+  display: none;
+}

@@ -5,7 +5,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-base-2) !important;
+  width: 100%;
+  height: 100%;
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -13,8 +17,59 @@ code {
 }
 
 :root {
-  --primary-1: #A61E7B;
-  --primary-2: #006D84;
-  --color-base-1: #FAFAFA;
-  --color-base-2: #C7C7C7;
+  --primary-1: #A61E7B;       /* Buttons */
+  --primary-2: #006D84;       /* Header color 006D84 */
+  --color-base-1: #FFFFFF;    /* Box color */ 
+  --color-base-2: #FAFAFA;    /* Background of page D8D8D8 */
+  --color-base-3: #f0f0f0;    /* Section header grey E1E2E4 EEEFF1 */
+  
+ /* --color-base-4: #8AB5B5;    Title color */
 }
+
+html {
+  --antd-wave-shadow-color: var(--primary-1) !important;
+}
+
+.controller{
+  border-right: solid var(--color-base-2) 0.5px;
+}
+
+p{
+  text-align: left;
+}
+
+.field-error{
+  border-bottom: solid red 1px !important;
+}
+
+.standard{
+  padding: 10px;
+  text-align: left;
+}
+
+.wrapper {
+  margin: 10px;
+  width: 95%;
+  box-shadow: 0 4px 8px 4px #c7c7c7c7;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.iframe-div {
+  background:url(./images/loader.gif) center center no-repeat;
+}
+
+.index-buttons {
+  background-color: var(--primary-1);
+  color: var(--color-base-1);
+  cursor: pointer;
+  border: 1px solid var(--primary-1);
+  display: inline-block;
+  height: 45px;
+  width: 160px;
+  padding: 9px 12px;
+}
+
+.icon-buttons:hover {
+  background-color: #e0e0e0 !important;
+} 
