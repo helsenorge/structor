@@ -88,7 +88,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
             tempIDs.push('choice_' + questionId + generateID());
         });
         setChoiceIDs(tempIDs);
-    }, []);
+    }, [localAnswer.choices, questionId]);
 
     function deleteButton(id: number): JSX.Element {
         return (
