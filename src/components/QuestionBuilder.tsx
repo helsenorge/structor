@@ -5,6 +5,7 @@ import { FormContext, updateQuestion } from '../store/FormStore';
 import IQuestion from '../types/IQuestion';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes, { IChoice, INumber, IText, IBoolean, ITime, IAnswer, IInfo } from '../types/IAnswer';
+import { useTranslation } from 'react-i18next';
 
 const { Option } = Select;
 
@@ -18,6 +19,7 @@ type QuestionProps = {
 function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localQuestion = { ...state.questions[questionId] } as IQuestion;
+    const { t } = useTranslation();
 
     function updateStore(attribute: {
         answerType?: AnswerTypes;
@@ -146,7 +148,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                             })
                                         }
                                     >
-                                        Spørsmålet skal være obligatorisk.
+                                        Mandatory
                                     </Checkbox>
                                 </Col>
                             </Row>
@@ -158,7 +160,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                             padding: '5px 10px 0 0',
                                         }}
                                     >
-                                        Velg type spørsmål:{' '}
+                                        Question type:{' '}
                                     </p>
                                     <Select
                                         defaultValue={localQuestion.answerType}
@@ -171,13 +173,13 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                                 answerType: value,
                                             });
                                         }}
-                                        placeholder="Trykk for å velge"
+                                        placeholder={t('Choose type')}
                                     >
-                                        <Option value={AnswerTypes.boolean}>Avkrysningsboks</Option>
-                                        <Option value={AnswerTypes.number}>Tall</Option>
-                                        <Option value={AnswerTypes.text}>Tekst</Option>
-                                        <Option value={AnswerTypes.time}>Dato/tid</Option>
-                                        <Option value={AnswerTypes.choice}>Flervalg</Option>
+                                        <Option value={AnswerTypes.boolean}>{t('Yes/no')}</Option>
+                                        <Option value={AnswerTypes.number}>{t('Number')}</Option>
+                                        <Option value={AnswerTypes.text}>{t('Text')}</Option>
+                                        <Option value={AnswerTypes.time}>{t('Date/time')}</Option>
+                                        <Option value={AnswerTypes.choice}>{t('Single/multiple choice')}</Option>
                                     </Select>
                                 </Col>
                             </Row>

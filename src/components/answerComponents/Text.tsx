@@ -3,6 +3,7 @@ import { Checkbox, Input, Row, Col } from 'antd';
 import './AnswerComponent.css';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { IText } from '../../types/IAnswer';
+import { useTranslation } from 'react-i18next';
 
 type TextInputProps = {
     questionId: string;
@@ -11,6 +12,7 @@ type TextInputProps = {
 function TextInput({ questionId }: TextInputProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = state.questions[questionId].answer as IText;
+    const { t } = useTranslation();
 
     function updateStore(attribute: { isLong?: boolean; maxLength?: string }) {
         const temp = { ...localAnswer } as IText;
@@ -34,7 +36,7 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
                                     });
                                 }}
                             >
-                                Langsvar med maks lengde:
+                                {t('Max length')}
                             </Checkbox>
                         </Col>
                         <Col span={8}>

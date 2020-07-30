@@ -6,6 +6,7 @@ import Moment from 'moment';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import './AnswerComponent.css';
+import { useTranslation } from 'react-i18next';
 
 type TimeProps = {
     questionId: string;
@@ -20,6 +21,7 @@ const inputStyle = {
 function Time({ questionId }: TimeProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const [localAnswer, setLocalAnswer] = useState(state.questions[questionId].answer as ITime);
+    const { t } = useTranslation();
 
     function getTimeFormat(): string {
         if (localAnswer.isTime && localAnswer.isDate) return 'DD.MM.YYYY  HH:mm';
@@ -84,19 +86,19 @@ function Time({ questionId }: TimeProps): JSX.Element {
                         type={localAnswer.isDate && !localAnswer.isTime ? 'primary' : 'default'}
                         onClick={() => changeTimeType(true, false)}
                     >
-                        Dato
+                        {t('Date')}
                     </Button>
                     <Button
                         type={!localAnswer.isDate && localAnswer.isTime ? 'primary' : 'default'}
                         onClick={() => changeTimeType(false, true)}
                     >
-                        Tid
+                        {t('Time')}
                     </Button>
                     <Button
                         type={localAnswer.isDate && localAnswer.isTime ? 'primary' : 'default'}
                         onClick={() => changeTimeType(true, true)}
                     >
-                        Dato og Tid
+                        {t('Date and time')}
                     </Button>
                 </Col>
             </Row>
@@ -137,7 +139,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                     localUpdate(tmp, true);
                                 }}
                             >
-                                Definer intervall for gyldige tidspunkt
+                                {t('Define valid time')}
                             </Checkbox>
                         </Col>
                     </Row>
@@ -192,7 +194,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                                     localUpdate(tmp, true);
                                                 }}
                                             >
-                                                Start {timeDefToString(false)}
+                                                {t('Start')} {timeDefToString(false)}
                                             </Checkbox>
                                         </Col>
                                         <Col span={10} style={{ paddingTop: '8px' }}>
@@ -223,7 +225,7 @@ function Time({ questionId }: TimeProps): JSX.Element {
                                                     localUpdate(tmp, true);
                                                 }}
                                             >
-                                                Slutt {timeDefToString(false)}
+                                                {t('End')} {timeDefToString(false)}
                                             </Checkbox>
                                         </Col>
                                         <Col span={10} style={{ paddingTop: '8px' }}>

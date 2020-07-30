@@ -14,11 +14,13 @@ import {
 import * as DND from 'react-beautiful-dnd';
 import './Form.css';
 import '../index.css';
+import { useTranslation } from 'react-i18next';
 
 function CreateForm(): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const [collapsedSection, setCollapsedSection] = useState('A');
     const [hasSections, setHasSections] = useState(false);
+    const { t } = useTranslation();
 
     function dispatchAddNewSection() {
         setHasSections(true);
@@ -131,7 +133,7 @@ function CreateForm(): JSX.Element {
                                     window.scrollTo(0, 0);
                                 }}
                             >
-                                Del inn i seksjoner
+                                {t('Add sections')}
                             </Button>
                         ) : (
                             <Button
@@ -141,7 +143,7 @@ function CreateForm(): JSX.Element {
                                 size="large"
                                 onClick={() => dispatchAddNewSection()}
                             >
-                                Legg til ny seksjon
+                                {t('Add section')}
                             </Button>
                         )}
                     </div>

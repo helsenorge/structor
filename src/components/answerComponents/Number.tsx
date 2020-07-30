@@ -3,6 +3,7 @@ import { Checkbox, Input, Row, Col } from 'antd';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { INumber } from '../../types/IAnswer';
 import './AnswerComponent.css';
+import { useTranslation } from 'react-i18next';
 
 type NumberProps = {
     questionId: string;
@@ -11,6 +12,7 @@ type NumberProps = {
 function Number({ questionId }: NumberProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...state.questions[questionId].answer } as INumber;
+    const { t } = useTranslation();
 
     const inputStyle = {
         width: '100px',
@@ -70,6 +72,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
                             });
                         }}
                     >
+                        {t('Set default value:')}
                         Forhåndsvelg en verdi:
                     </Checkbox>
                 </Col>
@@ -116,7 +119,7 @@ function Number({ questionId }: NumberProps): JSX.Element {
             </Row>
             <Row>
                 <Col className="standard" style={{ paddingBottom: '0' }}>
-                    <p>Avgrens gyldige verdier:</p>
+                    <p>{t('Define valid values:')}</p>
                 </Col>
             </Row>
             <Row>

@@ -12,6 +12,7 @@ import QuestionList from '../types/QuestionList';
 import AnswerTypes, { IInfo } from '../types/IAnswer';
 import IQuestion from '../types/IQuestion';
 import './answerComponents/AnswerComponent.css';
+import { useTranslation } from 'react-i18next';
 
 type QuestionProps = {
     duplicateQuestion: () => void;
@@ -32,11 +33,12 @@ function QuestionWrapper({
 }: QuestionProps): JSX.Element {
     const [questionPreview, setQuestionPreview] = useState(false);
     const { state, dispatch } = useContext(FormContext);
+    const { t } = useTranslation();
     const previewWarning = (
         <div>
             <p>
-                Spørsmålet er ikke ferdig utfylt. <br />
-                Fyll inn spørsmålstekst og velg type.
+                {t('Question not finished.')}. <br />
+                {t('Add question and choose question type.')}
             </p>
         </div>
     );
@@ -108,10 +110,10 @@ function QuestionWrapper({
                 <Row style={{ float: 'right', paddingTop: '10px' }}>
                     <Col span={24}>
                         <Popconfirm
-                            title={isInfo ? 'Vil du slette informasjonsfeltet?' : 'Vil du slette dette spørsmålet?'}
+                            title={isInfo ? t('Delete information field?') : t('Delete question?')}
                             onConfirm={() => removeQuestion()}
-                            okText="Ja"
-                            cancelText="Nei"
+                            okText={t('Yes')}
+                            cancelText={t('No')}
                         >
                             <Button
                                 style={{
@@ -124,7 +126,7 @@ function QuestionWrapper({
                                 icon={<DeleteOutlined />}
                                 type="default"
                             >
-                                Slett
+                                {t('Delete')}
                             </Button>
                         </Popconfirm>
                     </Col>
@@ -133,8 +135,8 @@ function QuestionWrapper({
                     <Col span={24}>
                         {disableButtons() ? (
                             <Popover
-                                content={!isInfo ? previewWarning : 'Fyll inn informasjonsfeltet.'}
-                                title="Ingenting å duplisere"
+                                content={!isInfo ? previewWarning : t('Add text before duplicating. ')}
+                                title={t('Nothing to duplicate')}
                                 placement="bottom"
                             >
                                 <Button
@@ -149,7 +151,7 @@ function QuestionWrapper({
                                     type="default"
                                     disabled
                                 >
-                                    Dupliser
+                                    {t('Duplicate')}
                                 </Button>
                             </Popover>
                         ) : (
@@ -174,8 +176,8 @@ function QuestionWrapper({
                     <Col span={24}>
                         {disableButtons() ? (
                             <Popover
-                                content={!isInfo ? previewWarning : 'Fyll inn informasjonsfeltet.'}
-                                title="Ingenting å forhåndsvise"
+                                content={!isInfo ? previewWarning : t('Add text')}
+                                title={t('Nothing to preview')}
                                 placement="bottom"
                             >
                                 <Button
@@ -190,7 +192,7 @@ function QuestionWrapper({
                                     type="default"
                                     disabled
                                 >
-                                    Forhåndsvis
+                                    {t('Preview')}
                                 </Button>
                             </Popover>
                         ) : (
@@ -206,7 +208,7 @@ function QuestionWrapper({
                                 type="default"
                                 onClick={() => setQuestionPreview(true)}
                             >
-                                Forhåndsvis
+                                {t('Preview')}
                             </Button>
                         )}
                     </Col>
@@ -243,7 +245,7 @@ function QuestionWrapper({
                 style={{ top: '10px' }}
                 footer={[
                     <Button key="submit" type="primary" onClick={() => setQuestionPreview(false)}>
-                        Lukk
+                        {t('Close')}
                     </Button>,
                 ]}
                 onCancel={() => setQuestionPreview(false)}
@@ -251,7 +253,7 @@ function QuestionWrapper({
                 <div style={{ height: '100%', width: '100%' }} className="iframe-div">
                     <iframe
                         id="schemeFrame"
-                        title="Forhåndsvis spørsmål"
+                        title="Preview"
                         style={{
                             width: '100%',
                             height: '70vh',
@@ -266,8 +268,8 @@ function QuestionWrapper({
                     <Tooltip
                         title={
                             (state.questions[questionId] as IQuestion).collapsed
-                                ? 'Utvid ' + (isInfo ? 'informasjon' : 'spørsmål')
-                                : 'Minimer ' + (isInfo ? 'informasjon' : 'spørsmål')
+                                ? t('Expand ') + (isInfo ? t('information') : t('question'))
+                                : t('Minify ') + (isInfo ? t('information') : t('question'))
                         }
                     >
                         <Button
@@ -320,7 +322,7 @@ function QuestionWrapper({
                                 {(state.questions[questionId].answer as IInfo).info ? (
                                     getCollapsedInfoText()
                                 ) : (
-                                    <p style={{ float: 'left', padding: '5px' }}>Tomt informasjonsfelt</p>
+                                    <p style={{ float: 'left', padding: '5px' }}>{t('Empty information')}</p>
                                 )}
                             </Col>
                         )}

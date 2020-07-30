@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Input, Row, Col } from 'antd';
 import { FormContext, updateFormMeta } from '../store/FormStore';
+import { useTranslation } from 'react-i18next';
 
 const { TextArea } = Input;
 
@@ -8,6 +9,7 @@ function TitleAndDescription(): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const [title, setTitle] = useState(state.title);
     const [description, setDescription] = useState(state.description);
+    const { t } = useTranslation();
 
     return (
         <div
@@ -21,7 +23,7 @@ function TitleAndDescription(): JSX.Element {
                 <Col xs={0} lg={4}></Col>
                 <Col xs={24} lg={16}>
                     <Input
-                        placeholder="Skjematittel..."
+                        placeholder={t('Form title')}
                         className="input-question"
                         size="large"
                         defaultValue={title}
@@ -37,7 +39,7 @@ function TitleAndDescription(): JSX.Element {
                 <Col xs={0} lg={4}></Col>
                 <Col xs={24} lg={16}>
                     <TextArea
-                        placeholder="Beskrivelse av skjema..."
+                        placeholder={t('Form description')}
                         className="input-question"
                         defaultValue={description}
                         onBlur={(e) => {

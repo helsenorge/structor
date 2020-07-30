@@ -138,7 +138,7 @@ export function addNewQuestion(sectionId: string, isInfo?: boolean): UpdateActio
         answerType: isInfo ? AnswerTypes.info : AnswerTypes.default,
         answer: { id: generateID() },
         isRequired: true,
-        placeholder: 'Spørsmålstekst',
+        placeholder: 'Question',
     };
     return {
         type: UpdateActionTypes.ADD_NEW_QUESTION,
