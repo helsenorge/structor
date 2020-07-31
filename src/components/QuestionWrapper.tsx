@@ -253,7 +253,7 @@ function QuestionWrapper({
                 <div style={{ height: '100%', width: '100%' }} className="iframe-div">
                     <iframe
                         id="schemeFrame"
-                        title="Preview"
+                        title={t('Preview')}
                         style={{
                             width: '100%',
                             height: '70vh',

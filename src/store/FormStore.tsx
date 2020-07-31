@@ -6,6 +6,7 @@ import QuestionList from '../types/QuestionList';
 import { generateID } from '../helpers/IDGenerator';
 import produce from 'immer';
 import { AnswerTypes, IChoice, ITime, INumber, IText, IBoolean } from '../types/IAnswer';
+import i18next from 'i18next';
 import {
     UpdateAction,
     UpdateActionTypes,
@@ -128,6 +129,7 @@ export function updateSection(section: ISection): UpdateAction {
 }
 
 export function addNewQuestion(sectionId: string, isInfo?: boolean): UpdateAction {
+    // const { t } = props;
     const questionId = generateID();
     const newQuestion: IQuestion = {
         id: questionId,
@@ -138,7 +140,7 @@ export function addNewQuestion(sectionId: string, isInfo?: boolean): UpdateActio
         answerType: isInfo ? AnswerTypes.info : AnswerTypes.default,
         answer: { id: generateID() },
         isRequired: true,
-        placeholder: 'Question',
+        placeholder: i18next.t('Question'),
     };
     return {
         type: UpdateActionTypes.ADD_NEW_QUESTION,

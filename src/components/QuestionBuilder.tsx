@@ -148,7 +148,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                             })
                                         }
                                     >
-                                        Mandatory
+                                        {t('Mandatory')}
                                     </Checkbox>
                                 </Col>
                             </Row>
@@ -160,7 +160,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                             padding: '5px 10px 0 0',
                                         }}
                                     >
-                                        Question type:{' '}
+                                        {t('Question type')}{' '}
                                     </p>
                                     <Select
                                         defaultValue={localQuestion.answerType}
@@ -175,6 +175,7 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                         }}
                                         placeholder={t('Choose type')}
                                     >
+                                        <Option value={AnswerTypes.default} disabled>{t('Choose type')}</Option>
                                         <Option value={AnswerTypes.boolean}>{t('Yes/no')}</Option>
                                         <Option value={AnswerTypes.number}>{t('Number')}</Option>
                                         <Option value={AnswerTypes.text}>{t('Text')}</Option>

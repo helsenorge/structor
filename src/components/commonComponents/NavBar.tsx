@@ -190,7 +190,7 @@ function NavBar(): JSX.Element {
                                     Modal.confirm({
                                         content: t('Save?'),
                                         icon: <ExclamationCircleOutlined />,
-                                        title: t('All fields not filled out.'),
+                                        title: t('Missing fields'),
                                         okText: t('Yes'),
                                         cancelText: t('Cancel'),
                                         onOk: exportToJsonAndDownload,

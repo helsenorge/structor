@@ -14,11 +14,10 @@ function LanguageSelector(): JSX.Element {
         i18n.changeLanguage(language);
     };
 
-    const handleMenuClick = (event: any) => {
+    const handleMenuClick = (event: { key: string }) => {
         if (supportedLocales.includes(event.key)) {
             setLocale(event.key);
-            const newlanguage = event.key.slice(0, 2);
-            changeLanguage(newlanguage);
+            changeLanguage(event.key);
         }
     };
 
@@ -29,13 +28,11 @@ function LanguageSelector(): JSX.Element {
         </Menu>
     );
     return (
-        <>
-            <Dropdown overlay={menu}>
-                <Button>
-                    {locale} <DownOutlined />
-                </Button>
-            </Dropdown>
-        </>
+        <Dropdown overlay={menu}>
+            <Button>
+                {locale} <DownOutlined />
+            </Button>
+        </Dropdown>
     );
 }
 export default LanguageSelector;

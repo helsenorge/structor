@@ -4,7 +4,7 @@ export enum AnswerTypes {
     number = 'number',
     time = 'time',
     text = 'text',
-    default = 'Choose one',
+    default = 'none',
     info = 'info',
 }
 

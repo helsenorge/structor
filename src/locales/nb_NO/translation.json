@@ -40,7 +40,7 @@
     "Delete question?": "Slett spørsmål?",
     "No": "Nei",
     "Delete": "Slett",
-    "Add text before duplicating":"Legg til tekst før du dupliserer", 
+    "Add text before duplicating": "Legg til tekst før du dupliserer",
     "Nothing to duplicate": "Ingenting å duplisere",
     "Duplicate": "Dupliser",
     "Add text": "Legg til tekst",
@@ -63,6 +63,8 @@
     "Add section": "Legg til seksjon",
     "Helsenorge form builder": "Helsenorge skjemastudio",
     "New form": "Nytt skjema",
-    "Upload JSON": "Last opp JSON"
-  }
-  
+    "Upload JSON": "Last opp JSON",
+    "Mandatory": "Obligatorisk",
+    "Question type": "Velg spørsmålstype",
+    "Missing fields": "Felt mangler"
+}
