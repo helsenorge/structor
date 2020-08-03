@@ -3,6 +3,7 @@ import './AnswerComponent.css';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { IInfo } from '../../types/IAnswer';
 import TextArea from 'antd/lib/input/TextArea';
+import { useTranslation } from 'react-i18next';
 
 type TextInputProps = {
     questionId: string;
@@ -11,6 +12,7 @@ type TextInputProps = {
 function TextInput({ questionId }: TextInputProps): JSX.Element {
     const { state, dispatch } = useContext(FormContext);
     const localAnswer = { ...(state.questions[questionId].answer as IInfo) };
+    const { t } = useTranslation();
 
     function localUpdate(attribute: { info?: string; hasInfo?: boolean }) {
         const temp = { ...localAnswer };
@@ -26,7 +28,7 @@ function TextInput({ questionId }: TextInputProps): JSX.Element {
             defaultValue={localAnswer.info}
             rows={8}
             className="input-question"
-            placeholder={'Skriv inn informasjon til sluttbruker her.'}
+            placeholder={t('Add info to respondent here.')}
             onBlur={(value) =>
                 localUpdate({
                     info: value.target.value,

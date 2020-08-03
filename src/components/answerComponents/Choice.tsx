@@ -5,6 +5,7 @@ import './AnswerComponent.css';
 import { IChoice } from '../../types/IAnswer';
 import { FormContext, updateAnswer } from '../../store/FormStore';
 import { generateID } from '../../helpers/IDGenerator';
+import { useTranslation } from 'react-i18next';
 
 const { Option } = Select;
 
@@ -20,6 +21,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
         'choice_' + questionId + generateID(),
         'choice_' + questionId + generateID(),
     ]);
+    const { t } = useTranslation();
 
     function localUpdate(attribute: {
         isMultiple?: boolean;
@@ -183,7 +185,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
             {localAnswer.isMultiple ? (
                 <div key={'choice_add_multiple'} className="question-component" style={choiceStyle}>
-                    <p>Skriv inn svaralternativer under:</p>
+                    <p>{t('Add choices below:')}</p>
                     {choices.map((name, id) => [createCheckbox(id)])}
                     <Button
                         type="text"
@@ -191,12 +193,12 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                         onClick={() => updateChoices({ mode: 'add' })}
                         value="Add"
                     >
-                        Legg til alternativ
+                        {t('Add option')}
                     </Button>
                 </div>
             ) : (
                 <div key={'choice_add_radio'} className="question-component" style={choiceStyle}>
-                    <p>Skriv inn svaralternativer under:</p>
+                    <p>{t('Add choices below:')}</p>
                     <Radio.Group
                         name="radiogroup"
                         value={localAnswer.hasDefault ? localAnswer.defaultValue : undefined}
@@ -210,7 +212,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                 value="Add"
                                 className="icon-buttons"
                             >
-                                Legg til alternativ
+                                {t('Add option')}
                             </Button>
                         }
                     </Radio.Group>
@@ -226,7 +228,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                             })
                         }
                     >
-                        La mottaker velge flere alternativ.
+                        {t('Let respondent choose more than one option.')}
                     </Checkbox>
                 </Col>
             </Row>
@@ -240,7 +242,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                             })
                         }
                     >
-                        La mottaker legge til annet svaralternativ.
+                        {t('Let respondent add their own response.')}
                     </Checkbox>
                 </Col>
             </Row>
@@ -270,12 +272,12 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                         defaultValue: value,
                                     });
                                 }}
-                                placeholder="Velg standardalternativ"
+                                placeholder={t('Mark as default.')}
                             >
                                 {choices
                                     ? choices.map((name, id) => [
                                           <Option key={'def' + questionId + id} value={id}>
-                                              {name.length < 1 ? 'Alternativ ' + (id + 1) : name}
+                                            {name.length < 1 ? t('Option ') + (id + 1) : name}
                                           </Option>,
                                       ])
                                     : []}

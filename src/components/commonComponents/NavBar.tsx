@@ -6,11 +6,13 @@ import './NavBar.css';
 import JSONConverter from '../../helpers/JSONGenerator';
 import JSONGenerator from '../../helpers/JSONGenerator';
 import AnswerTypes from '../../types/IAnswer';
+import { useTranslation } from 'react-i18next';
 
 function NavBar(): JSX.Element {
     const { state } = useContext(FormContext);
     const [formPreview, setFormPreview] = useState(false);
     const { Title } = Typography;
+    const { t } = useTranslation();
 
     function convertForm(): fhir.Questionnaire {
         const questionnaire = JSONConverter(
@@ -99,7 +101,7 @@ function NavBar(): JSX.Element {
     return (
         <div className="nav-bar">
             <Modal
-                title="Slik ser skjemaet ut for utfyller"
+                title={t('Form as seen by respondant')}
                 visible={formPreview}
                 onOk={() => setFormPreview(false)}
                 destroyOnClose={true}
@@ -107,7 +109,7 @@ function NavBar(): JSX.Element {
                 style={{ top: '10px' }}
                 footer={[
                     <Button key="submit" type="primary" onClick={() => setFormPreview(false)}>
-                        Lukk
+                        {t('Close')}
                     </Button>,
                 ]}
                 onCancel={() => setFormPreview(false)}
@@ -115,7 +117,7 @@ function NavBar(): JSX.Element {
                 <div style={{ height: '100%', width: '100%' }} className="iframe-div">
                     <iframe
                         id="schemeFrame"
-                        title="Forhåndsvis skjema"
+                        title={t('Preview')}
                         style={{
                             width: '100%',
                             height: '70vh',
@@ -143,8 +145,8 @@ function NavBar(): JSX.Element {
                     </Tooltip>
                 </Col>
                 <Col lg={17} md={12}>
-                    <Title level={2} style={{ color: 'var(--color-base-1)', float: 'left' }}>
-                        Skjemabygger
+                    <Title level={3} style={{ color: 'var(--color-base-1)', float: 'left' }}>
+                        {t('Form designer')}
                     </Title>
                 </Col>
                 <Col lg={6} md={11}>
@@ -160,17 +162,17 @@ function NavBar(): JSX.Element {
                                     setFormPreview(true);
                                 } else {
                                     Modal.confirm({
-                                        content: 'Er du sikker på at du vil forhåndsvise?',
+                                        content: t('Are you sure you want to preview?'),
                                         icon: <ExclamationCircleOutlined />,
-                                        title: 'Ikke alle felter er fylt ut.',
-                                        okText: 'Ja',
-                                        cancelText: 'Avbryt',
+                                        title: t('Not finished'),
+                                        okText: t('Yes'),
+                                        cancelText: t('Cancel'),
                                         onOk: confirmPreview,
                                     });
                                 }
                             }}
                         >
-                            Forhåndsvisning
+                            {t('Preview')}
                         </Button>
                         <Button
                             className="nav-button"
@@ -181,22 +183,22 @@ function NavBar(): JSX.Element {
                             onClick={() => {
                                 if (validateForm()) {
                                     message.success({
-                                        content: 'Skjemaet ble lastet ned.',
+                                        content: t('Form was downloaded.'),
                                     });
                                     exportToJsonAndDownload();
                                 } else {
                                     Modal.confirm({
-                                        content: 'Er du sikker på at du vil lagre?',
+                                        content: t('Save?'),
                                         icon: <ExclamationCircleOutlined />,
-                                        title: 'Ikke alle felter er fylt ut.',
-                                        okText: 'Ja',
-                                        cancelText: 'Avbryt',
+                                        title: t('Missing fields'),
+                                        okText: t('Yes'),
+                                        cancelText: t('Cancel'),
                                         onOk: exportToJsonAndDownload,
                                     });
                                 }
                             }}
                         >
-                            Lagre
+                            {t('Save')}
                         </Button>
                     </div>
                 </Col>

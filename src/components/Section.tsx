@@ -7,6 +7,7 @@ import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import * as DND from 'react-beautiful-dnd';
 import AnswerTypes from '../types/IAnswer';
 import './answerComponents/AnswerComponent.css';
+import { useTranslation } from 'react-i18next';
 
 const { TextArea } = Input;
 
@@ -33,9 +34,10 @@ function Section({
     const [placeholder, setPlaceholder] = useState('Tittel...');
     const [collapsedSection, setCollapsedSection] = useState(false);
     const { state, dispatch } = useContext(FormContext);
+    const { t } = useTranslation();
 
     function findPlaceholder() {
-        const placeholderString = 'Seksjon ' + (sectionIndex + 1) + '...';
+        const placeholderString = t('Section ') + (sectionIndex + 1) + '...';
         setPlaceholder(placeholderString);
     }
 
@@ -160,7 +162,7 @@ function Section({
                         <Col xs={3} lg={4}></Col>
                         <Col xs={15} lg={14}>
                             <TextArea
-                                placeholder="Beskrivelse av seksjon..."
+                                placeholder={t('Description of section')}
                                 defaultValue={state.sections[sectionId].description}
                                 onBlur={(e) => {
                                     localUpdate({ description: e.target.value });
@@ -176,10 +178,10 @@ function Section({
                             >
                                 <Col span={24}>
                                     <Popconfirm
-                                        title="Vil du slette denne seksjonen?"
+                                        title={t('Delete section?')}
                                         onConfirm={() => removeSection()}
-                                        okText="Ja"
-                                        cancelText="Nei"
+                                        okText={t('Yes')}
+                                        cancelText={t('No')}
                                     >
                                         <Button
                                             style={{
@@ -192,7 +194,7 @@ function Section({
                                             icon={<DeleteOutlined />}
                                             type="default"
                                         >
-                                            Slett seksjon
+                                            {t('Delete section')}
                                         </Button>
                                     </Popconfirm>
                                 </Col>
@@ -211,7 +213,7 @@ function Section({
                                         type="default"
                                         onClick={() => duplicateSection()}
                                     >
-                                        Dupliser seksjon
+                                        {t('Duplicate section')}
                                     </Button>
                                 </Col>
                             </Row>
@@ -298,7 +300,7 @@ function Section({
                             icon={<PlusOutlined />}
                             onClick={() => dispatchAddQuestion(false)}
                         >
-                            Legg til nytt spørsmål
+                            {t('Add question')}
                         </Button>
                         <Button
                             style={{
@@ -309,7 +311,7 @@ function Section({
                             onClick={() => dispatchAddQuestion(true)}
                             type="default"
                         >
-                            Legg til informasjon
+                            {t('Add information')}
                         </Button>
                     </Col>
                 </Row>

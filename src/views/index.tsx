@@ -13,11 +13,14 @@ import {
     updateFormMeta,
 } from '../store/FormStore';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from '../components/commonComponents/LanguageSelector';
 
 function Index(): JSX.Element {
-    const history = useHistory();
-
     const { dispatch } = useContext(FormContext);
+    const history = useHistory();
+    const { t } = useTranslation();
+
     function reuploadJSONFile(questionnaireObj: fhir.Questionnaire) {
         dispatch(clearAllSections());
         const oldJSON: {
@@ -68,21 +71,21 @@ function Index(): JSX.Element {
     return (
         <Row align="middle" justify="center" style={{ backgroundColor: 'var(--primary-2)', height: '100vh' }}>
             <Col
-                xl={8}
+                xl={12}
                 lg={10}
                 md={10}
                 sm={15}
                 style={{
                     backgroundColor: 'var(--color-base-1)',
-                    height: '33vh',
-                    boxShadow: '4px 4px 4px rgba(0, 0, 0, 0.25)',
+                    height: '40vh',
+                    boxShadow: '40px 40px 40px rgba(0, 0, 0, 0.1)',
                 }}
             >
                 <Row align="middle" justify="center" style={{ height: '100%' }}>
                     <Col>
-                        <Row gutter={[10, 48]}>
+                        <Row gutter={[10, 48]} justify="center">
                             <Col>
-                                <h1> Velkommen til skjemabyggeren</h1>
+                                <h1> {t('Helsenorge form builder')}</h1>
                             </Col>
                         </Row>
                         <Row align="middle" justify="center">
@@ -95,7 +98,7 @@ function Index(): JSX.Element {
                                 >
                                     <label className="index-buttons" onClick={createNewForm}>
                                         <EditOutlined style={{ paddingRight: '5px' }} />
-                                        Lag nytt skjema
+                                        {t('New form')}
                                     </label>
                                 </div>
                             </Col>
@@ -103,10 +106,15 @@ function Index(): JSX.Element {
                                 <label className="index-buttons">
                                     <input type="file" style={{ display: 'none' }} onChange={onChange} />
                                     <UploadOutlined style={{ paddingRight: '5px' }} />
-                                    Last opp JSON-fil
+                                    {t('Upload JSON')}
                                 </label>
                             </Col>
                         </Row>
+                    </Col>
+                </Row>
+                <Row justify="end" gutter={[48, 96]}>
+                    <Col>
+                        <LanguageSelector />
                     </Col>
                 </Row>
             </Col>

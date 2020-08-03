@@ -2,11 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { UserProvider } from './contexts/UserContext';
+import './helpers/i18n';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
     <React.StrictMode>
-        <App />
+        <UserProvider>
+            <App />
+        </UserProvider>
     </React.StrictMode>,
     document.getElementById('root'),
 );
