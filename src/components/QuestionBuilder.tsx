@@ -175,7 +175,9 @@ function QuestionBuilder({ questionId, buttons, provided, isInfo }: QuestionProp
                                         }}
                                         placeholder={t('Choose type')}
                                     >
-                                        <Option value={AnswerTypes.default} disabled>{t('Choose type')}</Option>
+                                        <Option value={AnswerTypes.default} disabled>
+                                            {t('Choose type')}
+                                        </Option>
                                         <Option value={AnswerTypes.boolean}>{t('Yes/no')}</Option>
                                         <Option value={AnswerTypes.number}>{t('Number')}</Option>
                                         <Option value={AnswerTypes.text}>{t('Text')}</Option>
