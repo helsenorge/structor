@@ -10,11 +10,11 @@ const TreeForm = (): JSX.Element => {
         dispatch(newItemAction('group', []));
     };
 
-    const renderTree = (items: Array<OrderItem>, parentArray: Array<string>) => {
+    const renderTree = (items: Array<OrderItem>, parentArray: Array<string>): Array<JSX.Element> => {
         return items.map((x) => {
             return (
                 <div key={x.linkId}>
-                    <TreeItem linkId={x.linkId} parentArray={parentArray} />
+                    <TreeItem item={state.qItems[x.linkId]} parentArray={parentArray} />
                     {renderTree(x.items, [...parentArray, x.linkId])}
                 </div>
             );

@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { TreeContext } from '../store/treeStore/treeStore';
-import { newItemAction, deleteItemAction } from '../store/treeStore/treeActions';
+import { newItemAction, deleteItemAction, updateItemAction } from '../store/treeStore/treeActions';
+import { QuestionnaireItem } from '../types/fhir';
 
 interface TreeItemProps {
-    linkId: string;
+    item: QuestionnaireItem;
     parentArray: Array<string>;
 }
 
@@ -11,19 +12,26 @@ const TreeItem = (props: TreeItemProps): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
 
     const dispatchNewItem = () => {
-        dispatch(newItemAction('group', [...props.parentArray, props.linkId]));
+        dispatch(newItemAction('group', [...props.parentArray, props.item.linkId]));
     };
 
     const dispatchDeleteItem = () => {
-        dispatch(deleteItemAction(props.linkId, props.parentArray));
+        dispatch(deleteItemAction(props.item.linkId, props.parentArray));
+    };
+
+    const dispatchUpdateItem = () => {
+        dispatch(updateItemAction(props.item.linkId, 'text', 'TEXT PROP'));
     };
 
     return (
         <div style={{ marginLeft: props.parentArray.length * 32 }}>
-            <span>{`LinkId: ${props.linkId}, med foreldre ${props.parentArray.join('->')}`}</span>
+            <span>{`LinkId: ${props.item.linkId}, text: ${props.item.text}, med foreldre ${props.parentArray.join(
+                '->',
+            )}`}</span>
             <div>
                 <button onClick={dispatchNewItem}>Add child</button>
                 <button onClick={dispatchDeleteItem}>Delete item</button>
+                <button onClick={dispatchUpdateItem}>Set text</button>
             </div>
         </div>
     );
