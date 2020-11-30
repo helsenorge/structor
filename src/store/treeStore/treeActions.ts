@@ -64,6 +64,7 @@ export const newItemAction = (type: QuestionnaireItemType, order: Array<string>)
     const newQuestionnaireItem = {
         linkId: Math.random().toString(),
         type: type,
+        text: 'GROUP HEADER',
     } as QuestionnaireItem;
     return {
         type: NEW_ITEM_ACTION,

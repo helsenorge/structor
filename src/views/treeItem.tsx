@@ -20,7 +20,7 @@ const TreeItem = (props: TreeItemProps): JSX.Element => {
     };
 
     const dispatchUpdateItem = () => {
-        dispatch(updateItemAction(props.item.linkId, 'text', 'TEXT PROP'));
+        dispatch(updateItemAction(props.item.linkId, 'text', 'NY HEADER'));
     };
 
     return (
