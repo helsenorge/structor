@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, createContext, useState } from 'react';
 
 const defaultLocale = 'en_US';
 
@@ -8,13 +8,13 @@ type UserContextType = {
 };
 
 type Props = {
-    children: React.ReactNode;
+    children: ReactNode;
 };
 
-export const UserContext = React.createContext<UserContextType | undefined>(undefined);
+export const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider = ({ children }: Props) => {
-    const [locale, setLocale] = React.useState(defaultLocale);
+export const UserProvider = ({ children }: Props): JSX.Element => {
+    const [locale, setLocale] = useState(defaultLocale);
 
     return <UserContext.Provider value={{ locale, setLocale }}>{children}</UserContext.Provider>;
 };

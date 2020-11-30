@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 function LanguageSelector(): JSX.Element {
     const supportedLocales = ['en_US', 'nb_NO'];
 
+    // TODO: Figure out how to do this without ignoring typescript and eslint-errors
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const { locale, setLocale } = React.useContext(UserContext)!;
     const { i18n } = useTranslation();
 
@@ -14,7 +16,10 @@ function LanguageSelector(): JSX.Element {
         i18n.changeLanguage(language);
     };
 
-    const handleMenuClick = (event: { key: string }) => {
+    // TODO: Figure out how to do this without ignoring typescript and eslint-errors
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const handleMenuClick: MenuClickEventHandler = (event: { key: string }) => {
         if (supportedLocales.includes(event.key)) {
             setLocale(event.key);
             changeLanguage(event.key);
