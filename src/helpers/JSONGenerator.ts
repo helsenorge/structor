@@ -81,7 +81,7 @@ function convertAnswers(
         questionIndex++;
         const answer = question.answer;
         if ((answer as IChoice).choices && (answer as IChoice).choices.length > 0) {
-            const system = 'system' + answer.id; 
+            const system = 'system' + answer.id;
             valueSetMap[answer.id] = system;
             const containPart: fhir.Resource = {
                 resourceType: 'ValueSet',
