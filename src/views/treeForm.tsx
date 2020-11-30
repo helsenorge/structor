@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { TreeContext, OrderItem } from '../store/treeStore/treeStore';
 import TreeItem from './treeItem';
 import { newItemAction } from '../store/treeStore/treeActions';
+import { generateQuestionnaire } from '../helpers/generateQuestionnaire';
 
 const TreeForm = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -25,6 +26,7 @@ const TreeForm = (): JSX.Element => {
         <>
             <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder, [])}</div>
             <button onClick={dispatchNewRootItem}>Add root child</button>
+            <button onClick={() => console.log(generateQuestionnaire(state))}>Log questionnaire to console</button>
         </>
     );
 };

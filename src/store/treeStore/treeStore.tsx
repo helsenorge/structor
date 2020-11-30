@@ -11,7 +11,7 @@ import {
     UPDATE_ITEM_ACTION,
 } from './treeActions';
 
-interface Items {
+export interface Items {
     [key: string]: QuestionnaireItem;
 }
 
@@ -20,12 +20,12 @@ export interface OrderItem {
     items: Array<OrderItem>;
 }
 
-interface State {
+export interface TreeState {
     qItems: Items;
     qOrder: Array<OrderItem>;
 }
 
-export const initialState: State = {
+export const initialState: TreeState = {
     qItems: {},
     qOrder: [
         /*
@@ -77,7 +77,7 @@ function getLinkIdOfAllSubItems(items: Array<OrderItem>, linkIds: Array<string>)
     return linkIds;
 }
 
-export function newItem(draft: State, action: NewItemAction): void {
+export function newItem(draft: TreeState, action: NewItemAction): void {
     draft.qItems[action.item.linkId] = action.item;
 
     // find the correct place to add the new item
@@ -85,7 +85,7 @@ export function newItem(draft: State, action: NewItemAction): void {
     arrayToAddItemTo.push({ linkId: action.item.linkId, items: [] });
 }
 
-export function deleteItem(draft: State, action: DeleteItemAction): void {
+export function deleteItem(draft: TreeState, action: DeleteItemAction): void {
     const arrayToDeleteItemFrom = findTreeArray(action.order, draft.qOrder);
     const indexToDelete = arrayToDeleteItemFrom.findIndex((x) => x.linkId === action.linkId);
 
@@ -99,14 +99,14 @@ export function deleteItem(draft: State, action: DeleteItemAction): void {
     arrayToDeleteItemFrom.splice(indexToDelete, 1);
 }
 
-export function updateItem(draft: State, action: UpdateItemAction): void {
+export function updateItem(draft: TreeState, action: UpdateItemAction): void {
     draft.qItems[action.linkId] = {
         ...draft.qItems[action.linkId],
         [action.itemProperty]: action.itemValue,
     };
 }
 
-const reducer = produce((draft: State, action: NewItemAction | DeleteItemAction | UpdateItemAction) => {
+const reducer = produce((draft: TreeState, action: NewItemAction | DeleteItemAction | UpdateItemAction) => {
     switch (action.type) {
         case NEW_ITEM_ACTION:
             newItem(draft, action);
@@ -121,7 +121,7 @@ const reducer = produce((draft: State, action: NewItemAction | DeleteItemAction 
 });
 
 export const TreeContext = createContext<{
-    state: State;
+    state: TreeState;
     dispatch: Dispatch<NewItemAction | DeleteItemAction | UpdateItemAction>;
 }>({
     state: initialState,
