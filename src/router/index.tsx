@@ -3,7 +3,9 @@ import { Switch } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import Index from '../views/index';
 import CreateForm from '../views/Form';
+import TreeForm from '../views/treeForm';
 import { FormContextProvider } from '../store/FormStore';
+import { TreeContextProvider } from '../store/treeStore/treeStore';
 
 export default function Routes(): JSX.Element {
     return (
@@ -17,6 +19,11 @@ export default function Routes(): JSX.Element {
                 <FormContextProvider>
                     <CreateForm />
                 </FormContextProvider>
+            </Route>
+            <Route path="/tree-test" exact>
+                <TreeContextProvider>
+                    <TreeForm />
+                </TreeContextProvider>
             </Route>
         </Switch>
     );
