@@ -38,7 +38,12 @@
         "extends": [
             "react-app",
             "react-app/jest"
-        ]
+        ],
+        "rules": {
+            "eqeqeq": "warn",
+            "strict": "off",
+            "@typescript-eslint/explicit-module-boundary-types": "off"
+        }
     },
     "browserslist": {
         "production": [
