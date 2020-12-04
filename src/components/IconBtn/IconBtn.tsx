@@ -2,7 +2,7 @@ import React from 'react';
 import './IconBtn.css';
 
 type IconBtnProps = {
-    type: 'back' | 'another';
+    type?: 'back' | 'x';
     title?: string;
 };
 
@@ -12,7 +12,10 @@ const IconBtn = ({ type, title }: IconBtnProps) => {
     switch (type) {
         case 'back': {
             icon = 'ion-ios-arrow-back';
+            break;
         }
+        default:
+            icon = 'ion-close-round';
     }
 
     return (

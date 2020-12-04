@@ -33,6 +33,11 @@ h1 {
     box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, .78);
 }
 
+.form-intro input, .form-intro textarea {
+    width: 66%;
+    margin: 5px auto;
+}
+
 input, textarea, select {
     padding: 10px;
     margin: 10px;
@@ -54,6 +59,23 @@ input, textarea, select {
     background-color: var(--color-base-2)!important;
     height: 60px!important;
     width: 100%;
-    transition: all .3s cubic-bezier(.645,.045,.355,1);
-    box-shadow: 0 4px 8px 4px hsla(0,0%,78%,.78);
+    transition: all .3s cubic-bezier(.645, .045, .355, 1);
+    box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, .78);
+}
+
+.structor-helper {
+    position: absolute;
+    top: 20%;
+    right: 0;
+    background: white;
+    min-width: 380px;
+    box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, .78);
+    text-align: left;
+}
+
+.json {
+    display: block;
+    white-space: pre;
+    text-align: left;
+    padding: 20px;
 }

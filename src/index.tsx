@@ -5,7 +5,7 @@ import App from './App';
 import { UserProvider } from './contexts/UserContext';
 import './helpers/i18n';
 import * as serviceWorker from './serviceWorker';
-import { debugContextDevtool } from 'react-context-devtool';
+//import { debugContextDevtool } from 'react-context-devtool';
 
 const container = document.getElementById('root');
 
@@ -23,4 +23,4 @@ ReactDOM.render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-debugContextDevtool(container);
+//debugContextDevtool(container);

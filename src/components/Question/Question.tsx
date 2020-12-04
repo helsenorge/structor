@@ -38,7 +38,6 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <button onClick={dispatchNewItem}>
                     <img src={PlusIcon} height="25" width="25" /> Legg til underspørsmål
                 </button>
-                <button onClick={() => dispatchUpdateItem('morn')}>Set text</button>
             </div>
             <div>
                 <h2>Spørsmål</h2>

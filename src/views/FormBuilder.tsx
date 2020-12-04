@@ -10,6 +10,7 @@ import Btn from '../components/Btn/Btn';
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const [isIframeVisible, setIsIframeVisible] = React.useState<boolean>(false);
+    const [isShowingFireStructure, setIsShowingFireStructure] = React.useState<boolean>(false);
 
     function iFrameLoaded() {
         const questionnaireString = generateQuestionnaire(state);
@@ -49,6 +50,7 @@ const FormBuilder = (): JSX.Element => {
                 <h1>Skjemabygger</h1>
                 <div className="pull-right">
                     <Btn title="Forhåndsvisning" onClick={() => setIsIframeVisible(!isIframeVisible)} />
+                    <Btn title="JSON" onClick={() => setIsShowingFireStructure(!isShowingFireStructure)} />
                 </div>
             </header>
 
@@ -77,6 +79,15 @@ const FormBuilder = (): JSX.Element => {
                         </button>
                     </div>
                 </>
+            )}
+            {isShowingFireStructure && (
+                <div className="structor-helper">
+                    <header>
+                        <IconBtn type="x" title="Tilbake" />
+                        <h1>JSON struktur</h1>
+                    </header>
+                    <code className="json">{JSON.stringify(state.qItems, undefined, 2)}</code>
+                </div>
             )}
         </>
     );

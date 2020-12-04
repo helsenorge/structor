@@ -1,3 +1,4 @@
+import CreateUUID from '../../helpers/CreateUUID';
 import { QuestionnaireItem } from '../../types/fhir';
 
 export const NEW_ITEM_ACTION = 'newItem';
@@ -62,9 +63,9 @@ export interface UpdateItemAction {
 
 export const newItemAction = (type: QuestionnaireItemType, order: Array<string>): NewItemAction => {
     const newQuestionnaireItem = {
-        linkId: Math.random().toString(),
+        linkId: CreateUUID(),
         type: type,
-        text: 'GROUP HEADER',
+        text: '',
     } as QuestionnaireItem;
     return {
         type: NEW_ITEM_ACTION,
