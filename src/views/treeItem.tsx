@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { TreeContext } from '../store/treeStore/treeStore';
 import { newItemAction, deleteItemAction, updateItemAction } from '../store/treeStore/treeActions';
 import { QuestionnaireItem } from '../types/fhir';
+import { IItemProperty } from '../types/IQuestionnareItemType';
 
 interface TreeItemProps {
     item: QuestionnaireItem;
@@ -20,7 +21,7 @@ const TreeItem = (props: TreeItemProps): JSX.Element => {
     };
 
     const dispatchUpdateItem = () => {
-        dispatch(updateItemAction(props.item.linkId, 'text', 'NY HEADER'));
+        dispatch(updateItemAction(props.item.linkId, IItemProperty.text, 'NY HEADER'));
     };
 
     return (

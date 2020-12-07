@@ -1,0 +1,10 @@
+.datepicker {
+    position: relative;
+    width: 222px;
+}
+
+.datepicker img {
+    position: absolute;
+    right: 10px;
+    top: 18px;
+}

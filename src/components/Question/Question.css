@@ -39,10 +39,21 @@
 
 .form-field label{
     font-size: 18px;
+    min-height: 28px;
 }
 
 .form-field input, .form-field select {
     margin: 0;
     font-size: 18px;
     margin-top: 5px;
+}
+
+.form-field input:disabled{
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.question-form {
+    position: relative;
 }

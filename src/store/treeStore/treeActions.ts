@@ -1,26 +1,10 @@
 import CreateUUID from '../../helpers/CreateUUID';
 import { QuestionnaireItem } from '../../types/fhir';
+import { IItemProperty } from '../../types/IQuestionnareItemType';
 
 export const NEW_ITEM_ACTION = 'newItem';
 export const DELETE_ITEM_ACTION = 'deleteItem';
 export const UPDATE_ITEM_ACTION = 'updateItem';
-
-type ItemProperty =
-    | 'linkId'
-    | 'definition'
-    | 'code'
-    | 'prefix'
-    | 'text'
-    | 'type'
-    | 'enableWhen'
-    | 'enableBehavior'
-    | 'maxLength'
-    | 'answerOption'
-    | 'initial'
-    | 'answerValueSet'
-    | 'required'
-    | 'repeats'
-    | 'readOnly'; // item og extension settes med annen action
 
 type ItemValueType = string | boolean; // TODO: legg på alle lovlige verdier
 
@@ -57,7 +41,7 @@ export interface DeleteItemAction {
 export interface UpdateItemAction {
     type: typeof UPDATE_ITEM_ACTION;
     linkId: string;
-    itemProperty: ItemProperty;
+    itemProperty: IItemProperty;
     itemValue: ItemValueType;
 }
 
@@ -84,7 +68,7 @@ export const deleteItemAction = (linkId: string, order: Array<string>): DeleteIt
 
 export const updateItemAction = (
     linkId: string,
-    itemProperty: ItemProperty,
+    itemProperty: IItemProperty,
     itemValue: ItemValueType,
 ): UpdateItemAction => {
     return {
