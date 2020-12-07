@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { TreeContext, OrderItem } from '../store/treeStore/treeStore';
+import { TreeContext, OrderItem, getValueSetId } from '../store/treeStore/treeStore';
 import TreeItem from './treeItem';
 import { newItemAction } from '../store/treeStore/treeActions';
 import { generateQuestionnaire } from '../helpers/generateQuestionnaire';
+import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 
 const TreeForm = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -25,14 +26,18 @@ const TreeForm = (): JSX.Element => {
     }
 
     const dispatchNewRootItem = () => {
-        dispatch(newItemAction('group', []));
+        dispatch(newItemAction(IQuestionnaireItemType.group, []));
     };
 
     const renderTree = (items: Array<OrderItem>, parentArray: Array<string>): Array<JSX.Element> => {
         return items.map((x) => {
             return (
                 <div key={x.linkId}>
-                    <TreeItem item={state.qItems[x.linkId]} parentArray={parentArray} />
+                    <TreeItem
+                        item={state.qItems[x.linkId]}
+                        parentArray={parentArray}
+                        valueSet={state.qValueSet[getValueSetId(x.linkId)]}
+                    />
                     {renderTree(x.items, [...parentArray, x.linkId])}
                 </div>
             );

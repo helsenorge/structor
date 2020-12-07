@@ -6,6 +6,7 @@ import { newItemAction } from '../store/treeStore/treeActions';
 import { generateQuestionnaire } from '../helpers/generateQuestionnaire';
 import IconBtn from '../components/IconBtn/IconBtn';
 import Btn from '../components/Btn/Btn';
+import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -29,7 +30,7 @@ const FormBuilder = (): JSX.Element => {
     }
 
     const dispatchNewRootItem = () => {
-        dispatch(newItemAction('group', []));
+        dispatch(newItemAction(IQuestionnaireItemType.group, []));
     };
 
     const renderTree = (items: Array<OrderItem>, parentArray: Array<string>): Array<JSX.Element> => {

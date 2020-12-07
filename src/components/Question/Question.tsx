@@ -21,7 +21,7 @@ const Question = (props: QuestionProps): JSX.Element => {
     // const [name, setName] = useState('');
 
     const dispatchNewItem = (type?: IQuestionnaireItemType) => {
-        dispatch(newItemAction(type || 'group', [...props.parentArray, props.item.linkId]));
+        dispatch(newItemAction(type || IQuestionnaireItemType.group, [...props.parentArray, props.item.linkId]));
     };
 
     const dispatchDeleteItem = () => {

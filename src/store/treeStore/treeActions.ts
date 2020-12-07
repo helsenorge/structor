@@ -1,30 +1,14 @@
 import CreateUUID from '../../helpers/CreateUUID';
-import { QuestionnaireItem } from '../../types/fhir';
-import { IItemProperty } from '../../types/IQuestionnareItemType';
+import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 
 export const NEW_ITEM_ACTION = 'newItem';
 export const DELETE_ITEM_ACTION = 'deleteItem';
 export const UPDATE_ITEM_ACTION = 'updateItem';
+export const NEW_VALUESET_CODE_ACTION = 'newValueSetCode';
+export const DELETE_VALUESET_CODE_ACTION = 'deleteValueSetCode';
 
 type ItemValueType = string | boolean; // TODO: legg på alle lovlige verdier
-
-type QuestionnaireItemType =
-    | 'group'
-    | 'display'
-    | 'boolean'
-    | 'decimal'
-    | 'integer'
-    | 'date'
-    | 'dateTime'
-    | 'time'
-    | 'string'
-    | 'text'
-    | 'url'
-    | 'choice'
-    | 'open-choice'
-    | 'attachment'
-    | 'reference'
-    | 'quantity';
 
 export interface NewItemAction {
     type: typeof NEW_ITEM_ACTION;
@@ -45,7 +29,19 @@ export interface UpdateItemAction {
     itemValue: ItemValueType;
 }
 
-export const newItemAction = (type: QuestionnaireItemType, order: Array<string>): NewItemAction => {
+export interface NewValueSetCodeAction {
+    type: typeof NEW_VALUESET_CODE_ACTION;
+    linkId: string;
+    conceptValue: ValueSetComposeIncludeConcept;
+}
+
+export interface DeleteValueSetCodeAction {
+    type: typeof DELETE_VALUESET_CODE_ACTION;
+    linkId: string;
+    code: string;
+}
+
+export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>): NewItemAction => {
     const newQuestionnaireItem = {
         linkId: CreateUUID(),
         type: type,
@@ -76,5 +72,25 @@ export const updateItemAction = (
         linkId,
         itemProperty,
         itemValue,
+    };
+};
+
+export const newValueSetCodeAction = (linkId: string, displayValue: string): NewValueSetCodeAction => {
+    const conceptValue = {
+        code: `${CreateUUID()}-${displayValue}`,
+        display: displayValue,
+    };
+    return {
+        type: NEW_VALUESET_CODE_ACTION,
+        linkId,
+        conceptValue,
+    };
+};
+
+export const deleteValueSetCodeAction = (linkId: string, code: string): DeleteValueSetCodeAction => {
+    return {
+        type: DELETE_VALUESET_CODE_ACTION,
+        linkId,
+        code,
     };
 };
