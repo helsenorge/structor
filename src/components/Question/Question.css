@@ -5,6 +5,10 @@
     margin-top: 10px;
 }
 
+.question button{
+    color: black;
+}
+
 .question-header {
     display: flex;
     border-bottom: 8px solid #EBF8FF;

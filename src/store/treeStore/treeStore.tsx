@@ -7,20 +7,24 @@ import {
     DeleteItemAction,
     UpdateItemAction,
     NewValueSetCodeAction,
+    UpdateValueSetCodeAction,
     DeleteValueSetCodeAction,
     NEW_ITEM_ACTION,
     DELETE_ITEM_ACTION,
     UPDATE_ITEM_ACTION,
     NEW_VALUESET_CODE_ACTION,
+    UPDATE_VALUESET_CODE_ACTION,
     DELETE_VALUESET_CODE_ACTION,
 } from './treeActions';
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import createUUID from '../../helpers/CreateUUID';
 
 type ActionType =
     | NewItemAction
     | DeleteItemAction
     | UpdateItemAction
     | NewValueSetCodeAction
+    | UpdateValueSetCodeAction
     | DeleteValueSetCodeAction;
 
 export interface Items {
@@ -84,12 +88,12 @@ function createNewValueSet(valueSetId: string): ValueSet {
                     system: `${valueSetId}-system`,
                     concept: [
                         {
-                            code: '1',
-                            display: 'Ja',
+                            code: createUUID(),
+                            display: '',
                         },
                         {
-                            code: '2',
-                            display: 'Nei',
+                            code: createUUID(),
+                            display: '',
                         },
                     ],
                 },
@@ -163,6 +167,16 @@ function newValueSetCodeAction(draft: TreeState, action: NewValueSetCodeAction):
     draft.qValueSet[getValueSetId(action.linkId)].compose?.include[0].concept?.push(action.conceptValue);
 }
 
+function updateValueSetCodeAction(draft: TreeState, action: UpdateValueSetCodeAction): void {
+    const valueSetItem = draft.qValueSet[getValueSetId(action.linkId)].compose?.include[0].concept?.find(
+        (x) => x.code === action.conceptValue.code,
+    );
+
+    if (valueSetItem) {
+        valueSetItem.display = action.conceptValue.display;
+    }
+}
+
 function deleteValueSetCodeAction(draft: TreeState, action: DeleteValueSetCodeAction): void {
     const index = draft.qValueSet[getValueSetId(action.linkId)].compose?.include[0].concept?.findIndex(
         (x) => x.code === action.code,
@@ -185,6 +199,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case NEW_VALUESET_CODE_ACTION:
             newValueSetCodeAction(draft, action);
+            break;
+        case UPDATE_VALUESET_CODE_ACTION:
+            updateValueSetCodeAction(draft, action);
             break;
         case DELETE_VALUESET_CODE_ACTION:
             deleteValueSetCodeAction(draft, action);

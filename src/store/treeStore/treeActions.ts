@@ -6,6 +6,7 @@ export const NEW_ITEM_ACTION = 'newItem';
 export const DELETE_ITEM_ACTION = 'deleteItem';
 export const UPDATE_ITEM_ACTION = 'updateItem';
 export const NEW_VALUESET_CODE_ACTION = 'newValueSetCode';
+export const UPDATE_VALUESET_CODE_ACTION = 'updateValueSetCode';
 export const DELETE_VALUESET_CODE_ACTION = 'deleteValueSetCode';
 
 type ItemValueType = string | boolean; // TODO: legg på alle lovlige verdier
@@ -31,6 +32,12 @@ export interface UpdateItemAction {
 
 export interface NewValueSetCodeAction {
     type: typeof NEW_VALUESET_CODE_ACTION;
+    linkId: string;
+    conceptValue: ValueSetComposeIncludeConcept;
+}
+
+export interface UpdateValueSetCodeAction {
+    type: typeof UPDATE_VALUESET_CODE_ACTION;
     linkId: string;
     conceptValue: ValueSetComposeIncludeConcept;
 }
@@ -77,13 +84,24 @@ export const updateItemAction = (
 
 export const newValueSetCodeAction = (linkId: string, displayValue: string): NewValueSetCodeAction => {
     const conceptValue = {
-        code: `${CreateUUID()}-${displayValue}`,
+        code: CreateUUID(),
         display: displayValue,
     };
     return {
         type: NEW_VALUESET_CODE_ACTION,
         linkId,
         conceptValue,
+    };
+};
+
+export const updateValueSetCodeAction = (
+    linkId: string,
+    consept: ValueSetComposeIncludeConcept,
+): UpdateValueSetCodeAction => {
+    return {
+        type: UPDATE_VALUESET_CODE_ACTION,
+        linkId,
+        conceptValue: consept,
     };
 };
 
