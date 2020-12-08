@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { newItemAction, deleteItemAction, updateItemAction } from '../../store/treeStore/treeActions';
-import { QuestionnaireItem } from '../../types/fhir';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import itemType from '../../helpers/QuestionHelper';
@@ -10,10 +10,12 @@ import Picker from '../DatePicker/DatePicker';
 import './Question.css';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Select from '../Select/Select';
+import RadioBtn from '../RadioBtn/RadioBtn';
 
 interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
+    valueSet: ValueSetComposeIncludeConcept[] | null;
 }
 
 const Question = (props: QuestionProps): JSX.Element => {
@@ -76,6 +78,19 @@ const Question = (props: QuestionProps): JSX.Element => {
                 return (
                     <div className="form-field">
                         <label>Todo</label>
+                    </div>
+                );
+            case IQuestionnaireItemType.choice:
+                return (
+                    <div className="form-field">
+                        {props.valueSet &&
+                            props.valueSet.map((set, index) => (
+                                <RadioBtn
+                                    key={index}
+                                    valueSetID={props.item.linkId + '-valueSet'}
+                                    value={set.display}
+                                />
+                            ))}
                     </div>
                 );
             default:

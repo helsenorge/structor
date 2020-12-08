@@ -82,7 +82,16 @@ function createNewValueSet(valueSetId: string): ValueSet {
             include: [
                 {
                     system: `${valueSetId}-system`,
-                    concept: [],
+                    concept: [
+                        {
+                            code: '1',
+                            display: 'Ja',
+                        },
+                        {
+                            code: '2',
+                            display: 'Nei',
+                        },
+                    ],
                 },
             ],
         },

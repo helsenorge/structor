@@ -65,8 +65,21 @@
 
 .horizontal {
     display: flex;
+    align-items: center;
 }
 
 .horizontal > * {
     margin-right: 25px;
+}
+
+.horizontal > input {
+    margin-right: 15px;
+}
+
+.horizontal > input[type="text"] {
+    width: 100%;
+}
+
+.horizontal > input:last-of-type {
+    margin-right: 0px;
 }

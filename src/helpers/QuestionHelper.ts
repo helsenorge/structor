@@ -33,6 +33,10 @@ const itemType = [
         display: 'Bekreftelse',
         code: IQuestionnaireItemType.boolean,
     },
+    {
+        display: 'Enkel valg/radio',
+        code: IQuestionnaireItemType.choice,
+    },
 ];
 
 export default itemType;
