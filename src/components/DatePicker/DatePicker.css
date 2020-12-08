@@ -1,10 +1,14 @@
 .datepicker {
     position: relative;
-    width: 222px;
+    width: 160px;
 }
 
 .datepicker img {
     position: absolute;
     right: 10px;
     top: 18px;
+}
+
+.datepicker input{
+    width: 160px;
 }

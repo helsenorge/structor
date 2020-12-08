@@ -9,6 +9,7 @@ import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnare
 import Picker from '../DatePicker/DatePicker';
 import './Question.css';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
+import Select from '../Select/Select';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -34,7 +35,7 @@ const Question = (props: QuestionProps): JSX.Element => {
     return (
         <div className="question" style={{ marginLeft: props.parentArray.length * 32 }}>
             <div className="question-header">
-                <span>{props.item.linkId}.</span>
+                <h2>Spørsmål</h2>
                 <button className="pull-right" onClick={dispatchDeleteItem}>
                     <img src={Trashcan} height="25" width="25" /> Slett
                 </button>
@@ -43,7 +44,6 @@ const Question = (props: QuestionProps): JSX.Element => {
                 </button>
             </div>
             <div className="question-form">
-                <h2>Spørsmål</h2>
                 <SwitchBtn
                     label="Obligatorisk"
                     value={props.item.required || false}
@@ -51,17 +51,13 @@ const Question = (props: QuestionProps): JSX.Element => {
                 />
                 <div className="form-field">
                     <label>Velg spørsmålstype</label>
-                    <select
-                        onChange={(event) => {
+                    <Select
+                        value={props.item.type}
+                        options={itemType}
+                        onChange={(event: { target: { value: string | boolean } }) => {
                             dispatchUpdateItem(IItemProperty.type, event.target.value);
                         }}
-                    >
-                        {itemType.map((item, index) => (
-                            <option key={index} value={item.code}>
-                                {item.display}
-                            </option>
-                        ))}
-                    </select>
+                    />
                 </div>
                 <div className="form-field">
                     <label>Skriv spørsmål</label>

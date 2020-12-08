@@ -21,6 +21,10 @@ const itemType = [
         display: 'Dato',
         code: IQuestionnaireItemType.date,
     },
+    {
+        display: 'Tid',
+        code: IQuestionnaireItemType.time,
+    },
 ];
 
 export default itemType;

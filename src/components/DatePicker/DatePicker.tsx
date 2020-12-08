@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
-import CalImg from '../../images/icons/calendar-outline.svg';
+import Calendar from '../../images/icons/calendar-outline.svg';
 import Clock from '../../images/icons/time-outline.svg';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -17,11 +17,11 @@ const Picker = ({ type }: PickerProps): JSX.Element => {
         <div className="datepicker">
             <DatePicker
                 disabled
-                placeholderText="dd.mm.åå"
+                placeholderText={type === 'time' ? '00:00' : 'dd.mm.åå'}
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
             />
-            <img src={type === 'date' ? CalImg : Clock} alt="datepicker icon" height="25" />
+            <img src={type === 'time' ? Clock : Calendar} alt="datepicker icon" height="25" />
         </div>
     );
 };
