@@ -7,7 +7,7 @@ type SwitchBtnProps = {
     label: string;
 };
 
-const SwitchBtn = ({ onClick, value, label }: SwitchBtnProps) => {
+const SwitchBtn = ({ onClick, value, label }: SwitchBtnProps): JSX.Element => {
     return (
         <div className="switch-btn">
             <label>{label}</label>

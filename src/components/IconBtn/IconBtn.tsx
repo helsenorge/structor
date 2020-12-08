@@ -6,7 +6,7 @@ type IconBtnProps = {
     title?: string;
 };
 
-const IconBtn = ({ type, title }: IconBtnProps) => {
+const IconBtn = ({ type, title }: IconBtnProps): JSX.Element => {
     let icon = '';
 
     switch (type) {

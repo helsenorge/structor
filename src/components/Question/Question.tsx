@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import DatePicker from 'react-datepicker';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { newItemAction, deleteItemAction, updateItemAction } from '../../store/treeStore/treeActions';
 import { QuestionnaireItem } from '../../types/fhir';
@@ -96,6 +95,12 @@ const Question = (props: QuestionProps): JSX.Element => {
                     <div className="form-field">
                         <label></label>
                         <Picker />
+                    </div>
+                )}
+                {props.item.type === IQuestionnaireItemType.time && (
+                    <div className="form-field">
+                        <label></label>
+                        <Picker type="time" />
                     </div>
                 )}
             </div>

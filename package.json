@@ -43,8 +43,7 @@
         ],
         "rules": {
             "eqeqeq": "warn",
-            "strict": "off",
-            "@typescript-eslint/explicit-module-boundary-types": "off"
+            "strict": "off"
         }
     },
     "browserslist": {
