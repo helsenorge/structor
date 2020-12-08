@@ -25,6 +25,14 @@ const itemType = [
         display: 'Tid',
         code: IQuestionnaireItemType.time,
     },
+    {
+        display: 'Tid og dato',
+        code: IQuestionnaireItemType.dateTime,
+    },
+    {
+        display: 'Bekreftelse',
+        code: IQuestionnaireItemType.boolean,
+    },
 ];
 
 export default itemType;

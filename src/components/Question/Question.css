@@ -62,3 +62,11 @@
 .question-form {
     position: relative;
 }
+
+.horizontal {
+    display: flex;
+}
+
+.horizontal > * {
+    margin-right: 25px;
+}

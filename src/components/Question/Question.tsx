@@ -32,6 +32,57 @@ const Question = (props: QuestionProps): JSX.Element => {
         dispatch(updateItemAction(props.item.linkId, name, value));
     };
 
+    const respondType = (param: string) => {
+        switch (param) {
+            case IQuestionnaireItemType.string:
+                return (
+                    <div className="form-field">
+                        <label></label>
+                        <input disabled value="Kortsvar" />
+                    </div>
+                );
+            case IQuestionnaireItemType.text:
+                return (
+                    <div className="form-field">
+                        <label></label>
+                        <input disabled value="Langsvar" />
+                    </div>
+                );
+            case IQuestionnaireItemType.date:
+                return (
+                    <div className="form-field">
+                        <label></label>
+                        <Picker />
+                    </div>
+                );
+            case IQuestionnaireItemType.time:
+                return (
+                    <div className="form-field">
+                        <label></label>
+                        <Picker type="time" />
+                    </div>
+                );
+            case IQuestionnaireItemType.dateTime:
+                return (
+                    <div className="form-field">
+                        <label></label>
+                        <div className="horizontal">
+                            <Picker type="time" />
+                            <Picker type="date" />
+                        </div>
+                    </div>
+                );
+            case IQuestionnaireItemType.boolean:
+                return (
+                    <div className="form-field">
+                        <label>Todo</label>
+                    </div>
+                );
+            default:
+                return '';
+        }
+    };
+
     return (
         <div className="question" style={{ marginLeft: props.parentArray.length * 32 }}>
             <div className="question-header">
@@ -75,30 +126,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     }}
                     />
                 </div>*/}
-                {props.item.type === IQuestionnaireItemType.string && (
-                    <div className="form-field">
-                        <label></label>
-                        <input disabled value="Kortsvar" />
-                    </div>
-                )}
-                {props.item.type === IQuestionnaireItemType.text && (
-                    <div className="form-field">
-                        <label></label>
-                        <input disabled value="Langsvar" />
-                    </div>
-                )}
-                {props.item.type === IQuestionnaireItemType.date && (
-                    <div className="form-field">
-                        <label></label>
-                        <Picker />
-                    </div>
-                )}
-                {props.item.type === IQuestionnaireItemType.time && (
-                    <div className="form-field">
-                        <label></label>
-                        <Picker type="time" />
-                    </div>
-                )}
+                {respondType(props.item.type)}
             </div>
         </div>
     );
