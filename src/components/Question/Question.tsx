@@ -1,8 +1,13 @@
 import React, { useContext } from 'react';
-import DatePicker from 'react-datepicker';
 import { TreeContext } from '../../store/treeStore/treeStore';
-import { newItemAction, deleteItemAction, updateItemAction } from '../../store/treeStore/treeActions';
-import { QuestionnaireItem } from '../../types/fhir';
+import {
+    newItemAction,
+    deleteItemAction,
+    updateItemAction,
+    newValueSetCodeAction,
+    updateValueSetCodeAction,
+} from '../../store/treeStore/treeActions';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import itemType from '../../helpers/QuestionHelper';
@@ -10,10 +15,14 @@ import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnare
 import Picker from '../DatePicker/DatePicker';
 import './Question.css';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
+import Select from '../Select/Select';
+import RadioBtn from '../RadioBtn/RadioBtn';
+import Btn from '../Btn/Btn';
 
 interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
+    valueSet: ValueSetComposeIncludeConcept[] | null;
     questionNumber: string;
 }
 
@@ -33,6 +42,85 @@ const Question = (props: QuestionProps): JSX.Element => {
         dispatch(updateItemAction(props.item.linkId, name, value));
     };
 
+    const dispatchNewValueSetQuestion = (question: string) => {
+        dispatch(newValueSetCodeAction(props.item.linkId, question));
+    };
+
+    const dispatchUpdateValueSet = (valueSet: ValueSetComposeIncludeConcept) => {
+        dispatch(updateValueSetCodeAction(props.item.linkId, valueSet));
+    };
+
+    const respondType = (param: string) => {
+        switch (param) {
+            case IQuestionnaireItemType.string:
+                return (
+                    <div className="form-field">
+                        <label></label>
+                        <input disabled value="Kortsvar" />
+                    </div>
+                );
+            case IQuestionnaireItemType.text:
+                return (
+                    <div className="form-field">
+                        <label></label>
+                        <input disabled value="Langsvar" />
+                    </div>
+                );
+            case IQuestionnaireItemType.date:
+                return (
+                    <div className="form-field">
+                        <label></label>
+                        <Picker />
+                    </div>
+                );
+            case IQuestionnaireItemType.time:
+                return (
+                    <div className="form-field">
+                        <label></label>
+                        <Picker type="time" />
+                    </div>
+                );
+            case IQuestionnaireItemType.dateTime:
+                return (
+                    <div className="form-field">
+                        <label></label>
+                        <div className="horizontal">
+                            <Picker type="time" />
+                            <Picker type="date" />
+                        </div>
+                    </div>
+                );
+            case IQuestionnaireItemType.boolean:
+                return (
+                    <div className="form-field">
+                        <label>Todo</label>
+                    </div>
+                );
+            case IQuestionnaireItemType.choice:
+                return (
+                    <>
+                        <div className="form-field">
+                            {props.valueSet &&
+                                props.valueSet.map((set, index) => (
+                                    <RadioBtn
+                                        key={index}
+                                        valueSetID={props.item.linkId + '-valueSet'}
+                                        value={set.display}
+                                        onChange={(event) => {
+                                            const clone = { ...set, display: event.target.value };
+                                            dispatchUpdateValueSet(clone);
+                                        }}
+                                    />
+                                ))}
+                        </div>
+                        <Btn title="+ Legg til alternativ" onClick={() => dispatchNewValueSetQuestion('')} />
+                    </>
+                );
+            default:
+                return '';
+        }
+    };
+
     return (
         <div className="question" style={{ marginLeft: props.parentArray.length * 32 }}>
             <div className="question-header">
@@ -46,7 +134,6 @@ const Question = (props: QuestionProps): JSX.Element => {
                 </button>
             </div>
             <div className="question-form">
-                <h2>Spørsmål</h2>
                 <SwitchBtn
                     label="Obligatorisk"
                     value={props.item.required || false}
@@ -54,17 +141,13 @@ const Question = (props: QuestionProps): JSX.Element => {
                 />
                 <div className="form-field">
                     <label>Velg spørsmålstype</label>
-                    <select
-                        onChange={(event) => {
+                    <Select
+                        value={props.item.type}
+                        options={itemType}
+                        onChange={(event: { target: { value: string | boolean } }) => {
                             dispatchUpdateItem(IItemProperty.type, event.target.value);
                         }}
-                    >
-                        {itemType.map((item, index) => (
-                            <option key={index} value={item.code}>
-                                {item.display}
-                            </option>
-                        ))}
-                    </select>
+                    />
                 </div>
                 <div className="form-field">
                     <label>Skriv spørsmål</label>
@@ -82,24 +165,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     }}
                     />
                 </div>*/}
-                {props.item.type === IQuestionnaireItemType.string && (
-                    <div className="form-field">
-                        <label></label>
-                        <input disabled value="Kortsvar" />
-                    </div>
-                )}
-                {props.item.type === IQuestionnaireItemType.text && (
-                    <div className="form-field">
-                        <label></label>
-                        <input disabled value="Langsvar" />
-                    </div>
-                )}
-                {props.item.type === IQuestionnaireItemType.date && (
-                    <div className="form-field">
-                        <label></label>
-                        <Picker />
-                    </div>
-                )}
+                {respondType(props.item.type)}
             </div>
         </div>
     );

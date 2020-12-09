@@ -4,9 +4,10 @@ import './IconBtn.css';
 type IconBtnProps = {
     type?: 'back' | 'x';
     title?: string;
+    onClick?: () => void;
 };
 
-const IconBtn = ({ type, title }: IconBtnProps) => {
+const IconBtn = ({ type, title, onClick }: IconBtnProps): JSX.Element => {
     let icon = '';
 
     switch (type) {
@@ -19,7 +20,7 @@ const IconBtn = ({ type, title }: IconBtnProps) => {
     }
 
     return (
-        <button className="iconBtn" title={title}>
+        <button className="iconBtn" title={title} onClick={onClick}>
             <i className={icon} />
         </button>
     );

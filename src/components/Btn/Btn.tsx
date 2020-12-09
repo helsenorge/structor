@@ -6,7 +6,7 @@ type BtnProps = {
     onClick: () => void;
 };
 
-const Btn = ({ title, onClick }: BtnProps) => {
+const Btn = ({ title, onClick }: BtnProps): JSX.Element => {
     return (
         <button className="regular-btn" onClick={onClick}>
             {title}

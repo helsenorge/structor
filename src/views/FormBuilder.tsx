@@ -33,6 +33,12 @@ const FormBuilder = (): JSX.Element => {
         dispatch(newItemAction(IQuestionnaireItemType.group, []));
     };
 
+    const getCurrentValueSet = (linkId: string) => {
+        const currentValueSet = state.qValueSet[linkId + '-valueSet'];
+
+        return currentValueSet?.compose?.include[0].concept || null;
+    };
+
     const renderTree = (
         items: Array<OrderItem>,
         parentArray: Array<string> = [],
@@ -43,7 +49,12 @@ const FormBuilder = (): JSX.Element => {
                 parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
             return (
                 <div key={x.linkId}>
-                    <Question item={state.qItems[x.linkId]} parentArray={parentArray} questionNumber={questionNumber} />
+                    <Question
+                        item={state.qItems[x.linkId]}
+                        parentArray={parentArray}
+                        questionNumber={questionNumber}
+                        valueSet={getCurrentValueSet(x.linkId)}
+                    />
                     {renderTree(x.items, [...parentArray, x.linkId], questionNumber)}
                 </div>
             );
@@ -90,10 +101,16 @@ const FormBuilder = (): JSX.Element => {
             {isShowingFireStructure && (
                 <div className="structor-helper">
                     <header>
-                        <IconBtn type="x" title="Tilbake" />
+                        <IconBtn
+                            type="x"
+                            title="Tilbake"
+                            onClick={() => setIsShowingFireStructure(!isShowingFireStructure)}
+                        />
                         <h1>JSON struktur</h1>
                     </header>
-                    <code className="json">{JSON.stringify(state.qItems, undefined, 2)}</code>
+                    <code className="json">
+                        {JSON.stringify(JSON.parse(generateQuestionnaire(state)), undefined, 2)}
+                    </code>
                 </div>
             )}
         </>

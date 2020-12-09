@@ -21,6 +21,22 @@ const itemType = [
         display: 'Dato',
         code: IQuestionnaireItemType.date,
     },
+    {
+        display: 'Tid',
+        code: IQuestionnaireItemType.time,
+    },
+    {
+        display: 'Tid og dato',
+        code: IQuestionnaireItemType.dateTime,
+    },
+    {
+        display: 'Bekreftelse',
+        code: IQuestionnaireItemType.boolean,
+    },
+    {
+        display: 'Enkel valg/radio',
+        code: IQuestionnaireItemType.choice,
+    },
 ];
 
 export default itemType;
