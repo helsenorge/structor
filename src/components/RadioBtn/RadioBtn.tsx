@@ -14,7 +14,7 @@ const RadioBtn = ({ valueSetID, value, onChange, deleteItem, counter }: Props): 
             <input type="radio" name={valueSetID} />{' '}
             <input type="text" name="beskrivelse" onChange={onChange} value={value} />
             {counter > 1 && (
-                <button type="button" name="Fjern" onClick={deleteItem} value={valueSetID}>
+                <button type="button" name="Fjern" onClick={deleteItem}>
                     X
                 </button>
             )}

@@ -145,7 +145,7 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
             draft.qValueSet[valueSetId] = createNewValueSet(valueSetId);
             draft.qItems[action.linkId] = {
                 ...draft.qItems[action.linkId],
-                answerValueSet: valueSetId,
+                answerValueSet: `#${valueSetId}`,
             };
         }
         // item type is changed from choice or open-choice to item type without valueSet, remove valueSet for this item
