@@ -1,19 +1,23 @@
 import React from 'react';
 
 type Props = {
-    valueSetID: string;
+    valueSetID?: string;
     value?: string;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    deletable: boolean;
+    deleteItem?: () => void;
+    counter: number;
 };
 
-//TODO: legg til slik at man kan slette
-
-const RadioBtn = ({ valueSetID, value, onChange }: Props): JSX.Element => {
+const RadioBtn = ({ valueSetID, value, onChange, deleteItem, counter }: Props): JSX.Element => {
     return (
         <div className="horizontal">
             <input type="radio" name={valueSetID} />{' '}
             <input type="text" name="beskrivelse" onChange={onChange} value={value} />
+            {counter > 1 && (
+                <button type="button" name="Fjern" onClick={deleteItem}>
+                    X
+                </button>
+            )}
         </div>
     );
 };
