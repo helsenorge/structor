@@ -14,6 +14,7 @@ import SwitchBtn from '../SwitchBtn/SwitchBtn';
 interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
+    questionNumber: string;
 }
 
 const Question = (props: QuestionProps): JSX.Element => {
@@ -35,7 +36,8 @@ const Question = (props: QuestionProps): JSX.Element => {
     return (
         <div className="question" style={{ marginLeft: props.parentArray.length * 32 }}>
             <div className="question-header">
-                <span>{props.item.linkId}.</span>
+                {/* <span>{props.item.linkId}.</span> */}
+                <span>{props.questionNumber}</span>
                 <button className="pull-right" onClick={dispatchDeleteItem}>
                     <img src={Trashcan} height="25" width="25" /> Slett
                 </button>

@@ -33,12 +33,18 @@ const FormBuilder = (): JSX.Element => {
         dispatch(newItemAction(IQuestionnaireItemType.group, []));
     };
 
-    const renderTree = (items: Array<OrderItem>, parentArray: Array<string>): Array<JSX.Element> => {
-        return items.map((x) => {
+    const renderTree = (
+        items: Array<OrderItem>,
+        parentArray: Array<string> = [],
+        parentQuestionNumber = '',
+    ): Array<JSX.Element> => {
+        return items.map((x, index) => {
+            const questionNumber =
+                parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
             return (
                 <div key={x.linkId}>
-                    <Question item={state.qItems[x.linkId]} parentArray={parentArray} />
-                    {renderTree(x.items, [...parentArray, x.linkId])}
+                    <Question item={state.qItems[x.linkId]} parentArray={parentArray} questionNumber={questionNumber} />
+                    {renderTree(x.items, [...parentArray, x.linkId], questionNumber)}
                 </div>
             );
         });
@@ -74,7 +80,7 @@ const FormBuilder = (): JSX.Element => {
                             <input placeholder="Skjematittel.." />
                             <textarea placeholder="Beskrivelse av skjema" />
                         </div>
-                        <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder, [])}</div>
+                        <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder)}</div>
                         <button className="section-button" onClick={dispatchNewRootItem}>
                             Opprett spørsmål
                         </button>
