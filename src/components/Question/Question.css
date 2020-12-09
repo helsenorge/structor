@@ -65,6 +65,8 @@
 
 .question-form {
     position: relative;
+    border-bottom: 8px solid #EBF8FF;
+    padding-bottom: 25px;
 }
 
 .horizontal {

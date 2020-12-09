@@ -18,6 +18,7 @@ import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Select from '../Select/Select';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import Btn from '../Btn/Btn';
+import Accordion from '../Accordion/Accordion';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -109,6 +110,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                                             const clone = { ...set, display: event.target.value };
                                             dispatchUpdateValueSet(clone);
                                         }}
+                                        deletable={index > 1}
                                     />
                                 ))}
                         </div>
@@ -164,6 +166,9 @@ const Question = (props: QuestionProps): JSX.Element => {
                     />
                 </div>*/}
                 {respondType(props.item.type)}
+            </div>
+            <div className="question-addons">
+                <Accordion title="Legg til validering" />
             </div>
         </div>
     );
