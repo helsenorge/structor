@@ -1,11 +1,14 @@
 .question {
     background: white;
     box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.18);
-    padding: 40px 28px 41px 70px;
     margin-top: 10px;
 }
 
-.question button{
+.question-header, .question-form, .accordion, .content {
+    padding: 20px 70px;
+}
+
+.question button {
     color: black;
 }
 
@@ -65,7 +68,6 @@
 
 .question-form {
     position: relative;
-    border-bottom: 8px solid #EBF8FF;
     padding-bottom: 25px;
 }
 
@@ -74,18 +76,18 @@
     align-items: center;
 }
 
-.horizontal > * {
+.horizontal>* {
     margin-right: 25px;
 }
 
-.horizontal > input {
+.horizontal>input {
     margin-right: 15px;
 }
 
-.horizontal > input[type="text"] {
+.horizontal>input[type="text"] {
     width: 100%;
 }
 
-.horizontal > input:last-of-type {
+.horizontal>input:last-of-type {
     margin-right: 0px;
 }

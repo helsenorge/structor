@@ -126,8 +126,9 @@ const Question = (props: QuestionProps): JSX.Element => {
     return (
         <div className="question" style={{ marginLeft: props.parentArray.length * 32 }}>
             <div className="question-header">
-                {/* <span>{props.item.linkId}.</span> */}
-                <span>{props.questionNumber}</span>
+                <h2>
+                    Spørsmål <span>{props.questionNumber}</span>
+                </h2>
                 <button className="pull-right" onClick={dispatchDeleteItem}>
                     <img src={Trashcan} height="25" width="25" /> Slett
                 </button>
@@ -171,6 +172,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             </div>
             <div className="question-addons">
                 <Accordion title="Legg til validering" />
+                <Accordion title="Legg til betinget visning" />
             </div>
         </div>
     );
