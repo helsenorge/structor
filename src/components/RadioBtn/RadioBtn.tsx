@@ -9,11 +9,11 @@ type Props = {
     disabled?: boolean;
 };
 
-const RadioBtn = ({ valueSetID, value, onChange, deleteItem, showDelete }: Props): JSX.Element => {
+const RadioBtn = ({ valueSetID, value, onChange, deleteItem, showDelete, disabled }: Props): JSX.Element => {
     return (
         <div className="horizontal">
-            <input type="radio" name={valueSetID} />{' '}
-            <input type="text" name="beskrivelse" onChange={onChange} value={value} />
+            <input disabled={disabled} type="radio" name={valueSetID} />{' '}
+            <input disabled={disabled} type="text" name="beskrivelse" onChange={onChange} value={value} />
             {showDelete && (
                 <button type="button" name="Fjern" onClick={deleteItem}>
                     X

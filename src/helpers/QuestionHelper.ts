@@ -22,7 +22,7 @@ const itemType = [
         code: IQuestionnaireItemType.choice,
     },
     {
-        display: 'Flere alternativer og åpent svar',
+        display: 'Flere alternativer med åpent svar',
         code: IQuestionnaireItemType.openChoice,
     },
     {

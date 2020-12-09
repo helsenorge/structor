@@ -164,7 +164,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                                         deleteItem={() => dispatchDeleteValueSet(set.code)}
                                     />
                                 ))}
-                            <RadioBtn value="bruker input" />
+                            <RadioBtn value="eget svaralternativ for bruker" />
                         </div>
                         <Btn title="+ Legg til alternativ" onClick={() => dispatchNewValueSetQuestion('')} />
                     </>
