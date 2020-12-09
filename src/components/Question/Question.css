@@ -47,7 +47,7 @@
     padding-bottom: 12px;
 }
 
-.form-field label {
+.form-field > label {
     font-size: 18px;
     min-height: 28px;
 }

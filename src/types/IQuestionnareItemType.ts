@@ -33,4 +33,5 @@ export enum IItemProperty {
     required = 'required',
     repeats = 'repeats',
     readOnly = 'readOnly',
+    extension = 'extension',
 }

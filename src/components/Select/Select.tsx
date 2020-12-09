@@ -6,7 +6,7 @@ import downArrow from '../../images/icons/chevron-down-outline.svg';
 type Props = {
     options: {
         display: string;
-        code: IQuestionnaireItemType;
+        code: IQuestionnaireItemType | string;
     }[];
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     value?: string;

@@ -10,7 +10,7 @@ import {
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
-import itemType from '../../helpers/QuestionHelper';
+import itemType, { checkboxExtension } from '../../helpers/QuestionHelper';
 import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import Picker from '../DatePicker/DatePicker';
 import './Question.css';
@@ -49,6 +49,14 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const dispatchUpdateValueSet = (valueSet: ValueSetComposeIncludeConcept) => {
         dispatch(updateValueSetCodeAction(props.item.linkId, valueSet));
+    };
+
+    const dispatchExtentionUpdate = () => {
+        if (props.item.extension && props.item.extension.length > 0) {
+            dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
+        } else {
+            dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, checkboxExtension));
+        }
     };
 
     const respondType = (param: string) => {
@@ -101,6 +109,12 @@ const Question = (props: QuestionProps): JSX.Element => {
                 return (
                     <>
                         <div className="form-field">
+                            <SwitchBtn
+                                label="Checkbox"
+                                onClick={() => dispatchExtentionUpdate()}
+                                initial
+                                value={props.item.extension !== undefined && props.item.extension.length > 0}
+                            />
                             {props.valueSet &&
                                 props.valueSet.map((set, index) => (
                                     <RadioBtn
@@ -116,6 +130,25 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 ))}
                         </div>
                         <Btn title="+ Legg til alternativ" onClick={() => dispatchNewValueSetQuestion('')} />
+                    </>
+                );
+            case IQuestionnaireItemType.integer:
+                return (
+                    <>
+                        <div className="form-field">
+                            <Select
+                                options={[
+                                    { display: 'ingen formatering', code: '1' },
+                                    { display: 'kg', code: '2' },
+                                    { display: 'år', code: '3' },
+                                    { display: 'måneder', code: '4' },
+                                    { display: 'dager', code: '5' },
+                                ]}
+                                onChange={() => {
+                                    //TODO!
+                                }}
+                            />
+                        </div>
                     </>
                 );
             default:

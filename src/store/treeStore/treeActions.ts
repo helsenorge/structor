@@ -1,6 +1,6 @@
 import CreateUUID from '../../helpers/CreateUUID';
 import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept, Extension } from '../../types/fhir';
 
 export const NEW_ITEM_ACTION = 'newItem';
 export const DELETE_ITEM_ACTION = 'deleteItem';
@@ -9,7 +9,7 @@ export const NEW_VALUESET_CODE_ACTION = 'newValueSetCode';
 export const UPDATE_VALUESET_CODE_ACTION = 'updateValueSetCode';
 export const DELETE_VALUESET_CODE_ACTION = 'deleteValueSetCode';
 
-type ItemValueType = string | boolean; // TODO: legg på alle lovlige verdier
+type ItemValueType = string | boolean | Extension[]; // TODO: legg på alle lovlige verdier
 
 export interface NewItemAction {
     type: typeof NEW_ITEM_ACTION;
@@ -53,6 +53,7 @@ export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>
         linkId: CreateUUID(),
         type: type,
         text: '',
+        extension: [],
     } as QuestionnaireItem;
     return {
         type: NEW_ITEM_ACTION,

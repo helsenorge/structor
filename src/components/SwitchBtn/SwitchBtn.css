@@ -6,7 +6,11 @@
     align-items: center;
 }
 
-.switch-btn label{
+.switch-btn.initial {
+    position: initial;
+}
+
+.switch-btn label {
     font-size: 16px;
 }
 

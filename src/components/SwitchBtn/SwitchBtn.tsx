@@ -5,14 +5,15 @@ type SwitchBtnProps = {
     onClick: () => void;
     value: boolean;
     label: string;
+    initial?: boolean;
 };
 
-const SwitchBtn = ({ onClick, value, label }: SwitchBtnProps): JSX.Element => {
+const SwitchBtn = ({ onClick, value, label, initial }: SwitchBtnProps): JSX.Element => {
     return (
-        <div className="switch-btn">
+        <div className={`switch-btn ${initial ? 'initial' : ''}`}>
             <label>{label}</label>
             <label className="switch">
-                <input type="checkbox" checked={value} onClick={onClick} />
+                <input type="checkbox" defaultChecked={value} onClick={onClick} />
                 <span className="slider round"></span>
             </label>
         </div>

@@ -16,7 +16,7 @@ import {
     UPDATE_VALUESET_CODE_ACTION,
     DELETE_VALUESET_CODE_ACTION,
 } from './treeActions';
-import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import createUUID from '../../helpers/CreateUUID';
 
 type ActionType =
@@ -135,7 +135,7 @@ function deleteItem(draft: TreeState, action: DeleteItemAction): void {
 }
 
 function updateItem(draft: TreeState, action: UpdateItemAction): void {
-    if (action.itemProperty === 'type') {
+    if (action.itemProperty === IItemProperty.type) {
         // item type is changed from item type without valueSet to choice or open-choice, add valueSet for this item
         if (
             isChoiceOrOpenChoice(action.itemValue as IQuestionnaireItemType) &&
@@ -157,6 +157,7 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
             delete draft.qItems[action.linkId].answerValueSet;
         }
     }
+
     draft.qItems[action.linkId] = {
         ...draft.qItems[action.linkId],
         [action.itemProperty]: action.itemValue,

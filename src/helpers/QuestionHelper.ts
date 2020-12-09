@@ -14,6 +14,10 @@ const itemType = [
         code: IQuestionnaireItemType.string,
     },
     {
+        display: 'Flere alternativer',
+        code: IQuestionnaireItemType.choice,
+    },
+    {
         display: 'Langsvar',
         code: IQuestionnaireItemType.text,
     },
@@ -34,8 +38,26 @@ const itemType = [
         code: IQuestionnaireItemType.boolean,
     },
     {
-        display: 'Enkel valg/radio',
-        code: IQuestionnaireItemType.choice,
+        display: 'Tall',
+        code: IQuestionnaireItemType.integer,
+    },
+];
+
+export const checkboxExtension = [
+    {
+        url: 'http://ehelse.no/fhir/StructureDefinition/validationtext',
+        valueString: 'Velg ett eller flere av alternativene.',
+    },
+    {
+        url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
+        valueCodeableConcept: {
+            coding: [
+                {
+                    system: 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
+                    code: 'check-box',
+                },
+            ],
+        },
     },
 ];
 
