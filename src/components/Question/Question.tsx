@@ -125,7 +125,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                                     <>
                                         <RadioBtn
                                             key={index}
-                                            counter={index}
+                                            showDelete={index > 1}
                                             valueSetID={set.code + '-valueSet'}
                                             value={set.display}
                                             onChange={(event) => {
@@ -136,6 +136,35 @@ const Question = (props: QuestionProps): JSX.Element => {
                                         />
                                     </>
                                 ))}
+                        </div>
+                        <Btn title="+ Legg til alternativ" onClick={() => dispatchNewValueSetQuestion('')} />
+                    </>
+                );
+            case IQuestionnaireItemType.openChoice:
+                return (
+                    <>
+                        <div className="form-field">
+                            <SwitchBtn
+                                label="Checkbox"
+                                onClick={() => dispatchExtentionUpdate()}
+                                initial
+                                value={props.item.extension !== undefined && props.item.extension.length > 0}
+                            />
+                            {props.valueSet &&
+                                props.valueSet.map((set, index) => (
+                                    <RadioBtn
+                                        key={index}
+                                        showDelete={index > 1}
+                                        valueSetID={set.code + '-valueSet'}
+                                        value={set.display}
+                                        onChange={(event) => {
+                                            const clone = { ...set, display: event.target.value };
+                                            dispatchUpdateValueSet(clone);
+                                        }}
+                                        deleteItem={() => dispatchDeleteValueSet(set.code)}
+                                    />
+                                ))}
+                            <RadioBtn value="bruker input" />
                         </div>
                         <Btn title="+ Legg til alternativ" onClick={() => dispatchNewValueSetQuestion('')} />
                     </>

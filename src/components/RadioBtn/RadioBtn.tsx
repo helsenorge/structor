@@ -5,15 +5,16 @@ type Props = {
     value?: string;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     deleteItem?: () => void;
-    counter: number;
+    showDelete?: boolean;
+    disabled?: boolean;
 };
 
-const RadioBtn = ({ valueSetID, value, onChange, deleteItem, counter }: Props): JSX.Element => {
+const RadioBtn = ({ valueSetID, value, onChange, deleteItem, showDelete }: Props): JSX.Element => {
     return (
         <div className="horizontal">
             <input type="radio" name={valueSetID} />{' '}
             <input type="text" name="beskrivelse" onChange={onChange} value={value} />
-            {counter > 1 && (
+            {showDelete && (
                 <button type="button" name="Fjern" onClick={deleteItem}>
                     X
                 </button>

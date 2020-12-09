@@ -10,16 +10,20 @@ const itemType = [
         code: IQuestionnaireItemType.display,
     },
     {
-        display: 'Enkelt spørsmål',
+        display: 'Kortsvar',
         code: IQuestionnaireItemType.string,
+    },
+    {
+        display: 'Langsvar',
+        code: IQuestionnaireItemType.text,
     },
     {
         display: 'Flere alternativer',
         code: IQuestionnaireItemType.choice,
     },
     {
-        display: 'Langsvar',
-        code: IQuestionnaireItemType.text,
+        display: 'Flere alternativer og åpent svar',
+        code: IQuestionnaireItemType.openChoice,
     },
     {
         display: 'Dato',
