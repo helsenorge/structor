@@ -6,6 +6,7 @@ import {
     updateItemAction,
     newValueSetCodeAction,
     updateValueSetCodeAction,
+    deleteValueSetCodeAction,
 } from '../../store/treeStore/treeActions';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
@@ -48,6 +49,10 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const dispatchUpdateValueSet = (valueSet: ValueSetComposeIncludeConcept) => {
         dispatch(updateValueSetCodeAction(props.item.linkId, valueSet));
+    };
+
+    const dispatchDeleteValueSet = (code: string) => {
+        dispatch(deleteValueSetCodeAction(props.item.linkId, code));
     };
 
     const respondType = (param: string) => {
@@ -102,15 +107,19 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <div className="form-field">
                             {props.valueSet &&
                                 props.valueSet.map((set, index) => (
-                                    <RadioBtn
-                                        key={index}
-                                        valueSetID={props.item.linkId + '-valueSet'}
-                                        value={set.display}
-                                        onChange={(event) => {
-                                            const clone = { ...set, display: event.target.value };
-                                            dispatchUpdateValueSet(clone);
-                                        }}
-                                    />
+                                    <>
+                                        <RadioBtn
+                                            key={index}
+                                            counter={index}
+                                            valueSetID={set.code + '-valueSet'}
+                                            value={set.display}
+                                            onChange={(event) => {
+                                                const clone = { ...set, display: event.target.value };
+                                                dispatchUpdateValueSet(clone);
+                                            }}
+                                            deleteItem={() => dispatchDeleteValueSet(set.code)}
+                                        />
+                                    </>
                                 ))}
                         </div>
                         <Btn title="+ Legg til alternativ" onClick={() => dispatchNewValueSetQuestion('')} />
