@@ -12,6 +12,7 @@ export const generateQuestionnaire = (state: TreeState): string => {
     };
 
     return JSON.stringify({
+        ...state.qMetadata,
         resourceType: 'Questionnaire',
         status: 'draft',
         contained: Object.values(state.qValueSet),
