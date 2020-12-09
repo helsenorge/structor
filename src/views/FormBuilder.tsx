@@ -95,8 +95,8 @@ const FormBuilder = (): JSX.Element => {
                         <div className="form-intro">
                             <input
                                 placeholder="Skjematittel.."
-                                value={state.title}
-                                onBlur={(event) => {
+                                value={state.qMetadata.title}
+                                onChange={(event) => {
                                     dispatchUpdateQuestionnaireMetadata(
                                         IQuestionnaireMetadataType.title,
                                         event.target.value,
@@ -105,8 +105,8 @@ const FormBuilder = (): JSX.Element => {
                             />
                             <textarea
                                 placeholder="Beskrivelse av skjema"
-                                value={state.description}
-                                onBlur={(event) => {
+                                value={state.qMetadata.description}
+                                onChange={(event) => {
                                     dispatchUpdateQuestionnaireMetadata(
                                         IQuestionnaireMetadataType.description,
                                         event.target.value,

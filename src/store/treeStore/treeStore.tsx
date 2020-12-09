@@ -19,6 +19,7 @@ import {
     UpdateValueSetCodeAction,
 } from './treeActions';
 import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IQuestionnaireMetadata } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
 
 type ActionType =
@@ -44,19 +45,59 @@ export interface OrderItem {
 }
 
 export interface TreeState {
-    title: string;
-    description: string;
     qValueSet: ValueSets;
     qItems: Items;
     qOrder: Array<OrderItem>;
+    qMetadata: IQuestionnaireMetadata;
 }
 
 export const initialState: TreeState = {
-    title: '',
-    description: '',
     qValueSet: {},
     qItems: {},
     qOrder: [],
+    qMetadata: {
+        title: '',
+        description: '',
+        resourceType: 'Questionnaire',
+        language: 'nb-NO',
+        name: 'hdir-${skjematittel}', // TODO
+        status: 'draft',
+        publisher: 'NHN',
+        meta: {
+            profile: ['http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire'],
+            tag: [
+                {
+                    system: 'urn:ietf:bcp:47',
+                    code: 'nb-NO',
+                    display: 'Norsk bokmål',
+                },
+            ],
+        },
+        useContext: [
+            {
+                code: {
+                    system: 'uri', // TODO
+                    code: 'focus',
+                    display: 'Clinical focus',
+                },
+                valueCodeableConcept: {
+                    coding: [
+                        {
+                            system: 'uri', // TODO
+                            code: '29',
+                            display: '',
+                        },
+                    ],
+                },
+            },
+        ],
+        contact: [
+            {
+                name: 'https://fhi.no/',
+            },
+        ],
+        subjectType: ['Patient'],
+    },
 };
 
 function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
@@ -194,14 +235,15 @@ function deleteValueSetCodeAction(draft: TreeState, action: DeleteValueSetCodeAc
     }
 }
 
-function updateQuestionnaireTitle(draft: TreeState, action: UpdateQuestionnaireMetadataAction) {
-    draft[action.propName] = action.value;
+function updateQuestionnaireMetadataProperty(draft: TreeState, action: UpdateQuestionnaireMetadataAction) {
+    draft.qMetadata[action.propName] = action.value;
+    // TODO name should also be changed if title changes
 }
 
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
         case UPDATE_QUESTIONNAIRE_METADATA_ACTION:
-            updateQuestionnaireTitle(draft, action);
+            updateQuestionnaireMetadataProperty(draft, action);
             break;
         case NEW_ITEM_ACTION:
             newItem(draft, action);
