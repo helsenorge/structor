@@ -1,7 +1,9 @@
 import CreateUUID from '../../helpers/CreateUUID';
 import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept, Extension } from '../../types/fhir';
+import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 
+export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata';
 export const NEW_ITEM_ACTION = 'newItem';
 export const DELETE_ITEM_ACTION = 'deleteItem';
 export const UPDATE_ITEM_ACTION = 'updateItem';
@@ -10,6 +12,12 @@ export const UPDATE_VALUESET_CODE_ACTION = 'updateValueSetCode';
 export const DELETE_VALUESET_CODE_ACTION = 'deleteValueSetCode';
 
 type ItemValueType = string | boolean | Extension[]; // TODO: legg på alle lovlige verdier
+
+export interface UpdateQuestionnaireMetadataAction {
+    type: typeof UPDATE_QUESTIONNAIRE_METADATA_ACTION;
+    propName: IQuestionnaireMetadataType;
+    value: string;
+}
 
 export interface NewItemAction {
     type: typeof NEW_ITEM_ACTION;
@@ -47,6 +55,17 @@ export interface DeleteValueSetCodeAction {
     linkId: string;
     code: string;
 }
+
+export const updateQuestionnaireMetadataAction = (
+    propName: IQuestionnaireMetadataType,
+    value: string,
+): UpdateQuestionnaireMetadataAction => {
+    return {
+        type: UPDATE_QUESTIONNAIRE_METADATA_ACTION,
+        propName,
+        value,
+    };
+};
 
 export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>): NewItemAction => {
     const newQuestionnaireItem = {

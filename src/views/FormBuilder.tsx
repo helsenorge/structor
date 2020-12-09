@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import './FormBuilder.css';
-import { TreeContext, OrderItem } from '../store/treeStore/treeStore';
+import { OrderItem, TreeContext } from '../store/treeStore/treeStore';
 import Question from '../components/Question/Question';
-import { newItemAction } from '../store/treeStore/treeActions';
+import { newItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import { generateQuestionnaire } from '../helpers/generateQuestionnaire';
 import IconBtn from '../components/IconBtn/IconBtn';
 import Btn from '../components/Btn/Btn';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -31,6 +32,10 @@ const FormBuilder = (): JSX.Element => {
 
     const dispatchNewRootItem = () => {
         dispatch(newItemAction(IQuestionnaireItemType.group, []));
+    };
+
+    const dispatchUpdateQuestionnaireMetadata = (propName: IQuestionnaireMetadataType, value: string) => {
+        dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
     const getCurrentValueSet = (linkId: string) => {
@@ -88,8 +93,26 @@ const FormBuilder = (): JSX.Element => {
                 <>
                     <div className="page-wrapper">
                         <div className="form-intro">
-                            <input placeholder="Skjematittel.." />
-                            <textarea placeholder="Beskrivelse av skjema" />
+                            <input
+                                placeholder="Skjematittel.."
+                                value={state.title}
+                                onBlur={(event) => {
+                                    dispatchUpdateQuestionnaireMetadata(
+                                        IQuestionnaireMetadataType.title,
+                                        event.target.value,
+                                    );
+                                }}
+                            />
+                            <textarea
+                                placeholder="Beskrivelse av skjema"
+                                value={state.description}
+                                onBlur={(event) => {
+                                    dispatchUpdateQuestionnaireMetadata(
+                                        IQuestionnaireMetadataType.description,
+                                        event.target.value,
+                                    );
+                                }}
+                            />
                         </div>
                         <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder)}</div>
                         <button className="section-button" onClick={dispatchNewRootItem}>

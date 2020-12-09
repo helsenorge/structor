@@ -1,25 +1,28 @@
-import React, { useReducer, createContext, Dispatch } from 'react';
+import React, { createContext, Dispatch, useReducer } from 'react';
 import produce from 'immer';
 
 import { QuestionnaireItem, ValueSet } from '../../types/fhir';
 import {
-    NewItemAction,
+    DELETE_ITEM_ACTION,
+    DELETE_VALUESET_CODE_ACTION,
     DeleteItemAction,
-    UpdateItemAction,
-    NewValueSetCodeAction,
-    UpdateValueSetCodeAction,
     DeleteValueSetCodeAction,
     NEW_ITEM_ACTION,
-    DELETE_ITEM_ACTION,
-    UPDATE_ITEM_ACTION,
     NEW_VALUESET_CODE_ACTION,
+    NewItemAction,
+    NewValueSetCodeAction,
+    UPDATE_ITEM_ACTION,
+    UPDATE_QUESTIONNAIRE_METADATA_ACTION,
     UPDATE_VALUESET_CODE_ACTION,
-    DELETE_VALUESET_CODE_ACTION,
+    UpdateItemAction,
+    UpdateQuestionnaireMetadataAction,
+    UpdateValueSetCodeAction,
 } from './treeActions';
 import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import createUUID from '../../helpers/CreateUUID';
 
 type ActionType =
+    | UpdateQuestionnaireMetadataAction
     | NewItemAction
     | DeleteItemAction
     | UpdateItemAction
@@ -41,12 +44,16 @@ export interface OrderItem {
 }
 
 export interface TreeState {
+    title: string;
+    description: string;
     qValueSet: ValueSets;
     qItems: Items;
     qOrder: Array<OrderItem>;
 }
 
 export const initialState: TreeState = {
+    title: '',
+    description: '',
     qValueSet: {},
     qItems: {},
     qOrder: [],
@@ -187,8 +194,15 @@ function deleteValueSetCodeAction(draft: TreeState, action: DeleteValueSetCodeAc
     }
 }
 
+function updateQuestionnaireTitle(draft: TreeState, action: UpdateQuestionnaireMetadataAction) {
+    draft[action.propName] = action.value;
+}
+
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
+        case UPDATE_QUESTIONNAIRE_METADATA_ACTION:
+            updateQuestionnaireTitle(draft, action);
+            break;
         case NEW_ITEM_ACTION:
             newItem(draft, action);
             break;

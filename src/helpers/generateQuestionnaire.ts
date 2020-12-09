@@ -14,6 +14,8 @@ export const generateQuestionnaire = (state: TreeState): string => {
     return JSON.stringify({
         resourceType: 'Questionnaire',
         status: 'draft',
+        title: state.title,
+        description: state.description,
         contained: Object.values(state.qValueSet),
         item: generateTree(state.qOrder, state.qItems),
     });
