@@ -7,11 +7,15 @@ import TreeForm from '../views/treeForm';
 import FormBuilder from '../views/FormBuilder';
 import { FormContextProvider } from '../store/FormStore';
 import { TreeContextProvider } from '../store/treeStore/treeStore';
+import MainMenu from '../views/MainMenu';
 
 export default function Routes(): JSX.Element {
     return (
         <Switch>
             <Route path="/" exact>
+                <MainMenu />
+            </Route>
+            <Route path="/old-menu" exact>
                 <FormContextProvider>
                     <Index />
                 </FormContextProvider>

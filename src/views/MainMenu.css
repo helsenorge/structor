@@ -1,0 +1,22 @@
+.align-everything {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-menu {
+    background: #006d84;
+    min-height: 100vh;
+}
+
+.main-menu>div {
+    background-color: white;
+    height: 40vh;
+    width: 50%;
+    box-shadow: rgba(0, 0, 0, 0.1) 40px 40px 40px;
+}
+
+
+.main-menu button:last-of-type {
+    margin-left: 15px;
+}
