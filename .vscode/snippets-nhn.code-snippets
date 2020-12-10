@@ -37,5 +37,13 @@
 			"export default $1;",
 		],
 		"description": "Component React Typescript"
+	},
+	"React UseState": {
+		"scope": "typescript, typescriptreact",
+		"prefix": "useState TS",
+		"body": [
+			"const [$1, set$1] = useState<any>();",
+		],
+		"description": "Component React UseState"
 	}
 }

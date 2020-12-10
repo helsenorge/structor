@@ -47,8 +47,8 @@
     padding-bottom: 12px;
 }
 
-.form-field > label {
-    font-size: 18px;
+.form-field>label {
+    font-size: 16px;
     min-height: 28px;
 }
 
@@ -77,8 +77,12 @@
     align-items: center;
 }
 
+.horizontal>*:first-of-type {
+    padding-left: 0px;
+}
+
 .horizontal>* {
-    margin-right: 25px;
+    padding-left: 25px;
 }
 
 .horizontal>input {
@@ -91,4 +95,8 @@
 
 .horizontal>input:last-of-type {
     margin-right: 0px;
+}
+
+.horizontal.equal>div {
+    width: 50%;
 }
