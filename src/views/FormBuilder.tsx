@@ -8,6 +8,7 @@ import IconBtn from '../components/IconBtn/IconBtn';
 import Btn from '../components/Btn/Btn';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
+import { QuestionnaireItem } from '../types/fhir';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -44,6 +45,21 @@ const FormBuilder = (): JSX.Element => {
         return currentValueSet?.compose?.include[0].concept || null;
     };
 
+    const getConditional = (parrentArray: string[]) => {
+        const conditinals = parrentArray.map((x) => {
+            return {
+                code: x,
+                display: state.qItems[x].text || 'Ikke definert tittel',
+            };
+        });
+
+        return conditinals;
+    };
+
+    const getQItem = (linkId: string): QuestionnaireItem => {
+        return state.qItems[linkId];
+    };
+
     const renderTree = (
         items: Array<OrderItem>,
         parentArray: Array<string> = [],
@@ -59,6 +75,8 @@ const FormBuilder = (): JSX.Element => {
                         parentArray={parentArray}
                         questionNumber={questionNumber}
                         valueSet={getCurrentValueSet(x.linkId)}
+                        conditionalArray={getConditional(parentArray)}
+                        getItem={getQItem}
                     />
                     {renderTree(x.items, [...parentArray, x.linkId], questionNumber)}
                 </div>
