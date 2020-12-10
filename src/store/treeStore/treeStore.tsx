@@ -19,7 +19,7 @@ import {
     UpdateValueSetCodeAction,
 } from './treeActions';
 import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import { IQuestionnaireMetadata } from '../../types/IQuestionnaireMetadataType';
+import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
 
 type ActionType =
@@ -60,7 +60,7 @@ export const initialState: TreeState = {
         description: '',
         resourceType: 'Questionnaire',
         language: 'nb-NO',
-        name: 'hdir-${skjematittel}', // TODO
+        name: '',
         status: 'draft',
         publisher: 'NHN',
         meta: {
@@ -235,9 +235,17 @@ function deleteValueSetCodeAction(draft: TreeState, action: DeleteValueSetCodeAc
     }
 }
 
-function updateQuestionnaireMetadataProperty(draft: TreeState, action: UpdateQuestionnaireMetadataAction) {
-    draft.qMetadata[action.propName] = action.value;
-    // TODO name should also be changed if title changes
+function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value }: UpdateQuestionnaireMetadataAction) {
+    draft.qMetadata[propName] = value;
+
+    if (IQuestionnaireMetadataType.title === propName) {
+        draft.qMetadata.name = `hdir-${value}`;
+
+        const codings = draft.qMetadata.useContext[0].valueCodeableConcept?.coding;
+        if (codings !== undefined && codings.length > 0) {
+            codings[0].display = value;
+        }
+    }
 }
 
 const reducer = produce((draft: TreeState, action: ActionType) => {
