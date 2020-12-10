@@ -1,0 +1,21 @@
+.selector {
+    position: relative;
+    height: 50px;
+}
+
+.selector img {
+    position: absolute;
+    right: 12px;
+    top: 33%;
+    z-index: 1;
+}
+
+.selector select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    position: absolute;
+    z-index: 2;
+    background: transparent;
+}

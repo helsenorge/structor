@@ -1,0 +1,94 @@
+.question {
+    background: white;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.question-header, .question-form, .accordion, .content {
+    padding: 20px 70px;
+}
+
+.question button {
+    color: black;
+}
+
+.question-header {
+    display: flex;
+    border-bottom: 8px solid #EBF8FF;
+    margin-bottom: 26px;
+}
+
+.question-header>button {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    font-size: 18px;
+    min-width: 32px;
+    color: #4299E1;
+    display: flex;
+    align-items: center;
+    padding-right: 15px;
+    font-weight: 700;
+}
+
+.question-header>button>i {
+    font-size: 28px;
+    color: black;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    max-width: 50%;
+    padding-bottom: 12px;
+}
+
+.form-field > label {
+    font-size: 18px;
+    min-height: 28px;
+}
+
+.form-field input, .form-field select {
+    margin: 0;
+    font-size: 18px;
+    margin-top: 5px;
+    border: 1px solid #A0AEC0;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+.form-field input:disabled {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.question-form {
+    position: relative;
+    padding-bottom: 25px;
+}
+
+.horizontal {
+    display: flex;
+    align-items: center;
+}
+
+.horizontal>* {
+    margin-right: 25px;
+}
+
+.horizontal>input {
+    margin-right: 15px;
+}
+
+.horizontal>input[type="text"] {
+    width: 100%;
+}
+
+.horizontal>input:last-of-type {
+    margin-right: 0px;
+}

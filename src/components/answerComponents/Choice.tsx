@@ -180,9 +180,6 @@ function Choice({ questionId }: choiceProps): JSX.Element {
 
     return (
         <>
-            
-            
-
             {localAnswer.isMultiple ? (
                 <div key={'choice_add_multiple'} className="question-component" style={choiceStyle}>
                     <p>{t('Add choices below:')}</p>
@@ -277,7 +274,7 @@ function Choice({ questionId }: choiceProps): JSX.Element {
                                 {choices
                                     ? choices.map((name, id) => [
                                           <Option key={'def' + questionId + id} value={id}>
-                                            {name.length < 1 ? t('Option ') + (id + 1) : name}
+                                              {name.length < 1 ? t('Option ') + (id + 1) : name}
                                           </Option>,
                                       ])
                                     : []}

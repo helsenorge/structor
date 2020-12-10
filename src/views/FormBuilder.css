@@ -1,0 +1,81 @@
+@import "/src/index.css";
+@import "https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css";
+header {
+    background-color: var(--primary-2);
+    display: flex;
+    padding: 10px 0;
+}
+
+h1 {
+    color: var(--color-base-1);
+    margin: 0;
+}
+
+.pull-right {
+    margin-left: auto;
+    line-height: 44px;
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.page-wrapper {
+    max-width: 66%;
+    margin: 0 auto;
+    padding-bottom: 150px;
+}
+
+.form-intro {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: var(--primary-2);
+    box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, .78);
+}
+
+.form-intro input, .form-intro textarea {
+    width: 66%;
+    margin: 5px auto;
+}
+
+input, textarea, select {
+    padding: 10px;
+}
+
+.section-button {
+    margin-top: 10px;
+    background: none;
+    border: 1px dashed;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    font-size: 16px;
+    min-width: 32px;
+    color: white;
+    color: var(--primary-1)!important;
+    border-color: var(--primary-1)!important;
+    background-color: var(--color-base-2)!important;
+    height: 60px!important;
+    width: 100%;
+    transition: all .3s cubic-bezier(.645, .045, .355, 1);
+    box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, .78);
+}
+
+.structor-helper {
+    position: absolute;
+    top: 20%;
+    right: 0;
+    background: white;
+    min-width: 380px;
+    box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, .78);
+    text-align: left;
+}
+
+.json {
+    display: block;
+    white-space: pre;
+    text-align: left;
+    padding: 20px;
+}
