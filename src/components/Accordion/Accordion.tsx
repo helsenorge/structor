@@ -3,9 +3,10 @@ import './Accordion.css';
 
 type AccordionProps = {
     title: string;
+    children: React.ReactNode;
 };
 
-const Accordion = ({ title }: AccordionProps): JSX.Element => {
+const Accordion = (props: AccordionProps): JSX.Element => {
     const [open, setOpen] = useState(false);
     const [maxHeight, setMaxHeight] = useState(0);
 
@@ -23,21 +24,10 @@ const Accordion = ({ title }: AccordionProps): JSX.Element => {
     return (
         <>
             <button className={`accordion${open ? ' active' : ''}`} onClick={handleClick}>
-                {title}
+                {props.title}
             </button>
             <div className={`panel${open ? ' active' : ''}`} style={{ maxHeight }}>
-                <div className="content">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat.
-                    </p>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat.
-                    </p>
-                </div>
+                <div className="content">{props.children}</div>
             </div>
         </>
     );

@@ -22,6 +22,7 @@ h1 {
 .page-wrapper {
     max-width: 66%;
     margin: 0 auto;
+    padding-bottom: 150px;
 }
 
 .form-intro {

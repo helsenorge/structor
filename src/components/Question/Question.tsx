@@ -241,8 +241,18 @@ const Question = (props: QuestionProps): JSX.Element => {
                 {respondType(props.item.type)}
             </div>
             <div className="question-addons">
-                <Accordion title="Legg til validering" />
-                <Accordion title="Legg til betinget visning" />
+                <Accordion title="Legg til validering">
+                    <p>
+                        Hvis relevansen for dette spørsmålet er avhgengig av svaret på et tidligere spørsmål, velger du
+                        dette her.{' '}
+                    </p>
+                </Accordion>
+                <Accordion title="Legg til betinget visning">
+                    <p>
+                        Hvis relevansen for dette spørsmålet er avhgengig av svaret på et tidligere spørsmål, velger du
+                        dette her.{' '}
+                    </p>
+                </Accordion>
             </div>
         </div>
     );
