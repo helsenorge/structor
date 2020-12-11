@@ -4,6 +4,7 @@ import ValidationAnswerTypesNumber from './ValidationAnswerTypeNumber';
 import ValidationAnswerTypesText from './ValidationAnswerTypeText';
 import ValidationAnswerTypeString from './ValidationAnswerTypeString';
 import ValidationAnswerTypeDate from './ValidationAnswerTypeDate';
+import ValidationAnswerTypeTime from './ValidationAnswerTypeTime';
 
 interface ValidationTypeProp {
     item: string;
@@ -21,12 +22,12 @@ const ValidationAnswerTypes = (item: any): JSX.Element => {
                 return <p>Choice</p>;
             case IQuestionnaireItemType.openChoice:
                 return <p>Open choice</p>;
-            case IQuestionnaireItemType.time:
-                return <p>Time</p>;
             case IQuestionnaireItemType.dateTime:
                 return <p>Datetime</p>;
             case IQuestionnaireItemType.boolean:
                 return <p>Boolean</p>;
+            case IQuestionnaireItemType.time:
+                return <ValidationAnswerTypeTime />;
             case IQuestionnaireItemType.date:
                 return <ValidationAnswerTypeDate />;
             case IQuestionnaireItemType.string:
