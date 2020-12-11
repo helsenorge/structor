@@ -11,6 +11,10 @@
     border-top: 8px solid #EBF8FF;
 }
 
+.accordion p {
+    font-size: 16px;
+}
+
 .accordion:after {
     content: '+'; /* Unicode character for "plus" sign (+) */
     font-size: 13px;

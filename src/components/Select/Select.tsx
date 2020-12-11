@@ -10,12 +10,18 @@ type Props = {
     }[];
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     value?: string;
+    placeholder?: string;
 };
 
-const Select = ({ options, onChange, value }: Props): JSX.Element => {
+const Select = ({ options, onChange, value, placeholder }: Props): JSX.Element => {
     return (
         <div className="selector">
             <select onChange={onChange} value={value}>
+                {placeholder && (
+                    <option value="" disabled selected>
+                        {placeholder}
+                    </option>
+                )}
                 {options.map((item, index) => (
                     <option key={index} value={item.code}>
                         {item.display}
