@@ -1,5 +1,7 @@
 import React from 'react';
+import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import ValidationAnswerTypesNumber from './ValidationAnswerTypeNumber';
+import ValidationAnswerTypesText from './ValidationAnswerTypeText';
 
 interface ValidationTypeProp {
     item: string;
@@ -9,32 +11,28 @@ interface ValidationTypeProp {
 const ValidationAnswerTypes = (item: any): JSX.Element => {
     const respondType = (param: string) => {
         switch (param) {
-            case 'group':
+            case IQuestionnaireItemType.group:
                 return <p>Group</p>;
-            case 'display':
+            case IQuestionnaireItemType.display:
                 return <p>Display</p>;
-            case 'string':
+            case IQuestionnaireItemType.string:
                 return <p>String</p>;
-            case 'text':
-                return <p>Text</p>;
-            case 'choice':
+            case IQuestionnaireItemType.choice:
                 return <p>Choice</p>;
-            case 'Open-choice':
+            case IQuestionnaireItemType.openChoice:
                 return <p>Open choice</p>;
-            case 'date':
+            case IQuestionnaireItemType.date:
                 return <p>Date</p>;
-            case 'time':
+            case IQuestionnaireItemType.time:
                 return <p>Time</p>;
-            case 'dateTime':
+            case IQuestionnaireItemType.dateTime:
                 return <p>Datetime</p>;
-            case 'boolean':
+            case IQuestionnaireItemType.boolean:
                 return <p>Boolean</p>;
-            case 'integer':
+            case IQuestionnaireItemType.text:
+                return <ValidationAnswerTypesText />;
+            case IQuestionnaireItemType.integer:
                 return <ValidationAnswerTypesNumber />;
-
-            default:
-                return <p>Error {param}</p>;
-                break;
         }
     };
 
