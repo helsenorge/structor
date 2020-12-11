@@ -13,7 +13,9 @@ export default function Routes(): JSX.Element {
     return (
         <Switch>
             <Route path="/" exact>
-                <MainMenu />
+                <TreeContextProvider>
+                    <MainMenu />
+                </TreeContextProvider>
             </Route>
             <Route path="/old-menu" exact>
                 <FormContextProvider>
