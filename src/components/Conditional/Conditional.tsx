@@ -54,7 +54,7 @@ const Conditional = ({ item }: Props): JSX.Element => {
                             />
                         </FormField>
                         <FormField label="Tall">
-                            <input onChange={(e) => setCondition(e.target.value)} />
+                            <input type="number" onChange={(e) => setCondition(e.target.value)} />
                         </FormField>
                     </div>
                     <div className="infobox">

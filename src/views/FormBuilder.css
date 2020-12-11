@@ -43,6 +43,11 @@ input, textarea, select {
     padding: 10px;
 }
 
+select{
+    padding: 10px 40px 10px 10px;
+    text-overflow: ellipsis;
+}
+
 .section-button {
     margin-top: 10px;
     background: none;
