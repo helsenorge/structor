@@ -1,0 +1,8 @@
+.horizontal button {
+    background-color: inherit;
+    border: 0px;
+}
+
+.horizontal button:focus {
+    outline: 0px;
+}

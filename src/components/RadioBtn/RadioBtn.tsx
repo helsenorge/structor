@@ -1,4 +1,6 @@
 import React from 'react';
+import CloseIcon from '../../images/icons/close-outline.svg';
+import './RadioBtn.css';
 
 type Props = {
     valueSetID?: string;
@@ -16,7 +18,7 @@ const RadioBtn = ({ valueSetID, value, onChange, deleteItem, showDelete, disable
             <input disabled={disabled} type="text" name="beskrivelse" onChange={onChange} value={value} />
             {showDelete && (
                 <button type="button" name="Fjern" onClick={deleteItem}>
-                    X
+                    <img src={CloseIcon} height="25" width="25"></img>
                 </button>
             )}
         </div>
