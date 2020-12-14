@@ -7,6 +7,7 @@ import {
     newValueSetCodeAction,
     updateValueSetCodeAction,
     deleteValueSetCodeAction,
+    duplicateItemAction,
 } from '../../store/treeStore/treeActions';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
@@ -47,6 +48,10 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const dispatchDeleteItem = () => {
         dispatch(deleteItemAction(props.item.linkId, props.parentArray));
+    };
+
+    const dispatchDuplicateItem = () => {
+        dispatch(duplicateItemAction(props.item.linkId, props.parentArray));
     };
 
     const dispatchUpdateItem = (name: IItemProperty, value: string | boolean) => {
@@ -208,7 +213,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <h2>
                     Spørsmål <span>{props.questionNumber}</span>
                 </h2>
-                <button className="pull-right">
+                <button className="pull-right" onClick={dispatchDuplicateItem}>
                     <img src={CopyIcon} height="25" width="25" /> Dupliser
                 </button>
                 <button onClick={() => dispatchNewItem()}>

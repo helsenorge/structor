@@ -10,6 +10,7 @@ export const UPDATE_ITEM_ACTION = 'updateItem';
 export const NEW_VALUESET_CODE_ACTION = 'newValueSetCode';
 export const UPDATE_VALUESET_CODE_ACTION = 'updateValueSetCode';
 export const DELETE_VALUESET_CODE_ACTION = 'deleteValueSetCode';
+export const DUPLICATE_ITEM_ACTION = 'duplicateItemAction';
 
 type ItemValueType = string | boolean | Extension[]; // TODO: legg på alle lovlige verdier
 
@@ -54,6 +55,12 @@ export interface DeleteValueSetCodeAction {
     type: typeof DELETE_VALUESET_CODE_ACTION;
     linkId: string;
     code: string;
+}
+
+export interface DuplicateItemAction {
+    type: typeof DUPLICATE_ITEM_ACTION;
+    linkId: string;
+    order: Array<string>;
 }
 
 export const updateQuestionnaireMetadataAction = (
@@ -130,5 +137,13 @@ export const deleteValueSetCodeAction = (linkId: string, code: string): DeleteVa
         type: DELETE_VALUESET_CODE_ACTION,
         linkId,
         code,
+    };
+};
+
+export const duplicateItemAction = (linkId: string, order: Array<string>): DuplicateItemAction => {
+    return {
+        type: DUPLICATE_ITEM_ACTION,
+        linkId,
+        order,
     };
 };
