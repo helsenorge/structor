@@ -2,6 +2,8 @@ import { Items, OrderItem, TreeState, ValueSets } from '../store/treeStore/treeS
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { Resource, ValueSet, Questionnaire, QuestionnaireItem } from '../types/fhir';
 
+const valueSetAppendix = '-valueSet';
+
 function convertToValueSets(contained?: Array<Resource>) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function instanceofValueSet(object: any): object is ValueSet {
@@ -18,7 +20,10 @@ function convertToValueSets(contained?: Array<Resource>) {
         .forEach((resource) => {
             const valueSet = resource as ValueSet;
             if (valueSet.id !== undefined) {
-                valueSets[valueSet.id] = valueSet;
+                valueSets[`${valueSet.id}${valueSetAppendix}`] = {
+                    ...valueSet,
+                    id: `${valueSet.id}${valueSetAppendix}`,
+                };
             }
         });
 
@@ -54,6 +59,15 @@ function extractMetadata(questionnaireObj: Questionnaire) {
     return getMetadataParts(questionnaireObj);
 }
 
+function adaptItemToTreeState(item: QuestionnaireItem): QuestionnaireItem {
+    const adaptedItem = { ...item };
+    delete adaptedItem.item;
+    if (adaptedItem.answerValueSet !== undefined) {
+        adaptedItem.answerValueSet = `${adaptedItem.answerValueSet}${valueSetAppendix}`;
+    }
+    return adaptedItem;
+}
+
 function extractItemsAndOrder(item?: Array<QuestionnaireItem>): { qItems: Items; qOrder: Array<OrderItem> } {
     function mapToOrderItem(qItem: QuestionnaireItem, qItems: Items): OrderItem {
         let children: Array<OrderItem>;
@@ -69,9 +83,10 @@ function extractItemsAndOrder(item?: Array<QuestionnaireItem>): { qItems: Items;
             linkId: qItem.linkId,
             items: children,
         };
-        // Add item to qItems - removes children as this is handled by qOrder
-        delete qItem.item;
-        qItems[qItem.linkId] = qItem;
+
+        const adaptedItem = adaptItemToTreeState(qItem);
+        qItems[adaptedItem.linkId] = adaptedItem;
+
         return orderItem;
     }
 

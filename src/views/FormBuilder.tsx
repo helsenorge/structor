@@ -40,7 +40,12 @@ const FormBuilder = (): JSX.Element => {
     };
 
     const getCurrentValueSet = (linkId: string) => {
-        const currentValueSet = state.qValueSet[linkId + '-valueSet'];
+        const valueSetId = state.qItems[linkId]?.answerValueSet?.substr(1);
+        let currentValueSet = null;
+
+        if (valueSetId !== undefined) {
+            currentValueSet = state.qValueSet[valueSetId];
+        }
 
         return currentValueSet?.compose?.include[0].concept || null;
     };
