@@ -1,16 +1,35 @@
-import React, { useState } from 'react';
-import { QuestionnaireItem } from '../../types/fhir';
-import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import React, { useContext, useState } from 'react';
+import { QuestionnaireItem, QuestionnaireItemEnableWhen } from '../../types/fhir';
+import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import FormField from '../FormField/FormField';
 import Select from '../Select/Select';
 import './Conditional.css';
+import { updateItemAction } from '../../store/treeStore/treeActions';
+import { TreeContext } from '../../store/treeStore/treeStore';
 
 type Props = {
-    item?: QuestionnaireItem;
+    getItem: (linkId: string) => QuestionnaireItem;
+    conditionalArray: {
+        code: string;
+        display: string;
+    }[];
+    linkId: string;
 };
 
-const Conditional = ({ item }: Props): JSX.Element => {
-    const [operator, setOperator] = useState<string>();
+type EnableWhen = {
+    question?: string;
+    operator?: string;
+    answerInteger?: number;
+};
+
+const Conditional = ({ getItem, conditionalArray, linkId }: Props): JSX.Element => {
+    const { dispatch } = useContext(TreeContext);
+    const dispatchUpdateItemEnableWhen = (value: QuestionnaireItemEnableWhen[]) => {
+        dispatch(updateItemAction(linkId, IItemProperty.enableWhen, value));
+    };
+
+    const [currentItem, setCurrentItem] = useState<QuestionnaireItem>();
+    const [enableWhen, setEnableWhen] = useState<EnableWhen>();
     const [condition, setCondition] = useState<string>();
 
     const options = [
@@ -42,14 +61,32 @@ const Conditional = ({ item }: Props): JSX.Element => {
 
     return (
         <>
-            {item?.type === IQuestionnaireItemType.integer && (
+            <p>
+                Hvis relevansen for dette spørsmålet er avhgengig av svaret på et tidligere spørsmål, velger dette her.{' '}
+            </p>
+            <div className="form-field">
+                <label>Velg tidligere spørsmål</label>
+                <Select
+                    placeholder="Velg spørsmål"
+                    options={conditionalArray}
+                    value={currentItem?.linkId}
+                    onChange={(event) => {
+                        setCurrentItem(getItem(event.target.value));
+                        dispatchUpdateItemEnableWhen([]);
+                    }}
+                />
+            </div>
+
+            {currentItem?.type === IQuestionnaireItemType.integer && (
                 <>
-                    <div className="horizontal equal    ">
+                    <div className="horizontal equal">
                         <FormField label="Vis hvis svaret er:">
                             <Select
                                 options={options}
                                 onChange={(e) => {
-                                    setOperator(e.target.value);
+                                    const copy = { ...enableWhen };
+                                    copy.operator = e.target.value;
+                                    setEnableWhen(copy);
                                 }}
                             />
                         </FormField>
@@ -60,15 +97,15 @@ const Conditional = ({ item }: Props): JSX.Element => {
                     <div className="infobox">
                         <p>Spørsmålet vil vises dersom svaret på:</p>
                         <p>
-                            <strong>{item.text}</strong>{' '}
-                            {options.find((x) => x.code === operator)?.display.toLocaleLowerCase()}{' '}
+                            <strong>{currentItem.text}</strong>{' '}
+                            {options.find((x) => x.code === enableWhen?.operator)?.display.toLocaleLowerCase()}{' '}
                             <strong>{condition}</strong>
                         </p>
                     </div>
                 </>
             )}
 
-            {item?.type !== IQuestionnaireItemType.integer && <p>TODO</p>}
+            {currentItem?.type !== IQuestionnaireItemType.integer && <p>TODO</p>}
         </>
     );
 };

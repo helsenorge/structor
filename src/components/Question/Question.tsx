@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import {
     newItemAction,
@@ -37,8 +37,6 @@ interface QuestionProps {
 }
 
 const Question = (props: QuestionProps): JSX.Element => {
-    const [currentConditional, setCurrentConditional] = useState<string>();
-
     const { dispatch } = useContext(TreeContext);
 
     const dispatchNewItem = (type?: IQuestionnaireItemType) => {
@@ -328,21 +326,11 @@ const Question = (props: QuestionProps): JSX.Element => {
                 {props.parentArray.length > 0 && (
                     <Accordion title="Legg til betinget visning">
                         <div style={{ width: '66%', minHeight: '442px' }}>
-                            <p>
-                                Hvis relevansen for dette spørsmålet er avhgengig av svaret på et tidligere spørsmål,
-                                velger dette her.{' '}
-                            </p>
-                            <div className="form-field">
-                                <label>Velg tidligere spørsmål</label>
-                                <Select
-                                    placeholder="Velg spørsmål"
-                                    options={props.conditionalArray}
-                                    onChange={(event) => {
-                                        setCurrentConditional(event.target.value);
-                                    }}
-                                />
-                            </div>
-                            {currentConditional && <Conditional item={props.getItem(currentConditional)} />}
+                            <Conditional
+                                getItem={props.getItem}
+                                conditionalArray={props.conditionalArray}
+                                linkId={props.item.linkId}
+                            />
                         </div>
                     </Accordion>
                 )}
