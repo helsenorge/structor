@@ -330,7 +330,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 getItem={props.getItem}
                                 conditionalArray={props.conditionalArray}
                                 linkId={props.item.linkId}
-                                enableWhen={props.item.enableWhen}
+                                enableWhen={props.item.enableWhen || []}
                             />
                         </div>
                     </Accordion>

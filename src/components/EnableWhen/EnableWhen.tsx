@@ -15,76 +15,107 @@ type Props = {
         display: string;
     }[];
     linkId: string;
-    enableWhen: QuestionnaireItemEnableWhen[] | undefined;
+    enableWhen: QuestionnaireItemEnableWhen[];
 };
 
-const Conditional = ({ getItem, conditionalArray, linkId }: Props): JSX.Element => {
+const Conditional = ({ getItem, conditionalArray, linkId, enableWhen }: Props): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
     const dispatchUpdateItemEnableWhen = (value: IEnableWhen[]) => {
         dispatch(updateItemAction(linkId, IItemProperty.enableWhen, value));
     };
 
-    const [currentItem, setCurrentItem] = useState<QuestionnaireItem>();
-    const [enableWhen, setEnableWhen] = useState<IEnableWhen>();
-    const [condition, setCondition] = useState<string>();
+    const [currentConditionItem, setCurrentConditionItem] = useState<QuestionnaireItem>();
+
+    const getEnableWhenWidget = (conditionItem: QuestionnaireItem, itemEnableWhen: QuestionnaireItemEnableWhen) => {
+        const param = conditionItem.type;
+
+        switch (param) {
+            case IQuestionnaireItemType.integer:
+                return (
+                    <>
+                        <div className="horizontal equal">
+                            <FormField label="Vis hvis svaret er:">
+                                <Select
+                                    placeholder="Velg en operator"
+                                    options={operator}
+                                    value={itemEnableWhen?.operator}
+                                    onChange={(e) => {
+                                        const copy = { ...itemEnableWhen, operator: e.currentTarget.value };
+                                        dispatchUpdateItemEnableWhen([copy]);
+                                    }}
+                                />
+                            </FormField>
+                            <FormField label="Tall">
+                                <input
+                                    type="number"
+                                    defaultValue={itemEnableWhen?.answerInteger}
+                                    onChange={(e) => {
+                                        const copy = {
+                                            ...itemEnableWhen,
+                                            answerInteger: parseInt(e.currentTarget.value),
+                                        };
+                                        dispatchUpdateItemEnableWhen([copy]);
+                                    }}
+                                />
+                            </FormField>
+                        </div>
+                        <div className="infobox">
+                            <p>Spørsmålet vil vises dersom svaret på:</p>
+                            <p>
+                                <strong>{conditionItem.text}</strong>{' '}
+                                {operator.find((x) => x.code === itemEnableWhen?.operator)?.display.toLocaleLowerCase()}{' '}
+                                <strong>{itemEnableWhen?.answerInteger}</strong>
+                            </p>
+                        </div>
+                    </>
+                );
+            default:
+                return <p>TODO</p>;
+        }
+    };
 
     return (
         <>
             <p>
                 Hvis relevansen for dette spørsmålet er avhgengig av svaret på et tidligere spørsmål, velger dette her.{' '}
+                Antall {enableWhen.length}
             </p>
-            <div className="form-field">
-                <label>Velg tidligere spørsmål</label>
-                <Select
-                    placeholder="Velg spørsmål"
-                    options={conditionalArray}
-                    value={currentItem?.linkId}
-                    onChange={(event) => {
-                        const copy = { ...enableWhen, question: event.target.value };
-                        setEnableWhen(copy);
-                        setCurrentItem(getItem(event.target.value));
-                        dispatchUpdateItemEnableWhen([copy]);
-                    }}
-                />
-            </div>
-
-            {currentItem?.type === IQuestionnaireItemType.integer && (
-                <>
-                    <div className="horizontal equal">
-                        <FormField label="Vis hvis svaret er:">
-                            <Select
-                                options={operator}
-                                onChange={(e) => {
-                                    const copy = { ...enableWhen, operator: e.currentTarget.value };
-                                    setEnableWhen(copy);
-                                    dispatchUpdateItemEnableWhen([copy]);
-                                }}
-                            />
-                        </FormField>
-                        <FormField label="Tall">
-                            <input
-                                type="number"
-                                onChange={(e) => {
-                                    const copy = { ...enableWhen, answerInteger: parseInt(e.currentTarget.value) };
-                                    setEnableWhen(copy);
-                                    dispatchUpdateItemEnableWhen([copy]);
-                                    setCondition(e.target.value);
-                                }}
-                            />
-                        </FormField>
-                    </div>
-                    <div className="infobox">
-                        <p>Spørsmålet vil vises dersom svaret på:</p>
-                        <p>
-                            <strong>{currentItem.text}</strong>{' '}
-                            {operator.find((x) => x.code === enableWhen?.operator)?.display.toLocaleLowerCase()}{' '}
-                            <strong>{condition}</strong>
-                        </p>
-                    </div>
-                </>
+            {enableWhen?.length == 0 && (
+                <div className="form-field">
+                    <label>Velg tidligere spørsmål</label>
+                    <Select
+                        placeholder="Velg spørsmål"
+                        options={conditionalArray}
+                        value={currentConditionItem?.linkId}
+                        onChange={(event) => {
+                            const copy = { question: event.target.value };
+                            setCurrentConditionItem(getItem(event.target.value));
+                            dispatchUpdateItemEnableWhen([copy]);
+                        }}
+                    />
+                </div>
             )}
 
-            {currentItem?.type !== IQuestionnaireItemType.integer && <p>TODO</p>}
+            {enableWhen.map((x, index) => {
+                return (
+                    <div key={index}>
+                        <div className="form-field">
+                            <label>Velg tidligere spørsmål</label>
+                            <Select
+                                placeholder="Velg spørsmål"
+                                options={conditionalArray}
+                                value={x.question}
+                                onChange={(event) => {
+                                    const copy = { question: event.target.value };
+                                    setCurrentConditionItem(getItem(event.target.value));
+                                    dispatchUpdateItemEnableWhen([copy]);
+                                }}
+                            />
+                        </div>
+                        {getEnableWhenWidget(getItem(x.question), x)}
+                    </div>
+                );
+            })}
         </>
     );
 };

@@ -141,14 +141,14 @@ const FormBuilder = (): JSX.Element => {
             )}
             {isShowingFireStructure && (
                 <div className="structor-helper">
-                    <header>
+                    <div>
                         <IconBtn
                             type="x"
                             title="Tilbake"
                             onClick={() => setIsShowingFireStructure(!isShowingFireStructure)}
                         />
                         <h1>JSON struktur</h1>
-                    </header>
+                    </div>
                     <code className="json">
                         {JSON.stringify(JSON.parse(generateQuestionnaire(state)), undefined, 2)}
                     </code>

@@ -4,6 +4,10 @@ header {
     background-color: var(--primary-2);
     display: flex;
     padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    z-index: 3;
+    top: 0;
 }
 
 h1 {
@@ -22,6 +26,7 @@ h1 {
 .page-wrapper {
     max-width: 66%;
     margin: 0 auto;
+    padding-top: 80px;
     padding-bottom: 150px;
 }
 
@@ -76,6 +81,12 @@ select{
     min-width: 380px;
     box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, .78);
     text-align: left;
+}
+
+.structor-helper > div{
+    background-color: var(--primary-2);
+    display: flex;
+    padding: 10px 0;
 }
 
 .json {
