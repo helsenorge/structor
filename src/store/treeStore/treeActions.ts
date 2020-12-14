@@ -1,11 +1,6 @@
 import CreateUUID from '../../helpers/CreateUUID';
-import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import {
-    QuestionnaireItem,
-    ValueSetComposeIncludeConcept,
-    Extension,
-    QuestionnaireItemEnableWhen,
-} from '../../types/fhir';
+import { IEnableWhen, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept, Extension } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 
 export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata';
@@ -16,7 +11,7 @@ export const NEW_VALUESET_CODE_ACTION = 'newValueSetCode';
 export const UPDATE_VALUESET_CODE_ACTION = 'updateValueSetCode';
 export const DELETE_VALUESET_CODE_ACTION = 'deleteValueSetCode';
 
-type ItemValueType = string | boolean | Extension[] | QuestionnaireItemEnableWhen[]; // TODO: legg på alle lovlige verdier
+type ItemValueType = string | boolean | Extension[] | IEnableWhen[]; // TODO: legg på alle lovlige verdier
 
 export interface UpdateQuestionnaireMetadataAction {
     type: typeof UPDATE_QUESTIONNAIRE_METADATA_ACTION;

@@ -22,7 +22,7 @@ import Select from '../Select/Select';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import Btn from '../Btn/Btn';
 import Accordion from '../Accordion/Accordion';
-import Conditional from '../Conditional/Conditional';
+import EnableWhen from '../EnableWhen/EnableWhen';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -326,10 +326,11 @@ const Question = (props: QuestionProps): JSX.Element => {
                 {props.parentArray.length > 0 && (
                     <Accordion title="Legg til betinget visning">
                         <div style={{ width: '66%', minHeight: '442px' }}>
-                            <Conditional
+                            <EnableWhen
                                 getItem={props.getItem}
                                 conditionalArray={props.conditionalArray}
                                 linkId={props.item.linkId}
+                                enableWhen={props.item.enableWhen}
                             />
                         </div>
                     </Accordion>

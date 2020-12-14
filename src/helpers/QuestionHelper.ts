@@ -65,4 +65,35 @@ export const checkboxExtension = [
     },
 ];
 
+export const operator = [
+    {
+        code: 'exists',
+        display: 'Eksisterer',
+    },
+    {
+        code: '=',
+        display: 'Er lik',
+    },
+    {
+        code: '!=',
+        display: 'Ikke lik',
+    },
+    {
+        code: '>',
+        display: 'Større enn',
+    },
+    {
+        code: '<',
+        display: 'Mindre enn',
+    },
+    {
+        code: '>=',
+        display: 'Større enn eller lik',
+    },
+    {
+        code: '<=',
+        display: 'Mindre enn eller lik',
+    },
+];
+
 export default itemType;

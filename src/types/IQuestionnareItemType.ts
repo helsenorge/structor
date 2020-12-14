@@ -35,3 +35,9 @@ export enum IItemProperty {
     readOnly = 'readOnly',
     extension = 'extension',
 }
+
+export type IEnableWhen = {
+    question?: string;
+    operator?: string;
+    answerInteger?: number;
+};
