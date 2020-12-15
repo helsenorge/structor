@@ -8,7 +8,7 @@ import IconBtn from '../components/IconBtn/IconBtn';
 import Btn from '../components/Btn/Btn';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import { QuestionnaireItem } from '../types/fhir';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -42,7 +42,7 @@ const FormBuilder = (): JSX.Element => {
     const getCurrentValueSet = (linkId: string) => {
         const currentValueSet = state.qValueSet[linkId + '-valueSet'];
 
-        return currentValueSet?.compose?.include[0].concept || null;
+        return currentValueSet?.compose?.include[0].concept || new Array<ValueSetComposeIncludeConcept>();
     };
 
     const getConditional = (parrentArray: string[]) => {
@@ -74,7 +74,7 @@ const FormBuilder = (): JSX.Element => {
                         item={state.qItems[x.linkId]}
                         parentArray={parentArray}
                         questionNumber={questionNumber}
-                        valueSet={getCurrentValueSet(x.linkId)}
+                        valueSet={getCurrentValueSet}
                         conditionalArray={getConditional(parentArray)}
                         getItem={getQItem}
                     />

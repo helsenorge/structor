@@ -1,13 +1,10 @@
 import React from 'react';
-import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import './Select.css';
 import downArrow from '../../images/icons/chevron-down-outline.svg';
+import { ValueSetComposeIncludeConcept } from '../../types/fhir';
 
 type Props = {
-    options: {
-        display: string;
-        code: IQuestionnaireItemType | string;
-    }[];
+    options: ValueSetComposeIncludeConcept[];
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     value?: string;
     placeholder?: string;

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { QuestionnaireItem, QuestionnaireItemEnableWhen } from '../../types/fhir';
+import { QuestionnaireItem, QuestionnaireItemEnableWhen, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import { IEnableWhen, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import FormField from '../FormField/FormField';
 import Select from '../Select/Select';
@@ -9,6 +9,7 @@ import { operator } from '../../helpers/QuestionHelper';
 import './EnableWhen.css';
 
 type Props = {
+    getValueSet: (linkId: string) => ValueSetComposeIncludeConcept[];
     getItem: (linkId: string) => QuestionnaireItem;
     conditionalArray: {
         code: string;
@@ -18,7 +19,7 @@ type Props = {
     enableWhen: QuestionnaireItemEnableWhen[];
 };
 
-const Conditional = ({ getItem, conditionalArray, linkId, enableWhen }: Props): JSX.Element => {
+const Conditional = ({ getItem, conditionalArray, linkId, enableWhen, getValueSet }: Props): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
     const dispatchUpdateItemEnableWhen = (value: IEnableWhen[]) => {
         dispatch(updateItemAction(linkId, IItemProperty.enableWhen, value));
@@ -67,6 +68,23 @@ const Conditional = ({ getItem, conditionalArray, linkId, enableWhen }: Props): 
                                 <strong>{itemEnableWhen?.answerInteger}</strong>
                             </p>
                         </div>
+                    </>
+                );
+            case IQuestionnaireItemType.choice:
+                const choices = getValueSet(conditionItem.linkId);
+
+                return (
+                    <>
+                        <FormField label="Hvis hvis svaret er:">
+                            <Select
+                                placeholder="Velg et alternativ.."
+                                options={choices}
+                                value={itemEnableWhen?.operator}
+                                onChange={(e) => {
+                                    console.log('todo', e.target.value);
+                                }}
+                            />
+                        </FormField>
                     </>
                 );
             default:

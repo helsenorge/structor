@@ -27,7 +27,7 @@ import EnableWhen from '../EnableWhen/EnableWhen';
 interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
-    valueSet: ValueSetComposeIncludeConcept[] | null;
+    valueSet: (linkId: string) => ValueSetComposeIncludeConcept[];
     questionNumber: string;
     conditionalArray: {
         code: string;
@@ -72,6 +72,8 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     const respondType = (param: string) => {
+        const valueSet = props.valueSet(props.item.linkId);
+
         switch (param) {
             case IQuestionnaireItemType.string:
                 return (
@@ -127,22 +129,21 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 initial
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}
                             />
-                            {props.valueSet &&
-                                props.valueSet.map((set, index) => (
-                                    <>
-                                        <RadioBtn
-                                            key={index}
-                                            showDelete={index > 1}
-                                            valueSetID={set.code + '-valueSet'}
-                                            value={set.display}
-                                            onChange={(event) => {
-                                                const clone = { ...set, display: event.target.value };
-                                                dispatchUpdateValueSet(clone);
-                                            }}
-                                            deleteItem={() => dispatchDeleteValueSet(set.code)}
-                                        />
-                                    </>
-                                ))}
+                            {valueSet?.map((set, index) => (
+                                <>
+                                    <RadioBtn
+                                        key={index}
+                                        showDelete={index > 1}
+                                        valueSetID={set.code + '-valueSet'}
+                                        value={set.display}
+                                        onChange={(event) => {
+                                            const clone = { ...set, display: event.target.value };
+                                            dispatchUpdateValueSet(clone);
+                                        }}
+                                        deleteItem={() => dispatchDeleteValueSet(set.code)}
+                                    />
+                                </>
+                            ))}
                         </div>
                         <Btn title="+ Legg til alternativ" onClick={() => dispatchNewValueSetQuestion('')} />
                     </>
@@ -157,20 +158,19 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 initial
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}
                             />
-                            {props.valueSet &&
-                                props.valueSet.map((set, index) => (
-                                    <RadioBtn
-                                        key={index}
-                                        showDelete={index > 1}
-                                        valueSetID={set.code + '-valueSet'}
-                                        value={set.display}
-                                        onChange={(event) => {
-                                            const clone = { ...set, display: event.target.value };
-                                            dispatchUpdateValueSet(clone);
-                                        }}
-                                        deleteItem={() => dispatchDeleteValueSet(set.code)}
-                                    />
-                                ))}
+                            {valueSet?.map((set, index) => (
+                                <RadioBtn
+                                    key={index}
+                                    showDelete={index > 1}
+                                    valueSetID={set.code + '-valueSet'}
+                                    value={set.display}
+                                    onChange={(event) => {
+                                        const clone = { ...set, display: event.target.value };
+                                        dispatchUpdateValueSet(clone);
+                                    }}
+                                    deleteItem={() => dispatchDeleteValueSet(set.code)}
+                                />
+                            ))}
                             <RadioBtn value="eget svaralternativ for bruker" />
                         </div>
                         <Btn title="+ Legg til alternativ" onClick={() => dispatchNewValueSetQuestion('')} />
@@ -328,6 +328,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <div style={{ width: '66%', minHeight: '442px' }}>
                             <EnableWhen
                                 getItem={props.getItem}
+                                getValueSet={props.valueSet}
                                 conditionalArray={props.conditionalArray}
                                 linkId={props.item.linkId}
                                 enableWhen={props.item.enableWhen || []}
