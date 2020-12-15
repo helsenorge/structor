@@ -7,15 +7,15 @@ export enum IQuestionnaireMetadataType {
 }
 
 export interface IQuestionnaireMetadata {
-    resourceType: string;
-    language: string;
-    name: string;
-    title: string;
-    description: string;
-    status: string;
-    publisher: string;
-    meta: Meta;
-    useContext: Array<UsageContext>;
-    contact: Array<ContactDetail>;
-    subjectType: Array<string>;
+    resourceType?: string;
+    language?: string;
+    name?: string;
+    title?: string;
+    description?: string;
+    status?: string;
+    publisher?: string;
+    meta?: Meta;
+    useContext?: Array<UsageContext>;
+    contact?: Array<ContactDetail>;
+    subjectType?: Array<string>;
 }

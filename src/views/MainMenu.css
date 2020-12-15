@@ -17,6 +17,13 @@
 }
 
 
-.main-menu button:last-of-type {
+.main-menu label.index-buttons {
     margin-left: 15px;
+}
+
+.main-menu img.upload-icon {
+    margin: 4px;
+    width: 25px;
+    height: 25px;
+    filter: invert();
 }

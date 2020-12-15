@@ -7,6 +7,7 @@ import {
     updateItemAction,
     newValueSetCodeAction,
     deleteValueSetCodeAction,
+    duplicateItemAction,
 } from '../store/treeStore/treeActions';
 import { QuestionnaireItem, ValueSet } from '../types/fhir';
 
@@ -39,6 +40,10 @@ const TreeItem = (props: TreeItemProps): JSX.Element => {
         dispatch(deleteValueSetCodeAction(props.item.linkId, code));
     };
 
+    const dispatchDuplicateItem = () => {
+        dispatch(duplicateItemAction(props.item.linkId, props.parentArray));
+    };
+
     return (
         <div style={{ marginLeft: props.parentArray.length * 32 }}>
             <span>{`LinkId: ${props.item.linkId}, text: ${props.item.text}, type: ${props.item.type}`}</span>
@@ -58,6 +63,7 @@ const TreeItem = (props: TreeItemProps): JSX.Element => {
                 <button onClick={dispatchNewItem}>Add child</button>
                 <button onClick={dispatchDeleteItem}>Delete item</button>
                 <button onClick={dispatchUpdateItem}>Set text</button>
+                <button onClick={dispatchDuplicateItem}>Dupliser</button>
                 {props.valueSet && <button onClick={dispatchNewValueSetItem}>Add valueSet value</button>}
             </div>
         </div>

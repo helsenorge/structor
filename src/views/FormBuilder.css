@@ -81,6 +81,7 @@ select {
     min-width: 380px;
     box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, .78);
     text-align: left;
+    z-index: 3;
 }
 
 .title {
@@ -91,7 +92,8 @@ select {
 
 .json {
     display: block;
-    white-space: pre;
+    white-space: pre-wrap;
     text-align: left;
     padding: 20px;
+    width: 600px;
 }
