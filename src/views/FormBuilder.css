@@ -48,7 +48,7 @@ input, textarea, select {
     padding: 10px;
 }
 
-select{
+select {
     padding: 10px 40px 10px 10px;
     text-overflow: ellipsis;
 }
@@ -83,7 +83,7 @@ select{
     text-align: left;
 }
 
-.structor-helper > div{
+.title {
     background-color: var(--primary-2);
     display: flex;
     padding: 10px 0;

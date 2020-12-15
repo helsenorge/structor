@@ -210,7 +210,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     <img src={CopyIcon} height="25" width="25" /> Dupliser
                 </button>
                 <button onClick={() => dispatchNewItem()}>
-                    <img src={PlusIcon} height="25" width="25" /> Nytt nivå
+                    <img src={PlusIcon} height="25" width="25" /> Oppfølgingsspørsmål
                 </button>
                 <button onClick={dispatchDeleteItem}>
                     <img src={Trashcan} height="25" width="25" /> Slett

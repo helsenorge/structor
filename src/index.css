@@ -56,6 +56,8 @@ p{
 }
 
 .iframe-div {
+  max-width: 70%;
+  margin: 135px auto;
   background:url(./images/loader.gif) center center no-repeat;
 }
 

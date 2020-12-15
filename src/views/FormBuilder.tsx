@@ -96,17 +96,23 @@ const FormBuilder = (): JSX.Element => {
             </header>
 
             {isIframeVisible ? (
-                <div style={{ height: '100%', width: '100%' }} className="iframe-div">
-                    <iframe
-                        id="schemeFrame"
-                        style={{
-                            width: '100%',
-                            height: '70vh',
-                        }}
-                        onLoad={iFrameLoaded}
-                        src="../../iframe/index.html"
-                    ></iframe>
-                </div>
+                <>
+                    <div className="iframe-div">
+                        <div className="title">
+                            <IconBtn type="x" title="Lukk" onClick={() => setIsIframeVisible(!isIframeVisible)} />
+                            <h1>Forhåndsvisning</h1>
+                        </div>
+                        <iframe
+                            id="schemeFrame"
+                            style={{
+                                width: '100%',
+                                height: '70vh',
+                            }}
+                            onLoad={iFrameLoaded}
+                            src="../../iframe/index.html"
+                        ></iframe>
+                    </div>
+                </>
             ) : (
                 <>
                     <div className="page-wrapper">
@@ -141,7 +147,7 @@ const FormBuilder = (): JSX.Element => {
             )}
             {isShowingFireStructure && (
                 <div className="structor-helper">
-                    <div>
+                    <div className="title">
                         <IconBtn
                             type="x"
                             title="Tilbake"
