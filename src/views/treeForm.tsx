@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { TreeContext, OrderItem } from '../store/treeStore/treeStore';
+import { TreeContext, OrderItem, getValueSetId } from '../store/treeStore/treeStore';
 import TreeItem from './treeItem';
 import { newItemAction } from '../store/treeStore/treeActions';
 import { generateQuestionnaire } from '../helpers/generateQuestionnaire';
@@ -29,16 +29,6 @@ const TreeForm = (): JSX.Element => {
         dispatch(newItemAction(IQuestionnaireItemType.group, []));
     };
 
-    const getValueSet = (linkId: string) => {
-        const valueSetId = state.qItems[linkId]?.answerValueSet;
-        let valueSet = undefined;
-
-        if (valueSetId) {
-            valueSet = state.qValueSet[valueSetId];
-        }
-        return valueSet;
-    };
-
     const renderTree = (items: Array<OrderItem>, parentArray: Array<string>): Array<JSX.Element> => {
         return items.map((x) => {
             return (
@@ -46,7 +36,7 @@ const TreeForm = (): JSX.Element => {
                     <TreeItem
                         item={state.qItems[x.linkId]}
                         parentArray={parentArray}
-                        valueSet={getValueSet(x.linkId)}
+                        valueSet={state.qValueSet[getValueSetId(x.linkId)]}
                     />
                     {renderTree(x.items, [...parentArray, x.linkId])}
                 </div>
