@@ -13,9 +13,9 @@ type Props = {
 const Select = ({ options, onChange, value, placeholder }: Props): JSX.Element => {
     return (
         <div className="selector">
-            <select onChange={onChange} value={value}>
+            <select onChange={onChange} value={value || ''}>
                 {placeholder && (
-                    <option value="" disabled selected>
+                    <option value="" disabled>
                         {placeholder}
                     </option>
                 )}

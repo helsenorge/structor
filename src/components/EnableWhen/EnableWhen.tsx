@@ -1,12 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { QuestionnaireItem, QuestionnaireItemEnableWhen, ValueSetComposeIncludeConcept } from '../../types/fhir';
-import { IEnableWhen, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IEnableWhen, IItemProperty, IOperator, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import FormField from '../FormField/FormField';
 import Select from '../Select/Select';
 import { updateItemAction } from '../../store/treeStore/treeActions';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { operator } from '../../helpers/QuestionHelper';
 import './EnableWhen.css';
+import Infobox from './Infobox';
 
 type Props = {
     getValueSet: (linkId: string) => ValueSetComposeIncludeConcept[];
@@ -60,14 +61,13 @@ const Conditional = ({ getItem, conditionalArray, linkId, enableWhen, getValueSe
                                 />
                             </FormField>
                         </div>
-                        <div className="infobox">
-                            <p>Spørsmålet vil vises dersom svaret på:</p>
+                        <Infobox title="Spørsmålet vil vises dersom svaret på:">
                             <p>
                                 <strong>{conditionItem.text}</strong>{' '}
                                 {operator.find((x) => x.code === itemEnableWhen?.operator)?.display.toLocaleLowerCase()}{' '}
                                 <strong>{itemEnableWhen?.answerInteger}</strong>
                             </p>
-                        </div>
+                        </Infobox>
                     </>
                 );
             case IQuestionnaireItemType.choice:
@@ -79,12 +79,74 @@ const Conditional = ({ getItem, conditionalArray, linkId, enableWhen, getValueSe
                             <Select
                                 placeholder="Velg et alternativ.."
                                 options={choices}
-                                value={itemEnableWhen?.operator}
+                                value={itemEnableWhen?.answerCoding?.code}
                                 onChange={(e) => {
-                                    console.log('todo', e.target.value);
+                                    const copy = {
+                                        ...itemEnableWhen,
+                                        operator: IOperator.equal,
+                                        answerCoding: {
+                                            system: conditionItem.linkId + '-valueSet-system',
+                                            code: e.target.value,
+                                        },
+                                    };
+                                    dispatchUpdateItemEnableWhen([copy]);
                                 }}
                             />
                         </FormField>
+                        <Infobox title="Spørsmålet vil vises dersom svaret på:">
+                            <p>
+                                <strong>{conditionItem.text}</strong>{' '}
+                                {operator.find((x) => x.code === itemEnableWhen?.operator)?.display.toLocaleLowerCase()}{' '}
+                                <strong>
+                                    {choices.find((x) => x.code === itemEnableWhen?.answerCoding?.code)?.display}
+                                </strong>
+                            </p>
+                        </Infobox>
+                    </>
+                );
+            case IQuestionnaireItemType.boolean:
+                const booleanChoices: ValueSetComposeIncludeConcept[] = [
+                    { display: 'Avhuket', code: 'true' },
+                    { display: 'Ikke avhuket', code: 'false' },
+                ];
+
+                const getAnswer = () => {
+                    if (itemEnableWhen.answerBoolean === true) {
+                        return 'true';
+                    }
+                    if (itemEnableWhen.answerBoolean === false) {
+                        return 'false';
+                    }
+
+                    return '';
+                };
+
+                return (
+                    <>
+                        <FormField label="Hvis hvis svaret er:">
+                            <Select
+                                placeholder="Velg et alternativ.."
+                                options={booleanChoices}
+                                value={getAnswer()}
+                                onChange={(e) => {
+                                    const copy = {
+                                        ...itemEnableWhen,
+                                        operator: IOperator.equal,
+                                        answerBoolean: e.target.value === 'true',
+                                    };
+                                    dispatchUpdateItemEnableWhen([copy]);
+                                }}
+                            />
+                        </FormField>
+                        <Infobox title="Spørsmålet vil vises dersom svaret på:">
+                            <p>
+                                <strong>{conditionItem.text}</strong> er{' '}
+                                <strong>
+                                    {itemEnableWhen.answerBoolean === true && 'avhuket'}
+                                    {itemEnableWhen.answerBoolean === false && 'ikke avhuket'}
+                                </strong>
+                            </p>
+                        </Infobox>
                     </>
                 );
             default:
@@ -95,8 +157,7 @@ const Conditional = ({ getItem, conditionalArray, linkId, enableWhen, getValueSe
     return (
         <>
             <p>
-                Hvis relevansen for dette spørsmålet er avhgengig av svaret på et tidligere spørsmål, velger dette her.{' '}
-                Antall {enableWhen.length}
+                Hvis relevansen for dette spørsmålet er avhgengig av svaret på et tidligere spørsmål, velger dette her.
             </p>
             {enableWhen?.length == 0 && (
                 <div className="form-field">
