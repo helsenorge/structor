@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import './FormBuilder.css';
-import { OrderItem, TreeContext } from '../store/treeStore/treeStore';
+import { OrderItem, TreeContext, getValueSetId } from '../store/treeStore/treeStore';
 import Question from '../components/Question/Question';
 import { newItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import { generateQuestionnaire } from '../helpers/generateQuestionnaire';
@@ -40,8 +40,7 @@ const FormBuilder = (): JSX.Element => {
     };
 
     const getCurrentValueSet = (linkId: string) => {
-        const currentValueSet = state.qValueSet[linkId + '-valueSet'];
-
+        const currentValueSet = state.qValueSet[getValueSetId(linkId)];
         return currentValueSet?.compose?.include[0].concept || null;
     };
 

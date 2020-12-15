@@ -3,6 +3,8 @@ import produce from 'immer';
 
 import { QuestionnaireItem, ValueSet } from '../../types/fhir';
 import {
+    RESET_QUESTIONNAIRE_ACTION,
+    ResetQuestionnaireAction,
     DELETE_ITEM_ACTION,
     DELETE_VALUESET_CODE_ACTION,
     DeleteItemAction,
@@ -25,6 +27,7 @@ import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/
 import createUUID from '../../helpers/CreateUUID';
 
 type ActionType =
+    | ResetQuestionnaireAction
     | UpdateQuestionnaireMetadataAction
     | NewItemAction
     | DeleteItemAction
@@ -244,11 +247,22 @@ function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value
     if (IQuestionnaireMetadataType.title === propName) {
         draft.qMetadata.name = `hdir-${value}`;
 
-        const codings = draft.qMetadata.useContext[0].valueCodeableConcept?.coding;
-        if (codings !== undefined && codings.length > 0) {
-            codings[0].display = value;
+        const useContext = draft.qMetadata.useContext;
+        if (useContext !== undefined && useContext.length > 0) {
+            const codings = useContext[0].valueCodeableConcept?.coding;
+            if (codings !== undefined && codings.length > 0) {
+                codings[0].display = value;
+            }
         }
     }
+}
+
+function resetQuestionnaireAction(draft: TreeState, action: ResetQuestionnaireAction): void {
+    const newState: TreeState = action.newState || initialState;
+    draft.qOrder = newState.qOrder;
+    draft.qItems = newState.qItems;
+    draft.qValueSet = newState.qValueSet;
+    draft.qMetadata = newState.qMetadata;
 }
 
 function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): void {
@@ -292,6 +306,9 @@ function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): voi
 
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
+        case RESET_QUESTIONNAIRE_ACTION:
+            resetQuestionnaireAction(draft, action);
+            break;
         case UPDATE_QUESTIONNAIRE_METADATA_ACTION:
             updateQuestionnaireMetadataProperty(draft, action);
             break;
