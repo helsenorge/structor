@@ -121,7 +121,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             case IQuestionnaireItemType.boolean:
                 return (
                     <div className="form-field">
-                        <label>Todo</label>
+                        <input type="checkbox" style={{ zoom: 1.5 }} disabled checked />
                     </div>
                 );
             case IQuestionnaireItemType.choice:

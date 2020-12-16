@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
+import { nb } from 'date-fns/locale';
+
 import Calendar from '../../images/icons/calendar-outline.svg';
 import Clock from '../../images/icons/time-outline.svg';
 
@@ -8,18 +10,31 @@ import './DatePicker.css';
 
 type PickerProps = {
     type?: 'date' | 'time';
+    disabled?: boolean;
+    withPortal?: boolean;
+    callback?: (date: Date) => void;
+    selected?: Date;
 };
 
-const Picker = ({ type }: PickerProps): JSX.Element => {
+setDefaultLocale('nb');
+registerLocale('nb', nb);
+
+const Picker = ({ type, disabled = true, withPortal, callback, selected }: PickerProps): JSX.Element => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [startDate, setStartDate] = useState<any>();
     return (
         <div className="datepicker">
             <DatePicker
-                disabled
+                disabled={disabled}
                 placeholderText={type === 'time' ? '00:00' : 'dd.mm.åå'}
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
+                selected={selected || startDate}
+                onChange={(date: Date) => {
+                    setStartDate(date);
+                    callback && callback(date);
+                }}
+                withPortal={withPortal}
+                locale="nb"
+                dateFormat="dd.MM.yyyy"
             />
             <img src={type === 'time' ? Clock : Calendar} alt="datepicker icon" height="25" />
         </div>

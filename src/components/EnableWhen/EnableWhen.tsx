@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { format, parse } from 'date-fns';
 import { QuestionnaireItem, QuestionnaireItemEnableWhen, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import { IEnableWhen, IItemProperty, IOperator, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import FormField from '../FormField/FormField';
@@ -8,6 +9,7 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { operator } from '../../helpers/QuestionHelper';
 import './EnableWhen.css';
 import Infobox from './Infobox';
+import Picker from '../DatePicker/DatePicker';
 
 type Props = {
     getValueSet: (linkId: string) => ValueSetComposeIncludeConcept[];
@@ -145,6 +147,44 @@ const Conditional = ({ getItem, conditionalArray, linkId, enableWhen, getValueSe
                                     {itemEnableWhen.answerBoolean === true && 'avhuket'}
                                     {itemEnableWhen.answerBoolean === false && 'ikke avhuket'}
                                 </strong>
+                            </p>
+                        </Infobox>
+                    </>
+                );
+            case IQuestionnaireItemType.date:
+                const selectedDate = itemEnableWhen.answerDate
+                    ? parse(itemEnableWhen.answerDate, 'yyyy-MM-dd', new Date())
+                    : undefined;
+                return (
+                    <>
+                        <FormField label="Vis hvis svaret er:">
+                            <Select
+                                placeholder="Velg en operator"
+                                options={operator}
+                                value={itemEnableWhen?.operator}
+                                onChange={(e) => {
+                                    const copy = { ...itemEnableWhen, operator: e.currentTarget.value };
+                                    dispatchUpdateItemEnableWhen([copy]);
+                                }}
+                            />
+                            <Picker
+                                selected={selectedDate}
+                                disabled={false}
+                                withPortal
+                                callback={(date: Date) => {
+                                    const copy = {
+                                        ...itemEnableWhen,
+                                        answerDate: format(date, 'yyyy-MM-dd'),
+                                    };
+                                    dispatchUpdateItemEnableWhen([copy]);
+                                }}
+                            />
+                        </FormField>
+                        <Infobox title="Spørsmålet vil vises dersom svaret på:">
+                            <p>
+                                <strong>{conditionItem.text}</strong>{' '}
+                                {operator.find((x) => x.code === itemEnableWhen?.operator)?.display.toLocaleLowerCase()}{' '}
+                                <strong>{selectedDate && format(selectedDate, 'dd.MM.yyyy')}</strong>
                             </p>
                         </Infobox>
                     </>
