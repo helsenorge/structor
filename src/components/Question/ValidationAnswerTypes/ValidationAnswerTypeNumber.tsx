@@ -18,7 +18,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, value));
     };
 
-    const Eventhandler = (url: string) => {
+    const updateExtensionInputElement = (url: string) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
             const validationTextExtension = {
                 url: url,
@@ -35,6 +35,21 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
         };
     };
 
+    const updateExtensionCheckboxElement = () => {
+        const validationCheckboxextension = {
+            url: 'allowDesimal',
+            valueBoolean: true,
+        };
+
+        const extensionToUpdate = item.extension?.find((ext) => ext.url === validationCheckboxextension.url);
+        const removedExt = item.extension?.filter((ext) => ext.url !== validationCheckboxextension.url) ?? [];
+        const newExtension =
+            extensionToUpdate === undefined || extensionToUpdate.valueBoolean === false
+                ? validationCheckboxextension
+                : { url: 'allowDesimal', valueBoolean: false };
+        dispatchExtentionUpdate([...removedExt, newExtension]);
+    };
+
     return (
         <>
             <div className="validating-help-title">
@@ -45,7 +60,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                 <input
                     type="checkbox"
                     onChange={() => {
-                        // TODO
+                        updateExtensionCheckboxElement();
                     }}
                 />
                 <span> Tillat desimaltall</span>
@@ -95,7 +110,11 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
 
             <div className="form-field custom-input-error-message">
                 <label className="#">Legg til egendefinert feilmelding:</label>
-                <input type="input" placeholder="feilmelding" onChange={Eventhandler('ErrorText')}></input>
+                <input
+                    type="input"
+                    placeholder="feilmelding"
+                    onChange={updateExtensionInputElement('ErrorText')}
+                ></input>
             </div>
         </>
     );
