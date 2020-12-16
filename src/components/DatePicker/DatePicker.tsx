@@ -34,7 +34,9 @@ const Picker = ({ type, disabled = true, withPortal, callback, selected }: Picke
                 }}
                 withPortal={withPortal}
                 locale="nb"
-                dateFormat="dd.MM.yyyy"
+                showTimeSelect={type === 'time'}
+                showTimeSelectOnly={type === 'time'}
+                dateFormat={type === 'date' ? 'dd.MM.yyyy' : 'HH:mm'}
             />
             <img src={type === 'time' ? Clock : Calendar} alt="datepicker icon" height="25" />
         </div>

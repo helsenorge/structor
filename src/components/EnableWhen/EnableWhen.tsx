@@ -189,6 +189,46 @@ const Conditional = ({ getItem, conditionalArray, linkId, enableWhen, getValueSe
                         </Infobox>
                     </>
                 );
+            case IQuestionnaireItemType.time:
+                const selectedTime = itemEnableWhen.answerTime
+                    ? parse(itemEnableWhen.answerTime, 'HH:mm:ss', new Date())
+                    : undefined;
+
+                return (
+                    <>
+                        <FormField label="Vis hvis svaret er:">
+                            <Select
+                                placeholder="Velg en operator"
+                                options={operator}
+                                value={itemEnableWhen?.operator}
+                                onChange={(e) => {
+                                    const copy = { ...itemEnableWhen, operator: e.currentTarget.value };
+                                    dispatchUpdateItemEnableWhen([copy]);
+                                }}
+                            />
+                            <Picker
+                                selected={selectedTime}
+                                type="time"
+                                disabled={false}
+                                withPortal
+                                callback={(date: Date) => {
+                                    const copy = {
+                                        ...itemEnableWhen,
+                                        answerTime: format(date, 'HH:mm:ss'),
+                                    };
+                                    dispatchUpdateItemEnableWhen([copy]);
+                                }}
+                            />
+                        </FormField>
+                        <Infobox title="Spørsmålet vil vises dersom svaret på:">
+                            <p>
+                                <strong>{conditionItem.text}</strong>{' '}
+                                {operator.find((x) => x.code === itemEnableWhen?.operator)?.display.toLocaleLowerCase()}{' '}
+                                <strong>{itemEnableWhen.answerTime?.slice(0, 5)}</strong>
+                            </p>
+                        </Infobox>
+                    </>
+                );
             default:
                 return <p>TODO</p>;
         }
