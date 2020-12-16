@@ -5,15 +5,15 @@ import ValidationAnswerTypesText from './ValidationAnswerTypeText';
 import ValidationAnswerTypeString from './ValidationAnswerTypeString';
 import ValidationAnswerTypeDate from './ValidationAnswerTypeDate';
 import ValidationAnswerTypeTime from './ValidationAnswerTypeTime';
-
+import { QuestionnaireItem } from '../../../types/fhir';
 interface ValidationTypeProp {
-    item: string;
+    item: QuestionnaireItem;
     //TYPES
 }
 
-const ValidationAnswerTypes = (item: any): JSX.Element => {
-    const respondType = (param: string) => {
-        switch (param) {
+const ValidationAnswerTypes = ({ item }: ValidationTypeProp): JSX.Element => {
+    const respondType = (itemType: string) => {
+        switch (itemType) {
             case IQuestionnaireItemType.group:
                 return <p>Group</p>;
             case IQuestionnaireItemType.display:
@@ -35,7 +35,7 @@ const ValidationAnswerTypes = (item: any): JSX.Element => {
             case IQuestionnaireItemType.text:
                 return <ValidationAnswerTypesText />;
             case IQuestionnaireItemType.integer:
-                return <ValidationAnswerTypesNumber />;
+                return <ValidationAnswerTypesNumber item={item} />;
         }
     };
 

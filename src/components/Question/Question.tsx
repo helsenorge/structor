@@ -252,7 +252,7 @@ const Question = (props: QuestionProps): JSX.Element => {
 
             <div className="question-addons">
                 <Accordion title="Legg til validering">
-                    <ValidationAnswerTypes type={props.item.type} />
+                    <ValidationAnswerTypes item={props.item} />
                 </Accordion>
                 <Accordion title="Legg til betinget visning">
                     <div style={{ width: '66%' }}>
