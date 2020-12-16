@@ -6,7 +6,7 @@ import FormField from '../FormField/FormField';
 import Select from '../Select/Select';
 import { updateItemAction } from '../../store/treeStore/treeActions';
 import { TreeContext } from '../../store/treeStore/treeStore';
-import { operator } from '../../helpers/QuestionHelper';
+import itemType, { operator } from '../../helpers/QuestionHelper';
 import './EnableWhen.css';
 import Infobox from './Infobox';
 import Picker from '../DatePicker/DatePicker';
@@ -230,7 +230,12 @@ const Conditional = ({ getItem, conditionalArray, linkId, enableWhen, getValueSe
                     </>
                 );
             default:
-                return <p>TODO</p>;
+                return (
+                    <p>
+                        Skjemabyggeren supporterer ikke betinget visning av typen:{' '}
+                        <strong>{itemType.find((x) => x.code === param)?.display || param}</strong>
+                    </p>
+                );
         }
     };
 
