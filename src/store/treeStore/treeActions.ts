@@ -1,7 +1,8 @@
 import CreateUUID from '../../helpers/CreateUUID';
-import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IEnableWhen, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept, Extension } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
+import { TreeState } from './treeStore';
 
 export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata';
 export const NEW_ITEM_ACTION = 'newItem';
@@ -10,8 +11,10 @@ export const UPDATE_ITEM_ACTION = 'updateItem';
 export const NEW_VALUESET_CODE_ACTION = 'newValueSetCode';
 export const UPDATE_VALUESET_CODE_ACTION = 'updateValueSetCode';
 export const DELETE_VALUESET_CODE_ACTION = 'deleteValueSetCode';
+export const DUPLICATE_ITEM_ACTION = 'duplicateItemAction';
+export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 
-type ItemValueType = string | boolean | Extension[]; // TODO: legg på alle lovlige verdier
+type ItemValueType = string | boolean | Extension[] | IEnableWhen[]; // TODO: legg på alle lovlige verdier
 
 export interface UpdateQuestionnaireMetadataAction {
     type: typeof UPDATE_QUESTIONNAIRE_METADATA_ACTION;
@@ -54,6 +57,17 @@ export interface DeleteValueSetCodeAction {
     type: typeof DELETE_VALUESET_CODE_ACTION;
     linkId: string;
     code: string;
+}
+
+export interface DuplicateItemAction {
+    type: typeof DUPLICATE_ITEM_ACTION;
+    linkId: string;
+    order: Array<string>;
+}
+
+export interface ResetQuestionnaireAction {
+    type: typeof RESET_QUESTIONNAIRE_ACTION;
+    newState?: TreeState;
 }
 
 export const updateQuestionnaireMetadataAction = (
@@ -130,5 +144,20 @@ export const deleteValueSetCodeAction = (linkId: string, code: string): DeleteVa
         type: DELETE_VALUESET_CODE_ACTION,
         linkId,
         code,
+    };
+};
+
+export const duplicateItemAction = (linkId: string, order: Array<string>): DuplicateItemAction => {
+    return {
+        type: DUPLICATE_ITEM_ACTION,
+        linkId,
+        order,
+    };
+};
+
+export const resetQuestionnaireAction = (newState?: TreeState | undefined): ResetQuestionnaireAction => {
+    return {
+        type: RESET_QUESTIONNAIRE_ACTION,
+        newState,
     };
 };

@@ -6,3 +6,13 @@
 .horizontal button:focus {
     outline: 0px;
 }
+
+.radioBtn>input[type="text"] {
+    width: 90%;
+    padding: 10px;
+}
+
+.radioBtn > button{
+    margin-left: auto;
+    cursor: pointer;
+}

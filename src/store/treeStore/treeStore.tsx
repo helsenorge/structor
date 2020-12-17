@@ -3,6 +3,8 @@ import produce from 'immer';
 
 import { QuestionnaireItem, ValueSet } from '../../types/fhir';
 import {
+    RESET_QUESTIONNAIRE_ACTION,
+    ResetQuestionnaireAction,
     DELETE_ITEM_ACTION,
     DELETE_VALUESET_CODE_ACTION,
     DeleteItemAction,
@@ -17,19 +19,23 @@ import {
     UpdateItemAction,
     UpdateQuestionnaireMetadataAction,
     UpdateValueSetCodeAction,
+    DUPLICATE_ITEM_ACTION,
+    DuplicateItemAction,
 } from './treeActions';
 import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
 
 type ActionType =
+    | ResetQuestionnaireAction
     | UpdateQuestionnaireMetadataAction
     | NewItemAction
     | DeleteItemAction
     | UpdateItemAction
     | NewValueSetCodeAction
     | UpdateValueSetCodeAction
-    | DeleteValueSetCodeAction;
+    | DeleteValueSetCodeAction
+    | DuplicateItemAction;
 
 export interface Items {
     [key: string]: QuestionnaireItem;
@@ -152,7 +158,7 @@ function createNewValueSet(valueSetId: string): ValueSet {
 
 function newItem(draft: TreeState, action: NewItemAction): void {
     let itemToAdd = action.item;
-    if (isChoiceOrOpenChoice(action.item.type)) {
+    if (isChoiceOrOpenChoice(itemToAdd.type)) {
         const valueSetId = getValueSetId(action.item.linkId);
         draft.qValueSet[valueSetId] = createNewValueSet(valueSetId);
         itemToAdd = {
@@ -241,15 +247,68 @@ function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value
     if (IQuestionnaireMetadataType.title === propName) {
         draft.qMetadata.name = `hdir-${value}`;
 
-        const codings = draft.qMetadata.useContext[0].valueCodeableConcept?.coding;
-        if (codings !== undefined && codings.length > 0) {
-            codings[0].display = value;
+        const useContext = draft.qMetadata.useContext;
+        if (useContext !== undefined && useContext.length > 0) {
+            const codings = useContext[0].valueCodeableConcept?.coding;
+            if (codings !== undefined && codings.length > 0) {
+                codings[0].display = value;
+            }
         }
     }
 }
 
+function resetQuestionnaireAction(draft: TreeState, action: ResetQuestionnaireAction): void {
+    const newState: TreeState = action.newState || initialState;
+    draft.qOrder = newState.qOrder;
+    draft.qItems = newState.qItems;
+    draft.qValueSet = newState.qValueSet;
+    draft.qMetadata = newState.qMetadata;
+}
+
+function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): void {
+    // find index of item to duplicate
+    const arrayToDuplicateInto = findTreeArray(action.order, draft.qOrder);
+    const indexToDuplicate = arrayToDuplicateInto.findIndex((x) => x.linkId === action.linkId);
+
+    const copyItemWithSubtrees = (itemToCopyFrom: OrderItem): OrderItem => {
+        let copyItem: QuestionnaireItem = JSON.parse(JSON.stringify(draft.qItems[itemToCopyFrom.linkId]));
+        copyItem.linkId = createUUID();
+
+        // if this item has a valueSet, copy the existing valueSet
+        if (isChoiceOrOpenChoice(copyItem.type)) {
+            const copyValueSet: ValueSet = JSON.parse(
+                JSON.stringify(draft.qValueSet[getValueSetId(itemToCopyFrom.linkId)]),
+            );
+            const copiedValueSetId = getValueSetId(copyItem.linkId);
+            copyValueSet.id = copiedValueSetId;
+            draft.qValueSet[copiedValueSetId] = copyValueSet;
+            copyItem = {
+                ...copyItem,
+                answerValueSet: `#${copiedValueSetId}`,
+            };
+        }
+
+        // add new item
+        draft.qItems[copyItem.linkId] = copyItem;
+
+        // add item to tree and generate subtrees
+        return {
+            linkId: copyItem.linkId,
+            items: itemToCopyFrom.items.map((item) => copyItemWithSubtrees(item)),
+        };
+    };
+
+    const duplictedItem = copyItemWithSubtrees(arrayToDuplicateInto[indexToDuplicate]);
+
+    // insert duplicated item below item that was copied from
+    arrayToDuplicateInto.splice(indexToDuplicate + 1, 0, duplictedItem);
+}
+
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
+        case RESET_QUESTIONNAIRE_ACTION:
+            resetQuestionnaireAction(draft, action);
+            break;
         case UPDATE_QUESTIONNAIRE_METADATA_ACTION:
             updateQuestionnaireMetadataProperty(draft, action);
             break;
@@ -270,6 +329,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case DELETE_VALUESET_CODE_ACTION:
             deleteValueSetCodeAction(draft, action);
+            break;
+        case DUPLICATE_ITEM_ACTION:
+            duplicateItemAction(draft, action);
             break;
     }
 });
