@@ -57,4 +57,5 @@ export enum IValidationType {
     minValue = 'http://hl7.org/fhir/StructureDefinition/minValue',
     maxValue = 'http://hl7.org/fhir/StructureDefinition/maxValue',
     regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
+    maxDecimalPlaces = 'http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces',
 }
