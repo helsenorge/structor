@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { IItemProperty } from '../../../types/IQuestionnareItemType';
+import { IItemProperty, IValidationType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 
 interface ValidationTypeProp {
@@ -10,6 +10,9 @@ interface ValidationTypeProp {
 
 const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
+    const validationText = item?.extension?.find((x) => x.url === IValidationType.validationtext)?.valueString || '';
+    const minValue = item?.extension?.find((x) => x.url === IValidationType.minValue)?.valueInteger;
+    const maxValue = item?.extension?.find((x) => x.url === IValidationType.maxValue)?.valueInteger;
 
     const dispatchExtentionUpdate = (value: any) => {
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, value));
@@ -83,6 +86,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                 <label className="#">Min verdi</label>
                 <input
                     type="number"
+                    defaultValue={minValue}
                     onChange={updateExtensionNumberElement('http://hl7.org/fhir/StructureDefinition/minValue')}
                 ></input>
             </div>
@@ -91,6 +95,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                 <label className="#">Max verdi</label>
                 <input
                     type="number"
+                    defaultValue={maxValue}
                     onChange={updateExtensionNumberElement('http://hl7.org/fhir/StructureDefinition/maxValue')}
                 ></input>
             </div>
@@ -110,6 +115,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                 <label className="#">Legg til egendefinert feilmelding:</label>
                 <input
                     type="input"
+                    defaultValue={validationText}
                     placeholder="feilmelding"
                     onChange={updateExtensionInputElement('http://ehelse.no/fhir/StructureDefinition/validationtext')}
                 ></input>
