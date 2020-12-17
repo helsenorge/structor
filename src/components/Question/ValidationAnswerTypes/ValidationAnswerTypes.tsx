@@ -14,24 +14,12 @@ interface ValidationTypeProp {
 const ValidationAnswerTypes = ({ item }: ValidationTypeProp): JSX.Element => {
     const respondType = (itemType: string) => {
         switch (itemType) {
-            case IQuestionnaireItemType.group:
-                return <p>Group</p>;
-            case IQuestionnaireItemType.display:
-                return <p>Display</p>;
-            case IQuestionnaireItemType.choice:
-                return <p>Choice</p>;
-            case IQuestionnaireItemType.openChoice:
-                return <p>Open choice</p>;
-            case IQuestionnaireItemType.dateTime:
-                return <p>Datetime</p>;
-            case IQuestionnaireItemType.boolean:
-                return <p>Boolean</p>;
             case IQuestionnaireItemType.time:
                 return <ValidationAnswerTypeTime />;
             case IQuestionnaireItemType.date:
                 return <ValidationAnswerTypeDate item={item} />;
             case IQuestionnaireItemType.string:
-                return <ValidationAnswerTypeString />;
+                return <ValidationAnswerTypeString item={item} />;
             case IQuestionnaireItemType.text:
                 return <ValidationAnswerTypesText item={item} />;
             case IQuestionnaireItemType.integer:

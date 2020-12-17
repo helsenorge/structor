@@ -9,6 +9,7 @@ import Btn from '../components/Btn/Btn';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
+import { Link } from 'react-router-dom';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -107,7 +108,10 @@ const FormBuilder = (): JSX.Element => {
     return (
         <>
             <header>
-                <IconBtn type="back" title="Tilbake" />
+                <Link to="/">
+                    <IconBtn type="back" title="Tilbake" />
+                </Link>
+
                 <h1>Skjemabygger</h1>
                 <div className="pull-right">
                     <Btn title="Forhåndsvisning" onClick={() => setIsIframeVisible(!isIframeVisible)} />
