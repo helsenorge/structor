@@ -14,7 +14,7 @@ export const DELETE_VALUESET_CODE_ACTION = 'deleteValueSetCode';
 export const DUPLICATE_ITEM_ACTION = 'duplicateItemAction';
 export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 
-type ItemValueType = string | boolean | Extension[] | IEnableWhen[]; // TODO: legg på alle lovlige verdier
+type ItemValueType = string | boolean | Extension[] | IEnableWhen[] | number; // TODO: legg på alle lovlige verdier
 
 export interface UpdateQuestionnaireMetadataAction {
     type: typeof UPDATE_QUESTIONNAIRE_METADATA_ACTION;
