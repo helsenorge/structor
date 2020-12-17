@@ -73,6 +73,10 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
+    const dispatchClearExtention = () => {
+        dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
+    };
+
     const dispatchDeleteValueSet = (code: string) => {
         dispatch(deleteValueSetCodeAction(props.item.linkId, code));
     };
@@ -235,6 +239,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         options={itemType}
                         onChange={(event: { target: { value: string | boolean } }) => {
                             dispatchUpdateItem(IItemProperty.type, event.target.value);
+                            dispatchClearExtention();
                         }}
                     />
                 </div>
