@@ -43,7 +43,6 @@
 .form-field {
     display: flex;
     flex-direction: column;
-    max-width: 50%;
     padding-bottom: 12px;
 }
 

@@ -139,7 +139,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                                     <RadioBtn
                                         key={index}
                                         showDelete={index > 1}
-                                        valueSetID={set.code + '-valueSet'}
+                                        valueSetID={props.item.linkId}
                                         value={set.display}
                                         onChange={(event) => {
                                             const clone = { ...set, display: event.target.value };
@@ -219,9 +219,6 @@ const Question = (props: QuestionProps): JSX.Element => {
                 </button>
                 <button onClick={dispatchDeleteItem}>
                     <img src={Trashcan} height="25" width="25" /> Slett
-                </button>
-                <button>
-                    <img src={MoveIcon} height="25" width="25" /> Flytt
                 </button>
             </div>
             <div className="question-form">

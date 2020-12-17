@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { format, parse } from 'date-fns';
+import { format, parse, parseISO, formatISO } from 'date-fns';
 import { QuestionnaireItem, QuestionnaireItemEnableWhen, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import { IEnableWhen, IItemProperty, IOperator, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import FormField from '../FormField/FormField';
@@ -10,6 +10,7 @@ import itemType, { operator } from '../../helpers/QuestionHelper';
 import './EnableWhen.css';
 import Infobox from './Infobox';
 import Picker from '../DatePicker/DatePicker';
+import DateTimePicker from '../DatePicker/DateTimePicker';
 
 type Props = {
     getValueSet: (linkId: string) => ValueSetComposeIncludeConcept[];
@@ -215,6 +216,47 @@ const Conditional = ({ getItem, conditionalArray, linkId, enableWhen, getValueSe
                                     const copy = {
                                         ...itemEnableWhen,
                                         answerTime: format(date, 'HH:mm:ss'),
+                                    };
+                                    dispatchUpdateItemEnableWhen([copy]);
+                                }}
+                            />
+                        </FormField>
+                        <Infobox title="Spørsmålet vil vises dersom svaret på:">
+                            <p>
+                                <strong>{conditionItem.text}</strong>{' '}
+                                {operator.find((x) => x.code === itemEnableWhen?.operator)?.display.toLocaleLowerCase()}{' '}
+                                <strong>{itemEnableWhen.answerTime?.slice(0, 5)}</strong>
+                            </p>
+                        </Infobox>
+                    </>
+                );
+            case IQuestionnaireItemType.dateTime:
+                const selectedDateTime = itemEnableWhen.answerDateTime
+                    ? parseISO(itemEnableWhen?.answerDateTime)
+                    : undefined;
+
+                return (
+                    <>
+                        <FormField label="Vis hvis svaret er:">
+                            <Select
+                                placeholder="Velg en operator"
+                                options={operator}
+                                value={itemEnableWhen?.operator}
+                                onChange={(e) => {
+                                    const copy = { ...itemEnableWhen, operator: e.currentTarget.value };
+                                    dispatchUpdateItemEnableWhen([copy]);
+                                }}
+                            />
+                            <DateTimePicker
+                                selected={selectedDateTime}
+                                disabled={false}
+                                withPortal
+                                callback={(date: Date) => {
+                                    console.log(date);
+                                    console.log(formatISO(date), 'formatted');
+                                    const copy = {
+                                        ...itemEnableWhen,
+                                        answerDateTime: formatISO(date),
                                     };
                                     dispatchUpdateItemEnableWhen([copy]);
                                 }}
