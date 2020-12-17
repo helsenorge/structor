@@ -1,5 +1,5 @@
 import CreateUUID from '../../helpers/CreateUUID';
-import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IEnableWhen, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept, Extension } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TreeState } from './treeStore';
@@ -14,7 +14,7 @@ export const DELETE_VALUESET_CODE_ACTION = 'deleteValueSetCode';
 export const DUPLICATE_ITEM_ACTION = 'duplicateItemAction';
 export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 
-type ItemValueType = string | boolean | Extension[]; // TODO: legg på alle lovlige verdier
+type ItemValueType = string | boolean | Extension[] | IEnableWhen[]; // TODO: legg på alle lovlige verdier
 
 export interface UpdateQuestionnaireMetadataAction {
     type: typeof UPDATE_QUESTIONNAIRE_METADATA_ACTION;

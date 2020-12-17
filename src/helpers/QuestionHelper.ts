@@ -1,4 +1,4 @@
-import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 
 const itemType = [
     {
@@ -62,6 +62,37 @@ export const checkboxExtension = [
                 },
             ],
         },
+    },
+];
+
+export const operator = [
+    {
+        code: IOperator.exists,
+        display: 'Eksisterer',
+    },
+    {
+        code: IOperator.equal,
+        display: 'Er lik',
+    },
+    {
+        code: IOperator.notEqual,
+        display: 'Ikke lik',
+    },
+    {
+        code: IOperator.greaterThan,
+        display: 'Større enn',
+    },
+    {
+        code: IOperator.lessThan,
+        display: 'Mindre enn',
+    },
+    {
+        code: IOperator.greaterThanOrEqual,
+        display: 'Større enn eller lik',
+    },
+    {
+        code: IOperator.lessThanOrEqual,
+        display: 'Mindre enn eller lik',
     },
 ];
 
