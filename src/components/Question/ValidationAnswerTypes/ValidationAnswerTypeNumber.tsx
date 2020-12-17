@@ -82,22 +82,24 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                 <span> Tillat desimaltall</span>
             </div>
 
-            <div className="form-field" id="number">
-                <label className="#">Min verdi</label>
-                <input
-                    type="number"
-                    defaultValue={minValue}
-                    onChange={updateExtensionNumberElement('http://hl7.org/fhir/StructureDefinition/minValue')}
-                ></input>
-            </div>
+            <div className="horizontal">
+                <div className="form-field" id="number">
+                    <label className="#">Min verdi</label>
+                    <input
+                        type="number"
+                        defaultValue={minValue}
+                        onChange={updateExtensionNumberElement('http://hl7.org/fhir/StructureDefinition/minValue')}
+                    ></input>
+                </div>
 
-            <div className="form-field" id="number">
-                <label className="#">Max verdi</label>
-                <input
-                    type="number"
-                    defaultValue={maxValue}
-                    onChange={updateExtensionNumberElement('http://hl7.org/fhir/StructureDefinition/maxValue')}
-                ></input>
+                <div className="form-field" id="number">
+                    <label className="#">Max verdi</label>
+                    <input
+                        type="number"
+                        defaultValue={maxValue}
+                        onChange={updateExtensionNumberElement('http://hl7.org/fhir/StructureDefinition/maxValue')}
+                    ></input>
+                </div>
             </div>
 
             {/* <div className="form-field">
