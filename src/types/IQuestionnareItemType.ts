@@ -52,3 +52,9 @@ export type IEnableWhen = {
     operator?: string;
     answerInteger?: number;
 };
+
+export enum IValidationType {
+    validationtext = 'http://ehelse.no/fhir/StructureDefinition/validationtext',
+    minValue = 'http://hl7.org/fhir/StructureDefinition/minValue',
+    maxValue = 'http://hl7.org/fhir/StructureDefinition/maxValue',
+}
