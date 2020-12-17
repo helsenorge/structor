@@ -55,7 +55,6 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
 
     const updateExtensionDesimal = (url: string) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
-            alert(url);
             const validationCheckboxextension = {
                 url: url,
                 valueInteger: parseInt(e.target.value),
