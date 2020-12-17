@@ -12,7 +12,6 @@ import {
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
-import MoveIcon from '../../images/icons/swap-vertical-outline.svg';
 import CopyIcon from '../../images/icons/copy-outline.svg';
 import itemType, { checkboxExtension } from '../../helpers/QuestionHelper';
 import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
