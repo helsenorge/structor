@@ -27,7 +27,6 @@ export enum IItemProperty {
     enableWhen = 'enableWhen',
     enableBehavior = 'enableBehavior',
     maxLength = 'maxLength',
-    minLength = 'minLength',
     answerOption = 'answerOption',
     initial = 'initial',
     answerValueSet = 'answerValueSet',
@@ -52,3 +51,10 @@ export type IEnableWhen = {
     operator?: string;
     answerInteger?: number;
 };
+
+export enum IValidationType {
+    validationtext = 'http://ehelse.no/fhir/StructureDefinition/validationtext',
+    minValue = 'http://hl7.org/fhir/StructureDefinition/minValue',
+    maxValue = 'http://hl7.org/fhir/StructureDefinition/maxValue',
+    regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
+}

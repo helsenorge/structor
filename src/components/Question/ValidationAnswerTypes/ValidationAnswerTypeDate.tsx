@@ -1,28 +1,89 @@
-import Select from '../../Select/Select';
-import React from 'react';
+import React, { useContext } from 'react';
+import { QuestionnaireItem, Extension } from '../../../types/fhir';
+import FormField from '../../FormField/FormField';
+import Picker from '../../DatePicker/DatePicker';
+import { updateItemAction } from '../../../store/treeStore/treeActions';
+import { IItemProperty, IValidationType } from '../../../types/IQuestionnareItemType';
+import { TreeContext } from '../../../store/treeStore/treeStore';
+import { format, parse } from 'date-fns';
 
-const ValidationAnswerTypeDate = (): JSX.Element => {
+type Props = {
+    item: QuestionnaireItem;
+};
+
+const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
+    const { dispatch } = useContext(TreeContext);
+
+    const dispatchExtentionUpdate = (extention: Extension) => {
+        const newExtention = new Array<Extension>();
+
+        if (item.extension === undefined || item.extension.length === 0) {
+            newExtention.push(extention);
+        }
+
+        if (item.extension && item.extension.length > 0) {
+            item.extension.forEach((x) => {
+                if (x.url !== extention.url) {
+                    newExtention.push(x);
+                }
+            });
+            newExtention.push(extention);
+        }
+
+        dispatch(updateItemAction(item.linkId, IItemProperty.extension, newExtention));
+    };
+
+    const validationText = item?.extension?.find((x) => x.url === IValidationType.validationtext)?.valueString || '';
+    const minDate = item?.extension?.find((x) => x.url === IValidationType.minValue)?.valueDate;
+    const maxDate = item?.extension?.find((x) => x.url === IValidationType.maxValue)?.valueDate;
+
     return (
         <>
-            <div className="validating-help-title">
-                <p>Veiledende tekst - Dato</p>
-            </div>
+            <FormField label="Legg til egendefinert feilmelding:">
+                <input
+                    defaultValue={validationText}
+                    onChange={(event) => {
+                        const newExtention: Extension = {
+                            url: IValidationType.validationtext,
+                            valueString: event.target.value,
+                        };
 
-            <div className="form-field half">
-                <label className="#">Svaret skal være:</label>
-                <Select
-                    options={[
-                        { display: 'Velg kriterie', code: '0' },
-                        { display: 'Mellom to datoer', code: '1' },
-                        { display: 'Før en bestemt tid', code: '2' },
-                        { display: 'Ette en bestemt tid', code: '3' },
-                        { display: 'Antall dager før', code: '4' },
-                        { display: 'Antall dager etter', code: '5' },
-                    ]}
-                    onChange={() => {
-                        //TODO!
+                        dispatchExtentionUpdate(newExtention);
                     }}
-                ></Select>
+                />
+            </FormField>
+            <div className="horizontal">
+                <FormField label="Min dato:">
+                    <Picker
+                        selected={minDate ? parse(minDate, 'yyyy-MM-dd', new Date()) : undefined}
+                        type="date"
+                        disabled={false}
+                        withPortal
+                        callback={(date) => {
+                            const newExtention: Extension = {
+                                url: IValidationType.minValue,
+                                valueDate: format(date, 'yyyy-MM-dd'),
+                            };
+
+                            dispatchExtentionUpdate(newExtention);
+                        }}
+                    />
+                </FormField>
+                <FormField label="Max dato:">
+                    <Picker
+                        selected={maxDate ? parse(maxDate, 'yyyy-MM-dd', new Date()) : undefined}
+                        type="date"
+                        disabled={false}
+                        withPortal
+                        callback={(date) => {
+                            const newExtention: Extension = {
+                                url: IValidationType.maxValue,
+                                valueDate: format(date, 'yyyy-MM-dd'),
+                            };
+                            dispatchExtentionUpdate(newExtention);
+                        }}
+                    />
+                </FormField>
             </div>
         </>
     );

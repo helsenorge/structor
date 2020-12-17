@@ -4,32 +4,16 @@ import ValidationAnswerTypesNumber from './ValidationAnswerTypeNumber';
 import ValidationAnswerTypesText from './ValidationAnswerTypeText';
 import ValidationAnswerTypeString from './ValidationAnswerTypeString';
 import ValidationAnswerTypeDate from './ValidationAnswerTypeDate';
-import ValidationAnswerTypeTime from './ValidationAnswerTypeTime';
 import { QuestionnaireItem } from '../../../types/fhir';
 interface ValidationTypeProp {
     item: QuestionnaireItem;
-    //TYPES
 }
 
 const ValidationAnswerTypes = ({ item }: ValidationTypeProp): JSX.Element => {
     const respondType = (itemType: string) => {
         switch (itemType) {
-            case IQuestionnaireItemType.group:
-                return <p>Group</p>;
-            case IQuestionnaireItemType.display:
-                return <p>Display</p>;
-            case IQuestionnaireItemType.choice:
-                return <p>Choice</p>;
-            case IQuestionnaireItemType.openChoice:
-                return <p>Open choice</p>;
-            case IQuestionnaireItemType.dateTime:
-                return <p>Datetime</p>;
-            case IQuestionnaireItemType.boolean:
-                return <p>Boolean</p>;
-            case IQuestionnaireItemType.time:
-                return <ValidationAnswerTypeTime />;
             case IQuestionnaireItemType.date:
-                return <ValidationAnswerTypeDate />;
+                return <ValidationAnswerTypeDate item={item} />;
             case IQuestionnaireItemType.string:
                 return <ValidationAnswerTypeString item={item} />;
             case IQuestionnaireItemType.text:

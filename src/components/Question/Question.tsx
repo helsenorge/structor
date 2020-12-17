@@ -13,7 +13,7 @@ import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fh
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import CopyIcon from '../../images/icons/copy-outline.svg';
-import itemType, { checkboxExtension } from '../../helpers/QuestionHelper';
+import itemType, { checkboxExtension, typeIsSupportingValidation } from '../../helpers/QuestionHelper';
 import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import Picker from '../DatePicker/DatePicker';
 import './Question.css';
@@ -71,6 +71,10 @@ const Question = (props: QuestionProps): JSX.Element => {
         } else {
             dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, checkboxExtension));
         }
+    };
+
+    const dispatchClearExtention = () => {
+        dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
     };
 
     const dispatchDeleteValueSet = (code: string) => {
@@ -235,6 +239,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         options={itemType}
                         onChange={(event: { target: { value: string | boolean } }) => {
                             dispatchUpdateItem(IItemProperty.type, event.target.value);
+                            dispatchClearExtention();
                         }}
                     />
                 </div>
@@ -247,20 +252,15 @@ const Question = (props: QuestionProps): JSX.Element => {
                         }}
                     />
                 </div>
-                {/*<div className="form-field">
-                    <label>Legg til beskrivelse (valgfritt)</label>
-                    <input onChange={(e) => {
-                        dispatchUpdateItem(IItemProperty.des, e.target.value);
-                    }}
-                    />
-                </div>*/}
                 {respondType(props.item.type)}
             </div>
 
             <div className="question-addons">
-                <Accordion title="Legg til validering">
-                    <ValidationAnswerTypes item={props.item} />
-                </Accordion>
+                {typeIsSupportingValidation(props.item.type as IQuestionnaireItemType) && (
+                    <Accordion title="Legg til validering">
+                        <ValidationAnswerTypes item={props.item} />
+                    </Accordion>
+                )}
                 {props.parentArray.length > 0 && (
                     <Accordion title="Legg til betinget visning">
                         <div style={{ width: '66%', minHeight: '442px' }}>
