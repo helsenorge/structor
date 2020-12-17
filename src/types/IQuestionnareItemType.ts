@@ -27,7 +27,6 @@ export enum IItemProperty {
     enableWhen = 'enableWhen',
     enableBehavior = 'enableBehavior',
     maxLength = 'maxLength',
-    minLength = 'minLength',
     answerOption = 'answerOption',
     initial = 'initial',
     answerValueSet = 'answerValueSet',
