@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import './FormBuilder.css';
-import { OrderItem, TreeContext } from '../store/treeStore/treeStore';
+import { OrderItem, TreeContext, getValueSetId } from '../store/treeStore/treeStore';
 import Question from '../components/Question/Question';
 import { newItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import { generateQuestionnaire } from '../helpers/generateQuestionnaire';
@@ -8,7 +8,7 @@ import IconBtn from '../components/IconBtn/IconBtn';
 import Btn from '../components/Btn/Btn';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import { QuestionnaireItem } from '../types/fhir';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -40,9 +40,8 @@ const FormBuilder = (): JSX.Element => {
     };
 
     const getCurrentValueSet = (linkId: string) => {
-        const currentValueSet = state.qValueSet[linkId + '-valueSet'];
-
-        return currentValueSet?.compose?.include[0].concept || null;
+        const currentValueSet = state.qValueSet[getValueSetId(linkId)];
+        return currentValueSet?.compose?.include[0].concept || new Array<ValueSetComposeIncludeConcept>();
     };
 
     const getConditional = (parrentArray: string[]) => {
@@ -74,7 +73,7 @@ const FormBuilder = (): JSX.Element => {
                         item={state.qItems[x.linkId]}
                         parentArray={parentArray}
                         questionNumber={questionNumber}
-                        valueSet={getCurrentValueSet(x.linkId)}
+                        valueSet={getCurrentValueSet}
                         conditionalArray={getConditional(parentArray)}
                         getItem={getQItem}
                     />
@@ -96,17 +95,23 @@ const FormBuilder = (): JSX.Element => {
             </header>
 
             {isIframeVisible ? (
-                <div style={{ height: '100%', width: '100%' }} className="iframe-div">
-                    <iframe
-                        id="schemeFrame"
-                        style={{
-                            width: '100%',
-                            height: '70vh',
-                        }}
-                        onLoad={iFrameLoaded}
-                        src="../../iframe/index.html"
-                    ></iframe>
-                </div>
+                <>
+                    <div className="iframe-div">
+                        <div className="title">
+                            <IconBtn type="x" title="Lukk" onClick={() => setIsIframeVisible(!isIframeVisible)} />
+                            <h1>Forhåndsvisning</h1>
+                        </div>
+                        <iframe
+                            id="schemeFrame"
+                            style={{
+                                width: '100%',
+                                height: '70vh',
+                            }}
+                            onLoad={iFrameLoaded}
+                            src="../../iframe/index.html"
+                        ></iframe>
+                    </div>
+                </>
             ) : (
                 <>
                     <div className="page-wrapper">
@@ -141,14 +146,14 @@ const FormBuilder = (): JSX.Element => {
             )}
             {isShowingFireStructure && (
                 <div className="structor-helper">
-                    <header>
+                    <div className="title">
                         <IconBtn
                             type="x"
                             title="Tilbake"
                             onClick={() => setIsShowingFireStructure(!isShowingFireStructure)}
                         />
                         <h1>JSON struktur</h1>
-                    </header>
+                    </div>
                     <code className="json">
                         {JSON.stringify(JSON.parse(generateQuestionnaire(state)), undefined, 2)}
                     </code>

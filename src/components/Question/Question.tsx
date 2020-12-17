@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import {
     newItemAction,
@@ -7,10 +7,12 @@ import {
     newValueSetCodeAction,
     updateValueSetCodeAction,
     deleteValueSetCodeAction,
+    duplicateItemAction,
 } from '../../store/treeStore/treeActions';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
+import CopyIcon from '../../images/icons/copy-outline.svg';
 import itemType, { checkboxExtension } from '../../helpers/QuestionHelper';
 import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import Picker from '../DatePicker/DatePicker';
@@ -20,14 +22,14 @@ import Select from '../Select/Select';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import Btn from '../Btn/Btn';
 import Accordion from '../Accordion/Accordion';
-import Conditional from '../Conditional/Conditional';
+import EnableWhen from '../EnableWhen/EnableWhen';
 
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
 
 interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
-    valueSet: ValueSetComposeIncludeConcept[] | null;
+    valueSet: (linkId: string) => ValueSetComposeIncludeConcept[];
     questionNumber: string;
     conditionalArray: {
         code: string;
@@ -37,8 +39,6 @@ interface QuestionProps {
 }
 
 const Question = (props: QuestionProps): JSX.Element => {
-    const [currentConditional, setCurrentConditional] = useState<string>();
-
     const { dispatch } = useContext(TreeContext);
 
     const dispatchNewItem = (type?: IQuestionnaireItemType) => {
@@ -47,6 +47,10 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const dispatchDeleteItem = () => {
         dispatch(deleteItemAction(props.item.linkId, props.parentArray));
+    };
+
+    const dispatchDuplicateItem = () => {
+        dispatch(duplicateItemAction(props.item.linkId, props.parentArray));
     };
 
     const dispatchUpdateItem = (name: IItemProperty, value: string | boolean) => {
@@ -74,6 +78,8 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     const respondType = (param: string) => {
+        const valueSet = props.valueSet(props.item.linkId);
+
         switch (param) {
             case IQuestionnaireItemType.string:
                 return (
@@ -116,7 +122,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             case IQuestionnaireItemType.boolean:
                 return (
                     <div className="form-field">
-                        <label>Todo</label>
+                        <input type="checkbox" style={{ zoom: 1.5 }} disabled checked />
                     </div>
                 );
             case IQuestionnaireItemType.choice:
@@ -129,22 +135,21 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 initial
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}
                             />
-                            {props.valueSet &&
-                                props.valueSet.map((set, index) => (
-                                    <>
-                                        <RadioBtn
-                                            key={index}
-                                            showDelete={index > 1}
-                                            valueSetID={set.code + '-valueSet'}
-                                            value={set.display}
-                                            onChange={(event) => {
-                                                const clone = { ...set, display: event.target.value };
-                                                dispatchUpdateValueSet(clone);
-                                            }}
-                                            deleteItem={() => dispatchDeleteValueSet(set.code)}
-                                        />
-                                    </>
-                                ))}
+                            {valueSet?.map((set, index) => (
+                                <>
+                                    <RadioBtn
+                                        key={index}
+                                        showDelete={index > 1}
+                                        valueSetID={props.item.linkId}
+                                        value={set.display}
+                                        onChange={(event) => {
+                                            const clone = { ...set, display: event.target.value };
+                                            dispatchUpdateValueSet(clone);
+                                        }}
+                                        deleteItem={() => dispatchDeleteValueSet(set.code)}
+                                    />
+                                </>
+                            ))}
                         </div>
                         <Btn title="+ Legg til alternativ" onClick={() => dispatchNewValueSetQuestion('')} />
                     </>
@@ -159,20 +164,19 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 initial
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}
                             />
-                            {props.valueSet &&
-                                props.valueSet.map((set, index) => (
-                                    <RadioBtn
-                                        key={index}
-                                        showDelete={index > 1}
-                                        valueSetID={set.code + '-valueSet'}
-                                        value={set.display}
-                                        onChange={(event) => {
-                                            const clone = { ...set, display: event.target.value };
-                                            dispatchUpdateValueSet(clone);
-                                        }}
-                                        deleteItem={() => dispatchDeleteValueSet(set.code)}
-                                    />
-                                ))}
+                            {valueSet?.map((set, index) => (
+                                <RadioBtn
+                                    key={index}
+                                    showDelete={index > 1}
+                                    valueSetID={set.code + '-valueSet'}
+                                    value={set.display}
+                                    onChange={(event) => {
+                                        const clone = { ...set, display: event.target.value };
+                                        dispatchUpdateValueSet(clone);
+                                    }}
+                                    deleteItem={() => dispatchDeleteValueSet(set.code)}
+                                />
+                            ))}
                             <RadioBtn value="eget svaralternativ for bruker" />
                         </div>
                         <Btn title="+ Legg til alternativ" onClick={() => dispatchNewValueSetQuestion('')} />
@@ -208,11 +212,14 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <h2>
                     Spørsmål <span>{props.questionNumber}</span>
                 </h2>
-                <button className="pull-right" onClick={dispatchDeleteItem}>
-                    <img src={Trashcan} height="25" width="25" /> Slett
+                <button className="pull-right" onClick={dispatchDuplicateItem}>
+                    <img src={CopyIcon} height="25" width="25" /> Dupliser
                 </button>
                 <button onClick={() => dispatchNewItem()}>
-                    <img src={PlusIcon} height="25" width="25" /> Legg til underspørsmål
+                    <img src={PlusIcon} height="25" width="25" /> Oppfølgingsspørsmål
+                </button>
+                <button onClick={dispatchDeleteItem}>
+                    <img src={Trashcan} height="25" width="25" /> Slett
                 </button>
             </div>
             <div className="question-form">
@@ -254,25 +261,19 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <Accordion title="Legg til validering">
                     <ValidationAnswerTypes item={props.item} />
                 </Accordion>
-                <Accordion title="Legg til betinget visning">
-                    <div style={{ width: '66%' }}>
-                        <p>
-                            Hvis relevansen for dette spørsmålet er avhgengig av svaret på et tidligere spørsmål, velger
-                            dette her.{' '}
-                        </p>
-                        <div className="form-field">
-                            <label>Velg tidligere spørsmål</label>
-                            <Select
-                                placeholder="Velg spørsmål"
-                                options={props.conditionalArray}
-                                onChange={(event) => {
-                                    setCurrentConditional(event.target.value);
-                                }}
+                {props.parentArray.length > 0 && (
+                    <Accordion title="Legg til betinget visning">
+                        <div style={{ width: '66%', minHeight: '442px' }}>
+                            <EnableWhen
+                                getItem={props.getItem}
+                                getValueSet={props.valueSet}
+                                conditionalArray={props.conditionalArray}
+                                linkId={props.item.linkId}
+                                enableWhen={props.item.enableWhen || []}
                             />
                         </div>
-                        {currentConditional && <Conditional item={props.getItem(currentConditional)} />}
-                    </div>
-                </Accordion>
+                    </Accordion>
+                )}
             </div>
         </div>
     );

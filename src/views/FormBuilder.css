@@ -4,6 +4,10 @@ header {
     background-color: var(--primary-2);
     display: flex;
     padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    z-index: 3;
+    top: 0;
 }
 
 h1 {
@@ -20,8 +24,9 @@ h1 {
 }
 
 .page-wrapper {
-    max-width: 66%;
+    max-width: 800px;
     margin: 0 auto;
+    padding-top: 80px;
     padding-bottom: 150px;
 }
 
@@ -41,6 +46,11 @@ h1 {
 
 input, textarea, select {
     padding: 10px;
+}
+
+select {
+    padding: 10px 40px 10px 10px;
+    text-overflow: ellipsis;
 }
 
 .section-button {
@@ -71,11 +81,19 @@ input, textarea, select {
     min-width: 380px;
     box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, .78);
     text-align: left;
+    z-index: 3;
+}
+
+.title {
+    background-color: var(--primary-2);
+    display: flex;
+    padding: 10px 0;
 }
 
 .json {
     display: block;
-    white-space: pre;
+    white-space: pre-wrap;
     text-align: left;
     padding: 20px;
+    width: 600px;
 }

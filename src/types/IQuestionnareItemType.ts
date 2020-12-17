@@ -36,3 +36,19 @@ export enum IItemProperty {
     readOnly = 'readOnly',
     extension = 'extension',
 }
+
+export enum IOperator {
+    exists = 'exists',
+    equal = '=',
+    notEqual = '!=',
+    greaterThan = '>',
+    lessThan = '<',
+    greaterThanOrEqual = '>=',
+    lessThanOrEqual = '<=',
+}
+
+export type IEnableWhen = {
+    question?: string;
+    operator?: string;
+    answerInteger?: number;
+};
