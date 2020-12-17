@@ -32,6 +32,10 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, newExtention));
     };
 
+    const updateMaxLength = (number: number) => {
+        dispatch(updateItemAction(item.linkId, IItemProperty.maxLength, number));
+    };
+
     const validationText = item?.extension?.find((x) => x.url === IValidationType.validationtext)?.valueString || '';
     const selectedRegEx = item?.extension?.find((x) => x.url === IValidationType.regEx)?.valueString || '';
 
@@ -81,6 +85,14 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                         dispatchExtentionUpdate(newExtention);
                     }}
                 />
+            </FormField>
+            <FormField label="Maximum antall tegn">
+                <input
+                    value={item.maxLength || ''}
+                    type="input"
+                    aria-label="maximum sign"
+                    onChange={(e) => updateMaxLength(parseInt(e.target.value.toString()))}
+                ></input>
             </FormField>
         </>
     );
