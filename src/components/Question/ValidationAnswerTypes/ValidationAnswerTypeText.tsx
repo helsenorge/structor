@@ -15,7 +15,7 @@ const ValidationAnswerTypeText = ({ item }: ValidationTypeProp): JSX.Element => 
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, value));
     };
 
-    const dispatchUpdateItem = (name: IItemProperty, value: string | boolean) => {
+    const dispatchUpdateItem = (name: IItemProperty, value: string | boolean | number) => {
         dispatch(updateItemAction(item.linkId, name, value));
     };
 
@@ -38,9 +38,8 @@ const ValidationAnswerTypeText = ({ item }: ValidationTypeProp): JSX.Element => 
 
     const updateExtensionNumberElement = (url: IItemProperty) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
-            const a = parseInt(e.target.value.toString());
-            console.log(typeof a);
-            dispatchUpdateItem(url, e.target.value);
+            const numberLength = parseInt(e.target.value.toString());
+            dispatchUpdateItem(url, numberLength);
         };
     };
 
