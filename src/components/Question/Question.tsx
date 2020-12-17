@@ -247,13 +247,6 @@ const Question = (props: QuestionProps): JSX.Element => {
                         }}
                     />
                 </div>
-                {/*<div className="form-field">
-                    <label>Legg til beskrivelse (valgfritt)</label>
-                    <input onChange={(e) => {
-                        dispatchUpdateItem(IItemProperty.des, e.target.value);
-                    }}
-                    />
-                </div>*/}
                 {respondType(props.item.type)}
             </div>
 

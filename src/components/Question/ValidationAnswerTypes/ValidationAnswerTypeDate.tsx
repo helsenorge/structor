@@ -1,28 +1,36 @@
-import Select from '../../Select/Select';
 import React from 'react';
+import { QuestionnaireItem } from '../../../types/fhir';
+import FormField from '../../FormField/FormField';
+import Picker from '../../DatePicker/DatePicker';
 
-const ValidationAnswerTypeDate = (): JSX.Element => {
+type Props = {
+    item: QuestionnaireItem;
+};
+
+const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
     return (
         <>
-            <div className="validating-help-title">
-                <p>Veiledende tekst - Dato</p>
-            </div>
-
-            <div className="form-field half">
-                <label className="#">Svaret skal være:</label>
-                <Select
-                    options={[
-                        { display: 'Velg kriterie', code: '0' },
-                        { display: 'Mellom to datoer', code: '1' },
-                        { display: 'Før en bestemt tid', code: '2' },
-                        { display: 'Ette en bestemt tid', code: '3' },
-                        { display: 'Antall dager før', code: '4' },
-                        { display: 'Antall dager etter', code: '5' },
-                    ]}
-                    onChange={() => {
-                        //TODO!
-                    }}
-                ></Select>
+            <div className="horizontal">
+                <FormField label="Min dato:">
+                    <Picker
+                        type="date"
+                        disabled={false}
+                        withPortal
+                        callback={(date) => {
+                            console.log(date);
+                        }}
+                    />
+                </FormField>
+                <FormField label="Max dato:">
+                    <Picker
+                        type="date"
+                        disabled={false}
+                        withPortal
+                        callback={(date) => {
+                            console.log(date);
+                        }}
+                    />
+                </FormField>
             </div>
         </>
     );
