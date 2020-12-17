@@ -33,7 +33,7 @@ const ValidationAnswerTypes = ({ item }: ValidationTypeProp): JSX.Element => {
             case IQuestionnaireItemType.string:
                 return <ValidationAnswerTypeString />;
             case IQuestionnaireItemType.text:
-                return <ValidationAnswerTypesText />;
+                return <ValidationAnswerTypesText item={item} />;
             case IQuestionnaireItemType.integer:
                 return <ValidationAnswerTypesNumber item={item} />;
         }

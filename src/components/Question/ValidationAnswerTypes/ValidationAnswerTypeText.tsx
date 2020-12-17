@@ -1,48 +1,63 @@
-import React from 'react';
-import Select from '../../Select/Select';
+import React, { useContext } from 'react';
+import { updateItemAction } from '../../../store/treeStore/treeActions';
+import { TreeContext } from '../../../store/treeStore/treeStore';
+import { IItemProperty } from '../../../types/IQuestionnareItemType';
+import { QuestionnaireItem } from '../../../types/fhir';
 
-const ValidationAnswerTypeText = (): JSX.Element => {
+interface ValidationTypeProp {
+    item: QuestionnaireItem;
+}
+
+const ValidationAnswerTypeText = ({ item }: ValidationTypeProp): JSX.Element => {
+    const { dispatch } = useContext(TreeContext);
+
+    const dispatchExtentionUpdate = (value: any) => {
+        dispatch(updateItemAction(item.linkId, IItemProperty.extension, value));
+    };
+
+    const dispatchUpdateItem = (name: IItemProperty, value: string | boolean) => {
+        dispatch(updateItemAction(item.linkId, name, value));
+    };
+
+    const updateExtensionInputElement = (url: string) => {
+        return (e: React.ChangeEvent<HTMLInputElement>) => {
+            const validationTextExtension = {
+                url: url,
+                valueString: e.target.value,
+            };
+            const extensionToUpdate = item.extension?.find((ext) => ext.url === validationTextExtension.url);
+            const removedExt = item.extension?.filter((ext) => ext.url !== validationTextExtension.url) ?? [];
+            const newExtension =
+                extensionToUpdate === undefined
+                    ? validationTextExtension
+                    : { url: extensionToUpdate.url, valueString: e.target.value };
+
+            dispatchExtentionUpdate([...removedExt, newExtension]);
+        };
+    };
+
+    const updateExtensionNumberElement = (url: IItemProperty) => {
+        return (e: React.ChangeEvent<HTMLInputElement>) => {
+            const a = parseInt(e.target.value.toString());
+            console.log(typeof a);
+            dispatchUpdateItem(url, e.target.value);
+        };
+    };
+
     return (
         <>
             <div className="validating-help-title">
                 <p>Veiledende tekst for Langsvar</p>
             </div>
 
-            <div className="form-field half">
-                <label className="#">Svaret skal inneholde:</label>
-                <Select
-                    options={[
-                        { display: 'Velg kriterie', code: '0' },
-                        { display: 'Maksimum antall tegn', code: '1' },
-                        { display: 'Minimum antall tegn', code: '2' },
-                    ]}
-                    onChange={() => {
-                        //TODO!
-                    }}
-                ></Select>
+            <div className="form-field" id="number">
+                <label className="#">Minimum antall tegn</label>
+                <input type="input" onChange={updateExtensionNumberElement(IItemProperty.minLength)}></input>
             </div>
 
-            {/* SHOW WHEN SELECED A VALUE */}
-            <div className="form-field half">
-                <label className="#">Skriv inn ett tall:</label>
-                <input
-                    type="input"
-                    placeholder="25"
-                    onChange={() => {
-                        //TODO
-                    }}
-                ></input>
-            </div>
-
-            <div className="form-field">
-                <a
-                    href="#"
-                    onClick={() => {
-                        //TODO
-                    }}
-                >
-                    + Legg til kriterie
-                </a>
+            <div className="form-field" id="number">
+                <label className="#">Maximum antall tegn</label>
+                <input type="input" onChange={updateExtensionNumberElement(IItemProperty.maxLength)}></input>
             </div>
 
             <div className="form-field custom-input-error-message">
@@ -50,9 +65,7 @@ const ValidationAnswerTypeText = (): JSX.Element => {
                 <input
                     type="input"
                     placeholder="feilmelding"
-                    onChange={() => {
-                        //TODO
-                    }}
+                    onChange={updateExtensionInputElement('http://ehelse.no/fhir/StructureDefinition/validationtext')}
                 ></input>
             </div>
         </>
