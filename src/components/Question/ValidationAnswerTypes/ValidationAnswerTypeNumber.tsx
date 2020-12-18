@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { IItemProperty, IValidationType } from '../../../types/IQuestionnareItemType';
-import { QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem, Extension } from '../../../types/fhir';
 
 interface ValidationTypeProp {
     item: QuestionnaireItem;
@@ -15,7 +15,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
     const maxValue = item?.extension?.find((x) => x.url === IValidationType.maxValue)?.valueInteger;
     const maxDecimalPlaces = item?.extension?.find((x) => x.url === IValidationType.maxDecimalPlaces)?.valueInteger;
 
-    const dispatchExtentionUpdate = (value: any) => {
+    const dispatchExtentionUpdate = (value: Extension[]) => {
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, value));
     };
 
