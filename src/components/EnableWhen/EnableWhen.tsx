@@ -172,6 +172,7 @@ const Conditional = ({ getItem, conditionalArray, linkId, enableWhen, getValueSe
                                 selected={selectedDate}
                                 disabled={false}
                                 withPortal
+                                type="date"
                                 callback={(date: Date) => {
                                     const copy = {
                                         ...itemEnableWhen,

@@ -97,3 +97,16 @@ select {
     padding: 20px;
     width: 600px;
 }
+
+.iframe-overlay{
+    height: 100vh;
+    position: absolute;
+    background: #000000a8;
+    z-index: 4;
+    width: 100%;
+    transition: 1s ease-in-out;
+}
+
+.iframe-div{
+    background: white;
+}
