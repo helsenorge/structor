@@ -13,7 +13,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
     const validationText = item?.extension?.find((x) => x.url === IValidationType.validationtext)?.valueString || '';
     const minValue = item?.extension?.find((x) => x.url === IValidationType.minValue)?.valueInteger;
     const maxValue = item?.extension?.find((x) => x.url === IValidationType.maxValue)?.valueInteger;
-    const maxDecimalPlaces = item?.extension?.find((x) => x.url === IValidationType.maxDecimalPlaces)?.valueInteger;
+    // const maxDecimalPlaces = item?.extension?.find((x) => x.url === IValidationType.maxDecimalPlaces)?.valueInteger;
 
     const dispatchExtentionUpdate = (value: Extension[]) => {
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, value));
@@ -53,21 +53,21 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
         };
     };
 
-    const updateExtensionDesimal = (url: string) => {
-        return (e: React.ChangeEvent<HTMLInputElement>) => {
-            const validationCheckboxextension = {
-                url: url,
-                valueInteger: parseInt(e.target.value),
-            };
-            const extensionToUpdate = item.extension?.find((ext) => ext.url === validationCheckboxextension.url);
-            const removedExt = item.extension?.filter((ext) => ext.url !== validationCheckboxextension.url) ?? [];
-            const newExtension =
-                extensionToUpdate === undefined
-                    ? validationCheckboxextension
-                    : { url: extensionToUpdate.url, valueInteger: parseInt(e.target.value) };
-            dispatchExtentionUpdate([...removedExt, newExtension]);
-        };
-    };
+    // const updateExtensionDesimal = (url: string) => {
+    //     return (e: React.ChangeEvent<HTMLInputElement>) => {
+    //         const validationCheckboxextension = {
+    //             url: url,
+    //             valueInteger: parseInt(e.target.value),
+    //         };
+    //         const extensionToUpdate = item.extension?.find((ext) => ext.url === validationCheckboxextension.url);
+    //         const removedExt = item.extension?.filter((ext) => ext.url !== validationCheckboxextension.url) ?? [];
+    //         const newExtension =
+    //             extensionToUpdate === undefined
+    //                 ? validationCheckboxextension
+    //                 : { url: extensionToUpdate.url, valueInteger: parseInt(e.target.value) };
+    //         dispatchExtentionUpdate([...removedExt, newExtension]);
+    //     };
+    // };
 
     return (
         <>
@@ -75,7 +75,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                 <p>Veiledende tekst</p>
             </div>
 
-            <div className="horizontal">
+            {/* <div className="horizontal">
                 <div className="form-field" id="allow-decimal">
                     <label>Tillat desimaltall</label>
                     <input
@@ -84,7 +84,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                         onChange={updateExtensionDesimal('http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces')}
                     />
                 </div>
-            </div>
+            </div> */}
 
             <div className="horizontal">
                 <div className="form-field" id="number">
