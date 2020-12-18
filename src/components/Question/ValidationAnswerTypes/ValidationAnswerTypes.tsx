@@ -1,0 +1,29 @@
+import React from 'react';
+import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import ValidationAnswerTypesNumber from './ValidationAnswerTypeNumber';
+import ValidationAnswerTypesText from './ValidationAnswerTypeText';
+import ValidationAnswerTypeString from './ValidationAnswerTypeString';
+import ValidationAnswerTypeDate from './ValidationAnswerTypeDate';
+import { QuestionnaireItem } from '../../../types/fhir';
+interface ValidationTypeProp {
+    item: QuestionnaireItem;
+}
+
+const ValidationAnswerTypes = ({ item }: ValidationTypeProp): JSX.Element => {
+    const respondType = (itemType: string) => {
+        switch (itemType) {
+            case IQuestionnaireItemType.date:
+                return <ValidationAnswerTypeDate item={item} />;
+            case IQuestionnaireItemType.string:
+                return <ValidationAnswerTypeString item={item} />;
+            case IQuestionnaireItemType.text:
+                return <ValidationAnswerTypesText item={item} />;
+            case IQuestionnaireItemType.integer:
+                return <ValidationAnswerTypesNumber item={item} />;
+        }
+    };
+
+    return <>{respondType(item.type)}</>;
+};
+
+export default ValidationAnswerTypes;

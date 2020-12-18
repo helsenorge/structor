@@ -9,6 +9,7 @@ import Btn from '../components/Btn/Btn';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
+import { Link } from 'react-router-dom';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -83,14 +84,39 @@ const FormBuilder = (): JSX.Element => {
         });
     };
 
+    function exportToJsonAndDownload() {
+        const questionnaire = generateQuestionnaire(state);
+        const filename = state.qMetadata.title || 'skjema' + '.json';
+        const contentType = 'application/json;charset=utf-8;';
+
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            const blob = new Blob([decodeURIComponent(encodeURI(questionnaire))], {
+                type: contentType,
+            });
+            navigator.msSaveOrOpenBlob(blob, filename);
+        } else {
+            const a = document.createElement('a');
+            a.download = filename;
+            a.href = 'data:' + contentType + ',' + encodeURIComponent(questionnaire);
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    }
+
     return (
         <>
             <header>
-                <IconBtn type="back" title="Tilbake" />
+                <Link to="/">
+                    <IconBtn type="back" title="Tilbake" />
+                </Link>
+
                 <h1>Skjemabygger</h1>
                 <div className="pull-right">
                     <Btn title="Forhåndsvisning" onClick={() => setIsIframeVisible(!isIframeVisible)} />
                     <Btn title="JSON" onClick={() => setIsShowingFireStructure(!isShowingFireStructure)} />
+                    <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
                 </div>
             </header>
 

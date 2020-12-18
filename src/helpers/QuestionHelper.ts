@@ -96,4 +96,15 @@ export const operator = [
     },
 ];
 
+export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolean => {
+    const validTypes = [
+        IQuestionnaireItemType.integer,
+        IQuestionnaireItemType.text,
+        IQuestionnaireItemType.string,
+        IQuestionnaireItemType.date,
+    ];
+
+    return validTypes.includes(type);
+};
+
 export default itemType;
