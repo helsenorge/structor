@@ -92,7 +92,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     <input
                         type="number"
                         defaultValue={minValue}
-                        onChange={updateExtensionNumberElement('http://hl7.org/fhir/StructureDefinition/minValue')}
+                        onChange={updateExtensionNumberElement(IValidationType.minValue)}
                     ></input>
                 </div>
 
@@ -101,7 +101,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     <input
                         type="number"
                         defaultValue={maxValue}
-                        onChange={updateExtensionNumberElement('http://hl7.org/fhir/StructureDefinition/maxValue')}
+                        onChange={updateExtensionNumberElement(IValidationType.maxValue)}
                     ></input>
                 </div>
             </div>
@@ -123,7 +123,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     type="input"
                     defaultValue={validationText}
                     placeholder="feilmelding"
-                    onChange={updateExtensionInputElement('http://ehelse.no/fhir/StructureDefinition/validationtext')}
+                    onChange={updateExtensionInputElement(IValidationType.validationtext)}
                 ></input>
             </div>
         </>
