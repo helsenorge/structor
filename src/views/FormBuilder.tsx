@@ -122,20 +122,22 @@ const FormBuilder = (): JSX.Element => {
 
             {isIframeVisible ? (
                 <>
-                    <div className="iframe-div">
-                        <div className="title">
-                            <IconBtn type="x" title="Lukk" onClick={() => setIsIframeVisible(!isIframeVisible)} />
-                            <h1>Forhåndsvisning</h1>
+                    <div className="iframe-overlay">
+                        <div className="iframe-div">
+                            <div className="title">
+                                <IconBtn type="x" title="Lukk" onClick={() => setIsIframeVisible(!isIframeVisible)} />
+                                <h1>Forhåndsvisning</h1>
+                            </div>
+                            <iframe
+                                id="schemeFrame"
+                                style={{
+                                    width: '100%',
+                                    height: '70vh',
+                                }}
+                                onLoad={iFrameLoaded}
+                                src="../../iframe/index.html"
+                            ></iframe>
                         </div>
-                        <iframe
-                            id="schemeFrame"
-                            style={{
-                                width: '100%',
-                                height: '70vh',
-                            }}
-                            onLoad={iFrameLoaded}
-                            src="../../iframe/index.html"
-                        ></iframe>
                     </div>
                 </>
             ) : (
