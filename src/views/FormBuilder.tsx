@@ -10,6 +10,7 @@ import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { Link } from 'react-router-dom';
+import FormField from '../components/FormField/FormField';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -105,6 +106,29 @@ const FormBuilder = (): JSX.Element => {
         }
     }
 
+    const Administrator = () => (
+        <div id="admin-menu">
+            <FormField label="Status">
+                <input defaultValue="none" />
+            </FormField>
+            <FormField label="ID">
+                <input defaultValue="none" />
+            </FormField>
+            <FormField label="Forfatter">
+                <input defaultValue="none" />
+            </FormField>
+            <FormField label="Endepunkt">
+                <input defaultValue="none" />
+            </FormField>
+            <FormField label="Språk">
+                <input defaultValue="none" />
+            </FormField>
+        </div>
+    );
+
+    const [showResults, setShowResults] = React.useState(false);
+    const onClick = () => setShowResults(!showResults);
+
     return (
         <>
             <header>
@@ -112,7 +136,11 @@ const FormBuilder = (): JSX.Element => {
                     <IconBtn type="back" title="Tilbake" />
                 </Link>
 
-                <h1>Skjemabygger</h1>
+                <div className="left">
+                    <Btn title="Administrator" onClick={() => onClick()} />
+                    {showResults ? <Administrator /> : null}
+                </div>
+
                 <div className="pull-right">
                     <Btn title="Forhåndsvisning" onClick={() => setIsIframeVisible(!isIframeVisible)} />
                     <Btn title="JSON" onClick={() => setIsShowingFireStructure(!isShowingFireStructure)} />

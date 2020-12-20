@@ -1,5 +1,5 @@
-@import "/src/index.css";
-@import "https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css";
+@import '/src/index.css';
+@import 'https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css';
 header {
     background-color: var(--primary-2);
     display: flex;
@@ -13,6 +13,22 @@ header {
 h1 {
     color: var(--color-base-1);
     margin: 0;
+}
+
+.left {
+    padding-left: 10px;
+    align-items: center;
+    display: flex;
+}
+
+#admin-menu {
+    position: absolute;
+    padding: 30px;
+    width: 350px;
+    max-height: 600px;
+    background-color: white;
+    text-align: left;
+    margin-top: 577px;
 }
 
 .pull-right {
@@ -36,15 +52,18 @@ h1 {
     margin-top: 20px;
     padding: 20px;
     background-color: var(--primary-2);
-    box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, .78);
+    box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, 0.78);
 }
 
-.form-intro input, .form-intro textarea {
+.form-intro input,
+.form-intro textarea {
     width: 66%;
     margin: 5px auto;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
     padding: 10px;
 }
 
@@ -64,13 +83,13 @@ select {
     font-size: 16px;
     min-width: 32px;
     color: white;
-    color: var(--primary-1)!important;
-    border-color: var(--primary-1)!important;
-    background-color: var(--color-base-2)!important;
-    height: 60px!important;
+    color: var(--primary-1) !important;
+    border-color: var(--primary-1) !important;
+    background-color: var(--color-base-2) !important;
+    height: 60px !important;
     width: 100%;
-    transition: all .3s cubic-bezier(.645, .045, .355, 1);
-    box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, .78);
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, 0.78);
 }
 
 .structor-helper {
@@ -79,7 +98,7 @@ select {
     right: 0;
     background: white;
     min-width: 380px;
-    box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, .78);
+    box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, 0.78);
     text-align: left;
     z-index: 3;
 }
@@ -98,7 +117,7 @@ select {
     width: 600px;
 }
 
-.iframe-overlay{
+.iframe-overlay {
     height: 100vh;
     position: absolute;
     background: #000000a8;
@@ -107,6 +126,6 @@ select {
     transition: 1s ease-in-out;
 }
 
-.iframe-div{
+.iframe-div {
     background: white;
 }
