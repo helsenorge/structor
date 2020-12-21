@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { TreeContext, OrderItem, getValueSetId } from '../store/treeStore/treeStore';
+import { TreeContext, OrderItem } from '../store/treeStore/treeStore';
 import TreeItem from './treeItem';
 import { newItemAction } from '../store/treeStore/treeActions';
 import { generateQuestionnaire } from '../helpers/generateQuestionnaire';
@@ -33,11 +33,7 @@ const TreeForm = (): JSX.Element => {
         return items.map((x) => {
             return (
                 <div key={x.linkId}>
-                    <TreeItem
-                        item={state.qItems[x.linkId]}
-                        parentArray={parentArray}
-                        valueSet={state.qValueSet[getValueSetId(x.linkId)]}
-                    />
+                    <TreeItem item={state.qItems[x.linkId]} parentArray={parentArray} />
                     {renderTree(x.items, [...parentArray, x.linkId])}
                 </div>
             );

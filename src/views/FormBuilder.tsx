@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import './FormBuilder.css';
-import { OrderItem, TreeContext, getValueSetId } from '../store/treeStore/treeStore';
+import { OrderItem, TreeContext } from '../store/treeStore/treeStore';
 import Question from '../components/Question/Question';
 import { newItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import { generateQuestionnaire } from '../helpers/generateQuestionnaire';
@@ -8,7 +8,7 @@ import IconBtn from '../components/IconBtn/IconBtn';
 import Btn from '../components/Btn/Btn';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
+import { QuestionnaireItem } from '../types/fhir';
 import { Link } from 'react-router-dom';
 
 const FormBuilder = (): JSX.Element => {
@@ -40,11 +40,6 @@ const FormBuilder = (): JSX.Element => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
-    const getCurrentValueSet = (linkId: string) => {
-        const currentValueSet = state.qValueSet[getValueSetId(linkId)];
-        return currentValueSet?.compose?.include[0].concept || new Array<ValueSetComposeIncludeConcept>();
-    };
-
     const getConditional = (parrentArray: string[]) => {
         const conditinals = parrentArray.map((x) => {
             return {
@@ -74,7 +69,6 @@ const FormBuilder = (): JSX.Element => {
                         item={state.qItems[x.linkId]}
                         parentArray={parentArray}
                         questionNumber={questionNumber}
-                        valueSet={getCurrentValueSet}
                         conditionalArray={getConditional(parentArray)}
                         getItem={getQItem}
                     />

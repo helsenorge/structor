@@ -13,7 +13,6 @@ import Picker from '../DatePicker/DatePicker';
 import DateTimePicker from '../DatePicker/DateTimePicker';
 
 type Props = {
-    getValueSet: (linkId: string) => ValueSetComposeIncludeConcept[];
     getItem: (linkId: string) => QuestionnaireItem;
     conditionalArray: {
         code: string;
@@ -23,7 +22,7 @@ type Props = {
     enableWhen: QuestionnaireItemEnableWhen[];
 };
 
-const Conditional = ({ getItem, conditionalArray, linkId, enableWhen, getValueSet }: Props): JSX.Element => {
+const Conditional = ({ getItem, conditionalArray, linkId, enableWhen }: Props): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
     const dispatchUpdateItemEnableWhen = (value: IEnableWhen[]) => {
         dispatch(updateItemAction(linkId, IItemProperty.enableWhen, value));
@@ -74,7 +73,9 @@ const Conditional = ({ getItem, conditionalArray, linkId, enableWhen, getValueSe
                     </>
                 );
             case IQuestionnaireItemType.choice:
-                const choices = getValueSet(conditionItem.linkId);
+                const choices = (conditionItem.answerOption || []).map((x) => {
+                    return { code: x.valueCoding.code || '', display: x.valueCoding.display };
+                });
 
                 return (
                     <>
