@@ -6,6 +6,7 @@ import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataTy
 import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
 import IconBtn from '../IconBtn/IconBtn';
+import Spinner from '../Spinner/Spinner';
 import './Publish.css';
 
 type Props = {
@@ -20,28 +21,38 @@ const Publish = ({ close }: Props): JSX.Element => {
     };
 
     const [upload, setUpload] = useState<'loading' | 'success' | 'error' | ''>('');
+    const [formState, setFormState] = useState<string>('');
+    const [error, setError] = useState<{ diagnostics: string; severity: string }[]>([]);
 
     const pushToServer = () => {
         setUpload('loading');
+        setError([]);
+        setFormState('');
 
         setTimeout(() => {
-            fetch('https://spark.incendi.no/fhir/questionnaire/' + state.qMetadata.id, {
+            fetch(`https://spark.incendi.no/fhir/questionnaire/${state.qMetadata.id}`, {
                 method: 'PUT',
                 body: generateQuestionnaire(state),
                 headers: {
                     'Content-Type': 'application/json',
                 },
-            }).then((res) => {
-                if (res.status >= 200 && res.status < 300) {
-                    setUpload('success');
-                } else {
-                    setUpload('error');
-                }
-            });
-            // .then((res) => {
+            })
+                .then((res) => {
+                    if (res.status >= 200 && res.status < 300) {
+                        setUpload('success');
+                        setFormState('Skjema er lastet opp');
+                    } else {
+                        setUpload('error');
+                        setFormState('Skjema har følgende feil:');
+                    }
 
-            //     console.log(res);
-            // });
+                    return res.json();
+                })
+                .then((data) => {
+                    if (data.issue) {
+                        setError(data.issue);
+                    }
+                });
         }, 2000);
     };
 
@@ -72,25 +83,13 @@ const Publish = ({ close }: Props): JSX.Element => {
                             pushToServer();
                         }}
                     />
-                    <div className={`loader ${upload}`}>
-                        <svg
-                            className="spinner"
-                            width="43px"
-                            height="43px"
-                            viewBox="0 0 44 44"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <circle
-                                className="path"
-                                fill="none"
-                                strokeWidth="4"
-                                strokeLinecap="round"
-                                cx="22"
-                                cy="22"
-                                r="20"
-                            ></circle>
-                        </svg>
+                    <div className="feedback">
+                        <Spinner state={upload} />
+                        <p>{formState}</p>
                     </div>
+                    {error.map((x, index) => {
+                        return <p key={index}>{x.diagnostics}</p>;
+                    })}
                 </div>
             </div>
         </div>
