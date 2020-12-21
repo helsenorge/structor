@@ -10,7 +10,7 @@ import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { Link } from 'react-router-dom';
-import Administrator from '../components/Metadata/AdministratorMenu';
+import Publish from '../components/Metadata/Publish';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -116,16 +116,15 @@ const FormBuilder = (): JSX.Element => {
                     <IconBtn type="back" title="Tilbake" />
                 </Link>
 
-                <div className="left">
-                    <Btn title="Administrator" onClick={() => onClick()} />
-                    {showResults ? <Administrator metadata={state.qMetadata} /> : null}
-                </div>
+                <div className="left"></div>
 
                 <div className="pull-right">
                     <Btn title="Forhåndsvisning" onClick={() => setIsIframeVisible(!isIframeVisible)} />
                     <Btn title="JSON" onClick={() => setIsShowingFireStructure(!isShowingFireStructure)} />
                     <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
+                    <Btn title="Publiser" onClick={() => onClick()} />
                 </div>
+                {showResults ? <Publish metadata={state.qMetadata} /> : null}
             </header>
 
             {isIframeVisible ? (

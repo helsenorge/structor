@@ -22,12 +22,13 @@ h1 {
 
 #admin-menu {
     position: absolute;
+    right: 0px;
     padding: 30px;
     width: 350px;
     max-height: 600px;
     background-color: white;
     text-align: left;
-    margin-top: 15px;
+    margin-top: 47px;
 }
 
 .pull-right {

@@ -18,3 +18,10 @@ export const metadataOperators = [
         display: 'Ukjent',
     },
 ];
+
+export const metadataLanguage = [
+    { code: 'nb-no', display: 'Norsk Nokmål ' },
+    { code: 'nn-no', display: 'Nynorsk' },
+    { code: 'se-no', display: 'Svensk' },
+    { code: 'en-gb', display: 'Engelsk' },
+];

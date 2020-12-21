@@ -1,7 +1,7 @@
 import React from 'react';
 
 type Props = {
-    label: string;
+    label?: string;
     children?: JSX.Element | JSX.Element[];
 };
 
