@@ -3,10 +3,16 @@ import { ContactDetail, Meta, UsageContext } from './fhir';
 export enum IQuestionnaireMetadataType {
     title = 'title',
     description = 'description',
-    // TODO Add more types
+    id = 'id',
+    status = 'status',
+    publisher = 'publisher',
+    language = 'language',
+    url = 'url',
 }
 
 export interface IQuestionnaireMetadata {
+    url?: string;
+    id?: string;
     resourceType?: string;
     language?: string;
     name?: string;
@@ -18,4 +24,11 @@ export interface IQuestionnaireMetadata {
     useContext?: Array<UsageContext>;
     contact?: Array<ContactDetail>;
     subjectType?: Array<string>;
+}
+
+export enum IQuestionnaireStatus {
+    active = 'active',
+    draft = 'draft',
+    retired = 'retired',
+    unknown = 'unknown',
 }

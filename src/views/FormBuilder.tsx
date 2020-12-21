@@ -10,11 +10,14 @@ import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { Link } from 'react-router-dom';
+import PublishModal from '../components/PublishModal/PublishModal';
+import Publish from '../components/Metadata/Publish';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const [isIframeVisible, setIsIframeVisible] = React.useState<boolean>(false);
     const [isShowingFireStructure, setIsShowingFireStructure] = React.useState<boolean>(false);
+    const [showPublishModal, setShowPublishModal] = React.useState<boolean>(false);
 
     function iFrameLoaded() {
         const questionnaireString = generateQuestionnaire(state);
@@ -105,6 +108,9 @@ const FormBuilder = (): JSX.Element => {
         }
     }
 
+    const [showResults, setShowAdminMenu] = React.useState(false);
+    const onClick = () => setShowAdminMenu(!showResults);
+
     return (
         <>
             <header>
@@ -112,17 +118,22 @@ const FormBuilder = (): JSX.Element => {
                     <IconBtn type="back" title="Tilbake" />
                 </Link>
 
-                <h1>Skjemabygger</h1>
+                <div className="left"></div>
+
                 <div className="pull-right">
                     <Btn title="Forhåndsvisning" onClick={() => setIsIframeVisible(!isIframeVisible)} />
                     <Btn title="JSON" onClick={() => setIsShowingFireStructure(!isShowingFireStructure)} />
                     <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
+                    <Btn title="Publiser" onClick={() => onClick()} />
                 </div>
+                {showResults && <Publish openModal={() => setShowPublishModal(!showPublishModal)} />}
             </header>
+
+            {showPublishModal && <PublishModal close={() => setShowPublishModal(!showPublishModal)} />}
 
             {isIframeVisible ? (
                 <>
-                    <div className="iframe-overlay">
+                    <div className="overlay">
                         <div className="iframe-div">
                             <div className="title">
                                 <IconBtn type="x" title="Lukk" onClick={() => setIsIframeVisible(!isIframeVisible)} />
