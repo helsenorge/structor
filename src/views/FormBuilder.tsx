@@ -10,7 +10,7 @@ import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { Link } from 'react-router-dom';
-import FormField from '../components/FormField/FormField';
+import Administrator from '../components/Metadata/AdministratorMenu';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -106,28 +106,8 @@ const FormBuilder = (): JSX.Element => {
         }
     }
 
-    const Administrator = () => (
-        <div id="admin-menu">
-            <FormField label="Status">
-                <input defaultValue="none" />
-            </FormField>
-            <FormField label="ID">
-                <input defaultValue="none" />
-            </FormField>
-            <FormField label="Forfatter">
-                <input defaultValue="none" />
-            </FormField>
-            <FormField label="Endepunkt">
-                <input defaultValue="none" />
-            </FormField>
-            <FormField label="Språk">
-                <input defaultValue="none" />
-            </FormField>
-        </div>
-    );
-
-    const [showResults, setShowResults] = React.useState(false);
-    const onClick = () => setShowResults(!showResults);
+    const [showResults, setShowAdminMenu] = React.useState(false);
+    const onClick = () => setShowAdminMenu(!showResults);
 
     return (
         <>
@@ -138,7 +118,7 @@ const FormBuilder = (): JSX.Element => {
 
                 <div className="left">
                     <Btn title="Administrator" onClick={() => onClick()} />
-                    {showResults ? <Administrator /> : null}
+                    {showResults ? <Administrator metadata={state.qMetadata} /> : null}
                 </div>
 
                 <div className="pull-right">

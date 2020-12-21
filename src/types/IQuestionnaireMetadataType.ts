@@ -19,3 +19,10 @@ export interface IQuestionnaireMetadata {
     contact?: Array<ContactDetail>;
     subjectType?: Array<string>;
 }
+
+export enum IQuestionnaireStatus {
+    active = 'active',
+    draft = 'draft',
+    retired = 'retired',
+    unknown = 'unknown',
+}

@@ -18,7 +18,6 @@ h1 {
 .left {
     padding-left: 10px;
     align-items: center;
-    display: flex;
 }
 
 #admin-menu {
@@ -28,7 +27,7 @@ h1 {
     max-height: 600px;
     background-color: white;
     text-align: left;
-    margin-top: 577px;
+    margin-top: 15px;
 }
 
 .pull-right {
