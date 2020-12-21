@@ -10,11 +10,13 @@ import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { Link } from 'react-router-dom';
+import Publish from '../components/Publish/Publish';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const [isIframeVisible, setIsIframeVisible] = React.useState<boolean>(false);
     const [isShowingFireStructure, setIsShowingFireStructure] = React.useState<boolean>(false);
+    const [showPublish, setShowPublish] = React.useState<boolean>(false);
 
     function iFrameLoaded() {
         const questionnaireString = generateQuestionnaire(state);
@@ -117,12 +119,14 @@ const FormBuilder = (): JSX.Element => {
                     <Btn title="Forhåndsvisning" onClick={() => setIsIframeVisible(!isIframeVisible)} />
                     <Btn title="JSON" onClick={() => setIsShowingFireStructure(!isShowingFireStructure)} />
                     <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
+                    <Btn title="Publiser" onClick={() => setShowPublish(!showPublish)} />
                 </div>
             </header>
 
+            {showPublish && <Publish close={() => setShowPublish(!showPublish)} />}
             {isIframeVisible ? (
                 <>
-                    <div className="iframe-overlay">
+                    <div className="overlay">
                         <div className="iframe-div">
                             <div className="title">
                                 <IconBtn type="x" title="Lukk" onClick={() => setIsIframeVisible(!isIframeVisible)} />

@@ -98,7 +98,7 @@ select {
     width: 600px;
 }
 
-.iframe-overlay{
+.overlay{
     height: 100vh;
     position: absolute;
     background: #000000a8;

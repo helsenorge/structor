@@ -3,10 +3,12 @@ import { ContactDetail, Meta, UsageContext } from './fhir';
 export enum IQuestionnaireMetadataType {
     title = 'title',
     description = 'description',
+    id = 'id',
     // TODO Add more types
 }
 
 export interface IQuestionnaireMetadata {
+    id?: string;
     resourceType?: string;
     language?: string;
     name?: string;
