@@ -30,7 +30,8 @@ const PublishModal = ({ close }: Props): JSX.Element => {
         setFormState('');
 
         setTimeout(() => {
-            fetch(`https://spark.incendi.no/fhir/questionnaire/${state.qMetadata.id}`, {
+            //https://spark.incendi.no/fhir/questionnaire
+            fetch(`${state.qMetadata.url}/${state.qMetadata.id}`, {
                 method: 'PUT',
                 body: generateQuestionnaire(state),
                 headers: {
@@ -43,7 +44,11 @@ const PublishModal = ({ close }: Props): JSX.Element => {
                         setFormState('Skjema er lastet opp');
                     } else {
                         setUpload('error');
-                        setFormState('Skjema har følgende feil:');
+                        setFormState('Skjema har en eller flere feil');
+                    }
+
+                    if (res.status === 404) {
+                        return { issue: [] };
                     }
 
                     return res.json();
@@ -65,24 +70,37 @@ const PublishModal = ({ close }: Props): JSX.Element => {
                 </div>
                 <div className="content">
                     <p>Er du klar for å publisere?</p>
-                    <FormField label="Url til publiseringen:">
-                        <input value={state.qMetadata.url || ''} placeholder="Skriv inn en url.." />
-                    </FormField>
-
-                    <FormField label="Skriv inn id: ">
-                        <input
-                            value={state.qMetadata.id || ''}
-                            maxLength={64}
-                            onChange={(e) => updateMeta(IQuestionnaireMetadataType.id, e.target.value || '')}
-                        />
-                    </FormField>
-
-                    <Btn
-                        title="Publiser skjema"
-                        onClick={() => {
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
                             pushToServer();
                         }}
-                    />
+                    >
+                        <FormField label="Url til publiseringen:">
+                            <input
+                                value={state.qMetadata.url || ''}
+                                placeholder="Skriv inn en url.."
+                                title="Kun url"
+                                onChange={(e) => updateMeta(IQuestionnaireMetadataType.url, e.target.value || '')}
+                                pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
+                                type="url"
+                                required
+                            />
+                        </FormField>
+
+                        <FormField label="Skriv inn id: ">
+                            <input
+                                pattern="[A-Z0-9_]{1,63}"
+                                title="Kun store bokstaver og tall"
+                                value={state.qMetadata.id || ''}
+                                maxLength={64}
+                                onChange={(e) => updateMeta(IQuestionnaireMetadataType.id, e.target.value || '')}
+                                required
+                            />
+                        </FormField>
+
+                        <Btn title="Publiser skjema" type="submit" />
+                    </form>
                     <div className="feedback">
                         <Spinner state={upload} />
                         <p>{formState}</p>
