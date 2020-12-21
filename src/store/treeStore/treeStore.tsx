@@ -19,7 +19,7 @@ import {
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
-import { createNewAnswerOption } from '../../helpers/answerOptionHelper';
+import { createNewAnswerOption, getSystem } from '../../helpers/answerOptionHelper';
 
 type ActionType =
     | ResetQuestionnaireAction
@@ -142,7 +142,7 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
         (action.itemValue === 'choice' || action.itemValue === 'open-choice') &&
         !draft.qItems[action.linkId].answerOption
     ) {
-        const system = `${action.linkId}-system`;
+        const system = getSystem(action.linkId);
         draft.qItems[action.linkId] = {
             ...draft.qItems[action.linkId],
             answerOption: [createNewAnswerOption(system), createNewAnswerOption(system)],

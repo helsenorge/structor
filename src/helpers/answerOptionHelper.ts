@@ -1,6 +1,10 @@
 import { QuestionnaireItemAnswerOption } from '../types/fhir';
 import createUUID from './CreateUUID';
 
+export const getSystem = (linkId: string): string => {
+    return `${linkId}-system`;
+};
+
 export const createNewAnswerOption = (system?: string): QuestionnaireItemAnswerOption => {
     return {
         valueCoding: {
@@ -16,7 +20,7 @@ export const addEmptyOptionToAnswerOptionArray = (
     linkId: string,
 ): QuestionnaireItemAnswerOption[] => {
     // find existing system, if any. Otherwise generate new system
-    const system = values.length > 0 ? values[0].valueCoding.system : `${linkId}-system`;
+    const system = values.length > 0 ? values[0].valueCoding.system : getSystem(linkId);
 
     // create new answerOption to add
     const newValueCoding = createNewAnswerOption(system);

@@ -11,6 +11,7 @@ import './EnableWhen.css';
 import Infobox from './Infobox';
 import Picker from '../DatePicker/DatePicker';
 import DateTimePicker from '../DatePicker/DateTimePicker';
+import { getSystem } from '../../helpers/answerOptionHelper';
 
 type Props = {
     getItem: (linkId: string) => QuestionnaireItem;
@@ -89,7 +90,7 @@ const Conditional = ({ getItem, conditionalArray, linkId, enableWhen }: Props): 
                                         ...itemEnableWhen,
                                         operator: IOperator.equal,
                                         answerCoding: {
-                                            system: conditionItem.linkId + '-valueSet-system',
+                                            system: getSystem(conditionItem.linkId),
                                             code: e.target.value,
                                         },
                                     };
