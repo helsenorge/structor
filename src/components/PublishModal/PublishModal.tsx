@@ -7,13 +7,13 @@ import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
 import IconBtn from '../IconBtn/IconBtn';
 import Spinner from '../Spinner/Spinner';
-import './Publish.css';
+import './PublishModal.css';
 
 type Props = {
     close: () => void;
 };
 
-const Publish = ({ close }: Props): JSX.Element => {
+const PublishModal = ({ close }: Props): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
 
     const updateMeta = (propName: IQuestionnaireMetadataType, value: string) => {
@@ -66,7 +66,7 @@ const Publish = ({ close }: Props): JSX.Element => {
                 <div className="content">
                     <p>Er du klar for å publisere?</p>
                     <FormField label="Url til publiseringen:">
-                        <input placeholder="Skriv inn en url.." />
+                        <input value={state.qMetadata.url || ''} placeholder="Skriv inn en url.." />
                     </FormField>
 
                     <FormField label="Skriv inn id: ">
@@ -96,4 +96,4 @@ const Publish = ({ close }: Props): JSX.Element => {
     );
 };
 
-export default Publish;
+export default PublishModal;

@@ -4,10 +4,14 @@ export enum IQuestionnaireMetadataType {
     title = 'title',
     description = 'description',
     id = 'id',
-    // TODO Add more types
+    status = 'status',
+    publisher = 'publisher',
+    language = 'language',
+    url = 'url',
 }
 
 export interface IQuestionnaireMetadata {
+    url?: string;
     id?: string;
     resourceType?: string;
     language?: string;
@@ -20,4 +24,11 @@ export interface IQuestionnaireMetadata {
     useContext?: Array<UsageContext>;
     contact?: Array<ContactDetail>;
     subjectType?: Array<string>;
+}
+
+export enum IQuestionnaireStatus {
+    active = 'active',
+    draft = 'draft',
+    retired = 'retired',
+    unknown = 'unknown',
 }
