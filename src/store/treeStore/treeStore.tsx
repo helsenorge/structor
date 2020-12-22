@@ -19,7 +19,7 @@ import {
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
-import { createNewAnswerOption, getSystem } from '../../helpers/answerOptionHelper';
+import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOptionHelper';
 
 type ActionType =
     | ResetQuestionnaireAction
@@ -142,11 +142,18 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
         (action.itemValue === 'choice' || action.itemValue === 'open-choice') &&
         !draft.qItems[action.linkId].answerOption
     ) {
-        const system = getSystem(action.linkId);
+        const system = createNewSystem();
         draft.qItems[action.linkId] = {
             ...draft.qItems[action.linkId],
             answerOption: [createNewAnswerOption(system), createNewAnswerOption(system)],
         };
+    } else if (
+        action.itemProperty === IItemProperty.type &&
+        action.itemValue !== 'choice' &&
+        action.itemValue !== 'open-choice' &&
+        draft.qItems[action.linkId].answerOption
+    ) {
+        draft.qItems[action.linkId].answerOption = undefined;
     }
 }
 
@@ -178,9 +185,18 @@ function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): voi
     const arrayToDuplicateInto = findTreeArray(action.order, draft.qOrder);
     const indexToDuplicate = arrayToDuplicateInto.findIndex((x) => x.linkId === action.linkId);
 
-    const copyItemWithSubtrees = (itemToCopyFrom: OrderItem): OrderItem => {
+    const copyItemWithSubtrees = (itemToCopyFrom: OrderItem, parentMap: { [key: string]: string }): OrderItem => {
         const copyItem: QuestionnaireItem = JSON.parse(JSON.stringify(draft.qItems[itemToCopyFrom.linkId]));
-        copyItem.linkId = createUUID();
+        const newId = createUUID();
+        parentMap[copyItem.linkId] = newId;
+        copyItem.linkId = newId;
+
+        // update enableWhen if condition is a copied parent
+        if (copyItem.enableWhen) {
+            copyItem.enableWhen = copyItem.enableWhen.map((x) => {
+                return { ...x, question: parentMap[x.question] || x.question };
+            });
+        }
 
         // add new item
         draft.qItems[copyItem.linkId] = copyItem;
@@ -188,11 +204,11 @@ function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): voi
         // add item to tree and generate subtrees
         return {
             linkId: copyItem.linkId,
-            items: itemToCopyFrom.items.map((item) => copyItemWithSubtrees(item)),
+            items: itemToCopyFrom.items.map((item) => copyItemWithSubtrees(item, parentMap)),
         };
     };
 
-    const duplictedItem = copyItemWithSubtrees(arrayToDuplicateInto[indexToDuplicate]);
+    const duplictedItem = copyItemWithSubtrees(arrayToDuplicateInto[indexToDuplicate], {});
 
     // insert duplicated item below item that was copied from
     arrayToDuplicateInto.splice(indexToDuplicate + 1, 0, duplictedItem);
