@@ -1,6 +1,6 @@
 import CreateUUID from '../../helpers/CreateUUID';
 import { IEnableWhen, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import { QuestionnaireItem, Extension, QuestionnaireItemAnswerOption } from '../../types/fhir';
+import { QuestionnaireItem, Extension, QuestionnaireItemAnswerOption, Element } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TreeState } from './treeStore';
 
@@ -11,7 +11,15 @@ export const UPDATE_ITEM_ACTION = 'updateItem';
 export const DUPLICATE_ITEM_ACTION = 'duplicateItemAction';
 export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 
-type ItemValueType = string | boolean | Extension[] | IEnableWhen[] | number | QuestionnaireItemAnswerOption[]; // TODO: legg på alle lovlige verdier
+type ItemValueType =
+    | string
+    | boolean
+    | Extension[]
+    | IEnableWhen[]
+    | number
+    | QuestionnaireItemAnswerOption[]
+    | Element
+    | undefined; // TODO: legg på alle lovlige verdier
 
 export interface UpdateQuestionnaireMetadataAction {
     type: typeof UPDATE_QUESTIONNAIRE_METADATA_ACTION;

@@ -6,7 +6,7 @@ import {
     updateItemAction,
     duplicateItemAction,
 } from '../../store/treeStore/treeActions';
-import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
+import { QuestionnaireItem, QuestionnaireItemAnswerOption, Element } from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import CopyIcon from '../../images/icons/copy-outline.svg';
@@ -27,6 +27,9 @@ import {
     removeOptionFromAnswerOptionArray,
     updateAnswerOption,
 } from '../../helpers/answerOptionHelper';
+import { removeExtensionValue, setExtensionValue } from '../../helpers/extensionHelper';
+
+const markdownUrl = 'http://hl7.org/fhir/StructureDefinition/rendering-markdown';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -40,6 +43,7 @@ interface QuestionProps {
 }
 
 const Question = (props: QuestionProps): JSX.Element => {
+    const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(!!props.item._text);
     const { dispatch } = useContext(TreeContext);
 
     const dispatchNewItem = (type?: IQuestionnaireItemType) => {
@@ -54,7 +58,10 @@ const Question = (props: QuestionProps): JSX.Element => {
         dispatch(duplicateItemAction(props.item.linkId, props.parentArray));
     };
 
-    const dispatchUpdateItem = (name: IItemProperty, value: string | boolean | QuestionnaireItemAnswerOption[]) => {
+    const dispatchUpdateItem = (
+        name: IItemProperty,
+        value: string | boolean | QuestionnaireItemAnswerOption[] | Element | undefined,
+    ) => {
         dispatch(updateItemAction(props.item.linkId, name, value));
     };
 
@@ -68,6 +75,26 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const dispatchClearExtention = () => {
         dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
+    };
+
+    const getLabelText = (): string => {
+        let labelText = '';
+        if (isMarkdownActivated) {
+            labelText = props.item._text?.extension?.find((x) => x.url === markdownUrl)?.valueMarkdown || '';
+        }
+        return labelText || props.item.text || '';
+    };
+
+    const dispatchUpdateMarkdownLabel = (newLabel: string): void => {
+        const markdownValue = {
+            url: markdownUrl,
+            valueMarkdown: newLabel,
+        };
+        const newValue = setExtensionValue(props.item._text, markdownValue);
+
+        dispatchUpdateItem(IItemProperty._text, newValue);
+        // update text with same value. Text is used in condition in enableWhen
+        dispatchUpdateItem(IItemProperty.text, newLabel);
     };
 
     const respondType = (param: string) => {
@@ -127,29 +154,27 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}
                             />
                             {props.item.answerOption?.map((answerOption, index) => (
-                                <>
-                                    <RadioBtn
-                                        name={answerOption.valueCoding.system}
-                                        key={index}
-                                        showDelete={index > 1}
-                                        value={answerOption.valueCoding.display}
-                                        onChange={(event) => {
-                                            const newArray = updateAnswerOption(
-                                                props.item.answerOption || [],
-                                                answerOption.valueCoding.code || '',
-                                                event.target.value,
-                                            );
-                                            dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                        }}
-                                        deleteItem={() => {
-                                            const newArray = removeOptionFromAnswerOptionArray(
-                                                props.item.answerOption || [],
-                                                answerOption.valueCoding.code || '',
-                                            );
-                                            dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                        }}
-                                    />
-                                </>
+                                <RadioBtn
+                                    name={answerOption.valueCoding.system}
+                                    key={index}
+                                    showDelete={index > 1}
+                                    value={answerOption.valueCoding.display}
+                                    onChange={(event) => {
+                                        const newArray = updateAnswerOption(
+                                            props.item.answerOption || [],
+                                            answerOption.valueCoding.code || '',
+                                            event.target.value,
+                                        );
+                                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                                    }}
+                                    deleteItem={() => {
+                                        const newArray = removeOptionFromAnswerOptionArray(
+                                            props.item.answerOption || [],
+                                            answerOption.valueCoding.code || '',
+                                        );
+                                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                                    }}
+                                />
                             ))}
                         </div>
                         <Btn
@@ -263,13 +288,39 @@ const Question = (props: QuestionProps): JSX.Element => {
                     />
                 </div>
                 <div className="form-field">
-                    <label>Skriv spørsmål</label>
-                    <input
-                        value={props.item.text}
-                        onChange={(e) => {
-                            dispatchUpdateItem(IItemProperty.text, e.target.value);
-                        }}
-                    />
+                    <div className="form-field-label-wrapper">
+                        <label>Skriv spørsmål</label>
+                        <SwitchBtn
+                            label="Aktiver markdown"
+                            initial
+                            value={isMarkdownActivated}
+                            onClick={() => {
+                                const newIsMarkdownEnabled = !isMarkdownActivated;
+                                setIsMarkdownActivated(newIsMarkdownEnabled);
+                                if (!newIsMarkdownEnabled) {
+                                    // remove markdown extension, but keep other extensions
+                                    const newValue = removeExtensionValue(props.item._text, markdownUrl);
+                                    dispatchUpdateItem(IItemProperty._text, newValue);
+                                } else {
+                                    // set existing text as markdown value
+                                    dispatchUpdateMarkdownLabel(props.item.text || '');
+                                }
+                            }}
+                        />
+                    </div>
+                    {isMarkdownActivated ? (
+                        <textarea
+                            value={getLabelText()}
+                            onChange={(e) => dispatchUpdateMarkdownLabel(e.target.value)}
+                        ></textarea>
+                    ) : (
+                        <input
+                            value={getLabelText()}
+                            onChange={(e) => {
+                                dispatchUpdateItem(IItemProperty.text, e.target.value);
+                            }}
+                        />
+                    )}
                 </div>
                 {respondType(props.item.type)}
             </div>

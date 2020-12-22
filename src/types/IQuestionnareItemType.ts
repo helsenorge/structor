@@ -23,6 +23,7 @@ export enum IItemProperty {
     code = 'code',
     prefix = 'prefix',
     text = 'text',
+    _text = '_text',
     type = 'type',
     enableWhen = 'enableWhen',
     enableBehavior = 'enableBehavior',
