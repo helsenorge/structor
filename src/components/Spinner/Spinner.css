@@ -110,7 +110,7 @@
     font-size: 25px;
     position: relative;
     left: 11.5px;
-    top: 2px;
+    top: 8px;
     opacity: 0;
     -moz-transition: opacity 1s ease-in-out;
     -o-transition: opacity 1s ease-in-out;
@@ -125,7 +125,7 @@
     font-size: 25px;
     position: relative;
     left: -8px;
-    top: 1.5px;
+    top: 8px;
     opacity: 0;
     -moz-transition: opacity 1s ease-in-out;
     -o-transition: opacity 1s ease-in-out;

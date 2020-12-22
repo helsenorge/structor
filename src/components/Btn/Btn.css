@@ -39,3 +39,28 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.regular-btn.primary {
+    background: #2A69AC;
+    border-radius: 24px;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 16px;
+    height: auto;
+}
+
+.regular-btn.primary i {
+    padding-right: 10px;
+}
+
+.regular-btn.secondary {
+    border: 3px solid #2A69AC;
+    box-sizing: border-box;
+    border-radius: 24px;
+    color: #2A69AC;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 16px;
+    height: auto;
+}
