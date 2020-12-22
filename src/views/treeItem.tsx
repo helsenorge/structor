@@ -59,7 +59,7 @@ const TreeItem = (props: TreeItemProps): JSX.Element => {
                     <button
                         onClick={() => {
                             const existingValues: QuestionnaireItemAnswerOption[] = props.item.answerOption || [];
-                            const newArray = addEmptyOptionToAnswerOptionArray(existingValues, props.item.linkId);
+                            const newArray = addEmptyOptionToAnswerOptionArray(existingValues);
                             dispatchUpdateItem(IItemProperty.answerOption, newArray);
                         }}
                     >

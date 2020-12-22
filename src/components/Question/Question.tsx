@@ -155,10 +155,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <Btn
                             title="+ Legg til alternativ"
                             onClick={() => {
-                                const newArray = addEmptyOptionToAnswerOptionArray(
-                                    props.item.answerOption || [],
-                                    props.item.linkId,
-                                );
+                                const newArray = addEmptyOptionToAnswerOptionArray(props.item.answerOption || []);
                                 dispatchUpdateItem(IItemProperty.answerOption, newArray);
                             }}
                         />
@@ -202,10 +199,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <Btn
                             title="+ Legg til alternativ"
                             onClick={() => {
-                                const newArray = addEmptyOptionToAnswerOptionArray(
-                                    props.item.answerOption || [],
-                                    props.item.linkId,
-                                );
+                                const newArray = addEmptyOptionToAnswerOptionArray(props.item.answerOption || []);
                                 dispatchUpdateItem(IItemProperty.answerOption, newArray);
                             }}
                         />

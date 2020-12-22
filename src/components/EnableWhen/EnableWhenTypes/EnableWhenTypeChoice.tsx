@@ -1,5 +1,5 @@
 import React from 'react';
-import { getSystem } from '../../../helpers/answerOptionHelper';
+import { createNewSystem } from '../../../helpers/answerOptionHelper';
 import { QuestionnaireItem, QuestionnaireItemEnableWhen, ValueSetComposeIncludeConcept } from '../../../types/fhir';
 import { IEnableWhen, IOperator } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
@@ -26,7 +26,7 @@ const EnableWhenTypeChoice = ({ choices, conditionItem, itemEnableWhen, dispatch
                             ...itemEnableWhen,
                             operator: IOperator.equal,
                             answerCoding: {
-                                system: getSystem(conditionItem.linkId),
+                                system: createNewSystem(),
                                 code: e.target.value,
                             },
                         };
