@@ -20,8 +20,8 @@ export const metadataOperators = [
 ];
 
 export const metadataLanguage = [
-    { code: 'nb-no', display: 'Norsk Nokmål ' },
+    { code: 'nb-no', display: 'Norsk Bokmål ' },
     { code: 'nn-no', display: 'Nynorsk' },
-    { code: 'se-no', display: 'Svensk' },
+    { code: 'se-no', display: 'Samisk' },
     { code: 'en-gb', display: 'Engelsk' },
 ];
