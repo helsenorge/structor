@@ -15,7 +15,6 @@ export const generateQuestionnaire = (state: TreeState): string => {
         ...state.qMetadata,
         resourceType: 'Questionnaire',
         status: 'draft',
-        contained: Object.values(state.qValueSet),
         item: generateTree(state.qOrder, state.qItems),
     });
 };

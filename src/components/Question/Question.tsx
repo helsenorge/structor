@@ -4,12 +4,9 @@ import {
     newItemAction,
     deleteItemAction,
     updateItemAction,
-    newValueSetCodeAction,
-    updateValueSetCodeAction,
-    deleteValueSetCodeAction,
     duplicateItemAction,
 } from '../../store/treeStore/treeActions';
-import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
+import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import CopyIcon from '../../images/icons/copy-outline.svg';
@@ -25,11 +22,15 @@ import Accordion from '../Accordion/Accordion';
 import EnableWhen from '../EnableWhen/EnableWhen';
 
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
+import {
+    addEmptyOptionToAnswerOptionArray,
+    removeOptionFromAnswerOptionArray,
+    updateAnswerOption,
+} from '../../helpers/answerOptionHelper';
 
 interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
-    valueSet: (linkId: string) => ValueSetComposeIncludeConcept[];
     questionNumber: string;
     conditionalArray: {
         code: string;
@@ -53,16 +54,8 @@ const Question = (props: QuestionProps): JSX.Element => {
         dispatch(duplicateItemAction(props.item.linkId, props.parentArray));
     };
 
-    const dispatchUpdateItem = (name: IItemProperty, value: string | boolean) => {
+    const dispatchUpdateItem = (name: IItemProperty, value: string | boolean | QuestionnaireItemAnswerOption[]) => {
         dispatch(updateItemAction(props.item.linkId, name, value));
-    };
-
-    const dispatchNewValueSetQuestion = (question: string) => {
-        dispatch(newValueSetCodeAction(props.item.linkId, question));
-    };
-
-    const dispatchUpdateValueSet = (valueSet: ValueSetComposeIncludeConcept) => {
-        dispatch(updateValueSetCodeAction(props.item.linkId, valueSet));
     };
 
     const dispatchExtentionUpdate = () => {
@@ -77,13 +70,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
     };
 
-    const dispatchDeleteValueSet = (code: string) => {
-        dispatch(deleteValueSetCodeAction(props.item.linkId, code));
-    };
-
     const respondType = (param: string) => {
-        const valueSet = props.valueSet(props.item.linkId);
-
         switch (param) {
             case IQuestionnaireItemType.string:
                 return (
@@ -139,23 +126,42 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 initial
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}
                             />
-                            {valueSet?.map((set, index) => (
+                            {props.item.answerOption?.map((answerOption, index) => (
                                 <>
                                     <RadioBtn
+                                        name={answerOption.valueCoding.system}
                                         key={index}
                                         showDelete={index > 1}
-                                        valueSetID={props.item.linkId}
-                                        value={set.display}
+                                        value={answerOption.valueCoding.display}
                                         onChange={(event) => {
-                                            const clone = { ...set, display: event.target.value };
-                                            dispatchUpdateValueSet(clone);
+                                            const newArray = updateAnswerOption(
+                                                props.item.answerOption || [],
+                                                answerOption.valueCoding.code || '',
+                                                event.target.value,
+                                            );
+                                            dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                         }}
-                                        deleteItem={() => dispatchDeleteValueSet(set.code)}
+                                        deleteItem={() => {
+                                            const newArray = removeOptionFromAnswerOptionArray(
+                                                props.item.answerOption || [],
+                                                answerOption.valueCoding.code || '',
+                                            );
+                                            dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                                        }}
                                     />
                                 </>
                             ))}
                         </div>
-                        <Btn title="+ Legg til alternativ" onClick={() => dispatchNewValueSetQuestion('')} />
+                        <Btn
+                            title="+ Legg til alternativ"
+                            onClick={() => {
+                                const newArray = addEmptyOptionToAnswerOptionArray(
+                                    props.item.answerOption || [],
+                                    props.item.linkId,
+                                );
+                                dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                            }}
+                        />
                     </>
                 );
             case IQuestionnaireItemType.openChoice:
@@ -168,22 +174,41 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 initial
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}
                             />
-                            {valueSet?.map((set, index) => (
+                            {props.item.answerOption?.map((answerOption, index) => (
                                 <RadioBtn
                                     key={index}
+                                    name={answerOption.valueCoding.system}
                                     showDelete={index > 1}
-                                    valueSetID={set.code + '-valueSet'}
-                                    value={set.display}
+                                    value={answerOption.valueCoding.display}
                                     onChange={(event) => {
-                                        const clone = { ...set, display: event.target.value };
-                                        dispatchUpdateValueSet(clone);
+                                        const newArray = updateAnswerOption(
+                                            props.item.answerOption || [],
+                                            answerOption.valueCoding.code || '',
+                                            event.target.value,
+                                        );
+                                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                     }}
-                                    deleteItem={() => dispatchDeleteValueSet(set.code)}
+                                    deleteItem={() => {
+                                        const newArray = removeOptionFromAnswerOptionArray(
+                                            props.item.answerOption || [],
+                                            answerOption.valueCoding.code || '',
+                                        );
+                                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                                    }}
                                 />
                             ))}
                             <RadioBtn value="eget svaralternativ for bruker" />
                         </div>
-                        <Btn title="+ Legg til alternativ" onClick={() => dispatchNewValueSetQuestion('')} />
+                        <Btn
+                            title="+ Legg til alternativ"
+                            onClick={() => {
+                                const newArray = addEmptyOptionToAnswerOptionArray(
+                                    props.item.answerOption || [],
+                                    props.item.linkId,
+                                );
+                                dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                            }}
+                        />
                     </>
                 );
             case IQuestionnaireItemType.integer:
@@ -266,7 +291,6 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <div style={{ width: '66%', minHeight: '442px' }}>
                             <EnableWhen
                                 getItem={props.getItem}
-                                getValueSet={props.valueSet}
                                 conditionalArray={props.conditionalArray}
                                 linkId={props.item.linkId}
                                 enableWhen={props.item.enableWhen || []}

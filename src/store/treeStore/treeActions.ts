@@ -1,6 +1,6 @@
 import CreateUUID from '../../helpers/CreateUUID';
 import { IEnableWhen, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import { QuestionnaireItem, ValueSetComposeIncludeConcept, Extension } from '../../types/fhir';
+import { QuestionnaireItem, Extension, QuestionnaireItemAnswerOption } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TreeState } from './treeStore';
 
@@ -8,13 +8,10 @@ export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata
 export const NEW_ITEM_ACTION = 'newItem';
 export const DELETE_ITEM_ACTION = 'deleteItem';
 export const UPDATE_ITEM_ACTION = 'updateItem';
-export const NEW_VALUESET_CODE_ACTION = 'newValueSetCode';
-export const UPDATE_VALUESET_CODE_ACTION = 'updateValueSetCode';
-export const DELETE_VALUESET_CODE_ACTION = 'deleteValueSetCode';
 export const DUPLICATE_ITEM_ACTION = 'duplicateItemAction';
 export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 
-type ItemValueType = string | boolean | Extension[] | IEnableWhen[] | number; // TODO: legg på alle lovlige verdier
+type ItemValueType = string | boolean | Extension[] | IEnableWhen[] | number | QuestionnaireItemAnswerOption[]; // TODO: legg på alle lovlige verdier
 
 export interface UpdateQuestionnaireMetadataAction {
     type: typeof UPDATE_QUESTIONNAIRE_METADATA_ACTION;
@@ -39,24 +36,6 @@ export interface UpdateItemAction {
     linkId: string;
     itemProperty: IItemProperty;
     itemValue: ItemValueType;
-}
-
-export interface NewValueSetCodeAction {
-    type: typeof NEW_VALUESET_CODE_ACTION;
-    linkId: string;
-    conceptValue: ValueSetComposeIncludeConcept;
-}
-
-export interface UpdateValueSetCodeAction {
-    type: typeof UPDATE_VALUESET_CODE_ACTION;
-    linkId: string;
-    conceptValue: ValueSetComposeIncludeConcept;
-}
-
-export interface DeleteValueSetCodeAction {
-    type: typeof DELETE_VALUESET_CODE_ACTION;
-    linkId: string;
-    code: string;
 }
 
 export interface DuplicateItemAction {
@@ -113,37 +92,6 @@ export const updateItemAction = (
         linkId,
         itemProperty,
         itemValue,
-    };
-};
-
-export const newValueSetCodeAction = (linkId: string, displayValue: string): NewValueSetCodeAction => {
-    const conceptValue = {
-        code: CreateUUID(),
-        display: displayValue,
-    };
-    return {
-        type: NEW_VALUESET_CODE_ACTION,
-        linkId,
-        conceptValue,
-    };
-};
-
-export const updateValueSetCodeAction = (
-    linkId: string,
-    consept: ValueSetComposeIncludeConcept,
-): UpdateValueSetCodeAction => {
-    return {
-        type: UPDATE_VALUESET_CODE_ACTION,
-        linkId,
-        conceptValue: consept,
-    };
-};
-
-export const deleteValueSetCodeAction = (linkId: string, code: string): DeleteValueSetCodeAction => {
-    return {
-        type: DELETE_VALUESET_CODE_ACTION,
-        linkId,
-        code,
     };
 };
 

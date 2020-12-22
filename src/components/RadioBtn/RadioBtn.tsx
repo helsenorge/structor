@@ -3,18 +3,18 @@ import CloseIcon from '../../images/icons/close-outline.svg';
 import './RadioBtn.css';
 
 type Props = {
-    valueSetID?: string;
     value?: string;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     deleteItem?: () => void;
     showDelete?: boolean;
     disabled?: boolean;
+    name?: string;
 };
 
-const RadioBtn = ({ valueSetID, value, onChange, deleteItem, showDelete, disabled }: Props): JSX.Element => {
+const RadioBtn = ({ value, onChange, deleteItem, showDelete, disabled, name }: Props): JSX.Element => {
     return (
         <div className="horizontal radioBtn">
-            <input disabled={disabled} type="radio" name={valueSetID} />{' '}
+            <input disabled={disabled} name={name} type="radio" />{' '}
             <input
                 autoComplete="off"
                 disabled={disabled}

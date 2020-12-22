@@ -1,18 +1,11 @@
 import React, { useContext } from 'react';
 import { TreeContext } from '../store/treeStore/treeStore';
 import { IItemProperty, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
-import {
-    newItemAction,
-    deleteItemAction,
-    updateItemAction,
-    newValueSetCodeAction,
-    deleteValueSetCodeAction,
-    duplicateItemAction,
-} from '../store/treeStore/treeActions';
-import { QuestionnaireItem, ValueSet } from '../types/fhir';
+import { newItemAction, deleteItemAction, updateItemAction, duplicateItemAction } from '../store/treeStore/treeActions';
+import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../types/fhir';
+import { addEmptyOptionToAnswerOptionArray, removeOptionFromAnswerOptionArray } from '../helpers/answerOptionHelper';
 
 interface TreeItemProps {
-    valueSet?: ValueSet;
     item: QuestionnaireItem;
     parentArray: Array<string>;
 }
@@ -28,16 +21,8 @@ const TreeItem = (props: TreeItemProps): JSX.Element => {
         dispatch(deleteItemAction(props.item.linkId, props.parentArray));
     };
 
-    const dispatchUpdateItem = () => {
-        dispatch(updateItemAction(props.item.linkId, IItemProperty.text, 'NY HEADER'));
-    };
-
-    const dispatchNewValueSetItem = () => {
-        dispatch(newValueSetCodeAction(props.item.linkId, Math.random().toString()));
-    };
-
-    const dispatchDeleteValueSetItem = (code: string) => {
-        dispatch(deleteValueSetCodeAction(props.item.linkId, code));
+    const dispatchUpdateItem = (property: IItemProperty, value: string | QuestionnaireItemAnswerOption[]) => {
+        dispatch(updateItemAction(props.item.linkId, property, value));
     };
 
     const dispatchDuplicateItem = () => {
@@ -47,14 +32,20 @@ const TreeItem = (props: TreeItemProps): JSX.Element => {
     return (
         <div style={{ marginLeft: props.parentArray.length * 32 }}>
             <span>{`LinkId: ${props.item.linkId}, text: ${props.item.text}, type: ${props.item.type}`}</span>
-            {props.valueSet && props.valueSet.compose && props.valueSet.compose.include[0].concept && (
+            {props.item.type === IQuestionnaireItemType.choice && props.item.answerOption && (
                 <div>
-                    {props.valueSet.compose.include[0].concept.map((x) => {
+                    {props.item.answerOption.map((x) => {
                         return (
                             <button
-                                key={x.code}
-                                onClick={() => dispatchDeleteValueSetItem(x.code)}
-                            >{`Delete ${x.display} value`}</button>
+                                key={x.valueCoding.code}
+                                onClick={() => {
+                                    const newArray = removeOptionFromAnswerOptionArray(
+                                        props.item.answerOption || [],
+                                        x.valueCoding.code || '',
+                                    );
+                                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                                }}
+                            >{`Delete ${x.valueCoding.display} value`}</button>
                         );
                     })}
                 </div>
@@ -62,9 +53,19 @@ const TreeItem = (props: TreeItemProps): JSX.Element => {
             <div>
                 <button onClick={dispatchNewItem}>Add child</button>
                 <button onClick={dispatchDeleteItem}>Delete item</button>
-                <button onClick={dispatchUpdateItem}>Set text</button>
+                <button onClick={() => dispatchUpdateItem(IItemProperty.text, 'NY HEADER')}>Set text</button>
                 <button onClick={dispatchDuplicateItem}>Dupliser</button>
-                {props.valueSet && <button onClick={dispatchNewValueSetItem}>Add valueSet value</button>}
+                {props.item.type === IQuestionnaireItemType.choice && (
+                    <button
+                        onClick={() => {
+                            const existingValues: QuestionnaireItemAnswerOption[] = props.item.answerOption || [];
+                            const newArray = addEmptyOptionToAnswerOptionArray(existingValues, props.item.linkId);
+                            dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                        }}
+                    >
+                        Add valueSet value
+                    </button>
+                )}
             </div>
         </div>
     );
