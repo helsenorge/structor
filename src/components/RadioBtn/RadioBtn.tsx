@@ -8,12 +8,13 @@ type Props = {
     deleteItem?: () => void;
     showDelete?: boolean;
     disabled?: boolean;
+    name?: string;
 };
 
-const RadioBtn = ({ value, onChange, deleteItem, showDelete, disabled }: Props): JSX.Element => {
+const RadioBtn = ({ value, onChange, deleteItem, showDelete, disabled, name }: Props): JSX.Element => {
     return (
         <div className="horizontal radioBtn">
-            <input disabled={disabled} type="radio" />{' '}
+            <input disabled={disabled} name={name} type="radio" />{' '}
             <input
                 autoComplete="off"
                 disabled={disabled}

@@ -129,6 +129,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                             {props.item.answerOption?.map((answerOption, index) => (
                                 <>
                                     <RadioBtn
+                                        name={answerOption.valueCoding.system}
                                         key={index}
                                         showDelete={index > 1}
                                         value={answerOption.valueCoding.display}
@@ -176,6 +177,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                             {props.item.answerOption?.map((answerOption, index) => (
                                 <RadioBtn
                                     key={index}
+                                    name={answerOption.valueCoding.system}
                                     showDelete={index > 1}
                                     value={answerOption.valueCoding.display}
                                     onChange={(event) => {
