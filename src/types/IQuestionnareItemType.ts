@@ -23,6 +23,7 @@ export enum IItemProperty {
     code = 'code',
     prefix = 'prefix',
     text = 'text',
+    _text = '_text',
     type = 'type',
     enableWhen = 'enableWhen',
     enableBehavior = 'enableBehavior',
@@ -52,10 +53,11 @@ export type IEnableWhen = {
     answerInteger?: number;
 };
 
-export enum IValidationType {
+export enum IExtentionType {
     validationtext = 'http://ehelse.no/fhir/StructureDefinition/validationtext',
     minValue = 'http://hl7.org/fhir/StructureDefinition/minValue',
     maxValue = 'http://hl7.org/fhir/StructureDefinition/maxValue',
     regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
     maxDecimalPlaces = 'http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces',
+    markdown = 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
 }

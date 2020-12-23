@@ -5,7 +5,10 @@
     margin-top: 10px;
 }
 
-.question-header, .question-form, .accordion, .content {
+.question-header,
+.question-form,
+.accordion,
+.content {
     padding: 20px 70px;
 }
 
@@ -15,11 +18,11 @@
 
 .question-header {
     display: flex;
-    border-bottom: 8px solid #EBF8FF;
+    border-bottom: 8px solid #ebf8ff;
     margin-bottom: 26px;
 }
 
-.question-header>button {
+.question-header > button {
     background: none;
     border: none;
     padding: 0;
@@ -28,14 +31,14 @@
     outline: inherit;
     font-size: 18px;
     min-width: 32px;
-    color: #4299E1;
+    color: #4299e1;
     display: flex;
     align-items: center;
     padding-right: 15px;
     font-weight: 700;
 }
 
-.question-header>button>i {
+.question-header > button > i {
     font-size: 28px;
     color: black;
 }
@@ -46,16 +49,23 @@
     padding-bottom: 12px;
 }
 
-.form-field>label {
+.form-field-label-wrapper,
+.form-field > label {
     font-size: 16px;
     min-height: 28px;
 }
 
-.form-field input, .form-field select {
+.form-field-label-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-field input,
+.form-field select {
     margin: 0;
     font-size: 16px;
     margin-top: 5px;
-    border: 1px solid #A0AEC0;
+    border: 1px solid #a0aec0;
     box-sizing: border-box;
     border-radius: 4px;
 }
@@ -63,7 +73,7 @@
 .form-field input:disabled {
     background: transparent;
     border: 0;
-    border-bottom: 1px solid #E2E8F0;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .question-form {
@@ -76,26 +86,26 @@
     align-items: center;
 }
 
-.horizontal>*:first-of-type {
+.horizontal > *:first-of-type {
     padding-left: 0px;
 }
 
-.horizontal>* {
+.horizontal > * {
     padding-left: 25px;
 }
 
-.horizontal>input {
+.horizontal > input {
     margin-right: 15px;
 }
 
-.horizontal>input[type="text"] {
+.horizontal > input[type='text'] {
     width: 100%;
 }
 
-.horizontal>input:last-of-type {
+.horizontal > input:last-of-type {
     margin-right: 0px;
 }
 
-.horizontal.equal>div {
+.horizontal.equal > div {
     width: 50%;
 }
