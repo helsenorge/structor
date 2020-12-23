@@ -1,5 +1,4 @@
 import React from 'react';
-import { createNewSystem } from '../../../helpers/answerOptionHelper';
 import { QuestionnaireItem, QuestionnaireItemEnableWhen, ValueSetComposeIncludeConcept } from '../../../types/fhir';
 import { IEnableWhen, IOperator } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
@@ -26,7 +25,8 @@ const EnableWhenTypeChoice = ({ choices, conditionItem, itemEnableWhen, dispatch
                             ...itemEnableWhen,
                             operator: IOperator.equal,
                             answerCoding: {
-                                system: createNewSystem(),
+                                system: conditionItem.answerOption?.find((x) => x.valueCoding.code === e.target.value)
+                                    ?.valueCoding.system,
                                 code: e.target.value,
                             },
                         };
