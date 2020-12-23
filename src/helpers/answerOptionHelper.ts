@@ -2,7 +2,7 @@ import { QuestionnaireItemAnswerOption } from '../types/fhir';
 import createUUID from './CreateUUID';
 
 export const createNewSystem = (): string => {
-    return `${createUUID}-system`;
+    return `${createUUID()}-system`;
 };
 
 export const createNewAnswerOption = (system?: string): QuestionnaireItemAnswerOption => {
