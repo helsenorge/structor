@@ -3,7 +3,7 @@ import { QuestionnaireItem, Extension } from '../../../types/fhir';
 import FormField from '../../FormField/FormField';
 import Picker from '../../DatePicker/DatePicker';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
-import { IItemProperty, IValidationType } from '../../../types/IQuestionnareItemType';
+import { IItemProperty, IExtentionType } from '../../../types/IQuestionnareItemType';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { format, parse } from 'date-fns';
 
@@ -33,9 +33,9 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, newExtention));
     };
 
-    const validationText = item?.extension?.find((x) => x.url === IValidationType.validationtext)?.valueString || '';
-    const minDate = item?.extension?.find((x) => x.url === IValidationType.minValue)?.valueDate;
-    const maxDate = item?.extension?.find((x) => x.url === IValidationType.maxValue)?.valueDate;
+    const validationText = item?.extension?.find((x) => x.url === IExtentionType.validationtext)?.valueString || '';
+    const minDate = item?.extension?.find((x) => x.url === IExtentionType.minValue)?.valueDate;
+    const maxDate = item?.extension?.find((x) => x.url === IExtentionType.maxValue)?.valueDate;
 
     return (
         <>
@@ -44,7 +44,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                     defaultValue={validationText}
                     onChange={(event) => {
                         const newExtention: Extension = {
-                            url: IValidationType.validationtext,
+                            url: IExtentionType.validationtext,
                             valueString: event.target.value,
                         };
 
@@ -61,7 +61,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                         withPortal
                         callback={(date) => {
                             const newExtention: Extension = {
-                                url: IValidationType.minValue,
+                                url: IExtentionType.minValue,
                                 valueDate: format(date, 'yyyy-MM-dd'),
                             };
 
@@ -77,7 +77,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                         withPortal
                         callback={(date) => {
                             const newExtention: Extension = {
-                                url: IValidationType.maxValue,
+                                url: IExtentionType.maxValue,
                                 valueDate: format(date, 'yyyy-MM-dd'),
                             };
                             dispatchExtentionUpdate(newExtention);

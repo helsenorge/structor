@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { IItemProperty, IValidationType } from '../../../types/IQuestionnareItemType';
+import { IItemProperty, IExtentionType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem, Extension } from '../../../types/fhir';
 
 interface ValidationTypeProp {
@@ -10,9 +10,9 @@ interface ValidationTypeProp {
 
 const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
-    const validationText = item?.extension?.find((x) => x.url === IValidationType.validationtext)?.valueString || '';
-    const minValue = item?.extension?.find((x) => x.url === IValidationType.minValue)?.valueInteger;
-    const maxValue = item?.extension?.find((x) => x.url === IValidationType.maxValue)?.valueInteger;
+    const validationText = item?.extension?.find((x) => x.url === IExtentionType.validationtext)?.valueString || '';
+    const minValue = item?.extension?.find((x) => x.url === IExtentionType.minValue)?.valueInteger;
+    const maxValue = item?.extension?.find((x) => x.url === IExtentionType.maxValue)?.valueInteger;
     // const maxDecimalPlaces = item?.extension?.find((x) => x.url === IValidationType.maxDecimalPlaces)?.valueInteger;
 
     const dispatchExtentionUpdate = (value: Extension[]) => {
@@ -92,7 +92,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     <input
                         type="number"
                         defaultValue={minValue}
-                        onChange={updateExtensionNumberElement(IValidationType.minValue)}
+                        onChange={updateExtensionNumberElement(IExtentionType.minValue)}
                     ></input>
                 </div>
 
@@ -101,7 +101,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     <input
                         type="number"
                         defaultValue={maxValue}
-                        onChange={updateExtensionNumberElement(IValidationType.maxValue)}
+                        onChange={updateExtensionNumberElement(IExtentionType.maxValue)}
                     ></input>
                 </div>
             </div>
@@ -123,7 +123,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     type="input"
                     defaultValue={validationText}
                     placeholder="feilmelding"
-                    onChange={updateExtensionInputElement(IValidationType.validationtext)}
+                    onChange={updateExtensionInputElement(IExtentionType.validationtext)}
                 ></input>
             </div>
         </>

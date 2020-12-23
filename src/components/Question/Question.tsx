@@ -11,7 +11,7 @@ import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import CopyIcon from '../../images/icons/copy-outline.svg';
 import itemType, { checkboxExtension, typeIsSupportingValidation } from '../../helpers/QuestionHelper';
-import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IItemProperty, IQuestionnaireItemType, IExtentionType } from '../../types/IQuestionnareItemType';
 import Picker from '../DatePicker/DatePicker';
 import './Question.css';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
@@ -28,8 +28,6 @@ import {
     updateAnswerOption,
 } from '../../helpers/answerOptionHelper';
 import { removeExtensionValue, setExtensionValue } from '../../helpers/extensionHelper';
-
-const markdownUrl = 'http://hl7.org/fhir/StructureDefinition/rendering-markdown';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -80,14 +78,15 @@ const Question = (props: QuestionProps): JSX.Element => {
     const getLabelText = (): string => {
         let labelText = '';
         if (isMarkdownActivated) {
-            labelText = props.item._text?.extension?.find((x) => x.url === markdownUrl)?.valueMarkdown || '';
+            labelText =
+                props.item._text?.extension?.find((x) => x.url === IExtentionType.markdown)?.valueMarkdown || '';
         }
         return labelText || props.item.text || '';
     };
 
     const dispatchUpdateMarkdownLabel = (newLabel: string): void => {
         const markdownValue = {
-            url: markdownUrl,
+            url: IExtentionType.markdown,
             valueMarkdown: newLabel,
         };
         const newValue = setExtensionValue(props.item._text, markdownValue);
@@ -299,7 +298,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 setIsMarkdownActivated(newIsMarkdownEnabled);
                                 if (!newIsMarkdownEnabled) {
                                     // remove markdown extension, but keep other extensions
-                                    const newValue = removeExtensionValue(props.item._text, markdownUrl);
+                                    const newValue = removeExtensionValue(props.item._text, IExtentionType.markdown);
                                     dispatchUpdateItem(IItemProperty._text, newValue);
                                 } else {
                                     // set existing text as markdown value

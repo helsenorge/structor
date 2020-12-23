@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { Extension, QuestionnaireItem } from '../../../types/fhir';
-import { IItemProperty, IValidationType } from '../../../types/IQuestionnareItemType';
+import { IItemProperty, IExtentionType } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
 import Select from '../../Select/Select';
 
@@ -36,8 +36,8 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
         dispatch(updateItemAction(item.linkId, IItemProperty.maxLength, number));
     };
 
-    const validationText = item?.extension?.find((x) => x.url === IValidationType.validationtext)?.valueString || '';
-    const selectedRegEx = item?.extension?.find((x) => x.url === IValidationType.regEx)?.valueString || '';
+    const validationText = item?.extension?.find((x) => x.url === IExtentionType.validationtext)?.valueString || '';
+    const selectedRegEx = item?.extension?.find((x) => x.url === IExtentionType.regEx)?.valueString || '';
 
     return (
         <>
@@ -65,7 +65,7 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                     ]}
                     onChange={(event) => {
                         const newExtention: Extension = {
-                            url: IValidationType.regEx,
+                            url: IExtentionType.regEx,
                             valueString: event.target.value,
                         };
 
@@ -78,7 +78,7 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                     defaultValue={validationText}
                     onChange={(event) => {
                         const newExtention: Extension = {
-                            url: IValidationType.validationtext,
+                            url: IExtentionType.validationtext,
                             valueString: event.target.value,
                         };
 
