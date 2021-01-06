@@ -74,6 +74,7 @@ const FormBuilder = (): JSX.Element => {
                         questionNumber={questionNumber}
                         conditionalArray={getConditional(parentArray)}
                         getItem={getQItem}
+                        containedResources={state.qContained}
                     />
                     {renderTree(x.items, [...parentArray, x.linkId], questionNumber)}
                 </div>

@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import produce from 'immer';
 
-import { QuestionnaireItem } from '../../types/fhir';
+import { QuestionnaireItem, ValueSet } from '../../types/fhir';
 import {
     RESET_QUESTIONNAIRE_ACTION,
     ResetQuestionnaireAction,
@@ -42,6 +42,7 @@ export interface TreeState {
     qItems: Items;
     qOrder: Array<OrderItem>;
     qMetadata: IQuestionnaireMetadata;
+    qContained?: Array<ValueSet>;
 }
 
 export const initialState: TreeState = {
@@ -91,6 +92,7 @@ export const initialState: TreeState = {
         subjectType: ['Patient'],
         extension: [],
     },
+    qContained: [],
 };
 
 function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
@@ -179,6 +181,7 @@ function resetQuestionnaireAction(draft: TreeState, action: ResetQuestionnaireAc
     draft.qOrder = newState.qOrder;
     draft.qItems = newState.qItems;
     draft.qMetadata = newState.qMetadata;
+    draft.qContained = newState.qContained;
 }
 
 function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): void {
