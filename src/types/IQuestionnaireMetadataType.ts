@@ -18,6 +18,7 @@ export interface IQuestionnaireMetadata {
     name?: string;
     title?: string;
     description?: string;
+    version?: string;
     status?: string;
     publisher?: string;
     meta?: Meta;
