@@ -1,14 +1,17 @@
 import { Items, OrderItem, TreeState } from '../store/treeStore/treeStore';
-import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { Questionnaire, QuestionnaireItem, ValueSet } from '../types/fhir';
+
+import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 
 function extractMetadata(questionnaireObj: Questionnaire) {
     const getMetadataParts = ({
         resourceType,
         language,
+        id,
         name,
         title,
         description,
+        version,
         status,
         publisher,
         meta,
@@ -19,9 +22,11 @@ function extractMetadata(questionnaireObj: Questionnaire) {
     }: IQuestionnaireMetadata) => ({
         resourceType,
         language,
+        id,
         name,
         title,
         description,
+        version,
         status,
         publisher,
         meta,
