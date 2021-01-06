@@ -1,4 +1,4 @@
-import { ContactDetail, Meta, UsageContext } from './fhir';
+import { ContactDetail, Extension, Meta, UsageContext } from './fhir';
 
 export enum IQuestionnaireMetadataType {
     title = 'title',
@@ -24,6 +24,7 @@ export interface IQuestionnaireMetadata {
     useContext?: Array<UsageContext>;
     contact?: Array<ContactDetail>;
     subjectType?: Array<string>;
+    extension?: Array<Extension>;
 }
 
 export enum IQuestionnaireStatus {

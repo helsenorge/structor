@@ -15,6 +15,7 @@ function extractMetadata(questionnaireObj: Questionnaire) {
         useContext,
         contact,
         subjectType,
+        extension,
     }: IQuestionnaireMetadata) => ({
         resourceType,
         language,
@@ -27,6 +28,7 @@ function extractMetadata(questionnaireObj: Questionnaire) {
         useContext,
         contact,
         subjectType,
+        extension,
     });
     return getMetadataParts(questionnaireObj);
 }

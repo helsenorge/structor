@@ -89,6 +89,7 @@ export const initialState: TreeState = {
             },
         ],
         subjectType: ['Patient'],
+        extension: [],
     },
 };
 
