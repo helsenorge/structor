@@ -1,0 +1,8 @@
+.anchor-menu {
+    position: fixed;
+    background: red;
+    top: 100px;
+    left: 10px;
+    width: 275px;
+    min-height: 169px;
+}

@@ -12,6 +12,7 @@ import { QuestionnaireItem } from '../types/fhir';
 import { Link } from 'react-router-dom';
 import PublishModal from '../components/PublishModal/PublishModal';
 import Publish from '../components/Metadata/Publish';
+import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -124,6 +125,8 @@ const FormBuilder = (): JSX.Element => {
             </header>
 
             {showPublishModal && <PublishModal close={() => setShowPublishModal(!showPublishModal)} />}
+
+            <AnchorMenu />
 
             {isIframeVisible ? (
                 <>
