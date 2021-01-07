@@ -21,7 +21,16 @@ const AnchorMenu = (): JSX.Element => {
     const [list, setList] = useState(initList);
 
     const handleChange = (result: DropResult) => {
-        console.log(result);
+        if (!result.destination) {
+            return;
+        }
+
+        const alteredArray = list.concat();
+
+        const [removed] = alteredArray.splice(result.source.index, 1);
+        alteredArray.splice(result.destination?.index, 0, removed);
+
+        setList(alteredArray);
     };
 
     return (
