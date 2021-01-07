@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import { OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 import './AnchorMenu.css';
 
 const AnchorMenu = (): JSX.Element => {
@@ -18,6 +19,8 @@ const AnchorMenu = (): JSX.Element => {
                 'Du har tatt en test som ikke påviser koronavirus. Du trenger vanligvis ikke å teste deg på nytt dersom du akkurat har fått et svar som ikke påviser koronavirus?',
         },
     ];
+
+    const { state, dispatch } = useContext(TreeContext);
 
     const [list, setList] = useState(initList);
 
@@ -55,6 +58,37 @@ const AnchorMenu = (): JSX.Element => {
         ...draggableStyle,
     });
 
+    const renderTree = (
+        items: Array<OrderItem>,
+        parentArray: Array<string> = [],
+        parentQuestionNumber = '',
+    ): Array<JSX.Element> => {
+        return items.map((x, index) => {
+            const questionNumber =
+                parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
+            return (
+                <Draggable key={index} draggableId={index.toString()} index={index}>
+                    {(provided, snapshot) => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                        >
+                            {state.qItems[x.linkId].text}
+                        </div>
+                    )}
+                </Draggable>
+            );
+            return (
+                <div key={x.linkId}>
+                    <p>{questionNumber}</p>
+                    {renderTree(x.items, [...parentArray, x.linkId], questionNumber)}
+                </div>
+            );
+        });
+    };
+
     return (
         <div className="anchor-menu">
             <p className="align-header">Oversikt</p>
@@ -67,22 +101,7 @@ const AnchorMenu = (): JSX.Element => {
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}
                         >
-                            {list.map((item, index) => {
-                                return (
-                                    <Draggable key={index} draggableId={index.toString()} index={index}>
-                                        {(provided, snapshot) => (
-                                            <div
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-                                            >
-                                                {item.text}
-                                            </div>
-                                        )}
-                                    </Draggable>
-                                );
-                            })}
+                            {renderTree(state.qOrder)}
                             {provided.placeholder}
                         </div>
                     )}
