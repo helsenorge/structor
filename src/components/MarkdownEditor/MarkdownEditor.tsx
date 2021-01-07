@@ -34,13 +34,9 @@ const MarkdownEditor = (props: MarkdownEditorProps): JSX.Element => {
     return (
         <CKEditor
             data={props.data}
-            onChange={(event: any, editor: any) => props.onChange(editor.getData())}
+            onChange={(event: Event, editor: Editor) => props.onChange(editor.getData())}
             editor={Editor}
             config={editorConfiguration}
-            onReady={(editor: any) => {
-                const plugins = [...editor.plugins._availablePlugins.values()].map((plugin: any) => plugin.pluginName);
-                console.log(editor, plugins);
-            }}
         />
     );
 };
