@@ -15,6 +15,8 @@ import {
     UpdateQuestionnaireMetadataAction,
     DUPLICATE_ITEM_ACTION,
     DuplicateItemAction,
+    REORDER_ITEM_ACTION,
+    ReorderItemAction,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -27,7 +29,8 @@ type ActionType =
     | NewItemAction
     | DeleteItemAction
     | UpdateItemAction
-    | DuplicateItemAction;
+    | DuplicateItemAction
+    | ReorderItemAction;
 
 export interface Items {
     [key: string]: QuestionnaireItem;
@@ -218,6 +221,16 @@ function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): voi
     arrayToDuplicateInto.splice(indexToDuplicate + 1, 0, duplictedItem);
 }
 
+function reorderItem(draft: TreeState, action: ReorderItemAction): void {
+    const arrayToReorderFrom = findTreeArray(action.order, draft.qOrder);
+    const indexToMove = arrayToReorderFrom.findIndex((x) => x.linkId === action.linkId);
+    if (indexToMove === -1) {
+        throw 'Could not find item to move';
+    }
+    const movedOrderItem = arrayToReorderFrom.splice(indexToMove, 1);
+    arrayToReorderFrom.splice(action.newIndex, 0, movedOrderItem[0]);
+}
+
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
         case RESET_QUESTIONNAIRE_ACTION:
@@ -237,6 +250,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case DUPLICATE_ITEM_ACTION:
             duplicateItemAction(draft, action);
+            break;
+        case REORDER_ITEM_ACTION:
+            reorderItem(draft, action);
             break;
     }
 });
