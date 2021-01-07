@@ -13,6 +13,7 @@ export const generateQuestionnaire = (state: TreeState): string => {
 
     return JSON.stringify({
         ...state.qMetadata,
+        contained: state.qContained,
         resourceType: 'Questionnaire',
         status: 'draft',
         item: generateTree(state.qOrder, state.qItems),
