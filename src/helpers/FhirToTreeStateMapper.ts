@@ -1,32 +1,39 @@
 import { Items, OrderItem, TreeState } from '../store/treeStore/treeStore';
+import { Questionnaire, QuestionnaireItem, ValueSet } from '../types/fhir';
+
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
-import { Questionnaire, QuestionnaireItem } from '../types/fhir';
 
 function extractMetadata(questionnaireObj: Questionnaire) {
     const getMetadataParts = ({
         resourceType,
         language,
+        id,
         name,
         title,
         description,
+        version,
         status,
         publisher,
         meta,
         useContext,
         contact,
         subjectType,
+        extension,
     }: IQuestionnaireMetadata) => ({
         resourceType,
         language,
+        id,
         name,
         title,
         description,
+        version,
         status,
         publisher,
         meta,
         useContext,
         contact,
         subjectType,
+        extension,
     });
     return getMetadataParts(questionnaireObj);
 }
@@ -64,12 +71,14 @@ function extractItemsAndOrder(item?: Array<QuestionnaireItem>): { qItems: Items;
 
 function mapToTreeState(questionnaireObj: Questionnaire): TreeState {
     const qMetadata: IQuestionnaireMetadata = extractMetadata(questionnaireObj);
+    const qContained = questionnaireObj.contained as Array<ValueSet>; // we expect contained to only contain ValueSets
     const { qItems, qOrder } = extractItemsAndOrder(questionnaireObj.item);
 
     const newState: TreeState = {
         qItems,
         qOrder,
         qMetadata,
+        qContained,
     };
 
     return newState;

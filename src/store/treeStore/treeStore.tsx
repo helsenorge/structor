@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import produce from 'immer';
 
-import { QuestionnaireItem } from '../../types/fhir';
+import { QuestionnaireItem, ValueSet } from '../../types/fhir';
 import {
     RESET_QUESTIONNAIRE_ACTION,
     ResetQuestionnaireAction,
@@ -15,6 +15,8 @@ import {
     UpdateQuestionnaireMetadataAction,
     DUPLICATE_ITEM_ACTION,
     DuplicateItemAction,
+    REORDER_ITEM_ACTION,
+    ReorderItemAction,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -27,7 +29,8 @@ type ActionType =
     | NewItemAction
     | DeleteItemAction
     | UpdateItemAction
-    | DuplicateItemAction;
+    | DuplicateItemAction
+    | ReorderItemAction;
 
 export interface Items {
     [key: string]: QuestionnaireItem;
@@ -42,6 +45,7 @@ export interface TreeState {
     qItems: Items;
     qOrder: Array<OrderItem>;
     qMetadata: IQuestionnaireMetadata;
+    qContained?: Array<ValueSet>;
 }
 
 export const initialState: TreeState = {
@@ -89,7 +93,9 @@ export const initialState: TreeState = {
             },
         ],
         subjectType: ['Patient'],
+        extension: [],
     },
+    qContained: [],
 };
 
 function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
@@ -178,6 +184,7 @@ function resetQuestionnaireAction(draft: TreeState, action: ResetQuestionnaireAc
     draft.qOrder = newState.qOrder;
     draft.qItems = newState.qItems;
     draft.qMetadata = newState.qMetadata;
+    draft.qContained = newState.qContained;
 }
 
 function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): void {
@@ -214,6 +221,16 @@ function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): voi
     arrayToDuplicateInto.splice(indexToDuplicate + 1, 0, duplictedItem);
 }
 
+function reorderItem(draft: TreeState, action: ReorderItemAction): void {
+    const arrayToReorderFrom = findTreeArray(action.order, draft.qOrder);
+    const indexToMove = arrayToReorderFrom.findIndex((x) => x.linkId === action.linkId);
+    if (indexToMove === -1) {
+        throw 'Could not find item to move';
+    }
+    const movedOrderItem = arrayToReorderFrom.splice(indexToMove, 1);
+    arrayToReorderFrom.splice(action.newIndex, 0, movedOrderItem[0]);
+}
+
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
         case RESET_QUESTIONNAIRE_ACTION:
@@ -233,6 +250,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case DUPLICATE_ITEM_ACTION:
             duplicateItemAction(draft, action);
+            break;
+        case REORDER_ITEM_ACTION:
+            reorderItem(draft, action);
             break;
     }
 });

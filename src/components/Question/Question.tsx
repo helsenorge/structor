@@ -6,7 +6,7 @@ import {
     updateItemAction,
     duplicateItemAction,
 } from '../../store/treeStore/treeActions';
-import { QuestionnaireItem, QuestionnaireItemAnswerOption, Element } from '../../types/fhir';
+import { QuestionnaireItem, QuestionnaireItemAnswerOption, Element, ValueSet } from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import CopyIcon from '../../images/icons/copy-outline.svg';
@@ -38,6 +38,7 @@ interface QuestionProps {
         display: string;
     }[];
     getItem: (linkId: string) => QuestionnaireItem;
+    containedResources?: Array<ValueSet>;
 }
 
 const Question = (props: QuestionProps): JSX.Element => {
@@ -96,6 +97,62 @@ const Question = (props: QuestionProps): JSX.Element => {
         dispatchUpdateItem(IItemProperty.text, newLabel);
     };
 
+    const getContainedValueSetValues = (valueSetId: string): Array<{ system?: string; display?: string }> => {
+        const valueSet = props.containedResources?.find((x) => `#${x.id}` === valueSetId);
+        if (valueSet && valueSet.compose && valueSet.compose.include && valueSet.compose.include[0].concept) {
+            return valueSet.compose.include[0].concept.map((x) => {
+                return { system: valueSet.compose?.include[0].system, display: x.display };
+            });
+        }
+        return [];
+    };
+
+    const renderValueSetValues = (): JSX.Element => {
+        return (
+            <>
+                {props.item.answerValueSet && props.item.answerValueSet.startsWith('#') && (
+                    <div>
+                        <p>Dette spørsmålet bruker følgende innebygde verdier, som ikke kan endres i skjemabyggeren:</p>
+                        {getContainedValueSetValues(props.item.answerValueSet).map((x, index) => {
+                            return (
+                                <RadioBtn name={x.system} key={index} disabled showDelete={false} value={x.display} />
+                            );
+                        })}
+                    </div>
+                )}
+                {props.item.answerValueSet && props.item.answerValueSet.startsWith('http') && (
+                    <div>{`Dette spørsmålet henter verdier fra ${props.item.answerValueSet}`}</div>
+                )}
+            </>
+        );
+    };
+
+    const renderRadioBtn = (answerOption: QuestionnaireItemAnswerOption, index: number): JSX.Element => {
+        return (
+            <RadioBtn
+                name={answerOption.valueCoding.system}
+                key={index}
+                showDelete={index > 1}
+                value={answerOption.valueCoding.display}
+                onChange={(event) => {
+                    const newArray = updateAnswerOption(
+                        props.item.answerOption || [],
+                        answerOption.valueCoding.code || '',
+                        event.target.value,
+                    );
+                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                }}
+                deleteItem={() => {
+                    const newArray = removeOptionFromAnswerOptionArray(
+                        props.item.answerOption || [],
+                        answerOption.valueCoding.code || '',
+                    );
+                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                }}
+            />
+        );
+    };
+
     const respondType = (param: string) => {
         switch (param) {
             case IQuestionnaireItemType.string:
@@ -152,37 +209,18 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 initial
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}
                             />
-                            {props.item.answerOption?.map((answerOption, index) => (
-                                <RadioBtn
-                                    name={answerOption.valueCoding.system}
-                                    key={index}
-                                    showDelete={index > 1}
-                                    value={answerOption.valueCoding.display}
-                                    onChange={(event) => {
-                                        const newArray = updateAnswerOption(
-                                            props.item.answerOption || [],
-                                            answerOption.valueCoding.code || '',
-                                            event.target.value,
-                                        );
-                                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                    }}
-                                    deleteItem={() => {
-                                        const newArray = removeOptionFromAnswerOptionArray(
-                                            props.item.answerOption || [],
-                                            answerOption.valueCoding.code || '',
-                                        );
-                                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                    }}
-                                />
-                            ))}
+                            {props.item.answerValueSet && !props.item.answerOption && renderValueSetValues()}
+                            {props.item.answerOption?.map((answerOption, index) => renderRadioBtn(answerOption, index))}
                         </div>
-                        <Btn
-                            title="+ Legg til alternativ"
-                            onClick={() => {
-                                const newArray = addEmptyOptionToAnswerOptionArray(props.item.answerOption || []);
-                                dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                            }}
-                        />
+                        {!props.item.answerValueSet && (
+                            <Btn
+                                title="+ Legg til alternativ"
+                                onClick={() => {
+                                    const newArray = addEmptyOptionToAnswerOptionArray(props.item.answerOption || []);
+                                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                                }}
+                            />
+                        )}
                     </>
                 );
             case IQuestionnaireItemType.openChoice:
@@ -195,38 +233,19 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 initial
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}
                             />
-                            {props.item.answerOption?.map((answerOption, index) => (
-                                <RadioBtn
-                                    key={index}
-                                    name={answerOption.valueCoding.system}
-                                    showDelete={index > 1}
-                                    value={answerOption.valueCoding.display}
-                                    onChange={(event) => {
-                                        const newArray = updateAnswerOption(
-                                            props.item.answerOption || [],
-                                            answerOption.valueCoding.code || '',
-                                            event.target.value,
-                                        );
-                                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                    }}
-                                    deleteItem={() => {
-                                        const newArray = removeOptionFromAnswerOptionArray(
-                                            props.item.answerOption || [],
-                                            answerOption.valueCoding.code || '',
-                                        );
-                                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                    }}
-                                />
-                            ))}
+                            {props.item.answerValueSet && !props.item.answerOption && renderValueSetValues()}
+                            {props.item.answerOption?.map((answerOption, index) => renderRadioBtn(answerOption, index))}
                             <RadioBtn value="eget svaralternativ for bruker" />
                         </div>
-                        <Btn
-                            title="+ Legg til alternativ"
-                            onClick={() => {
-                                const newArray = addEmptyOptionToAnswerOptionArray(props.item.answerOption || []);
-                                dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                            }}
-                        />
+                        {!props.item.answerValueSet && (
+                            <Btn
+                                title="+ Legg til alternativ"
+                                onClick={() => {
+                                    const newArray = addEmptyOptionToAnswerOptionArray(props.item.answerOption || []);
+                                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                                }}
+                            />
+                        )}
                     </>
                 );
             case IQuestionnaireItemType.integer:

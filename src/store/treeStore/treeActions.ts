@@ -8,8 +8,9 @@ export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata
 export const NEW_ITEM_ACTION = 'newItem';
 export const DELETE_ITEM_ACTION = 'deleteItem';
 export const UPDATE_ITEM_ACTION = 'updateItem';
-export const DUPLICATE_ITEM_ACTION = 'duplicateItemAction';
+export const DUPLICATE_ITEM_ACTION = 'duplicateItem';
 export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
+export const REORDER_ITEM_ACTION = 'reorderItem';
 
 type ItemValueType =
     | string
@@ -55,6 +56,13 @@ export interface DuplicateItemAction {
 export interface ResetQuestionnaireAction {
     type: typeof RESET_QUESTIONNAIRE_ACTION;
     newState?: TreeState;
+}
+
+export interface ReorderItemAction {
+    type: typeof REORDER_ITEM_ACTION;
+    linkId: string;
+    order: Array<string>;
+    newIndex: number;
 }
 
 export const updateQuestionnaireMetadataAction = (
@@ -115,5 +123,14 @@ export const resetQuestionnaireAction = (newState?: TreeState | undefined): Rese
     return {
         type: RESET_QUESTIONNAIRE_ACTION,
         newState,
+    };
+};
+
+export const reorderItemAction = (linkId: string, order: Array<string>, newIndex: number): ReorderItemAction => {
+    return {
+        type: REORDER_ITEM_ACTION,
+        linkId,
+        order,
+        newIndex,
     };
 };
