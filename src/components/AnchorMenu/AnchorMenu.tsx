@@ -1,40 +1,21 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import { reorderItemAction } from '../../store/treeStore/treeActions';
 import { OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 import './AnchorMenu.css';
 
 const AnchorMenu = (): JSX.Element => {
-    const initList = [
-        {
-            id: '1',
-            text: 'Her kan det være et godt spørmsål',
-        },
-        {
-            id: '2',
-            text: 'Litt lenger spørsmål',
-        },
-        {
-            id: '4',
-            text:
-                'Du har tatt en test som ikke påviser koronavirus. Du trenger vanligvis ikke å teste deg på nytt dersom du akkurat har fått et svar som ikke påviser koronavirus?',
-        },
-    ];
-
     const { state, dispatch } = useContext(TreeContext);
 
-    const [list, setList] = useState(initList);
+    const dispatchReorderItem = (linkId: string, newIndex: number) => {
+        dispatch(reorderItemAction(linkId, [], newIndex));
+    };
 
     const handleChange = (result: DropResult) => {
-        if (!result.destination) {
+        if (!result.destination || !result.draggableId) {
             return;
         }
-
-        const alteredArray = list.concat();
-
-        const [removed] = alteredArray.splice(result.source.index, 1);
-        alteredArray.splice(result.destination?.index, 0, removed);
-
-        setList(alteredArray);
+        dispatchReorderItem(result.draggableId, result.destination.index);
     };
 
     const grid = 8;
@@ -58,32 +39,23 @@ const AnchorMenu = (): JSX.Element => {
         ...draggableStyle,
     });
 
-    const renderTree = (
-        items: Array<OrderItem>,
-        parentArray: Array<string> = [],
-        parentQuestionNumber = '',
-    ): Array<JSX.Element> => {
+    const renderTree = (items: Array<OrderItem>, parentArray: Array<string> = []): Array<JSX.Element> => {
         return items.map((x, index) => {
-            const questionNumber =
-                parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
             return (
-                <Draggable key={index} draggableId={index.toString()} index={index}>
-                    {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-                        >
-                            {state.qItems[x.linkId].text}
-                        </div>
-                    )}
-                </Draggable>
-            );
-            return (
-                <div key={x.linkId}>
-                    <p>{questionNumber}</p>
-                    {renderTree(x.items, [...parentArray, x.linkId], questionNumber)}
+                <div key={index}>
+                    <Draggable draggableId={x.linkId} index={index}>
+                        {(provided, snapshot) => (
+                            <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                            >
+                                {state.qItems[x.linkId].text}
+                            </div>
+                        )}
+                    </Draggable>
+                    {renderTree(x.items, [...parentArray, x.linkId])}
                 </div>
             );
         });
