@@ -42,21 +42,18 @@ const AnchorMenu = (): JSX.Element => {
     const renderTree = (items: Array<OrderItem>, parentArray: Array<string> = []): Array<JSX.Element> => {
         return items.map((x, index) => {
             return (
-                <div key={index}>
-                    <Draggable draggableId={x.linkId} index={index}>
-                        {(provided, snapshot) => (
-                            <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-                            >
-                                {state.qItems[x.linkId].text}
-                            </div>
-                        )}
-                    </Draggable>
-                    {renderTree(x.items, [...parentArray, x.linkId])}
-                </div>
+                <Draggable key={x.linkId} draggableId={x.linkId} index={index}>
+                    {(provided, snapshot) => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                        >
+                            {state.qItems[x.linkId].text}
+                        </div>
+                    )}
+                </Draggable>
             );
         });
     };
