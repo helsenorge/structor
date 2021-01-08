@@ -3,7 +3,7 @@ import React from 'react';
 // @ts-ignore
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 // @ts-ignore
-import Editor from '@losol/ckeditor5-build-markdown';
+import Editor from '@helsenorge/ckeditor5-build-markdown';
 
 const editorConfiguration = {
     toolbar: [
@@ -16,7 +16,6 @@ const editorConfiguration = {
         'numberedList',
         '|',
         'blockQuote',
-        'insertTable',
         '|',
         'undo',
         'redo',
