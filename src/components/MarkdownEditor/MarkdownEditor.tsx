@@ -5,6 +5,8 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 // @ts-ignore
 import Editor from '@helsenorge/ckeditor5-build-markdown';
 
+import './MarkdownEditor.css';
+
 const editorConfiguration = {
     toolbar: [
         'heading',
