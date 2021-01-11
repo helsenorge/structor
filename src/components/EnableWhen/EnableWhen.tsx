@@ -1,11 +1,17 @@
 import React, { useContext, useState } from 'react';
-import { QuestionnaireItem, QuestionnaireItemEnableWhen } from '../../types/fhir';
+import {
+    QuestionnaireItem,
+    QuestionnaireItemEnableBehaviorCodes,
+    QuestionnaireItemEnableWhen,
+    ValueSet,
+} from '../../types/fhir';
 import { IEnableWhen, IItemProperty } from '../../types/IQuestionnareItemType';
 import Select from '../Select/Select';
 import { updateItemAction } from '../../store/treeStore/treeActions';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import './EnableWhen.css';
 import EnableWhenTypes from './EnableWhenTypes/EnableWhenTypes';
+import EnableWhenInfoBox from './EnableWhenInfoBox';
 
 type Props = {
     getItem: (linkId: string) => QuestionnaireItem;
@@ -15,9 +21,10 @@ type Props = {
     }[];
     linkId: string;
     enableWhen: QuestionnaireItemEnableWhen[];
+    containedResources?: Array<ValueSet>;
 };
 
-const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen }: Props): JSX.Element => {
+const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedResources }: Props): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
     const dispatchUpdateItemEnableWhen = (value: IEnableWhen[]) => {
         dispatch(updateItemAction(linkId, IItemProperty.enableWhen, value));
@@ -72,6 +79,14 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen }: Props): J
 
                 return null;
             })}
+            {
+                <EnableWhenInfoBox
+                    getItem={getItem}
+                    enableWhen={enableWhen}
+                    containedResources={containedResources}
+                    enableBehavior={getItem(linkId).enableBehavior as QuestionnaireItemEnableBehaviorCodes}
+                />
+            }
         </>
     );
 };

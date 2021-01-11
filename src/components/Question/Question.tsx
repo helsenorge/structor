@@ -355,6 +355,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 conditionalArray={props.conditionalArray}
                                 linkId={props.item.linkId}
                                 enableWhen={props.item.enableWhen || []}
+                                containedResources={props.containedResources}
                             />
                         </div>
                     </Accordion>

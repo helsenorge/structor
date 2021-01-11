@@ -1,0 +1,109 @@
+import React from 'react';
+import {
+    QuestionnaireItemEnableWhen,
+    QuestionnaireItemEnableBehaviorCodes,
+    QuestionnaireItem,
+    Coding,
+    ValueSet,
+} from '../../types/fhir';
+import { format } from 'date-fns';
+import Infobox from './Infobox';
+import { IOperator } from '../../types/IQuestionnareItemType';
+
+type OperatorMapType = {
+    [key: string]: string;
+};
+
+const operatorMap: OperatorMapType = {
+    [IOperator.exists]: 'eksisterer',
+    [IOperator.equal]: 'er lik',
+    [IOperator.notEqual]: 'ikke er lik',
+    [IOperator.greaterThan]: 'er større enn',
+    [IOperator.lessThan]: 'er mindre enn',
+    [IOperator.greaterThanOrEqual]: 'er større enn eller lik',
+    [IOperator.lessThanOrEqual]: 'er mindre enn eller lik',
+};
+
+interface Props {
+    getItem: (linkId: string) => QuestionnaireItem;
+    enableWhen: Array<QuestionnaireItemEnableWhen>;
+    containedResources?: Array<ValueSet>;
+    enableBehavior?: QuestionnaireItemEnableBehaviorCodes;
+}
+
+const EnableWhenInfoBox = ({ getItem, enableWhen, containedResources, enableBehavior }: Props): JSX.Element => {
+    const getCodingDisplay = (conditionLinkId: string, coding: Coding): string => {
+        const item = getItem(conditionLinkId);
+        let display: string | undefined;
+        if (item.answerOption) {
+            const codingItem = item.answerOption.find(
+                (x) => x.valueCoding.system === coding.system && x.valueCoding.code === coding.code,
+            );
+            display = codingItem?.valueCoding.display;
+        } else if (item.answerValueSet && containedResources) {
+            const valueSet = containedResources.find((x) => `#${x.id}` === item.answerValueSet);
+            if (valueSet && valueSet.compose && valueSet.compose.include && valueSet.compose.include[0].concept) {
+                const codingItem = valueSet.compose.include[0].concept.find((x) => x.code === coding.code);
+                display = codingItem?.display;
+            }
+        }
+
+        return display || '';
+    };
+
+    const generateCondition = (enableWhen: QuestionnaireItemEnableWhen): JSX.Element => {
+        const conditionItem = getItem(enableWhen.question);
+        if (!conditionItem) {
+            // if this happens, this enableWhen refers to a question which does not exist
+            console.warn(`Feil i betinget visning: item med linkId ${enableWhen.question} finnes ikke.`);
+            return <div>{`Feil i betinget visning: item med linkId ${enableWhen.question} finnes ikke.`}</div>;
+        }
+
+        let answerCondition: string;
+        if (enableWhen.hasOwnProperty('answerBoolean')) {
+            answerCondition = enableWhen.answerBoolean === true ? 'Sant' : 'Usant';
+        } else if (enableWhen.hasOwnProperty('answerDecimal')) {
+            answerCondition = enableWhen.answerDecimal.toString();
+        } else if (enableWhen.hasOwnProperty('answerInteger')) {
+            answerCondition = enableWhen.answerInteger.toString();
+        } else if (enableWhen.hasOwnProperty('answerDate')) {
+            answerCondition = format(new Date(enableWhen.answerDate), 'dd.MM.yyyy');
+        } else if (enableWhen.hasOwnProperty('answerDateTime')) {
+            answerCondition = format(new Date(enableWhen.answerDateTime), "dd.MM.yyyy' 'HH:mm");
+        } else if (enableWhen.hasOwnProperty('answerTime')) {
+            answerCondition = enableWhen.answerTime;
+        } else if (enableWhen.hasOwnProperty('answerString')) {
+            answerCondition = enableWhen.answerString;
+        } else if (enableWhen.hasOwnProperty('answerCoding')) {
+            answerCondition = getCodingDisplay(enableWhen.question, enableWhen.answerCoding);
+        } else if (enableWhen.hasOwnProperty('answerQuantity')) {
+            answerCondition = ''; // TODO
+        } else if (enableWhen.hasOwnProperty('answerReference')) {
+            answerCondition = enableWhen.answerReference.reference || ''; // TODO: show display of reference (read extension)
+        } else {
+            answerCondition = '';
+        }
+
+        return (
+            <>
+                <strong>{getItem(enableWhen.question).text}</strong> {operatorMap[enableWhen.operator]}{' '}
+                <strong>{answerCondition}</strong>
+            </>
+        );
+    };
+    const enableBehaviorText = enableBehavior === QuestionnaireItemEnableBehaviorCodes.ALL ? 'og' : 'eller';
+
+    return (
+        <Infobox title="Spørsmålet vil vises dersom:">
+            {enableWhen
+                .map((condition) => {
+                    return generateCondition(condition);
+                })
+                .reduce((accumulated: JSX.Element[], elem: JSX.Element) => {
+                    return [...accumulated, accumulated.length > 0 ? <p>{enableBehaviorText}</p> : <></>, elem];
+                }, [])}
+        </Infobox>
+    );
+};
+
+export default EnableWhenInfoBox;
