@@ -127,60 +127,66 @@ const FormBuilder = (): JSX.Element => {
 
             {showPublishModal && <PublishModal close={() => setShowPublishModal(!showPublishModal)} />}
 
-            <AnchorMenu />
-
-            {isIframeVisible ? (
-                <>
-                    <div className="overlay">
-                        <div className="iframe-div">
-                            <div className="title">
-                                <IconBtn type="x" title="Lukk" onClick={() => setIsIframeVisible(!isIframeVisible)} />
-                                <h1>Forhåndsvisning</h1>
+            <div style={{ display: 'flex' }}>
+                <AnchorMenu />
+                {isIframeVisible ? (
+                    <>
+                        <div className="overlay">
+                            <div className="iframe-div">
+                                <div className="title">
+                                    <IconBtn
+                                        type="x"
+                                        title="Lukk"
+                                        onClick={() => setIsIframeVisible(!isIframeVisible)}
+                                    />
+                                    <h1>Forhåndsvisning</h1>
+                                </div>
+                                <iframe
+                                    id="schemeFrame"
+                                    style={{
+                                        width: '100%',
+                                        height: '70vh',
+                                    }}
+                                    onLoad={iFrameLoaded}
+                                    src="../../iframe/index.html"
+                                ></iframe>
                             </div>
-                            <iframe
-                                id="schemeFrame"
-                                style={{
-                                    width: '100%',
-                                    height: '70vh',
-                                }}
-                                onLoad={iFrameLoaded}
-                                src="../../iframe/index.html"
-                            ></iframe>
                         </div>
-                    </div>
-                </>
-            ) : (
-                <>
-                    <div className="page-wrapper">
-                        <div className="form-intro">
-                            <input
-                                placeholder="Skjematittel.."
-                                value={state.qMetadata.title}
-                                onChange={(event) => {
-                                    dispatchUpdateQuestionnaireMetadata(
-                                        IQuestionnaireMetadataType.title,
-                                        event.target.value,
-                                    );
-                                }}
-                            />
-                            <textarea
-                                placeholder="Beskrivelse av skjema"
-                                value={state.qMetadata.description}
-                                onChange={(event) => {
-                                    dispatchUpdateQuestionnaireMetadata(
-                                        IQuestionnaireMetadataType.description,
-                                        event.target.value,
-                                    );
-                                }}
-                            />
+                    </>
+                ) : (
+                    <>
+                        <div className="page-wrapper">
+                            <div className="form-intro">
+                                <input
+                                    placeholder="Skjematittel.."
+                                    value={state.qMetadata.title}
+                                    onChange={(event) => {
+                                        dispatchUpdateQuestionnaireMetadata(
+                                            IQuestionnaireMetadataType.title,
+                                            event.target.value,
+                                        );
+                                    }}
+                                />
+                                <textarea
+                                    placeholder="Beskrivelse av skjema"
+                                    value={state.qMetadata.description}
+                                    onChange={(event) => {
+                                        dispatchUpdateQuestionnaireMetadata(
+                                            IQuestionnaireMetadataType.description,
+                                            event.target.value,
+                                        );
+                                    }}
+                                />
+                            </div>
+                            <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder)}</div>
+                            <button className="section-button" onClick={dispatchNewRootItem}>
+                                Opprett spørsmål
+                            </button>
                         </div>
-                        <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder)}</div>
-                        <button className="section-button" onClick={dispatchNewRootItem}>
-                            Opprett spørsmål
-                        </button>
-                    </div>
-                </>
-            )}
+                    </>
+                )}
+            </div>
+
             {isShowingFireStructure && (
                 <div className="structor-helper">
                     <div className="title">

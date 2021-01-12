@@ -1,61 +1,25 @@
 import React, { useContext } from 'react';
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { reorderItemAction } from '../../store/treeStore/treeActions';
-import { OrderItem, TreeContext } from '../../store/treeStore/treeStore';
+import { TreeContext } from '../../store/treeStore/treeStore';
 import './AnchorMenu.css';
+import SubAnchor from './SubAnchor';
 
 const AnchorMenu = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
 
-    const dispatchReorderItem = (linkId: string, newIndex: number) => {
-        dispatch(reorderItemAction(linkId, [], newIndex));
+    const dispatchReorderItem = (linkId: string, newIndex: number, order: string[] = []) => {
+        dispatch(reorderItemAction(linkId, order, newIndex));
     };
 
     const handleChange = (result: DropResult) => {
+        console.log(result);
         if (!result.destination || !result.draggableId) {
             return;
         }
-        dispatchReorderItem(result.draggableId, result.destination.index);
-    };
 
-    const grid = 8;
-
-    const getListStyle = (isDraggingOver: boolean) => ({
-        background: isDraggingOver ? 'lightblue' : 'lightgrey',
-        padding: grid,
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
-        // some basic styles to make the items look a bit nicer
-        userSelect: 'none',
-        padding: grid * 2,
-        margin: `0 0 ${grid}px 0`,
-
-        // change background colour if dragging
-        background: isDragging ? 'lightgreen' : 'grey',
-
-        // styles we need to apply on draggables
-        ...draggableStyle,
-    });
-
-    const renderTree = (items: Array<OrderItem>, parentArray: Array<string> = []): Array<JSX.Element> => {
-        return items.map((x, index) => {
-            return (
-                <Draggable key={x.linkId} draggableId={x.linkId} index={index}>
-                    {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-                        >
-                            {state.qItems[x.linkId].text}
-                        </div>
-                    )}
-                </Draggable>
-            );
-        });
+        const order = JSON.parse(result.type);
+        dispatchReorderItem(result.draggableId, result.destination.index, order);
     };
 
     return (
@@ -63,18 +27,7 @@ const AnchorMenu = (): JSX.Element => {
             <p className="align-header">Oversikt</p>
 
             <DragDropContext onDragEnd={handleChange}>
-                <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <div
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}
-                        >
-                            {renderTree(state.qOrder)}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
+                <SubAnchor items={state.qOrder} parentItem="draggable" parentArray={[]} />
             </DragDropContext>
         </div>
     );
