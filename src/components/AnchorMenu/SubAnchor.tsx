@@ -15,20 +15,17 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
-        // some basic styles to make the items look a bit nicer
         userSelect: 'none',
         padding: grid * 2,
-        // change background colour if dragging
-        background: isDragging ? 'lightgreen' : 'grey',
+        background: isDragging ? 'lightgreen' : 'transparent',
 
         margin: '0 10px 10px 0',
         border: '1px solid grey',
-        // styles we need to apply on draggables
         ...draggableStyle,
     });
 
     const getListStyle = (isDraggingOver: boolean) => ({
-        background: isDraggingOver ? 'lightblue' : '#b5b2b2',
+        background: isDraggingOver ? 'lightblue' : 'transparent',
         padding: grid,
         margin: '10px 0',
     });
@@ -48,13 +45,16 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                         {...provided.draggableProps}
                                         style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                                     >
-                                        <div style={{ display: 'flex' }}>
-                                            {state.qItems[item.linkId].text}
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <span className="truncate">
+                                                {state.qItems[item.linkId].text || <i>Legg inn spørsmål</i>}
+                                            </span>
                                             <span
                                                 {...provided.dragHandleProps}
                                                 style={{
                                                     display: 'block',
-                                                    margin: '0 10px',
+                                                    height: 25,
+                                                    width: 25,
                                                 }}
                                             >
                                                 <img src={ReorderIcon} height={25} aria-label="reorder" />

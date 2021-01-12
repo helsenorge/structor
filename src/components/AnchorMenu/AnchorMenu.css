@@ -10,11 +10,23 @@
     transition: opacity .3s ease-in-out;
 }
 
-.anchor-menu:hover{
+.anchor-menu:hover {
     opacity: 1;
 }
 
 .align-header {
     text-align: center;
     font-size: 24px;
+}
+
+.truncate {
+    width: 310px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+.center-text {
+    text-align: center;
 }

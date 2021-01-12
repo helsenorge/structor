@@ -127,7 +127,7 @@ const FormBuilder = (): JSX.Element => {
 
             {showPublishModal && <PublishModal close={() => setShowPublishModal(!showPublishModal)} />}
 
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', paddingBottom: '180px' }}>
                 <AnchorMenu />
                 {isIframeVisible ? (
                     <>
