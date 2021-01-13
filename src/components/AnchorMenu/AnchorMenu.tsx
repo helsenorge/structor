@@ -30,7 +30,7 @@ const AnchorMenu = (): JSX.Element => {
             </DragDropContext>
             {state.qOrder.length === 0 && (
                 <p className="center-text" style={{ padding: '0px 25px' }}>
-                    Ingen spørsmål er lagt til, legg til et spørsmål. Her finner du en oversikt av alle spørsmålene.
+                    Opprett et spørsmål, her finner du en oversikt av alle spørsmålene.
                 </p>
             )}
         </div>

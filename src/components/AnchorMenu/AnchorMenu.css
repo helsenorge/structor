@@ -20,7 +20,7 @@
 }
 
 .truncate {
-    width: 310px;
+    width: 300px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -29,4 +29,10 @@
 
 .center-text {
     text-align: center;
+}
+
+.anchor-icon {
+    display: 'block';
+    height: 25px;
+    width: 25px,
 }

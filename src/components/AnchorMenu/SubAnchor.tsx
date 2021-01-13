@@ -1,7 +1,13 @@
 import React, { useContext } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { OrderItem, TreeContext } from '../../store/treeStore/treeStore';
+
 import ReorderIcon from '../../images/icons/reorder-three-outline.svg';
+import FolderIcon from '../../images/icons/folder-outline.svg';
+import MessageIcon from '../../images/icons/information-circle-outline.svg';
+import QuestionIcon from '../../images/icons/help-circle-outline.svg';
+
+import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 
 type SubAnchorProps = {
     parentItem: string;
@@ -30,6 +36,17 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
         margin: '10px 0',
     });
 
+    const getRelevantIcon = (type: string) => {
+        switch (type) {
+            case IQuestionnaireItemType.group:
+                return <img src={FolderIcon} height={25} alt={`question type ${IQuestionnaireItemType.group}`} />;
+            case IQuestionnaireItemType.display:
+                return <img src={MessageIcon} height={25} alt={`question type ${IQuestionnaireItemType.display}`} />;
+            default:
+                return <img src={QuestionIcon} height={25} alt="question" />;
+        }
+    };
+
     const { state } = useContext(TreeContext);
 
     return (
@@ -46,18 +63,19 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                         style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                                     >
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <span className="anchor-icon" style={{ paddingRight: 10 }}>
+                                                {getRelevantIcon(state.qItems[item.linkId].type)}
+                                            </span>
                                             <span className="truncate">
                                                 {state.qItems[item.linkId].text || <i>Legg inn spørsmål</i>}
                                             </span>
-                                            <span
-                                                {...provided.dragHandleProps}
-                                                style={{
-                                                    display: 'block',
-                                                    height: 25,
-                                                    width: 25,
-                                                }}
-                                            >
-                                                <img src={ReorderIcon} height={25} aria-label="reorder" />
+                                            <span {...provided.dragHandleProps} className="anchor-icon">
+                                                <img
+                                                    src={ReorderIcon}
+                                                    height={25}
+                                                    alt="reorder"
+                                                    aria-label="reorder item"
+                                                />
                                             </span>
                                         </div>
                                         <div>
