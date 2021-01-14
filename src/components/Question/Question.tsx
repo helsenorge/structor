@@ -355,7 +355,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 : ''
                         }`}
                     >
-                        <div style={{ width: '66%', minHeight: '442px' }}>
+                        <div>
                             <EnableWhen
                                 getItem={props.getItem}
                                 conditionalArray={props.conditionalArray}

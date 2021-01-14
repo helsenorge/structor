@@ -104,7 +104,17 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
                                         value={x.operator}
                                         onChange={(event) => {
                                             const copy = getItem(linkId).enableWhen?.map((x, ewIndex) => {
-                                                return index === ewIndex ? { ...x, operator: event.target.value } : x;
+                                                let item = x;
+                                                if (index === ewIndex && event.target.value === IOperator.exists) {
+                                                    // remove answer[x] if operator is changed to exists
+                                                    item = {
+                                                        question: x.question,
+                                                        operator: event.target.value,
+                                                    } as QuestionnaireItemEnableWhen;
+                                                } else if (index === ewIndex) {
+                                                    item = { ...x, operator: event.target.value };
+                                                }
+                                                return item;
                                             });
                                             dispatchUpdateItemEnableWhen(copy);
                                         }}
