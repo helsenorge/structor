@@ -222,7 +222,6 @@ function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): voi
 }
 
 function reorderItem(draft: TreeState, action: ReorderItemAction): void {
-    console.log(draft.qOrder, 'QORDER');
     const arrayToReorderFrom = findTreeArray(action.order, draft.qOrder);
     const indexToMove = arrayToReorderFrom.findIndex((x) => x.linkId === action.linkId);
     if (indexToMove === -1) {

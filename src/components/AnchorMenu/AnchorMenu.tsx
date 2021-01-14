@@ -13,7 +13,6 @@ const AnchorMenu = (): JSX.Element => {
     };
 
     const handleChange = (result: DropResult) => {
-        console.log(result);
         if (!result.destination || !result.draggableId) {
             return;
         }
