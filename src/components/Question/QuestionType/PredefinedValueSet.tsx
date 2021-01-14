@@ -60,8 +60,6 @@ const PredefinedValueSet = ({ linkId, selectedValueSet }: Props): JSX.Element =>
                     onChange={(event) => {
                         const id = event.target.value;
                         dispatch(updateItemAction(linkId, IItemProperty.answerValueSet, `#${id}`));
-                        // todo add referance to item.
-                        console.log(id, 'selected');
                     }}
                     placeholder="Velg et alternativ.."
                 />
