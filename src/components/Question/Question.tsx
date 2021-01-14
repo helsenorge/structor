@@ -279,13 +279,13 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <h2>
                     Spørsmål <span>{props.questionNumber}</span>
                 </h2>
-                <button className="pull-right" onClick={dispatchDuplicateItem}>
+                <button className="pull-right question-button" onClick={dispatchDuplicateItem}>
                     <img src={CopyIcon} height="25" width="25" /> Dupliser
                 </button>
-                <button onClick={() => dispatchNewItem()}>
+                <button className="question-button" onClick={() => dispatchNewItem()}>
                     <img src={PlusIcon} height="25" width="25" /> Oppfølgingsspørsmål
                 </button>
-                <button onClick={dispatchDeleteItem}>
+                <button className="question-button" onClick={dispatchDeleteItem}>
                     <img src={Trashcan} height="25" width="25" /> Slett
                 </button>
             </div>
@@ -348,7 +348,13 @@ const Question = (props: QuestionProps): JSX.Element => {
                     </Accordion>
                 )}
                 {props.parentArray.length > 0 && (
-                    <Accordion title="Legg til betinget visning">
+                    <Accordion
+                        title={`Legg til betinget visning ${
+                            props.item.enableWhen && props.item.enableWhen.length > 0
+                                ? `(${props.item.enableWhen?.length})`
+                                : ''
+                        }`}
+                    >
                         <div style={{ width: '66%', minHeight: '442px' }}>
                             <EnableWhen
                                 getItem={props.getItem}

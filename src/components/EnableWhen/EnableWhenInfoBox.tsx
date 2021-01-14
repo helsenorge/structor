@@ -52,6 +52,9 @@ const EnableWhenInfoBox = ({ getItem, enableWhen, containedResources, enableBeha
     };
 
     const generateCondition = (enableWhen: QuestionnaireItemEnableWhen): JSX.Element => {
+        if (!enableWhen.question) {
+            return <></>;
+        }
         const conditionItem = getItem(enableWhen.question);
         if (!conditionItem) {
             // if this happens, this enableWhen refers to a question which does not exist

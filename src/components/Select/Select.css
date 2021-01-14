@@ -8,6 +8,7 @@
     right: 12px;
     top: 33%;
     z-index: 1;
+    pointer-events: none;
 }
 
 .selector select {
@@ -16,7 +17,5 @@
     -moz-appearance: none;
     appearance: none;
     width: 100%;
-    position: absolute;
     z-index: 2;
-    background: transparent;
 }
