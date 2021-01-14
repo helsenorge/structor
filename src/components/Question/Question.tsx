@@ -202,8 +202,9 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <input type="checkbox" style={{ zoom: 1.5 }} disabled checked />
                     </div>
                 );
-            case IQuestionnaireItemType.predefined:
-                return <PredefinedValueSet />;
+            case IQuestionnaireItemType.choice:
+            case props.item.answerValueSet && props.item.answerValueSet.indexOf('pre-') >= 0:
+                return <PredefinedValueSet linkId={props.item.linkId} selectedValueSet={props.item.answerValueSet} />;
             case IQuestionnaireItemType.choice:
                 return <Choice item={props.item} />;
             case IQuestionnaireItemType.openChoice:
@@ -255,6 +256,13 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
+    const handleDisplayQuestionType = () => {
+        if (props.item.answerValueSet && props.item.answerValueSet.indexOf('pre-') >= 0) {
+            return IQuestionnaireItemType.predefined;
+        }
+        return props.item.type;
+    };
+
     return (
         <div className="question" style={{ marginLeft: props.parentArray.length * 32 }}>
             <div className="question-header">
@@ -280,10 +288,15 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <div className="form-field">
                     <label>Velg spørsmålstype</label>
                     <Select
-                        value={props.item.type}
+                        value={handleDisplayQuestionType()}
                         options={itemType}
                         onChange={(event: { target: { value: string | boolean } }) => {
-                            dispatchUpdateItem(IItemProperty.type, event.target.value);
+                            if (event.target.value === IQuestionnaireItemType.predefined) {
+                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
+                                dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
+                            } else {
+                                dispatchUpdateItem(IItemProperty.type, event.target.value);
+                            }
                             dispatchClearExtention();
                         }}
                     />
