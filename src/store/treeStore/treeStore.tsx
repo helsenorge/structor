@@ -22,6 +22,7 @@ import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/
 import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOptionHelper';
+import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 
 type ActionType =
     | ResetQuestionnaireAction
@@ -95,7 +96,7 @@ export const initialState: TreeState = {
         subjectType: ['Patient'],
         extension: [],
     },
-    qContained: [],
+    qContained: initPredefinedValueSet,
 };
 
 function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {

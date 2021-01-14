@@ -29,6 +29,8 @@ import {
 } from '../../helpers/answerOptionHelper';
 import { removeExtensionValue, setExtensionValue } from '../../helpers/extensionHelper';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
+import PredefinedValueSet from './QuestionType/PredefinedValueSet';
+import Choice from './QuestionType/Choice';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -200,30 +202,10 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <input type="checkbox" style={{ zoom: 1.5 }} disabled checked />
                     </div>
                 );
+            case IQuestionnaireItemType.predefined:
+                return <PredefinedValueSet />;
             case IQuestionnaireItemType.choice:
-                return (
-                    <>
-                        <div className="form-field">
-                            <SwitchBtn
-                                label="Checkbox"
-                                onClick={() => dispatchExtentionUpdate()}
-                                initial
-                                value={props.item.extension !== undefined && props.item.extension.length > 0}
-                            />
-                            {props.item.answerValueSet && !props.item.answerOption && renderValueSetValues()}
-                            {props.item.answerOption?.map((answerOption, index) => renderRadioBtn(answerOption, index))}
-                        </div>
-                        {!props.item.answerValueSet && (
-                            <Btn
-                                title="+ Legg til alternativ"
-                                onClick={() => {
-                                    const newArray = addEmptyOptionToAnswerOptionArray(props.item.answerOption || []);
-                                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                }}
-                            />
-                        )}
-                    </>
-                );
+                return <Choice item={props.item} />;
             case IQuestionnaireItemType.openChoice:
                 return (
                     <>
