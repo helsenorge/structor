@@ -157,6 +157,14 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     const respondType = (param: string) => {
+        if (
+            props.item.answerValueSet &&
+            props.item.answerValueSet.indexOf('pre-') >= 0 &&
+            param === IQuestionnaireItemType.choice
+        ) {
+            return <PredefinedValueSet linkId={props.item.linkId} selectedValueSet={props.item.answerValueSet} />;
+        }
+
         switch (param) {
             case IQuestionnaireItemType.string:
                 return (
@@ -202,9 +210,6 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <input type="checkbox" style={{ zoom: 1.5 }} disabled checked />
                     </div>
                 );
-            case IQuestionnaireItemType.choice:
-            case props.item.answerValueSet && props.item.answerValueSet.indexOf('pre-') >= 0:
-                return <PredefinedValueSet linkId={props.item.linkId} selectedValueSet={props.item.answerValueSet} />;
             case IQuestionnaireItemType.choice:
                 return <Choice item={props.item} />;
             case IQuestionnaireItemType.openChoice:
@@ -296,6 +301,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
                             } else {
                                 dispatchUpdateItem(IItemProperty.type, event.target.value);
+                                dispatchUpdateItem(IItemProperty.answerValueSet, '');
                             }
                             dispatchClearExtention();
                         }}
