@@ -46,7 +46,8 @@ const EnableWhenAnswerTypes = ({
 
     return (
         <>
-            {conditionItem.type === IQuestionnaireItemType.choice && (
+            {(conditionItem.type === IQuestionnaireItemType.choice ||
+                conditionItem.type === IQuestionnaireItemType.openChoice) && (
                 <Select
                     placeholder="Velg et alternativ.."
                     options={getChoices(conditionItem)}
@@ -114,6 +115,83 @@ const EnableWhenAnswerTypes = ({
                     callback={(date: Date) => {
                         const copy = itemEnableWhen?.map((x, ewIndex) => {
                             return index === ewIndex ? { ...x, answerDateTime: formatISO(date) } : x;
+                        });
+                        dispatchUpdateItemEnableWhen(copy);
+                    }}
+                />
+            )}
+            {conditionItem.type === IQuestionnaireItemType.time && (
+                <Picker
+                    selected={enableWhen.answerTime ? parse(enableWhen.answerTime, 'HH:mm:ss', new Date()) : undefined}
+                    type="time"
+                    disabled={false}
+                    withPortal
+                    callback={(date: Date) => {
+                        const copy = itemEnableWhen?.map((x, ewIndex) => {
+                            return index === ewIndex ? { ...x, answerTime: format(date, 'HH:mm:ss') } : x;
+                        });
+                        dispatchUpdateItemEnableWhen(copy);
+                    }}
+                />
+            )}
+            {conditionItem.type === IQuestionnaireItemType.integer && (
+                <input
+                    type="number"
+                    defaultValue={enableWhen.answerInteger}
+                    onChange={(event) => {
+                        const copy = itemEnableWhen?.map((x, ewIndex) => {
+                            return index === ewIndex ? { ...x, answerInteger: parseInt(event.target.value, 10) } : x;
+                        });
+                        dispatchUpdateItemEnableWhen(copy);
+                    }}
+                />
+            )}
+            {conditionItem.type === IQuestionnaireItemType.decimal && (
+                <input
+                    type="number"
+                    defaultValue={enableWhen.answerDecimal}
+                    onChange={(event) => {
+                        const copy = itemEnableWhen?.map((x, ewIndex) => {
+                            return index === ewIndex ? { ...x, answerDecimal: parseFloat(event.target.value) } : x;
+                        });
+                        dispatchUpdateItemEnableWhen(copy);
+                    }}
+                />
+            )}
+            {conditionItem.type === IQuestionnaireItemType.quantity && (
+                <input
+                    type="number"
+                    value={enableWhen.answerQuantity ? enableWhen.answerQuantity.value : ''}
+                    onChange={(event) => {
+                        const extension = (conditionItem.extension || []).find(
+                            (x) => x.url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
+                        );
+                        // get code and system from extension
+                        const system = extension ? extension.valueCoding?.system : '';
+                        const code = extension ? extension.valueCoding?.code : '';
+                        const copy = itemEnableWhen?.map((x, ewIndex) => {
+                            return index === ewIndex
+                                ? {
+                                      ...x,
+                                      answerQuantity: {
+                                          value: parseFloat(event.target.value),
+                                          system: system,
+                                          code: code,
+                                      },
+                                  }
+                                : x;
+                        });
+                        dispatchUpdateItemEnableWhen(copy);
+                    }}
+                />
+            )}
+            {(conditionItem.type === IQuestionnaireItemType.string ||
+                conditionItem.type === IQuestionnaireItemType.text) && (
+                <input
+                    value={enableWhen.answerString}
+                    onChange={(event) => {
+                        const copy = itemEnableWhen?.map((x, ewIndex) => {
+                            return index === ewIndex ? { ...x, answerString: event.target.value } : x;
                         });
                         dispatchUpdateItemEnableWhen(copy);
                     }}

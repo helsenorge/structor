@@ -60,14 +60,8 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
         return !(
             conditionItemType === IQuestionnaireItemType.group ||
             conditionItemType === IQuestionnaireItemType.display ||
-            conditionItemType === IQuestionnaireItemType.decimal ||
-            conditionItemType === IQuestionnaireItemType.time ||
-            conditionItemType === IQuestionnaireItemType.string ||
-            conditionItemType === IQuestionnaireItemType.text ||
-            conditionItemType === IQuestionnaireItemType.openChoice ||
             conditionItemType === IQuestionnaireItemType.attachment ||
-            conditionItemType === IQuestionnaireItemType.reference ||
-            conditionItemType === IQuestionnaireItemType.quantity
+            conditionItemType === IQuestionnaireItemType.reference
         );
     };
 
@@ -81,7 +75,7 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
                 const conditionItem = getItem(x.question);
                 return (
                     // we cannot use index as key, since we can also delete elements. Try to find a better index...
-                    <div key={JSON.stringify(x)} className="enablewhen-box">
+                    <div key={`${linkId}-${x.question}-${x.operator}-${index}`} className="enablewhen-box">
                         <FormField label="Velg tidligere spørsmål:">
                             <Select
                                 placeholder="Velg spørsmål"
@@ -120,20 +114,6 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
                                         }}
                                     />
                                     <div className="enableWhen-condition__answer">
-                                        {conditionItem.type === IQuestionnaireItemType.integer && (
-                                            <input
-                                                type="number"
-                                                defaultValue={x.answerInteger}
-                                                onChange={(event) => {
-                                                    const copy = getItem(linkId).enableWhen?.map((x, ewIndex) => {
-                                                        return index === ewIndex
-                                                            ? { ...x, answerInteger: parseInt(event.target.value, 10) }
-                                                            : x;
-                                                    });
-                                                    dispatchUpdateItemEnableWhen(copy);
-                                                }}
-                                            />
-                                        )}
                                         {x.operator !== IOperator.exists && (
                                             <EnableWhenAnswerTypes
                                                 conditionItem={conditionItem}
