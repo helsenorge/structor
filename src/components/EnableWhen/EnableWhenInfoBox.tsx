@@ -5,6 +5,7 @@ import {
     QuestionnaireItem,
     Coding,
     ValueSet,
+    Quantity,
 } from '../../types/fhir';
 import { format } from 'date-fns';
 import Infobox from './Infobox';
@@ -51,6 +52,15 @@ const EnableWhenInfoBox = ({ getItem, enableWhen, containedResources, enableBeha
         return display || '';
     };
 
+    const getQuantityDisplay = (answerQuantity: Quantity): string => {
+        let display: string | undefined = '';
+        if (answerQuantity) {
+            const unit = answerQuantity.unit;
+            display = `${answerQuantity.value} ${unit ? unit : answerQuantity.code}`;
+        }
+        return display;
+    };
+
     const generateCondition = (enableWhen: QuestionnaireItemEnableWhen): JSX.Element => {
         if (!enableWhen.question) {
             return <></>;
@@ -80,7 +90,7 @@ const EnableWhenInfoBox = ({ getItem, enableWhen, containedResources, enableBeha
         } else if (enableWhen.hasOwnProperty('answerCoding')) {
             answerCondition = getCodingDisplay(enableWhen.question, enableWhen.answerCoding);
         } else if (enableWhen.hasOwnProperty('answerQuantity')) {
-            answerCondition = ''; // TODO
+            answerCondition = getQuantityDisplay(enableWhen.answerQuantity);
         } else if (enableWhen.hasOwnProperty('answerReference')) {
             answerCondition = enableWhen.answerReference.reference || ''; // TODO: show display of reference (read extension)
         } else {
