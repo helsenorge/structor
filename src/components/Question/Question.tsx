@@ -46,7 +46,7 @@ const Question = (props: QuestionProps): JSX.Element => {
     const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(!!props.item._text);
     const { dispatch } = useContext(TreeContext);
 
-    const dispatchNewItem = (type?: IQuestionnaireItemType) => {
+    const dispatchNewChildItem = (type?: IQuestionnaireItemType) => {
         dispatch(newItemAction(type || IQuestionnaireItemType.group, [...props.parentArray, props.item.linkId]));
     };
 
@@ -273,6 +273,8 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
+    const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
+
     return (
         <div className="question" style={{ marginLeft: props.parentArray.length * 32 }}>
             <div className="question-header">
@@ -282,9 +284,11 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <button className="pull-right" onClick={dispatchDuplicateItem}>
                     <img src={CopyIcon} height="25" width="25" /> Dupliser
                 </button>
-                <button onClick={() => dispatchNewItem()}>
-                    <img src={PlusIcon} height="25" width="25" /> Oppfølgingsspørsmål
-                </button>
+                {canCreateChild && (
+                    <button onClick={() => dispatchNewChildItem()}>
+                        <img src={PlusIcon} height="25" width="25" /> Oppfølgingsspørsmål
+                    </button>
+                )}
                 <button onClick={dispatchDeleteItem}>
                     <img src={Trashcan} height="25" width="25" /> Slett
                 </button>
