@@ -28,6 +28,7 @@ import {
     updateAnswerOption,
 } from '../../helpers/answerOptionHelper';
 import { removeExtensionValue, setExtensionValue } from '../../helpers/extensionHelper';
+import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -331,10 +332,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         />
                     </div>
                     {isMarkdownActivated ? (
-                        <textarea
-                            value={getLabelText()}
-                            onChange={(e) => dispatchUpdateMarkdownLabel(e.target.value)}
-                        ></textarea>
+                        <MarkdownEditor data={getLabelText()} onChange={dispatchUpdateMarkdownLabel} />
                     ) : (
                         <input
                             value={getLabelText()}
