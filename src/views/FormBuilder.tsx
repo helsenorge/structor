@@ -3,38 +3,22 @@ import './FormBuilder.css';
 import { OrderItem, TreeContext } from '../store/treeStore/treeStore';
 import Question from '../components/Question/Question';
 import { newItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
-import { generateQuestionnaire } from '../helpers/generateQuestionnaire';
-import IconBtn from '../components/IconBtn/IconBtn';
-import Btn from '../components/Btn/Btn';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import { QuestionnaireItem } from '../types/fhir';
-import { Link } from 'react-router-dom';
+
 import PublishModal from '../components/PublishModal/PublishModal';
 import Publish from '../components/Metadata/Publish';
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
+import Navbar from '../components/Navbar/Navbar';
+import FormFiller from '../components/FormFiller/FormFiller';
+import JSONView from '../components/JSONView/JSONView';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const [isIframeVisible, setIsIframeVisible] = React.useState<boolean>(false);
     const [isShowingFireStructure, setIsShowingFireStructure] = React.useState<boolean>(false);
     const [showPublishModal, setShowPublishModal] = React.useState<boolean>(false);
-
-    function iFrameLoaded() {
-        const questionnaireString = generateQuestionnaire(state);
-        const schemeDisplayer = document.getElementById('schemeFrame');
-        if (schemeDisplayer) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            schemeDisplayer.contentWindow.postMessage(
-                {
-                    questionnaireString: questionnaireString,
-                    showFooter: false,
-                },
-                '*',
-            );
-        }
-    }
 
     const dispatchNewRootItem = () => {
         dispatch(newItemAction(IQuestionnaireItemType.group, []));
@@ -83,76 +67,23 @@ const FormBuilder = (): JSX.Element => {
         });
     };
 
-    function exportToJsonAndDownload() {
-        const questionnaire = generateQuestionnaire(state);
-        const filename = state.qMetadata.title || 'skjema' + '.json';
-        const contentType = 'application/json;charset=utf-8;';
-
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            const blob = new Blob([decodeURIComponent(encodeURI(questionnaire))], {
-                type: contentType,
-            });
-            navigator.msSaveOrOpenBlob(blob, filename);
-        } else {
-            const a = document.createElement('a');
-            a.download = filename;
-            a.href = 'data:' + contentType + ',' + encodeURIComponent(questionnaire);
-            a.target = '_blank';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-    }
-
     const [showResults, setShowAdminMenu] = React.useState(false);
-    const onClick = () => setShowAdminMenu(!showResults);
 
     return (
         <>
-            <header>
-                <Link to="/">
-                    <IconBtn type="back" title="Tilbake" />
-                </Link>
+            <Navbar
+                showAdmin={() => setShowAdminMenu(!showResults)}
+                showFormFiller={() => setIsIframeVisible(!isIframeVisible)}
+                showJSONView={() => setIsShowingFireStructure(!isShowingFireStructure)}
+            />
 
-                <div className="left"></div>
-
-                <div className="pull-right">
-                    <Btn title="Forhåndsvisning" onClick={() => setIsIframeVisible(!isIframeVisible)} />
-                    <Btn title="JSON" onClick={() => setIsShowingFireStructure(!isShowingFireStructure)} />
-                    <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
-                    <Btn title="Publiser" onClick={() => onClick()} />
-                </div>
-                {showResults && <Publish openModal={() => setShowPublishModal(!showPublishModal)} />}
-            </header>
-
+            {showResults && <Publish openModal={() => setShowPublishModal(!showPublishModal)} />}
             {showPublishModal && <PublishModal close={() => setShowPublishModal(!showPublishModal)} />}
 
             <div style={{ display: 'flex', paddingBottom: '180px' }}>
                 <AnchorMenu />
                 {isIframeVisible ? (
-                    <>
-                        <div className="overlay">
-                            <div className="iframe-div">
-                                <div className="title">
-                                    <IconBtn
-                                        type="x"
-                                        title="Lukk"
-                                        onClick={() => setIsIframeVisible(!isIframeVisible)}
-                                    />
-                                    <h1>Forhåndsvisning</h1>
-                                </div>
-                                <iframe
-                                    id="schemeFrame"
-                                    style={{
-                                        width: '100%',
-                                        height: '70vh',
-                                    }}
-                                    onLoad={iFrameLoaded}
-                                    src="../../iframe/index.html"
-                                ></iframe>
-                            </div>
-                        </div>
-                    </>
+                    <FormFiller showFormFiller={() => setIsIframeVisible(!isIframeVisible)} />
                 ) : (
                     <>
                         <div className="page-wrapper">
@@ -188,19 +119,7 @@ const FormBuilder = (): JSX.Element => {
             </div>
 
             {isShowingFireStructure && (
-                <div className="structor-helper">
-                    <div className="title">
-                        <IconBtn
-                            type="x"
-                            title="Tilbake"
-                            onClick={() => setIsShowingFireStructure(!isShowingFireStructure)}
-                        />
-                        <h1>JSON struktur</h1>
-                    </div>
-                    <code className="json">
-                        {JSON.stringify(JSON.parse(generateQuestionnaire(state)), undefined, 2)}
-                    </code>
-                </div>
+                <JSONView showJSONView={() => setIsShowingFireStructure(!isShowingFireStructure)} />
             )}
         </>
     );
