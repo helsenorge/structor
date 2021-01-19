@@ -168,8 +168,6 @@ function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value
     draft.qMetadata[propName] = value;
 
     if (IQuestionnaireMetadataType.title === propName) {
-        draft.qMetadata.name = `hdir-${value}`;
-
         const useContext = draft.qMetadata.useContext;
         if (useContext !== undefined && useContext.length > 0) {
             const codings = useContext[0].valueCodeableConcept?.coding;
