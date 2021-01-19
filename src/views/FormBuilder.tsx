@@ -11,7 +11,7 @@ import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType'
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { Link } from 'react-router-dom';
 import PublishModal from '../components/PublishModal/PublishModal';
-import Publish from '../components/Metadata/Publish';
+import MetadataEditor from '../components/Metadata/MetadataEditor';
 import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 
@@ -98,9 +98,6 @@ const FormBuilder = (): JSX.Element => {
         }
     }
 
-    const [showResults, setShowAdminMenu] = React.useState(false);
-    const onClick = () => setShowAdminMenu(!showResults);
-
     return (
         <>
             <header>
@@ -114,9 +111,8 @@ const FormBuilder = (): JSX.Element => {
                     <Btn title="Forhåndsvisning" onClick={() => setIsIframeVisible(!isIframeVisible)} />
                     <Btn title="JSON" onClick={() => setIsShowingFireStructure(!isShowingFireStructure)} />
                     <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
-                    <Btn title="Publiser" onClick={() => onClick()} />
+                    <Btn title="Publiser" onClick={() => setShowPublishModal(!showPublishModal)} />
                 </div>
-                {showResults && <Publish openModal={() => setShowPublishModal(!showPublishModal)} />}
             </header>
 
             {showPublishModal && <PublishModal close={() => setShowPublishModal(!showPublishModal)} />}
@@ -172,6 +168,7 @@ const FormBuilder = (): JSX.Element => {
                                     }}
                                 />
                             </div>
+                            <MetadataEditor />
                             <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder)}</div>
                             <button className="section-button" onClick={dispatchNewRootItem}>
                                 Opprett spørsmål
