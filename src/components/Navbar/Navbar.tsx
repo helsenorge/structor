@@ -9,9 +9,10 @@ type Props = {
     showAdmin: () => void;
     showFormFiller: () => void;
     showJSONView: () => void;
+    showImportValueSet: () => void;
 };
 
-const Navbar = ({ showAdmin, showFormFiller, showJSONView }: Props): JSX.Element => {
+const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet }: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
 
     function exportToJsonAndDownload() {
@@ -48,6 +49,7 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView }: Props): JSX.Element
                 <Btn title="JSON" onClick={showJSONView} />
                 <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
                 <Btn title="Publiser" onClick={showAdmin} />
+                <Btn title="Importer" onClick={showImportValueSet} />
             </div>
         </header>
     );

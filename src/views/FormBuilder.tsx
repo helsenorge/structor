@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import './FormBuilder.css';
 import { OrderItem, TreeContext } from '../store/treeStore/treeStore';
 import Question from '../components/Question/Question';
@@ -13,12 +13,15 @@ import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import Navbar from '../components/Navbar/Navbar';
 import FormFiller from '../components/FormFiller/FormFiller';
 import JSONView from '../components/JSONView/JSONView';
+import ImportValueSet from '../components/ImportValueSet/ImportValueSet';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
-    const [isIframeVisible, setIsIframeVisible] = React.useState<boolean>(false);
-    const [isShowingFireStructure, setIsShowingFireStructure] = React.useState<boolean>(false);
-    const [showPublishModal, setShowPublishModal] = React.useState<boolean>(false);
+    const [isIframeVisible, setIsIframeVisible] = useState(false);
+    const [isShowingFireStructure, setIsShowingFireStructure] = useState(false);
+    const [showPublishModal, setShowPublishModal] = useState(false);
+    const [showImportValueSet, setShowImportValueSet] = useState(false);
+    const [showResults, setShowAdminMenu] = useState(false);
 
     const dispatchNewRootItem = () => {
         dispatch(newItemAction(IQuestionnaireItemType.group, []));
@@ -67,18 +70,18 @@ const FormBuilder = (): JSX.Element => {
         });
     };
 
-    const [showResults, setShowAdminMenu] = React.useState(false);
-
     return (
         <>
             <Navbar
                 showAdmin={() => setShowAdminMenu(!showResults)}
                 showFormFiller={() => setIsIframeVisible(!isIframeVisible)}
                 showJSONView={() => setIsShowingFireStructure(!isShowingFireStructure)}
+                showImportValueSet={() => setShowImportValueSet(!showImportValueSet)}
             />
 
             {showResults && <Publish openModal={() => setShowPublishModal(!showPublishModal)} />}
             {showPublishModal && <PublishModal close={() => setShowPublishModal(!showPublishModal)} />}
+            {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
 
             <div style={{ display: 'flex', paddingBottom: '180px' }}>
                 <AnchorMenu />

@@ -5,7 +5,7 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
-import IconBtn from '../IconBtn/IconBtn';
+import Modal from '../Modal/Modal';
 import Spinner from '../Spinner/Spinner';
 import './PublishModal.css';
 
@@ -62,55 +62,49 @@ const PublishModal = ({ close }: Props): JSX.Element => {
     };
 
     return (
-        <div className="overlay">
-            <div className="modal">
-                <div className="title">
-                    <IconBtn type="x" title="Lukk" onClick={close} />
-                    <h1>Publiser</h1>
-                </div>
-                <div className="content">
-                    <p>Er du klar for å publisere?</p>
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            pushToServer();
-                        }}
-                    >
-                        <FormField label="Url til publiseringen:">
-                            <input
-                                value={state.qMetadata.url || ''}
-                                placeholder="Skriv inn en url.."
-                                title="Kun url"
-                                onChange={(e) => updateMeta(IQuestionnaireMetadataType.url, e.target.value || '')}
-                                pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
-                                type="url"
-                                required
-                            />
-                        </FormField>
+        <Modal close={close} title="Publiser">
+            <p>Er du klar for å publisere?</p>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    pushToServer();
+                }}
+            >
+                <FormField label="Url til publiseringen:">
+                    <input
+                        value={state.qMetadata.url || ''}
+                        placeholder="Skriv inn en url.."
+                        title="Kun url"
+                        onChange={(e) => updateMeta(IQuestionnaireMetadataType.url, e.target.value || '')}
+                        pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
+                        type="url"
+                        required
+                    />
+                </FormField>
 
-                        <FormField label="Skriv inn id: ">
-                            <input
-                                pattern="[A-Z0-9_]{1,63}"
-                                title="Kun store bokstaver og tall"
-                                value={state.qMetadata.id || ''}
-                                maxLength={64}
-                                onChange={(e) => updateMeta(IQuestionnaireMetadataType.id, e.target.value || '')}
-                                required
-                            />
-                        </FormField>
+                <FormField label="Skriv inn id: ">
+                    <input
+                        pattern="[A-Z0-9_]{1,63}"
+                        title="Kun store bokstaver og tall"
+                        value={state.qMetadata.id || ''}
+                        maxLength={64}
+                        onChange={(e) => updateMeta(IQuestionnaireMetadataType.id, e.target.value || '')}
+                        required
+                    />
+                </FormField>
 
-                        <Btn title="Publiser skjema" type="submit" />
-                    </form>
-                    <div className="feedback">
-                        <Spinner state={upload} />
-                        <p>{formState}</p>
-                    </div>
-                    {error.map((x, index) => {
-                        return <p key={index}>{x.diagnostics}</p>;
-                    })}
-                </div>
+                <Btn title="Publiser skjema" type="submit" />
+            </form>
+            <div className="feedback">
+                <Spinner state={upload} />
+                <p>{formState}</p>
             </div>
-        </div>
+            <div>
+                {error.map((x, index) => {
+                    return <p key={index}>{x.diagnostics}</p>;
+                })}
+            </div>
+        </Modal>
     );
 };
 
