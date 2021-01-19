@@ -6,7 +6,13 @@ import {
     updateItemAction,
     duplicateItemAction,
 } from '../../store/treeStore/treeActions';
-import { QuestionnaireItem, QuestionnaireItemAnswerOption, Element, ValueSet } from '../../types/fhir';
+import {
+    QuestionnaireItem,
+    QuestionnaireItemAnswerOption,
+    Element,
+    ValueSet,
+    ValueSetComposeIncludeConcept,
+} from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import CopyIcon from '../../images/icons/copy-outline.svg';
@@ -34,10 +40,7 @@ interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
     questionNumber: string;
-    conditionalArray: {
-        code: string;
-        display: string;
-    }[];
+    conditionalArray: ValueSetComposeIncludeConcept[];
     getItem: (linkId: string) => QuestionnaireItem;
     containedResources?: Array<ValueSet>;
 }
@@ -347,25 +350,23 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <ValidationAnswerTypes item={props.item} />
                     </Accordion>
                 )}
-                {props.parentArray.length > 0 && (
-                    <Accordion
-                        title={`Legg til betinget visning ${
-                            props.item.enableWhen && props.item.enableWhen.length > 0
-                                ? `(${props.item.enableWhen?.length})`
-                                : ''
-                        }`}
-                    >
-                        <div>
-                            <EnableWhen
-                                getItem={props.getItem}
-                                conditionalArray={props.conditionalArray}
-                                linkId={props.item.linkId}
-                                enableWhen={props.item.enableWhen || []}
-                                containedResources={props.containedResources}
-                            />
-                        </div>
-                    </Accordion>
-                )}
+                <Accordion
+                    title={`Legg til betinget visning ${
+                        props.item.enableWhen && props.item.enableWhen.length > 0
+                            ? `(${props.item.enableWhen?.length})`
+                            : ''
+                    }`}
+                >
+                    <div>
+                        <EnableWhen
+                            getItem={props.getItem}
+                            conditionalArray={props.conditionalArray}
+                            linkId={props.item.linkId}
+                            enableWhen={props.item.enableWhen || []}
+                            containedResources={props.containedResources}
+                        />
+                    </div>
+                </Accordion>
             </div>
         </div>
     );
