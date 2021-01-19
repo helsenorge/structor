@@ -29,6 +29,8 @@ import {
 } from '../../helpers/answerOptionHelper';
 import { removeExtensionValue, setExtensionValue } from '../../helpers/extensionHelper';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
+import PredefinedValueSet from './QuestionType/PredefinedValueSet';
+import Choice from './QuestionType/Choice';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -155,6 +157,14 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     const respondType = (param: string) => {
+        if (
+            props.item.answerValueSet &&
+            props.item.answerValueSet.indexOf('pre-') >= 0 &&
+            param === IQuestionnaireItemType.choice
+        ) {
+            return <PredefinedValueSet linkId={props.item.linkId} selectedValueSet={props.item.answerValueSet} />;
+        }
+
         switch (param) {
             case IQuestionnaireItemType.string:
                 return (
@@ -201,29 +211,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     </div>
                 );
             case IQuestionnaireItemType.choice:
-                return (
-                    <>
-                        <div className="form-field">
-                            <SwitchBtn
-                                label="Checkbox"
-                                onClick={() => dispatchExtentionUpdate()}
-                                initial
-                                value={props.item.extension !== undefined && props.item.extension.length > 0}
-                            />
-                            {props.item.answerValueSet && !props.item.answerOption && renderValueSetValues()}
-                            {props.item.answerOption?.map((answerOption, index) => renderRadioBtn(answerOption, index))}
-                        </div>
-                        {!props.item.answerValueSet && (
-                            <Btn
-                                title="+ Legg til alternativ"
-                                onClick={() => {
-                                    const newArray = addEmptyOptionToAnswerOptionArray(props.item.answerOption || []);
-                                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                }}
-                            />
-                        )}
-                    </>
-                );
+                return <Choice item={props.item} />;
             case IQuestionnaireItemType.openChoice:
                 return (
                     <>
@@ -273,6 +261,12 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
+    const handleDisplayQuestionType = () => {
+        if (props.item.answerValueSet && props.item.answerValueSet.indexOf('pre-') >= 0) {
+            return IQuestionnaireItemType.predefined;
+        }
+        return props.item.type;
+    };
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
 
     return (
@@ -302,10 +296,16 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <div className="form-field">
                     <label>Velg spørsmålstype</label>
                     <Select
-                        value={props.item.type}
+                        value={handleDisplayQuestionType()}
                         options={itemType}
                         onChange={(event: { target: { value: string | boolean } }) => {
-                            dispatchUpdateItem(IItemProperty.type, event.target.value);
+                            if (event.target.value === IQuestionnaireItemType.predefined) {
+                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
+                                dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
+                            } else {
+                                dispatchUpdateItem(IItemProperty.type, event.target.value);
+                                dispatchUpdateItem(IItemProperty.answerValueSet, '');
+                            }
                             dispatchClearExtention();
                         }}
                     />
