@@ -6,7 +6,13 @@ import {
     updateItemAction,
     duplicateItemAction,
 } from '../../store/treeStore/treeActions';
-import { QuestionnaireItem, QuestionnaireItemAnswerOption, Element, ValueSet } from '../../types/fhir';
+import {
+    QuestionnaireItem,
+    QuestionnaireItemAnswerOption,
+    Element,
+    ValueSet,
+    ValueSetComposeIncludeConcept,
+} from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import CopyIcon from '../../images/icons/copy-outline.svg';
@@ -36,10 +42,7 @@ interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
     questionNumber: string;
-    conditionalArray: {
-        code: string;
-        display: string;
-    }[];
+    conditionalArray: ValueSetComposeIncludeConcept[];
     getItem: (linkId: string) => QuestionnaireItem;
     containedResources?: Array<ValueSet>;
 }
@@ -275,15 +278,15 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <h2>
                     Spørsmål <span>{props.questionNumber}</span>
                 </h2>
-                <button className="pull-right" onClick={dispatchDuplicateItem}>
+                <button className="pull-right question-button" onClick={dispatchDuplicateItem}>
                     <img src={CopyIcon} height="25" width="25" /> Dupliser
                 </button>
                 {canCreateChild && (
-                    <button onClick={() => dispatchNewChildItem()}>
+                    <button className="question-button" onClick={() => dispatchNewChildItem()}>
                         <img src={PlusIcon} height="25" width="25" /> Oppfølgingsspørsmål
                     </button>
                 )}
-                <button onClick={dispatchDeleteItem}>
+                <button className="question-button" onClick={dispatchDeleteItem}>
                     <img src={Trashcan} height="25" width="25" /> Slett
                 </button>
             </div>
@@ -351,18 +354,23 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <ValidationAnswerTypes item={props.item} />
                     </Accordion>
                 )}
-                {props.parentArray.length > 0 && (
-                    <Accordion title="Legg til betinget visning">
-                        <div style={{ width: '66%', minHeight: '442px' }}>
-                            <EnableWhen
-                                getItem={props.getItem}
-                                conditionalArray={props.conditionalArray}
-                                linkId={props.item.linkId}
-                                enableWhen={props.item.enableWhen || []}
-                            />
-                        </div>
-                    </Accordion>
-                )}
+                <Accordion
+                    title={`Legg til betinget visning ${
+                        props.item.enableWhen && props.item.enableWhen.length > 0
+                            ? `(${props.item.enableWhen?.length})`
+                            : ''
+                    }`}
+                >
+                    <div>
+                        <EnableWhen
+                            getItem={props.getItem}
+                            conditionalArray={props.conditionalArray}
+                            linkId={props.item.linkId}
+                            enableWhen={props.item.enableWhen || []}
+                            containedResources={props.containedResources}
+                        />
+                    </div>
+                </Accordion>
             </div>
         </div>
     );

@@ -8,10 +8,11 @@ import IconBtn from '../components/IconBtn/IconBtn';
 import Btn from '../components/Btn/Btn';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import { QuestionnaireItem } from '../types/fhir';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { Link } from 'react-router-dom';
 import PublishModal from '../components/PublishModal/PublishModal';
 import Publish from '../components/Metadata/Publish';
+import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 
 const FormBuilder = (): JSX.Element => {
@@ -44,15 +45,8 @@ const FormBuilder = (): JSX.Element => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
-    const getConditional = (parrentArray: string[]) => {
-        const conditinals = parrentArray.map((x) => {
-            return {
-                code: x,
-                display: state.qItems[x].text || 'Ikke definert tittel',
-            };
-        });
-
-        return conditinals;
+    const getConditional = (parentArray: string[], linkId: string): ValueSetComposeIncludeConcept[] => {
+        return getEnableWhenConditionals(state, parentArray, linkId);
     };
 
     const getQItem = (linkId: string): QuestionnaireItem => {
@@ -73,7 +67,7 @@ const FormBuilder = (): JSX.Element => {
                         item={state.qItems[x.linkId]}
                         parentArray={parentArray}
                         questionNumber={questionNumber}
-                        conditionalArray={getConditional(parentArray)}
+                        conditionalArray={getConditional(parentArray, x.linkId)}
                         getItem={getQItem}
                         containedResources={state.qContained}
                     />

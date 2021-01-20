@@ -12,17 +12,13 @@
     padding: 20px 70px;
 }
 
-.question button {
-    color: black;
-}
-
 .question-header {
     display: flex;
     border-bottom: 8px solid #ebf8ff;
     margin-bottom: 26px;
 }
 
-.question-header > button {
+.question-button {
     background: none;
     border: none;
     padding: 0;
@@ -38,7 +34,7 @@
     font-weight: 700;
 }
 
-.question-header > button > i {
+.question-button > i {
     font-size: 28px;
     color: black;
 }
@@ -52,7 +48,6 @@
 .form-field-label-wrapper,
 .form-field > label {
     font-size: 16px;
-    min-height: 28px;
 }
 
 .form-field-label-wrapper {
