@@ -5,7 +5,8 @@
     transform: translateX(-50%);
     width: 900px;
     background: white;
-    min-height: 600px;
+    height: 600px;
+    overflow: auto;
     text-align: left;
 }
 
