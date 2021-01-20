@@ -35,6 +35,8 @@ import {
 } from '../../helpers/answerOptionHelper';
 import { removeExtensionValue, setExtensionValue } from '../../helpers/extensionHelper';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
+import PredefinedValueSet from './QuestionType/PredefinedValueSet';
+import Choice from './QuestionType/Choice';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -49,7 +51,7 @@ const Question = (props: QuestionProps): JSX.Element => {
     const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(!!props.item._text);
     const { dispatch } = useContext(TreeContext);
 
-    const dispatchNewItem = (type?: IQuestionnaireItemType) => {
+    const dispatchNewChildItem = (type?: IQuestionnaireItemType) => {
         dispatch(newItemAction(type || IQuestionnaireItemType.group, [...props.parentArray, props.item.linkId]));
     };
 
@@ -158,6 +160,14 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     const respondType = (param: string) => {
+        if (
+            props.item.answerValueSet &&
+            props.item.answerValueSet.indexOf('pre-') >= 0 &&
+            param === IQuestionnaireItemType.choice
+        ) {
+            return <PredefinedValueSet linkId={props.item.linkId} selectedValueSet={props.item.answerValueSet} />;
+        }
+
         switch (param) {
             case IQuestionnaireItemType.string:
                 return (
@@ -204,29 +214,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     </div>
                 );
             case IQuestionnaireItemType.choice:
-                return (
-                    <>
-                        <div className="form-field">
-                            <SwitchBtn
-                                label="Checkbox"
-                                onClick={() => dispatchExtentionUpdate()}
-                                initial
-                                value={props.item.extension !== undefined && props.item.extension.length > 0}
-                            />
-                            {props.item.answerValueSet && !props.item.answerOption && renderValueSetValues()}
-                            {props.item.answerOption?.map((answerOption, index) => renderRadioBtn(answerOption, index))}
-                        </div>
-                        {!props.item.answerValueSet && (
-                            <Btn
-                                title="+ Legg til alternativ"
-                                onClick={() => {
-                                    const newArray = addEmptyOptionToAnswerOptionArray(props.item.answerOption || []);
-                                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                }}
-                            />
-                        )}
-                    </>
-                );
+                return <Choice item={props.item} />;
             case IQuestionnaireItemType.openChoice:
                 return (
                     <>
@@ -276,6 +264,14 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
+    const handleDisplayQuestionType = () => {
+        if (props.item.answerValueSet && props.item.answerValueSet.indexOf('pre-') >= 0) {
+            return IQuestionnaireItemType.predefined;
+        }
+        return props.item.type;
+    };
+    const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
+
     return (
         <div className="question" style={{ marginLeft: props.parentArray.length * 32 }}>
             <div className="question-header">
@@ -285,9 +281,11 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <button className="pull-right question-button" onClick={dispatchDuplicateItem}>
                     <img src={CopyIcon} height="25" width="25" /> Dupliser
                 </button>
-                <button className="question-button" onClick={() => dispatchNewItem()}>
-                    <img src={PlusIcon} height="25" width="25" /> Oppfølgingsspørsmål
-                </button>
+                {canCreateChild && (
+                    <button className="question-button" onClick={() => dispatchNewChildItem()}>
+                        <img src={PlusIcon} height="25" width="25" /> Oppfølgingsspørsmål
+                    </button>
+                )}
                 <button className="question-button" onClick={dispatchDeleteItem}>
                     <img src={Trashcan} height="25" width="25" /> Slett
                 </button>
@@ -301,10 +299,16 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <div className="form-field">
                     <label>Velg spørsmålstype</label>
                     <Select
-                        value={props.item.type}
+                        value={handleDisplayQuestionType()}
                         options={itemType}
                         onChange={(event: { target: { value: string | boolean } }) => {
-                            dispatchUpdateItem(IItemProperty.type, event.target.value);
+                            if (event.target.value === IQuestionnaireItemType.predefined) {
+                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
+                                dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
+                            } else {
+                                dispatchUpdateItem(IItemProperty.type, event.target.value);
+                                dispatchUpdateItem(IItemProperty.answerValueSet, '');
+                            }
                             dispatchClearExtention();
                         }}
                     />

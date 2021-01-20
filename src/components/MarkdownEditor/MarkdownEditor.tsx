@@ -1,15 +1,28 @@
-import React, { useState } from 'react';
-import ReactMde from 'react-mde';
-import * as Showdown from 'showdown';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import React from 'react';
+// @ts-ignore
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+// @ts-ignore
+import Editor from '@helsenorge/ckeditor5-build-markdown';
 
-import 'react-mde/lib/styles/css/react-mde-all.css';
+import './MarkdownEditor.css';
 
-const converter = new Showdown.Converter({
-    tables: true,
-    simplifiedAutoLink: true,
-    strikethrough: true,
-    tasklists: true,
-});
+const editorConfiguration = {
+    toolbar: [
+        'heading',
+        '|',
+        'bold',
+        'italic',
+        'link',
+        'bulletedList',
+        'numberedList',
+        '|',
+        'blockQuote',
+        '|',
+        'undo',
+        'redo',
+    ],
+};
 
 interface MarkdownEditorProps {
     data: string;
@@ -17,15 +30,12 @@ interface MarkdownEditorProps {
 }
 
 const MarkdownEditor = (props: MarkdownEditorProps): JSX.Element => {
-    const [selectedTab, setSelectedTab] = useState<'write' | 'preview'>('write');
-
     return (
-        <ReactMde
-            value={props.data}
-            onChange={props.onChange}
-            selectedTab={selectedTab}
-            onTabChange={setSelectedTab}
-            generateMarkdownPreview={(markdown) => Promise.resolve(converter.makeHtml(markdown))}
+        <CKEditor
+            data={props.data}
+            onChange={(event: Event, editor: Editor) => props.onChange(editor.getData())}
+            editor={Editor}
+            config={editorConfiguration}
         />
     );
 };

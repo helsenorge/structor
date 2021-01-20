@@ -27,6 +27,10 @@ const itemType = [
         code: IQuestionnaireItemType.openChoice,
     },
     {
+        display: 'Predefinerte alternativer',
+        code: IQuestionnaireItemType.predefined,
+    },
+    {
         display: 'Dato',
         code: IQuestionnaireItemType.date,
     },

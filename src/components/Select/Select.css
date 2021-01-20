@@ -6,7 +6,7 @@
 .selector img {
     position: absolute;
     right: 12px;
-    top: 33%;
+    top: 30%;
     z-index: 1;
     pointer-events: none;
 }

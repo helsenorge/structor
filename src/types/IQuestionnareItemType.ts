@@ -15,6 +15,8 @@ export enum IQuestionnaireItemType {
     attachment = 'attachment',
     reference = 'reference',
     quantity = 'quantity',
+    // extention
+    predefined = 'predifined',
 }
 
 export enum IItemProperty {

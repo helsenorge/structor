@@ -14,7 +14,8 @@
 }
 
 .logo {
-    width: 120px;
+    padding-top: 8px;
+    width: 100px;
 }
 
 .app-name {
@@ -32,7 +33,7 @@
     min-height: calc(100vh - 65px);
 }
 
-.main-menu>div {
+.main-menu > div {
     background-color: white;
     height: 40vh;
     width: 750px;
