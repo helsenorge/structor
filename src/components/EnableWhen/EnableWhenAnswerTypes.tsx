@@ -188,7 +188,7 @@ const EnableWhenAnswerTypes = ({
             {(conditionItem.type === IQuestionnaireItemType.string ||
                 conditionItem.type === IQuestionnaireItemType.text) && (
                 <input
-                    value={enableWhen.answerString}
+                    value={enableWhen.answerString || ''}
                     onChange={(event) => {
                         const copy = itemEnableWhen?.map((x, ewIndex) => {
                             return index === ewIndex ? { ...x, answerString: event.target.value } : x;

@@ -10,6 +10,7 @@ import {
 import { format } from 'date-fns';
 import Infobox from './Infobox';
 import { IOperator } from '../../types/IQuestionnareItemType';
+import createUUID from '../../helpers/CreateUUID';
 
 type OperatorMapType = {
     [key: string]: string;
@@ -27,12 +28,13 @@ const operatorMap: OperatorMapType = {
 
 interface Props {
     getItem: (linkId: string) => QuestionnaireItem;
+    linkId: string;
     enableWhen: Array<QuestionnaireItemEnableWhen>;
     containedResources?: Array<ValueSet>;
     enableBehavior?: QuestionnaireItemEnableBehaviorCodes;
 }
 
-const EnableWhenInfoBox = ({ getItem, enableWhen, containedResources, enableBehavior }: Props): JSX.Element => {
+const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, enableBehavior }: Props): JSX.Element => {
     const getCodingDisplay = (conditionLinkId: string, coding: Coding): string => {
         const item = getItem(conditionLinkId);
         let display: string | undefined;
@@ -61,15 +63,19 @@ const EnableWhenInfoBox = ({ getItem, enableWhen, containedResources, enableBeha
         return display;
     };
 
-    const generateCondition = (enableWhen: QuestionnaireItemEnableWhen): JSX.Element => {
+    const generateCondition = (enableWhen: QuestionnaireItemEnableWhen, enableBehaviorText: string): JSX.Element => {
         if (!enableWhen.question) {
-            return <></>;
+            return <div key={`${linkId}-empty-${createUUID()}`}></div>;
         }
         const conditionItem = getItem(enableWhen.question);
         if (!conditionItem) {
             // if this happens, this enableWhen refers to a question which does not exist
             console.warn(`Feil i betinget visning: item med linkId ${enableWhen.question} finnes ikke.`);
-            return <div>{`Feil i betinget visning: item med linkId ${enableWhen.question} finnes ikke.`}</div>;
+            return (
+                <div
+                    key={`${linkId}-${enableWhen.question}-${enableWhen.operator}-notfound`}
+                >{`Feil i betinget visning: item med linkId ${enableWhen.question} finnes ikke.`}</div>
+            );
         }
 
         let answerCondition: string;
@@ -98,23 +104,20 @@ const EnableWhenInfoBox = ({ getItem, enableWhen, containedResources, enableBeha
         }
 
         return (
-            <>
+            <div key={`${linkId}-${enableWhen.question}-${enableWhen.operator}-${answerCondition}`}>
+                {enableBehaviorText && <p>{enableBehaviorText}</p>}
                 <strong>{getItem(enableWhen.question).text}</strong> {operatorMap[enableWhen.operator]}{' '}
                 <strong>{answerCondition}</strong>
-            </>
+            </div>
         );
     };
     const enableBehaviorText = enableBehavior === QuestionnaireItemEnableBehaviorCodes.ALL ? 'og' : 'eller';
 
     return (
         <Infobox title="Spørsmålet vil vises dersom:">
-            {enableWhen
-                .map((condition) => {
-                    return generateCondition(condition);
-                })
-                .reduce((accumulated: JSX.Element[], elem: JSX.Element) => {
-                    return [...accumulated, accumulated.length > 0 ? <p>{enableBehaviorText}</p> : <></>, elem];
-                }, [])}
+            {enableWhen.map((condition, index) => {
+                return generateCondition(condition, index > 0 ? enableBehaviorText : '');
+            })}
         </Infobox>
     );
 };

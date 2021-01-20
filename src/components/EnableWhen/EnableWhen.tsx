@@ -179,6 +179,7 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
             {enableWhen.length > 0 && (
                 <EnableWhenInfoBox
                     getItem={getItem}
+                    linkId={linkId}
                     enableWhen={enableWhen}
                     containedResources={containedResources}
                     enableBehavior={getItem(linkId).enableBehavior as QuestionnaireItemEnableBehaviorCodes}
