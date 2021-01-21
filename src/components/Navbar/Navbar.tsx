@@ -1,9 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import Btn from '../Btn/Btn';
 import IconBtn from '../IconBtn/IconBtn';
+import MoreIcon from '../../images/icons/ellipsis-horizontal-outline.svg';
+import './Navbar.css';
 
 type Props = {
     showAdmin: () => void;
@@ -14,6 +16,7 @@ type Props = {
 
 const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet }: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
+    const [menuIsVisible, setMenuIsVisible] = useState(false);
 
     function exportToJsonAndDownload() {
         const questionnaire = generateQuestionnaire(state);
@@ -36,6 +39,20 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet }:
         }
     }
 
+    const handleClickOutside = (event: MouseEvent) => {
+        const currentClass = (event.target as Element).className;
+        if (currentClass.indexOf('more-menu') < 0 && menuIsVisible) {
+            setTimeout(() => setMenuIsVisible(false), 200);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside, true);
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true);
+        };
+    });
+
     return (
         <header>
             <Link to="/">
@@ -46,11 +63,26 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet }:
 
             <div className="pull-right">
                 <Btn title="Forhåndsvisning" onClick={showFormFiller} />
-                <Btn title="JSON" onClick={showJSONView} />
                 <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
-                <Btn title="Publiser" onClick={showAdmin} />
-                <Btn title="Importer" onClick={showImportValueSet} />
+                <div
+                    className="more-menu"
+                    tabIndex={0}
+                    role="button"
+                    aria-label="menu list"
+                    aria-pressed="false"
+                    onClick={() => setMenuIsVisible(!menuIsVisible)}
+                    onKeyPress={(e) => e.code === 'Enter' && setMenuIsVisible(!menuIsVisible)}
+                >
+                    <img className="more-menu-icon" src={MoreIcon} alt="more icon" height={25} />
+                </div>
             </div>
+            {menuIsVisible && (
+                <div className="menu">
+                    <Btn title="JSON" onClick={showJSONView} />
+                    <Btn title="Publiser" onClick={showAdmin} />
+                    <Btn title="Importer" onClick={showImportValueSet} />
+                </div>
+            )}
         </header>
     );
 };
