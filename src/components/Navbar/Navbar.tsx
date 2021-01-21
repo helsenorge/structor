@@ -80,7 +80,7 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet }:
                 <div className="menu">
                     <Btn title="JSON" onClick={showJSONView} />
                     <Btn title="Publiser" onClick={showAdmin} />
-                    <Btn title="Importer" onClick={showImportValueSet} />
+                    <Btn title="Importer valg" onClick={showImportValueSet} />
                 </div>
             )}
         </header>

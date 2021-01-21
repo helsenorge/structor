@@ -17,6 +17,8 @@ import {
     DuplicateItemAction,
     REORDER_ITEM_ACTION,
     ReorderItemAction,
+    AppendValueSetAction,
+    APPEND_VALUESET_ACTION,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -31,7 +33,8 @@ type ActionType =
     | DeleteItemAction
     | UpdateItemAction
     | DuplicateItemAction
-    | ReorderItemAction;
+    | ReorderItemAction
+    | AppendValueSetAction;
 
 export interface Items {
     [key: string]: QuestionnaireItem;
@@ -232,6 +235,14 @@ function reorderItem(draft: TreeState, action: ReorderItemAction): void {
     arrayToReorderFrom.splice(action.newIndex, 0, movedOrderItem[0]);
 }
 
+function appendValueSet(draft: TreeState, action: AppendValueSetAction): void {
+    if (draft.qContained && draft.qContained.length > 0) {
+        draft.qContained = [...draft.qContained, ...action.valueSet];
+    } else {
+        draft.qContained = [...action.valueSet];
+    }
+}
+
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
         case RESET_QUESTIONNAIRE_ACTION:
@@ -254,6 +265,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case REORDER_ITEM_ACTION:
             reorderItem(draft, action);
+            break;
+        case APPEND_VALUESET_ACTION:
+            appendValueSet(draft, action);
             break;
     }
 });

@@ -1,6 +1,6 @@
 import CreateUUID from '../../helpers/CreateUUID';
 import { IEnableWhen, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import { QuestionnaireItem, Extension, QuestionnaireItemAnswerOption, Element } from '../../types/fhir';
+import { QuestionnaireItem, Extension, QuestionnaireItemAnswerOption, Element, ValueSet } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TreeState } from './treeStore';
 
@@ -11,6 +11,7 @@ export const UPDATE_ITEM_ACTION = 'updateItem';
 export const DUPLICATE_ITEM_ACTION = 'duplicateItem';
 export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 export const REORDER_ITEM_ACTION = 'reorderItem';
+export const APPEND_VALUESET_ACTION = 'appendValueSet';
 
 type ItemValueType =
     | string
@@ -63,6 +64,11 @@ export interface ReorderItemAction {
     linkId: string;
     order: Array<string>;
     newIndex: number;
+}
+
+export interface AppendValueSetAction {
+    type: typeof APPEND_VALUESET_ACTION;
+    valueSet: ValueSet[];
 }
 
 export const updateQuestionnaireMetadataAction = (
@@ -132,5 +138,12 @@ export const reorderItemAction = (linkId: string, order: Array<string>, newIndex
         linkId,
         order,
         newIndex,
+    };
+};
+
+export const appendValueSetAction = (valueSet: ValueSet[]): AppendValueSetAction => {
+    return {
+        type: APPEND_VALUESET_ACTION,
+        valueSet,
     };
 };

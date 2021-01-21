@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { BundleEntry, ValueSet } from '../../types/fhir';
 import Btn from '../Btn/Btn';
@@ -6,12 +6,16 @@ import FormField from '../FormField/FormField';
 import Modal from '../Modal/Modal';
 import './ImportValueSet.css';
 import AlertIcon from '../../images/icons/alert-circle-outline.svg';
+import { TreeContext } from '../../store/treeStore/treeStore';
+import { appendValueSetAction } from '../../store/treeStore/treeActions';
 
 type Props = {
     close: () => void;
 };
 
 const ImportValueSet = ({ close }: Props): JSX.Element => {
+    const { dispatch } = useContext(TreeContext);
+
     const [url, setUrl] = useState('');
     const [error, setError] = useState<string | null>();
     const [loading, setLoading] = useState(false);
@@ -87,6 +91,13 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
         }
     };
 
+    const handleAddNewValueSet = () => {
+        if (valueSets) {
+            dispatch(appendValueSetAction(valueSets));
+        }
+        close();
+    };
+
     return (
         <Modal close={close} title="Importer Value Set">
             <div>
@@ -139,7 +150,7 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                     <div className="button-btn">
                         <div>
                             <p>Legg til ({valueSets?.length} ValueSet) i predefinerte valg</p>
-                            <Btn title="Importer" variant="primary" onClick={() => console.info('TODO!')} />
+                            <Btn title="Importer" variant="primary" onClick={handleAddNewValueSet} />
                         </div>
                     </div>
                 )}
