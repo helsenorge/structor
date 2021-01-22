@@ -270,7 +270,7 @@ const Question = (props: QuestionProps): JSX.Element => {
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
 
     return (
-        <div className="question" style={{ marginLeft: props.parentArray.length * 32 }}>
+        <div className="question" style={{ marginLeft: props.parentArray.length * 32 }} id={props.item.linkId}>
             <div className="question-header">
                 <h2>
                     Spørsmål <span>{props.questionNumber}</span>
