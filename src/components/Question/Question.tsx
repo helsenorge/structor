@@ -241,6 +241,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     </>
                 );
             case IQuestionnaireItemType.integer:
+            case IQuestionnaireItemType.decimal:
                 return (
                     <>
                         <div className="form-field">
@@ -267,6 +268,9 @@ const Question = (props: QuestionProps): JSX.Element => {
     const handleDisplayQuestionType = () => {
         if (props.item.answerValueSet && props.item.answerValueSet.indexOf('pre-') >= 0) {
             return IQuestionnaireItemType.predefined;
+        }
+        if (props.item.type === IQuestionnaireItemType.integer || props.item.type === IQuestionnaireItemType.decimal) {
+            return IQuestionnaireItemType.number;
         }
         return props.item.type;
     };
@@ -305,6 +309,9 @@ const Question = (props: QuestionProps): JSX.Element => {
                             if (event.target.value === IQuestionnaireItemType.predefined) {
                                 dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
                                 dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
+                            } else if (event.target.value === IQuestionnaireItemType.number) {
+                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
+                                dispatchUpdateItem(IItemProperty.answerValueSet, '');
                             } else {
                                 dispatchUpdateItem(IItemProperty.type, event.target.value);
                                 dispatchUpdateItem(IItemProperty.answerValueSet, '');

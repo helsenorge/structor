@@ -48,7 +48,7 @@ const itemType = [
     },
     {
         display: 'Tall',
-        code: IQuestionnaireItemType.integer,
+        code: IQuestionnaireItemType.number,
     },
 ];
 
@@ -165,6 +165,7 @@ export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
 export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolean => {
     const validTypes = [
         IQuestionnaireItemType.integer,
+        IQuestionnaireItemType.decimal,
         IQuestionnaireItemType.text,
         IQuestionnaireItemType.string,
         IQuestionnaireItemType.date,
