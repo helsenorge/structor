@@ -101,6 +101,10 @@
     margin-right: 0px;
 }
 
+.horizontal.equal {
+    min-height: 81px;
+}
+
 .horizontal.equal > div {
     width: 50%;
 }

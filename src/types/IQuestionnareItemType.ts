@@ -17,6 +17,8 @@ export enum IQuestionnaireItemType {
     quantity = 'quantity',
     // extention
     predefined = 'predifined',
+    // number applies to both integer and decimal
+    number = 'number',
 }
 
 export enum IItemProperty {
