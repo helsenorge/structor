@@ -17,7 +17,7 @@ export enum IQuestionnaireItemType {
     quantity = 'quantity',
     // extention
     predefined = 'predifined',
-    // number applies to both integer and decimal
+    // number is not a fhir-type, but used internally for types integer, decimal and quantity
     number = 'number',
 }
 
@@ -64,4 +64,5 @@ export enum IExtentionType {
     regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
     maxDecimalPlaces = 'http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces',
     markdown = 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+    questionnaireUnit = 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
 }

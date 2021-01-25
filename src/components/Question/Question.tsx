@@ -1,23 +1,29 @@
-import React, { useContext } from 'react';
+import React, { ChangeEvent, useContext } from 'react';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import {
-    newItemAction,
     deleteItemAction,
-    updateItemAction,
     duplicateItemAction,
+    newItemAction,
+    updateItemAction,
 } from '../../store/treeStore/treeActions';
 import {
+    Element,
+    Extension,
     QuestionnaireItem,
     QuestionnaireItemAnswerOption,
-    Element,
     ValueSet,
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import CopyIcon from '../../images/icons/copy-outline.svg';
-import itemType, { checkboxExtension, typeIsSupportingValidation } from '../../helpers/QuestionHelper';
-import { IItemProperty, IQuestionnaireItemType, IExtentionType } from '../../types/IQuestionnareItemType';
+import itemType, {
+    checkboxExtension,
+    QUANTITY_UNIT_TYPE_NOT_SELECTED,
+    quantityUnitTypes,
+    typeIsSupportingValidation,
+} from '../../helpers/QuestionHelper';
+import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import Picker from '../DatePicker/DatePicker';
 import './Question.css';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
@@ -65,12 +71,12 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const dispatchUpdateItem = (
         name: IItemProperty,
-        value: string | boolean | QuestionnaireItemAnswerOption[] | Element | undefined,
+        value: string | boolean | QuestionnaireItemAnswerOption[] | Element | Extension[] | undefined,
     ) => {
         dispatch(updateItemAction(props.item.linkId, name, value));
     };
 
-    const dispatchExtentionUpdate = () => {
+    const dispatchExtensionUpdate = () => {
         if (props.item.extension && props.item.extension.length > 0) {
             dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
         } else {
@@ -78,7 +84,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
-    const dispatchClearExtention = () => {
+    const dispatchClearExtension = () => {
         dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
     };
 
@@ -111,6 +117,37 @@ const Question = (props: QuestionProps): JSX.Element => {
             });
         }
         return [];
+    };
+
+    const getQuantityType = (): string => {
+        if (props.item.type !== IQuestionnaireItemType.quantity) {
+            return QUANTITY_UNIT_TYPE_NOT_SELECTED;
+        }
+        const quantityType = props.item.extension?.find((extension) => {
+            return extension.url === IExtentionType.questionnaireUnit;
+        })?.valueCoding?.code;
+
+        return quantityType || QUANTITY_UNIT_TYPE_NOT_SELECTED;
+    };
+
+    const updateQuantityType = (event: ChangeEvent<HTMLSelectElement>) => {
+        const {
+            target: { value: quantityTypeCode },
+        } = event;
+        let updatedExtensions: Extension[];
+        if (quantityTypeCode === QUANTITY_UNIT_TYPE_NOT_SELECTED) {
+            updatedExtensions = removeExtensionValue(props.item, IExtentionType.questionnaireUnit)?.extension || [];
+            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.decimal);
+        } else {
+            const coding = quantityUnitTypes.find(({ code }) => code === quantityTypeCode);
+            const unitExtension: Extension = {
+                url: IExtentionType.questionnaireUnit,
+                valueCoding: coding,
+            };
+            updatedExtensions = setExtensionValue(props.item, unitExtension).extension || [];
+            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.quantity);
+        }
+        dispatchUpdateItem(IItemProperty.extension, updatedExtensions);
     };
 
     const renderValueSetValues = (): JSX.Element => {
@@ -221,7 +258,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <div className="form-field">
                             <SwitchBtn
                                 label="Checkbox"
-                                onClick={() => dispatchExtentionUpdate()}
+                                onChange={() => dispatchExtensionUpdate()}
                                 initial
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}
                             />
@@ -242,21 +279,18 @@ const Question = (props: QuestionProps): JSX.Element => {
                 );
             case IQuestionnaireItemType.integer:
             case IQuestionnaireItemType.decimal:
+            case IQuestionnaireItemType.quantity:
                 return (
                     <>
                         <div className="form-field">
-                            <Select
-                                options={[
-                                    { display: 'ingen formatering', code: '1' },
-                                    { display: 'kg', code: '2' },
-                                    { display: 'år', code: '3' },
-                                    { display: 'måneder', code: '4' },
-                                    { display: 'dager', code: '5' },
-                                ]}
-                                onChange={() => {
-                                    //TODO!
-                                }}
-                            />
+                            <div>
+                                <label>Legg til enhet</label>
+                                <Select
+                                    options={quantityUnitTypes}
+                                    onChange={updateQuantityType}
+                                    value={getQuantityType()}
+                                />
+                            </div>
                         </div>
                     </>
                 );
@@ -269,7 +303,11 @@ const Question = (props: QuestionProps): JSX.Element => {
         if (props.item.answerValueSet && props.item.answerValueSet.indexOf('pre-') >= 0) {
             return IQuestionnaireItemType.predefined;
         }
-        if (props.item.type === IQuestionnaireItemType.integer || props.item.type === IQuestionnaireItemType.decimal) {
+        if (
+            props.item.type === IQuestionnaireItemType.integer ||
+            props.item.type === IQuestionnaireItemType.decimal ||
+            props.item.type === IQuestionnaireItemType.quantity
+        ) {
             return IQuestionnaireItemType.number;
         }
         return props.item.type;
@@ -298,7 +336,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <SwitchBtn
                     label="Obligatorisk"
                     value={props.item.required || false}
-                    onClick={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
+                    onChange={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
                 />
                 <div className="form-field">
                     <label>Velg spørsmålstype</label>
@@ -316,7 +354,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 dispatchUpdateItem(IItemProperty.type, event.target.value);
                                 dispatchUpdateItem(IItemProperty.answerValueSet, '');
                             }
-                            dispatchClearExtention();
+                            dispatchClearExtension();
                         }}
                     />
                 </div>
@@ -327,7 +365,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                             label="Aktiver markdown"
                             initial
                             value={isMarkdownActivated}
-                            onClick={() => {
+                            onChange={() => {
                                 const newIsMarkdownEnabled = !isMarkdownActivated;
                                 setIsMarkdownActivated(newIsMarkdownEnabled);
                                 if (!newIsMarkdownEnabled) {

@@ -47,8 +47,43 @@ const itemType = [
         code: IQuestionnaireItemType.boolean,
     },
     {
+        // Used for itemTypes integer, decimal and quantity
         display: 'Tall',
         code: IQuestionnaireItemType.number,
+    },
+];
+
+export const QUANTITY_UNIT_TYPE_NOT_SELECTED = 'QUANTITY_UNIT_TYPE_NOT_SELECTED';
+export const quantityUnitTypes = [
+    {
+        system: '',
+        code: QUANTITY_UNIT_TYPE_NOT_SELECTED,
+        display: 'Velg enhet',
+    },
+    {
+        system: 'http://unitsofmeasure.org',
+        code: 'cm',
+        display: 'centimeter',
+    },
+    {
+        system: 'http://unitsofmeasure.org',
+        code: 'kg',
+        display: 'kilo',
+    },
+    {
+        system: 'http://unitsofmeasure.org',
+        code: 'a',
+        display: 'år',
+    },
+    {
+        system: 'http://unitsofmeasure.org',
+        code: 'mo',
+        display: 'måned',
+    },
+    {
+        system: 'http://unitsofmeasure.org',
+        code: 'd',
+        display: 'dag',
     },
 ];
 
@@ -166,6 +201,7 @@ export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolea
     const validTypes = [
         IQuestionnaireItemType.integer,
         IQuestionnaireItemType.decimal,
+        IQuestionnaireItemType.quantity,
         IQuestionnaireItemType.text,
         IQuestionnaireItemType.string,
         IQuestionnaireItemType.date,

@@ -15,7 +15,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
     const minValue = item?.extension?.find((x) => x.url === IExtentionType.minValue)?.valueInteger;
     const maxValue = item?.extension?.find((x) => x.url === IExtentionType.maxValue)?.valueInteger;
     const maxDecimalPlaces = item?.extension?.find((x) => x.url === IExtentionType.maxDecimalPlaces)?.valueInteger;
-    const isDecimal = item?.type === IQuestionnaireItemType.decimal;
+    const isDecimal = item?.type === IQuestionnaireItemType.decimal || item?.type === IQuestionnaireItemType.quantity;
 
     const dispatchUpdateItemType = (value: IQuestionnaireItemType.decimal | IQuestionnaireItemType.integer) => {
         dispatch(updateItemAction(item.linkId, IItemProperty.type, value));
@@ -84,7 +84,13 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
         <>
             <div className="horizontal equal">
                 <div className="form-field">
-                    <SwitchBtn label="Tillat desimaltall" initial value={isDecimal} onClick={changeItemType} />
+                    <SwitchBtn
+                        label="Tillat desimaltall"
+                        initial
+                        value={isDecimal}
+                        onChange={changeItemType}
+                        disabled={item?.type === IQuestionnaireItemType.quantity}
+                    />
                 </div>
                 {isDecimal && (
                     <div className="form-field">

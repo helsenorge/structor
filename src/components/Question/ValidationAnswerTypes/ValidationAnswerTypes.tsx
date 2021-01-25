@@ -20,6 +20,7 @@ const ValidationAnswerTypes = ({ item }: ValidationTypeProp): JSX.Element => {
                 return <ValidationAnswerTypesText item={item} />;
             case IQuestionnaireItemType.integer:
             case IQuestionnaireItemType.decimal:
+            case IQuestionnaireItemType.quantity:
                 return <ValidationAnswerTypeNumber item={item} />;
         }
     };
