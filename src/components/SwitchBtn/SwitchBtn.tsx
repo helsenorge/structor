@@ -2,18 +2,19 @@ import React from 'react';
 import './SwitchBtn.css';
 
 type SwitchBtnProps = {
-    onClick: () => void;
+    onChange: () => void;
     value: boolean;
     label: string;
     initial?: boolean;
+    disabled?: boolean;
 };
 
-const SwitchBtn = ({ onClick, value, label, initial }: SwitchBtnProps): JSX.Element => {
+const SwitchBtn = ({ onChange, value, label, initial, disabled }: SwitchBtnProps): JSX.Element => {
     return (
         <div className={`switch-btn ${initial ? 'initial' : ''}`}>
             <label>{label}</label>
             <label className="switch">
-                <input type="checkbox" defaultChecked={value} onClick={onClick} />
+                <input type="checkbox" checked={value} onChange={onChange} disabled={disabled} />
                 <span className="slider round"></span>
             </label>
         </div>

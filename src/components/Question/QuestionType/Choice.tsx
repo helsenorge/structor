@@ -97,7 +97,7 @@ const Choice = ({ item }: Props): JSX.Element => {
             <div className="form-field">
                 <SwitchBtn
                     label="Checkbox"
-                    onClick={() => dispatchExtentionUpdate()}
+                    onChange={() => dispatchExtentionUpdate()}
                     initial
                     value={item.extension !== undefined && item.extension.length > 0}
                 />
