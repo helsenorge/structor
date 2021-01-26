@@ -119,33 +119,28 @@ const Question = (props: QuestionProps): JSX.Element => {
         return [];
     };
 
-    const getQuantityType = (): string => {
-        if (props.item.type !== IQuestionnaireItemType.quantity) {
-            return QUANTITY_UNIT_TYPE_NOT_SELECTED;
-        }
-        const quantityType = props.item.extension?.find((extension) => {
+    const getQuantityUnitType = (): string => {
+        const quantityUnitType = props.item.extension?.find((extension) => {
             return extension.url === IExtentionType.questionnaireUnit;
         })?.valueCoding?.code;
 
-        return quantityType || QUANTITY_UNIT_TYPE_NOT_SELECTED;
+        return quantityUnitType || QUANTITY_UNIT_TYPE_NOT_SELECTED;
     };
 
-    const updateQuantityType = (event: ChangeEvent<HTMLSelectElement>) => {
+    const updateQuantityUnitType = (event: ChangeEvent<HTMLSelectElement>) => {
         const {
-            target: { value: quantityTypeCode },
+            target: { value: quantityUnitTypeCode },
         } = event;
         let updatedExtensions: Extension[];
-        if (quantityTypeCode === QUANTITY_UNIT_TYPE_NOT_SELECTED) {
+        if (quantityUnitTypeCode === QUANTITY_UNIT_TYPE_NOT_SELECTED) {
             updatedExtensions = removeExtensionValue(props.item, IExtentionType.questionnaireUnit)?.extension || [];
-            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.decimal);
         } else {
-            const coding = quantityUnitTypes.find(({ code }) => code === quantityTypeCode);
+            const coding = quantityUnitTypes.find(({ code }) => code === quantityUnitTypeCode);
             const unitExtension: Extension = {
                 url: IExtentionType.questionnaireUnit,
                 valueCoding: coding,
             };
             updatedExtensions = setExtensionValue(props.item, unitExtension).extension || [];
-            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.quantity);
         }
         dispatchUpdateItem(IItemProperty.extension, updatedExtensions);
     };
@@ -277,8 +272,6 @@ const Question = (props: QuestionProps): JSX.Element => {
                         )}
                     </>
                 );
-            case IQuestionnaireItemType.integer:
-            case IQuestionnaireItemType.decimal:
             case IQuestionnaireItemType.quantity:
                 return (
                     <>
@@ -287,8 +280,8 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 <label>Legg til enhet</label>
                                 <Select
                                     options={quantityUnitTypes}
-                                    onChange={updateQuantityType}
-                                    value={getQuantityType()}
+                                    onChange={updateQuantityUnitType}
+                                    value={getQuantityUnitType()}
                                 />
                             </div>
                         </div>
@@ -303,11 +296,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         if (props.item.answerValueSet && props.item.answerValueSet.indexOf('pre-') >= 0) {
             return IQuestionnaireItemType.predefined;
         }
-        if (
-            props.item.type === IQuestionnaireItemType.integer ||
-            props.item.type === IQuestionnaireItemType.decimal ||
-            props.item.type === IQuestionnaireItemType.quantity
-        ) {
+        if (props.item.type === IQuestionnaireItemType.integer || props.item.type === IQuestionnaireItemType.decimal) {
             return IQuestionnaireItemType.number;
         }
         return props.item.type;
