@@ -47,9 +47,13 @@ const itemType = [
         code: IQuestionnaireItemType.boolean,
     },
     {
-        // Used for itemTypes integer, decimal and quantity
+        // Used for itemTypes integer and decimal
         display: 'Tall',
         code: IQuestionnaireItemType.number,
+    },
+    {
+        display: 'Antall med enhet',
+        code: IQuestionnaireItemType.quantity,
     },
 ];
 
