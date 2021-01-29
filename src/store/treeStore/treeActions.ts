@@ -11,6 +11,7 @@ export const UPDATE_ITEM_ACTION = 'updateItem';
 export const DUPLICATE_ITEM_ACTION = 'duplicateItem';
 export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 export const REORDER_ITEM_ACTION = 'reorderItem';
+export const UPDATE_LINK_ID_ACTION = 'updateLinkId';
 
 type ItemValueType =
     | string
@@ -21,6 +22,13 @@ type ItemValueType =
     | QuestionnaireItemAnswerOption[]
     | Element
     | undefined; // TODO: legg på alle lovlige verdier
+
+export interface UpdateLinkIdAction {
+    type: typeof UPDATE_LINK_ID_ACTION;
+    oldLinkId: string;
+    newLinkId: string;
+    parentArray: Array<string>;
+}
 
 export interface UpdateQuestionnaireMetadataAction {
     type: typeof UPDATE_QUESTIONNAIRE_METADATA_ACTION;
@@ -64,6 +72,19 @@ export interface ReorderItemAction {
     order: Array<string>;
     newIndex: number;
 }
+
+export const updateLinkIdAction = (
+    oldLinkId: string,
+    newLinkId: string,
+    parentArray: Array<string>,
+): UpdateLinkIdAction => {
+    return {
+        type: UPDATE_LINK_ID_ACTION,
+        oldLinkId,
+        newLinkId,
+        parentArray,
+    };
+};
 
 export const updateQuestionnaireMetadataAction = (
     propName: IQuestionnaireMetadataType,

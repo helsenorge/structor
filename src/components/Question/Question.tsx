@@ -43,6 +43,7 @@ import { removeExtensionValue, setExtensionValue } from '../../helpers/extension
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import PredefinedValueSet from './QuestionType/PredefinedValueSet';
 import Choice from './QuestionType/Choice';
+import AdvancedQuestionOptions from '../AdvancedQuestionOptions/AdvancedQuestionOptions';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -404,6 +405,9 @@ const Question = (props: QuestionProps): JSX.Element => {
                             containedResources={props.containedResources}
                         />
                     </div>
+                </Accordion>
+                <Accordion title="Avanserte innstillinger">
+                    <AdvancedQuestionOptions item={props.item} parentArray={props.parentArray} />
                 </Accordion>
             </div>
         </div>
