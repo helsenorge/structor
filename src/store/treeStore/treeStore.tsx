@@ -3,20 +3,22 @@ import produce from 'immer';
 
 import { QuestionnaireItem, ValueSet } from '../../types/fhir';
 import {
-    RESET_QUESTIONNAIRE_ACTION,
-    ResetQuestionnaireAction,
     DELETE_ITEM_ACTION,
     DeleteItemAction,
-    NEW_ITEM_ACTION,
-    NewItemAction,
-    UPDATE_ITEM_ACTION,
-    UPDATE_QUESTIONNAIRE_METADATA_ACTION,
-    UpdateItemAction,
-    UpdateQuestionnaireMetadataAction,
     DUPLICATE_ITEM_ACTION,
     DuplicateItemAction,
+    NEW_ITEM_ACTION,
+    NewItemAction,
     REORDER_ITEM_ACTION,
     ReorderItemAction,
+    RESET_QUESTIONNAIRE_ACTION,
+    ResetQuestionnaireAction,
+    UPDATE_ITEM_ACTION,
+    UPDATE_LINK_ID_ACTION,
+    UPDATE_QUESTIONNAIRE_METADATA_ACTION,
+    UpdateItemAction,
+    UpdateLinkIdAction,
+    UpdateQuestionnaireMetadataAction,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -31,7 +33,8 @@ type ActionType =
     | DeleteItemAction
     | UpdateItemAction
     | DuplicateItemAction
-    | ReorderItemAction;
+    | ReorderItemAction
+    | UpdateLinkIdAction;
 
 export interface Items {
     [key: string]: QuestionnaireItem;
@@ -230,6 +233,40 @@ function reorderItem(draft: TreeState, action: ReorderItemAction): void {
     arrayToReorderFrom.splice(action.newIndex, 0, movedOrderItem[0]);
 }
 
+function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
+    const { qItems, qOrder } = draft;
+    const { oldLinkId, newLinkId, parentArray } = action;
+
+    // Replace in qItems
+    const oldItem = qItems[oldLinkId];
+    const newItem = {
+        ...oldItem,
+        linkId: newLinkId,
+    };
+    qItems[newLinkId] = newItem;
+    delete qItems[oldLinkId];
+
+    // Replace in qOrder
+    const arrayToUpdateIn = findTreeArray(parentArray, qOrder);
+    const itemToUpdate = arrayToUpdateIn.find((item) => item.linkId === oldLinkId);
+    if (!itemToUpdate) {
+        throw `Trying to update linkId that doesn't exist`;
+    }
+    itemToUpdate.linkId = newLinkId;
+
+    // Replace enableWhen(s)
+    Object.values(qItems).forEach((item) => {
+        if (!item.enableWhen) {
+            return;
+        }
+        item.enableWhen.forEach((enableWhen) => {
+            if (enableWhen.question === oldLinkId) {
+                enableWhen.question = newLinkId;
+            }
+        });
+    });
+}
+
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
         case RESET_QUESTIONNAIRE_ACTION:
@@ -252,6 +289,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case REORDER_ITEM_ACTION:
             reorderItem(draft, action);
+            break;
+        case UPDATE_LINK_ID_ACTION:
+            updateLinkId(draft, action);
             break;
     }
 });
