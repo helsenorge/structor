@@ -60,10 +60,6 @@ p {
   text-align: left;
 }
 
-.field-error {
-  border-bottom: solid red 1px !important;
-}
-
 .standard {
   padding: 10px;
   text-align: left;

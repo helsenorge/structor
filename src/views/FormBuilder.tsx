@@ -62,7 +62,7 @@ const FormBuilder = (): JSX.Element => {
             const questionNumber =
                 parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
             return (
-                <div key={x.linkId}>
+                <div key={index}>
                     <Question
                         item={state.qItems[x.linkId]}
                         parentArray={parentArray}

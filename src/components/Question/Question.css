@@ -55,6 +55,18 @@
     justify-content: space-between;
 }
 
+.msg-error {
+    color: #ff0000;
+}
+
+.form-field.field-error input,
+.form-field.field-error input:focus,
+.form-field.field-error select,
+.form-field.field-error select:focus {
+    border: 1px solid #ff0000;
+    outline-color: #ff0000;
+}
+
 .form-field input,
 .form-field select {
     margin: 0;
@@ -99,6 +111,10 @@
 
 .horizontal > input:last-of-type {
     margin-right: 0px;
+}
+
+.horizontal.equal {
+    min-height: 81px;
 }
 
 .horizontal.equal > div {

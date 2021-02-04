@@ -56,7 +56,12 @@ const MainMenu = (): JSX.Element => {
             <div className="main-menu align-everything">
                 <div className="align-everything">
                     <Link to="/new-create-form">
-                        <Btn title="Opprett nytt skjema" icon="ion-plus-round" variant="primary" />
+                        <Btn
+                            title="Opprett nytt skjema"
+                            icon="ion-plus-round"
+                            variant="primary"
+                            onClick={() => dispatch(resetQuestionnaireAction())}
+                        />
                     </Link>
                     <label className="regular-btn secondary" style={{ marginLeft: 30 }}>
                         <input type="file" style={{ display: 'none' }} onChange={onChange} accept="application/JSON" />

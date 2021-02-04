@@ -47,8 +47,47 @@ const itemType = [
         code: IQuestionnaireItemType.boolean,
     },
     {
+        // Used for itemTypes integer and decimal
         display: 'Tall',
-        code: IQuestionnaireItemType.integer,
+        code: IQuestionnaireItemType.number,
+    },
+    {
+        display: 'Antall med enhet',
+        code: IQuestionnaireItemType.quantity,
+    },
+];
+
+export const QUANTITY_UNIT_TYPE_NOT_SELECTED = 'QUANTITY_UNIT_TYPE_NOT_SELECTED';
+export const quantityUnitTypes = [
+    {
+        system: '',
+        code: QUANTITY_UNIT_TYPE_NOT_SELECTED,
+        display: 'Velg enhet',
+    },
+    {
+        system: 'http://unitsofmeasure.org',
+        code: 'cm',
+        display: 'centimeter',
+    },
+    {
+        system: 'http://unitsofmeasure.org',
+        code: 'kg',
+        display: 'kilo',
+    },
+    {
+        system: 'http://unitsofmeasure.org',
+        code: 'a',
+        display: 'år',
+    },
+    {
+        system: 'http://unitsofmeasure.org',
+        code: 'mo',
+        display: 'måned',
+    },
+    {
+        system: 'http://unitsofmeasure.org',
+        code: 'd',
+        display: 'dag',
     },
 ];
 
@@ -165,6 +204,8 @@ export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
 export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolean => {
     const validTypes = [
         IQuestionnaireItemType.integer,
+        IQuestionnaireItemType.decimal,
+        IQuestionnaireItemType.quantity,
         IQuestionnaireItemType.text,
         IQuestionnaireItemType.string,
         IQuestionnaireItemType.date,
