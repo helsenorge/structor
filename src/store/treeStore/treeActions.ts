@@ -1,6 +1,12 @@
 import CreateUUID from '../../helpers/CreateUUID';
 import { IEnableWhen, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import { QuestionnaireItem, Extension, QuestionnaireItemAnswerOption, Element } from '../../types/fhir';
+import {
+    QuestionnaireItem,
+    Extension,
+    QuestionnaireItemAnswerOption,
+    QuestionnaireItemInitial,
+    Element,
+} from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TreeState } from './treeStore';
 
@@ -21,6 +27,7 @@ type ItemValueType =
     | number
     | QuestionnaireItemAnswerOption[]
     | Element
+    | QuestionnaireItemInitial[]
     | undefined; // TODO: legg på alle lovlige verdier
 
 export interface UpdateLinkIdAction {

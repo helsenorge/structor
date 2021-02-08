@@ -1,9 +1,12 @@
-import React, { useContext, useState, FocusEvent } from 'react';
+import React, { FocusEvent, useContext, useState } from 'react';
 import { TreeContext } from '../../store/treeStore/treeStore';
-import { QuestionnaireItem } from '../../types/fhir';
-import { updateLinkIdAction } from '../../store/treeStore/treeActions';
+import { QuestionnaireItem, QuestionnaireItemInitial } from '../../types/fhir';
+import { updateItemAction, updateLinkIdAction } from '../../store/treeStore/treeActions';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
+import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import SwitchBtn from '../SwitchBtn/SwitchBtn';
+import Initial from './Initial/Initial';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -15,6 +18,15 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     const [isDuplicateLinkId, setDuplicateLinkId] = useState(false);
     const [linkId, setLinkId] = useState(item.linkId);
     const { qItems } = state;
+
+    const isRepeatsAndReadOnlyApplicable = item.type !== IQuestionnaireItemType.display;
+
+    const isInitialApplicable =
+        item.type !== IQuestionnaireItemType.display && item.type !== IQuestionnaireItemType.group;
+
+    const dispatchUpdateItem = (name: IItemProperty, value: boolean) => {
+        dispatch(updateItemAction(item.linkId, name, value));
+    };
 
     function dispatchUpdateLinkId(event: FocusEvent<HTMLInputElement>) {
         // Verify no duplicates
@@ -39,6 +51,27 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     return (
         <>
+            {isRepeatsAndReadOnlyApplicable && (
+                <div className="horizontal equal">
+                    <div className="form-field">
+                        <SwitchBtn
+                            onChange={() => dispatchUpdateItem(IItemProperty.repeats, !item.repeats)}
+                            value={item.repeats || false}
+                            label="Kan gjentas"
+                            initial
+                        />
+                    </div>
+                    <div className="form-field">
+                        <SwitchBtn
+                            onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
+                            value={item.readOnly || false}
+                            label="Skrivebeskyttet"
+                            initial
+                        />
+                    </div>
+                </div>
+            )}
+            {isInitialApplicable && <Initial item={item} />}
             <div className={`form-field ${isDuplicateLinkId ? 'field-error' : ''}`}>
                 <label>LinkId</label>
                 <input
