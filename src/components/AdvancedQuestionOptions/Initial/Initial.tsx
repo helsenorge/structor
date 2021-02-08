@@ -7,13 +7,15 @@ import InitialInputTypeString from './InitialInputTypeString';
 import InitialInputTypeInteger from './InitialInputTypeInteger';
 import InitialInputTypeDecimal from './InitialInputTypeDecimal';
 import InitialInputTypeBoolean from './InitialInputTypeBoolean';
+import InitialInputTypeChoice from './InitialInputTypeChoice';
+import './Initial.css';
 
 type InitialProps = {
     item: QuestionnaireItem;
 };
 
 const Initial = (props: InitialProps): JSX.Element => {
-    const { state, dispatch } = useContext(TreeContext);
+    const { dispatch } = useContext(TreeContext);
 
     const dispatchUpdateItem = (value: QuestionnaireItemInitial | undefined) => {
         // TODO Support multiple QuestionnaireItemInitial
@@ -28,14 +30,17 @@ const Initial = (props: InitialProps): JSX.Element => {
         switch (props.item.type) {
             case IQuestionnaireItemType.string:
             case IQuestionnaireItemType.text:
-                return <InitialInputTypeString initial={initial} onBlur={dispatchUpdateItem} />;
+                return <InitialInputTypeString initial={initial} dispatchAction={dispatchUpdateItem} />;
             case IQuestionnaireItemType.integer:
-                return <InitialInputTypeInteger initial={initial} onBlur={dispatchUpdateItem} />;
+                return <InitialInputTypeInteger initial={initial} dispatchAction={dispatchUpdateItem} />;
             case IQuestionnaireItemType.quantity:
             case IQuestionnaireItemType.decimal:
-                return <InitialInputTypeDecimal initial={initial} onBlur={dispatchUpdateItem} />;
+                return <InitialInputTypeDecimal initial={initial} dispatchAction={dispatchUpdateItem} />;
             case IQuestionnaireItemType.boolean:
-                return <InitialInputTypeBoolean initial={initial} onBlur={dispatchUpdateItem} />;
+                return <InitialInputTypeBoolean initial={initial} dispatchAction={dispatchUpdateItem} />;
+            case IQuestionnaireItemType.choice:
+            case IQuestionnaireItemType.openChoice:
+                return <InitialInputTypeChoice item={props.item} dispatchAction={dispatchUpdateItem} />;
         }
     }
 

@@ -3,7 +3,7 @@ import { QuestionnaireItemInitial } from '../../../types/fhir';
 
 type InitialInputTypeIntegerProps = {
     initial?: QuestionnaireItemInitial;
-    onBlur: (value: QuestionnaireItemInitial | undefined) => void;
+    dispatchAction: (value: QuestionnaireItemInitial | undefined) => void;
 };
 
 const InitialInputTypeInteger = (props: InitialInputTypeIntegerProps): JSX.Element => {
@@ -34,7 +34,7 @@ const InitialInputTypeInteger = (props: InitialInputTypeIntegerProps): JSX.Eleme
                     const newInitial: QuestionnaireItemInitial | undefined = isInteger(initialValue)
                         ? { valueInteger: parseInt(initialValue) }
                         : undefined;
-                    props.onBlur(newInitial);
+                    props.dispatchAction(newInitial);
                 }}
             />
         </div>

@@ -4,7 +4,7 @@ import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 
 type InitialInputTypeBooleanProps = {
     initial?: QuestionnaireItemInitial;
-    onBlur: (value: QuestionnaireItemInitial | undefined) => void;
+    dispatchAction: (value: QuestionnaireItemInitial | undefined) => void;
 };
 
 const InitialInputTypeBoolean = (props: InitialInputTypeBooleanProps): JSX.Element => {
@@ -26,7 +26,7 @@ const InitialInputTypeBoolean = (props: InitialInputTypeBooleanProps): JSX.Eleme
                     const newInitial: QuestionnaireItemInitial | undefined = newInitialValue
                         ? { valueBoolean: newInitialValue }
                         : undefined;
-                    props.onBlur(newInitial);
+                    props.dispatchAction(newInitial);
                 }}
                 value={initialValue}
                 label="Initiell verdi"

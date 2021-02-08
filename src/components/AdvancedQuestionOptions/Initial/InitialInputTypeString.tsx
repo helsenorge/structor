@@ -3,7 +3,7 @@ import { QuestionnaireItemInitial } from '../../../types/fhir';
 
 type InitialInputTypeStringProps = {
     initial?: QuestionnaireItemInitial;
-    onBlur: (value: QuestionnaireItemInitial | undefined) => void;
+    dispatchAction: (value: QuestionnaireItemInitial | undefined) => void;
 };
 
 const InitialInputTypeString = (props: InitialInputTypeStringProps): JSX.Element => {
@@ -26,7 +26,7 @@ const InitialInputTypeString = (props: InitialInputTypeStringProps): JSX.Element
                     const newInitial: QuestionnaireItemInitial | undefined = initialValue
                         ? { valueString: initialValue }
                         : undefined;
-                    props.onBlur(newInitial);
+                    props.dispatchAction(newInitial);
                 }}
             />
         </div>

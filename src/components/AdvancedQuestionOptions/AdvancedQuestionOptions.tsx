@@ -1,6 +1,6 @@
 import React, { FocusEvent, useContext, useState } from 'react';
 import { TreeContext } from '../../store/treeStore/treeStore';
-import { QuestionnaireItem, QuestionnaireItemInitial } from '../../types/fhir';
+import { QuestionnaireItem } from '../../types/fhir';
 import { updateItemAction, updateLinkIdAction } from '../../store/treeStore/treeActions';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
@@ -71,28 +71,34 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     </div>
                 </div>
             )}
-            {isInitialApplicable && <Initial item={item} />}
-            <div className={`form-field ${isDuplicateLinkId ? 'field-error' : ''}`}>
-                <label>LinkId</label>
-                <input
-                    value={linkId}
-                    onChange={(event) => {
-                        const {
-                            target: { value: newLinkId },
-                        } = event;
-                        validateLinkId(newLinkId);
-                        setLinkId(event.target.value);
-                    }}
-                    onBlur={dispatchUpdateLinkId}
-                />
-                {isDuplicateLinkId && (
-                    <div className="msg-error">
-                        LinkId er allerede i bruk{' '}
-                        <button onClick={resetLinkId}>
-                            <img src={UndoIcon} height={16} /> Sett tilbake til opprinnelig verdi
-                        </button>
-                    </div>
-                )}
+            {isInitialApplicable && (
+                <div className="horizontal full">
+                    <Initial item={item} />
+                </div>
+            )}
+            <div className="horizontal full">
+                <div className={`form-field ${isDuplicateLinkId ? 'field-error' : ''}`}>
+                    <label>LinkId</label>
+                    <input
+                        value={linkId}
+                        onChange={(event) => {
+                            const {
+                                target: { value: newLinkId },
+                            } = event;
+                            validateLinkId(newLinkId);
+                            setLinkId(event.target.value);
+                        }}
+                        onBlur={dispatchUpdateLinkId}
+                    />
+                    {isDuplicateLinkId && (
+                        <div className="msg-error">
+                            LinkId er allerede i bruk{' '}
+                            <button onClick={resetLinkId}>
+                                <img src={UndoIcon} height={16} /> Sett tilbake til opprinnelig verdi
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
         </>
     );
