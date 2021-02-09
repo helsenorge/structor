@@ -1,5 +1,28 @@
 .infobox {
-    background: #EBF8FF;
-    color: #4A5568;
-    padding: 35px 63px;
+    background: #ebf8ff;
+    color: #4a5568;
+    margin-top: 1rem;
+    padding: 1rem 2.5rem;
+}
+
+.enablewhen-box {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin: 1.5rem 0;
+}
+
+.enablewhen-condition {
+    display: flex;
+}
+
+.enableWhen-condition__answer {
+    flex: 1;
+    padding-left: 1rem;
+}
+
+.enablebehavior {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0;
 }

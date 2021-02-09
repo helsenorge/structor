@@ -3,11 +3,14 @@ import { ContactDetail, Extension, Meta, UsageContext } from './fhir';
 export enum IQuestionnaireMetadataType {
     title = 'title',
     description = 'description',
+    name = 'name',
     id = 'id',
     status = 'status',
     publisher = 'publisher',
     language = 'language',
     url = 'url',
+    purpose = 'purpose',
+    copyright = 'copyright',
 }
 
 export interface IQuestionnaireMetadata {
@@ -26,6 +29,8 @@ export interface IQuestionnaireMetadata {
     contact?: Array<ContactDetail>;
     subjectType?: Array<string>;
     extension?: Array<Extension>;
+    purpose?: string;
+    copyright?: string;
 }
 
 export enum IQuestionnaireStatus {

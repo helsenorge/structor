@@ -1,0 +1,7 @@
+.msg-error button {
+    background: none;
+    border: none;
+    color: #4299e1;
+    cursor: pointer;
+    font-weight: 700;
+}

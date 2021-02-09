@@ -97,7 +97,7 @@ const Choice = ({ item }: Props): JSX.Element => {
             <div className="form-field">
                 <SwitchBtn
                     label="Checkbox"
-                    onClick={() => dispatchExtentionUpdate()}
+                    onChange={() => dispatchExtentionUpdate()}
                     initial
                     value={item.extension !== undefined && item.extension.length > 0}
                 />
@@ -107,10 +107,13 @@ const Choice = ({ item }: Props): JSX.Element => {
             {!item.answerValueSet && (
                 <Btn
                     title="+ Legg til alternativ"
+                    type="button"
                     onClick={() => {
                         const newArray = addEmptyOptionToAnswerOptionArray(item.answerOption || []);
                         dispatchUpdateItem(IItemProperty.answerOption, newArray);
                     }}
+                    variant="secondary"
+                    size="small"
                 />
             )}
         </>

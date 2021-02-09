@@ -5,10 +5,10 @@ import Question from '../components/Question/Question';
 import { newItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import { QuestionnaireItem } from '../types/fhir';
-
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import PublishModal from '../components/PublishModal/PublishModal';
-import Publish from '../components/Metadata/Publish';
+import MetadataEditor from '../components/Metadata/MetadataEditor';
+import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import Navbar from '../components/Navbar/Navbar';
 import FormFiller from '../components/FormFiller/FormFiller';
@@ -32,15 +32,8 @@ const FormBuilder = (): JSX.Element => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
-    const getConditional = (parrentArray: string[]) => {
-        const conditinals = parrentArray.map((x) => {
-            return {
-                code: x,
-                display: state.qItems[x].text || 'Ikke definert tittel',
-            };
-        });
-
-        return conditinals;
+    const getConditional = (parentArray: string[], linkId: string): ValueSetComposeIncludeConcept[] => {
+        return getEnableWhenConditionals(state, parentArray, linkId);
     };
 
     const getQItem = (linkId: string): QuestionnaireItem => {
@@ -56,12 +49,12 @@ const FormBuilder = (): JSX.Element => {
             const questionNumber =
                 parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
             return (
-                <div key={x.linkId}>
+                <div key={index}>
                     <Question
                         item={state.qItems[x.linkId]}
                         parentArray={parentArray}
                         questionNumber={questionNumber}
-                        conditionalArray={getConditional(parentArray)}
+                        conditionalArray={getConditional(parentArray, x.linkId)}
                         getItem={getQItem}
                         containedResources={state.qContained}
                         setCurrentQuestion={(linkId: string) => setCurrentQuestion(linkId)}
@@ -82,11 +75,10 @@ const FormBuilder = (): JSX.Element => {
                 showImportValueSet={() => setShowImportValueSet(!showImportValueSet)}
             />
 
-            {showResults && <Publish openModal={() => setShowPublishModal(!showPublishModal)} />}
             {showPublishModal && <PublishModal close={() => setShowPublishModal(!showPublishModal)} />}
             {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
 
-            <div style={{ display: 'flex', paddingBottom: '180px' }}>
+            <div className="editor">
                 <AnchorMenu />
                 {isIframeVisible ? (
                     <FormFiller showFormFiller={() => setIsIframeVisible(!isIframeVisible)} />
@@ -115,6 +107,7 @@ const FormBuilder = (): JSX.Element => {
                                     }}
                                 />
                             </div>
+                            <MetadataEditor />
                             <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder)}</div>
                             <button className="section-button" onClick={dispatchNewRootItem}>
                                 Opprett spørsmål

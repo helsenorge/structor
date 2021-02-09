@@ -3,20 +3,22 @@ import produce from 'immer';
 
 import { QuestionnaireItem, ValueSet } from '../../types/fhir';
 import {
-    RESET_QUESTIONNAIRE_ACTION,
-    ResetQuestionnaireAction,
     DELETE_ITEM_ACTION,
     DeleteItemAction,
-    NEW_ITEM_ACTION,
-    NewItemAction,
-    UPDATE_ITEM_ACTION,
-    UPDATE_QUESTIONNAIRE_METADATA_ACTION,
-    UpdateItemAction,
-    UpdateQuestionnaireMetadataAction,
     DUPLICATE_ITEM_ACTION,
     DuplicateItemAction,
+    NEW_ITEM_ACTION,
+    NewItemAction,
     REORDER_ITEM_ACTION,
     ReorderItemAction,
+    RESET_QUESTIONNAIRE_ACTION,
+    ResetQuestionnaireAction,
+    UPDATE_ITEM_ACTION,
+    UPDATE_LINK_ID_ACTION,
+    UPDATE_QUESTIONNAIRE_METADATA_ACTION,
+    UpdateItemAction,
+    UpdateLinkIdAction,
+    UpdateQuestionnaireMetadataAction,
     AppendValueSetAction,
     APPEND_VALUESET_ACTION,
 } from './treeActions';
@@ -34,7 +36,8 @@ type ActionType =
     | UpdateItemAction
     | DuplicateItemAction
     | ReorderItemAction
-    | AppendValueSetAction;
+    | AppendValueSetAction
+    | UpdateLinkIdAction;
 
 export interface Items {
     [key: string]: QuestionnaireItem;
@@ -171,8 +174,6 @@ function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value
     draft.qMetadata[propName] = value;
 
     if (IQuestionnaireMetadataType.title === propName) {
-        draft.qMetadata.name = `hdir-${value}`;
-
         const useContext = draft.qMetadata.useContext;
         if (useContext !== undefined && useContext.length > 0) {
             const codings = useContext[0].valueCodeableConcept?.coding;
@@ -243,6 +244,40 @@ function appendValueSet(draft: TreeState, action: AppendValueSetAction): void {
     }
 }
 
+function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
+    const { qItems, qOrder } = draft;
+    const { oldLinkId, newLinkId, parentArray } = action;
+
+    // Replace in qItems
+    const oldItem = qItems[oldLinkId];
+    const newItem = {
+        ...oldItem,
+        linkId: newLinkId,
+    };
+    qItems[newLinkId] = newItem;
+    delete qItems[oldLinkId];
+
+    // Replace in qOrder
+    const arrayToUpdateIn = findTreeArray(parentArray, qOrder);
+    const itemToUpdate = arrayToUpdateIn.find((item) => item.linkId === oldLinkId);
+    if (!itemToUpdate) {
+        throw `Trying to update linkId that doesn't exist`;
+    }
+    itemToUpdate.linkId = newLinkId;
+
+    // Replace enableWhen(s)
+    Object.values(qItems).forEach((item) => {
+        if (!item.enableWhen) {
+            return;
+        }
+        item.enableWhen.forEach((enableWhen) => {
+            if (enableWhen.question === oldLinkId) {
+                enableWhen.question = newLinkId;
+            }
+        });
+    });
+}
+
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
         case RESET_QUESTIONNAIRE_ACTION:
@@ -268,6 +303,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case APPEND_VALUESET_ACTION:
             appendValueSet(draft, action);
+            break;
+        case UPDATE_LINK_ID_ACTION:
+            updateLinkId(draft, action);
             break;
     }
 });

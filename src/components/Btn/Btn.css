@@ -64,3 +64,13 @@
     padding: 16px;
     height: auto;
 }
+
+.regular-btn.small{
+    font-size: initial;
+    padding: 8px;
+}
+
+.regular-btn.large{
+    font-size: 24px;
+    padding: 16px;
+}

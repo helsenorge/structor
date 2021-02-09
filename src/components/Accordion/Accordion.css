@@ -8,7 +8,7 @@
     border: none;
     outline: none;
     transition: 0.4s;
-    border-top: 8px solid #EBF8FF;
+    border-top: 8px solid #ebf8ff;
 }
 
 .accordion p {
@@ -21,22 +21,20 @@
     float: right;
     margin-left: 5px;
     font-size: 24px;
-  }
-  
-  .active:after {
-    content: "+"; /* Unicode character for "minus" sign (-) */
-    font-size: 24px;
-    transform: rotate(45deg);
-  }
+}
 
-.active, .accordion:hover {
+.accordion.active:after {
+    transform: rotate(45deg);
+}
+
+.active,
+.accordion:hover {
     background-color: #ccc;
 }
 
-.panel{
+.panel {
     padding: 0;
     background-color: white;
-    max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-in-out;
     white-space: pre-wrap;

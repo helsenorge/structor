@@ -1,5 +1,10 @@
 @import '/src/index.css';
 @import 'https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css';
+.editor{
+    display: flex;
+    padding-bottom: 180px;
+}
+
 header {
     background-color: var(--primary-2);
     display: flex;

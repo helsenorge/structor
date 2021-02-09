@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { IItemProperty, IExtentionType } from '../../../types/IQuestionnareItemType';
-import { QuestionnaireItem, Extension } from '../../../types/fhir';
+import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { Extension, QuestionnaireItem } from '../../../types/fhir';
+import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 
 interface ValidationTypeProp {
     item: QuestionnaireItem;
@@ -13,10 +14,36 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
     const validationText = item?.extension?.find((x) => x.url === IExtentionType.validationtext)?.valueString || '';
     const minValue = item?.extension?.find((x) => x.url === IExtentionType.minValue)?.valueInteger;
     const maxValue = item?.extension?.find((x) => x.url === IExtentionType.maxValue)?.valueInteger;
-    // const maxDecimalPlaces = item?.extension?.find((x) => x.url === IValidationType.maxDecimalPlaces)?.valueInteger;
+    const maxDecimalPlaces = item?.extension?.find((x) => x.url === IExtentionType.maxDecimalPlaces)?.valueInteger;
+    const isDecimal = item?.type === IQuestionnaireItemType.decimal || item?.type === IQuestionnaireItemType.quantity;
 
-    const dispatchExtentionUpdate = (value: Extension[]) => {
+    const dispatchUpdateItemType = (value: IQuestionnaireItemType.decimal | IQuestionnaireItemType.integer) => {
+        dispatch(updateItemAction(item.linkId, IItemProperty.type, value));
+    };
+
+    const dispatchExtensionUpdate = (value: Extension[]) => {
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, value));
+    };
+
+    const dispatchRemoveMaxDecimalsExtension = () => {
+        const updatedExtensions = item.extension?.filter(
+            (extension: Extension) => extension.url !== IExtentionType.maxDecimalPlaces,
+        );
+        if (updatedExtensions) {
+            dispatchExtensionUpdate([...updatedExtensions]);
+        }
+    };
+
+    const changeItemType = () => {
+        const newItemType =
+            item?.type === IQuestionnaireItemType.decimal
+                ? IQuestionnaireItemType.integer
+                : IQuestionnaireItemType.decimal;
+
+        dispatchUpdateItemType(newItemType);
+        if (newItemType === IQuestionnaireItemType.integer) {
+            dispatchRemoveMaxDecimalsExtension();
+        }
     };
 
     const updateExtensionInputElement = (url: string) => {
@@ -32,7 +59,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     ? validationTextExtension
                     : { url: extensionToUpdate.url, valueString: e.target.value };
 
-            dispatchExtentionUpdate([...removedExt, newExtension]);
+            dispatchExtensionUpdate([...removedExt, newExtension]);
         };
     };
 
@@ -49,44 +76,35 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     ? validationTextExtension
                     : { url: extensionToUpdate.url, valueInteger: parseInt(e.target.value) };
 
-            dispatchExtentionUpdate([...removedExt, newExtension]);
+            dispatchExtensionUpdate([...removedExt, newExtension]);
         };
     };
 
-    // const updateExtensionDesimal = (url: string) => {
-    //     return (e: React.ChangeEvent<HTMLInputElement>) => {
-    //         const validationCheckboxextension = {
-    //             url: url,
-    //             valueInteger: parseInt(e.target.value),
-    //         };
-    //         const extensionToUpdate = item.extension?.find((ext) => ext.url === validationCheckboxextension.url);
-    //         const removedExt = item.extension?.filter((ext) => ext.url !== validationCheckboxextension.url) ?? [];
-    //         const newExtension =
-    //             extensionToUpdate === undefined
-    //                 ? validationCheckboxextension
-    //                 : { url: extensionToUpdate.url, valueInteger: parseInt(e.target.value) };
-    //         dispatchExtentionUpdate([...removedExt, newExtension]);
-    //     };
-    // };
-
     return (
         <>
-            <div className="validating-help-title">
-                <p>Veiledende tekst</p>
-            </div>
-
-            {/* <div className="horizontal">
-                <div className="form-field" id="allow-decimal">
-                    <label>Tillat desimaltall</label>
-                    <input
-                        type="number"
-                        defaultValue={maxDecimalPlaces || 0}
-                        onChange={updateExtensionDesimal('http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces')}
+            <div className="horizontal equal">
+                <div className="form-field">
+                    <SwitchBtn
+                        label="Tillat desimaltall"
+                        initial
+                        value={isDecimal}
+                        onChange={changeItemType}
+                        disabled={item?.type === IQuestionnaireItemType.quantity}
                     />
                 </div>
-            </div> */}
+                {isDecimal && (
+                    <div className="form-field">
+                        <label className="#">Max antall desimaler</label>
+                        <input
+                            type="number"
+                            defaultValue={maxDecimalPlaces}
+                            onChange={updateExtensionNumberElement(IExtentionType.maxDecimalPlaces)}
+                        />
+                    </div>
+                )}
+            </div>
 
-            <div className="horizontal">
+            <div className="horizontal equal">
                 <div className="form-field" id="number">
                     <label className="#">Min verdi</label>
                     <input
@@ -105,17 +123,6 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     ></input>
                 </div>
             </div>
-
-            {/* <div className="form-field">
-                <a
-                    href="#"
-                    onClick={() => {
-                        //TODO
-                    }}
-                >
-                    + Legg til kriterie
-                </a>
-            </div> */}
 
             <div className="form-field custom-input-error-message">
                 <label className="#">Legg til egendefinert feilmelding:</label>

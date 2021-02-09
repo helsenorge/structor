@@ -1,6 +1,13 @@
 import CreateUUID from '../../helpers/CreateUUID';
 import { IEnableWhen, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import { QuestionnaireItem, Extension, QuestionnaireItemAnswerOption, Element, ValueSet } from '../../types/fhir';
+import {
+    QuestionnaireItem,
+    Extension,
+    QuestionnaireItemAnswerOption,
+    QuestionnaireItemInitial,
+    Element,
+    ValueSet,
+} from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TreeState } from './treeStore';
 
@@ -12,6 +19,7 @@ export const DUPLICATE_ITEM_ACTION = 'duplicateItem';
 export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 export const REORDER_ITEM_ACTION = 'reorderItem';
 export const APPEND_VALUESET_ACTION = 'appendValueSet';
+export const UPDATE_LINK_ID_ACTION = 'updateLinkId';
 
 type ItemValueType =
     | string
@@ -21,7 +29,15 @@ type ItemValueType =
     | number
     | QuestionnaireItemAnswerOption[]
     | Element
+    | QuestionnaireItemInitial[]
     | undefined; // TODO: legg på alle lovlige verdier
+
+export interface UpdateLinkIdAction {
+    type: typeof UPDATE_LINK_ID_ACTION;
+    oldLinkId: string;
+    newLinkId: string;
+    parentArray: Array<string>;
+}
 
 export interface UpdateQuestionnaireMetadataAction {
     type: typeof UPDATE_QUESTIONNAIRE_METADATA_ACTION;
@@ -70,6 +86,19 @@ export interface AppendValueSetAction {
     type: typeof APPEND_VALUESET_ACTION;
     valueSet: ValueSet[];
 }
+
+export const updateLinkIdAction = (
+    oldLinkId: string,
+    newLinkId: string,
+    parentArray: Array<string>,
+): UpdateLinkIdAction => {
+    return {
+        type: UPDATE_LINK_ID_ACTION,
+        oldLinkId,
+        newLinkId,
+        parentArray,
+    };
+};
 
 export const updateQuestionnaireMetadataAction = (
     propName: IQuestionnaireMetadataType,

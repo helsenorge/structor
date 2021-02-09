@@ -1,17 +1,29 @@
-import React, { useContext } from 'react';
+import React, { ChangeEvent, useContext } from 'react';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import {
-    newItemAction,
     deleteItemAction,
-    updateItemAction,
     duplicateItemAction,
+    newItemAction,
+    updateItemAction,
 } from '../../store/treeStore/treeActions';
-import { QuestionnaireItem, QuestionnaireItemAnswerOption, Element, ValueSet } from '../../types/fhir';
+import {
+    Element,
+    Extension,
+    QuestionnaireItem,
+    QuestionnaireItemAnswerOption,
+    ValueSet,
+    ValueSetComposeIncludeConcept,
+} from '../../types/fhir';
 import Trashcan from '../../images/icons/trash-outline.svg';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import CopyIcon from '../../images/icons/copy-outline.svg';
-import itemType, { checkboxExtension, typeIsSupportingValidation } from '../../helpers/QuestionHelper';
-import { IItemProperty, IQuestionnaireItemType, IExtentionType } from '../../types/IQuestionnareItemType';
+import itemType, {
+    checkboxExtension,
+    QUANTITY_UNIT_TYPE_NOT_SELECTED,
+    quantityUnitTypes,
+    typeIsSupportingValidation,
+} from '../../helpers/QuestionHelper';
+import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import Picker from '../DatePicker/DatePicker';
 import './Question.css';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
@@ -31,15 +43,13 @@ import { removeExtensionValue, setExtensionValue } from '../../helpers/extension
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import PredefinedValueSet from './QuestionType/PredefinedValueSet';
 import Choice from './QuestionType/Choice';
+import AdvancedQuestionOptions from '../AdvancedQuestionOptions/AdvancedQuestionOptions';
 
 interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
     questionNumber: string;
-    conditionalArray: {
-        code: string;
-        display: string;
-    }[];
+    conditionalArray: ValueSetComposeIncludeConcept[];
     getItem: (linkId: string) => QuestionnaireItem;
     containedResources?: Array<ValueSet>;
     setCurrentQuestion: (linkId: string) => void;
@@ -64,12 +74,12 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const dispatchUpdateItem = (
         name: IItemProperty,
-        value: string | boolean | QuestionnaireItemAnswerOption[] | Element | undefined,
+        value: string | boolean | QuestionnaireItemAnswerOption[] | Element | Extension[] | undefined,
     ) => {
         dispatch(updateItemAction(props.item.linkId, name, value));
     };
 
-    const dispatchExtentionUpdate = () => {
+    const dispatchExtensionUpdate = () => {
         if (props.item.extension && props.item.extension.length > 0) {
             dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
         } else {
@@ -77,7 +87,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
-    const dispatchClearExtention = () => {
+    const dispatchClearExtension = () => {
         dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
     };
 
@@ -90,34 +100,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         return labelText || props.item.text || '';
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let timerId: any;
-
-    const dispatchUpdateMarkdown = (markdown: string) => {
-        console.log('this is called!');
-        const markdownValue = {
-            url: IExtentionType.markdown,
-            valueMarkdown: markdown,
-        };
-        const newValue = setExtensionValue(props.item._text, markdownValue);
-
-        dispatchUpdateItem(IItemProperty._text, newValue);
-        // update text with same value. Text is used in condition in enableWhen
-        dispatchUpdateItem(IItemProperty.text, markdown);
-    };
-
-    const debounceFunction = function (func: () => void, delay: number) {
-        clearTimeout(timerId);
-        timerId = setTimeout(func, delay);
-    };
-
-    const remake = (markdown: string): void => {
-        debounceFunction(dispatchUpdateMarkdown(markdown), 1000);
-    };
-
     const dispatchUpdateMarkdownLabel = (newLabel: string): void => {
-        debounceFunction(helloWord, 1000);
-
         const markdownValue = {
             url: IExtentionType.markdown,
             valueMarkdown: newLabel,
@@ -137,6 +120,32 @@ const Question = (props: QuestionProps): JSX.Element => {
             });
         }
         return [];
+    };
+
+    const getQuantityUnitType = (): string => {
+        const quantityUnitType = props.item.extension?.find((extension) => {
+            return extension.url === IExtentionType.questionnaireUnit;
+        })?.valueCoding?.code;
+
+        return quantityUnitType || QUANTITY_UNIT_TYPE_NOT_SELECTED;
+    };
+
+    const updateQuantityUnitType = (event: ChangeEvent<HTMLSelectElement>) => {
+        const {
+            target: { value: quantityUnitTypeCode },
+        } = event;
+        let updatedExtensions: Extension[];
+        if (quantityUnitTypeCode === QUANTITY_UNIT_TYPE_NOT_SELECTED) {
+            updatedExtensions = removeExtensionValue(props.item, IExtentionType.questionnaireUnit)?.extension || [];
+        } else {
+            const coding = quantityUnitTypes.find(({ code }) => code === quantityUnitTypeCode);
+            const unitExtension: Extension = {
+                url: IExtentionType.questionnaireUnit,
+                valueCoding: coding,
+            };
+            updatedExtensions = setExtensionValue(props.item, unitExtension).extension || [];
+        }
+        dispatchUpdateItem(IItemProperty.extension, updatedExtensions);
     };
 
     const renderValueSetValues = (): JSX.Element => {
@@ -247,7 +256,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <div className="form-field">
                             <SwitchBtn
                                 label="Checkbox"
-                                onClick={() => dispatchExtentionUpdate()}
+                                onChange={() => dispatchExtensionUpdate()}
                                 initial
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}
                             />
@@ -266,22 +275,18 @@ const Question = (props: QuestionProps): JSX.Element => {
                         )}
                     </>
                 );
-            case IQuestionnaireItemType.integer:
+            case IQuestionnaireItemType.quantity:
                 return (
                     <>
                         <div className="form-field">
-                            <Select
-                                options={[
-                                    { display: 'ingen formatering', code: '1' },
-                                    { display: 'kg', code: '2' },
-                                    { display: 'år', code: '3' },
-                                    { display: 'måneder', code: '4' },
-                                    { display: 'dager', code: '5' },
-                                ]}
-                                onChange={() => {
-                                    //TODO!
-                                }}
-                            />
+                            <div>
+                                <label>Legg til enhet</label>
+                                <Select
+                                    options={quantityUnitTypes}
+                                    onChange={updateQuantityUnitType}
+                                    value={getQuantityUnitType()}
+                                />
+                            </div>
                         </div>
                     </>
                 );
@@ -294,12 +299,13 @@ const Question = (props: QuestionProps): JSX.Element => {
         if (props.item.answerValueSet && props.item.answerValueSet.indexOf('pre-') >= 0) {
             return IQuestionnaireItemType.predefined;
         }
+        if (props.item.type === IQuestionnaireItemType.integer || props.item.type === IQuestionnaireItemType.decimal) {
+            return IQuestionnaireItemType.number;
+        }
         return props.item.type;
     };
 
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
-
-    const isSelected = props.currentQuestion === props.item.linkId;
 
     return (
         <div
@@ -312,102 +318,106 @@ const Question = (props: QuestionProps): JSX.Element => {
                 <h2>
                     Spørsmål <span>{props.questionNumber}</span>
                 </h2>
-                <button className="pull-right" onClick={dispatchDuplicateItem}>
+                <button className="pull-right question-button" onClick={dispatchDuplicateItem}>
                     <img src={CopyIcon} height="25" width="25" /> Dupliser
                 </button>
                 {canCreateChild && (
-                    <button onClick={() => dispatchNewChildItem()}>
+                    <button className="question-button" onClick={() => dispatchNewChildItem()}>
                         <img src={PlusIcon} height="25" width="25" /> Oppfølgingsspørsmål
                     </button>
                 )}
-                <button onClick={dispatchDeleteItem}>
+                <button className="question-button" onClick={dispatchDeleteItem}>
                     <img src={Trashcan} height="25" width="25" /> Slett
                 </button>
             </div>
-            {isSelected && (
-                <div>
-                    <div className="question-form">
-                        <SwitchBtn
-                            label="Obligatorisk"
-                            value={props.item.required || false}
-                            onClick={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
-                        />
-                        <div className="form-field">
-                            <label>Velg spørsmålstype</label>
-                            <Select
-                                value={handleDisplayQuestionType()}
-                                options={itemType}
-                                onChange={(event: { target: { value: string | boolean } }) => {
-                                    if (event.target.value === IQuestionnaireItemType.predefined) {
-                                        dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
-                                        dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
-                                    } else {
-                                        dispatchUpdateItem(IItemProperty.type, event.target.value);
-                                        dispatchUpdateItem(IItemProperty.answerValueSet, '');
-                                    }
-                                    dispatchClearExtention();
-                                }}
-                            />
-                        </div>
-                        <div className="form-field">
-                            <div className="form-field-label-wrapper">
-                                <label>Skriv spørsmål</label>
-                                <SwitchBtn
-                                    label="Aktiver markdown"
-                                    initial
-                                    value={isMarkdownActivated}
-                                    onClick={() => {
-                                        const newIsMarkdownEnabled = !isMarkdownActivated;
-                                        setIsMarkdownActivated(newIsMarkdownEnabled);
-                                        if (!newIsMarkdownEnabled) {
-                                            // remove markdown extension, but keep other extensions
-                                            const newValue = removeExtensionValue(
-                                                props.item._text,
-                                                IExtentionType.markdown,
-                                            );
-                                            dispatchUpdateItem(IItemProperty._text, newValue);
-                                        } else {
-                                            // set existing text as markdown value
-                                            dispatchUpdateMarkdownLabel(props.item.text || '');
-                                        }
-                                    }}
-                                />
-                            </div>
-                            {isMarkdownActivated ? (
-                                <MarkdownEditor data={getLabelText()} onChange={remake} />
-                            ) : (
-                                <input
-                                    defaultValue={getLabelText()}
-                                    onBlur={(e) => {
-                                        dispatchUpdateItem(IItemProperty.text, e.target.value);
-                                    }}
-                                />
-                            )}
-                        </div>
-                        {respondType(props.item.type)}
-                    </div>
-
-                    <div className="question-addons">
-                        {typeIsSupportingValidation(props.item.type as IQuestionnaireItemType) && (
-                            <Accordion title="Legg til validering">
-                                <ValidationAnswerTypes item={props.item} />
-                            </Accordion>
-                        )}
-                        {props.parentArray.length > 0 && (
-                            <Accordion title="Legg til betinget visning">
-                                <div style={{ width: '66%', minHeight: '442px' }}>
-                                    <EnableWhen
-                                        getItem={props.getItem}
-                                        conditionalArray={props.conditionalArray}
-                                        linkId={props.item.linkId}
-                                        enableWhen={props.item.enableWhen || []}
-                                    />
-                                </div>
-                            </Accordion>
-                        )}
-                    </div>
+            <div className="question-form">
+                <SwitchBtn
+                    label="Obligatorisk"
+                    value={props.item.required || false}
+                    onChange={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
+                />
+                <div className="form-field">
+                    <label>Velg spørsmålstype</label>
+                    <Select
+                        value={handleDisplayQuestionType()}
+                        options={itemType}
+                        onChange={(event: { target: { value: string | boolean } }) => {
+                            if (event.target.value === IQuestionnaireItemType.predefined) {
+                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
+                                dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
+                            } else if (event.target.value === IQuestionnaireItemType.number) {
+                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
+                                dispatchUpdateItem(IItemProperty.answerValueSet, '');
+                            } else {
+                                dispatchUpdateItem(IItemProperty.type, event.target.value);
+                                dispatchUpdateItem(IItemProperty.answerValueSet, '');
+                            }
+                            dispatchClearExtension();
+                        }}
+                    />
                 </div>
-            )}
+                <div className="form-field">
+                    <div className="form-field-label-wrapper">
+                        <label>Skriv spørsmål</label>
+                        <SwitchBtn
+                            label="Aktiver markdown"
+                            initial
+                            value={isMarkdownActivated}
+                            onChange={() => {
+                                const newIsMarkdownEnabled = !isMarkdownActivated;
+                                setIsMarkdownActivated(newIsMarkdownEnabled);
+                                if (!newIsMarkdownEnabled) {
+                                    // remove markdown extension, but keep other extensions
+                                    const newValue = removeExtensionValue(props.item._text, IExtentionType.markdown);
+                                    dispatchUpdateItem(IItemProperty._text, newValue);
+                                } else {
+                                    // set existing text as markdown value
+                                    dispatchUpdateMarkdownLabel(props.item.text || '');
+                                }
+                            }}
+                        />
+                    </div>
+                    {isMarkdownActivated ? (
+                        <MarkdownEditor data={getLabelText()} onChange={dispatchUpdateMarkdownLabel} />
+                    ) : (
+                        <input
+                            value={getLabelText()}
+                            onChange={(e) => {
+                                dispatchUpdateItem(IItemProperty.text, e.target.value);
+                            }}
+                        />
+                    )}
+                </div>
+                {respondType(props.item.type)}
+            </div>
+
+            <div className="question-addons">
+                {typeIsSupportingValidation(props.item.type as IQuestionnaireItemType) && (
+                    <Accordion title="Legg til validering">
+                        <ValidationAnswerTypes item={props.item} />
+                    </Accordion>
+                )}
+                <Accordion
+                    title={`Legg til betinget visning ${
+                        props.item.enableWhen && props.item.enableWhen.length > 0
+                            ? `(${props.item.enableWhen?.length})`
+                            : ''
+                    }`}
+                >
+                    <div>
+                        <EnableWhen
+                            getItem={props.getItem}
+                            conditionalArray={props.conditionalArray}
+                            linkId={props.item.linkId}
+                            enableWhen={props.item.enableWhen || []}
+                            containedResources={props.containedResources}
+                        />
+                    </div>
+                </Accordion>
+                <Accordion title="Avanserte innstillinger">
+                    <AdvancedQuestionOptions item={props.item} parentArray={props.parentArray} />
+                </Accordion>
+            </div>
         </div>
     );
 };
