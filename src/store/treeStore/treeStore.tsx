@@ -21,6 +21,8 @@ import {
     UpdateQuestionnaireMetadataAction,
     AppendValueSetAction,
     APPEND_VALUESET_ACTION,
+    REMOVE_ITEM_ATTRIBUTE_ACTION,
+    RemoveItemAttributeAction,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -37,7 +39,8 @@ type ActionType =
     | DuplicateItemAction
     | ReorderItemAction
     | AppendValueSetAction
-    | UpdateLinkIdAction;
+    | UpdateLinkIdAction
+    | RemoveItemAttributeAction;
 
 export interface Items {
     [key: string]: QuestionnaireItem;
@@ -278,6 +281,14 @@ function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
     });
 }
 
+function removeAttributeFromItem(draft: TreeState, action: RemoveItemAttributeAction): void {
+    if (draft.qItems[action.linkId] && draft.qItems[action.linkId][action.itemProperty]) {
+        delete draft.qItems[action.linkId][action.itemProperty];
+    } else {
+        console.error('Cannot find qItem and/or attribute ', action.itemProperty);
+    }
+}
+
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
         case RESET_QUESTIONNAIRE_ACTION:
@@ -306,6 +317,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case UPDATE_LINK_ID_ACTION:
             updateLinkId(draft, action);
+            break;
+        case REMOVE_ITEM_ATTRIBUTE_ACTION:
+            removeAttributeFromItem(draft, action);
             break;
     }
 });

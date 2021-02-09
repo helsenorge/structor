@@ -5,6 +5,7 @@ import {
     duplicateItemAction,
     newItemAction,
     updateItemAction,
+    removeItemAttributeAction,
 } from '../../store/treeStore/treeActions';
 import {
     Element,
@@ -77,6 +78,10 @@ const Question = (props: QuestionProps): JSX.Element => {
         value: string | boolean | QuestionnaireItemAnswerOption[] | Element | Extension[] | undefined,
     ) => {
         dispatch(updateItemAction(props.item.linkId, name, value));
+    };
+
+    const dispatchRemoveAttribute = (name: IItemProperty) => {
+        dispatch(removeItemAttributeAction(props.item.linkId, name));
     };
 
     const dispatchExtensionUpdate = () => {
@@ -345,6 +350,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                             if (event.target.value === IQuestionnaireItemType.predefined) {
                                 dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
                                 dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
+                                dispatchRemoveAttribute(IItemProperty.answerOption);
                             } else if (event.target.value === IQuestionnaireItemType.number) {
                                 dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
                                 dispatchUpdateItem(IItemProperty.answerValueSet, '');

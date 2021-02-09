@@ -13,6 +13,7 @@ import { TreeState } from './treeStore';
 
 export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata';
 export const NEW_ITEM_ACTION = 'newItem';
+export const REMOVE_ITEM_ATTRIBUTE_ACTION = 'removeItemAttribute';
 export const DELETE_ITEM_ACTION = 'deleteItem';
 export const UPDATE_ITEM_ACTION = 'updateItem';
 export const DUPLICATE_ITEM_ACTION = 'duplicateItem';
@@ -62,6 +63,12 @@ export interface UpdateItemAction {
     linkId: string;
     itemProperty: IItemProperty;
     itemValue: ItemValueType;
+}
+
+export interface RemoveItemAttributeAction {
+    type: typeof REMOVE_ITEM_ATTRIBUTE_ACTION;
+    linkId: string;
+    itemProperty: IItemProperty;
 }
 
 export interface DuplicateItemAction {
@@ -143,6 +150,14 @@ export const updateItemAction = (
         linkId,
         itemProperty,
         itemValue,
+    };
+};
+
+export const removeItemAttributeAction = (linkId: string, itemProperty: IItemProperty): RemoveItemAttributeAction => {
+    return {
+        type: REMOVE_ITEM_ATTRIBUTE_ACTION,
+        linkId,
+        itemProperty,
     };
 };
 
