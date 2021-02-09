@@ -107,6 +107,7 @@ const Choice = ({ item }: Props): JSX.Element => {
             {!item.answerValueSet && (
                 <Btn
                     title="+ Legg til alternativ"
+                    type="button"
                     onClick={() => {
                         const newArray = addEmptyOptionToAnswerOptionArray(item.answerOption || []);
                         dispatchUpdateItem(IItemProperty.answerOption, newArray);
