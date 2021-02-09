@@ -310,6 +310,21 @@ const Question = (props: QuestionProps): JSX.Element => {
         return props.item.type;
     };
 
+    const handleQuestionareTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        if (event.target.value === IQuestionnaireItemType.predefined) {
+            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
+            dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
+            dispatchRemoveAttribute(IItemProperty.answerOption);
+        } else if (event.target.value === IQuestionnaireItemType.number) {
+            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
+            dispatchRemoveAttribute(IItemProperty.answerValueSet);
+        } else {
+            dispatchUpdateItem(IItemProperty.type, event.target.value);
+            dispatchRemoveAttribute(IItemProperty.answerValueSet);
+        }
+        dispatchClearExtension();
+    };
+
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
 
     return (
@@ -346,20 +361,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     <Select
                         value={handleDisplayQuestionType()}
                         options={itemType}
-                        onChange={(event: { target: { value: string | boolean } }) => {
-                            if (event.target.value === IQuestionnaireItemType.predefined) {
-                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
-                                dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
-                                dispatchRemoveAttribute(IItemProperty.answerOption);
-                            } else if (event.target.value === IQuestionnaireItemType.number) {
-                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
-                                dispatchUpdateItem(IItemProperty.answerValueSet, '');
-                            } else {
-                                dispatchUpdateItem(IItemProperty.type, event.target.value);
-                                dispatchUpdateItem(IItemProperty.answerValueSet, '');
-                            }
-                            dispatchClearExtension();
-                        }}
+                        onChange={handleQuestionareTypeChange}
                     />
                 </div>
                 <div className="form-field">
