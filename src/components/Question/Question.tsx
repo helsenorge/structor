@@ -42,6 +42,8 @@ interface QuestionProps {
     }[];
     getItem: (linkId: string) => QuestionnaireItem;
     containedResources?: Array<ValueSet>;
+    setCurrentQuestion: (linkId: string) => void;
+    currentQuestion: string;
 }
 
 const Question = (props: QuestionProps): JSX.Element => {
@@ -88,7 +90,34 @@ const Question = (props: QuestionProps): JSX.Element => {
         return labelText || props.item.text || '';
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let timerId: any;
+
+    const dispatchUpdateMarkdown = (markdown: string) => {
+        console.log('this is called!');
+        const markdownValue = {
+            url: IExtentionType.markdown,
+            valueMarkdown: markdown,
+        };
+        const newValue = setExtensionValue(props.item._text, markdownValue);
+
+        dispatchUpdateItem(IItemProperty._text, newValue);
+        // update text with same value. Text is used in condition in enableWhen
+        dispatchUpdateItem(IItemProperty.text, markdown);
+    };
+
+    const debounceFunction = function (func: () => void, delay: number) {
+        clearTimeout(timerId);
+        timerId = setTimeout(func, delay);
+    };
+
+    const remake = (markdown: string): void => {
+        debounceFunction(dispatchUpdateMarkdown(markdown), 1000);
+    };
+
     const dispatchUpdateMarkdownLabel = (newLabel: string): void => {
+        debounceFunction(helloWord, 1000);
+
         const markdownValue = {
             url: IExtentionType.markdown,
             valueMarkdown: newLabel,
@@ -267,10 +296,18 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
         return props.item.type;
     };
+
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
 
+    const isSelected = props.currentQuestion === props.item.linkId;
+
     return (
-        <div className="question" style={{ marginLeft: props.parentArray.length * 32 }} id={props.item.linkId}>
+        <div
+            className="question"
+            style={{ marginLeft: props.parentArray.length * 32 }}
+            id={props.item.linkId}
+            onClick={() => props.setCurrentQuestion(props.item.linkId)}
+        >
             <div className="question-header">
                 <h2>
                     Spørsmål <span>{props.questionNumber}</span>
@@ -287,83 +324,90 @@ const Question = (props: QuestionProps): JSX.Element => {
                     <img src={Trashcan} height="25" width="25" /> Slett
                 </button>
             </div>
-            <div className="question-form">
-                <SwitchBtn
-                    label="Obligatorisk"
-                    value={props.item.required || false}
-                    onClick={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
-                />
-                <div className="form-field">
-                    <label>Velg spørsmålstype</label>
-                    <Select
-                        value={handleDisplayQuestionType()}
-                        options={itemType}
-                        onChange={(event: { target: { value: string | boolean } }) => {
-                            if (event.target.value === IQuestionnaireItemType.predefined) {
-                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
-                                dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
-                            } else {
-                                dispatchUpdateItem(IItemProperty.type, event.target.value);
-                                dispatchUpdateItem(IItemProperty.answerValueSet, '');
-                            }
-                            dispatchClearExtention();
-                        }}
-                    />
-                </div>
-                <div className="form-field">
-                    <div className="form-field-label-wrapper">
-                        <label>Skriv spørsmål</label>
+            {isSelected && (
+                <div>
+                    <div className="question-form">
                         <SwitchBtn
-                            label="Aktiver markdown"
-                            initial
-                            value={isMarkdownActivated}
-                            onClick={() => {
-                                const newIsMarkdownEnabled = !isMarkdownActivated;
-                                setIsMarkdownActivated(newIsMarkdownEnabled);
-                                if (!newIsMarkdownEnabled) {
-                                    // remove markdown extension, but keep other extensions
-                                    const newValue = removeExtensionValue(props.item._text, IExtentionType.markdown);
-                                    dispatchUpdateItem(IItemProperty._text, newValue);
-                                } else {
-                                    // set existing text as markdown value
-                                    dispatchUpdateMarkdownLabel(props.item.text || '');
-                                }
-                            }}
+                            label="Obligatorisk"
+                            value={props.item.required || false}
+                            onClick={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
                         />
-                    </div>
-                    {isMarkdownActivated ? (
-                        <MarkdownEditor data={getLabelText()} onChange={dispatchUpdateMarkdownLabel} />
-                    ) : (
-                        <input
-                            value={getLabelText()}
-                            onChange={(e) => {
-                                dispatchUpdateItem(IItemProperty.text, e.target.value);
-                            }}
-                        />
-                    )}
-                </div>
-                {respondType(props.item.type)}
-            </div>
-
-            <div className="question-addons">
-                {typeIsSupportingValidation(props.item.type as IQuestionnaireItemType) && (
-                    <Accordion title="Legg til validering">
-                        <ValidationAnswerTypes item={props.item} />
-                    </Accordion>
-                )}
-                {props.parentArray.length > 0 && (
-                    <Accordion title="Legg til betinget visning">
-                        <div style={{ width: '66%', minHeight: '442px' }}>
-                            <EnableWhen
-                                getItem={props.getItem}
-                                conditionalArray={props.conditionalArray}
-                                linkId={props.item.linkId}
-                                enableWhen={props.item.enableWhen || []}
+                        <div className="form-field">
+                            <label>Velg spørsmålstype</label>
+                            <Select
+                                value={handleDisplayQuestionType()}
+                                options={itemType}
+                                onChange={(event: { target: { value: string | boolean } }) => {
+                                    if (event.target.value === IQuestionnaireItemType.predefined) {
+                                        dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
+                                        dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
+                                    } else {
+                                        dispatchUpdateItem(IItemProperty.type, event.target.value);
+                                        dispatchUpdateItem(IItemProperty.answerValueSet, '');
+                                    }
+                                    dispatchClearExtention();
+                                }}
                             />
                         </div>
-                    </Accordion>
-                )}
-            </div>
+                        <div className="form-field">
+                            <div className="form-field-label-wrapper">
+                                <label>Skriv spørsmål</label>
+                                <SwitchBtn
+                                    label="Aktiver markdown"
+                                    initial
+                                    value={isMarkdownActivated}
+                                    onClick={() => {
+                                        const newIsMarkdownEnabled = !isMarkdownActivated;
+                                        setIsMarkdownActivated(newIsMarkdownEnabled);
+                                        if (!newIsMarkdownEnabled) {
+                                            // remove markdown extension, but keep other extensions
+                                            const newValue = removeExtensionValue(
+                                                props.item._text,
+                                                IExtentionType.markdown,
+                                            );
+                                            dispatchUpdateItem(IItemProperty._text, newValue);
+                                        } else {
+                                            // set existing text as markdown value
+                                            dispatchUpdateMarkdownLabel(props.item.text || '');
+                                        }
+                                    }}
+                                />
+                            </div>
+                            {isMarkdownActivated ? (
+                                <MarkdownEditor data={getLabelText()} onChange={remake} />
+                            ) : (
+                                <input
+                                    defaultValue={getLabelText()}
+                                    onBlur={(e) => {
+                                        dispatchUpdateItem(IItemProperty.text, e.target.value);
+                                    }}
+                                />
+                            )}
+                        </div>
+                        {respondType(props.item.type)}
+                    </div>
+
+                    <div className="question-addons">
+                        {typeIsSupportingValidation(props.item.type as IQuestionnaireItemType) && (
+                            <Accordion title="Legg til validering">
+                                <ValidationAnswerTypes item={props.item} />
+                            </Accordion>
+                        )}
+                        {props.parentArray.length > 0 && (
+                            <Accordion title="Legg til betinget visning">
+                                <div style={{ width: '66%', minHeight: '442px' }}>
+                                    <EnableWhen
+                                        getItem={props.getItem}
+                                        conditionalArray={props.conditionalArray}
+                                        linkId={props.item.linkId}
+                                        enableWhen={props.item.enableWhen || []}
+                                    />
+                                </div>
+                            </Accordion>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

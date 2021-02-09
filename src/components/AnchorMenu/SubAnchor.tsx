@@ -69,11 +69,13 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-                                        onClick={() => {
-                                            handleScrollTo(item.linkId);
-                                        }}
                                     >
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        <div
+                                            style={{ display: 'flex', alignItems: 'center' }}
+                                            onClick={() => {
+                                                handleScrollTo(item.linkId);
+                                            }}
+                                        >
                                             <span className="anchor-icon" style={{ paddingRight: 10 }}>
                                                 {getRelevantIcon(state.qItems[item.linkId].type)}
                                             </span>

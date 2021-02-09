@@ -17,6 +17,7 @@ import ImportValueSet from '../components/ImportValueSet/ImportValueSet';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
+    const [currentQuestion, setCurrentQuestion] = useState('');
     const [isIframeVisible, setIsIframeVisible] = useState(false);
     const [isShowingFireStructure, setIsShowingFireStructure] = useState(false);
     const [showPublishModal, setShowPublishModal] = useState(false);
@@ -63,6 +64,8 @@ const FormBuilder = (): JSX.Element => {
                         conditionalArray={getConditional(parentArray)}
                         getItem={getQItem}
                         containedResources={state.qContained}
+                        setCurrentQuestion={(linkId: string) => setCurrentQuestion(linkId)}
+                        currentQuestion={currentQuestion}
                     />
                     {renderTree(x.items, [...parentArray, x.linkId], questionNumber)}
                 </div>
