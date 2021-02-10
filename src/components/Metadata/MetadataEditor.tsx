@@ -8,13 +8,14 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import Accordion from '../Accordion/Accordion';
+import { Meta } from '../../types/fhir';
 
 const MetadataEditor = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
 
     const { qMetadata } = state;
 
-    const updateMeta = (propName: IQuestionnaireMetadataType, value: string) => {
+    const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
@@ -31,7 +32,23 @@ const MetadataEditor = (): JSX.Element => {
                     <Select
                         value={qMetadata.language || ''}
                         options={metadataLanguage}
-                        onChange={(e) => updateMeta(IQuestionnaireMetadataType.language, e.target.value)}
+                        onChange={(e) => {
+                            const display = metadataLanguage.find((x) => x.code === e.target.value)?.localDisplay;
+                            const newMeta = {
+                                ...qMetadata.meta,
+                                tag: qMetadata.meta?.tag?.map((x) =>
+                                    x.system === 'urn:ietf:bcp:47'
+                                        ? {
+                                              system: 'urn:ietf:bcp:47',
+                                              code: e.target.value,
+                                              display: display,
+                                          }
+                                        : x,
+                                ),
+                            };
+                            updateMeta(IQuestionnaireMetadataType.language, e.target.value);
+                            updateMeta(IQuestionnaireMetadataType.meta, newMeta);
+                        }}
                     ></Select>
                 </FormField>
                 <FormField label="Navn">

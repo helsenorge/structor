@@ -174,14 +174,17 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
 }
 
 function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value }: UpdateQuestionnaireMetadataAction) {
-    draft.qMetadata[propName] = value;
+    draft.qMetadata = {
+        ...draft.qMetadata,
+        [propName]: value,
+    };
 
     if (IQuestionnaireMetadataType.title === propName) {
         const useContext = draft.qMetadata.useContext;
         if (useContext !== undefined && useContext.length > 0) {
             const codings = useContext[0].valueCodeableConcept?.coding;
             if (codings !== undefined && codings.length > 0) {
-                codings[0].display = value;
+                codings[0].display = value as string;
             }
         }
     }

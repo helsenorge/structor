@@ -7,6 +7,7 @@ import {
     QuestionnaireItemInitial,
     Element,
     ValueSet,
+    Meta,
 } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TreeState } from './treeStore';
@@ -43,7 +44,7 @@ export interface UpdateLinkIdAction {
 export interface UpdateQuestionnaireMetadataAction {
     type: typeof UPDATE_QUESTIONNAIRE_METADATA_ACTION;
     propName: IQuestionnaireMetadataType;
-    value: string;
+    value: string | Meta;
 }
 
 export interface NewItemAction {
@@ -109,7 +110,7 @@ export const updateLinkIdAction = (
 
 export const updateQuestionnaireMetadataAction = (
     propName: IQuestionnaireMetadataType,
-    value: string,
+    value: string | Meta,
 ): UpdateQuestionnaireMetadataAction => {
     return {
         type: UPDATE_QUESTIONNAIRE_METADATA_ACTION,

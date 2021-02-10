@@ -11,6 +11,7 @@ export enum IQuestionnaireMetadataType {
     url = 'url',
     purpose = 'purpose',
     copyright = 'copyright',
+    meta = 'meta',
 }
 
 export interface IQuestionnaireMetadata {
