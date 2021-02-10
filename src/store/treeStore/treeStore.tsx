@@ -19,6 +19,10 @@ import {
     UpdateItemAction,
     UpdateLinkIdAction,
     UpdateQuestionnaireMetadataAction,
+    AppendValueSetAction,
+    APPEND_VALUESET_ACTION,
+    REMOVE_ITEM_ATTRIBUTE_ACTION,
+    RemoveItemAttributeAction,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -34,7 +38,9 @@ type ActionType =
     | UpdateItemAction
     | DuplicateItemAction
     | ReorderItemAction
-    | UpdateLinkIdAction;
+    | AppendValueSetAction
+    | UpdateLinkIdAction
+    | RemoveItemAttributeAction;
 
 export interface Items {
     [key: string]: QuestionnaireItem;
@@ -233,6 +239,14 @@ function reorderItem(draft: TreeState, action: ReorderItemAction): void {
     arrayToReorderFrom.splice(action.newIndex, 0, movedOrderItem[0]);
 }
 
+function appendValueSet(draft: TreeState, action: AppendValueSetAction): void {
+    if (draft.qContained && draft.qContained.length > 0) {
+        draft.qContained = [...draft.qContained, ...action.valueSet];
+    } else {
+        draft.qContained = [...action.valueSet];
+    }
+}
+
 function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
     const { qItems, qOrder } = draft;
     const { oldLinkId, newLinkId, parentArray } = action;
@@ -267,6 +281,14 @@ function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
     });
 }
 
+function removeAttributeFromItem(draft: TreeState, action: RemoveItemAttributeAction): void {
+    if (draft.qItems[action.linkId] && draft.qItems[action.linkId][action.itemProperty]) {
+        delete draft.qItems[action.linkId][action.itemProperty];
+    } else {
+        console.error('Cannot find qItem and/or attribute ', action.itemProperty);
+    }
+}
+
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
         case RESET_QUESTIONNAIRE_ACTION:
@@ -290,8 +312,14 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
         case REORDER_ITEM_ACTION:
             reorderItem(draft, action);
             break;
+        case APPEND_VALUESET_ACTION:
+            appendValueSet(draft, action);
+            break;
         case UPDATE_LINK_ID_ACTION:
             updateLinkId(draft, action);
+            break;
+        case REMOVE_ITEM_ATTRIBUTE_ACTION:
+            removeAttributeFromItem(draft, action);
             break;
     }
 });

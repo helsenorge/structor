@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { format, parse, formatISO, parseISO } from 'date-fns';
 import {
     QuestionnaireItem,
@@ -10,6 +10,7 @@ import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import Picker from '../DatePicker/DatePicker';
 import DateTimePicker from '../DatePicker/DateTimePicker';
 import Select from '../Select/Select';
+import { TreeContext } from '../../store/treeStore/treeStore';
 
 interface Props {
     conditionItem: QuestionnaireItem;
@@ -28,6 +29,8 @@ const EnableWhenAnswerTypes = ({
     containedResources,
     dispatchUpdateItemEnableWhen,
 }: Props): JSX.Element => {
+    const { state } = useContext(TreeContext);
+    const { qContained } = state;
     const getChoices = (conditionItem: QuestionnaireItem): ValueSetComposeIncludeConcept[] => {
         if (conditionItem.answerOption) {
             return conditionItem.answerOption.map((x) => {
@@ -53,14 +56,23 @@ const EnableWhenAnswerTypes = ({
                     options={getChoices(conditionItem)}
                     value={enableWhen.answerCoding?.code}
                     onChange={(event) => {
+                        const getSystem = () => {
+                            if (conditionItem.answerValueSet) {
+                                return qContained?.find((x) => x.id === conditionItem.answerValueSet?.replace('#', ''))
+                                    ?.compose?.include[0].system;
+                            } else {
+                                return conditionItem.answerOption?.find(
+                                    (x) => x.valueCoding.code === event.target.value,
+                                )?.valueCoding.system;
+                            }
+                        };
+
                         const copy = itemEnableWhen?.map((x, ewIndex) => {
                             return index === ewIndex
                                 ? {
                                       ...x,
                                       answerCoding: {
-                                          system: conditionItem.answerOption?.find(
-                                              (x) => x.valueCoding.code === event.target.value,
-                                          )?.valueCoding.system,
+                                          system: getSystem(),
                                           code: event.target.value,
                                       },
                                   }

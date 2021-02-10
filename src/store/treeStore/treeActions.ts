@@ -6,17 +6,20 @@ import {
     QuestionnaireItemAnswerOption,
     QuestionnaireItemInitial,
     Element,
+    ValueSet,
 } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TreeState } from './treeStore';
 
 export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata';
 export const NEW_ITEM_ACTION = 'newItem';
+export const REMOVE_ITEM_ATTRIBUTE_ACTION = 'removeItemAttribute';
 export const DELETE_ITEM_ACTION = 'deleteItem';
 export const UPDATE_ITEM_ACTION = 'updateItem';
 export const DUPLICATE_ITEM_ACTION = 'duplicateItem';
 export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 export const REORDER_ITEM_ACTION = 'reorderItem';
+export const APPEND_VALUESET_ACTION = 'appendValueSet';
 export const UPDATE_LINK_ID_ACTION = 'updateLinkId';
 
 type ItemValueType =
@@ -62,6 +65,12 @@ export interface UpdateItemAction {
     itemValue: ItemValueType;
 }
 
+export interface RemoveItemAttributeAction {
+    type: typeof REMOVE_ITEM_ATTRIBUTE_ACTION;
+    linkId: string;
+    itemProperty: IItemProperty;
+}
+
 export interface DuplicateItemAction {
     type: typeof DUPLICATE_ITEM_ACTION;
     linkId: string;
@@ -78,6 +87,11 @@ export interface ReorderItemAction {
     linkId: string;
     order: Array<string>;
     newIndex: number;
+}
+
+export interface AppendValueSetAction {
+    type: typeof APPEND_VALUESET_ACTION;
+    valueSet: ValueSet[];
 }
 
 export const updateLinkIdAction = (
@@ -139,6 +153,14 @@ export const updateItemAction = (
     };
 };
 
+export const removeItemAttributeAction = (linkId: string, itemProperty: IItemProperty): RemoveItemAttributeAction => {
+    return {
+        type: REMOVE_ITEM_ATTRIBUTE_ACTION,
+        linkId,
+        itemProperty,
+    };
+};
+
 export const duplicateItemAction = (linkId: string, order: Array<string>): DuplicateItemAction => {
     return {
         type: DUPLICATE_ITEM_ACTION,
@@ -160,5 +182,12 @@ export const reorderItemAction = (linkId: string, order: Array<string>, newIndex
         linkId,
         order,
         newIndex,
+    };
+};
+
+export const appendValueSetAction = (valueSet: ValueSet[]): AppendValueSetAction => {
+    return {
+        type: APPEND_VALUESET_ACTION,
+        valueSet,
     };
 };

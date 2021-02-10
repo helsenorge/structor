@@ -24,6 +24,7 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
         userSelect: 'none',
         padding: grid * 2,
         background: isDragging ? 'lightgreen' : 'transparent',
+        cursor: 'pointer',
 
         margin: '0 10px 10px 0',
         border: '1px solid grey',
@@ -47,6 +48,13 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
         }
     };
 
+    const handleScrollTo = (id: string) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+        }
+    };
+
     const { state } = useContext(TreeContext);
 
     return (
@@ -62,7 +70,12 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                         {...provided.draggableProps}
                                         style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                                     >
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        <div
+                                            style={{ display: 'flex', alignItems: 'center' }}
+                                            onClick={() => {
+                                                handleScrollTo(item.linkId);
+                                            }}
+                                        >
                                             <span className="anchor-icon" style={{ paddingRight: 10 }}>
                                                 {getRelevantIcon(state.qItems[item.linkId].type)}
                                             </span>

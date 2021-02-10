@@ -5,6 +5,7 @@ import {
     duplicateItemAction,
     newItemAction,
     updateItemAction,
+    removeItemAttributeAction,
 } from '../../store/treeStore/treeActions';
 import {
     Element,
@@ -52,6 +53,8 @@ interface QuestionProps {
     conditionalArray: ValueSetComposeIncludeConcept[];
     getItem: (linkId: string) => QuestionnaireItem;
     containedResources?: Array<ValueSet>;
+    setCurrentQuestion: (linkId: string) => void;
+    currentQuestion: string;
 }
 
 const Question = (props: QuestionProps): JSX.Element => {
@@ -75,6 +78,10 @@ const Question = (props: QuestionProps): JSX.Element => {
         value: string | boolean | QuestionnaireItemAnswerOption[] | Element | Extension[] | undefined,
     ) => {
         dispatch(updateItemAction(props.item.linkId, name, value));
+    };
+
+    const dispatchRemoveAttribute = (name: IItemProperty) => {
+        dispatch(removeItemAttributeAction(props.item.linkId, name));
     };
 
     const dispatchExtensionUpdate = () => {
@@ -302,10 +309,31 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
         return props.item.type;
     };
+
+    const handleQuestionareTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        if (event.target.value === IQuestionnaireItemType.predefined) {
+            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
+            dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
+            dispatchRemoveAttribute(IItemProperty.answerOption);
+        } else if (event.target.value === IQuestionnaireItemType.number) {
+            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
+            dispatchRemoveAttribute(IItemProperty.answerValueSet);
+        } else {
+            dispatchUpdateItem(IItemProperty.type, event.target.value);
+            dispatchRemoveAttribute(IItemProperty.answerValueSet);
+        }
+        dispatchClearExtension();
+    };
+
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
 
     return (
-        <div className="question" style={{ marginLeft: props.parentArray.length * 32 }}>
+        <div
+            className="question"
+            style={{ marginLeft: props.parentArray.length * 32 }}
+            id={props.item.linkId}
+            onClick={() => props.setCurrentQuestion(props.item.linkId)}
+        >
             <div className="question-header">
                 <h2>
                     Spørsmål <span>{props.questionNumber}</span>
@@ -333,19 +361,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     <Select
                         value={handleDisplayQuestionType()}
                         options={itemType}
-                        onChange={(event: { target: { value: string | boolean } }) => {
-                            if (event.target.value === IQuestionnaireItemType.predefined) {
-                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
-                                dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
-                            } else if (event.target.value === IQuestionnaireItemType.number) {
-                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
-                                dispatchUpdateItem(IItemProperty.answerValueSet, '');
-                            } else {
-                                dispatchUpdateItem(IItemProperty.type, event.target.value);
-                                dispatchUpdateItem(IItemProperty.answerValueSet, '');
-                            }
-                            dispatchClearExtension();
-                        }}
+                        onChange={handleQuestionareTypeChange}
                     />
                 </div>
                 <div className="form-field">
