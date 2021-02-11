@@ -15,6 +15,7 @@ import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../typ
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
+import Codes from './Code/Codes';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import Select from '../Select/Select';
 import { EnrichmentSet } from '../../helpers/QuestionHelper';
@@ -326,6 +327,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     )}
                 </div>
             </div>
+            <Codes linkId={item.linkId} />
             <div>
                 <FormField>
                     <SwitchBtn
