@@ -1,7 +1,7 @@
 import React, { FocusEvent, useContext, useState } from 'react';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { QuestionnaireItem } from '../../types/fhir';
-import { updateItemAction, updateLinkIdAction } from '../../store/treeStore/treeActions';
+import { newItemHelpIconAction, updateItemAction, updateLinkIdAction } from '../../store/treeStore/treeActions';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
 import { IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
@@ -26,6 +26,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     const dispatchUpdateItem = (name: IItemProperty, value: boolean) => {
         dispatch(updateItemAction(item.linkId, name, value));
+    };
+
+    const dispatchInlineHelp = () => {
+        dispatch(newItemHelpIconAction([...parentArray, item.linkId]));
     };
 
     function dispatchUpdateLinkId(event: FocusEvent<HTMLInputElement>) {
@@ -99,6 +103,9 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         </div>
                     )}
                 </div>
+            </div>
+            <div className="horizontal full">
+                <SwitchBtn onChange={() => dispatchInlineHelp()} value={false} label="Skru på hjelpeikon" initial />
             </div>
         </>
     );
