@@ -3,26 +3,30 @@ import produce from 'immer';
 
 import { QuestionnaireItem, ValueSet } from '../../types/fhir';
 import {
+    ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
+    AddQuestionnaireLanguageAction,
+    APPEND_VALUESET_ACTION,
+    AppendValueSetAction,
     DELETE_ITEM_ACTION,
     DeleteItemAction,
     DUPLICATE_ITEM_ACTION,
     DuplicateItemAction,
     NEW_ITEM_ACTION,
     NewItemAction,
+    REMOVE_ITEM_ATTRIBUTE_ACTION,
+    RemoveItemAttributeAction,
     REORDER_ITEM_ACTION,
     ReorderItemAction,
     RESET_QUESTIONNAIRE_ACTION,
     ResetQuestionnaireAction,
     UPDATE_ITEM_ACTION,
+    UPDATE_ITEM_TRANSLATION_ACTION,
     UPDATE_LINK_ID_ACTION,
     UPDATE_QUESTIONNAIRE_METADATA_ACTION,
     UpdateItemAction,
+    UpdateItemTranslationAction,
     UpdateLinkIdAction,
     UpdateQuestionnaireMetadataAction,
-    AppendValueSetAction,
-    APPEND_VALUESET_ACTION,
-    REMOVE_ITEM_ATTRIBUTE_ACTION,
-    RemoveItemAttributeAction,
     UpdateMarkedLinkId,
     UPDATE_MARKED_LINK_ID,
 } from './treeActions';
@@ -32,7 +36,11 @@ import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOptionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 
+const INITIAL_LANGUAGE = 'nb-no';
+
 export type ActionType =
+    | AddQuestionnaireLanguageAction
+    | UpdateItemTranslationAction
     | ResetQuestionnaireAction
     | UpdateQuestionnaireMetadataAction
     | NewItemAction
@@ -49,6 +57,21 @@ export interface Items {
     [key: string]: QuestionnaireItem;
 }
 
+export interface ItemTranslation {
+    text: string;
+}
+
+export interface ItemTranslations {
+    [key: string]: ItemTranslation;
+}
+export interface Translations {
+    items: ItemTranslations;
+}
+
+export interface Languages {
+    [key: string]: Translations;
+}
+
 export interface OrderItem {
     linkId: string;
     items: Array<OrderItem>;
@@ -60,6 +83,7 @@ export interface TreeState {
     qMetadata: IQuestionnaireMetadata;
     qContained?: Array<ValueSet>;
     qCurrentItemId?: string;
+    qAdditionalLanguages?: Languages;
 }
 
 export const initialState: TreeState = {
@@ -69,7 +93,7 @@ export const initialState: TreeState = {
         title: '',
         description: '',
         resourceType: 'Questionnaire',
-        language: 'nb-NO',
+        language: INITIAL_LANGUAGE,
         name: '',
         status: 'draft',
         publisher: 'NHN',
@@ -78,7 +102,7 @@ export const initialState: TreeState = {
             tag: [
                 {
                     system: 'urn:ietf:bcp:47',
-                    code: 'nb-NO',
+                    code: INITIAL_LANGUAGE,
                     display: 'Norsk bokmål',
                 },
             ],
@@ -111,7 +135,23 @@ export const initialState: TreeState = {
     },
     qContained: initPredefinedValueSet,
     qCurrentItemId: '',
+    qAdditionalLanguages: {},
 };
+
+function buildTranslationBase(draft: TreeState): Translations {
+    const translations: Translations = { items: {} };
+    Object.values(draft.qItems).forEach((item) => {
+        translations.items[item.linkId] = { text: '' };
+    });
+    return translations;
+}
+
+function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
+    if (!draft.qAdditionalLanguages) {
+        draft.qAdditionalLanguages = {};
+    }
+    draft.qAdditionalLanguages[action.additionalLanguageCode] = buildTranslationBase(draft);
+}
 
 function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
     if (searchPath.length === 0) {
@@ -154,6 +194,8 @@ function deleteItem(draft: TreeState, action: DeleteItemAction): void {
 
     // delete node from qOrder
     arrayToDeleteItemFrom.splice(indexToDelete, 1);
+
+    // TODO i18n slett fra qLanguages
 }
 
 function updateItem(draft: TreeState, action: UpdateItemAction): void {
@@ -182,6 +224,12 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
     }
 }
 
+function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAction) {
+    if (draft.qAdditionalLanguages) {
+        draft.qAdditionalLanguages[action.languageCode].items[action.linkId].text = action.text;
+    }
+}
+
 function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value }: UpdateQuestionnaireMetadataAction) {
     draft.qMetadata = {
         ...draft.qMetadata,
@@ -205,6 +253,7 @@ function resetQuestionnaireAction(draft: TreeState, action: ResetQuestionnaireAc
     draft.qItems = newState.qItems;
     draft.qMetadata = newState.qMetadata;
     draft.qContained = newState.qContained;
+    draft.qAdditionalLanguages = newState.qAdditionalLanguages;
 }
 
 function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): void {
@@ -227,6 +276,8 @@ function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): voi
 
         // add new item
         draft.qItems[copyItem.linkId] = copyItem;
+
+        // TODO i18n Copy translations, if any
 
         // add item to tree and generate subtrees
         return {
@@ -291,6 +342,8 @@ function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
             }
         });
     });
+
+    // TODO i18n Replace in qAdditionalLanguages
 }
 
 function removeAttributeFromItem(draft: TreeState, action: RemoveItemAttributeAction): void {
@@ -301,6 +354,9 @@ function removeAttributeFromItem(draft: TreeState, action: RemoveItemAttributeAc
 
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
+        case ADD_QUESTIONNAIRE_LANGUAGE_ACTION:
+            addLanguage(draft, action);
+            break;
         case RESET_QUESTIONNAIRE_ACTION:
             resetQuestionnaireAction(draft, action);
             break;
@@ -315,6 +371,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case UPDATE_ITEM_ACTION:
             updateItem(draft, action);
+            break;
+        case UPDATE_ITEM_TRANSLATION_ACTION:
+            updateItemTranslation(draft, action);
             break;
         case DUPLICATE_ITEM_ACTION:
             duplicateItemAction(draft, action);

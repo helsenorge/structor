@@ -1,0 +1,44 @@
+.translation-modal > .overlay > .modal {
+    height: auto;
+    width: 90%;
+    top: 30px;
+    bottom: 30px;
+}
+
+.translation-modal > .overlay > .modal > .title {
+    top: 0;
+    width: 100%;
+    position: sticky;
+    z-index: 10;
+}
+
+.translation-modal > .overlay > .modal > .content {
+    padding-top: 0;
+    z-index: 0;
+}
+
+.translation-modal > .overlay > .modal > .content > .horizontal.equal {
+    align-items: start;
+}
+
+.translation-modal > .overlay > .modal > .content > .horizontal > .form-field > div > input {
+    width: 100%;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 63px;
+    background-color: #ffffff;
+    border-bottom: 1px solid black;
+    z-index: 10;
+    padding-top: 8px;
+    margin-bottom: 8px;
+}
+
+.sticky-header > .horizontal.equal {
+    min-height: 32px;
+}
+
+.sticky-header > .form-field {
+    padding-bottom: 0px;
+}

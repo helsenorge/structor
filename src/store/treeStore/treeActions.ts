@@ -13,6 +13,8 @@ import {
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TreeState } from './treeStore';
 
+export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = 'addQuestionnaireLanguage';
+export const UPDATE_ITEM_TRANSLATION_ACTION = 'updateItemTranslation';
 export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata';
 export const NEW_ITEM_ACTION = 'newItem';
 export const REMOVE_ITEM_ATTRIBUTE_ACTION = 'removeItemAttribute';
@@ -41,6 +43,18 @@ export interface UpdateMarkedLinkId {
     type: typeof UPDATE_MARKED_LINK_ID;
     linkId: string;
 }
+export interface AddQuestionnaireLanguageAction {
+    type: typeof ADD_QUESTIONNAIRE_LANGUAGE_ACTION;
+    additionalLanguageCode: string;
+}
+
+export interface UpdateItemTranslationAction {
+    type: typeof UPDATE_ITEM_TRANSLATION_ACTION;
+    languageCode: string;
+    linkId: string;
+    text: string;
+}
+
 export interface UpdateLinkIdAction {
     type: typeof UPDATE_LINK_ID_ACTION;
     oldLinkId: string;
@@ -106,6 +120,26 @@ export const updateMarkedLinkIdAction = (markedLinkId: string): UpdateMarkedLink
     return {
         type: UPDATE_MARKED_LINK_ID,
         linkId: markedLinkId,
+    };
+};
+
+export const addQuestionnaireLanguageAction = (additionalLanguageCode: string): AddQuestionnaireLanguageAction => {
+    return {
+        type: ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
+        additionalLanguageCode,
+    };
+};
+
+export const updateItemTranslationAction = (
+    languageCode: string,
+    linkId: string,
+    text: string,
+): UpdateItemTranslationAction => {
+    return {
+        type: UPDATE_ITEM_TRANSLATION_ACTION,
+        languageCode,
+        linkId,
+        text,
     };
 };
 
