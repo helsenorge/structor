@@ -370,7 +370,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     </div>
                     <div className="form-field">
                         <SwitchBtn
-                            label="Tekstformattering"
+                            label="Tekstformatering"
                             initial
                             value={isMarkdownActivated}
                             onChange={() => {
