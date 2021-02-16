@@ -7,7 +7,7 @@ import FolderIcon from '../../images/icons/folder-outline.svg';
 import MessageIcon from '../../images/icons/information-circle-outline.svg';
 import QuestionIcon from '../../images/icons/help-circle-outline.svg';
 
-import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IExtentionType, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 
 type SubAnchorProps = {
     parentItem: string;
@@ -57,6 +57,11 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
 
     const { state } = useContext(TreeContext);
 
+    const isSupported = (linkId: string) => {
+        const notViewableExtentions = state.qItems[linkId].extension?.find((x) => x.url === IExtentionType.itemControl);
+        return !!notViewableExtentions;
+    };
+
     return (
         <div style={{ marginLeft: props.parentArray.length * 2 }}>
             <Droppable droppableId={`droppable-${props.parentItem}`} type={JSON.stringify(props.parentArray)}>
@@ -80,6 +85,7 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                                 {getRelevantIcon(state.qItems[item.linkId].type)}
                                             </span>
                                             <span className="truncate">
+                                                {isSupported(item.linkId) ? 'supported' : 'not'}
                                                 {state.qItems[item.linkId].text || <i>Legg inn spørsmål</i>}
                                             </span>
                                             <span {...provided.dragHandleProps} className="anchor-icon">

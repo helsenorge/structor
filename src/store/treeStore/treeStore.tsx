@@ -53,7 +53,7 @@ export interface OrderItem {
 
 export interface TreeState {
     qItems: Items;
-    qOrder: Array<OrderItem>;
+    qOrder: OrderItem[];
     qMetadata: IQuestionnaireMetadata;
     qContained?: Array<ValueSet>;
 }

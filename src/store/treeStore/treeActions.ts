@@ -141,7 +141,7 @@ export const newItemHelpIconAction = (order: Array<string>): NewItemAction => {
         repeats: false,
         readOnly: true,
         maxLength: 250,
-        text: 'Fyll inn tekst her!',
+        text: '',
         extension: [
             {
                 url: IExtentionType.itemControl,
