@@ -1,19 +1,21 @@
-import React, { useContext, useState } from 'react';
 import './FormBuilder.css';
+
 import { OrderItem, TreeContext } from '../store/treeStore/treeStore';
-import Question from '../components/Question/Question';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
+import React, { useContext, useState } from 'react';
 import { newItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
+
+import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
+import FormFiller from '../components/FormFiller/FormFiller';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
-import PublishModal from '../components/PublishModal/PublishModal';
-import MetadataEditor from '../components/Metadata/MetadataEditor';
-import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
-import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
-import Navbar from '../components/Navbar/Navbar';
-import FormFiller from '../components/FormFiller/FormFiller';
-import JSONView from '../components/JSONView/JSONView';
 import ImportValueSet from '../components/ImportValueSet/ImportValueSet';
+import JSONView from '../components/JSONView/JSONView';
+import MetadataEditor from '../components/Metadata/MetadataEditor';
+import Navbar from '../components/Navbar/Navbar';
+import PublishModal from '../components/PublishModal/PublishModal';
+import Question from '../components/Question/Question';
+import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -86,31 +88,31 @@ const FormBuilder = (): JSX.Element => {
                     <>
                         <div className="page-wrapper">
                             <div className="form-intro">
-                                <input
-                                    placeholder="Skjematittel.."
-                                    value={state.qMetadata.title}
-                                    onChange={(event) => {
-                                        dispatchUpdateQuestionnaireMetadata(
-                                            IQuestionnaireMetadataType.title,
-                                            event.target.value,
-                                        );
-                                    }}
-                                />
-                                <textarea
-                                    placeholder="Beskrivelse av skjema"
-                                    value={state.qMetadata.description}
-                                    onChange={(event) => {
-                                        dispatchUpdateQuestionnaireMetadata(
-                                            IQuestionnaireMetadataType.description,
-                                            event.target.value,
-                                        );
-                                    }}
-                                />
+                                <div className="form-intro-header">
+                                    <h2>Skjemainformasjon</h2>
+                                </div>
+                                <div className="form-intro-field">
+                                    <label htmlFor="questionnaire-title">Tittel:</label>
+                                    <br />
+                                    <input
+                                        placeholder="Tittel"
+                                        value={state.qMetadata.title}
+                                        id="questionnaire-title"
+                                        onChange={(event) => {
+                                            dispatchUpdateQuestionnaireMetadata(
+                                                IQuestionnaireMetadataType.title,
+                                                event.target.value,
+                                            );
+                                        }}
+                                    />
+                                </div>
+
+                                <MetadataEditor />
                             </div>
-                            <MetadataEditor />
+
                             <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder)}</div>
                             <button className="section-button" onClick={dispatchNewRootItem}>
-                                Opprett spørsmål
+                                Legg til element
                             </button>
                         </div>
                     </>

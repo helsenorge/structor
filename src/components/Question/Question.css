@@ -89,6 +89,22 @@
     padding-bottom: 25px;
 }
 
+.flex-align-start {
+    align-items: flex-start;
+}
+
+.flex-align-center {
+    align-items: center;
+}
+
+.flex-align-end {
+    align-items: flex-end;
+}
+
+.text-align-right {
+    text-align: right;
+}
+
 .horizontal {
     display: flex;
     align-items: center;

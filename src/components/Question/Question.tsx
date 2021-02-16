@@ -1,12 +1,5 @@
-import React, { ChangeEvent, useContext } from 'react';
-import { TreeContext } from '../../store/treeStore/treeStore';
-import {
-    deleteItemAction,
-    duplicateItemAction,
-    newItemAction,
-    updateItemAction,
-    removeItemAttributeAction,
-} from '../../store/treeStore/treeActions';
+import './Question.css';
+
 import {
     Element,
     Extension,
@@ -15,36 +8,44 @@ import {
     ValueSet,
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
-import Trashcan from '../../images/icons/trash-outline.svg';
-import PlusIcon from '../../images/icons/add-circle-outline.svg';
-import CopyIcon from '../../images/icons/copy-outline.svg';
-import itemType, {
-    checkboxExtension,
-    QUANTITY_UNIT_TYPE_NOT_SELECTED,
-    quantityUnitTypes,
-    typeIsSupportingValidation,
-} from '../../helpers/QuestionHelper';
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import Picker from '../DatePicker/DatePicker';
-import './Question.css';
-import SwitchBtn from '../SwitchBtn/SwitchBtn';
-import Select from '../Select/Select';
-import RadioBtn from '../RadioBtn/RadioBtn';
-import Btn from '../Btn/Btn';
-import Accordion from '../Accordion/Accordion';
-import EnableWhen from '../EnableWhen/EnableWhen';
-
-import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
+import React, { ChangeEvent, useContext } from 'react';
 import {
     addEmptyOptionToAnswerOptionArray,
     removeOptionFromAnswerOptionArray,
     updateAnswerOption,
 } from '../../helpers/answerOptionHelper';
+import {
+    deleteItemAction,
+    duplicateItemAction,
+    newItemAction,
+    removeItemAttributeAction,
+    updateItemAction,
+} from '../../store/treeStore/treeActions';
+import itemType, {
+    QUANTITY_UNIT_TYPE_NOT_SELECTED,
+    checkboxExtension,
+    quantityUnitTypes,
+    typeIsSupportingValidation,
+} from '../../helpers/QuestionHelper';
 import { removeExtensionValue, setExtensionValue } from '../../helpers/extensionHelper';
-import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import PredefinedValueSet from './QuestionType/PredefinedValueSet';
-import Choice from './QuestionType/Choice';
+
+import Accordion from '../Accordion/Accordion';
 import AdvancedQuestionOptions from '../AdvancedQuestionOptions/AdvancedQuestionOptions';
+import Btn from '../Btn/Btn';
+import Choice from './QuestionType/Choice';
+import CopyIcon from '../../images/icons/copy-outline.svg';
+import EnableWhen from '../EnableWhen/EnableWhen';
+import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
+import Picker from '../DatePicker/DatePicker';
+import PlusIcon from '../../images/icons/add-circle-outline.svg';
+import PredefinedValueSet from './QuestionType/PredefinedValueSet';
+import RadioBtn from '../RadioBtn/RadioBtn';
+import Select from '../Select/Select';
+import SwitchBtn from '../SwitchBtn/SwitchBtn';
+import Trashcan from '../../images/icons/trash-outline.svg';
+import { TreeContext } from '../../store/treeStore/treeStore';
+import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -198,7 +199,6 @@ const Question = (props: QuestionProps): JSX.Element => {
             />
         );
     };
-
     const respondType = (param: string) => {
         if (
             props.item.answerValueSet &&
@@ -336,7 +336,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         >
             <div className="question-header">
                 <h2>
-                    Spørsmål <span>{props.questionNumber}</span>
+                    Element <span>{props.questionNumber}</span>
                 </h2>
                 <button className="pull-right question-button" onClick={dispatchDuplicateItem}>
                     <img src={CopyIcon} height="25" width="25" /> Dupliser
@@ -351,24 +351,26 @@ const Question = (props: QuestionProps): JSX.Element => {
                 </button>
             </div>
             <div className="question-form">
-                <SwitchBtn
-                    label="Obligatorisk"
-                    value={props.item.required || false}
-                    onChange={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
-                />
                 <div className="form-field">
-                    <label>Velg spørsmålstype</label>
+                    <label>Velg type</label>
                     <Select
                         value={handleDisplayQuestionType()}
                         options={itemType}
                         onChange={handleQuestionareTypeChange}
                     />
                 </div>
-                <div className="form-field">
-                    <div className="form-field-label-wrapper">
-                        <label>Skriv spørsmål</label>
+                <div className="horizontal">
+                    <div className="form-field ">
                         <SwitchBtn
-                            label="Aktiver markdown"
+                            label="Obligatorisk"
+                            initial
+                            value={props.item.required || false}
+                            onChange={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
+                        />
+                    </div>
+                    <div className="form-field">
+                        <SwitchBtn
+                            label="Tekstformattering"
                             initial
                             value={isMarkdownActivated}
                             onChange={() => {
@@ -385,6 +387,11 @@ const Question = (props: QuestionProps): JSX.Element => {
                             }}
                         />
                     </div>
+                </div>
+                <div className="form-field">
+                    <div className="form-field-label-wrapper">
+                        <label>Tekst</label>
+                    </div>
                     {isMarkdownActivated ? (
                         <MarkdownEditor data={getLabelText()} onChange={dispatchUpdateMarkdownLabel} />
                     ) : (
@@ -398,7 +405,6 @@ const Question = (props: QuestionProps): JSX.Element => {
                 </div>
                 {respondType(props.item.type)}
             </div>
-
             <div className="question-addons">
                 {typeIsSupportingValidation(props.item.type as IQuestionnaireItemType) && (
                     <Accordion title="Legg til validering">
@@ -406,7 +412,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     </Accordion>
                 )}
                 <Accordion
-                    title={`Legg til betinget visning ${
+                    title={`Betinget visning ${
                         props.item.enableWhen && props.item.enableWhen.length > 0
                             ? `(${props.item.enableWhen?.length})`
                             : ''

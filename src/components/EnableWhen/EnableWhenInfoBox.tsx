@@ -1,16 +1,17 @@
-import React from 'react';
 import {
-    QuestionnaireItemEnableWhen,
-    QuestionnaireItemEnableBehaviorCodes,
-    QuestionnaireItem,
     Coding,
-    ValueSet,
     Quantity,
+    QuestionnaireItem,
+    QuestionnaireItemEnableBehaviorCodes,
+    QuestionnaireItemEnableWhen,
+    ValueSet,
 } from '../../types/fhir';
-import { format } from 'date-fns';
-import Infobox from './Infobox';
+
 import { IOperator } from '../../types/IQuestionnareItemType';
+import Infobox from './Infobox';
+import React from 'react';
 import createUUID from '../../helpers/CreateUUID';
+import { format } from 'date-fns';
 
 type OperatorMapType = {
     [key: string]: string;
@@ -114,7 +115,7 @@ const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, en
     const enableBehaviorText = enableBehavior === QuestionnaireItemEnableBehaviorCodes.ALL ? 'og' : 'eller';
 
     return (
-        <Infobox title="Spørsmålet vil vises dersom:">
+        <Infobox title="Elementet vil vises dersom:">
             {enableWhen.map((condition, index) => {
                 return generateCondition(condition, index > 0 ? enableBehaviorText : '');
             })}
