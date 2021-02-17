@@ -65,4 +65,6 @@ export enum IExtentionType {
     maxDecimalPlaces = 'http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces',
     markdown = 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
     questionnaireUnit = 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
+    itemControl = 'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
+    itemControlValueSet = 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
 }

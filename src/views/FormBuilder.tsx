@@ -4,10 +4,9 @@ import { OrderItem, TreeContext } from '../store/treeStore/treeStore';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import React, { useContext, useState } from 'react';
 import { newItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
-
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import FormFiller from '../components/FormFiller/FormFiller';
-import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import ImportValueSet from '../components/ImportValueSet/ImportValueSet';
 import JSONView from '../components/JSONView/JSONView';
@@ -42,14 +41,24 @@ const FormBuilder = (): JSX.Element => {
         return state.qItems[linkId];
     };
 
+    const isNotSupported = (linkId: string) => {
+        return (
+            state.qItems[linkId].extension !== undefined &&
+            state.qItems[linkId].extension?.find((x) => x.url === IExtentionType.itemControl) !== undefined
+        );
+    };
+
     const renderTree = (
         items: Array<OrderItem>,
         parentArray: Array<string> = [],
         parentQuestionNumber = '',
-    ): Array<JSX.Element> => {
+    ): Array<JSX.Element | null> => {
         return items.map((x, index) => {
             const questionNumber =
                 parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
+            if (isNotSupported(x.linkId)) {
+                return null;
+            }
             return (
                 <div key={index}>
                     <Question

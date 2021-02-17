@@ -53,7 +53,7 @@ export interface OrderItem {
 
 export interface TreeState {
     qItems: Items;
-    qOrder: Array<OrderItem>;
+    qOrder: OrderItem[];
     qMetadata: IQuestionnaireMetadata;
     qContained?: Array<ValueSet>;
 }
@@ -287,8 +287,6 @@ function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
 function removeAttributeFromItem(draft: TreeState, action: RemoveItemAttributeAction): void {
     if (draft.qItems[action.linkId] && draft.qItems[action.linkId][action.itemProperty]) {
         delete draft.qItems[action.linkId][action.itemProperty];
-    } else {
-        console.error('Cannot find qItem and/or attribute ', action.itemProperty);
     }
 }
 

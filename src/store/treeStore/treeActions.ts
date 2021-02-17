@@ -1,5 +1,5 @@
 import CreateUUID from '../../helpers/CreateUUID';
-import { IEnableWhen, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IEnableWhen, IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import {
     QuestionnaireItem,
     Extension,
@@ -125,6 +125,36 @@ export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>
         type: type,
         text: '',
         extension: [],
+    } as QuestionnaireItem;
+    return {
+        type: NEW_ITEM_ACTION,
+        item: newQuestionnaireItem,
+        order,
+    };
+};
+
+export const newItemHelpIconAction = (order: Array<string>): NewItemAction => {
+    const newQuestionnaireItem = {
+        linkId: CreateUUID(),
+        type: IQuestionnaireItemType.text,
+        required: false,
+        repeats: false,
+        readOnly: true,
+        maxLength: 250,
+        text: '',
+        extension: [
+            {
+                url: IExtentionType.itemControl,
+                valueCodeableConcept: {
+                    coding: [
+                        {
+                            system: IExtentionType.itemControlValueSet,
+                            code: 'help',
+                        },
+                    ],
+                },
+            },
+        ],
     } as QuestionnaireItem;
     return {
         type: NEW_ITEM_ACTION,
