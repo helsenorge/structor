@@ -7,7 +7,7 @@ import FolderIcon from '../../images/icons/folder-outline.svg';
 import MessageIcon from '../../images/icons/information-circle-outline.svg';
 import QuestionIcon from '../../images/icons/help-circle-outline.svg';
 
-import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IExtentionType, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 
 type SubAnchorProps = {
     parentItem: string;
@@ -18,6 +18,8 @@ type SubAnchorProps = {
 
 const SubAnchor = (props: SubAnchorProps): JSX.Element => {
     const grid = 8;
+
+    const { state } = useContext(TreeContext);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
@@ -55,7 +57,16 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
         }
     };
 
-    const { state } = useContext(TreeContext);
+    const isNotSupported = (linkId: string) => {
+        return (
+            state.qItems[linkId].extension &&
+            !!state.qItems[linkId].extension?.find((x) => x.url === IExtentionType.itemControl)
+        );
+    };
+
+    const removeUnsupportedChildren = (items: OrderItem[]) => {
+        return items.filter((x) => !isNotSupported(x.linkId));
+    };
 
     return (
         <div style={{ marginLeft: props.parentArray.length * 2 }}>
@@ -92,9 +103,9 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                             </span>
                                         </div>
                                         <div>
-                                            {item.items.length > 0 && (
+                                            {removeUnsupportedChildren(item.items).length > 0 && (
                                                 <SubAnchor
-                                                    items={item.items}
+                                                    items={removeUnsupportedChildren(item.items)}
                                                     parentItem={item.linkId}
                                                     parentArray={[...props.parentArray, item.linkId]}
                                                 />
