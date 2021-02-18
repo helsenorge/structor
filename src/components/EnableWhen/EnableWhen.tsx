@@ -1,4 +1,6 @@
-import React, { useContext } from 'react';
+import './EnableWhen.css';
+
+import { IItemProperty, IOperator, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import {
     QuestionnaireItem,
     QuestionnaireItemEnableBehaviorCodes,
@@ -6,23 +8,23 @@ import {
     ValueSet,
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
-import Trashcan from '../../images/icons/trash-outline.svg';
-import PlusIcon from '../../images/icons/add-circle-outline.svg';
-import { IItemProperty, IOperator, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import Select from '../Select/Select';
-import { updateItemAction } from '../../store/treeStore/treeActions';
-import { TreeContext } from '../../store/treeStore/treeStore';
-import './EnableWhen.css';
-import EnableWhenInfoBox from './EnableWhenInfoBox';
+import React, { useContext } from 'react';
 import {
     enableWhenOperator,
     enableWhenOperatorBoolean,
     enableWhenOperatorChoice,
     enableWhenOperatorDate,
 } from '../../helpers/QuestionHelper';
-import FormField from '../FormField/FormField';
+
 import EnableBehavior from './EnableBehavior';
 import EnableWhenAnswerTypes from './EnableWhenAnswerTypes';
+import EnableWhenInfoBox from './EnableWhenInfoBox';
+import FormField from '../FormField/FormField';
+import PlusIcon from '../../images/icons/add-circle-outline.svg';
+import Select from '../Select/Select';
+import Trashcan from '../../images/icons/trash-outline.svg';
+import { TreeContext } from '../../store/treeStore/treeStore';
+import { updateItemAction } from '../../store/treeStore/treeActions';
 
 type Props = {
     getItem: (linkId: string) => QuestionnaireItem;
@@ -68,10 +70,7 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
 
     return (
         <>
-            <p>
-                Hvis relevansen for dette spørsmålet er avhgengig av svaret på et eller flere tidligere spørsmål, velges
-                dette her.
-            </p>
+            <p>Sett betingelser for visning av elementet.</p>
             {enableWhen.map((x, index) => {
                 const conditionItem = getItem(x.question);
                 return (
