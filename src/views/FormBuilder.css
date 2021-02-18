@@ -2,7 +2,11 @@
 @import 'https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css';
 .editor {
     display: flex;
-    padding-bottom: 180px;
+    padding-bottom: 60px;
+}
+
+.anchor-wrapper {
+    width: 400px;
 }
 
 header {
@@ -53,15 +57,12 @@ h1 {
     padding: 20px 70px;
 }
 
-.form-intro-field input,
-.form-intro-field label {
+.form-intro-field input, .form-intro-field label {
     margin: 20px 70px;
     width: 66%;
 }
 
-input,
-textarea,
-select {
+input, textarea, select {
     padding: 10px;
 }
 
@@ -126,4 +127,10 @@ select {
     z-index: 4;
     width: 100%;
     transition: 1s ease-in-out;
+}
+
+@media only screen and (max-width: 1300px) {
+    .anchor-wrapper {
+        display: none;
+    }
 }

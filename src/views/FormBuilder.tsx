@@ -97,7 +97,9 @@ const FormBuilder = (): JSX.Element => {
             {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
 
             <div className="editor">
-                <AnchorMenu />
+                <div className="anchor-wrapper">
+                    <AnchorMenu />
+                </div>
                 {isIframeVisible ? (
                     <FormFiller showFormFiller={() => setIsIframeVisible(!isIframeVisible)} />
                 ) : (
