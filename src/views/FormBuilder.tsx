@@ -41,11 +41,18 @@ const FormBuilder = (): JSX.Element => {
         return state.qItems[linkId];
     };
 
-    const isNotSupported = (linkId: string) => {
-        return (
-            state.qItems[linkId].extension !== undefined &&
-            state.qItems[linkId].extension?.find((x) => x.url === IExtentionType.itemControl) !== undefined
+    const willIgnoreItem = (linkId: string) => {
+        const hasItemControlExtention = state.qItems[linkId].extension?.find(
+            (x) => x.url === IExtentionType.itemControl,
         );
+
+        const ignoreItem =
+            state.qItems[linkId].extension !== undefined &&
+            hasItemControlExtention !== undefined &&
+            hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
+            hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help';
+
+        return ignoreItem;
     };
 
     const renderTree = (
@@ -56,7 +63,7 @@ const FormBuilder = (): JSX.Element => {
         return items.map((x, index) => {
             const questionNumber =
                 parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
-            if (isNotSupported(x.linkId)) {
+            if (willIgnoreItem(x.linkId)) {
                 return null;
             }
             return (
