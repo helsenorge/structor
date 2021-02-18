@@ -1,9 +1,11 @@
-import React, { useContext } from 'react';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import { reorderItemAction } from '../../store/treeStore/treeActions';
-import { TreeContext } from '../../store/treeStore/treeStore';
 import './AnchorMenu.css';
+
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import React, { useContext } from 'react';
+
 import SubAnchor from './SubAnchor';
+import { TreeContext } from '../../store/treeStore/treeStore';
+import { reorderItemAction } from '../../store/treeStore/treeActions';
 
 const AnchorMenu = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -29,7 +31,7 @@ const AnchorMenu = (): JSX.Element => {
             </DragDropContext>
             {state.qOrder.length === 0 && (
                 <p className="center-text" style={{ padding: '0px 25px' }}>
-                    Opprett et spørsmål, her finner du en oversikt av alle spørsmålene.
+                    Her vil du finne en oversikt over elementene i skjemaet.
                 </p>
             )}
         </div>

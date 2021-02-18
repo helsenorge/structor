@@ -1,14 +1,16 @@
-import React, { useContext } from 'react';
-import FormField from '../FormField/FormField';
-import { metadataOperators, metadataLanguage } from '../../helpers/MetadataHelper';
-import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
-import Select from '../Select/Select';
 import './MetadataEditor.css';
+
+import React, { useContext } from 'react';
+import { metadataLanguage, metadataOperators } from '../../helpers/MetadataHelper';
+
+import Accordion from '../Accordion/Accordion';
+import FormField from '../FormField/FormField';
+import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
+import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
+import { Meta } from '../../types/fhir';
+import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
-import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import Accordion from '../Accordion/Accordion';
-import { Meta } from '../../types/fhir';
 
 const MetadataEditor = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -22,6 +24,14 @@ const MetadataEditor = (): JSX.Element => {
     return (
         <div id="metadata-editor">
             <Accordion title="Skjemadetaljer">
+                <FormField label="Description">
+                    <textarea
+                        placeholder="Beskrivelse av skjema"
+                        value={qMetadata.description || ''}
+                        onChange={(e) => updateMeta(IQuestionnaireMetadataType.description, e.target.value)}
+                    />
+                </FormField>
+
                 <FormField label="Id">
                     <input
                         value={qMetadata.id || ''}
@@ -51,7 +61,7 @@ const MetadataEditor = (): JSX.Element => {
                         }}
                     ></Select>
                 </FormField>
-                <FormField label="Navn">
+                <FormField label="Teknisk navn">
                     <input
                         value={qMetadata.name || ''}
                         onChange={(e) => updateMeta(IQuestionnaireMetadataType.name, e.target.value)}

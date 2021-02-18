@@ -1,12 +1,14 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import { TreeContext } from '../store/treeStore/treeStore';
-import { resetQuestionnaireAction } from '../store/treeStore/treeActions';
-import { Questionnaire } from '../types/fhir';
-import mapToTreeState from '../helpers/FhirToTreeStateMapper';
 import './MainMenu.css';
+
+import React, { useContext } from 'react';
+
 import Btn from '../components/Btn/Btn';
+import { Link } from 'react-router-dom';
+import { Questionnaire } from '../types/fhir';
+import { TreeContext } from '../store/treeStore/treeStore';
+import mapToTreeState from '../helpers/FhirToTreeStateMapper';
+import { resetQuestionnaireAction } from '../store/treeStore/treeActions';
+import { useHistory } from 'react-router-dom';
 
 const MainMenu = (): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
@@ -57,7 +59,7 @@ const MainMenu = (): JSX.Element => {
                 <div className="align-everything">
                     <Link to="/new-create-form">
                         <Btn
-                            title="Opprett nytt skjema"
+                            title="Lag nytt skjema"
                             icon="ion-plus-round"
                             variant="primary"
                             onClick={() => dispatch(resetQuestionnaireAction())}
