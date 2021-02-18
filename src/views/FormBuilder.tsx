@@ -100,7 +100,10 @@ const FormBuilder = (): JSX.Element => {
                     <AnchorMenu qOrder={state.qOrder} qItems={state.qItems} dispatch={dispatch} />
                 </div>
                 {isIframeVisible ? (
-                    <FormFiller showFormFiller={() => setIsIframeVisible(!isIframeVisible)} />
+                    <FormFiller
+                        showFormFiller={() => setIsIframeVisible(!isIframeVisible)}
+                        language={state.qMetadata.language}
+                    />
                 ) : (
                     <>
                         <div className="page-wrapper">

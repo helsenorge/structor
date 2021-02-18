@@ -2,13 +2,7 @@ import './MetadataEditor.css';
 
 import React, { useContext } from 'react';
 import { formatISO, parseISO } from 'date-fns';
-import {
-    canBePerformedBy,
-    metadataLanguage,
-    metadataOperators,
-    presentationButtons,
-} from '../../helpers/MetadataHelper';
-
+import { canBePerformedBy, metadataOperators, presentationButtons } from '../../helpers/MetadataHelper';
 import Accordion from '../Accordion/Accordion';
 import DateTimePicker from '../DatePicker/DateTimePicker';
 import FormField from '../FormField/FormField';
@@ -19,6 +13,7 @@ import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
+import { supportedLanguages } from '../../helpers/LanguageHelper';
 
 const MetadataEditor = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -57,9 +52,9 @@ const MetadataEditor = (): JSX.Element => {
                 <FormField label="Språk">
                     <Select
                         value={qMetadata.language || ''}
-                        options={metadataLanguage}
+                        options={supportedLanguages}
                         onChange={(e) => {
-                            const display = metadataLanguage.find((x) => x.code === e.target.value)?.localDisplay;
+                            const display = supportedLanguages.find((x) => x.code === e.target.value)?.localDisplay;
                             const newMeta = {
                                 ...qMetadata.meta,
                                 tag: qMetadata.meta?.tag?.map((x) =>

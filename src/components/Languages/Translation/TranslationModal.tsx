@@ -2,10 +2,10 @@ import React, { useContext, useState } from 'react';
 import Modal from '../../Modal/Modal';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { addQuestionnaireLanguageAction, updateItemTranslationAction } from '../../../store/treeStore/treeActions';
-import { getLanguageFromCode, metadataLanguage } from '../../../helpers/MetadataHelper';
 import Select from '../../Select/Select';
 import './TranslationModal.css';
 import TranslationRow from './TranslationRow';
+import { getLanguageFromCode, supportedLanguages } from '../../../helpers/LanguageHelper';
 
 type TranslationModalProps = {
     close: () => void;
@@ -18,7 +18,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     const [targetLanguage, setTargetLanguage] = useState(props.targetLanguage);
     const availableLanguages = [
         { code: '', display: 'Velg språk' },
-        ...metadataLanguage.filter((lang) => lang.code.toLowerCase() !== qMetadata.language?.toLowerCase()),
+        ...supportedLanguages.filter((lang) => lang.code.toLowerCase() !== qMetadata.language?.toLowerCase()),
     ];
 
     const questions = Object.values(qItems).filter((question) => {
