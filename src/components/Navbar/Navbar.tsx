@@ -41,7 +41,7 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet }:
 
     const handleClickOutside = (event: MouseEvent) => {
         const currentClass = (event.target as Element).className;
-        if (currentClass.indexOf('more-menu') < 0 && menuIsVisible) {
+        if (menuIsVisible && currentClass.indexOf('more-menu') < 0) {
             setTimeout(() => setMenuIsVisible(false), 200);
         }
     };
