@@ -58,10 +58,17 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
     };
 
     const isNotSupported = (linkId: string) => {
-        return (
-            state.qItems[linkId].extension &&
-            !!state.qItems[linkId].extension?.find((x) => x.url === IExtentionType.itemControl)
+        const hasItemControlExtention = state.qItems[linkId].extension?.find(
+            (x) => x.url === IExtentionType.itemControl,
         );
+
+        const ignoreItem =
+            state.qItems[linkId].extension !== undefined &&
+            hasItemControlExtention !== undefined &&
+            hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
+            hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help';
+
+        return ignoreItem;
     };
 
     const removeUnsupportedChildren = (items: OrderItem[]) => {
