@@ -1,98 +1,118 @@
 body > * {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+        'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  margin-top: 0;
-  margin-bottom: .5em;
-  color: rgba(0,0,0,.85);
-  font-weight: 500;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
 }
 
-button, input, optgroup, select, textarea {
-  margin: 0;
-  color: inherit;
-  font-size: inherit;
-  font-family: inherit;
-  line-height: inherit;
+button,
+input,
+optgroup,
+select,
+textarea {
+    margin: 0;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: inherit;
 }
 
-iframe{
-  border-width: 0;
+iframe {
+    border-width: 0;
 }
 
 body {
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--color-base-2) !important;
-  width: 100%;
-  height: 100%;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-base-2) !important;
+    width: 100%;
+    height: 100%;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 :root {
-  --primary-1: #A61E7B;
-  /* Buttons */
-  --primary-2: #006D84;
-  /* Header color 006D84 */
-  --color-base-1: #FFFFFF;
-  /* Box color */
-  --color-base-2: #FAFAFA;
-  /* Background of page D8D8D8 */
-  --color-base-3: #f0f0f0;
-  /* Section header grey E1E2E4 EEEFF1 */
-  /* --color-base-4: #8AB5B5;    Title color */
+    --primary-1: #a61e7b;
+    /* Buttons */
+    --primary-2: #006d84;
+    /* Header color 006D84 */
+    --color-base-1: #ffffff;
+    /* Box color */
+    --color-base-2: #fafafa;
+    /* Background of page D8D8D8 */
+    --color-base-3: #f0f0f0;
+    /* Section header grey E1E2E4 EEEFF1 */
+    /* --color-base-4: #8AB5B5;    Title color */
 }
 
 html {
-  --antd-wave-shadow-color: var(--primary-1) !important;
+    --antd-wave-shadow-color: var(--primary-1) !important;
 }
 
 .controller {
-  border-right: solid var(--color-base-2) 0.5px;
+    border-right: solid var(--color-base-2) 0.5px;
 }
 
 p {
-  text-align: left;
+    text-align: left;
 }
 
 .standard {
-  padding: 10px;
-  text-align: left;
+    padding: 10px;
+    text-align: left;
 }
 
 .wrapper {
-  margin: 10px;
-  width: 95%;
-  box-shadow: 0 4px 8px 4px #c7c7c7c7;
-  border-radius: 2px;
-  display: inline-block;
+    margin: 10px;
+    width: 95%;
+    box-shadow: 0 4px 8px 4px #c7c7c7c7;
+    border-radius: 2px;
+    display: inline-block;
 }
 
 .iframe-div {
-  background: url(./images/loader.gif) center center no-repeat;
-  position: fixed;
-  top: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 900px;
+    font-family: Source Sans Pro, Arial, Verdana, sans-serif;
+    background-color: #f5f3f3;
+    position: fixed;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+}
+
+.iframe-div h2 {
+    color: black;
+    margin-top: 70px;
+    text-align: left;
+    font-size: 42px;
+    padding-left: 20px;
+    font-weight: 700;
 }
 
 .index-buttons {
-  background-color: var(--primary-1);
-  color: var(--color-base-1);
-  cursor: pointer;
-  border: 1px solid var(--primary-1);
-  display: inline-block;
-  height: 45px;
-  width: 160px;
-  padding: 9px 12px;
+    background-color: var(--primary-1);
+    color: var(--color-base-1);
+    cursor: pointer;
+    border: 1px solid var(--primary-1);
+    display: inline-block;
+    height: 45px;
+    width: 160px;
+    padding: 9px 12px;
 }
 
 .icon-buttons:hover {
-  background-color: #e0e0e0 !important;
+    background-color: #e0e0e0 !important;
 }

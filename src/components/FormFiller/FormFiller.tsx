@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
-import { TreeContext } from '../../store/treeStore/treeStore';
+
 import IconBtn from '../IconBtn/IconBtn';
+import { TreeContext } from '../../store/treeStore/treeStore';
+import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 
 type Props = {
     showFormFiller: () => void;
@@ -33,11 +34,13 @@ const FormFiller = ({ showFormFiller }: Props): JSX.Element => {
                     <IconBtn type="x" title="Lukk" onClick={showFormFiller} />
                     <h1>Forhåndsvisning</h1>
                 </div>
+                <h2 className="q-title">{state.qMetadata.title}</h2>
                 <iframe
                     id="schemeFrame"
                     style={{
-                        width: '100%',
+                        width: 'calc(100% - 40px)',
                         height: '70vh',
+                        padding: '20px',
                     }}
                     onLoad={iFrameLoaded}
                     src="../../../iframe/index.html"
