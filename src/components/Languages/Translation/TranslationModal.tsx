@@ -6,6 +6,7 @@ import Select from '../../Select/Select';
 import './TranslationModal.css';
 import TranslationRow from './TranslationRow';
 import { getLanguageFromCode, supportedLanguages } from '../../../helpers/LanguageHelper';
+import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 
 type TranslationModalProps = {
     close: () => void;
@@ -68,16 +69,20 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         if (questions && qAdditionalLanguages && targetLanguage) {
             return (
                 <>
-                    {questions.map((question) => {
-                        return (
-                            <TranslationRow
-                                key={question.linkId}
-                                item={question}
-                                translation={qAdditionalLanguages[targetLanguage].items[question.linkId].text}
-                                onChange={(text) => dispatchUpdateItemTranslation(question.linkId, text)}
-                            />
-                        );
-                    })}
+                    {questions
+                        .filter((item) => {
+                            return !(item.type === IQuestionnaireItemType.group && !item.text);
+                        })
+                        .map((question) => {
+                            return (
+                                <TranslationRow
+                                    key={question.linkId}
+                                    item={question}
+                                    translation={qAdditionalLanguages[targetLanguage].items[question.linkId].text}
+                                    onChange={(text) => dispatchUpdateItemTranslation(question.linkId, text)}
+                                />
+                            );
+                        })}
                 </>
             );
         }
