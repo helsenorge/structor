@@ -21,8 +21,12 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
 
     const { state } = useContext(TreeContext);
 
+    const isMatching = (linkId: string) => {
+        return linkId === state.qCurrentItemId;
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+    const getItemStyle = (isDragging: boolean, draggableStyle: any, linkId: string) => ({
         userSelect: 'none',
         padding: grid * 2,
         background: isDragging ? 'lightgreen' : 'transparent',
@@ -30,6 +34,7 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
 
         margin: '0 10px 10px 0',
         border: '1px solid grey',
+        color: isMatching(linkId) ? 'red' : 'black',
         ...draggableStyle,
     });
 
@@ -86,7 +91,11 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                     <div
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
-                                        style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                                        style={getItemStyle(
+                                            snapshot.isDragging,
+                                            provided.draggableProps.style,
+                                            item.linkId,
+                                        )}
                                     >
                                         <div
                                             style={{ display: 'flex', alignItems: 'center' }}
