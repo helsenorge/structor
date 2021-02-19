@@ -327,7 +327,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     )}
                 </div>
             </div>
-            <Codes linkId={item.linkId} />
+            {item.type !== IQuestionnaireItemType.display && <Codes linkId={item.linkId} />}
             <div>
                 <FormField>
                     <SwitchBtn
