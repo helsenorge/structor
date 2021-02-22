@@ -329,15 +329,20 @@ const Question = (props: QuestionProps): JSX.Element => {
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
 
     const observed = (elements: IntersectionObserverEntry[]) => {
-        if (elements[0].intersectionRatio !== 0) {
+        console.log(elements[0].intersectionRatio);
+        if (elements[0].intersectionRatio > 0.5) {
             dispatch(updateMarkedLinkIdAction(props.item.linkId));
-        } else {
-            console.error('Is out of view', props.item.text || 'not exists');
         }
     };
 
     useEffect(() => {
-        const myObserver = new IntersectionObserver(observed);
+        const options = {
+            root: null,
+            rootMargin: '52px 0px 0px 0px',
+            threshold: [0.5],
+        };
+
+        const myObserver = new IntersectionObserver(observed, options);
 
         const myEl = document.getElementById(props.item.linkId);
 
