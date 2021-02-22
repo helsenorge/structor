@@ -85,7 +85,12 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
                                         value={x.question}
                                         onChange={(event) => {
                                             const copy = getItem(linkId).enableWhen?.map((x, ewIndex) => {
-                                                return index === ewIndex ? { ...x, question: event.target.value } : x;
+                                                // clear any answer[x] values when changing question condition
+                                                return index === ewIndex
+                                                    ? ({
+                                                          question: event.target.value,
+                                                      } as QuestionnaireItemEnableWhen)
+                                                    : x;
                                             });
                                             dispatchUpdateItemEnableWhen(copy);
                                         }}
