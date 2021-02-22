@@ -50,7 +50,8 @@ const FormBuilder = (): JSX.Element => {
             state.qItems[linkId].extension !== undefined &&
             hasItemControlExtention !== undefined &&
             hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-            hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help';
+            (hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help' ||
+                hasItemControlExtention.valueCodeableConcept.coding[0].code === 'highlight');
 
         return ignoreItem;
     };
@@ -93,7 +94,7 @@ const FormBuilder = (): JSX.Element => {
                 showImportValueSet={() => setShowImportValueSet(!showImportValueSet)}
             />
 
-            {showPublishModal && <PublishModal close={() => setShowPublishModal(!showPublishModal)} />}
+            {showResults && <PublishModal close={() => setShowAdminMenu(!showResults)} />}
             {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
 
             <div className="editor">

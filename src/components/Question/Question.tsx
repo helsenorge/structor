@@ -329,7 +329,6 @@ const Question = (props: QuestionProps): JSX.Element => {
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
 
     const observed = (elements: IntersectionObserverEntry[]) => {
-        console.log(elements[0].intersectionRatio);
         if (elements[0].intersectionRatio > 0.5) {
             dispatch(updateMarkedLinkIdAction(props.item.linkId));
         }
