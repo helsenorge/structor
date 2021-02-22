@@ -69,11 +69,11 @@ const FormBuilder = (): JSX.Element => {
 
             const questionEl = (
                 <Question
-                    key={x.linkId}
+                    key={`${index}${x.linkId}`}
                     item={state.qItems[x.linkId]}
                     parentArray={parentArray}
                     questionNumber={questionNumber}
-                    conditionalArray={getConditional(parentArray, x.linkId)}
+                    getConditionalArray={getConditional}
                     getItem={getQItem}
                     containedResources={state.qContained}
                     dispatch={dispatch}

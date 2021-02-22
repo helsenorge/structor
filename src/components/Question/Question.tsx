@@ -51,9 +51,9 @@ interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
     questionNumber: string;
-    conditionalArray: ValueSetComposeIncludeConcept[];
-    getItem: (linkId: string) => QuestionnaireItem;
     containedResources?: Array<ValueSet>;
+    getConditionalArray: (parentArray: string[], linkId: string) => ValueSetComposeIncludeConcept[];
+    getItem: (linkId: string) => QuestionnaireItem;
     dispatch: React.Dispatch<ActionType>;
 }
 
@@ -324,6 +324,7 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
 
+    console.log(`render question: ${props.item.linkId}`);
     return (
         <div className="question" style={{ marginLeft: props.parentArray.length * 32 }} id={props.item.linkId}>
             <div className="question-header">
@@ -413,7 +414,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     <div>
                         <EnableWhen
                             getItem={props.getItem}
-                            conditionalArray={props.conditionalArray}
+                            conditionalArray={props.getConditionalArray(props.parentArray, props.item.linkId)}
                             linkId={props.item.linkId}
                             enableWhen={props.item.enableWhen || []}
                             containedResources={props.containedResources}
@@ -428,4 +429,12 @@ const Question = (props: QuestionProps): JSX.Element => {
     );
 };
 
-export default Question;
+export default React.memo(Question, (prevProps: QuestionProps, nextProps: QuestionProps) => {
+    // if ALL of these props are identical, do not re-render the question
+    const isItemIdentical = JSON.stringify(prevProps.item) === JSON.stringify(nextProps.item);
+    const isParentArrayIdentical = JSON.stringify(prevProps.parentArray) === JSON.stringify(nextProps.parentArray);
+    const isQuestionNumberIdentical = prevProps.questionNumber === nextProps.questionNumber;
+    const isContainedResourcesIdentical =
+        JSON.stringify(prevProps.containedResources) === JSON.stringify(nextProps.containedResources);
+    return isItemIdentical && isParentArrayIdentical && isQuestionNumberIdentical && isContainedResourcesIdentical;
+});
