@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
+import './DatePicker.css';
+
 import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
-import { nb } from 'date-fns/locale';
+import React, { useState } from 'react';
 
 import Calendar from '../../images/icons/calendar-outline.svg';
 import Clock from '../../images/icons/time-outline.svg';
-
-import 'react-datepicker/dist/react-datepicker.css';
-import './DatePicker.css';
+import { nb } from 'date-fns/locale';
 
 type PickerProps = {
     type?: 'date' | 'time';
     disabled?: boolean;
     withPortal?: boolean;
+    nowButton?: boolean;
     callback?: (date: Date) => void;
     selected?: Date;
 };
@@ -19,7 +20,7 @@ type PickerProps = {
 setDefaultLocale('nb');
 registerLocale('nb', nb);
 
-const Picker = ({ type, disabled = true, withPortal, callback, selected }: PickerProps): JSX.Element => {
+const Picker = ({ type, disabled = true, withPortal, nowButton, callback, selected }: PickerProps): JSX.Element => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [startDate, setStartDate] = useState<any>();
     return (
@@ -32,6 +33,7 @@ const Picker = ({ type, disabled = true, withPortal, callback, selected }: Picke
                     setStartDate(date);
                     callback && callback(date);
                 }}
+                todayButton={nowButton ? 'I dag' : undefined}
                 withPortal={withPortal}
                 locale="nb"
                 showTimeSelect={type === 'time'}
