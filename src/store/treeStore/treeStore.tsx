@@ -30,7 +30,7 @@ import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOptionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 
-type ActionType =
+export type ActionType =
     | ResetQuestionnaireAction
     | UpdateQuestionnaireMetadataAction
     | NewItemAction

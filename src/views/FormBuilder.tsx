@@ -18,7 +18,6 @@ import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
-    const [currentQuestion, setCurrentQuestion] = useState('');
     const [isIframeVisible, setIsIframeVisible] = useState(false);
     const [isShowingFireStructure, setIsShowingFireStructure] = useState(false);
     const [showPublishModal, setShowPublishModal] = useState(false);
@@ -57,32 +56,37 @@ const FormBuilder = (): JSX.Element => {
 
     const renderTree = (
         items: Array<OrderItem>,
+        questionArray: Array<JSX.Element>,
         parentArray: Array<string> = [],
         parentQuestionNumber = '',
-    ): Array<JSX.Element | null> => {
-        return items.map((x, index) => {
+    ): void => {
+        items.map((x, index) => {
             const questionNumber =
                 parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
             if (willIgnoreItem(x.linkId)) {
-                return null;
+                return;
             }
-            return (
-                <div key={`${index}${x.linkId}`}>
-                    <Question
-                        item={state.qItems[x.linkId]}
-                        parentArray={parentArray}
-                        questionNumber={questionNumber}
-                        conditionalArray={getConditional(parentArray, x.linkId)}
-                        getItem={getQItem}
-                        containedResources={state.qContained}
-                        setCurrentQuestion={(linkId: string) => setCurrentQuestion(linkId)}
-                        currentQuestion={currentQuestion}
-                    />
-                    {renderTree(x.items, [...parentArray, x.linkId], questionNumber)}
-                </div>
+
+            const questionEl = (
+                <Question
+                    key={x.linkId}
+                    item={state.qItems[x.linkId]}
+                    parentArray={parentArray}
+                    questionNumber={questionNumber}
+                    conditionalArray={getConditional(parentArray, x.linkId)}
+                    getItem={getQItem}
+                    containedResources={state.qContained}
+                    dispatch={dispatch}
+                />
             );
+            questionArray.push(questionEl);
+
+            renderTree(x.items, questionArray, [...parentArray, x.linkId], questionNumber);
         });
     };
+
+    const flatQuestionArray: JSX.Element[] = [];
+    renderTree(state.qOrder, flatQuestionArray);
 
     return (
         <>
@@ -128,7 +132,7 @@ const FormBuilder = (): JSX.Element => {
                                 <MetadataEditor />
                             </div>
 
-                            <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder)}</div>
+                            <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{flatQuestionArray}</div>
                             <button className="section-button" onClick={dispatchNewRootItem}>
                                 Legg til element
                             </button>
