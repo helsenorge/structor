@@ -60,7 +60,7 @@ const FormBuilder = (): JSX.Element => {
         parentArray: Array<string> = [],
         parentQuestionNumber = '',
     ): void => {
-        items.map((x, index) => {
+        items.forEach((x, index) => {
             const questionNumber =
                 parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
             if (willIgnoreItem(x.linkId)) {
