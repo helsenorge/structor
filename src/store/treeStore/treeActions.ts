@@ -8,6 +8,7 @@ import {
     Element,
     ValueSet,
     Meta,
+    Coding,
 } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TreeState } from './treeStore';
@@ -33,6 +34,7 @@ type ItemValueType =
     | QuestionnaireItemAnswerOption[]
     | Element
     | QuestionnaireItemInitial[]
+    | Coding[]
     | undefined; // TODO: legg på alle lovlige verdier
 
 export interface UpdateMarkedLinkId {
@@ -141,6 +143,49 @@ export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>
     return {
         type: NEW_ITEM_ACTION,
         item: newQuestionnaireItem,
+        order,
+    };
+};
+
+export const newItemSidebar = (order: Array<string>): NewItemAction => {
+    const sidebar = {
+        extension: [
+            {
+                url: IExtentionType.itemControl,
+                valueCodeableConcept: {
+                    coding: [
+                        {
+                            system: IExtentionType.itemControlValueSet,
+                            code: 'sidebar',
+                        },
+                    ],
+                },
+            },
+        ],
+        linkId: CreateUUID(),
+        code: [
+            {
+                system: IExtentionType.sotHeader,
+                code: '',
+                display: '',
+            },
+        ],
+        _text: {
+            extension: [
+                {
+                    url: IExtentionType.markdown,
+                    valueMarkdown: '',
+                },
+            ],
+        },
+        type: IQuestionnaireItemType.text,
+        required: false,
+        repeats: false,
+        readOnly: false,
+    } as QuestionnaireItem;
+    return {
+        type: NEW_ITEM_ACTION,
+        item: sidebar,
         order,
     };
 };
