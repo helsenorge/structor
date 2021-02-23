@@ -13,6 +13,7 @@ import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../typ
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
+import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -35,7 +36,16 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     };
 
     const dispatchUpdateItemX = (linkId: string, value: string) => {
-        dispatch(updateItemAction(linkId, IItemProperty.text, value));
+        const newValue = {
+            extension: [
+                {
+                    url: IExtentionType.markdown,
+                    valueMarkdown: value,
+                },
+            ],
+        };
+
+        dispatch(updateItemAction(linkId, IItemProperty._text, newValue));
     };
 
     const dispatchInlineHelp = () => {
@@ -80,29 +90,31 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         return null;
     }
 
-    const handleInlineHelpText = (event: React.FocusEvent<HTMLTextAreaElement>) => {
+    const handleInlineHelpText = (markdown: string) => {
         const children = search(item.linkId)?.items;
         children?.forEach((x) => {
             if (qItems[x.linkId].extension?.find((y) => y.url === IExtentionType.itemControl)) {
-                dispatchUpdateItemX(qItems[x.linkId].linkId, event.target.value);
+                dispatchUpdateItemX(qItems[x.linkId].linkId, markdown);
             }
         });
     };
 
     const itemInlineHelperItem = () => {
         const children = search(item.linkId)?.items;
-        let text;
+        let _text = '';
         let exist = false;
         let linkId = '';
         children?.forEach((x) => {
             if (qItems[x.linkId].extension?.find((y) => y.url === IExtentionType.itemControl)) {
-                text = qItems[x.linkId].text;
+                _text =
+                    qItems[x.linkId]._text?.extension?.find((x) => x.url === IExtentionType.markdown)?.valueMarkdown ??
+                    '';
                 exist = true;
                 linkId = x.linkId;
             }
         });
 
-        return { text, exist, linkId };
+        return { exist, linkId, _text };
     };
 
     return (
@@ -167,7 +179,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                 </FormField>
                 {itemInlineHelperItem().exist && (
                     <FormField label="Skriv en hjelpende tekst">
-                        <textarea rows={2} onBlur={handleInlineHelpText} defaultValue={itemInlineHelperItem().text} />
+                        <MarkdownEditor data={itemInlineHelperItem()._text} onChange={handleInlineHelpText} />
                     </FormField>
                 )}
             </div>

@@ -78,8 +78,7 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
             state.qItems[linkId].extension !== undefined &&
             hasItemControlExtention !== undefined &&
             hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-            (hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help' ||
-                hasItemControlExtention.valueCodeableConcept.coding[0].code === 'highlight');
+            hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help';
 
         return ignoreItem;
     };

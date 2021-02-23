@@ -153,7 +153,14 @@ export const newItemHelpIconAction = (order: Array<string>): NewItemAction => {
         repeats: false,
         readOnly: true,
         maxLength: 250,
-        text: '',
+        _text: {
+            extension: [
+                {
+                    url: IExtentionType.markdown,
+                    valueMarkdown: '',
+                },
+            ],
+        },
         extension: [
             {
                 url: IExtentionType.itemControl,

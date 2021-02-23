@@ -1,6 +1,6 @@
 import './MetadataEditor.css';
 
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { metadataLanguage, metadataOperators } from '../../helpers/MetadataHelper';
 
 import Accordion from '../Accordion/Accordion';
@@ -11,14 +11,10 @@ import { Meta } from '../../types/fhir';
 import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
-import Btn from '../Btn/Btn';
 
 const MetadataEditor = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
-
     const { qMetadata } = state;
-
-    const [hightLight, setHiglight] = useState(false);
 
     const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
@@ -94,39 +90,6 @@ const MetadataEditor = (): JSX.Element => {
                         data={qMetadata.copyright || ''}
                         onChange={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
                     />
-                </FormField>
-                <FormField label="Highlight">
-                    <div>
-                        {!hightLight && (
-                            <p>
-                                Det er ikke lagt til highlight i skjema{' '}
-                                <span>
-                                    <Btn
-                                        size="small"
-                                        title="+ Legg til highlight"
-                                        variant="secondary"
-                                        onClick={() => setHiglight(true)}
-                                    ></Btn>
-                                </span>
-                            </p>
-                        )}
-                        {hightLight && (
-                            <div>
-                                <p>
-                                    Highlight er aktivert{' '}
-                                    <span>
-                                        <Btn
-                                            size="small"
-                                            title="- Slett"
-                                            variant="secondary"
-                                            onClick={() => setHiglight(false)}
-                                        ></Btn>
-                                    </span>
-                                </p>
-                                <MarkdownEditor data="" onChange={(markdown: string) => console.log(markdown)} />
-                            </div>
-                        )}
-                    </div>
                 </FormField>
             </Accordion>
         </div>

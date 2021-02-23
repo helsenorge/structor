@@ -15,13 +15,13 @@ import Navbar from '../components/Navbar/Navbar';
 import PublishModal from '../components/PublishModal/PublishModal';
 import Question from '../components/Question/Question';
 import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
+import Accordion from '../components/Accordion/Accordion';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const [currentQuestion, setCurrentQuestion] = useState('');
     const [isIframeVisible, setIsIframeVisible] = useState(false);
     const [isShowingFireStructure, setIsShowingFireStructure] = useState(false);
-    const [showPublishModal, setShowPublishModal] = useState(false);
     const [showImportValueSet, setShowImportValueSet] = useState(false);
     const [showResults, setShowAdminMenu] = useState(false);
 
@@ -50,8 +50,7 @@ const FormBuilder = (): JSX.Element => {
             state.qItems[linkId].extension !== undefined &&
             hasItemControlExtention !== undefined &&
             hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-            (hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help' ||
-                hasItemControlExtention.valueCodeableConcept.coding[0].code === 'highlight');
+            hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help';
 
         return ignoreItem;
     };
@@ -127,6 +126,9 @@ const FormBuilder = (): JSX.Element => {
                                 </div>
 
                                 <MetadataEditor />
+                                <Accordion title="Hjelpetext">
+                                    <p>Some blasat from the past</p>
+                                </Accordion>
                             </div>
 
                             <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder)}</div>
