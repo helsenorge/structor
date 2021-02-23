@@ -6,6 +6,7 @@ import {
     updateItemAction,
     updateLinkIdAction,
     deleteItemAction,
+    removeItemAttributeAction,
 } from '../../store/treeStore/treeActions';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
@@ -35,7 +36,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         dispatch(updateItemAction(item.linkId, name, value));
     };
 
-    const dispatchUpdateItemX = (linkId: string, value: string) => {
+    const dispatchUpdateItemHelpText = (linkId: string, value: string) => {
         const newValue = {
             extension: [
                 {
@@ -54,6 +55,32 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             dispatch(deleteItemAction(inlineHelp.linkId, [...parentArray, item.linkId]));
         } else {
             dispatch(newItemHelpIconAction([...parentArray, item.linkId]));
+        }
+    };
+
+    const getHighlight = () => {
+        const hasItemControl = item?.extension?.find((x) => x.url === IExtentionType.itemControl);
+        return hasItemControl?.valueCodeableConcept?.coding?.find((x) => x.code === 'highlight');
+    };
+
+    const dispatchHighLight = () => {
+        if (!!getHighlight()) {
+            dispatch(removeItemAttributeAction(item.linkId, IItemProperty.extension));
+        } else {
+            const extension = [
+                {
+                    url: IExtentionType.itemControl,
+                    valueCodeableConcept: {
+                        coding: [
+                            {
+                                system: IExtentionType.itemControlValueSet,
+                                code: 'highlight',
+                            },
+                        ],
+                    },
+                },
+            ];
+            dispatch(updateItemAction(item.linkId, IItemProperty.extension, extension));
         }
     };
 
@@ -94,7 +121,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         const children = search(item.linkId)?.items;
         children?.forEach((x) => {
             if (qItems[x.linkId].extension?.find((y) => y.url === IExtentionType.itemControl)) {
-                dispatchUpdateItemX(qItems[x.linkId].linkId, markdown);
+                dispatchUpdateItemHelpText(qItems[x.linkId].linkId, markdown);
             }
         });
     };
@@ -115,6 +142,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         });
 
         return { exist, linkId, _text };
+    };
+
+    const handleHighlightChange = () => {
+        console.log('bop boop');
     };
 
     return (
@@ -183,6 +214,11 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     </FormField>
                 )}
             </div>
+            {item.type === IQuestionnaireItemType.text && (
+                <div>
+                    <SwitchBtn onChange={dispatchHighLight} value={!!getHighlight()} label="Highlight" initial />
+                </div>
+            )}
         </>
     );
 };

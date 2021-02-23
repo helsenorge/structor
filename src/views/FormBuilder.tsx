@@ -126,8 +126,8 @@ const FormBuilder = (): JSX.Element => {
                                 </div>
 
                                 <MetadataEditor />
-                                <Accordion title="Hjelpetext">
-                                    <p>Some blasat from the past</p>
+                                <Accordion title="Sidebar">
+                                    <p>Blast from the past</p>
                                 </Accordion>
                             </div>
 
