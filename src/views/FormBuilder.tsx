@@ -6,7 +6,7 @@ import React, { useContext, useState } from 'react';
 import { newItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import FormFiller from '../components/FormFiller/FormFiller';
-import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import ImportValueSet from '../components/ImportValueSet/ImportValueSet';
 import JSONView from '../components/JSONView/JSONView';
@@ -15,6 +15,7 @@ import Navbar from '../components/Navbar/Navbar';
 import PublishModal from '../components/PublishModal/PublishModal';
 import Question from '../components/Question/Question';
 import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
+import { isItemControlHelp } from '../helpers/itemControl';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -40,20 +41,6 @@ const FormBuilder = (): JSX.Element => {
         return state.qItems[linkId];
     };
 
-    const willIgnoreItem = (linkId: string) => {
-        const hasItemControlExtention = state.qItems[linkId].extension?.find(
-            (x) => x.url === IExtentionType.itemControl,
-        );
-
-        const ignoreItem =
-            state.qItems[linkId].extension !== undefined &&
-            hasItemControlExtention !== undefined &&
-            hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-            hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help';
-
-        return ignoreItem;
-    };
-
     const renderTree = (
         items: Array<OrderItem>,
         questionArray: Array<JSX.Element>,
@@ -63,7 +50,7 @@ const FormBuilder = (): JSX.Element => {
         items.forEach((x, index) => {
             const questionNumber =
                 parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
-            if (willIgnoreItem(x.linkId)) {
+            if (isItemControlHelp(state.qItems[x.linkId])) {
                 return;
             }
 
@@ -102,7 +89,7 @@ const FormBuilder = (): JSX.Element => {
 
             <div className="editor">
                 <div className="anchor-wrapper">
-                    <AnchorMenu />
+                    <AnchorMenu qOrder={state.qOrder} qItems={state.qItems} dispatch={dispatch} />
                 </div>
                 {isIframeVisible ? (
                     <FormFiller showFormFiller={() => setIsIframeVisible(!isIframeVisible)} />
