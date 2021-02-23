@@ -21,9 +21,11 @@ import {
     ResetQuestionnaireAction,
     UPDATE_ITEM_ACTION,
     UPDATE_ITEM_TRANSLATION_ACTION,
+    UPDATE_ITEM_OPTION_TRANSLATION_ACTION,
     UPDATE_LINK_ID_ACTION,
     UPDATE_QUESTIONNAIRE_METADATA_ACTION,
     UpdateItemAction,
+    UpdateItemOptionTranslationAction,
     UpdateItemTranslationAction,
     UpdateLinkIdAction,
     UpdateQuestionnaireMetadataAction,
@@ -41,6 +43,7 @@ const INITIAL_LANGUAGE = 'nb-no';
 export type ActionType =
     | AddQuestionnaireLanguageAction
     | UpdateItemTranslationAction
+    | UpdateItemOptionTranslationAction
     | ResetQuestionnaireAction
     | UpdateQuestionnaireMetadataAction
     | NewItemAction
@@ -57,13 +60,19 @@ export interface Items {
     [key: string]: QuestionnaireItem;
 }
 
+export interface AnswerOption {
+    [code: string]: string;
+}
+
 export interface ItemTranslation {
     text: string;
+    answerOptions?: AnswerOption;
 }
 
 export interface ItemTranslations {
     [key: string]: ItemTranslation;
 }
+
 export interface Translations {
     items: ItemTranslations;
 }
@@ -141,7 +150,17 @@ export const initialState: TreeState = {
 function buildTranslationBase(draft: TreeState): Translations {
     const translations: Translations = { items: {} };
     Object.values(draft.qItems).forEach((item) => {
-        translations.items[item.linkId] = { text: '' };
+        let answerOptions: AnswerOption | undefined = undefined;
+        if (item.answerOption) {
+            answerOptions = {};
+            item.answerOption.forEach((opt) => {
+                const { code } = opt.valueCoding;
+                if (code && answerOptions) {
+                    answerOptions[code] = '';
+                }
+            });
+        }
+        translations.items[item.linkId] = { text: '', answerOptions };
     });
     return translations;
 }
@@ -227,6 +246,15 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
 function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAction) {
     if (draft.qAdditionalLanguages) {
         draft.qAdditionalLanguages[action.languageCode].items[action.linkId].text = action.text;
+    }
+}
+
+function updateItemOptionTranslation(draft: TreeState, action: UpdateItemOptionTranslationAction) {
+    if (draft.qAdditionalLanguages) {
+        const item = draft.qAdditionalLanguages[action.languageCode].items[action.linkId];
+        if (item.answerOptions) {
+            item.answerOptions[action.optionCode] = action.text;
+        }
     }
 }
 
@@ -374,6 +402,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case UPDATE_ITEM_TRANSLATION_ACTION:
             updateItemTranslation(draft, action);
+            break;
+        case UPDATE_ITEM_OPTION_TRANSLATION_ACTION:
+            updateItemOptionTranslation(draft, action);
             break;
         case DUPLICATE_ITEM_ACTION:
             duplicateItemAction(draft, action);

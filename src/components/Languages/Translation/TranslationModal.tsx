@@ -1,12 +1,13 @@
 import React, { useContext, useState } from 'react';
 import Modal from '../../Modal/Modal';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { addQuestionnaireLanguageAction, updateItemTranslationAction } from '../../../store/treeStore/treeActions';
+import { addQuestionnaireLanguageAction } from '../../../store/treeStore/treeActions';
 import Select from '../../Select/Select';
 import './TranslationModal.css';
-import TranslationRow from './TranslationRow';
+import TranslateItemRow from './TranslateItemRow';
 import { getLanguageFromCode, supportedLanguages } from '../../../helpers/LanguageHelper';
 import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { QuestionnaireItem } from '../../../types/fhir';
 
 type TranslationModalProps = {
     close: () => void;
@@ -22,72 +23,58 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         ...supportedLanguages.filter((lang) => lang.code.toLowerCase() !== qMetadata.language?.toLowerCase()),
     ];
 
-    const questions = Object.values(qItems).filter((question) => {
-        // Don't translate hidden items?
-        return !question.extension?.some(
+    const isTranslatableItem = (item: QuestionnaireItem): boolean =>
+        // Groups without text
+        !(item.type === IQuestionnaireItemType.group && !item.text) &&
+        // Hidden items
+        !item.extension?.some(
             (ext) => ext.url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-hidden' && ext.valueBoolean,
         );
+
+    const translatableItems = Object.values(qItems).filter((question) => {
+        return isTranslatableItem(question);
     });
 
-    function dispatchAddLanguage(selectedLanguage: string) {
+    const dispatchAddLanguage = (selectedLanguage: string) => {
         if (!qAdditionalLanguages || !qAdditionalLanguages[selectedLanguage]) {
             dispatch(addQuestionnaireLanguageAction(selectedLanguage));
         }
-    }
+    };
 
-    function dispatchUpdateItemTranslation(linkId: string, text: string) {
-        if (targetLanguage) {
-            dispatch(updateItemTranslationAction(targetLanguage, linkId, text));
-        }
-    }
-
-    function getHeader(): JSX.Element {
-        return (
-            <div className="sticky-header">
-                {qMetadata.language && (
-                    <div className="horizontal equal">
-                        <div>
-                            <label>{getLanguageFromCode(qMetadata.language)?.display}</label>
-                        </div>
-                        <div>
-                            <Select
-                                value={targetLanguage}
-                                options={availableLanguages}
-                                onChange={(e) => {
-                                    setTargetLanguage(e.target.value);
-                                    dispatchAddLanguage(e.target.value);
-                                }}
-                            />
-                        </div>
+    const getHeader = (): JSX.Element => (
+        <div className="sticky-header">
+            {qMetadata.language && (
+                <div className="horizontal equal">
+                    <div>
+                        <label>{getLanguageFromCode(qMetadata.language)?.display}</label>
                     </div>
-                )}
-            </div>
-        );
-    }
+                    <div>
+                        <Select
+                            value={targetLanguage}
+                            options={availableLanguages}
+                            onChange={(e) => {
+                                setTargetLanguage(e.target.value);
+                                dispatchAddLanguage(e.target.value);
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
+        </div>
+    );
 
-    function showQuestions(): JSX.Element {
-        if (questions && qAdditionalLanguages && targetLanguage) {
+    const showQuestions = (): JSX.Element => {
+        if (translatableItems && qAdditionalLanguages && targetLanguage) {
             return (
                 <>
-                    {questions
-                        .filter((item) => {
-                            return !(item.type === IQuestionnaireItemType.group && !item.text);
-                        })
-                        .map((question) => {
-                            return (
-                                <TranslationRow
-                                    key={question.linkId}
-                                    item={question}
-                                    translation={qAdditionalLanguages[targetLanguage].items[question.linkId].text}
-                                    onChange={(text) => dispatchUpdateItemTranslation(question.linkId, text)}
-                                />
-                            );
-                        })}
+                    {translatableItems.map((question) => (
+                        <TranslateItemRow key={question.linkId} item={question} targetLanguage={targetLanguage} />
+                    ))}
                 </>
             );
         }
         return <></>;
-    }
+    };
 
     return (
         <div className="translation-modal">

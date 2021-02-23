@@ -42,3 +42,29 @@
 .sticky-header > .form-field {
     padding-bottom: 0px;
 }
+
+.translation-item {
+    border-bottom: 8px solid #8ec1db;
+    margin-bottom: 24px;
+}
+
+.translation-row {
+    display: flex;
+    padding: 8px 0px;
+}
+
+.translation-row > div {
+    width: 50%;
+}
+
+.translation-row > *:first-of-type {
+    padding-left: 0px;
+}
+
+.translation-row > * {
+    padding-left: 25px;
+}
+
+.translation-row > div > input {
+    width: 100%;
+}
