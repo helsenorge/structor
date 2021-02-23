@@ -144,10 +144,6 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         return { exist, linkId, _text };
     };
 
-    const handleHighlightChange = () => {
-        console.log('bop boop');
-    };
-
     return (
         <>
             {isRepeatsAndReadOnlyApplicable && (
