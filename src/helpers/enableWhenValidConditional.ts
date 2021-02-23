@@ -6,31 +6,35 @@ export const getEnableWhenConditionals = (
     parentArray: string[],
     linkId: string,
 ): ValueSetComposeIncludeConcept[] => {
-    const createValueSetComposeIncludeConcept = (linkId: string, indent: number) => {
+    const createValueSetComposeIncludeConcept = (linkId: string, idArray: Array<number>, index: number) => {
         const getQItem = (linkId: string): QuestionnaireItem => {
             return state.qItems[linkId];
         };
 
         // TODO: ignore items which cannot have enableWhen? (display, group, text.help, text.highlight...)
-        const itemText = `${'\xA0'.repeat(indent * 4)}${getQItem(linkId).text || 'Ikke definert tittel'}`;
+        const itemText = `${'\xA0'.repeat(idArray.length * 4)}${getQItem(linkId).text || 'Ikke definert tittel'}`;
         const displayText = itemText.length > 120 ? `${itemText?.substr(0, 120)}...` : itemText;
         return {
             code: linkId,
-            display: displayText,
+            display: `${displayText} ${JSON.stringify([...idArray, index + 1])}`,
         };
     };
 
-    const expandSubTree = (order: OrderItem, indent: number): ValueSetComposeIncludeConcept[] => {
-        return order.items.reduce((acc: ValueSetComposeIncludeConcept[], current: OrderItem) => {
+    const expandSubTree = (order: OrderItem, idArray: Array<number>): ValueSetComposeIncludeConcept[] => {
+        return order.items.reduce((acc: ValueSetComposeIncludeConcept[], current: OrderItem, index: number) => {
             return [
                 ...acc,
-                createValueSetComposeIncludeConcept(current.linkId, indent),
-                ...expandSubTree(current, indent + 1),
+                createValueSetComposeIncludeConcept(current.linkId, idArray, index),
+                ...expandSubTree(current, [...idArray, index + 1]),
             ];
         }, []);
     };
 
-    const search = (order: OrderItem[], searchArray: string[], indent: number): ValueSetComposeIncludeConcept[] => {
+    const search = (
+        order: OrderItem[],
+        searchArray: string[],
+        idArray: Array<number>,
+    ): ValueSetComposeIncludeConcept[] => {
         if (searchArray.length === 0) {
             return [];
         }
@@ -39,12 +43,13 @@ export const getEnableWhenConditionals = (
         const stopIndexWithoutSelfItem = searchArray.length > 1 ? stopIndex + 1 : stopIndex;
         return order
             .slice(0, stopIndexWithoutSelfItem)
-            .reduce((acc: ValueSetComposeIncludeConcept[], current: OrderItem) => {
-                const expandedPart = current.linkId === currentLinkId ? [] : expandSubTree(current, indent + 1);
-                return [...acc, createValueSetComposeIncludeConcept(current.linkId, indent), ...expandedPart];
+            .reduce((acc: ValueSetComposeIncludeConcept[], current: OrderItem, index: number) => {
+                const expandedPart =
+                    current.linkId === currentLinkId ? [] : expandSubTree(current, [...idArray, index + 1]);
+                return [...acc, createValueSetComposeIncludeConcept(current.linkId, idArray, index), ...expandedPart];
             }, [])
-            .concat(search(order[stopIndex].items, searchArray.slice(1), indent + 1));
+            .concat(search(order[stopIndex].items, searchArray.slice(1), [...idArray, stopIndex + 1]));
     };
 
-    return search(state.qOrder, [...parentArray, linkId], 0);
+    return search(state.qOrder, [...parentArray, linkId], []);
 };
