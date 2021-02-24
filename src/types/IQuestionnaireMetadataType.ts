@@ -6,6 +6,7 @@ export enum IQuestionnaireMetadataType {
     name = 'name',
     id = 'id',
     status = 'status',
+    date = 'date',
     publisher = 'publisher',
     language = 'language',
     url = 'url',
@@ -24,6 +25,7 @@ export interface IQuestionnaireMetadata {
     description?: string;
     version?: string;
     status?: string;
+    date?: string;
     publisher?: string;
     meta?: Meta;
     useContext?: Array<UsageContext>;
