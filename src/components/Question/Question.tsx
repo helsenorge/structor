@@ -9,7 +9,7 @@ import {
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import React, { ChangeEvent, useContext, useEffect } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import {
     addEmptyOptionToAnswerOptionArray,
     removeOptionFromAnswerOptionArray,
@@ -45,57 +45,54 @@ import RadioBtn from '../RadioBtn/RadioBtn';
 import Select from '../Select/Select';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Trashcan from '../../images/icons/trash-outline.svg';
-import { TreeContext } from '../../store/treeStore/treeStore';
+import { ActionType } from '../../store/treeStore/treeStore';
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
 
 interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
     questionNumber: string;
-    conditionalArray: ValueSetComposeIncludeConcept[];
-    getItem: (linkId: string) => QuestionnaireItem;
     containedResources?: Array<ValueSet>;
-    setCurrentQuestion: (linkId: string) => void;
-    currentQuestion: string;
+    getConditionalArray: (parentArray: string[], linkId: string) => ValueSetComposeIncludeConcept[];
+    getItem: (linkId: string) => QuestionnaireItem;
+    dispatch: React.Dispatch<ActionType>;
 }
 
 const Question = (props: QuestionProps): JSX.Element => {
     const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(!!props.item._text);
-    const { dispatch } = useContext(TreeContext);
-
-    const dispatchNewChildItem = (type?: IQuestionnaireItemType) => {
-        dispatch(newItemAction(type || IQuestionnaireItemType.group, [...props.parentArray, props.item.linkId]));
+    const dispatchNewChildItem = (type?: IQuestionnaireItemType): void => {
+        props.dispatch(newItemAction(type || IQuestionnaireItemType.group, [...props.parentArray, props.item.linkId]));
     };
 
-    const dispatchDeleteItem = () => {
-        dispatch(deleteItemAction(props.item.linkId, props.parentArray));
+    const dispatchDeleteItem = (): void => {
+        props.dispatch(deleteItemAction(props.item.linkId, props.parentArray));
     };
 
-    const dispatchDuplicateItem = () => {
-        dispatch(duplicateItemAction(props.item.linkId, props.parentArray));
+    const dispatchDuplicateItem = (): void => {
+        props.dispatch(duplicateItemAction(props.item.linkId, props.parentArray));
     };
 
     const dispatchUpdateItem = (
         name: IItemProperty,
         value: string | boolean | QuestionnaireItemAnswerOption[] | Element | Extension[] | undefined,
-    ) => {
-        dispatch(updateItemAction(props.item.linkId, name, value));
+    ): void => {
+        props.dispatch(updateItemAction(props.item.linkId, name, value));
     };
 
-    const dispatchRemoveAttribute = (name: IItemProperty) => {
-        dispatch(removeItemAttributeAction(props.item.linkId, name));
+    const dispatchRemoveAttribute = (name: IItemProperty): void => {
+        props.dispatch(removeItemAttributeAction(props.item.linkId, name));
     };
 
-    const dispatchExtensionUpdate = () => {
+    const dispatchExtensionUpdate = (): void => {
         if (props.item.extension && props.item.extension.length > 0) {
-            dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
+            props.dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
         } else {
-            dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, checkboxExtension));
+            props.dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, checkboxExtension));
         }
     };
 
-    const dispatchClearExtension = () => {
-        dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
+    const dispatchClearExtension = (): void => {
+        props.dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
     };
 
     const getLabelText = (): string => {
@@ -137,7 +134,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         return quantityUnitType || QUANTITY_UNIT_TYPE_NOT_SELECTED;
     };
 
-    const updateQuantityUnitType = (event: ChangeEvent<HTMLSelectElement>) => {
+    const updateQuantityUnitType = (event: ChangeEvent<HTMLSelectElement>): void => {
         const {
             target: { value: quantityUnitTypeCode },
         } = event;
@@ -330,7 +327,7 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const observed = (elements: IntersectionObserverEntry[]) => {
         if (elements[0].intersectionRatio > 0.5) {
-            dispatch(updateMarkedLinkIdAction(props.item.linkId));
+            props.dispatch(updateMarkedLinkIdAction(props.item.linkId));
         }
     };
 
@@ -351,12 +348,7 @@ const Question = (props: QuestionProps): JSX.Element => {
     }, []);
 
     return (
-        <div
-            className="question"
-            style={{ marginLeft: props.parentArray.length * 32 }}
-            id={props.item.linkId}
-            onClick={() => props.setCurrentQuestion(props.item.linkId)}
-        >
+        <div className="question" style={{ marginLeft: props.parentArray.length * 32 }} id={props.item.linkId}>
             <div className="question-header">
                 <h2>
                     Element <span>{props.questionNumber}</span>
@@ -444,7 +436,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     <div>
                         <EnableWhen
                             getItem={props.getItem}
-                            conditionalArray={props.conditionalArray}
+                            conditionalArray={props.getConditionalArray(props.parentArray, props.item.linkId)}
                             linkId={props.item.linkId}
                             enableWhen={props.item.enableWhen || []}
                             containedResources={props.containedResources}
@@ -459,4 +451,12 @@ const Question = (props: QuestionProps): JSX.Element => {
     );
 };
 
-export default Question;
+export default React.memo(Question, (prevProps: QuestionProps, nextProps: QuestionProps) => {
+    // if ALL of these props are identical, do not re-render the question
+    const isItemIdentical = JSON.stringify(prevProps.item) === JSON.stringify(nextProps.item);
+    const isParentArrayIdentical = JSON.stringify(prevProps.parentArray) === JSON.stringify(nextProps.parentArray);
+    const isQuestionNumberIdentical = prevProps.questionNumber === nextProps.questionNumber;
+    const isContainedResourcesIdentical =
+        JSON.stringify(prevProps.containedResources) === JSON.stringify(nextProps.containedResources);
+    return isItemIdentical && isParentArrayIdentical && isQuestionNumberIdentical && isContainedResourcesIdentical;
+});

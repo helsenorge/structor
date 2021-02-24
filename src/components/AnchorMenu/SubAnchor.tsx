@@ -1,18 +1,20 @@
 import React, { useContext } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import { OrderItem, TreeContext } from '../../store/treeStore/treeStore';
+import { Items, OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 
 import ReorderIcon from '../../images/icons/reorder-three-outline.svg';
 import FolderIcon from '../../images/icons/folder-outline.svg';
 import MessageIcon from '../../images/icons/information-circle-outline.svg';
 import QuestionIcon from '../../images/icons/help-circle-outline.svg';
 
-import { IExtentionType, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { isItemControlHelp } from '../../helpers/itemControl';
 
 type SubAnchorProps = {
     parentItem: string;
     items: OrderItem[];
     parentArray: Array<string>;
+    qItems: Items;
     children?: JSX.Element | JSX.Element[];
 };
 
@@ -32,7 +34,6 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
 
         return 'transparent';
     };
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getItemStyle = (isDragging: boolean, draggableStyle: any, linkId: string) => ({
         userSelect: 'none',
@@ -69,23 +70,8 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
         }
     };
 
-    const isNotSupported = (linkId: string) => {
-        const hasItemControlExtention = state.qItems[linkId].extension?.find(
-            (x) => x.url === IExtentionType.itemControl,
-        );
-
-        const ignoreItem =
-            state.qItems[linkId].extension !== undefined &&
-            hasItemControlExtention !== undefined &&
-            hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-            (hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help' ||
-                hasItemControlExtention.valueCodeableConcept.coding[0].code === 'sidebar');
-
-        return ignoreItem;
-    };
-
     const removeUnsupportedChildren = (items: OrderItem[]) => {
-        return items.filter((x) => !isNotSupported(x.linkId));
+        return items.filter((x) => !isItemControlHelp(props.qItems[x.linkId]));
     };
 
     return (
@@ -112,10 +98,10 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                             }}
                                         >
                                             <span className="anchor-icon" style={{ paddingRight: 10 }}>
-                                                {getRelevantIcon(state.qItems[item.linkId].type)}
+                                                {getRelevantIcon(props.qItems[item.linkId].type)}
                                             </span>
                                             <span className="truncate">
-                                                {state.qItems[item.linkId].text || <i>Legg inn spørsmål</i>}
+                                                {props.qItems[item.linkId].text || <i>Legg inn spørsmål</i>}
                                             </span>
                                             <span {...provided.dragHandleProps} className="anchor-icon">
                                                 <img
@@ -131,6 +117,7 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                                 <SubAnchor
                                                     items={removeUnsupportedChildren(item.items)}
                                                     parentItem={item.linkId}
+                                                    qItems={props.qItems}
                                                     parentArray={[...props.parentArray, item.linkId]}
                                                 />
                                             )}

@@ -6,7 +6,7 @@ import React, { useContext, useState } from 'react';
 import { newItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import FormFiller from '../components/FormFiller/FormFiller';
-import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import ImportValueSet from '../components/ImportValueSet/ImportValueSet';
 import JSONView from '../components/JSONView/JSONView';
@@ -15,11 +15,11 @@ import Navbar from '../components/Navbar/Navbar';
 import PublishModal from '../components/PublishModal/PublishModal';
 import Question from '../components/Question/Question';
 import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
+import { isItemControlHelp } from '../helpers/itemControl';
 import Sidebar from '../components/Sidebar/Sidebar';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
-    const [currentQuestion, setCurrentQuestion] = useState('');
     const [isIframeVisible, setIsIframeVisible] = useState(false);
     const [isShowingFireStructure, setIsShowingFireStructure] = useState(false);
     const [showImportValueSet, setShowImportValueSet] = useState(false);
@@ -41,51 +41,40 @@ const FormBuilder = (): JSX.Element => {
         return state.qItems[linkId];
     };
 
-    const willIgnoreItem = (linkId: string) => {
-        const hasItemControlExtention = state.qItems[linkId].extension?.find(
-            (x) => x.url === IExtentionType.itemControl,
-        );
-
-        const ignoreItem =
-            state.qItems[linkId].extension !== undefined &&
-            hasItemControlExtention !== undefined &&
-            hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-            (hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help' ||
-                hasItemControlExtention.valueCodeableConcept.coding[0].code === 'sidebar');
-
-        return ignoreItem;
-    };
-
     const removeUnsupportedChildren = (items: OrderItem[]) => {
-        return items.filter((x) => !willIgnoreItem(x.linkId));
+        return items.filter((x) => !isItemControlHelp(state.qItems[x.linkId]));
     };
 
     const renderTree = (
         items: Array<OrderItem>,
+        questionArray: Array<JSX.Element>,
         parentArray: Array<string> = [],
         parentQuestionNumber = '',
-    ): Array<JSX.Element | null> => {
-        return removeUnsupportedChildren(items).map((x, index) => {
+    ): void => {
+        removeUnsupportedChildren(items).forEach((x, index) => {
             const questionNumber =
                 parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
 
-            return (
-                <div key={`${index}${x.linkId}`}>
-                    <Question
-                        item={state.qItems[x.linkId]}
-                        parentArray={parentArray}
-                        questionNumber={questionNumber}
-                        conditionalArray={getConditional(parentArray, x.linkId)}
-                        getItem={getQItem}
-                        containedResources={state.qContained}
-                        setCurrentQuestion={(linkId: string) => setCurrentQuestion(linkId)}
-                        currentQuestion={currentQuestion}
-                    />
-                    {renderTree(x.items, [...parentArray, x.linkId], questionNumber)}
-                </div>
+            const questionEl = (
+                <Question
+                    key={`${index}${x.linkId}`}
+                    item={state.qItems[x.linkId]}
+                    parentArray={parentArray}
+                    questionNumber={questionNumber}
+                    getConditionalArray={getConditional}
+                    getItem={getQItem}
+                    containedResources={state.qContained}
+                    dispatch={dispatch}
+                />
             );
+            questionArray.push(questionEl);
+
+            renderTree(x.items, questionArray, [...parentArray, x.linkId], questionNumber);
         });
     };
+
+    const flatQuestionArray: JSX.Element[] = [];
+    renderTree(state.qOrder, flatQuestionArray);
 
     return (
         <>
@@ -101,7 +90,7 @@ const FormBuilder = (): JSX.Element => {
 
             <div className="editor">
                 <div className="anchor-wrapper">
-                    <AnchorMenu />
+                    <AnchorMenu qOrder={state.qOrder} qItems={state.qItems} dispatch={dispatch} />
                 </div>
                 {isIframeVisible ? (
                     <FormFiller showFormFiller={() => setIsIframeVisible(!isIframeVisible)} />
@@ -132,7 +121,7 @@ const FormBuilder = (): JSX.Element => {
                                 <Sidebar />
                             </div>
 
-                            <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder)}</div>
+                            <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{flatQuestionArray}</div>
                             <button className="section-button" onClick={dispatchNewRootItem}>
                                 Legg til element
                             </button>

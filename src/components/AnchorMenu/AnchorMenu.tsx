@@ -1,17 +1,21 @@
 import './AnchorMenu.css';
 
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import React, { useContext } from 'react';
+import React from 'react';
 
 import SubAnchor from './SubAnchor';
-import { TreeContext } from '../../store/treeStore/treeStore';
+import { ActionType, Items, OrderItem } from '../../store/treeStore/treeStore';
 import { reorderItemAction } from '../../store/treeStore/treeActions';
 
-const AnchorMenu = (): JSX.Element => {
-    const { state, dispatch } = useContext(TreeContext);
+interface AnchorMenuProps {
+    qOrder: OrderItem[];
+    qItems: Items;
+    dispatch: React.Dispatch<ActionType>;
+}
 
+const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     const dispatchReorderItem = (linkId: string, newIndex: number, order: string[] = []) => {
-        dispatch(reorderItemAction(linkId, order, newIndex));
+        props.dispatch(reorderItemAction(linkId, order, newIndex));
     };
 
     const handleChange = (result: DropResult) => {
@@ -27,9 +31,9 @@ const AnchorMenu = (): JSX.Element => {
         <div className="anchor-menu">
             <p className="align-header">Skjemaoversikt</p>
             <DragDropContext onDragEnd={handleChange}>
-                <SubAnchor items={state.qOrder} parentItem="draggable" parentArray={[]} />
+                <SubAnchor items={props.qOrder} parentItem="draggable" qItems={props.qItems} parentArray={[]} />
             </DragDropContext>
-            {state.qOrder.length === 0 && (
+            {props.qOrder.length === 0 && (
                 <p className="center-text" style={{ padding: '0px 25px' }}>
                     Her vil du finne en oversikt over elementene i skjemaet.
                 </p>
@@ -38,4 +42,18 @@ const AnchorMenu = (): JSX.Element => {
     );
 };
 
-export default AnchorMenu;
+export default React.memo(AnchorMenu, (prevProps: AnchorMenuProps, nextProps: AnchorMenuProps) => {
+    const isOrderEqual = JSON.stringify(prevProps.qOrder) === JSON.stringify(nextProps.qOrder);
+    const areItemsEqual =
+        JSON.stringify(
+            Object.keys(prevProps.qItems).map(
+                (key: string) => `${prevProps.qItems[key].text}${prevProps.qItems[key].type}`,
+            ),
+        ) ===
+        JSON.stringify(
+            Object.keys(nextProps.qItems).map(
+                (key: string) => `${nextProps.qItems[key].text}${nextProps.qItems[key].type}`,
+            ),
+        );
+    return isOrderEqual && areItemsEqual;
+});
