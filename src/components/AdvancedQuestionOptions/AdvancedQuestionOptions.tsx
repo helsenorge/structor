@@ -36,7 +36,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         dispatch(updateItemAction(item.linkId, name, value));
     };
 
-    const dispatchUpdateItemHelpText = (linkId: string, value: string) => {
+    const dispatchUpdateItemHelpText = (id: string, value: string) => {
         const newValue = {
             extension: [
                 {
@@ -46,7 +46,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             ],
         };
 
-        dispatch(updateItemAction(linkId, IItemProperty._text, newValue));
+        dispatch(updateItemAction(id, IItemProperty._text, newValue));
     };
 
     const dispatchInlineHelp = () => {
@@ -134,8 +134,8 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         children?.forEach((x) => {
             if (qItems[x.linkId].extension?.find((y) => y.url === IExtentionType.itemControl)) {
                 _text =
-                    qItems[x.linkId]._text?.extension?.find((x) => x.url === IExtentionType.markdown)?.valueMarkdown ??
-                    '';
+                    qItems[x.linkId]._text?.extension?.find((ex) => ex.url === IExtentionType.markdown)
+                        ?.valueMarkdown ?? '';
                 exist = true;
                 linkId = x.linkId;
             }

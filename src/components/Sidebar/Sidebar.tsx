@@ -23,7 +23,7 @@ const Sidebar = (): JSX.Element => {
         (x) =>
             state.qItems[x.linkId].type === IQuestionnaireItemType.text &&
             state.qItems[x.linkId].extension
-                ?.find((x) => x.url === IExtentionType.itemControl)
+                ?.find((ex) => ex.url === IExtentionType.itemControl)
                 ?.valueCodeableConcept?.coding?.find((y) => y.code === 'sidebar'),
     );
 
