@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import { Items, OrderItem } from '../../store/treeStore/treeStore';
+import { Items, OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 
 import ReorderIcon from '../../images/icons/reorder-three-outline.svg';
 import FolderIcon from '../../images/icons/folder-outline.svg';
@@ -21,11 +21,24 @@ type SubAnchorProps = {
 const SubAnchor = (props: SubAnchorProps): JSX.Element => {
     const grid = 8;
 
+    const { state } = useContext(TreeContext);
+
+    const getBackgroundColor = (isDragging: boolean, linkId: string) => {
+        if (isDragging) {
+            return 'lightgreen';
+        }
+
+        if (linkId === state.qCurrentItemId) {
+            return '#93bdd4';
+        }
+
+        return 'transparent';
+    };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+    const getItemStyle = (isDragging: boolean, draggableStyle: any, linkId: string) => ({
         userSelect: 'none',
         padding: grid * 2,
-        background: isDragging ? 'lightgreen' : 'transparent',
+        background: getBackgroundColor(isDragging, linkId),
         cursor: 'pointer',
 
         margin: '0 10px 10px 0',
@@ -66,13 +79,17 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
             <Droppable droppableId={`droppable-${props.parentItem}`} type={JSON.stringify(props.parentArray)}>
                 {(provided, snapshot) => (
                     <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
-                        {props.items.map((item, index) => (
+                        {removeUnsupportedChildren(props.items).map((item, index) => (
                             <Draggable key={item.linkId} draggableId={item.linkId} index={index}>
                                 {(provided, snapshot) => (
                                     <div
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
-                                        style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                                        style={getItemStyle(
+                                            snapshot.isDragging,
+                                            provided.draggableProps.style,
+                                            item.linkId,
+                                        )}
                                     >
                                         <div
                                             style={{ display: 'flex', alignItems: 'center' }}

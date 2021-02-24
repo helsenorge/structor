@@ -8,7 +8,8 @@ export const isItemControlHelp = (item: QuestionnaireItem): boolean => {
         item.extension !== undefined &&
         hasItemControlExtention !== undefined &&
         hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-        hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help';
+        (hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help' ||
+            hasItemControlExtention.valueCodeableConcept.coding[0].code === 'sidebar');
 
     return ignoreItem;
 };

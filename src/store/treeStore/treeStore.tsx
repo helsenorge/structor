@@ -23,6 +23,8 @@ import {
     APPEND_VALUESET_ACTION,
     REMOVE_ITEM_ATTRIBUTE_ACTION,
     RemoveItemAttributeAction,
+    UpdateMarkedLinkId,
+    UPDATE_MARKED_LINK_ID,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -40,7 +42,8 @@ export type ActionType =
     | ReorderItemAction
     | AppendValueSetAction
     | UpdateLinkIdAction
-    | RemoveItemAttributeAction;
+    | RemoveItemAttributeAction
+    | UpdateMarkedLinkId;
 
 export interface Items {
     [key: string]: QuestionnaireItem;
@@ -56,6 +59,7 @@ export interface TreeState {
     qOrder: OrderItem[];
     qMetadata: IQuestionnaireMetadata;
     qContained?: Array<ValueSet>;
+    qCurrentItemId?: string;
 }
 
 export const initialState: TreeState = {
@@ -106,6 +110,7 @@ export const initialState: TreeState = {
         extension: [],
     },
     qContained: initPredefinedValueSet,
+    qCurrentItemId: '',
 };
 
 function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
@@ -123,6 +128,10 @@ function getLinkIdOfAllSubItems(items: Array<OrderItem>, linkIds: Array<string>)
         getLinkIdOfAllSubItems(x.items, linkIds);
     });
     return linkIds;
+}
+
+function updateMarkedItemId(draft: TreeState, action: UpdateMarkedLinkId): void {
+    draft.qCurrentItemId = action.linkId;
 }
 
 function newItem(draft: TreeState, action: NewItemAction): void {
@@ -321,6 +330,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case REMOVE_ITEM_ATTRIBUTE_ACTION:
             removeAttributeFromItem(draft, action);
+            break;
+        case UPDATE_MARKED_LINK_ID:
+            updateMarkedItemId(draft, action);
             break;
     }
 });

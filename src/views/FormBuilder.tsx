@@ -16,12 +16,12 @@ import PublishModal from '../components/PublishModal/PublishModal';
 import Question from '../components/Question/Question';
 import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
 import { isItemControlHelp } from '../helpers/itemControl';
+import Sidebar from '../components/Sidebar/Sidebar';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const [isIframeVisible, setIsIframeVisible] = useState(false);
     const [isShowingFireStructure, setIsShowingFireStructure] = useState(false);
-    const [showPublishModal, setShowPublishModal] = useState(false);
     const [showImportValueSet, setShowImportValueSet] = useState(false);
     const [showResults, setShowAdminMenu] = useState(false);
 
@@ -41,18 +41,19 @@ const FormBuilder = (): JSX.Element => {
         return state.qItems[linkId];
     };
 
+    const removeUnsupportedChildren = (items: OrderItem[]) => {
+        return items.filter((x) => !isItemControlHelp(state.qItems[x.linkId]));
+    };
+
     const renderTree = (
         items: Array<OrderItem>,
         questionArray: Array<JSX.Element>,
         parentArray: Array<string> = [],
         parentQuestionNumber = '',
     ): void => {
-        items.forEach((x, index) => {
+        removeUnsupportedChildren(items).forEach((x, index) => {
             const questionNumber =
                 parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
-            if (isItemControlHelp(state.qItems[x.linkId])) {
-                return;
-            }
 
             const questionEl = (
                 <Question
@@ -84,7 +85,7 @@ const FormBuilder = (): JSX.Element => {
                 showImportValueSet={() => setShowImportValueSet(!showImportValueSet)}
             />
 
-            {showPublishModal && <PublishModal close={() => setShowPublishModal(!showPublishModal)} />}
+            {showResults && <PublishModal close={() => setShowAdminMenu(!showResults)} />}
             {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
 
             <div className="editor">
@@ -117,6 +118,7 @@ const FormBuilder = (): JSX.Element => {
                                 </div>
 
                                 <MetadataEditor />
+                                <Sidebar />
                             </div>
 
                             <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{flatQuestionArray}</div>

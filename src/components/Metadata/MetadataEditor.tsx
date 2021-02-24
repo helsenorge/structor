@@ -1,9 +1,11 @@
 import './MetadataEditor.css';
 
 import React, { useContext } from 'react';
+import { formatISO, parseISO } from 'date-fns';
 import { metadataLanguage, metadataOperators } from '../../helpers/MetadataHelper';
 
 import Accordion from '../Accordion/Accordion';
+import DateTimePicker from '../DatePicker/DateTimePicker';
 import FormField from '../FormField/FormField';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
@@ -14,7 +16,6 @@ import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeAct
 
 const MetadataEditor = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
-
     const { qMetadata } = state;
 
     const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta) => {
@@ -67,6 +68,17 @@ const MetadataEditor = (): JSX.Element => {
                         onChange={(e) => updateMeta(IQuestionnaireMetadataType.name, e.target.value)}
                     />
                 </FormField>
+                <FormField label="Dato">
+                    <DateTimePicker
+                        selected={qMetadata.date ? parseISO(qMetadata.date) : undefined}
+                        disabled={false}
+                        nowButton={true}
+                        callback={(date: Date) => {
+                            updateMeta(IQuestionnaireMetadataType.date, formatISO(date));
+                        }}
+                    />
+                </FormField>
+
                 <FormField label="Status">
                     <Select
                         value={qMetadata.status || ''}
