@@ -67,4 +67,5 @@ export enum IExtentionType {
     questionnaireUnit = 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
     itemControl = 'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
     itemControlValueSet = 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
+    sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
 }

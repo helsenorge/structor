@@ -14,7 +14,6 @@ import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeAct
 
 const MetadataEditor = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
-
     const { qMetadata } = state;
 
     const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta) => {
