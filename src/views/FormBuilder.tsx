@@ -15,13 +15,13 @@ import Navbar from '../components/Navbar/Navbar';
 import PublishModal from '../components/PublishModal/PublishModal';
 import Question from '../components/Question/Question';
 import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
+import Sidebar from '../components/Sidebar/Sidebar';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const [currentQuestion, setCurrentQuestion] = useState('');
     const [isIframeVisible, setIsIframeVisible] = useState(false);
     const [isShowingFireStructure, setIsShowingFireStructure] = useState(false);
-    const [showPublishModal, setShowPublishModal] = useState(false);
     const [showImportValueSet, setShowImportValueSet] = useState(false);
     const [showResults, setShowAdminMenu] = useState(false);
 
@@ -50,9 +50,14 @@ const FormBuilder = (): JSX.Element => {
             state.qItems[linkId].extension !== undefined &&
             hasItemControlExtention !== undefined &&
             hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-            hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help';
+            (hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help' ||
+                hasItemControlExtention.valueCodeableConcept.coding[0].code === 'sidebar');
 
         return ignoreItem;
+    };
+
+    const removeUnsupportedChildren = (items: OrderItem[]) => {
+        return items.filter((x) => !willIgnoreItem(x.linkId));
     };
 
     const renderTree = (
@@ -60,12 +65,10 @@ const FormBuilder = (): JSX.Element => {
         parentArray: Array<string> = [],
         parentQuestionNumber = '',
     ): Array<JSX.Element | null> => {
-        return items.map((x, index) => {
+        return removeUnsupportedChildren(items).map((x, index) => {
             const questionNumber =
                 parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
-            if (willIgnoreItem(x.linkId)) {
-                return null;
-            }
+
             return (
                 <div key={`${index}${x.linkId}`}>
                     <Question
@@ -93,7 +96,7 @@ const FormBuilder = (): JSX.Element => {
                 showImportValueSet={() => setShowImportValueSet(!showImportValueSet)}
             />
 
-            {showPublishModal && <PublishModal close={() => setShowPublishModal(!showPublishModal)} />}
+            {showResults && <PublishModal close={() => setShowAdminMenu(!showResults)} />}
             {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
 
             <div className="editor">
@@ -126,6 +129,7 @@ const FormBuilder = (): JSX.Element => {
                                 </div>
 
                                 <MetadataEditor />
+                                <Sidebar />
                             </div>
 
                             <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{renderTree(state.qOrder)}</div>

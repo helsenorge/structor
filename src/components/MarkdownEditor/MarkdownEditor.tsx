@@ -23,11 +23,13 @@ const editorConfiguration = {
         'undo',
         'redo',
     ],
+    language: 'no-nb',
 };
 
 interface MarkdownEditorProps {
     data: string;
     onChange: (data: string) => void;
+    disabled?: boolean;
 }
 
 const MarkdownEditor = (props: MarkdownEditorProps): JSX.Element => {
@@ -41,7 +43,15 @@ const MarkdownEditor = (props: MarkdownEditorProps): JSX.Element => {
         props.onChange(debouncedValue);
     }, [debouncedValue]);
 
-    return <CKEditor data={value} onChange={handleChange} editor={Editor} config={editorConfiguration} />;
+    return (
+        <CKEditor
+            data={value}
+            onChange={handleChange}
+            editor={Editor}
+            config={editorConfiguration}
+            disabled={props.disabled}
+        />
+    );
 };
 
 export default MarkdownEditor;

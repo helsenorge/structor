@@ -78,7 +78,8 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
             state.qItems[linkId].extension !== undefined &&
             hasItemControlExtention !== undefined &&
             hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-            hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help';
+            (hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help' ||
+                hasItemControlExtention.valueCodeableConcept.coding[0].code === 'sidebar');
 
         return ignoreItem;
     };
@@ -92,7 +93,7 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
             <Droppable droppableId={`droppable-${props.parentItem}`} type={JSON.stringify(props.parentArray)}>
                 {(provided, snapshot) => (
                     <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
-                        {props.items.map((item, index) => (
+                        {removeUnsupportedChildren(props.items).map((item, index) => (
                             <Draggable key={item.linkId} draggableId={item.linkId} index={index}>
                                 {(provided, snapshot) => (
                                     <div
