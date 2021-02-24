@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 // @ts-ignore
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 // @ts-ignore
 import Editor from '@helsenorge/ckeditor5-build-markdown';
 
 import './MarkdownEditor.css';
+import useDebounce from './useDebounce';
 
 const editorConfiguration = {
     toolbar: [
@@ -30,14 +31,17 @@ interface MarkdownEditorProps {
 }
 
 const MarkdownEditor = (props: MarkdownEditorProps): JSX.Element => {
-    return (
-        <CKEditor
-            data={props.data}
-            onChange={(event: Event, editor: Editor) => props.onChange(editor.getData())}
-            editor={Editor}
-            config={editorConfiguration}
-        />
-    );
+    const [value, setValue] = useState<string>(props.data);
+    const debouncedValue = useDebounce<string>(value, 500);
+    const handleChange = (event: Event, editor: Editor) => {
+        setValue(editor.getData());
+    };
+
+    useEffect(() => {
+        props.onChange(debouncedValue);
+    }, [debouncedValue]);
+
+    return <CKEditor data={value} onChange={handleChange} editor={Editor} config={editorConfiguration} />;
 };
 
 export default MarkdownEditor;
