@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import Modal from '../../Modal/Modal';
-import { TreeContext } from '../../../store/treeStore/treeStore';
+import { OrderItem, TreeContext } from '../../../store/treeStore/treeStore';
 import { addQuestionnaireLanguageAction } from '../../../store/treeStore/treeActions';
 import Select from '../../Select/Select';
 import './TranslationModal.css';
@@ -63,24 +63,33 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         </div>
     );
 
-    const showQuestions = (): JSX.Element => {
+    const renderItems = (orderItems: OrderItem[], parentNumber = ''): Array<JSX.Element | null> => {
         if (translatableItems && qAdditionalLanguages && targetLanguage) {
-            return (
-                <>
-                    {translatableItems.map((question) => (
-                        <TranslateItemRow key={question.linkId} item={question} targetLanguage={targetLanguage} />
-                    ))}
-                </>
-            );
+            return orderItems.map((orderItem, index) => {
+                // TODO Filtrere basert på translatable items
+                const item = qItems[orderItem.linkId];
+                const itemNumber = parentNumber === '' ? `${index + 1}` : `${parentNumber}.${index + 1}`;
+                return (
+                    <>
+                        <TranslateItemRow
+                            key={item.linkId}
+                            item={item}
+                            targetLanguage={targetLanguage}
+                            itemNumber={itemNumber}
+                        />
+                        {renderItems(orderItem.items, itemNumber)}
+                    </>
+                );
+            });
         }
-        return <></>;
+        return [];
     };
 
     return (
         <div className="translation-modal">
             <Modal close={props.close} title="Oversett skjema">
                 {getHeader()}
-                {showQuestions()}
+                <>{renderItems(state.qOrder)}</>
             </Modal>
         </div>
     );
