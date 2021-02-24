@@ -15,6 +15,8 @@ import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
+import Select from '../Select/Select';
+import { EnrichmentSet } from '../../helpers/QuestionHelper';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -144,6 +146,19 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         return { exist, linkId, _text };
     };
 
+    const handleFhirpath = (fhirpath: string) => {
+        const update = [
+            {
+                url: IExtentionType.fhirPath,
+                valueString: fhirpath,
+            },
+        ];
+        dispatch(updateItemAction(item.linkId, IItemProperty.extension, update));
+        dispatchUpdateItem(IItemProperty.readOnly, true);
+    };
+
+    const getFhirpath = item?.extension?.find((item) => item.url === IExtentionType.fhirPath)?.valueString ?? '';
+
     return (
         <>
             {isRepeatsAndReadOnlyApplicable && (
@@ -165,6 +180,18 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         />
                     </div>
                 </div>
+            )}
+            {item.type === IQuestionnaireItemType.string && (
+                <FormField label="Beriking">
+                    <Select
+                        value={getFhirpath}
+                        options={EnrichmentSet}
+                        placeholder="Legg til en formel.."
+                        onChange={(event) => {
+                            handleFhirpath(event.target.value);
+                        }}
+                    />
+                </FormField>
             )}
             {isInitialApplicable && (
                 <div className="horizontal full">

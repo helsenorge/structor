@@ -214,4 +214,29 @@ export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolea
     return validTypes.includes(type);
 };
 
+export const EnrichmentSet: ValueSetComposeIncludeConcept[] = [
+    {
+        code: "Patient.name.where(use = 'official').select(given.join(' ') & ' ' & family)",
+        display: 'Navn',
+    },
+    {
+        code:
+            "Patient.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
+        display: 'Fødselsnummer',
+    },
+    {
+        code: "Patient.telecom.where(use = 'home' and system = 'email').value",
+        display: 'Epost',
+    },
+    {
+        code:
+            "RelatedPerson.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
+        display: 'På vegne av innbygger (Fødselsnummer)',
+    },
+    {
+        code: "RelatedPerson.name.where(use = 'official').select(given.join(' ') & ' ' & family)",
+        display: 'På vegne av innbygger (Navn)',
+    },
+];
+
 export default itemType;
