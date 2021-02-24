@@ -1,4 +1,4 @@
-import { Language } from '../types/LanguageTypes';
+import { Language, MetadataProperty, TranslatableMetadataProperty } from '../types/LanguageTypes';
 import { TreeState } from '../store/treeStore/treeStore';
 
 export const supportedLanguages: Language[] = [
@@ -19,3 +19,11 @@ export const getLanguagesInUse = ({ qMetadata, qAdditionalLanguages }: TreeState
             (qAdditionalLanguages && qAdditionalLanguages[x.code.toLowerCase()]),
     );
 };
+
+export const translatableMetadata: MetadataProperty[] = [
+    { propertyName: TranslatableMetadataProperty.title, label: 'Tittel', markdown: false },
+    { propertyName: TranslatableMetadataProperty.description, label: 'Beskrivelse', markdown: false },
+    { propertyName: TranslatableMetadataProperty.publisher, label: 'Utsteder', markdown: false },
+    { propertyName: TranslatableMetadataProperty.purpose, label: 'Formål', markdown: true },
+    { propertyName: TranslatableMetadataProperty.copyright, label: 'Copyright', markdown: true },
+];

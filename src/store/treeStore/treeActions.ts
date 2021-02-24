@@ -16,6 +16,7 @@ import { TreeState } from './treeStore';
 export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = 'addQuestionnaireLanguage';
 export const UPDATE_ITEM_TRANSLATION_ACTION = 'updateItemTranslation';
 export const UPDATE_ITEM_OPTION_TRANSLATION_ACTION = 'updateItemOptionTranslation';
+export const UPDATE_METADATA_TRANSLATION_ACTION = 'updateMetadataTranslation';
 export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata';
 export const NEW_ITEM_ACTION = 'newItem';
 export const REMOVE_ITEM_ATTRIBUTE_ACTION = 'removeItemAttribute';
@@ -62,6 +63,13 @@ export interface UpdateItemOptionTranslationAction {
     linkId: string;
     text: string;
     optionCode: string;
+}
+
+export interface UpdateMetadataTranslationAction {
+    type: typeof UPDATE_METADATA_TRANSLATION_ACTION;
+    languageCode: string;
+    propertyName: string;
+    translation: string;
 }
 
 export interface UpdateLinkIdAction {
@@ -164,6 +172,19 @@ export const updateItemOptionTranslationAction = (
         linkId,
         text,
         optionCode,
+    };
+};
+
+export const updateMetadataTranslationAction = (
+    languageCode: string,
+    propertyName: string,
+    translation: string,
+): UpdateMetadataTranslationAction => {
+    return {
+        type: UPDATE_METADATA_TRANSLATION_ACTION,
+        languageCode,
+        propertyName,
+        translation,
     };
 };
 

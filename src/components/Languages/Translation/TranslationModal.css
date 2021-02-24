@@ -43,6 +43,11 @@
     padding-bottom: 0px;
 }
 
+.translation-group {
+    border-bottom: 8px solid #8ec1db;
+    margin-bottom: 24px;
+}
+
 .translation-item {
     border-bottom: 8px solid #8ec1db;
     margin-bottom: 24px;

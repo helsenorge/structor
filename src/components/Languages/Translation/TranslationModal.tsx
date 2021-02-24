@@ -8,6 +8,7 @@ import TranslateItemRow from './TranslateItemRow';
 import { getLanguageFromCode, supportedLanguages } from '../../../helpers/LanguageHelper';
 import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
+import TranslateMetaData from './TranslateMetaData';
 
 type TranslationModalProps = {
     close: () => void;
@@ -89,6 +90,16 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         <div className="translation-modal">
             <Modal close={props.close} title="Oversett skjema">
                 {getHeader()}
+                <>
+                    {qAdditionalLanguages && targetLanguage && (
+                        <TranslateMetaData
+                            qMetadata={qMetadata}
+                            targetLanguage={targetLanguage}
+                            translations={qAdditionalLanguages}
+                            dispatch={dispatch}
+                        />
+                    )}
+                </>
                 <>{renderItems(state.qOrder)}</>
             </Modal>
         </div>

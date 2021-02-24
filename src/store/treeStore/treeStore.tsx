@@ -23,11 +23,13 @@ import {
     UPDATE_ITEM_TRANSLATION_ACTION,
     UPDATE_ITEM_OPTION_TRANSLATION_ACTION,
     UPDATE_LINK_ID_ACTION,
+    UPDATE_METADATA_TRANSLATION_ACTION,
     UPDATE_QUESTIONNAIRE_METADATA_ACTION,
     UpdateItemAction,
     UpdateItemOptionTranslationAction,
     UpdateItemTranslationAction,
     UpdateLinkIdAction,
+    UpdateMetadataTranslationAction,
     UpdateQuestionnaireMetadataAction,
     UpdateMarkedLinkId,
     UPDATE_MARKED_LINK_ID,
@@ -53,6 +55,7 @@ export type ActionType =
     | ReorderItemAction
     | AppendValueSetAction
     | UpdateLinkIdAction
+    | UpdateMetadataTranslationAction
     | RemoveItemAttributeAction
     | UpdateMarkedLinkId;
 
@@ -73,12 +76,17 @@ export interface ItemTranslations {
     [key: string]: ItemTranslation;
 }
 
-export interface Translations {
+export interface MetadataTranslations {
+    [key: string]: string;
+}
+
+export interface Translation {
     items: ItemTranslations;
+    metaData: MetadataTranslations;
 }
 
 export interface Languages {
-    [key: string]: Translations;
+    [key: string]: Translation;
 }
 
 export interface OrderItem {
@@ -147,8 +155,8 @@ export const initialState: TreeState = {
     qAdditionalLanguages: {},
 };
 
-function buildTranslationBase(draft: TreeState): Translations {
-    const translations: Translations = { items: {} };
+function buildTranslationBase(draft: TreeState): Translation {
+    const translations: Translation = { items: {}, metaData: {} };
     Object.values(draft.qItems).forEach((item) => {
         let answerOptions: AnswerOption | undefined = undefined;
         if (item.answerOption) {
@@ -255,6 +263,12 @@ function updateItemOptionTranslation(draft: TreeState, action: UpdateItemOptionT
         if (item.answerOptions) {
             item.answerOptions[action.optionCode] = action.text;
         }
+    }
+}
+
+function updateMetadataTranslation(draft: TreeState, action: UpdateMetadataTranslationAction) {
+    if (draft.qAdditionalLanguages) {
+        draft.qAdditionalLanguages[action.languageCode].metaData[action.propertyName] = action.translation;
     }
 }
 
@@ -405,6 +419,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case UPDATE_ITEM_OPTION_TRANSLATION_ACTION:
             updateItemOptionTranslation(draft, action);
+            break;
+        case UPDATE_METADATA_TRANSLATION_ACTION:
+            updateMetadataTranslation(draft, action);
             break;
         case DUPLICATE_ITEM_ACTION:
             duplicateItemAction(draft, action);
