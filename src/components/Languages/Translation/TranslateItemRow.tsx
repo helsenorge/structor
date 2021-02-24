@@ -49,15 +49,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
 
     function getReadOnlyInputField(): JSX.Element {
         if (isMarkdown) {
-            return (
-                <MarkdownEditor
-                    data={item.text || ''}
-                    disabled={true}
-                    onChange={(text) => {
-                        // Do nothing
-                    }}
-                />
-            );
+            return <MarkdownEditor data={item.text || ''} disabled={true} />;
         }
         return <input defaultValue={item.text} disabled={true} />;
     }

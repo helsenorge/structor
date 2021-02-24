@@ -28,7 +28,7 @@ const editorConfiguration = {
 
 interface MarkdownEditorProps {
     data: string;
-    onChange: (data: string) => void;
+    onChange?: (data: string) => void;
     disabled?: boolean;
 }
 
@@ -40,7 +40,9 @@ const MarkdownEditor = (props: MarkdownEditorProps): JSX.Element => {
     };
 
     useEffect(() => {
-        props.onChange(debouncedValue);
+        if (props.onChange) {
+            props.onChange(debouncedValue);
+        }
     }, [debouncedValue]);
 
     return (
