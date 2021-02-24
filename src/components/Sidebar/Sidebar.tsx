@@ -56,8 +56,11 @@ const Sidebar = (): JSX.Element => {
         dispatch(updateItemAction(linkId, IItemProperty._text, newValue));
     };
 
-    const getMarkdown = (linkId: string) =>
-        state.qItems[linkId]?.extension?.find((x) => x.url === IExtentionType.markdown)?.valueMarkdown ?? '';
+    const getMarkdown = (linkId: string) => {
+        return (
+            state.qItems[linkId]?._text?.extension?.find((x) => x.url === IExtentionType.markdown)?.valueMarkdown ?? ''
+        );
+    };
 
     return (
         <Accordion title="Sidebar">
