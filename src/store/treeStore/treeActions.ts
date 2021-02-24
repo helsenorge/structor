@@ -22,6 +22,7 @@ export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 export const REORDER_ITEM_ACTION = 'reorderItem';
 export const APPEND_VALUESET_ACTION = 'appendValueSet';
 export const UPDATE_LINK_ID_ACTION = 'updateLinkId';
+export const UPDATE_MARKED_LINK_ID = 'updateMarkedLinkId';
 
 type ItemValueType =
     | string
@@ -34,6 +35,10 @@ type ItemValueType =
     | QuestionnaireItemInitial[]
     | undefined; // TODO: legg på alle lovlige verdier
 
+export interface UpdateMarkedLinkId {
+    type: typeof UPDATE_MARKED_LINK_ID;
+    linkId: string;
+}
 export interface UpdateLinkIdAction {
     type: typeof UPDATE_LINK_ID_ACTION;
     oldLinkId: string;
@@ -94,6 +99,13 @@ export interface AppendValueSetAction {
     type: typeof APPEND_VALUESET_ACTION;
     valueSet: ValueSet[];
 }
+
+export const updateMarkedLinkIdAction = (markedLinkId: string): UpdateMarkedLinkId => {
+    return {
+        type: UPDATE_MARKED_LINK_ID,
+        linkId: markedLinkId,
+    };
+};
 
 export const updateLinkIdAction = (
     oldLinkId: string,
