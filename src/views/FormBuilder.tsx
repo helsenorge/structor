@@ -87,6 +87,9 @@ const FormBuilder = (): JSX.Element => {
 
             {showResults && <PublishModal close={() => setShowAdminMenu(!showResults)} />}
             {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
+            {isShowingFireStructure && (
+                <JSONView showJSONView={() => setIsShowingFireStructure(!isShowingFireStructure)} />
+            )}
 
             <div className="editor">
                 <div className="anchor-wrapper">
@@ -129,10 +132,6 @@ const FormBuilder = (): JSX.Element => {
                     </>
                 )}
             </div>
-
-            {isShowingFireStructure && (
-                <JSONView showJSONView={() => setIsShowingFireStructure(!isShowingFireStructure)} />
-            )}
         </>
     );
 };

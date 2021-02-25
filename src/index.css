@@ -87,7 +87,7 @@ p {
     font-family: Source Sans Pro, Arial, Verdana, sans-serif;
     background-color: #f5f3f3;
     position: fixed;
-    top: 120px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
