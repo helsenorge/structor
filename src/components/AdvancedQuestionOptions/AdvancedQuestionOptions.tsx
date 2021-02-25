@@ -157,7 +157,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         dispatchUpdateItem(IItemProperty.readOnly, true);
     };
 
-    const getFhirpath = item?.extension?.find((item) => item.url === IExtentionType.fhirPath)?.valueString ?? '';
+    const getFhirpath = item?.extension?.find((x) => x.url === IExtentionType.fhirPath)?.valueString ?? '';
 
     return (
         <>
