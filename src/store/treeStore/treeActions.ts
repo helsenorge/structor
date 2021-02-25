@@ -17,6 +17,7 @@ export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = 'addQuestionnaireLanguage';
 export const UPDATE_ITEM_TRANSLATION_ACTION = 'updateItemTranslation';
 export const UPDATE_ITEM_OPTION_TRANSLATION_ACTION = 'updateItemOptionTranslation';
 export const UPDATE_METADATA_TRANSLATION_ACTION = 'updateMetadataTranslation';
+export const UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION = 'updateContainedValueSetTranslation';
 export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata';
 export const NEW_ITEM_ACTION = 'newItem';
 export const REMOVE_ITEM_ATTRIBUTE_ACTION = 'removeItemAttribute';
@@ -69,6 +70,14 @@ export interface UpdateMetadataTranslationAction {
     type: typeof UPDATE_METADATA_TRANSLATION_ACTION;
     languageCode: string;
     propertyName: string;
+    translation: string;
+}
+
+export interface UpdateContainedValueSetTranslationAction {
+    type: typeof UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION;
+    languageCode: string;
+    valueSetId: string;
+    conceptId: string;
     translation: string;
 }
 
@@ -184,6 +193,21 @@ export const updateMetadataTranslationAction = (
         type: UPDATE_METADATA_TRANSLATION_ACTION,
         languageCode,
         propertyName,
+        translation,
+    };
+};
+
+export const updateContainedValueSetTranslationAction = (
+    languageCode: string,
+    valueSetId: string,
+    conceptId: string,
+    translation: string,
+): UpdateContainedValueSetTranslationAction => {
+    return {
+        type: UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION,
+        languageCode,
+        valueSetId,
+        conceptId,
         translation,
     };
 };

@@ -43,9 +43,22 @@
     padding-bottom: 0px;
 }
 
+.translation-section-header {
+    background-color: #8ec1db;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding: 12px 6px;
+}
+
 .translation-group {
     border-bottom: 8px solid #8ec1db;
     margin-bottom: 24px;
+}
+
+.translation-group-header {
+    font-size: 18px;
+    font-weight: 500;
 }
 
 .translation-item {

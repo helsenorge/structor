@@ -9,6 +9,7 @@ import { getLanguageFromCode, supportedLanguages } from '../../../helpers/Langua
 import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import TranslateMetaData from './TranslateMetaData';
+import TranslateContainedValueSets from './TranslateContainedValueSets';
 
 type TranslationModalProps = {
     close: () => void;
@@ -17,7 +18,7 @@ type TranslationModalProps = {
 
 const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
-    const { qItems, qAdditionalLanguages, qMetadata } = state;
+    const { qItems, qAdditionalLanguages, qMetadata, qContained } = state;
     const [targetLanguage, setTargetLanguage] = useState(props.targetLanguage);
     const availableLanguages = [
         { code: '', display: 'Velg språk' },
@@ -92,15 +93,23 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                 {getHeader()}
                 <>
                     {qAdditionalLanguages && targetLanguage && (
-                        <TranslateMetaData
-                            qMetadata={qMetadata}
-                            targetLanguage={targetLanguage}
-                            translations={qAdditionalLanguages}
-                            dispatch={dispatch}
-                        />
+                        <>
+                            <TranslateMetaData
+                                qMetadata={qMetadata}
+                                targetLanguage={targetLanguage}
+                                translations={qAdditionalLanguages}
+                                dispatch={dispatch}
+                            />
+                            <TranslateContainedValueSets
+                                qContained={qContained}
+                                targetLanguage={targetLanguage}
+                                translations={qAdditionalLanguages}
+                                dispatch={dispatch}
+                            />
+                            {renderItems(state.qOrder)}
+                        </>
                     )}
                 </>
-                <>{renderItems(state.qOrder)}</>
             </Modal>
         </div>
     );

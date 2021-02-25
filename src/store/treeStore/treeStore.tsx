@@ -19,12 +19,14 @@ import {
     ReorderItemAction,
     RESET_QUESTIONNAIRE_ACTION,
     ResetQuestionnaireAction,
+    UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION,
     UPDATE_ITEM_ACTION,
     UPDATE_ITEM_TRANSLATION_ACTION,
     UPDATE_ITEM_OPTION_TRANSLATION_ACTION,
     UPDATE_LINK_ID_ACTION,
     UPDATE_METADATA_TRANSLATION_ACTION,
     UPDATE_QUESTIONNAIRE_METADATA_ACTION,
+    UpdateContainedValueSetTranslationAction,
     UpdateItemAction,
     UpdateItemOptionTranslationAction,
     UpdateItemTranslationAction,
@@ -54,6 +56,7 @@ export type ActionType =
     | DuplicateItemAction
     | ReorderItemAction
     | AppendValueSetAction
+    | UpdateContainedValueSetTranslationAction
     | UpdateLinkIdAction
     | UpdateMetadataTranslationAction
     | RemoveItemAttributeAction
@@ -63,13 +66,21 @@ export interface Items {
     [key: string]: QuestionnaireItem;
 }
 
-export interface AnswerOption {
+export interface CodeStringValue {
     [code: string]: string;
 }
 
 export interface ItemTranslation {
     text: string;
-    answerOptions?: AnswerOption;
+    answerOptions?: CodeStringValue;
+}
+
+export interface ContainedTranslation {
+    concepts: CodeStringValue;
+}
+
+export interface ContainedTranslations {
+    [id: string]: ContainedTranslation;
 }
 
 export interface ItemTranslations {
@@ -83,6 +94,7 @@ export interface MetadataTranslations {
 export interface Translation {
     items: ItemTranslations;
     metaData: MetadataTranslations;
+    contained: ContainedTranslations;
 }
 
 export interface Languages {
@@ -156,9 +168,9 @@ export const initialState: TreeState = {
 };
 
 function buildTranslationBase(draft: TreeState): Translation {
-    const translations: Translation = { items: {}, metaData: {} };
+    const translations: Translation = { items: {}, metaData: {}, contained: {} };
     Object.values(draft.qItems).forEach((item) => {
-        let answerOptions: AnswerOption | undefined = undefined;
+        let answerOptions: CodeStringValue | undefined = undefined;
         if (item.answerOption) {
             answerOptions = {};
             item.answerOption.forEach((opt) => {
@@ -269,6 +281,16 @@ function updateItemOptionTranslation(draft: TreeState, action: UpdateItemOptionT
 function updateMetadataTranslation(draft: TreeState, action: UpdateMetadataTranslationAction) {
     if (draft.qAdditionalLanguages) {
         draft.qAdditionalLanguages[action.languageCode].metaData[action.propertyName] = action.translation;
+    }
+}
+
+function updateContainedValueSetTranslation(draft: TreeState, action: UpdateContainedValueSetTranslationAction) {
+    if (draft.qAdditionalLanguages) {
+        const contained = draft.qAdditionalLanguages[action.languageCode].contained;
+        if (!contained[action.valueSetId]) {
+            contained[action.valueSetId] = { concepts: {} };
+        }
+        contained[action.valueSetId].concepts[action.conceptId] = action.translation;
     }
 }
 
@@ -419,6 +441,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case UPDATE_ITEM_OPTION_TRANSLATION_ACTION:
             updateItemOptionTranslation(draft, action);
+            break;
+        case UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION:
+            updateContainedValueSetTranslation(draft, action);
             break;
         case UPDATE_METADATA_TRANSLATION_ACTION:
             updateMetadataTranslation(draft, action);

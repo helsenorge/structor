@@ -2,7 +2,7 @@ import React from 'react';
 import { translatableMetadata } from '../../../helpers/LanguageHelper';
 import FormField from '../../FormField/FormField';
 import { IQuestionnaireMetadata } from '../../../types/IQuestionnaireMetadataType';
-import { ActionType, Languages, Translation } from '../../../store/treeStore/treeStore';
+import { ActionType, Languages } from '../../../store/treeStore/treeStore';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { updateMetadataTranslationAction } from '../../../store/treeStore/treeActions';
 
@@ -30,7 +30,7 @@ const TranslateMetaData = ({
                 const translatedValue = translations[targetLanguage].metaData[propertyName];
                 return (
                     <div key={propertyName}>
-                        <div>{label}</div>
+                        <div className="translation-group-header">{label}</div>
                         <div className="translation-row">
                             <FormField>
                                 {markdown ? (
