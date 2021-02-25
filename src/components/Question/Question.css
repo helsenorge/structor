@@ -49,6 +49,7 @@
 .form-field-label-wrapper,
 .form-field > label {
     font-size: 16px;
+    text-align: left;
 }
 
 .form-field-label-wrapper {

@@ -66,6 +66,12 @@ export enum IExtentionType {
     markdown = 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
     questionnaireUnit = 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
     itemControl = 'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
+    fhirPath = 'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpath',
+    endpoint = 'http://ehelse.no/fhir/StructureDefinition/sdf-endpoint',
+    presentationbuttons = 'http://helsenorge.no/fhir/StructureDefinition/sdf-presentationbuttons',
+    canBePerformedBy = 'http://ehelse.no/fhir/StructureDefinition/sdf-canbeperformedby',
     itemControlValueSet = 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
     sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
+    presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
+    canBePerformedByValueSet = 'http://ehelse.no/fhir/ValueSet/CanBePerformedBy',
 }

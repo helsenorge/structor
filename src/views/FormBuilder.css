@@ -96,14 +96,12 @@ select {
 }
 
 .structor-helper {
-    position: absolute;
-    top: 20%;
-    right: 0;
-    background: white;
-    min-width: 380px;
-    box-shadow: 0 4px 8px 4px hsla(0, 0%, 78%, 0.78);
-    text-align: left;
-    z-index: 3;
+    background-color: #f5f3f3;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
 }
 
 .title {
@@ -117,7 +115,8 @@ select {
     white-space: pre-wrap;
     text-align: left;
     padding: 20px;
-    width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 .overlay {
