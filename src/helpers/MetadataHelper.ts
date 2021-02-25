@@ -25,3 +25,14 @@ export const metadataLanguage = [
     { code: 'se-no', display: 'Samisk', localDisplay: 'Davvisámegillii' },
     { code: 'en-gb', display: 'Engelsk', localDisplay: 'English' },
 ];
+
+export const presentationButtons = [
+    { code: 'none', display: 'Ingen' },
+    { code: 'static', display: 'Fast' },
+    { code: 'sticky', display: 'Flytende' },
+];
+
+export const canBePerformedBy = [
+    { code: '1', display: 'Default' },
+    { code: '2', display: 'SubjectOnly' },
+];
