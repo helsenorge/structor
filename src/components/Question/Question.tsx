@@ -9,7 +9,7 @@ import {
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import {
     addEmptyOptionToAnswerOptionArray,
     removeOptionFromAnswerOptionArray,
@@ -21,6 +21,7 @@ import {
     newItemAction,
     removeItemAttributeAction,
     updateItemAction,
+    updateMarkedLinkIdAction,
 } from '../../store/treeStore/treeActions';
 import itemType, {
     QUANTITY_UNIT_TYPE_NOT_SELECTED,
@@ -323,6 +324,28 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
+
+    const observed = (elements: IntersectionObserverEntry[]) => {
+        if (elements[0].intersectionRatio > 0.5) {
+            props.dispatch(updateMarkedLinkIdAction(props.item.linkId));
+        }
+    };
+
+    useEffect(() => {
+        const options = {
+            root: null,
+            rootMargin: '52px 0px 0px 0px',
+            threshold: [0.5],
+        };
+
+        const myObserver = new IntersectionObserver(observed, options);
+
+        const myEl = document.getElementById(props.item.linkId);
+
+        if (myEl) {
+            myObserver.observe(myEl);
+        }
+    }, []);
 
     return (
         <div className="question" style={{ marginLeft: props.parentArray.length * 32 }} id={props.item.linkId}>

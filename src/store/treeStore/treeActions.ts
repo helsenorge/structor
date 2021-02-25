@@ -8,6 +8,7 @@ import {
     Element,
     ValueSet,
     Meta,
+    Coding,
 } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TreeState } from './treeStore';
@@ -22,6 +23,7 @@ export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 export const REORDER_ITEM_ACTION = 'reorderItem';
 export const APPEND_VALUESET_ACTION = 'appendValueSet';
 export const UPDATE_LINK_ID_ACTION = 'updateLinkId';
+export const UPDATE_MARKED_LINK_ID = 'updateMarkedLinkId';
 
 type ItemValueType =
     | string
@@ -32,8 +34,13 @@ type ItemValueType =
     | QuestionnaireItemAnswerOption[]
     | Element
     | QuestionnaireItemInitial[]
+    | Coding[]
     | undefined; // TODO: legg på alle lovlige verdier
 
+export interface UpdateMarkedLinkId {
+    type: typeof UPDATE_MARKED_LINK_ID;
+    linkId: string;
+}
 export interface UpdateLinkIdAction {
     type: typeof UPDATE_LINK_ID_ACTION;
     oldLinkId: string;
@@ -95,6 +102,13 @@ export interface AppendValueSetAction {
     valueSet: ValueSet[];
 }
 
+export const updateMarkedLinkIdAction = (markedLinkId: string): UpdateMarkedLinkId => {
+    return {
+        type: UPDATE_MARKED_LINK_ID,
+        linkId: markedLinkId,
+    };
+};
+
 export const updateLinkIdAction = (
     oldLinkId: string,
     newLinkId: string,
@@ -133,6 +147,49 @@ export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>
     };
 };
 
+export const newItemSidebar = (order: Array<string>): NewItemAction => {
+    const sidebar = {
+        extension: [
+            {
+                url: IExtentionType.itemControl,
+                valueCodeableConcept: {
+                    coding: [
+                        {
+                            system: IExtentionType.itemControlValueSet,
+                            code: 'sidebar',
+                        },
+                    ],
+                },
+            },
+        ],
+        linkId: CreateUUID(),
+        code: [
+            {
+                system: IExtentionType.sotHeader,
+                code: '',
+                display: '',
+            },
+        ],
+        _text: {
+            extension: [
+                {
+                    url: IExtentionType.markdown,
+                    valueMarkdown: '',
+                },
+            ],
+        },
+        type: IQuestionnaireItemType.text,
+        required: false,
+        repeats: false,
+        readOnly: false,
+    } as QuestionnaireItem;
+    return {
+        type: NEW_ITEM_ACTION,
+        item: sidebar,
+        order,
+    };
+};
+
 export const newItemHelpIconAction = (order: Array<string>): NewItemAction => {
     const newQuestionnaireItem = {
         linkId: CreateUUID(),
@@ -141,7 +198,14 @@ export const newItemHelpIconAction = (order: Array<string>): NewItemAction => {
         repeats: false,
         readOnly: true,
         maxLength: 250,
-        text: '',
+        _text: {
+            extension: [
+                {
+                    url: IExtentionType.markdown,
+                    valueMarkdown: '',
+                },
+            ],
+        },
         extension: [
             {
                 url: IExtentionType.itemControl,
