@@ -16,7 +16,7 @@ export const getEnableWhenConditionals = (
         const displayText = itemText.length > 120 ? `${itemText?.substr(0, 120)}...` : itemText;
         return {
             code: linkId,
-            display: `${displayText} ${JSON.stringify([...idArray, index + 1])}`,
+            display: `${displayText} ${JSON.stringify([...idArray, index + 1].join('.'))}`,
         };
     };
 
