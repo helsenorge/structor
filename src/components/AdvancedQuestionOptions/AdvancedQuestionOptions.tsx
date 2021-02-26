@@ -1,6 +1,6 @@
 import React, { FocusEvent, useContext, useState } from 'react';
 import { TreeContext } from '../../store/treeStore/treeStore';
-import { QuestionnaireItem } from '../../types/fhir';
+import { Extension, QuestionnaireItem } from '../../types/fhir';
 import {
     newItemHelpIconAction,
     updateItemAction,
@@ -147,17 +147,25 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     };
 
     const handleFhirpath = (fhirpath: string) => {
-        const update = [
-            {
-                url: IExtentionType.fhirPath,
-                valueString: fhirpath,
-            },
-        ];
-        dispatch(updateItemAction(item.linkId, IItemProperty.extension, update));
+        const extension = {
+            url: IExtentionType.fhirPath,
+            valueString: fhirpath,
+        };
+        handleExtension(extension);
         dispatchUpdateItem(IItemProperty.readOnly, true);
     };
 
+    const handleExtension = (extension: Extension) => {
+        if (item?.extension && item?.extension?.length > 0) {
+            const newExtension = [...item.extension.filter((x) => x.url !== extension.url), extension];
+            dispatch(updateItemAction(item.linkId, IItemProperty.extension, newExtension));
+        } else {
+            dispatch(updateItemAction(item.linkId, IItemProperty.extension, [extension]));
+        }
+    };
+
     const getFhirpath = item?.extension?.find((x) => x.url === IExtentionType.fhirPath)?.valueString ?? '';
+    const getPlaceholder = item?.extension?.find((x) => x.url === IExtentionType.entryFormat)?.valueString ?? '';
 
     return (
         <>
@@ -190,6 +198,19 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         onChange={(event) => {
                             handleFhirpath(event.target.value);
                         }}
+                    />
+                </FormField>
+            )}
+            {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.text) && (
+                <FormField label="Placeholder">
+                    <input
+                        defaultValue={getPlaceholder}
+                        onBlur={(e) =>
+                            handleExtension({
+                                url: IExtentionType.entryFormat,
+                                valueString: e.target.value,
+                            })
+                        }
                     />
                 </FormField>
             )}

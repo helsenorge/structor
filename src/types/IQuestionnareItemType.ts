@@ -70,6 +70,7 @@ export enum IExtentionType {
     endpoint = 'http://ehelse.no/fhir/StructureDefinition/sdf-endpoint',
     presentationbuttons = 'http://helsenorge.no/fhir/StructureDefinition/sdf-presentationbuttons',
     canBePerformedBy = 'http://ehelse.no/fhir/StructureDefinition/sdf-canbeperformedby',
+    entryFormat = 'http://hl7.org/fhir/StructureDefinition/entryFormat',
     itemControlValueSet = 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
     sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
     presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
