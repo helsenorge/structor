@@ -11,6 +11,7 @@ import {
     Coding,
 } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
+import { TranslatableSidebarProperty } from '../../types/LanguageTypes';
 import { TreeState } from './treeStore';
 
 export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = 'addQuestionnaireLanguage';
@@ -18,6 +19,7 @@ export const UPDATE_ITEM_TRANSLATION_ACTION = 'updateItemTranslation';
 export const UPDATE_ITEM_OPTION_TRANSLATION_ACTION = 'updateItemOptionTranslation';
 export const UPDATE_METADATA_TRANSLATION_ACTION = 'updateMetadataTranslation';
 export const UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION = 'updateContainedValueSetTranslation';
+export const UPDATE_SIDEBAR_TRANSLATION_ACTION = 'updateSidebarTranslation';
 export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata';
 export const NEW_ITEM_ACTION = 'newItem';
 export const REMOVE_ITEM_ATTRIBUTE_ACTION = 'removeItemAttribute';
@@ -79,6 +81,14 @@ export interface UpdateContainedValueSetTranslationAction {
     valueSetId: string;
     conceptId: string;
     translation: string;
+}
+
+export interface UpdateSidebarTranslationAction {
+    type: typeof UPDATE_SIDEBAR_TRANSLATION_ACTION;
+    languageCode: string;
+    linkId: string;
+    propName: TranslatableSidebarProperty;
+    value: string;
 }
 
 export interface UpdateLinkIdAction {
@@ -209,6 +219,21 @@ export const updateContainedValueSetTranslationAction = (
         valueSetId,
         conceptId,
         translation,
+    };
+};
+
+export const updateSidebarTranslationAction = (
+    languageCode: string,
+    linkId: string,
+    propName: TranslatableSidebarProperty,
+    value: string,
+): UpdateSidebarTranslationAction => {
+    return {
+        type: UPDATE_SIDEBAR_TRANSLATION_ACTION,
+        languageCode,
+        linkId,
+        propName,
+        value,
     };
 };
 

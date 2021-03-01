@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Items, OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 
 import ReorderIcon from '../../images/icons/reorder-three-outline.svg';
@@ -8,7 +8,7 @@ import MessageIcon from '../../images/icons/information-circle-outline.svg';
 import QuestionIcon from '../../images/icons/help-circle-outline.svg';
 
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import { isItemControlHelp } from '../../helpers/itemControl';
+import { isIgnorableItem } from '../../helpers/itemControl';
 
 type SubAnchorProps = {
     parentItem: string;
@@ -71,7 +71,7 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
     };
 
     const removeUnsupportedChildren = (items: OrderItem[]) => {
-        return items.filter((x) => !isItemControlHelp(props.qItems[x.linkId]));
+        return items.filter((x) => !isIgnorableItem(props.qItems[x.linkId]));
     };
 
     return (

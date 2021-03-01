@@ -1,15 +1,30 @@
 import { QuestionnaireItem } from '../types/fhir';
 import { IExtentionType } from '../types/IQuestionnareItemType';
 
+export const isIgnorableItem = (item: QuestionnaireItem): boolean => {
+    return isItemControlHelp(item) || isItemControlSidebar(item);
+};
+
 export const isItemControlHelp = (item: QuestionnaireItem): boolean => {
     const hasItemControlExtention = item.extension?.find((x) => x.url === IExtentionType.itemControl);
 
-    const ignoreItem =
+    const isHelpItem =
         item.extension !== undefined &&
         hasItemControlExtention !== undefined &&
         hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-        (hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help' ||
-            hasItemControlExtention.valueCodeableConcept.coding[0].code === 'sidebar');
+        hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help';
 
-    return ignoreItem;
+    return isHelpItem;
+};
+
+export const isItemControlSidebar = (item: QuestionnaireItem): boolean => {
+    const hasItemControlExtention = item.extension?.find((x) => x.url === IExtentionType.itemControl);
+
+    const isSidebarItem =
+        item.extension !== undefined &&
+        hasItemControlExtention !== undefined &&
+        hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
+        hasItemControlExtention.valueCodeableConcept.coding[0].code === 'sidebar';
+
+    return isSidebarItem;
 };

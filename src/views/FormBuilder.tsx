@@ -15,7 +15,7 @@ import Navbar from '../components/Navbar/Navbar';
 import PublishModal from '../components/PublishModal/PublishModal';
 import Question from '../components/Question/Question';
 import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
-import { isItemControlHelp } from '../helpers/itemControl';
+import { isIgnorableItem } from '../helpers/itemControl';
 import Languages from '../components/Languages/Languages';
 import TranslationModal from '../components/Languages/Translation/TranslationModal';
 import Sidebar from '../components/Sidebar/Sidebar';
@@ -45,7 +45,7 @@ const FormBuilder = (): JSX.Element => {
     };
 
     const removeUnsupportedChildren = (items: OrderItem[]) => {
-        return items.filter((x) => !isItemControlHelp(state.qItems[x.linkId]));
+        return items.filter((x) => !isIgnorableItem(state.qItems[x.linkId]));
     };
 
     const renderTree = (

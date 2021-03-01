@@ -10,6 +10,8 @@ import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import TranslateMetaData from './TranslateMetaData';
 import TranslateContainedValueSets from './TranslateContainedValueSets';
+import { isIgnorableItem } from '../../../helpers/itemControl';
+import TranslateSidebar from './TranslateSidebar';
 
 type TranslationModalProps = {
     close: () => void;
@@ -31,7 +33,8 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         // Hidden items
         !item.extension?.some(
             (ext) => ext.url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-hidden' && ext.valueBoolean,
-        );
+        ) &&
+        !isIgnorableItem(item);
 
     const translatableItems = Object.values(qItems).filter((question) => {
         return isTranslatableItem(question);
@@ -68,20 +71,18 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     const renderItems = (orderItems: OrderItem[], parentNumber = ''): Array<JSX.Element | null> => {
         if (translatableItems && qAdditionalLanguages && targetLanguage) {
             return orderItems.map((orderItem, index) => {
-                // TODO Filtrere basert på translatable items
-                const item = qItems[orderItem.linkId];
-                const itemNumber = parentNumber === '' ? `${index + 1}` : `${parentNumber}.${index + 1}`;
-                return (
-                    <>
-                        <TranslateItemRow
-                            key={item.linkId}
-                            item={item}
-                            targetLanguage={targetLanguage}
-                            itemNumber={itemNumber}
-                        />
-                        {renderItems(orderItem.items, itemNumber)}
-                    </>
-                );
+                const item = translatableItems.find((i) => i.linkId === orderItem.linkId);
+
+                if (item) {
+                    const itemNumber = parentNumber === '' ? `${index + 1}` : `${parentNumber}.${index + 1}`;
+                    return (
+                        <div key={item.linkId}>
+                            <TranslateItemRow item={item} targetLanguage={targetLanguage} itemNumber={itemNumber} />
+                            {renderItems(orderItem.items, itemNumber)}
+                        </div>
+                    );
+                }
+                return null;
             });
         }
         return [];
@@ -100,13 +101,22 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                                 translations={qAdditionalLanguages}
                                 dispatch={dispatch}
                             />
+                            <TranslateSidebar
+                                targetLanguage={targetLanguage}
+                                translations={qAdditionalLanguages}
+                                items={qItems}
+                                dispatch={dispatch}
+                            />
                             <TranslateContainedValueSets
                                 qContained={qContained}
                                 targetLanguage={targetLanguage}
                                 translations={qAdditionalLanguages}
                                 dispatch={dispatch}
                             />
-                            {renderItems(state.qOrder)}
+                            <div>
+                                <div className="translation-section-header">Elementer</div>
+                                {renderItems(state.qOrder)}
+                            </div>
                         </>
                     )}
                 </>

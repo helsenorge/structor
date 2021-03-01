@@ -26,6 +26,7 @@ import {
     UPDATE_LINK_ID_ACTION,
     UPDATE_METADATA_TRANSLATION_ACTION,
     UPDATE_QUESTIONNAIRE_METADATA_ACTION,
+    UPDATE_SIDEBAR_TRANSLATION_ACTION,
     UpdateContainedValueSetTranslationAction,
     UpdateItemAction,
     UpdateItemOptionTranslationAction,
@@ -33,6 +34,7 @@ import {
     UpdateLinkIdAction,
     UpdateMetadataTranslationAction,
     UpdateQuestionnaireMetadataAction,
+    UpdateSidebarTranslationAction,
     UpdateMarkedLinkId,
     UPDATE_MARKED_LINK_ID,
 } from './treeActions';
@@ -59,6 +61,7 @@ export type ActionType =
     | UpdateContainedValueSetTranslationAction
     | UpdateLinkIdAction
     | UpdateMetadataTranslationAction
+    | UpdateSidebarTranslationAction
     | RemoveItemAttributeAction
     | UpdateMarkedLinkId;
 
@@ -91,8 +94,18 @@ export interface MetadataTranslations {
     [key: string]: string;
 }
 
+export interface SidebarItemTranslation {
+    display: string;
+    markdown: string;
+}
+
+export interface SidebarItemTranslations {
+    [linkId: string]: SidebarItemTranslation;
+}
+
 export interface Translation {
     items: ItemTranslations;
+    sidebarItems: SidebarItemTranslations;
     metaData: MetadataTranslations;
     contained: ContainedTranslations;
 }
@@ -168,7 +181,7 @@ export const initialState: TreeState = {
 };
 
 function buildTranslationBase(draft: TreeState): Translation {
-    const translations: Translation = { items: {}, metaData: {}, contained: {} };
+    const translations: Translation = { items: {}, sidebarItems: {}, metaData: {}, contained: {} };
     Object.values(draft.qItems).forEach((item) => {
         let answerOptions: CodeStringValue | undefined = undefined;
         if (item.answerOption) {
@@ -291,6 +304,16 @@ function updateContainedValueSetTranslation(draft: TreeState, action: UpdateCont
             contained[action.valueSetId] = { concepts: {} };
         }
         contained[action.valueSetId].concepts[action.conceptId] = action.translation;
+    }
+}
+
+function updateSidebarTranslation(draft: TreeState, action: UpdateSidebarTranslationAction) {
+    if (draft.qAdditionalLanguages) {
+        const sidebarItems = draft.qAdditionalLanguages[action.languageCode].sidebarItems;
+        if (!sidebarItems[action.linkId]) {
+            sidebarItems[action.linkId] = { display: '', markdown: '' };
+        }
+        sidebarItems[action.linkId][action.propName] = action.value;
     }
 }
 
@@ -447,6 +470,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case UPDATE_METADATA_TRANSLATION_ACTION:
             updateMetadataTranslation(draft, action);
+            break;
+        case UPDATE_SIDEBAR_TRANSLATION_ACTION:
+            updateSidebarTranslation(draft, action);
             break;
         case DUPLICATE_ITEM_ACTION:
             duplicateItemAction(draft, action);

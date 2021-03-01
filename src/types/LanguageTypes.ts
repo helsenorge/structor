@@ -17,3 +17,8 @@ export type MetadataProperty = {
     label: string;
     markdown?: boolean;
 };
+
+export enum TranslatableSidebarProperty {
+    display = 'display',
+    markdown = 'markdown',
+}
