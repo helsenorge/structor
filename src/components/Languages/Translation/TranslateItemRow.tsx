@@ -70,8 +70,8 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
     }
 
     return (
-        <div className="translation-item">
-            <div className="item-number">{itemNumber}</div>
+        <>
+            <div className="translation-group-header">{`Element ${itemNumber}`}</div>
             <div className="translation-row">
                 <FormField>{getReadOnlyInputField()}</FormField>
                 <FormField>{getInputField()}</FormField>
@@ -83,7 +83,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
                     })}
                 </>
             )}
-        </div>
+        </>
     );
 };
 

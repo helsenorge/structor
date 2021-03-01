@@ -1,5 +1,5 @@
 import { Language, MetadataProperty, TranslatableMetadataProperty } from '../types/LanguageTypes';
-import { TreeState } from '../store/treeStore/treeStore';
+import { Languages, TreeState } from '../store/treeStore/treeStore';
 
 export const supportedLanguages: Language[] = [
     { code: 'nb-no', display: 'Norsk Bokmål', localDisplay: 'Norsk bokmål' },
@@ -27,3 +27,10 @@ export const translatableMetadata: MetadataProperty[] = [
     { propertyName: TranslatableMetadataProperty.purpose, label: 'Formål', markdown: true },
     { propertyName: TranslatableMetadataProperty.copyright, label: 'Copyright', markdown: true },
 ];
+
+export const getHelpTextTranslation = (languageCode: string, languages: Languages, linkId: string): string => {
+    if (!languageCode || !languages || !languages[languageCode] || !languages[languageCode].items[linkId]) {
+        return '';
+    }
+    return languages[languageCode].items[linkId].text;
+};

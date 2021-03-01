@@ -20,7 +20,7 @@ const TranslateSidebar = ({
     dispatch,
 }: TranslateSidebarProps): JSX.Element | null => {
     const sidebarItems = Object.values(items).filter((item) => isItemControlSidebar(item));
-    if (!sidebarItems) {
+    if (!sidebarItems || sidebarItems.length < 1) {
         return null;
     }
 

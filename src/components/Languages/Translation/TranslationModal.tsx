@@ -1,17 +1,19 @@
 import React, { useContext, useState } from 'react';
 import Modal from '../../Modal/Modal';
 import { OrderItem, TreeContext } from '../../../store/treeStore/treeStore';
-import { addQuestionnaireLanguageAction } from '../../../store/treeStore/treeActions';
+import { addQuestionnaireLanguageAction, updateItemTranslationAction } from '../../../store/treeStore/treeActions';
 import Select from '../../Select/Select';
 import './TranslationModal.css';
 import TranslateItemRow from './TranslateItemRow';
-import { getLanguageFromCode, supportedLanguages } from '../../../helpers/LanguageHelper';
+import { getHelpTextTranslation, getLanguageFromCode, supportedLanguages } from '../../../helpers/LanguageHelper';
 import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import TranslateMetaData from './TranslateMetaData';
 import TranslateContainedValueSets from './TranslateContainedValueSets';
-import { isIgnorableItem } from '../../../helpers/itemControl';
+import { getHelpText, isItemControlHelp, isItemControlSidebar } from '../../../helpers/itemControl';
 import TranslateSidebar from './TranslateSidebar';
+import FormField from '../../FormField/FormField';
+import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 
 type TranslationModalProps = {
     close: () => void;
@@ -34,7 +36,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         !item.extension?.some(
             (ext) => ext.url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-hidden' && ext.valueBoolean,
         ) &&
-        !isIgnorableItem(item);
+        !isItemControlSidebar(item);
 
     const translatableItems = Object.values(qItems).filter((question) => {
         return isTranslatableItem(question);
@@ -68,16 +70,46 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         </div>
     );
 
+    const renderHelpText = (orderItems: OrderItem[]): JSX.Element | null => {
+        const helpTextItemId = orderItems.find((orderItem) => isItemControlHelp(qItems[orderItem.linkId]));
+        if (!helpTextItemId || !targetLanguage || !qAdditionalLanguages) {
+            return null;
+        }
+        const helpText = getHelpText(qItems[helpTextItemId.linkId]);
+        const translatedHelpText = getHelpTextTranslation(targetLanguage, qAdditionalLanguages, helpTextItemId.linkId);
+        return (
+            <>
+                <div className="translation-group-header">Hjelpetekst</div>
+                <div className="translation-row">
+                    <FormField>
+                        <MarkdownEditor data={helpText} disabled={true} />
+                    </FormField>
+                    <FormField>
+                        <MarkdownEditor
+                            data={translatedHelpText}
+                            onChange={(value) =>
+                                dispatch(updateItemTranslationAction(targetLanguage, helpTextItemId.linkId, value))
+                            }
+                        />
+                    </FormField>
+                </div>
+            </>
+        );
+    };
+
     const renderItems = (orderItems: OrderItem[], parentNumber = ''): Array<JSX.Element | null> => {
         if (translatableItems && qAdditionalLanguages && targetLanguage) {
             return orderItems.map((orderItem, index) => {
                 const item = translatableItems.find((i) => i.linkId === orderItem.linkId);
 
-                if (item) {
+                if (item && !isItemControlHelp(item)) {
                     const itemNumber = parentNumber === '' ? `${index + 1}` : `${parentNumber}.${index + 1}`;
                     return (
                         <div key={item.linkId}>
-                            <TranslateItemRow item={item} targetLanguage={targetLanguage} itemNumber={itemNumber} />
+                            <div className="translation-item">
+                                <TranslateItemRow item={item} targetLanguage={targetLanguage} itemNumber={itemNumber} />
+                                {renderHelpText(orderItem.items)}
+                            </div>
                             {renderItems(orderItem.items, itemNumber)}
                         </div>
                     );
