@@ -14,6 +14,7 @@ import { getHelpText, isItemControlHelp, isItemControlSidebar } from '../../../h
 import TranslateSidebar from './TranslateSidebar';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
+import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 
 type TranslationModalProps = {
     close: () => void;
@@ -88,7 +89,14 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                         <MarkdownEditor
                             data={translatedHelpText}
                             onChange={(value) =>
-                                dispatch(updateItemTranslationAction(targetLanguage, helpTextItemId.linkId, value))
+                                dispatch(
+                                    updateItemTranslationAction(
+                                        targetLanguage,
+                                        helpTextItemId.linkId,
+                                        TranslatableItemProperty.text,
+                                        value,
+                                    ),
+                                )
                             }
                         />
                     </FormField>

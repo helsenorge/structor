@@ -1,5 +1,5 @@
-import { ValueSetComposeIncludeConcept } from '../types/fhir';
-import { IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
+import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 
 const itemType = [
     {
@@ -238,5 +238,9 @@ export const EnrichmentSet: ValueSetComposeIncludeConcept[] = [
         display: 'På vegne av innbygger (Navn)',
     },
 ];
+
+export const getValidationMessage = (item: QuestionnaireItem): string => {
+    return item.extension?.find((extension) => extension.url === IExtentionType.validationtext)?.valueString || '';
+};
 
 export default itemType;

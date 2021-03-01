@@ -34,3 +34,10 @@ export const getHelpTextTranslation = (languageCode: string, languages: Language
     }
     return languages[languageCode].items[linkId].text;
 };
+
+export const getValidationMessageTranslation = (languageCode: string, languages: Languages, linkId: string): string => {
+    if (!languageCode || !languages || !languages[languageCode]) {
+        return '';
+    }
+    return languages[languageCode].items[linkId].validationText || '';
+};

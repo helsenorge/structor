@@ -75,6 +75,7 @@ export interface CodeStringValue {
 
 export interface ItemTranslation {
     text: string;
+    validationText?: string;
     answerOptions?: CodeStringValue;
 }
 
@@ -278,7 +279,7 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
 
 function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAction) {
     if (draft.qAdditionalLanguages) {
-        draft.qAdditionalLanguages[action.languageCode].items[action.linkId].text = action.text;
+        draft.qAdditionalLanguages[action.languageCode].items[action.linkId][action.propertyName] = action.value;
     }
 }
 

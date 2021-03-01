@@ -22,3 +22,8 @@ export enum TranslatableSidebarProperty {
     display = 'display',
     markdown = 'markdown',
 }
+
+export enum TranslatableItemProperty {
+    text = 'text',
+    validationText = 'validationText',
+}

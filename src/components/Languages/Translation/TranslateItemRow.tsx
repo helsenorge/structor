@@ -2,9 +2,12 @@ import React, { useContext, useState } from 'react';
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
-import { updateItemTranslationAction, updateItemOptionTranslationAction } from '../../../store/treeStore/treeActions';
+import { updateItemOptionTranslationAction, updateItemTranslationAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import TranslateOptionRow from './TranslateOptionRow';
+import { getValidationMessage } from '../../../helpers/QuestionHelper';
+import { getValidationMessageTranslation } from '../../../helpers/LanguageHelper';
+import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 
 type TranslationRowProps = {
     targetLanguage: string;
@@ -24,8 +27,8 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
     const [translatedText, setTranslatedText] = useState(itemTranslation.text);
     const isMarkdown: boolean = item._text ? true : false;
 
-    function dispatchUpdateItemTranslation(text: string) {
-        dispatch(updateItemTranslationAction(targetLanguage, item.linkId, text));
+    function dispatchUpdateItemTranslation(text: string, propertyName: TranslatableItemProperty) {
+        dispatch(updateItemTranslationAction(targetLanguage, item.linkId, propertyName, text));
     }
 
     function dispatchUpdateOptionTranslation(text: string, optionCode?: string) {
@@ -36,13 +39,18 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
 
     function getInputField(): JSX.Element {
         if (isMarkdown) {
-            return <MarkdownEditor data={translatedText} onChange={(text) => dispatchUpdateItemTranslation(text)} />;
+            return (
+                <MarkdownEditor
+                    data={translatedText}
+                    onChange={(text) => dispatchUpdateItemTranslation(text, TranslatableItemProperty.text)}
+                />
+            );
         }
         return (
             <input
                 value={translatedText}
                 onChange={(e) => setTranslatedText(e.target.value)}
-                onBlur={(e) => dispatchUpdateItemTranslation(e.target.value)}
+                onBlur={(e) => dispatchUpdateItemTranslation(e.target.value, TranslatableItemProperty.text)}
             />
         );
     }
@@ -76,6 +84,28 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
                 <FormField>{getReadOnlyInputField()}</FormField>
                 <FormField>{getInputField()}</FormField>
             </div>
+            {getValidationMessage(item) && (
+                <div className="translation-row">
+                    <FormField>
+                        <input defaultValue={getValidationMessage(item)} disabled={true} />
+                    </FormField>
+                    <FormField>
+                        <input
+                            defaultValue={getValidationMessageTranslation(
+                                targetLanguage,
+                                state.qAdditionalLanguages,
+                                item.linkId,
+                            )}
+                            onBlur={(event) =>
+                                dispatchUpdateItemTranslation(
+                                    event.target.value,
+                                    TranslatableItemProperty.validationText,
+                                )
+                            }
+                        />
+                    </FormField>
+                </div>
+            )}
             {item.answerOption && (
                 <>
                     {item.answerOption.map((option) => {

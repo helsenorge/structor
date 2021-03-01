@@ -11,7 +11,7 @@ import {
     Coding,
 } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
-import { TranslatableSidebarProperty } from '../../types/LanguageTypes';
+import { TranslatableItemProperty, TranslatableSidebarProperty } from '../../types/LanguageTypes';
 import { TreeState } from './treeStore';
 
 export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = 'addQuestionnaireLanguage';
@@ -57,7 +57,8 @@ export interface UpdateItemTranslationAction {
     type: typeof UPDATE_ITEM_TRANSLATION_ACTION;
     languageCode: string;
     linkId: string;
-    text: string;
+    propertyName: TranslatableItemProperty;
+    value: string;
 }
 
 export interface UpdateItemOptionTranslationAction {
@@ -169,13 +170,15 @@ export const addQuestionnaireLanguageAction = (additionalLanguageCode: string): 
 export const updateItemTranslationAction = (
     languageCode: string,
     linkId: string,
-    text: string,
+    propertyName: TranslatableItemProperty,
+    value: string,
 ): UpdateItemTranslationAction => {
     return {
         type: UPDATE_ITEM_TRANSLATION_ACTION,
         languageCode,
         linkId,
-        text,
+        propertyName,
+        value,
     };
 };
 
