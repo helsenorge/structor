@@ -15,7 +15,7 @@ export const initialState: ValueSetState = {
 
 export type ActionType = UPDATE_VALUESETS_ACTION;
 
-export const ValueSetStore = createContext<{
+export const ValueSetContext = createContext<{
     state: ValueSetState;
     dispatch: Dispatch<ActionType>;
 }>({
@@ -40,6 +40,6 @@ export const TreeContextProvider = (props: { children: JSX.Element }): JSX.Eleme
     return (
         // eslint-disable-next-line
         // @ts-ignore
-        <ValueSetStore.Provider value={{ state, dispatch }}>{props.children}</ValueSetStore.Provider>
+        <ValueSetContext.Provider value={{ state, dispatch }}>{props.children}</ValueSetContext.Provider>
     );
 };
