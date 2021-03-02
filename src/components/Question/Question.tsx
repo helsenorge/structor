@@ -258,7 +258,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     <>
                         <div className="form-field">
                             <SwitchBtn
-                                label="Checkbox"
+                                label="Flere valg mulig"
                                 onChange={() => dispatchExtensionUpdate()}
                                 initial
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}

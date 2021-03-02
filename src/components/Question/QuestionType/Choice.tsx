@@ -1,17 +1,18 @@
+import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
 import React, { useContext } from 'react';
 import {
     addEmptyOptionToAnswerOptionArray,
     removeOptionFromAnswerOptionArray,
     updateAnswerOption,
 } from '../../../helpers/answerOptionHelper';
-import { checkboxExtension } from '../../../helpers/QuestionHelper';
-import { updateItemAction } from '../../../store/treeStore/treeActions';
-import { TreeContext } from '../../../store/treeStore/treeStore';
-import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
-import { IItemProperty } from '../../../types/IQuestionnareItemType';
+
 import Btn from '../../Btn/Btn';
+import { IItemProperty } from '../../../types/IQuestionnareItemType';
 import RadioBtn from '../../RadioBtn/RadioBtn';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
+import { TreeContext } from '../../../store/treeStore/treeStore';
+import { checkboxExtension } from '../../../helpers/QuestionHelper';
+import { updateItemAction } from '../../../store/treeStore/treeActions';
 
 type Props = {
     item: QuestionnaireItem;
@@ -96,7 +97,7 @@ const Choice = ({ item }: Props): JSX.Element => {
         <>
             <div className="form-field">
                 <SwitchBtn
-                    label="Checkbox"
+                    label="Flere valg mulig"
                     onChange={() => dispatchExtentionUpdate()}
                     initial
                     value={item.extension !== undefined && item.extension.length > 0}
