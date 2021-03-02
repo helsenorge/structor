@@ -47,7 +47,7 @@ const TranslateSidebar = ({
                 const { valueMarkdown } = item._text.extension[0];
 
                 return (
-                    <div key={item.linkId} className="translation-group">
+                    <div key={`${targetLanguage}-${item.linkId}`} className="translation-group">
                         <div className="translation-group-header">{code}</div>
                         <div className="translation-row">
                             <FormField>

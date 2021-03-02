@@ -118,7 +118,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                 if (item && !isItemControlHelp(item)) {
                     const itemNumber = parentNumber === '' ? `${index + 1}` : `${parentNumber}.${index + 1}`;
                     return (
-                        <div key={item.linkId}>
+                        <div key={`${targetLanguage}-${item.linkId}`}>
                             <div className="translation-item">
                                 <TranslateItemRow item={item} targetLanguage={targetLanguage} itemNumber={itemNumber} />
                                 {renderHelpText(orderItem.items)}

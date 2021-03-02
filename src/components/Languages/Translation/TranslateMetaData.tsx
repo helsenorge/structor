@@ -29,7 +29,7 @@ const TranslateMetaData = ({
                 const baseValue = qMetadata[propertyName];
                 const translatedValue = translations[targetLanguage].metaData[propertyName];
                 return (
-                    <div key={propertyName}>
+                    <div key={`${targetLanguage}-${propertyName}`}>
                         <div className="translation-group-header">{label}</div>
                         <div className="translation-row">
                             <FormField>

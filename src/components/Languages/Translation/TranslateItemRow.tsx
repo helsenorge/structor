@@ -67,7 +67,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
             const translation = itemTranslation.answerOptions[option.valueCoding.code];
             return (
                 <TranslateOptionRow
-                    key={`${item.linkId}-${option.valueCoding.code}`}
+                    key={`${targetLanguage}-${item.linkId}-${option.valueCoding.code}`}
                     option={option}
                     translation={translation}
                     onBlur={(text: string) => dispatchUpdateOptionTranslation(text, option.valueCoding.code)}

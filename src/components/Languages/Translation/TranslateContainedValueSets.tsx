@@ -35,7 +35,7 @@ const TranslateContainedValueSets = ({
                     }
                     const translatedText = containedTranslations[id]?.concepts[code];
                     return (
-                        <div key={code} className="translation-row">
+                        <div key={`${targetLanguage}-${code}`} className="translation-row">
                             <FormField>
                                 <input defaultValue={display} disabled={true} />
                             </FormField>
@@ -69,7 +69,7 @@ const TranslateContainedValueSets = ({
             <div className="translation-section-header">ValueSet</div>
             {qContained.map((valueSet: ValueSet) => {
                 return (
-                    <div key={valueSet.id} className="translation-group">
+                    <div key={`${targetLanguage}-${valueSet.id}`} className="translation-group">
                         <div className="translation-group-header">{valueSet.title}</div>
                         {renderValueSetOptions(valueSet)}
                     </div>
