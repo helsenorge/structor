@@ -53,7 +53,7 @@ interface QuestionProps {
     parentArray: Array<string>;
     questionNumber: string;
     containedResources?: Array<ValueSet>;
-    getConditionalArray: (parentArray: string[], linkId: string) => ValueSetComposeIncludeConcept[];
+    conditionalArray: ValueSetComposeIncludeConcept[];
     getItem: (linkId: string) => QuestionnaireItem;
     dispatch: React.Dispatch<ActionType>;
 }
@@ -439,7 +439,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     <div>
                         <EnableWhen
                             getItem={props.getItem}
-                            conditionalArray={props.getConditionalArray(props.parentArray, props.item.linkId)}
+                            conditionalArray={props.conditionalArray}
                             linkId={props.item.linkId}
                             enableWhen={props.item.enableWhen || []}
                             containedResources={props.containedResources}
@@ -458,8 +458,16 @@ export default React.memo(Question, (prevProps: QuestionProps, nextProps: Questi
     // if ALL of these props are identical, do not re-render the question
     const isItemIdentical = JSON.stringify(prevProps.item) === JSON.stringify(nextProps.item);
     const isParentArrayIdentical = JSON.stringify(prevProps.parentArray) === JSON.stringify(nextProps.parentArray);
+    const isConditionalArrayIdentical =
+        JSON.stringify(prevProps.conditionalArray) === JSON.stringify(nextProps.conditionalArray);
     const isQuestionNumberIdentical = prevProps.questionNumber === nextProps.questionNumber;
     const isContainedResourcesIdentical =
         JSON.stringify(prevProps.containedResources) === JSON.stringify(nextProps.containedResources);
-    return isItemIdentical && isParentArrayIdentical && isQuestionNumberIdentical && isContainedResourcesIdentical;
+    return (
+        isItemIdentical &&
+        isParentArrayIdentical &&
+        isConditionalArrayIdentical &&
+        isQuestionNumberIdentical &&
+        isContainedResourcesIdentical
+    );
 });

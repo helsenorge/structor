@@ -34,7 +34,6 @@ const FormFiller = ({ showFormFiller }: Props): JSX.Element => {
                     <IconBtn type="x" title="Lukk" onClick={showFormFiller} />
                     <h1>Forhåndsvisning</h1>
                 </div>
-                <h2 className="q-title">{state.qMetadata.title}</h2>
                 <iframe
                     id="schemeFrame"
                     style={{
