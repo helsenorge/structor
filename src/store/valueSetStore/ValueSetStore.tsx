@@ -1,8 +1,8 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import produce from 'immer';
 
-import { ValueSet } from '../types/fhir';
-import { initPredefinedValueSet } from '../helpers/initPredefinedValueSet';
+import { ValueSet } from '../../types/fhir';
+import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { UPDATE_VALUESET, UPDATE_VALUESETS_ACTION } from './ValueSetAction';
 
 export interface ValueSetState {
@@ -15,7 +15,7 @@ export const initialState: ValueSetState = {
 
 export type ActionType = UPDATE_VALUESETS_ACTION;
 
-export const ValueSetContext = createContext<{
+export const ValueSetStore = createContext<{
     state: ValueSetState;
     dispatch: Dispatch<ActionType>;
 }>({
@@ -40,6 +40,6 @@ export const TreeContextProvider = (props: { children: JSX.Element }): JSX.Eleme
     return (
         // eslint-disable-next-line
         // @ts-ignore
-        <ValueSetContext.Provider value={{ state, dispatch }}>{props.children}</ValueSetContext.Provider>
+        <ValueSetStore.Provider value={{ state, dispatch }}>{props.children}</ValueSetStore.Provider>
     );
 };

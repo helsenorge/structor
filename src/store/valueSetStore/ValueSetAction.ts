@@ -1,4 +1,4 @@
-import { ValueSet } from '../types/fhir';
+import { ValueSet } from '../../types/fhir';
 
 export const UPDATE_VALUESET = 'UPDATE_VALUESET';
 
