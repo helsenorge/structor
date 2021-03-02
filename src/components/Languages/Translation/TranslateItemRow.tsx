@@ -3,7 +3,7 @@ import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { updateItemOptionTranslationAction, updateItemTranslationAction } from '../../../store/treeStore/treeActions';
-import { TreeContext } from '../../../store/treeStore/treeStore';
+import { ItemTranslation, TreeContext } from '../../../store/treeStore/treeStore';
 import TranslateOptionRow from './TranslateOptionRow';
 import { getPlaceHolderText, getValidationMessage } from '../../../helpers/QuestionHelper';
 import { getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
@@ -23,8 +23,8 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
         return null;
     }
 
-    const itemTranslation = state.qAdditionalLanguages[targetLanguage].items[item.linkId];
-    const [translatedText, setTranslatedText] = useState(itemTranslation.text);
+    const itemTranslation: ItemTranslation = state.qAdditionalLanguages[targetLanguage].items[item.linkId] || {};
+    const [translatedText, setTranslatedText] = useState(itemTranslation.text || '');
     const isMarkdown: boolean = item._text ? true : false;
 
     function dispatchUpdateItemTranslation(text: string, propertyName: TranslatableItemProperty) {

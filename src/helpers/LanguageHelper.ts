@@ -39,5 +39,8 @@ export const getItemPropertyTranslation = (
     linkId: string,
     property: TranslatableItemProperty,
 ): string => {
+    if (!languages[languageCode].items[linkId]) {
+        return '';
+    }
     return languages[languageCode].items[linkId][property] || '';
 };
