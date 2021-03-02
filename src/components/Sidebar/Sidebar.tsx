@@ -75,9 +75,8 @@ const Sidebar = (): JSX.Element => {
                                     onBlur={(event) => handleChangeCode(event.target.value, x.linkId)}
                                 />
                             </FormField>
-                            <FormField label="Overskrift">
+                            <FormField label="Teknisk navn">
                                 <input
-                                    placeholder="Legg inn overskrift"
                                     defaultValue={findCurrentCode(x.linkId)?.display}
                                     onBlur={(event) => handleChangeDisplay(event.target.value, x.linkId)}
                                 />
