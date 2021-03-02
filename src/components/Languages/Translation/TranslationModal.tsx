@@ -5,7 +5,7 @@ import { addQuestionnaireLanguageAction, updateItemTranslationAction } from '../
 import Select from '../../Select/Select';
 import './TranslationModal.css';
 import TranslateItemRow from './TranslateItemRow';
-import { getHelpTextTranslation, getLanguageFromCode, supportedLanguages } from '../../../helpers/LanguageHelper';
+import { getItemPropertyTranslation, getLanguageFromCode, supportedLanguages } from '../../../helpers/LanguageHelper';
 import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import TranslateMetaData from './TranslateMetaData';
@@ -77,7 +77,12 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
             return null;
         }
         const helpText = getHelpText(qItems[helpTextItemId.linkId]);
-        const translatedHelpText = getHelpTextTranslation(targetLanguage, qAdditionalLanguages, helpTextItemId.linkId);
+        const translatedHelpText = getItemPropertyTranslation(
+            targetLanguage,
+            qAdditionalLanguages,
+            helpTextItemId.linkId,
+            TranslatableItemProperty.text,
+        );
         return (
             <>
                 <div className="translation-group-header">Hjelpetekst</div>

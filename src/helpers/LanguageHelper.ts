@@ -1,4 +1,9 @@
-import { Language, MetadataProperty, TranslatableMetadataProperty } from '../types/LanguageTypes';
+import {
+    Language,
+    MetadataProperty,
+    TranslatableItemProperty,
+    TranslatableMetadataProperty,
+} from '../types/LanguageTypes';
 import { Languages, TreeState } from '../store/treeStore/treeStore';
 
 export const supportedLanguages: Language[] = [
@@ -28,16 +33,11 @@ export const translatableMetadata: MetadataProperty[] = [
     { propertyName: TranslatableMetadataProperty.copyright, label: 'Copyright', markdown: true },
 ];
 
-export const getHelpTextTranslation = (languageCode: string, languages: Languages, linkId: string): string => {
-    if (!languageCode || !languages || !languages[languageCode] || !languages[languageCode].items[linkId]) {
-        return '';
-    }
-    return languages[languageCode].items[linkId].text;
-};
-
-export const getValidationMessageTranslation = (languageCode: string, languages: Languages, linkId: string): string => {
-    if (!languageCode || !languages || !languages[languageCode]) {
-        return '';
-    }
-    return languages[languageCode].items[linkId].validationText || '';
+export const getItemPropertyTranslation = (
+    languageCode: string,
+    languages: Languages,
+    linkId: string,
+    property: TranslatableItemProperty,
+): string => {
+    return languages[languageCode].items[linkId][property] || '';
 };

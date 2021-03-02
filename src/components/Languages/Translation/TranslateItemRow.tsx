@@ -5,8 +5,8 @@ import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { updateItemOptionTranslationAction, updateItemTranslationAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import TranslateOptionRow from './TranslateOptionRow';
-import { getValidationMessage } from '../../../helpers/QuestionHelper';
-import { getValidationMessageTranslation } from '../../../helpers/LanguageHelper';
+import { getPlaceHolderText, getValidationMessage } from '../../../helpers/QuestionHelper';
+import { getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 
 type TranslationRowProps = {
@@ -91,15 +91,39 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
                     </FormField>
                     <FormField>
                         <input
-                            defaultValue={getValidationMessageTranslation(
+                            defaultValue={getItemPropertyTranslation(
                                 targetLanguage,
                                 state.qAdditionalLanguages,
                                 item.linkId,
+                                TranslatableItemProperty.validationText,
                             )}
                             onBlur={(event) =>
                                 dispatchUpdateItemTranslation(
                                     event.target.value,
                                     TranslatableItemProperty.validationText,
+                                )
+                            }
+                        />
+                    </FormField>
+                </div>
+            )}
+            {getPlaceHolderText(item) && (
+                <div className="translation-row">
+                    <FormField>
+                        <input defaultValue={getPlaceHolderText(item)} disabled={true} />
+                    </FormField>
+                    <FormField>
+                        <input
+                            defaultValue={getItemPropertyTranslation(
+                                targetLanguage,
+                                state.qAdditionalLanguages,
+                                item.linkId,
+                                TranslatableItemProperty.entryFormatText,
+                            )}
+                            onBlur={(event) =>
+                                dispatchUpdateItemTranslation(
+                                    event.target.value,
+                                    TranslatableItemProperty.entryFormatText,
                                 )
                             }
                         />

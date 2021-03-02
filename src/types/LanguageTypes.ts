@@ -26,4 +26,5 @@ export enum TranslatableSidebarProperty {
 export enum TranslatableItemProperty {
     text = 'text',
     validationText = 'validationText',
+    entryFormatText = 'entryFormatText',
 }

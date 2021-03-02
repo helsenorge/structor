@@ -243,4 +243,8 @@ export const getValidationMessage = (item: QuestionnaireItem): string => {
     return item.extension?.find((extension) => extension.url === IExtentionType.validationtext)?.valueString || '';
 };
 
+export const getPlaceHolderText = (item: QuestionnaireItem): string => {
+    return item.extension?.find((extension) => extension.url === IExtentionType.entryFormat)?.valueString || '';
+};
+
 export default itemType;

@@ -76,6 +76,7 @@ export interface CodeStringValue {
 export interface ItemTranslation {
     text: string;
     validationText?: string;
+    entryFormatText?: string;
     answerOptions?: CodeStringValue;
 }
 
