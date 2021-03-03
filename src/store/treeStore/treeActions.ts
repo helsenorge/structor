@@ -11,7 +11,7 @@ import {
     Coding,
 } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
-import { TranslatableItemProperty, TranslatableSidebarProperty } from '../../types/LanguageTypes';
+import { TranslatableItemProperty } from '../../types/LanguageTypes';
 import { TreeState } from './treeStore';
 
 export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = 'addQuestionnaireLanguage';
