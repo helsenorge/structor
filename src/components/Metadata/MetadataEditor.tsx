@@ -13,7 +13,6 @@ import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
-import { supportedLanguages } from '../../helpers/LanguageHelper';
 
 const MetadataEditor = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -48,29 +47,6 @@ const MetadataEditor = (): JSX.Element => {
                         value={qMetadata.id || ''}
                         onChange={(e) => updateMeta(IQuestionnaireMetadataType.id, e.target.value)}
                     />
-                </FormField>
-                <FormField label="Språk">
-                    <Select
-                        value={qMetadata.language || ''}
-                        options={supportedLanguages}
-                        onChange={(e) => {
-                            const display = supportedLanguages.find((x) => x.code === e.target.value)?.localDisplay;
-                            const newMeta = {
-                                ...qMetadata.meta,
-                                tag: qMetadata.meta?.tag?.map((x) =>
-                                    x.system === 'urn:ietf:bcp:47'
-                                        ? {
-                                              system: 'urn:ietf:bcp:47',
-                                              code: e.target.value,
-                                              display: display,
-                                          }
-                                        : x,
-                                ),
-                            };
-                            updateMeta(IQuestionnaireMetadataType.language, e.target.value);
-                            updateMeta(IQuestionnaireMetadataType.meta, newMeta);
-                        }}
-                    ></Select>
                 </FormField>
                 <FormField label="Teknisk navn">
                     <input

@@ -16,8 +16,6 @@ import PublishModal from '../components/PublishModal/PublishModal';
 import Question from '../components/Question/Question';
 import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
 import { isIgnorableItem } from '../helpers/itemControl';
-import Languages from '../components/Languages/Languages';
-import TranslationModal from '../components/Languages/Translation/TranslationModal';
 import Sidebar from '../components/Sidebar/Sidebar';
 import LanguageAccordion from '../components/Languages/LanguageAccordion';
 
@@ -27,7 +25,6 @@ const FormBuilder = (): JSX.Element => {
     const [isShowingFireStructure, setIsShowingFireStructure] = useState(false);
     const [showImportValueSet, setShowImportValueSet] = useState(false);
     const [showResults, setShowAdminMenu] = useState(false);
-    const [showTranslations, setShowTranslations] = useState(false);
 
     const dispatchNewRootItem = () => {
         dispatch(newItemAction(IQuestionnaireItemType.group, []));
@@ -94,7 +91,6 @@ const FormBuilder = (): JSX.Element => {
             {isShowingFireStructure && (
                 <JSONView showJSONView={() => setIsShowingFireStructure(!isShowingFireStructure)} />
             )}
-            {showTranslations && <TranslationModal close={() => setShowTranslations(!showTranslations)} />}
 
             <div className="editor">
                 <div className="anchor-wrapper">
@@ -108,7 +104,6 @@ const FormBuilder = (): JSX.Element => {
                 ) : (
                     <>
                         <div className="page-wrapper">
-                            <Languages showTranslationEditor={() => setShowTranslations(!showTranslations)} />
                             <div className="form-intro">
                                 <div className="form-intro-header">
                                     <h2>Skjemainformasjon</h2>
