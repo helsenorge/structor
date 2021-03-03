@@ -5,12 +5,13 @@ type Props = {
     close: () => void;
     title?: string;
     children: JSX.Element | JSX.Element[];
+    size?: 'large' | 'small';
 };
 
-const Modal = ({ close, children, title }: Props): JSX.Element => {
+const Modal = ({ close, children, title, size = 'small' }: Props): JSX.Element => {
     return (
         <div className="overlay">
-            <div className="modal">
+            <div className={`modal ${size}`}>
                 <div className="title">
                     <IconBtn type="x" title="Lukk" onClick={close} />
                     <h1>{title}</h1>

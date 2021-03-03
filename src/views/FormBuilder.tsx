@@ -19,6 +19,7 @@ import { isIgnorableItem } from '../helpers/itemControl';
 import Languages from '../components/Languages/Languages';
 import TranslationModal from '../components/Languages/Translation/TranslationModal';
 import Sidebar from '../components/Sidebar/Sidebar';
+import LanguageAccordion from '../components/Languages/LanguageAccordion';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -130,6 +131,7 @@ const FormBuilder = (): JSX.Element => {
 
                                 <MetadataEditor />
                                 <Sidebar />
+                                <LanguageAccordion />
                             </div>
 
                             <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{flatQuestionArray}</div>

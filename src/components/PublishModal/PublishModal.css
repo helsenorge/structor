@@ -10,6 +10,11 @@
     text-align: left;
 }
 
+.modal.large {
+    width: 90%;
+    height: 80vh;
+}
+
 .modal>.content>form>button {
     font-weight: 600;
     background-color: #2a69ac;
