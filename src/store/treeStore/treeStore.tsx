@@ -97,7 +97,6 @@ export interface MetadataTranslations {
 }
 
 export interface SidebarItemTranslation {
-    display: string;
     markdown: string;
 }
 
@@ -316,9 +315,9 @@ function updateSidebarTranslation(draft: TreeState, action: UpdateSidebarTransla
     if (draft.qAdditionalLanguages) {
         const sidebarItems = draft.qAdditionalLanguages[action.languageCode].sidebarItems;
         if (!sidebarItems[action.linkId]) {
-            sidebarItems[action.linkId] = { display: '', markdown: '' };
+            sidebarItems[action.linkId] = { markdown: '' };
         }
-        sidebarItems[action.linkId][action.propName] = action.value;
+        sidebarItems[action.linkId].markdown = action.value;
     }
 }
 

@@ -88,7 +88,6 @@ export interface UpdateSidebarTranslationAction {
     type: typeof UPDATE_SIDEBAR_TRANSLATION_ACTION;
     languageCode: string;
     linkId: string;
-    propName: TranslatableSidebarProperty;
     value: string;
 }
 
@@ -228,14 +227,12 @@ export const updateContainedValueSetTranslationAction = (
 export const updateSidebarTranslationAction = (
     languageCode: string,
     linkId: string,
-    propName: TranslatableSidebarProperty,
     value: string,
 ): UpdateSidebarTranslationAction => {
     return {
         type: UPDATE_SIDEBAR_TRANSLATION_ACTION,
         languageCode,
         linkId,
-        propName,
         value,
     };
 };

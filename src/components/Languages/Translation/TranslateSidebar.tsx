@@ -4,7 +4,6 @@ import { isItemControlSidebar } from '../../../helpers/itemControl';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { updateSidebarTranslationAction } from '../../../store/treeStore/treeActions';
-import { TranslatableSidebarProperty } from '../../../types/LanguageTypes';
 
 type TranslateSidebarProps = {
     targetLanguage: string;
@@ -25,15 +24,15 @@ const TranslateSidebar = ({
     }
 
     const translatedSidebarItems = translations[targetLanguage].sidebarItems;
-    const getTranslation = (linkId: string, propName: TranslatableSidebarProperty) => {
+    const getTranslation = (linkId: string) => {
         if (translatedSidebarItems[linkId]) {
-            return translatedSidebarItems[linkId][propName] || '';
+            return translatedSidebarItems[linkId].markdown || '';
         }
         return '';
     };
 
-    const dispatchTranslation = (linkId: string, propName: TranslatableSidebarProperty, value: string) => {
-        dispatch(updateSidebarTranslationAction(targetLanguage, linkId, propName, value));
+    const dispatchTranslation = (linkId: string, value: string) => {
+        dispatch(updateSidebarTranslationAction(targetLanguage, linkId, value));
     };
 
     return (
@@ -48,23 +47,8 @@ const TranslateSidebar = ({
 
                 return (
                     <div key={`${targetLanguage}-${item.linkId}`} className="translation-group">
-                        <div className="translation-group-header">{code}</div>
-                        <div className="translation-row">
-                            <FormField>
-                                <input defaultValue={display} disabled={true} />
-                            </FormField>
-                            <FormField>
-                                <input
-                                    defaultValue={getTranslation(item.linkId, TranslatableSidebarProperty.display)}
-                                    onBlur={(event) =>
-                                        dispatchTranslation(
-                                            item.linkId,
-                                            TranslatableSidebarProperty.display,
-                                            event.target.value,
-                                        )
-                                    }
-                                />
-                            </FormField>
+                        <div className="translation-group-header">
+                            {display} ({code})
                         </div>
                         <div className="translation-row">
                             <FormField>
@@ -72,10 +56,8 @@ const TranslateSidebar = ({
                             </FormField>
                             <FormField>
                                 <MarkdownEditor
-                                    data={getTranslation(item.linkId, TranslatableSidebarProperty.markdown)}
-                                    onChange={(value) =>
-                                        dispatchTranslation(item.linkId, TranslatableSidebarProperty.markdown, value)
-                                    }
+                                    data={getTranslation(item.linkId)}
+                                    onChange={(value) => dispatchTranslation(item.linkId, value)}
                                 />
                             </FormField>
                         </div>
