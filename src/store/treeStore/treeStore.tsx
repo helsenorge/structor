@@ -42,7 +42,6 @@ import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/
 import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOptionHelper';
-import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 
 const INITIAL_LANGUAGE = 'nb-no';
 
@@ -176,7 +175,7 @@ export const initialState: TreeState = {
         subjectType: ['Patient'],
         extension: [],
     },
-    qContained: initPredefinedValueSet,
+    qContained: [],
     qCurrentItemId: '',
     qAdditionalLanguages: {},
 };
