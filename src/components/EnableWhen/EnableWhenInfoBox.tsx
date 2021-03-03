@@ -41,9 +41,9 @@ const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, en
         let display: string | undefined;
         if (item.answerOption) {
             const codingItem = item.answerOption.find(
-                (x) => x.valueCoding.system === coding.system && x.valueCoding.code === coding.code,
+                (x) => x.valueCoding?.system === coding.system && x.valueCoding?.code === coding.code,
             );
-            display = codingItem?.valueCoding.display;
+            display = codingItem?.valueCoding?.display;
         } else if (item.answerValueSet && containedResources) {
             const valueSet = containedResources.find((x) => `#${x.id}` === item.answerValueSet);
             if (valueSet && valueSet.compose && valueSet.compose.include && valueSet.compose.include[0].concept) {

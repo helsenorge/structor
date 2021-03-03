@@ -190,9 +190,8 @@ function buildTranslationBase(draft: TreeState): Translation {
         if (item.answerOption) {
             answerOptions = {};
             item.answerOption.forEach((opt) => {
-                const { code } = opt.valueCoding;
-                if (code && answerOptions) {
-                    answerOptions[code] = '';
+                if (opt.valueCoding?.code && answerOptions) {
+                    answerOptions[opt.valueCoding.code] = '';
                 }
             });
         }

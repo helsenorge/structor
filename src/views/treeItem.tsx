@@ -37,15 +37,15 @@ const TreeItem = (props: TreeItemProps): JSX.Element => {
                     {props.item.answerOption.map((x) => {
                         return (
                             <button
-                                key={x.valueCoding.code}
+                                key={x.valueCoding?.code}
                                 onClick={() => {
                                     const newArray = removeOptionFromAnswerOptionArray(
                                         props.item.answerOption || [],
-                                        x.valueCoding.code || '',
+                                        x.valueCoding?.code || '',
                                     );
                                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                 }}
-                            >{`Delete ${x.valueCoding.display} value`}</button>
+                            >{`Delete ${x.valueCoding?.display} value`}</button>
                         );
                     })}
                 </div>

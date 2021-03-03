@@ -90,9 +90,9 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
             initialOptions =
                 props.item.answerOption?.map((answerOption) => {
                     return {
-                        system: answerOption.valueCoding.system || '',
-                        code: answerOption.valueCoding.code || '',
-                        display: answerOption.valueCoding.display || '',
+                        system: answerOption.valueCoding?.system || '',
+                        code: answerOption.valueCoding?.code || '',
+                        display: answerOption.valueCoding?.display || '',
                     };
                 }) || [];
         }

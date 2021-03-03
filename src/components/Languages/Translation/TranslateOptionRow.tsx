@@ -14,7 +14,7 @@ const TranslateOptionRow = ({ option, translation, onBlur }: TranslateOptionRowP
     return (
         <div className="translation-row">
             <FormField>
-                <input value={option.valueCoding.display} disabled={true} />
+                <input value={option.valueCoding?.display} disabled={true} />
             </FormField>
             <FormField>
                 <input

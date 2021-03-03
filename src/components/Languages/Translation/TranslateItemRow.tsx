@@ -63,14 +63,14 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
     }
 
     function getOptionRow(option: QuestionnaireItemAnswerOption): JSX.Element | null {
-        if (itemTranslation.answerOptions && option.valueCoding.code) {
+        if (itemTranslation.answerOptions && option.valueCoding?.code) {
             const translation = itemTranslation.answerOptions[option.valueCoding.code];
             return (
                 <TranslateOptionRow
                     key={`${targetLanguage}-${item.linkId}-${option.valueCoding.code}`}
                     option={option}
                     translation={translation}
-                    onBlur={(text: string) => dispatchUpdateOptionTranslation(text, option.valueCoding.code)}
+                    onBlur={(text: string) => dispatchUpdateOptionTranslation(text, option.valueCoding?.code)}
                 />
             );
         }
