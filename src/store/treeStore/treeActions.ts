@@ -15,6 +15,7 @@ import { TranslatableItemProperty } from '../../types/LanguageTypes';
 import { TreeState } from './treeStore';
 
 export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = 'addQuestionnaireLanguage';
+export const REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION = 'removeQuestionnaireLanguage';
 export const UPDATE_ITEM_TRANSLATION_ACTION = 'updateItemTranslation';
 export const UPDATE_ITEM_OPTION_TRANSLATION_ACTION = 'updateItemOptionTranslation';
 export const UPDATE_METADATA_TRANSLATION_ACTION = 'updateMetadataTranslation';
@@ -51,6 +52,11 @@ export interface UpdateMarkedLinkId {
 export interface AddQuestionnaireLanguageAction {
     type: typeof ADD_QUESTIONNAIRE_LANGUAGE_ACTION;
     additionalLanguageCode: string;
+}
+
+export interface RemoveQuestionnaireLanguageAction {
+    type: typeof REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION;
+    languageCode: string;
 }
 
 export interface UpdateItemTranslationAction {
@@ -163,6 +169,13 @@ export const addQuestionnaireLanguageAction = (additionalLanguageCode: string): 
     return {
         type: ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
         additionalLanguageCode,
+    };
+};
+
+export const removeQuestionnaireLanguageAction = (languageCode: string): RemoveQuestionnaireLanguageAction => {
+    return {
+        type: REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION,
+        languageCode,
     };
 };
 

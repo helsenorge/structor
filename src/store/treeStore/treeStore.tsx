@@ -37,6 +37,8 @@ import {
     UpdateSidebarTranslationAction,
     UpdateMarkedLinkId,
     UPDATE_MARKED_LINK_ID,
+    REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION,
+    RemoveQuestionnaireLanguageAction,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -47,6 +49,7 @@ const INITIAL_LANGUAGE = 'nb-no';
 
 export type ActionType =
     | AddQuestionnaireLanguageAction
+    | RemoveQuestionnaireLanguageAction
     | UpdateItemTranslationAction
     | UpdateItemOptionTranslationAction
     | ResetQuestionnaireAction
@@ -203,6 +206,13 @@ function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
         draft.qAdditionalLanguages = {};
     }
     draft.qAdditionalLanguages[action.additionalLanguageCode] = buildTranslationBase(draft);
+}
+
+function removeLanguage(draft: TreeState, action: RemoveQuestionnaireLanguageAction) {
+    if (!draft.qAdditionalLanguages) {
+        draft.qAdditionalLanguages = {};
+    }
+    delete draft.qAdditionalLanguages[action.languageCode];
 }
 
 function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
@@ -446,6 +456,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
         case ADD_QUESTIONNAIRE_LANGUAGE_ACTION:
             addLanguage(draft, action);
+            break;
+        case REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION:
+            removeLanguage(draft, action);
             break;
         case RESET_QUESTIONNAIRE_ACTION:
             resetQuestionnaireAction(draft, action);

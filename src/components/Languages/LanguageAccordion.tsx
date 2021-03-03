@@ -1,8 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { supportedLanguages, getLanguageFromCode, getLanguagesInUse } from '../../helpers/LanguageHelper';
-import { addQuestionnaireLanguageAction, updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
+import {
+    addQuestionnaireLanguageAction,
+    removeQuestionnaireLanguageAction,
+    updateQuestionnaireMetadataAction,
+} from '../../store/treeStore/treeActions';
 import { TreeContext } from '../../store/treeStore/treeStore';
-import { Extension, Meta } from '../../types/fhir';
+import { Meta } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import Accordion from '../Accordion/Accordion';
 import Btn from '../Btn/Btn';
@@ -18,7 +22,7 @@ const LanguageAccordion = (): JSX.Element => {
     const [selectedLang, setSelectedLang] = useState('');
     const [translateLang, setTranslateLang] = useState('');
 
-    const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta | Extension[]) => {
+    const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
@@ -28,7 +32,14 @@ const LanguageAccordion = (): JSX.Element => {
         }
     };
 
+    const removeAdditionalLanguage = (language: string) => {
+        if (qAdditionalLanguages !== undefined && qAdditionalLanguages[language]) {
+            dispatch(removeQuestionnaireLanguageAction(language));
+        }
+    };
+
     const languageInUse = getLanguagesInUse(state).map((x) => x.code);
+    const additionalLanguagesInUse = languageInUse.filter((x) => x !== qMetadata.language);
 
     const getUnusedLanguage = supportedLanguages
         .filter((language) => language.code !== qMetadata.language)
@@ -90,11 +101,10 @@ const LanguageAccordion = (): JSX.Element => {
                         </div>
                     </div>
                 )}
-                <div>
-                    <p>Tilleggsspråk:</p>
-                    {languageInUse
-                        .filter((x) => x !== qMetadata.language)
-                        .map((language, index) => (
+                {additionalLanguagesInUse.length > 0 && (
+                    <div>
+                        <p>Tilleggsspråk:</p>
+                        {additionalLanguagesInUse.map((language, index) => (
                             <div key={index} className="enablewhen-box align-everything">
                                 <div>{getLanguageFromCode(language)?.display} </div>
                                 <div className="pull-right btn-group">
@@ -103,7 +113,7 @@ const LanguageAccordion = (): JSX.Element => {
                                         type="button"
                                         size="small"
                                         variant="secondary"
-                                        onClick={() => alert('not implemented')}
+                                        onClick={() => removeAdditionalLanguage(language)}
                                     />
                                     <Btn
                                         title="Rediger"
@@ -118,7 +128,8 @@ const LanguageAccordion = (): JSX.Element => {
                                 </div>
                             </div>
                         ))}
-                </div>
+                    </div>
+                )}
             </Accordion>
         </>
     );
