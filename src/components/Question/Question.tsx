@@ -32,6 +32,7 @@ import itemType, {
 import { removeExtensionValue, setExtensionValue } from '../../helpers/extensionHelper';
 
 import Accordion from '../Accordion/Accordion';
+import { ActionType } from '../../store/treeStore/treeStore';
 import AdvancedQuestionOptions from '../AdvancedQuestionOptions/AdvancedQuestionOptions';
 import Btn from '../Btn/Btn';
 import Choice from './QuestionType/Choice';
@@ -45,7 +46,6 @@ import RadioBtn from '../RadioBtn/RadioBtn';
 import Select from '../Select/Select';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Trashcan from '../../images/icons/trash-outline.svg';
-import { ActionType } from '../../store/treeStore/treeStore';
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
 
 interface QuestionProps {
@@ -258,7 +258,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     <>
                         <div className="form-field">
                             <SwitchBtn
-                                label="Checkbox"
+                                label="Flere valg mulig"
                                 onChange={() => dispatchExtensionUpdate()}
                                 initial
                                 value={props.item.extension !== undefined && props.item.extension.length > 0}
@@ -270,10 +270,13 @@ const Question = (props: QuestionProps): JSX.Element => {
                         {!props.item.answerValueSet && (
                             <Btn
                                 title="+ Legg til alternativ"
+                                type="button"
                                 onClick={() => {
                                     const newArray = addEmptyOptionToAnswerOptionArray(props.item.answerOption || []);
                                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                 }}
+                                variant="secondary"
+                                size="small"
                             />
                         )}
                     </>
