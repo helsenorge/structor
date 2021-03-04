@@ -47,7 +47,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
             );
         }
         return (
-            <input
+            <textarea
                 value={translatedText}
                 onChange={(e) => setTranslatedText(e.target.value)}
                 onBlur={(e) => dispatchUpdateItemTranslation(e.target.value, TranslatableItemProperty.text)}
@@ -59,7 +59,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
         if (isMarkdown) {
             return <MarkdownEditor data={item.text || ''} disabled={true} />;
         }
-        return <input defaultValue={item.text} disabled={true} />;
+        return <textarea defaultValue={item.text} disabled={true} />;
     }
 
     function getOptionRow(option: QuestionnaireItemAnswerOption): JSX.Element | null {
@@ -87,10 +87,10 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
             {getValidationMessage(item) && (
                 <div className="translation-row">
                     <FormField>
-                        <input defaultValue={getValidationMessage(item)} disabled={true} />
+                        <textarea defaultValue={getValidationMessage(item)} disabled={true} />
                     </FormField>
                     <FormField>
-                        <input
+                        <textarea
                             defaultValue={getItemPropertyTranslation(
                                 targetLanguage,
                                 state.qAdditionalLanguages,
@@ -110,10 +110,10 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
             {getPlaceHolderText(item) && (
                 <div className="translation-row">
                     <FormField>
-                        <input defaultValue={getPlaceHolderText(item)} disabled={true} />
+                        <textarea defaultValue={getPlaceHolderText(item)} disabled={true} />
                     </FormField>
                     <FormField>
-                        <input
+                        <textarea
                             defaultValue={getItemPropertyTranslation(
                                 targetLanguage,
                                 state.qAdditionalLanguages,

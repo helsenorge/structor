@@ -14,6 +14,7 @@ import TranslateSidebar from './TranslateSidebar';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
+import Btn from '../../Btn/Btn';
 
 type TranslationModalProps = {
     close: () => void;
@@ -137,15 +138,26 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                                 items={qItems}
                                 dispatch={dispatch}
                             />
-                            <TranslateContainedValueSets
-                                qContained={qContained}
-                                targetLanguage={props.targetLanguage}
-                                translations={qAdditionalLanguages}
-                                dispatch={dispatch}
-                            />
+                            {!!qContained && qContained?.length > 0 && (
+                                <TranslateContainedValueSets
+                                    qContained={qContained}
+                                    targetLanguage={props.targetLanguage}
+                                    translations={qAdditionalLanguages}
+                                    dispatch={dispatch}
+                                />
+                            )}
                             <div>
                                 <div className="translation-section-header">Elementer</div>
                                 {renderItems(state.qOrder)}
+                            </div>
+                            <div className="center-text">
+                                <Btn
+                                    title="Lagre og lukk"
+                                    size="small"
+                                    type="button"
+                                    variant="secondary"
+                                    onClick={props.close}
+                                />
                             </div>
                         </>
                     )}

@@ -24,6 +24,7 @@ const TranslateMetaData = ({
     };
     return (
         <div className="translation-group">
+            <div className="translation-section-header">Skjemadetaljer</div>
             {translatableMetadata.map((prop) => {
                 const { propertyName, label, markdown } = prop;
                 const baseValue = qMetadata[propertyName];
@@ -36,7 +37,7 @@ const TranslateMetaData = ({
                                 {markdown ? (
                                     <MarkdownEditor data={baseValue || ''} disabled={true} />
                                 ) : (
-                                    <input defaultValue={baseValue} disabled={true} />
+                                    <textarea defaultValue={baseValue} disabled={true} />
                                 )}
                             </FormField>
                             <FormField>
@@ -46,13 +47,15 @@ const TranslateMetaData = ({
                                         onChange={(text) => {
                                             dispatchPropertyUpdate(propertyName, text);
                                         }}
+                                        placeholder="Legg inn oversettelse.."
                                     />
                                 ) : (
-                                    <input
+                                    <textarea
                                         defaultValue={translatedValue}
                                         onBlur={(event) => {
                                             dispatchPropertyUpdate(propertyName, event.target.value);
                                         }}
+                                        placeholder="Legg inn oversettelse.."
                                     />
                                 )}
                             </FormField>

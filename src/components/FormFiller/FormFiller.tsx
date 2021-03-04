@@ -49,7 +49,7 @@ const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     return (
         <div className="overlay">
             <div className="iframe-div">
-                <div className="title">
+                <div className="title align-everything">
                     <IconBtn type="x" title="Lukk" onClick={showFormFiller} />
                     <h1>Forhåndsvisning</h1>
                     <div className="pull-right">

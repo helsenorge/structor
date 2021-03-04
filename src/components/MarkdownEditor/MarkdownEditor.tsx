@@ -8,28 +8,11 @@ import Editor from '@helsenorge/ckeditor5-build-markdown';
 import './MarkdownEditor.css';
 import useDebounce from './useDebounce';
 
-const editorConfiguration = {
-    toolbar: [
-        'heading',
-        '|',
-        'bold',
-        'italic',
-        'link',
-        'bulletedList',
-        'numberedList',
-        '|',
-        'blockQuote',
-        '|',
-        'undo',
-        'redo',
-    ],
-    language: 'no-nb',
-};
-
 interface MarkdownEditorProps {
     data: string;
     onChange?: (data: string) => void;
     disabled?: boolean;
+    placeholder?: string;
 }
 
 const MarkdownEditor = (props: MarkdownEditorProps): JSX.Element => {
@@ -37,6 +20,25 @@ const MarkdownEditor = (props: MarkdownEditorProps): JSX.Element => {
     const debouncedValue = useDebounce<string>(value, 500);
     const handleChange = (event: Event, editor: Editor) => {
         setValue(editor.getData());
+    };
+
+    const editorConfiguration = {
+        toolbar: [
+            'heading',
+            '|',
+            'bold',
+            'italic',
+            'link',
+            'bulletedList',
+            'numberedList',
+            '|',
+            'blockQuote',
+            '|',
+            'undo',
+            'redo',
+        ],
+        language: 'no-nb',
+        placeholder: props.placeholder || '',
     };
 
     useEffect(() => {

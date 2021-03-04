@@ -1,27 +1,27 @@
-.translation-modal > .overlay > .modal {
+.translation-modal>.overlay>.modal {
     height: auto;
     width: 90%;
     top: 30px;
     bottom: 30px;
 }
 
-.translation-modal > .overlay > .modal > .title {
+.translation-modal>.overlay>.modal>.title {
     top: 0;
     width: 100%;
     position: sticky;
     z-index: 10;
 }
 
-.translation-modal > .overlay > .modal > .content {
+.translation-modal>.overlay>.modal>.content {
     padding-top: 0;
     z-index: 0;
 }
 
-.translation-modal > .overlay > .modal > .content > .horizontal.equal {
+.translation-modal>.overlay>.modal>.content>.horizontal.equal {
     align-items: start;
 }
 
-.translation-modal > .overlay > .modal > .content > .horizontal > .form-field > div > input {
+.translation-modal>.overlay>.modal>.content>.horizontal>.form-field>div>input {
     width: 100%;
 }
 
@@ -35,54 +35,69 @@
     margin-bottom: 8px;
 }
 
-.sticky-header > .horizontal.equal {
+.sticky-header>.horizontal.equal {
     min-height: 32px;
 }
 
-.sticky-header > .form-field {
+.sticky-header>.horizontal.equal>div:last-child {
+    padding-left: 40px;
+}
+
+.sticky-header>.form-field {
     padding-bottom: 0px;
 }
 
 .translation-section-header {
-    background-color: #8ec1db;
+    background-color: #CCC;
     font-size: 24px;
-    font-weight: 600;
+    font-weight: 400;
     margin-bottom: 12px;
     padding: 12px 6px;
 }
 
 .translation-group {
-    border-bottom: 8px solid #8ec1db;
     margin-bottom: 24px;
 }
 
 .translation-group-header {
-    font-size: 18px;
-    font-weight: 500;
+    padding-left: 10px;
+    font-weight: 300;
 }
 
 .translation-item {
-    border-bottom: 8px solid #8ec1db;
     margin-bottom: 24px;
 }
 
 .translation-row {
     display: flex;
-    padding: 8px 0px;
+    padding: 8px 10px;
 }
 
-.translation-row > div {
+.translation-row>div {
     width: 50%;
 }
 
-.translation-row > *:first-of-type {
+.translation-row>*:first-of-type {
     padding-left: 0px;
 }
 
-.translation-row > * {
-    padding-left: 25px;
+.translation-row>* {
+    padding-left: 40px;
 }
 
-.translation-row > div > input {
+.translation-row>div>input {
     width: 100%;
+}
+
+.translation-row textarea {
+    resize: vertical;
+}
+
+.translation-row textarea:disabled {
+    cursor: not-allowed;
+}
+
+.ck.ck-editor__main>.ck-editor__editable.ck-read-only {
+    background: #f8f8f8;
+    cursor: not-allowed;
 }

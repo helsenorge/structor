@@ -37,10 +37,10 @@ const TranslateContainedValueSets = ({
                     return (
                         <div key={`${targetLanguage}-${code}`} className="translation-row">
                             <FormField>
-                                <input defaultValue={display} disabled={true} />
+                                <textarea defaultValue={display} disabled={true} />
                             </FormField>
                             <FormField>
-                                <input
+                                <textarea
                                     defaultValue={translatedText}
                                     onBlur={(event) => {
                                         dispatch(
@@ -66,7 +66,7 @@ const TranslateContainedValueSets = ({
     }
     return (
         <div>
-            <div className="translation-section-header">ValueSet</div>
+            <div className="translation-section-header">Predefinerte valg</div>
             {qContained.map((valueSet: ValueSet) => {
                 return (
                     <div key={`${targetLanguage}-${valueSet.id}`} className="translation-group">
