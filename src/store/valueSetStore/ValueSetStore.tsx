@@ -15,14 +15,6 @@ export const initialState: ValueSetState = {
 
 export type ActionType = UPDATE_VALUESETS_ACTION;
 
-export const ValueSetContext = createContext<{
-    state: ValueSetState;
-    dispatch: Dispatch<ActionType>;
-}>({
-    state: initialState,
-    dispatch: () => null,
-});
-
 function updateValueSet(draft: ValueSetState, action: UPDATE_VALUESETS_ACTION) {
     draft.predefinedValueSet = [...draft.predefinedValueSet, ...action.items];
 }
@@ -35,7 +27,15 @@ const reducer = produce((draft: ValueSetState, action: ActionType) => {
     }
 });
 
-export const TreeContextProvider = (props: { children: JSX.Element }): JSX.Element => {
+export const ValueSetContext = createContext<{
+    state: ValueSetState;
+    dispatch: Dispatch<ActionType>;
+}>({
+    state: initialState,
+    dispatch: () => null,
+});
+
+export const ValueSetContextProvider = (props: { children: JSX.Element }): JSX.Element => {
     const [state, dispatch] = useReducer(reducer, initialState);
     return (
         // eslint-disable-next-line
