@@ -64,7 +64,7 @@ const PredefinedValueSet = ({ linkId, selectedValueSet }: Props): JSX.Element =>
                         const valueSet = predefinedValueSet.find((x) => x.id === id);
                         if (valueSet) {
                             dispatch(updateItemAction(linkId, IItemProperty.answerValueSet, `#${id}`));
-                            dispatch(appendValueSetAction([valueSet]));
+                            dispatch(appendValueSetAction(valueSet));
                         }
                     }}
                     placeholder="Velg et alternativ.."

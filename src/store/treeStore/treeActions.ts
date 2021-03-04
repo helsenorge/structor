@@ -155,7 +155,7 @@ export interface ReorderItemAction {
 
 export interface AppendValueSetAction {
     type: typeof APPEND_VALUESET_ACTION;
-    valueSet: ValueSet[];
+    valueSet: ValueSet;
 }
 
 export const updateMarkedLinkIdAction = (markedLinkId: string): UpdateMarkedLinkId => {
@@ -421,7 +421,7 @@ export const reorderItemAction = (linkId: string, order: Array<string>, newIndex
     };
 };
 
-export const appendValueSetAction = (valueSet: ValueSet[]): AppendValueSetAction => {
+export const appendValueSetAction = (valueSet: ValueSet): AppendValueSetAction => {
     return {
         type: APPEND_VALUESET_ACTION,
         valueSet,

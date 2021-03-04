@@ -126,7 +126,7 @@ export interface TreeState {
     qItems: Items;
     qOrder: OrderItem[];
     qMetadata: IQuestionnaireMetadata;
-    qContained?: Array<ValueSet>;
+    qContained?: ValueSet[];
     qCurrentItemId?: string;
     qAdditionalLanguages?: Languages;
 }
@@ -402,10 +402,14 @@ function reorderItem(draft: TreeState, action: ReorderItemAction): void {
 }
 
 function appendValueSet(draft: TreeState, action: AppendValueSetAction): void {
+    const valueSetExists = draft.qContained && !!draft.qContained.find((x) => x.id === action.valueSet.id);
+    if (valueSetExists) {
+        return;
+    }
     if (draft.qContained && draft.qContained.length > 0) {
-        draft.qContained = [...draft.qContained, ...action.valueSet];
+        draft.qContained = [...draft.qContained, action.valueSet];
     } else {
-        draft.qContained = [...action.valueSet];
+        draft.qContained = [action.valueSet];
     }
 }
 
