@@ -63,8 +63,10 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
     }
 
     function getOptionRow(option: QuestionnaireItemAnswerOption): JSX.Element | null {
-        if (itemTranslation.answerOptions && option.valueCoding?.code) {
-            const translation = itemTranslation.answerOptions[option.valueCoding.code];
+        if (option.valueCoding?.code) {
+            const translation = itemTranslation.answerOptions
+                ? itemTranslation.answerOptions[option.valueCoding.code] || ''
+                : '';
             return (
                 <TranslateOptionRow
                     key={`${targetLanguage}-${item.linkId}-${option.valueCoding.code}`}

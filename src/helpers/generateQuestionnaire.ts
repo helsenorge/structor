@@ -90,6 +90,7 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
 
     const itemTranslation = languages[languageCode].items[orderItem.linkId];
 
+    // TODO i18n håndtere hvis ingen oversettelse finnes
     // item.text
     let _text = undefined;
     const translatedText = itemTranslation.text;

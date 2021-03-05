@@ -17,6 +17,10 @@ export const getLanguageFromCode = (languageCode: string): Language | undefined 
     return supportedLanguages.find((x) => x.code.toLowerCase() === languageCode.toLowerCase());
 };
 
+export const isSupportedLanguage = (languageCode: string): boolean => {
+    return supportedLanguages.some((lang) => lang.code.toLowerCase() === languageCode.toLowerCase());
+};
+
 export const getLanguagesInUse = ({ qMetadata, qAdditionalLanguages }: TreeState): Language[] => {
     return supportedLanguages.filter(
         (x) =>
