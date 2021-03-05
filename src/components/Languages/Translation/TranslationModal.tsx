@@ -9,7 +9,7 @@ import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import TranslateMetaData from './TranslateMetaData';
 import TranslateContainedValueSets from './TranslateContainedValueSets';
-import { getHelpText, isItemControlHelp, isItemControlSidebar } from '../../../helpers/itemControl';
+import { getHelpText, isIgnorableItem, isItemControlHelp, isItemControlSidebar } from '../../../helpers/itemControl';
 import TranslateSidebar from './TranslateSidebar';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
@@ -119,6 +119,10 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         return [];
     };
 
+    const removeUnsupportedChildren = (items: OrderItem[]) => {
+        return items.filter((x) => !isIgnorableItem(state.qItems[x.linkId]));
+    };
+
     return (
         <div className="translation-modal">
             <Modal close={props.close} title="Oversett skjema">
@@ -148,7 +152,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                             )}
                             <div>
                                 <div className="translation-section-header">Elementer</div>
-                                {renderItems(state.qOrder)}
+                                {renderItems(removeUnsupportedChildren(state.qOrder))}
                             </div>
                             <div className="center-text">
                                 <Btn
