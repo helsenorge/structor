@@ -356,6 +356,17 @@ function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): voi
     const arrayToDuplicateInto = findTreeArray(action.order, draft.qOrder);
     const indexToDuplicate = arrayToDuplicateInto.findIndex((x) => x.linkId === action.linkId);
 
+    const copyItemTranslations = (linkIdToCopyFrom: string, newLinkId: string) => {
+        if (draft.qAdditionalLanguages) {
+            Object.values(draft.qAdditionalLanguages).forEach((translation) => {
+                const translationItemToCopyFrom = translation.items[linkIdToCopyFrom];
+                if (translationItemToCopyFrom) {
+                    translation.items[newLinkId] = translationItemToCopyFrom;
+                }
+            });
+        }
+    };
+
     const copyItemWithSubtrees = (itemToCopyFrom: OrderItem, parentMap: { [key: string]: string }): OrderItem => {
         const copyItem: QuestionnaireItem = JSON.parse(JSON.stringify(draft.qItems[itemToCopyFrom.linkId]));
         const newId = createUUID();
@@ -372,7 +383,7 @@ function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): voi
         // add new item
         draft.qItems[copyItem.linkId] = copyItem;
 
-        // TODO i18n Copy translations, if any
+        copyItemTranslations(itemToCopyFrom.linkId, newId);
 
         // add item to tree and generate subtrees
         return {
