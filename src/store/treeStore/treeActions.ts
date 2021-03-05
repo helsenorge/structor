@@ -280,6 +280,7 @@ export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>
         type: type,
         text: '',
         extension: [],
+        required: true,
     } as QuestionnaireItem;
     return {
         type: NEW_ITEM_ACTION,

@@ -78,7 +78,7 @@ const LanguageAccordion = (): JSX.Element => {
                 {getUnusedLanguage.length > 0 && (
                     <div className="horizontal equal">
                         <div style={{ marginBottom: 10, width: '100%' }}>
-                            <FormField label="Legg til support for tilleggsspråk">
+                            <FormField label="Legg til støtte for tilleggsspråk">
                                 <Select
                                     placeholder="Velg et språk.."
                                     options={getUnusedLanguage}
@@ -116,7 +116,7 @@ const LanguageAccordion = (): JSX.Element => {
                                         onClick={() => removeAdditionalLanguage(language)}
                                     />
                                     <Btn
-                                        title="Rediger"
+                                        title="Oversett"
                                         type="button"
                                         size="small"
                                         variant="primary"
