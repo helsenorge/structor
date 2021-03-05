@@ -14,16 +14,19 @@ import {
     NEW_ITEM_ACTION,
     NewItemAction,
     REMOVE_ITEM_ATTRIBUTE_ACTION,
+    REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION,
     RemoveItemAttributeAction,
+    RemoveQuestionnaireLanguageAction,
     REORDER_ITEM_ACTION,
     ReorderItemAction,
     RESET_QUESTIONNAIRE_ACTION,
     ResetQuestionnaireAction,
     UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION,
     UPDATE_ITEM_ACTION,
-    UPDATE_ITEM_TRANSLATION_ACTION,
     UPDATE_ITEM_OPTION_TRANSLATION_ACTION,
+    UPDATE_ITEM_TRANSLATION_ACTION,
     UPDATE_LINK_ID_ACTION,
+    UPDATE_MARKED_LINK_ID,
     UPDATE_METADATA_TRANSLATION_ACTION,
     UPDATE_QUESTIONNAIRE_METADATA_ACTION,
     UPDATE_SIDEBAR_TRANSLATION_ACTION,
@@ -32,13 +35,10 @@ import {
     UpdateItemOptionTranslationAction,
     UpdateItemTranslationAction,
     UpdateLinkIdAction,
+    UpdateMarkedLinkId,
     UpdateMetadataTranslationAction,
     UpdateQuestionnaireMetadataAction,
     UpdateSidebarTranslationAction,
-    UpdateMarkedLinkId,
-    UPDATE_MARKED_LINK_ID,
-    REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION,
-    RemoveQuestionnaireLanguageAction,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -410,7 +410,7 @@ function appendValueSet(draft: TreeState, action: AppendValueSetAction): void {
 }
 
 function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
-    const { qItems, qOrder } = draft;
+    const { qItems, qOrder, qAdditionalLanguages } = draft;
     const { oldLinkId, newLinkId, parentArray } = action;
 
     // Replace in qItems
@@ -442,7 +442,13 @@ function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
         });
     });
 
-    // TODO i18n Replace in qAdditionalLanguages
+    if (qAdditionalLanguages) {
+        Object.values(qAdditionalLanguages).forEach((translation) => {
+            const oldItemTranslation = translation.items[oldLinkId];
+            translation.items[newLinkId] = oldItemTranslation;
+            delete translation.items[oldLinkId];
+        });
+    }
 }
 
 function removeAttributeFromItem(draft: TreeState, action: RemoveItemAttributeAction): void {
