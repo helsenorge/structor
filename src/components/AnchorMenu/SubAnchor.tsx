@@ -16,6 +16,7 @@ type SubAnchorProps = {
     parentArray: Array<string>;
     qItems: Items;
     children?: JSX.Element | JSX.Element[];
+    parentQuestionNumber: string;
 };
 
 const SubAnchor = (props: SubAnchorProps): JSX.Element => {
@@ -74,6 +75,13 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
         return items.filter((x) => !isIgnorableItem(props.qItems[x.linkId]));
     };
 
+    const showHierarchy = (index: number) => {
+        if (props.parentQuestionNumber) {
+            return `${props.parentQuestionNumber}.${index + 1}`;
+        }
+        return `${index + 1}`;
+    };
+
     return (
         <div style={{ marginLeft: props.parentArray.length * 2 }}>
             <Droppable droppableId={`droppable-${props.parentItem}`} type={JSON.stringify(props.parentArray)}>
@@ -100,8 +108,9 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                             <span className="anchor-icon" style={{ paddingRight: 10 }}>
                                                 {getRelevantIcon(props.qItems[item.linkId].type)}
                                             </span>
-                                            <span className="truncate">
-                                                {props.qItems[item.linkId].text || <i>Legg inn spørsmål</i>}
+                                            <span className="truncate" title={props.qItems[item.linkId].text || ''}>
+                                                {showHierarchy(index)}{' '}
+                                                {props.qItems[item.linkId].text || <i>Legg inn tekst</i>}
                                             </span>
                                             <span {...provided.dragHandleProps} className="anchor-icon">
                                                 <img
@@ -119,6 +128,7 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                                     parentItem={item.linkId}
                                                     qItems={props.qItems}
                                                     parentArray={[...props.parentArray, item.linkId]}
+                                                    parentQuestionNumber={showHierarchy(index)}
                                                 />
                                             )}
                                         </div>
