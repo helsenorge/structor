@@ -183,28 +183,15 @@ export const initialState: TreeState = {
     qAdditionalLanguages: {},
 };
 
-function buildTranslationBase(draft: TreeState): Translation {
-    const translations: Translation = { items: {}, sidebarItems: {}, metaData: {}, contained: {} };
-    Object.values(draft.qItems).forEach((item) => {
-        let answerOptions: CodeStringValue | undefined = undefined;
-        if (item.answerOption) {
-            answerOptions = {};
-            item.answerOption.forEach((opt) => {
-                if (opt.valueCoding?.code && answerOptions) {
-                    answerOptions[opt.valueCoding.code] = '';
-                }
-            });
-        }
-        translations.items[item.linkId] = { text: '', answerOptions };
-    });
-    return translations;
+function buildTranslationBase(): Translation {
+    return { items: {}, sidebarItems: {}, metaData: {}, contained: {} };
 }
 
 function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
     if (!draft.qAdditionalLanguages) {
         draft.qAdditionalLanguages = {};
     }
-    draft.qAdditionalLanguages[action.additionalLanguageCode] = buildTranslationBase(draft);
+    draft.qAdditionalLanguages[action.additionalLanguageCode] = buildTranslationBase();
 }
 
 function removeLanguage(draft: TreeState, action: RemoveQuestionnaireLanguageAction) {
@@ -297,9 +284,10 @@ function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAc
 function updateItemOptionTranslation(draft: TreeState, action: UpdateItemOptionTranslationAction) {
     if (draft.qAdditionalLanguages) {
         const item = draft.qAdditionalLanguages[action.languageCode].items[action.linkId];
-        if (item.answerOptions) {
-            item.answerOptions[action.optionCode] = action.text;
+        if (!item.answerOptions) {
+            item.answerOptions = {};
         }
+        item.answerOptions[action.optionCode] = action.text;
     }
 }
 
@@ -346,7 +334,7 @@ function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value
     }
 }
 
-function resetQuestionnaireAction(draft: TreeState, action: ResetQuestionnaireAction): void {
+function resetQuestionnaire(draft: TreeState, action: ResetQuestionnaireAction): void {
     const newState: TreeState = action.newState || initialState;
     draft.qOrder = newState.qOrder;
     draft.qItems = newState.qItems;
@@ -464,7 +452,7 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             removeLanguage(draft, action);
             break;
         case RESET_QUESTIONNAIRE_ACTION:
-            resetQuestionnaireAction(draft, action);
+            resetQuestionnaire(draft, action);
             break;
         case UPDATE_QUESTIONNAIRE_METADATA_ACTION:
             updateQuestionnaireMetadataProperty(draft, action);

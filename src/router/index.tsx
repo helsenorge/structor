@@ -21,11 +21,11 @@ export default function Routes(): JSX.Element {
                 </TreeContextProvider>
             </Route>
             <Route path="/new-create-form" exact>
-                <ValueSetContextProvider>
-                    <TreeContextProvider>
+                <TreeContextProvider>
+                    <ValueSetContextProvider>
                         <FormBuilder />
-                    </TreeContextProvider>
-                </ValueSetContextProvider>
+                    </ValueSetContextProvider>
+                </TreeContextProvider>
             </Route>
         </Switch>
     );

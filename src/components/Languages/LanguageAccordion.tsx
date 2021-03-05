@@ -39,7 +39,7 @@ const LanguageAccordion = (): JSX.Element => {
     };
 
     const languageInUse = getLanguagesInUse(state).map((x) => x.code);
-    const additionalLanguagesInUse = languageInUse.filter((x) => x !== qMetadata.language);
+    const additionalLanguagesInUse = languageInUse.filter((x) => x.toLowerCase() !== qMetadata.language?.toLowerCase());
 
     const getUnusedLanguage = supportedLanguages
         .filter((language) => language.code !== qMetadata.language)

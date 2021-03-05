@@ -1,4 +1,4 @@
-import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
+import { Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 
 const itemType = [
@@ -239,12 +239,16 @@ export const EnrichmentSet: ValueSetComposeIncludeConcept[] = [
     },
 ];
 
-export const getValidationMessage = (item: QuestionnaireItem): string => {
-    return item.extension?.find((extension) => extension.url === IExtentionType.validationtext)?.valueString || '';
+export const getValidationMessage = (item?: QuestionnaireItem): string => {
+    return item?.extension?.find((extension) => extension.url === IExtentionType.validationtext)?.valueString || '';
 };
 
-export const getPlaceHolderText = (item: QuestionnaireItem): string => {
-    return item.extension?.find((extension) => extension.url === IExtentionType.entryFormat)?.valueString || '';
+export const getPlaceHolderText = (item?: QuestionnaireItem): string => {
+    return item?.extension?.find((extension) => extension.url === IExtentionType.entryFormat)?.valueString || '';
+};
+
+export const getMarkdownText = (extensions?: Extension[]): string => {
+    return extensions?.find((extension) => extension.url === IExtentionType.markdown)?.valueMarkdown || '';
 };
 
 export default itemType;
