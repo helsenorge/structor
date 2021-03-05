@@ -89,6 +89,7 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
                                                 return index === ewIndex
                                                     ? ({
                                                           question: event.target.value,
+                                                          operator: IOperator.equal,
                                                       } as QuestionnaireItemEnableWhen)
                                                     : x;
                                             });
