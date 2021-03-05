@@ -231,6 +231,15 @@ function newItem(draft: TreeState, action: NewItemAction): void {
 }
 
 function deleteItem(draft: TreeState, action: DeleteItemAction): void {
+    const deleteItemTranslations = (linkIdToDelete: string, languages?: Languages) => {
+        if (!languages) {
+            return;
+        }
+        Object.values(languages).forEach((translation) => {
+            delete translation.items[linkIdToDelete];
+        });
+    };
+
     const arrayToDeleteItemFrom = findTreeArray(action.order, draft.qOrder);
     const indexToDelete = arrayToDeleteItemFrom.findIndex((x) => x.linkId === action.linkId);
 
@@ -238,12 +247,11 @@ function deleteItem(draft: TreeState, action: DeleteItemAction): void {
     const itemsToDelete = [action.linkId, ...getLinkIdOfAllSubItems(arrayToDeleteItemFrom[indexToDelete].items, [])];
     itemsToDelete.forEach((linkIdToDelete: string) => {
         delete draft.qItems[linkIdToDelete];
+        deleteItemTranslations(linkIdToDelete, draft.qAdditionalLanguages);
     });
 
     // delete node from qOrder
     arrayToDeleteItemFrom.splice(indexToDelete, 1);
-
-    // TODO i18n slett fra qLanguages
 }
 
 function updateItem(draft: TreeState, action: UpdateItemAction): void {
