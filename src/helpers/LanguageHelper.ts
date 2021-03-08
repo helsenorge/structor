@@ -29,7 +29,7 @@ export const getLanguagesInUse = ({ qMetadata, qAdditionalLanguages }: TreeState
     return supportedLanguages.filter(
         (x) =>
             qMetadata.language?.toLowerCase() === x.code.toLowerCase() ||
-            (qAdditionalLanguages && qAdditionalLanguages[x.code.toLowerCase()]),
+            (qAdditionalLanguages && qAdditionalLanguages[x.code]),
     );
 };
 
