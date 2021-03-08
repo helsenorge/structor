@@ -5,7 +5,6 @@ import { updateItemTranslationAction } from '../../../store/treeStore/treeAction
 import './TranslationModal.css';
 import TranslateItemRow from './TranslateItemRow';
 import { getItemPropertyTranslation, getLanguageFromCode } from '../../../helpers/LanguageHelper';
-import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import TranslateMetaData from './TranslateMetaData';
 import TranslateContainedValueSets from './TranslateContainedValueSets';
@@ -26,13 +25,10 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     const { qItems, qAdditionalLanguages, qMetadata, qContained } = state;
 
     const isTranslatableItem = (item: QuestionnaireItem): boolean =>
-        // Groups without text
-        !(item.type === IQuestionnaireItemType.group && !item.text) &&
         // Hidden items
         !item.extension?.some(
             (ext) => ext.url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-hidden' && ext.valueBoolean,
-        ) &&
-        !isItemControlSidebar(item);
+        ) && !isItemControlSidebar(item);
 
     const translatableItems = Object.values(qItems).filter((question) => {
         return isTranslatableItem(question);
