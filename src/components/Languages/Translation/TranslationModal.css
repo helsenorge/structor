@@ -65,7 +65,9 @@
 }
 
 .translation-item {
+    border: solid 1px #c0d7dc;
     margin-bottom: 24px;
+    padding-top: 13px;
 }
 
 .translation-row {
