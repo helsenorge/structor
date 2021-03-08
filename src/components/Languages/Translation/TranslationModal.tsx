@@ -14,6 +14,7 @@ import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 import Btn from '../../Btn/Btn';
+import { IExtentionType } from '../../../types/IQuestionnareItemType';
 
 type TranslationModalProps = {
     close: () => void;
@@ -26,9 +27,8 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
 
     const isTranslatableItem = (item: QuestionnaireItem): boolean =>
         // Hidden items
-        !item.extension?.some(
-            (ext) => ext.url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-hidden' && ext.valueBoolean,
-        ) && !isItemControlSidebar(item);
+        !item.extension?.some((ext) => ext.url === IExtentionType.hidden && ext.valueBoolean) &&
+        !isItemControlSidebar(item);
 
     const translatableItems = Object.values(qItems).filter((question) => {
         return isTranslatableItem(question);
