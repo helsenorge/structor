@@ -14,14 +14,7 @@ type Props = {
 const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
     const [selectedLanguage, setSelectedLanguage] = useState(language || state.qMetadata.language || 'nb-no');
-
     const languages = getLanguagesInUse(state);
-    const title =
-        selectedLanguage !== state.qMetadata.language &&
-        state.qAdditionalLanguages &&
-        state.qAdditionalLanguages[selectedLanguage]
-            ? state.qAdditionalLanguages[selectedLanguage].metaData.title
-            : state.qMetadata.title;
 
     function iFrameLoaded() {
         const questionnaireString = generateQuestionnaireForPreview(state, selectedLanguage);
@@ -64,7 +57,6 @@ const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                         />
                     </div>
                 </div>
-                <h2 className="q-title">{title}</h2>
                 <iframe
                     id="schemeFrame"
                     style={{

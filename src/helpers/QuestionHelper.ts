@@ -19,15 +19,15 @@ const itemType = [
         code: IQuestionnaireItemType.text,
     },
     {
-        display: 'Flere alternativer',
+        display: 'Alternativer',
         code: IQuestionnaireItemType.choice,
     },
     {
-        display: 'Flere alternativer med åpent svar',
+        display: 'Alternativer med åpent svar',
         code: IQuestionnaireItemType.openChoice,
     },
     {
-        display: 'Predefinerte alternativer',
+        display: 'Forhåndsdefinerte alternativer',
         code: IQuestionnaireItemType.predefined,
     },
     {
