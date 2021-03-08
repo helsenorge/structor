@@ -30,11 +30,17 @@ export const getLanguagesInUse = ({ qMetadata, qAdditionalLanguages }: TreeState
 };
 
 export const translatableMetadata: MetadataProperty[] = [
-    { propertyName: TranslatableMetadataProperty.title, label: 'Tittel', markdown: false },
-    { propertyName: TranslatableMetadataProperty.description, label: 'Beskrivelse', markdown: false },
-    { propertyName: TranslatableMetadataProperty.publisher, label: 'Utsteder', markdown: false },
-    { propertyName: TranslatableMetadataProperty.purpose, label: 'Formål', markdown: true },
-    { propertyName: TranslatableMetadataProperty.copyright, label: 'Copyright', markdown: true },
+    { propertyName: TranslatableMetadataProperty.title, label: 'Tittel', markdown: false, mustBeUnique: false },
+    { propertyName: TranslatableMetadataProperty.id, label: 'Id', markdown: false, mustBeUnique: true },
+    {
+        propertyName: TranslatableMetadataProperty.description,
+        label: 'Beskrivelse',
+        markdown: false,
+        mustBeUnique: false,
+    },
+    { propertyName: TranslatableMetadataProperty.publisher, label: 'Utsteder', markdown: false, mustBeUnique: false },
+    { propertyName: TranslatableMetadataProperty.purpose, label: 'Formål', markdown: true, mustBeUnique: false },
+    { propertyName: TranslatableMetadataProperty.copyright, label: 'Copyright', markdown: true, mustBeUnique: false },
 ];
 
 export const getItemPropertyTranslation = (

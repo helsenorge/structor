@@ -5,6 +5,7 @@ export type Language = {
 };
 
 export enum TranslatableMetadataProperty {
+    id = 'id',
     title = 'title',
     description = 'description',
     publisher = 'publisher',
@@ -15,7 +16,8 @@ export enum TranslatableMetadataProperty {
 export type MetadataProperty = {
     propertyName: TranslatableMetadataProperty;
     label: string;
-    markdown?: boolean;
+    markdown: boolean;
+    mustBeUnique: boolean;
 };
 
 export enum TranslatableItemProperty {

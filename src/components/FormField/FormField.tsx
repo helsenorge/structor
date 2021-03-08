@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 type Props = {
     label?: string;
-    children?: JSX.Element | JSX.Element[];
+    children?: ReactNode;
 };
 
 const FormField = ({ label, children }: Props): JSX.Element => {
