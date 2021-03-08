@@ -8,25 +8,23 @@ export const isIgnorableItem = (item: QuestionnaireItem): boolean => {
 export const isItemControlHelp = (item: QuestionnaireItem): boolean => {
     const hasItemControlExtention = item.extension?.find((x) => x.url === IExtentionType.itemControl);
 
-    const isHelpItem =
+    return (
         item.extension !== undefined &&
         hasItemControlExtention !== undefined &&
         hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-        hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help';
-
-    return isHelpItem;
+        hasItemControlExtention.valueCodeableConcept.coding[0].code === 'help'
+    );
 };
 
 export const isItemControlSidebar = (item: QuestionnaireItem): boolean => {
     const hasItemControlExtention = item.extension?.find((x) => x.url === IExtentionType.itemControl);
 
-    const isSidebarItem =
+    return (
         item.extension !== undefined &&
         hasItemControlExtention !== undefined &&
         hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-        hasItemControlExtention.valueCodeableConcept.coding[0].code === 'sidebar';
-
-    return isSidebarItem;
+        hasItemControlExtention.valueCodeableConcept.coding[0].code === 'sidebar'
+    );
 };
 
 export const getHelpText = (item: QuestionnaireItem): string => {

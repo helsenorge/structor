@@ -77,7 +77,7 @@ const TranslateMetaDataRow = ({
         Object.entries(translations)
             .filter(([languageCode]) => languageCode !== targetLanguage)
             .forEach(([, translation]) => {
-                usedPropertyValues.push(translation.metaData[propertyName] as string);
+                usedPropertyValues.push(translation.metaData[propertyName]);
             });
         return !usedPropertyValues.some((usedValue) => usedValue === value);
     };

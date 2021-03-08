@@ -213,7 +213,7 @@ function mapToTreeState(resource: Bundle | Questionnaire): TreeState {
     let qAdditionalLanguages: Languages = {};
     if (resource.resourceType === 'Bundle' && resource.entry) {
         mainQuestionnaire = resource.entry[0] as Questionnaire;
-        qAdditionalLanguages = extractTranslations(resource as Bundle);
+        qAdditionalLanguages = extractTranslations(resource);
     } else {
         mainQuestionnaire = resource as Questionnaire;
     }
