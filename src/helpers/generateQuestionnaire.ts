@@ -59,7 +59,10 @@ const getTranslatedContained = (qContained: Array<ValueSet> | undefined, transla
         }
 
         const concept = valueSet.compose.include[0].concept.map((c) => {
-            const translatedValue = valueSet.id ? translation.contained[valueSet.id].concepts[c.code] : '';
+            const translatedValue =
+                valueSet.id && translation.contained[valueSet.id]
+                    ? translation.contained[valueSet.id].concepts[c.code]
+                    : '';
             return { ...c, display: translatedValue };
         });
 
@@ -90,10 +93,9 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
 
     const itemTranslation = languages[languageCode].items[orderItem.linkId];
 
-    // TODO i18n håndtere hvis ingen oversettelse finnes
     // item.text
     let _text = undefined;
-    const translatedText = itemTranslation.text;
+    const translatedText = itemTranslation?.text;
     const markdownExtension = getExtension(currentItem._text?.extension, IExtentionType.markdown);
     if (markdownExtension) {
         const translatedMarkdownExtension = { ...markdownExtension, valueMarkdown: translatedText };
@@ -110,7 +112,7 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
     if (validationTextExtension) {
         const translatedValidationTextExtension = {
             ...validationTextExtension,
-            valueString: itemTranslation.validationText,
+            valueString: itemTranslation?.validationText,
         };
         extension = updateTranslatedExtension(extension, translatedValidationTextExtension);
     }
@@ -120,12 +122,12 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
     if (entryFormatExtension) {
         const translatedEntryFormatExtension = {
             ...entryFormatExtension,
-            valueString: itemTranslation.entryFormatText,
+            valueString: itemTranslation?.entryFormatText,
         };
         extension = updateTranslatedExtension(extension, translatedEntryFormatExtension);
     }
 
-    const answerOption = getTranslatedAnswerOptions(currentItem.answerOption, itemTranslation.answerOptions);
+    const answerOption = getTranslatedAnswerOptions(currentItem.answerOption, itemTranslation?.answerOptions);
 
     return { ...currentItem, text: translatedText, _text, extension, answerOption };
 };
