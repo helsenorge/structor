@@ -1,12 +1,13 @@
-import React, { FocusEvent, useContext, useState } from 'react';
-import { TreeContext } from '../../store/treeStore/treeStore';
-import { Extension, QuestionnaireItem } from '../../types/fhir';
+import React, { FocusEvent, useContext, useEffect, useState } from 'react';
+import { OrderItem, TreeContext } from '../../store/treeStore/treeStore';
+import { Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import {
     newItemHelpIconAction,
     updateItemAction,
     updateLinkIdAction,
     deleteItemAction,
     removeItemAttributeAction,
+    moveItemAction,
 } from '../../store/treeStore/treeActions';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
@@ -17,17 +18,26 @@ import FormField from '../FormField/FormField';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import Select from '../Select/Select';
 import { EnrichmentSet } from '../../helpers/QuestionHelper';
+import Btn from '../Btn/Btn';
+import { isIgnorableItem } from '../../helpers/itemControl';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
     parentArray: Array<string>;
 };
 
+interface FlattOrder extends ValueSetComposeIncludeConcept {
+    parent: Array<string>;
+}
+
 const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const [isDuplicateLinkId, setDuplicateLinkId] = useState(false);
+    const [hierarki, setHierarki] = useState<FlattOrder[]>([]);
     const [linkId, setLinkId] = useState(item.linkId);
     const { qItems, qOrder } = state;
+    const [linkIdMoveTo, setLinkIdMoveTo] = useState('');
+    const [moveError, setMoveError] = useState('');
 
     const isRepeatsAndReadOnlyApplicable = item.type !== IQuestionnaireItemType.display;
 
@@ -167,6 +177,71 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     const getFhirpath = item?.extension?.find((x) => x.url === IExtentionType.fhirPath)?.valueString ?? '';
     const getPlaceholder = item?.extension?.find((x) => x.url === IExtentionType.entryFormat)?.valueString ?? '';
 
+    useEffect(() => {
+        flattenOrder();
+    }, [qOrder]);
+
+    const handleChild = (items: OrderItem[], parent: number[], tempHierarki: FlattOrder[], linkId: string[]) => {
+        items
+            .filter((x) => !isIgnorableItem(qItems[x.linkId]))
+            .forEach((child, childIndex) => {
+                const childTitle = childIndex + 1;
+                tempHierarki.push({
+                    display: `${'\xA0'.repeat(parent.length * 2)}${parent.join('.')}.${childTitle} ${
+                        qItems[child.linkId].text
+                    }`,
+                    code: child.linkId,
+                    parent: linkId,
+                });
+                if (child.items) {
+                    handleChild(child.items, [...parent, childTitle], tempHierarki, [...linkId, child.linkId]);
+                }
+            });
+    };
+
+    const flattenOrder = () => {
+        const temp = [] as FlattOrder[];
+        temp.push({ display: 'Toppnivå', code: 'top-level', parent: [] });
+        qOrder
+            .filter((x) => !isIgnorableItem(qItems[x.linkId]))
+            .forEach((x, index) => {
+                const hirarkiTitle = index + 1;
+                temp.push({ display: `${hirarkiTitle}. ${qItems[x.linkId].text}`, code: x.linkId, parent: [] });
+                if (x.items) {
+                    handleChild(x.items, [hirarkiTitle], temp, [x.linkId]);
+                }
+            });
+        setHierarki([...temp]);
+    };
+
+    const moveIsInvalid = () => {
+        console.log('will run', linkIdMoveTo === item.linkId);
+        if (qItems[linkIdMoveTo]?.type === IQuestionnaireItemType.display) {
+            setMoveError(`Det er ikke mulig å flytte til element av type: ${IQuestionnaireItemType.display}`);
+            return true;
+        }
+        if (linkIdMoveTo === item.linkId) {
+            setMoveError('Det er ikke mulig å flytte elementet til seg selv');
+            return true;
+        }
+        return false;
+    };
+
+    const handleMove = () => {
+        setMoveError('');
+        if (moveIsInvalid()) {
+            return;
+        }
+
+        const toParent = hierarki.find((x) => x.code === linkIdMoveTo)?.parent || [];
+        if (linkIdMoveTo === 'top-level') {
+            dispatch(moveItemAction(item.linkId, [], parentArray));
+        } else {
+            const moveToPath = [...toParent, linkIdMoveTo];
+            dispatch(moveItemAction(item.linkId, moveToPath, parentArray));
+        }
+    };
+
     return (
         <>
             {isRepeatsAndReadOnlyApplicable && (
@@ -263,6 +338,18 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     <SwitchBtn onChange={dispatchHighLight} value={!!getHighlight()} label="Highlight" initial />
                 </div>
             )}
+            <div>
+                <FormField label="Flytt til element">
+                    <Select
+                        placeholder="Hvor skal elementet flyttes til?"
+                        options={hierarki}
+                        value={linkIdMoveTo}
+                        onChange={(event) => setLinkIdMoveTo(event.target.value)}
+                    />
+                    {moveError && <div className="msg-error">{moveError}</div>}
+                    <Btn onClick={() => handleMove()} title="Flytt" type="button" variant="primary" size="small" />
+                </FormField>
+            </div>
         </>
     );
 };

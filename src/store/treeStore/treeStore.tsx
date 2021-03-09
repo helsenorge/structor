@@ -39,6 +39,8 @@ import {
     UpdateMetadataTranslationAction,
     UpdateQuestionnaireMetadataAction,
     UpdateSidebarTranslationAction,
+    MoveItemAction,
+    MOVE_ITEM_ACTION,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -59,6 +61,7 @@ export type ActionType =
     | UpdateItemAction
     | DuplicateItemAction
     | ReorderItemAction
+    | MoveItemAction
     | AppendValueSetAction
     | UpdateContainedValueSetTranslationAction
     | UpdateLinkIdAction
@@ -228,6 +231,18 @@ function newItem(draft: TreeState, action: NewItemAction): void {
     // find the correct place to add the new item
     const arrayToAddItemTo = findTreeArray(action.order, draft.qOrder);
     arrayToAddItemTo.push({ linkId: itemToAdd.linkId, items: [] });
+}
+
+function moveItem(draft: TreeState, action: MoveItemAction): void {
+    const arrayToDeleteItemFrom = findTreeArray(action.oldOrder, draft.qOrder);
+    const indexToDelete = arrayToDeleteItemFrom.findIndex((x) => x.linkId === action.linkId);
+
+    // delete node from qOrder
+    arrayToDeleteItemFrom.splice(indexToDelete, 1);
+
+    // find the correct place to move the item
+    const arrayToAddItemTo = findTreeArray(action.newOrder, draft.qOrder);
+    arrayToAddItemTo.push({ linkId: action.linkId, items: [] });
 }
 
 function deleteItem(draft: TreeState, action: DeleteItemAction): void {
@@ -511,6 +526,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case REORDER_ITEM_ACTION:
             reorderItem(draft, action);
+            break;
+        case MOVE_ITEM_ACTION:
+            moveItem(draft, action);
             break;
         case APPEND_VALUESET_ACTION:
             appendValueSet(draft, action);
