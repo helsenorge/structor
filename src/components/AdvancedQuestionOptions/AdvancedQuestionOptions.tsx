@@ -317,7 +317,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         onBlur={dispatchUpdateLinkId}
                     />
                     {isDuplicateLinkId && (
-                        <div className="msg-error">
+                        <div className="msg-error" aria-live="polite">
                             LinkId er allerede i bruk{' '}
                             <button onClick={resetLinkId}>
                                 <img src={UndoIcon} height={16} /> Sett tilbake til opprinnelig verdi
@@ -354,7 +354,11 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         value={linkIdMoveTo}
                         onChange={(event) => setLinkIdMoveTo(event.target.value)}
                     />
-                    {moveError && <div className="msg-error">{moveError}</div>}
+                    {moveError && (
+                        <div className="msg-error" aria-live="polite">
+                            {moveError}
+                        </div>
+                    )}
                     <Btn onClick={() => handleMove()} title="Flytt" type="button" variant="primary" size="small" />
                 </FormField>
             </div>
