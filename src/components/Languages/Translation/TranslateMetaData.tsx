@@ -1,22 +1,15 @@
 import React from 'react';
 import { translatableMetadata } from '../../../helpers/LanguageHelper';
-import { IQuestionnaireMetadata } from '../../../types/IQuestionnaireMetadataType';
-import { ActionType, Languages } from '../../../store/treeStore/treeStore';
+import { ActionType, TreeState } from '../../../store/treeStore/treeStore';
 import TranslateMetaDataRow from './TranslateMetaDataRow';
 
 type TranslateMetaDataProps = {
-    qMetadata: IQuestionnaireMetadata;
+    state: TreeState;
     targetLanguage: string;
-    translations: Languages;
     dispatch: React.Dispatch<ActionType>;
 };
 
-const TranslateMetaData = ({
-    qMetadata,
-    translations,
-    targetLanguage,
-    dispatch,
-}: TranslateMetaDataProps): JSX.Element => {
+const TranslateMetaData = ({ state, targetLanguage, dispatch }: TranslateMetaDataProps): JSX.Element => {
     return (
         <div className="translation-group">
             <div className="translation-section-header">Skjemadetaljer</div>
@@ -25,9 +18,8 @@ const TranslateMetaData = ({
                     dispatch={dispatch}
                     key={prop.propertyName}
                     metadataProperty={prop}
-                    qMetadata={qMetadata}
+                    state={state}
                     targetLanguage={targetLanguage}
-                    translations={translations}
                 />
             ))}
         </div>

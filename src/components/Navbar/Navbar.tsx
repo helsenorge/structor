@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
-import { TreeContext } from '../../store/treeStore/treeStore';
+import { TreeContext, TreeState } from '../../store/treeStore/treeStore';
 import Btn from '../Btn/Btn';
 import IconBtn from '../IconBtn/IconBtn';
 import MoreIcon from '../../images/icons/ellipsis-horizontal-outline.svg';
@@ -18,9 +18,18 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet }:
     const { state } = useContext(TreeContext);
     const [menuIsVisible, setMenuIsVisible] = useState(false);
 
+    const getFileName = (state: TreeState): string => {
+        const technicalName = state.qMetadata.name || 'skjema';
+        const version = state.qMetadata.version ? `-v${state.qMetadata.version}` : '';
+        if (state.qAdditionalLanguages && Object.values(state.qAdditionalLanguages).length < 1) {
+            return `${technicalName}-${state.qMetadata.language}${version}.json`;
+        }
+        return `${technicalName}${version}.json`;
+    };
+
     function exportToJsonAndDownload() {
         const questionnaire = generateQuestionnaire(state);
-        const filename = state.qMetadata.title || 'skjema' + '.json';
+        const filename = getFileName(state);
         const contentType = 'application/json;charset=utf-8;';
 
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {

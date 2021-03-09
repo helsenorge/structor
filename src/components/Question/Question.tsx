@@ -411,7 +411,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <label>Tekst</label>
                     </div>
                     {isMarkdownActivated ? (
-                        <MarkdownEditor data={getLabelText()} onChange={dispatchUpdateMarkdownLabel} />
+                        <MarkdownEditor data={getLabelText()} onBlur={dispatchUpdateMarkdownLabel} />
                     ) : (
                         <input
                             value={getLabelText()}

@@ -71,7 +71,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                     <FormField>
                         <MarkdownEditor
                             data={translatedHelpText}
-                            onChange={(value) =>
+                            onBlur={(value) =>
                                 dispatch(
                                     updateItemTranslationAction(
                                         props.targetLanguage,
@@ -127,9 +127,8 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                     {qAdditionalLanguages && (
                         <>
                             <TranslateMetaData
-                                qMetadata={qMetadata}
+                                state={state}
                                 targetLanguage={props.targetLanguage}
-                                translations={qAdditionalLanguages}
                                 dispatch={dispatch}
                             />
                             <TranslateSidebar

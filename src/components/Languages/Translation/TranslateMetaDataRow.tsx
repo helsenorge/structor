@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { MetadataProperty } from '../../../types/LanguageTypes';
-import { IQuestionnaireMetadata } from '../../../types/IQuestionnaireMetadataType';
-import { ActionType, Languages } from '../../../store/treeStore/treeStore';
+import { ActionType, TreeState } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { updateMetadataTranslationAction } from '../../../store/treeStore/treeActions';
@@ -9,27 +8,27 @@ import { updateMetadataTranslationAction } from '../../../store/treeStore/treeAc
 type TranslateMetaDataRowProps = {
     dispatch: React.Dispatch<ActionType>;
     metadataProperty: MetadataProperty;
-    qMetadata: IQuestionnaireMetadata;
+    state: TreeState;
     targetLanguage: string;
-    translations: Languages;
 };
 
 const TranslateMetaDataRow = ({
     dispatch,
     metadataProperty,
-    qMetadata,
+    state,
     targetLanguage,
-    translations,
 }: TranslateMetaDataRowProps): JSX.Element => {
-    const [unique, setUnique] = useState(true);
-    const { propertyName, label, markdown, mustBeUnique } = metadataProperty;
-    const baseValue = qMetadata[propertyName];
-    const translatedMetadata = translations[targetLanguage].metaData;
-    const translatedValue = translatedMetadata[propertyName];
-    const displayErrorMessage: boolean = mustBeUnique && !unique;
+    const { propertyName, label, markdown, validate } = metadataProperty;
+    const baseValue = state.qMetadata[propertyName];
+    const translatedMetadata =
+        state.qAdditionalLanguages && state.qAdditionalLanguages[targetLanguage]
+            ? state.qAdditionalLanguages[targetLanguage].metaData
+            : {};
+    const [translatedValue, setTranslatedValue] = useState(translatedMetadata[propertyName]);
+    const validationMessage = validate ? validate(translatedValue, state, targetLanguage) : '';
 
     const dispatchPropertyUpdate = (text: string) => {
-        if (!mustBeUnique || unique) {
+        if (!validationMessage) {
             dispatch(updateMetadataTranslationAction(targetLanguage, propertyName, text));
         }
     };
@@ -45,8 +44,8 @@ const TranslateMetaDataRow = ({
         <>
             {markdown ? (
                 <MarkdownEditor
-                    data={translatedValue || ''}
-                    onChange={(value) => {
+                    data={translatedValue}
+                    onBlur={(value) => {
                         dispatchPropertyUpdate(value);
                     }}
                     placeholder="Legg inn oversettelse.."
@@ -58,29 +57,13 @@ const TranslateMetaDataRow = ({
                         dispatchPropertyUpdate(event.target.value);
                     }}
                     onChange={(event) => {
-                        if (mustBeUnique) {
-                            setUnique(isUnique(event.target.value));
-                        }
+                        setTranslatedValue(event.target.value);
                     }}
                     placeholder="Legg inn oversettelse.."
                 />
             )}
         </>
     );
-
-    const isUnique = (value: string): boolean => {
-        const usedPropertyValues: string[] = [];
-        const mainPropertyValue = String(qMetadata[propertyName]);
-        if (mainPropertyValue) {
-            usedPropertyValues.push(mainPropertyValue);
-        }
-        Object.entries(translations)
-            .filter(([languageCode]) => languageCode !== targetLanguage)
-            .forEach(([, translation]) => {
-                usedPropertyValues.push(translation.metaData[propertyName]);
-            });
-        return !usedPropertyValues.some((usedValue) => usedValue === value);
-    };
 
     return (
         <div key={`${targetLanguage}-${propertyName}`}>
@@ -89,7 +72,11 @@ const TranslateMetaDataRow = ({
                 <FormField>{renderBaseValue()}</FormField>
                 <FormField>
                     {renderTranslation()}
-                    {displayErrorMessage && <div className="msg-error">Må være unik</div>}
+                    {validationMessage && (
+                        <div className="msg-error" aria-live="polite">
+                            {validationMessage}
+                        </div>
+                    )}
                 </FormField>
             </div>
         </div>

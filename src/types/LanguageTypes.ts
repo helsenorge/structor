@@ -1,3 +1,5 @@
+import { TreeState } from '../store/treeStore/treeStore';
+
 export type Language = {
     code: string;
     display: string;
@@ -17,7 +19,7 @@ export type MetadataProperty = {
     propertyName: TranslatableMetadataProperty;
     label: string;
     markdown: boolean;
-    mustBeUnique: boolean;
+    validate?: (value: string, state?: TreeState, targetLanguage?: string) => string;
 };
 
 export enum TranslatableItemProperty {

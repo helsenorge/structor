@@ -57,7 +57,7 @@ const TranslateSidebar = ({
                             <FormField>
                                 <MarkdownEditor
                                     data={getTranslation(item.linkId)}
-                                    onChange={(value) => dispatchTranslation(item.linkId, value)}
+                                    onBlur={(value) => dispatchTranslation(item.linkId, value)}
                                 />
                             </FormField>
                         </div>
