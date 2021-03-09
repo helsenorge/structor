@@ -5,6 +5,7 @@ import {
     TranslatableMetadataProperty,
 } from '../types/LanguageTypes';
 import { Languages, TreeState } from '../store/treeStore/treeStore';
+import { isValidId } from './MetadataHelper';
 
 export const supportedLanguages: Language[] = [
     { code: 'nb-no', display: 'Norsk Bokmål', localDisplay: 'Norsk bokmål' },
@@ -33,18 +34,77 @@ export const getLanguagesInUse = ({ qMetadata, qAdditionalLanguages }: TreeState
     );
 };
 
+export const isUniqueAcrossLanguages = (
+    propertyName: TranslatableMetadataProperty,
+    value: string,
+    { qAdditionalLanguages, qMetadata }: TreeState,
+    targetLanguage: string,
+): boolean => {
+    if (!qAdditionalLanguages || Object.keys(qAdditionalLanguages).length < 1) {
+        return false;
+    }
+    const usedPropertyValues: string[] = [];
+    const mainPropertyValue = String(qMetadata[propertyName]);
+    if (mainPropertyValue) {
+        usedPropertyValues.push(mainPropertyValue);
+    }
+    Object.entries(qAdditionalLanguages)
+        .filter(([languageCode]) => languageCode !== targetLanguage)
+        .forEach(([, translation]) => {
+            usedPropertyValues.push(translation.metaData[propertyName]);
+        });
+    return !usedPropertyValues.some((usedValue) => usedValue === value);
+};
+
 export const translatableMetadata: MetadataProperty[] = [
-    { propertyName: TranslatableMetadataProperty.title, label: 'Tittel', markdown: false, mustBeUnique: false },
-    { propertyName: TranslatableMetadataProperty.id, label: 'Id', markdown: false, mustBeUnique: true },
+    {
+        propertyName: TranslatableMetadataProperty.title,
+        label: 'Tittel',
+        markdown: false,
+        validate: undefined,
+    },
+    {
+        propertyName: TranslatableMetadataProperty.id,
+        label: 'Id',
+        markdown: false,
+        validate: (value: string, state?: TreeState, targetLanguage?: string): string => {
+            if (!isValidId(value)) {
+                return 'Id må være fra 1-64 tegn og kan kun inneholde bokstaver fra a-z, tall, - og .';
+            }
+            if (
+                state &&
+                targetLanguage &&
+                !isUniqueAcrossLanguages(TranslatableMetadataProperty.id, value, state, targetLanguage)
+            ) {
+                return 'Id må være unik på tvers av språk';
+            }
+            return '';
+        },
+    },
     {
         propertyName: TranslatableMetadataProperty.description,
         label: 'Beskrivelse',
         markdown: false,
-        mustBeUnique: false,
+        validate: undefined,
     },
-    { propertyName: TranslatableMetadataProperty.publisher, label: 'Utsteder', markdown: false, mustBeUnique: false },
-    { propertyName: TranslatableMetadataProperty.purpose, label: 'Formål', markdown: true, mustBeUnique: false },
-    { propertyName: TranslatableMetadataProperty.copyright, label: 'Copyright', markdown: true, mustBeUnique: false },
+    {
+        propertyName: TranslatableMetadataProperty.publisher,
+        label: 'Utsteder',
+        markdown: false,
+        validate: undefined,
+    },
+    {
+        propertyName: TranslatableMetadataProperty.purpose,
+        label: 'Formål',
+        markdown: true,
+        validate: undefined,
+    },
+    {
+        propertyName: TranslatableMetadataProperty.copyright,
+        label: 'Copyright',
+        markdown: true,
+        validate: undefined,
+    },
 ];
 
 export const getItemPropertyTranslation = (

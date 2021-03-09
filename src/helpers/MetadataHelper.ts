@@ -30,16 +30,12 @@ export const canBePerformedBy = [
     { code: '2', display: 'SubjectOnly' },
 ];
 
-export const isValidId = (value: string, stateValue: string | undefined): boolean => {
-    // Allow id not matching regex if imported and unchanged
-    if (stateValue && value === stateValue) {
-        return true;
-    }
+export const isValidId = (value: string): boolean => {
     const regExp = /^[A-Za-z0-9-.]{1,64}$/;
     return regExp.test(value);
 };
 
-export const isValidTechnicalName = (value: string, stateValue: string | undefined): boolean => {
+export const isValidTechnicalName = (value: string, stateValue?: string): boolean => {
     // Allow name not matching regex if imported and unchanged
     if (stateValue && value === stateValue) {
         return true;

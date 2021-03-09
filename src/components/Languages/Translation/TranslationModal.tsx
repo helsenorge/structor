@@ -127,9 +127,8 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                     {qAdditionalLanguages && (
                         <>
                             <TranslateMetaData
-                                qMetadata={qMetadata}
+                                state={state}
                                 targetLanguage={props.targetLanguage}
-                                translations={qAdditionalLanguages}
                                 dispatch={dispatch}
                             />
                             <TranslateSidebar

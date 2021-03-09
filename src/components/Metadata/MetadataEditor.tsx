@@ -57,10 +57,10 @@ const MetadataEditor = (): JSX.Element => {
                         value={id}
                         onChange={(e) => {
                             setId(e.target.value);
-                            setDisplayIdValidationError(!isValidId(e.target.value, state.qMetadata.id));
+                            setDisplayIdValidationError(!isValidId(e.target.value));
                         }}
                         onBlur={(e) => {
-                            if (isValidId(e.target.value, state.qMetadata.id)) {
+                            if (isValidId(e.target.value)) {
                                 updateMeta(IQuestionnaireMetadataType.id, e.target.value);
                             }
                         }}
