@@ -29,6 +29,7 @@ export const UPDATE_ITEM_ACTION = 'updateItem';
 export const DUPLICATE_ITEM_ACTION = 'duplicateItem';
 export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 export const REORDER_ITEM_ACTION = 'reorderItem';
+export const MOVE_ITEM_ACTION = 'moveItem';
 export const APPEND_VALUESET_ACTION = 'appendValueSet';
 export const UPDATE_LINK_ID_ACTION = 'updateLinkId';
 export const UPDATE_MARKED_LINK_ID = 'updateMarkedLinkId';
@@ -151,6 +152,13 @@ export interface ReorderItemAction {
     linkId: string;
     order: Array<string>;
     newIndex: number;
+}
+
+export interface MoveItemAction {
+    type: typeof MOVE_ITEM_ACTION;
+    linkId: string;
+    oldOrder: string[];
+    newOrder: string[];
 }
 
 export interface AppendValueSetAction {
@@ -419,6 +427,15 @@ export const reorderItemAction = (linkId: string, order: Array<string>, newIndex
         linkId,
         order,
         newIndex,
+    };
+};
+
+export const moveItemAction = (linkId: string, newOrder: string[], oldOrder: string[]): MoveItemAction => {
+    return {
+        type: MOVE_ITEM_ACTION,
+        linkId,
+        newOrder,
+        oldOrder,
     };
 };
 
