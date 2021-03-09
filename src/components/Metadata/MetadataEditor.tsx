@@ -136,13 +136,13 @@ const MetadataEditor = (): JSX.Element => {
                 <FormField label="Formål">
                     <MarkdownEditor
                         data={qMetadata.purpose || ''}
-                        onChange={(purpose: string) => updateMeta(IQuestionnaireMetadataType.purpose, purpose)}
+                        onBlur={(purpose: string) => updateMeta(IQuestionnaireMetadataType.purpose, purpose)}
                     />
                 </FormField>
                 <FormField label="Copyright">
                     <MarkdownEditor
                         data={qMetadata.copyright || ''}
-                        onChange={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
+                        onBlur={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
                     />
                 </FormField>
             </Accordion>

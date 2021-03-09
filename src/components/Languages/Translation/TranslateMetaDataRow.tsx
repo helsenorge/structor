@@ -46,7 +46,7 @@ const TranslateMetaDataRow = ({
             {markdown ? (
                 <MarkdownEditor
                     data={translatedValue || ''}
-                    onChange={(value) => {
+                    onBlur={(value) => {
                         dispatchPropertyUpdate(value);
                     }}
                     placeholder="Legg inn oversettelse.."

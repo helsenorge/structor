@@ -85,7 +85,7 @@ const Sidebar = (): JSX.Element => {
                         <FormField label="Innhold">
                             <MarkdownEditor
                                 data={getMarkdown(x.linkId)}
-                                onChange={(markdown) => handleMarkdown(x.linkId, markdown)}
+                                onBlur={(markdown) => handleMarkdown(x.linkId, markdown)}
                             />
                         </FormField>
                         <div className="center-text">

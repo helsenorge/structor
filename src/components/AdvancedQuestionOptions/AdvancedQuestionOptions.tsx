@@ -254,7 +254,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                 </FormField>
                 {itemInlineHelperItem().exist && (
                     <FormField label="Skriv en hjelpende tekst">
-                        <MarkdownEditor data={itemInlineHelperItem()._text} onChange={handleInlineHelpText} />
+                        <MarkdownEditor data={itemInlineHelperItem()._text} onBlur={handleInlineHelpText} />
                     </FormField>
                 )}
             </div>

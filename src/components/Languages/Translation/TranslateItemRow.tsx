@@ -42,7 +42,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
             return (
                 <MarkdownEditor
                     data={translatedText}
-                    onChange={(text) => dispatchUpdateItemTranslation(text, TranslatableItemProperty.text)}
+                    onBlur={(text) => dispatchUpdateItemTranslation(text, TranslatableItemProperty.text)}
                 />
             );
         }
