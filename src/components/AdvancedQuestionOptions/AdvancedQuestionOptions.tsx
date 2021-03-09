@@ -33,7 +33,7 @@ interface FlattOrder extends ValueSetComposeIncludeConcept {
 const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const [isDuplicateLinkId, setDuplicateLinkId] = useState(false);
-    const [hierarki, setHierarki] = useState<FlattOrder[]>([]);
+    const [hierarchy, setHierarchy] = useState<FlattOrder[]>([]);
     const [linkId, setLinkId] = useState(item.linkId);
     const { qItems, qOrder } = state;
     const [linkIdMoveTo, setLinkIdMoveTo] = useState('');
@@ -181,12 +181,12 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         flattenOrder();
     }, [qOrder]);
 
-    const handleChild = (items: OrderItem[], parent: number[], tempHierarki: FlattOrder[], linkId: string[]) => {
+    const handleChild = (items: OrderItem[], parent: number[], tempHierarchy: FlattOrder[], linkId: string[]) => {
         items
             .filter((x) => !isIgnorableItem(qItems[x.linkId]))
             .forEach((child, childIndex) => {
                 const childTitle = childIndex + 1;
-                tempHierarki.push({
+                tempHierarchy.push({
                     display: `${'\xA0'.repeat(parent.length * 2)}${parent.join('.')}.${childTitle} ${
                         qItems[child.linkId].text
                     }`,
@@ -194,7 +194,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     parent: linkId,
                 });
                 if (child.items) {
-                    handleChild(child.items, [...parent, childTitle], tempHierarki, [...linkId, child.linkId]);
+                    handleChild(child.items, [...parent, childTitle], tempHierarchy, [...linkId, child.linkId]);
                 }
             });
     };
@@ -211,11 +211,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     handleChild(x.items, [hirarkiTitle], temp, [x.linkId]);
                 }
             });
-        setHierarki([...temp]);
+        setHierarchy([...temp]);
     };
 
-    const moveIsInvalid = () => {
-        console.log('will run', linkIdMoveTo === item.linkId);
+    const moveIsInvalid = (moveToPath: string[]) => {
         if (qItems[linkIdMoveTo]?.type === IQuestionnaireItemType.display) {
             setMoveError(`Det er ikke mulig å flytte til element av type: ${IQuestionnaireItemType.display}`);
             return true;
@@ -224,20 +223,29 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             setMoveError('Det er ikke mulig å flytte elementet til seg selv');
             return true;
         }
+        if (moveToPath.includes(item.linkId)) {
+            setMoveError('Det er ikke mulig å flytte mor-node til barn-node');
+            return true;
+        }
+        if (parentArray.length === 0 && moveToPath.length === 1 && moveToPath.find((x) => x === 'top-level')) {
+            setMoveError('Det er ikke mulig å flytte element fra topp-node til topp-node');
+            return true;
+        }
         return false;
     };
 
     const handleMove = () => {
         setMoveError('');
-        if (moveIsInvalid()) {
+        const toParent = hierarchy.find((x) => x.code === linkIdMoveTo)?.parent || [];
+        const moveToPath = [...toParent, linkIdMoveTo];
+
+        if (moveIsInvalid(moveToPath)) {
             return;
         }
 
-        const toParent = hierarki.find((x) => x.code === linkIdMoveTo)?.parent || [];
         if (linkIdMoveTo === 'top-level') {
             dispatch(moveItemAction(item.linkId, [], parentArray));
         } else {
-            const moveToPath = [...toParent, linkIdMoveTo];
             dispatch(moveItemAction(item.linkId, moveToPath, parentArray));
         }
     };
@@ -309,7 +317,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         onBlur={dispatchUpdateLinkId}
                     />
                     {isDuplicateLinkId && (
-                        <div className="msg-error">
+                        <div className="msg-error" aria-live="polite">
                             LinkId er allerede i bruk{' '}
                             <button onClick={resetLinkId}>
                                 <img src={UndoIcon} height={16} /> Sett tilbake til opprinnelig verdi
@@ -342,11 +350,15 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                 <FormField label="Flytt til element">
                     <Select
                         placeholder="Hvor skal elementet flyttes til?"
-                        options={hierarki}
+                        options={hierarchy}
                         value={linkIdMoveTo}
                         onChange={(event) => setLinkIdMoveTo(event.target.value)}
                     />
-                    {moveError && <div className="msg-error">{moveError}</div>}
+                    {moveError && (
+                        <div className="msg-error" aria-live="polite">
+                            {moveError}
+                        </div>
+                    )}
                     <Btn onClick={() => handleMove()} title="Flytt" type="button" variant="primary" size="small" />
                 </FormField>
             </div>

@@ -236,13 +236,14 @@ function newItem(draft: TreeState, action: NewItemAction): void {
 function moveItem(draft: TreeState, action: MoveItemAction): void {
     const arrayToDeleteItemFrom = findTreeArray(action.oldOrder, draft.qOrder);
     const indexToDelete = arrayToDeleteItemFrom.findIndex((x) => x.linkId === action.linkId);
-
-    // delete node from qOrder
-    arrayToDeleteItemFrom.splice(indexToDelete, 1);
+    const subTree = arrayToDeleteItemFrom[indexToDelete].items;
 
     // find the correct place to move the item
     const arrayToAddItemTo = findTreeArray(action.newOrder, draft.qOrder);
-    arrayToAddItemTo.push({ linkId: action.linkId, items: [] });
+    arrayToAddItemTo.push({ linkId: action.linkId, items: subTree });
+
+    // delete node from qOrder
+    arrayToDeleteItemFrom.splice(indexToDelete, 1);
 }
 
 function deleteItem(draft: TreeState, action: DeleteItemAction): void {
