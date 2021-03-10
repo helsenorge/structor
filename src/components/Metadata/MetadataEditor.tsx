@@ -91,6 +91,15 @@ const MetadataEditor = (): JSX.Element => {
                         </div>
                     )}
                 </FormField>
+                <FormField label="Versjon">
+                    <input
+                        placeholder="Versjonsnummer"
+                        defaultValue={qMetadata.version}
+                        onBlur={(e) => {
+                            updateMeta(IQuestionnaireMetadataType.version, e.target.value);
+                        }}
+                    />
+                </FormField>
                 <FormField label="Helsenorge endpoint">
                     <input
                         placeholder="F.eks Endpoint/35"

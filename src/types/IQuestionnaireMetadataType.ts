@@ -14,6 +14,7 @@ export enum IQuestionnaireMetadataType {
     copyright = 'copyright',
     meta = 'meta',
     extension = 'extension',
+    version = 'version',
 }
 
 export interface IQuestionnaireMetadata {
