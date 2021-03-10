@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Modal from '../../Modal/Modal';
 import { OrderItem, TreeContext } from '../../../store/treeStore/treeStore';
 import { updateItemTranslationAction } from '../../../store/treeStore/treeActions';
@@ -21,9 +21,45 @@ type TranslationModalProps = {
     targetLanguage: string;
 };
 
+interface FlattOrderTranslation {
+    linkId: string;
+    path: string;
+}
+
 const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
-    const { qItems, qAdditionalLanguages, qMetadata, qContained } = state;
+    const { qItems, qOrder, qAdditionalLanguages, qMetadata, qContained } = state;
+    const [flattOrder, setFlattOrder] = useState<FlattOrderTranslation[]>([]);
+
+    useEffect(() => {
+        flattenOrder();
+    }, []);
+
+    const handleChild = (items: OrderItem[], path: string, tempHierarchy: FlattOrderTranslation[]) => {
+        items
+            .filter((x) => !isIgnorableItem(qItems[x.linkId]))
+            .forEach((child, childIndex) => {
+                const childPath = `${path}${childIndex + 1}`;
+                tempHierarchy.push({ linkId: child.linkId, path: childPath });
+                if (child.items) {
+                    handleChild(child.items, childPath, tempHierarchy);
+                }
+            });
+    };
+
+    const flattenOrder = () => {
+        const temp = [] as FlattOrderTranslation[];
+        qOrder
+            .filter((x) => !isIgnorableItem(qItems[x.linkId]))
+            .forEach((x, index) => {
+                const itemPath = `${index + 1}.`;
+                temp.push({ linkId: x.linkId, path: itemPath });
+                if (x.items) {
+                    handleChild(x.items, itemPath, temp);
+                }
+            });
+        setFlattOrder([...temp]);
+    };
 
     const isTranslatableItem = (item: QuestionnaireItem): boolean =>
         // Hidden items
@@ -88,6 +124,28 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         );
     };
 
+    useEffect(() => {
+        const options = {
+            root: document.getElementById('translation-modal'),
+            rootMargin: '63px 0px 0px 0px',
+            threshold: [0.5],
+        };
+
+        const observed = (elements: IntersectionObserverEntry[]) => {
+            if (elements[0].intersectionRatio === 1) {
+                console.log('Fire!');
+            }
+        };
+
+        const myObserver = new IntersectionObserver(observed, options);
+
+        const myEl = document.getElementById('bottom-translation-modal');
+
+        if (myEl) {
+            myObserver.observe(myEl);
+        }
+    }, []);
+
     const renderItems = (orderItems: OrderItem[], parentNumber = ''): Array<JSX.Element | null> => {
         if (translatableItems && qAdditionalLanguages) {
             return orderItems.map((orderItem, index) => {
@@ -121,46 +179,50 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
 
     return (
         <div className="translation-modal">
-            <Modal close={props.close} title="Oversett skjema">
+            <Modal close={props.close} title="Oversett skjema" id="translation-modal">
                 {getHeader()}
-                <>
-                    {qAdditionalLanguages && (
-                        <>
-                            <TranslateMetaData
-                                state={state}
-                                targetLanguage={props.targetLanguage}
-                                dispatch={dispatch}
-                            />
-                            <TranslateSidebar
-                                targetLanguage={props.targetLanguage}
-                                translations={qAdditionalLanguages}
-                                items={qItems}
-                                dispatch={dispatch}
-                            />
-                            {!!qContained && qContained?.length > 0 && (
-                                <TranslateContainedValueSets
-                                    qContained={qContained}
+                <div style={{ position: 'relative' }}>
+                    <>
+                        {qAdditionalLanguages && (
+                            <>
+                                <TranslateMetaData
+                                    state={state}
                                     targetLanguage={props.targetLanguage}
-                                    translations={qAdditionalLanguages}
                                     dispatch={dispatch}
                                 />
-                            )}
-                            <div>
-                                <div className="translation-section-header">Elementer</div>
-                                {renderItems(removeUnsupportedChildren(state.qOrder))}
-                            </div>
-                            <div className="center-text">
-                                <Btn
-                                    title="Lagre og lukk"
-                                    size="small"
-                                    type="button"
-                                    variant="secondary"
-                                    onClick={props.close}
+                                <TranslateSidebar
+                                    targetLanguage={props.targetLanguage}
+                                    translations={qAdditionalLanguages}
+                                    items={qItems}
+                                    dispatch={dispatch}
                                 />
-                            </div>
-                        </>
-                    )}
-                </>
+                                {!!qContained && qContained?.length > 0 && (
+                                    <TranslateContainedValueSets
+                                        qContained={qContained}
+                                        targetLanguage={props.targetLanguage}
+                                        translations={qAdditionalLanguages}
+                                        dispatch={dispatch}
+                                    />
+                                )}
+                                <div>
+                                    <div className="translation-section-header">Elementer</div>
+                                    {renderItems(removeUnsupportedChildren(state.qOrder))}
+                                </div>
+                                <div>{flattOrder.length}</div>
+                                <div id="bottom-translation-modal" style={{ height: 1 }} />
+                                <div className="center-text">
+                                    <Btn
+                                        title="Lagre og lukk"
+                                        size="small"
+                                        type="button"
+                                        variant="secondary"
+                                        onClick={props.close}
+                                    />
+                                </div>
+                            </>
+                        )}
+                    </>
+                </div>
             </Modal>
         </div>
     );

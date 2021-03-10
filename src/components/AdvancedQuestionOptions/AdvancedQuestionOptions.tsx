@@ -181,20 +181,20 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         flattenOrder();
     }, [qOrder]);
 
-    const handleChild = (items: OrderItem[], parent: number[], tempHierarchy: FlattOrder[], linkId: string[]) => {
+    const handleChild = (items: OrderItem[], parentPath: number[], tempHierarchy: FlattOrder[], linkId: string[]) => {
         items
             .filter((x) => !isIgnorableItem(qItems[x.linkId]))
             .forEach((child, childIndex) => {
                 const childTitle = childIndex + 1;
                 tempHierarchy.push({
-                    display: `${'\xA0'.repeat(parent.length * 2)}${parent.join('.')}.${childTitle} ${
+                    display: `${'\xA0'.repeat(parentPath.length * 2)}${parentPath.join('.')}.${childTitle} ${
                         qItems[child.linkId].text
                     }`,
                     code: child.linkId,
                     parent: linkId,
                 });
                 if (child.items) {
-                    handleChild(child.items, [...parent, childTitle], tempHierarchy, [...linkId, child.linkId]);
+                    handleChild(child.items, [...parentPath, childTitle], tempHierarchy, [...linkId, child.linkId]);
                 }
             });
     };
@@ -205,10 +205,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         qOrder
             .filter((x) => !isIgnorableItem(qItems[x.linkId]))
             .forEach((x, index) => {
-                const hirarkiTitle = index + 1;
-                temp.push({ display: `${hirarkiTitle}. ${qItems[x.linkId].text}`, code: x.linkId, parent: [] });
+                const parentPath = index + 1;
+                temp.push({ display: `${parentPath}. ${qItems[x.linkId].text}`, code: x.linkId, parent: [] });
                 if (x.items) {
-                    handleChild(x.items, [hirarkiTitle], temp, [x.linkId]);
+                    handleChild(x.items, [parentPath], temp, [x.linkId]);
                 }
             });
         setHierarchy([...temp]);
