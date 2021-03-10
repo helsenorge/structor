@@ -1,18 +1,23 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import IconBtn from '../IconBtn/IconBtn';
 import { TreeContext } from '../../store/treeStore/treeStore';
-import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
+import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionnaire';
+import Select from '../Select/Select';
+import { getLanguagesInUse } from '../../helpers/LanguageHelper';
 
 type Props = {
     showFormFiller: () => void;
+    language?: string;
 };
 
-const FormFiller = ({ showFormFiller }: Props): JSX.Element => {
+const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
+    const [selectedLanguage, setSelectedLanguage] = useState(language || state.qMetadata.language || 'nb-no');
+    const languages = getLanguagesInUse(state);
 
     function iFrameLoaded() {
-        const questionnaireString = generateQuestionnaire(state);
+        const questionnaireString = generateQuestionnaireForPreview(state, selectedLanguage);
         const schemeDisplayer = document.getElementById('schemeFrame');
         if (schemeDisplayer) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -27,12 +32,30 @@ const FormFiller = ({ showFormFiller }: Props): JSX.Element => {
         }
     }
 
+    function reloadIframe() {
+        const schemeDisplayer = document.getElementById('schemeFrame') as HTMLIFrameElement;
+        if (schemeDisplayer) {
+            schemeDisplayer.src = '../../../iframe/index.html';
+        }
+    }
+
     return (
         <div className="overlay">
             <div className="iframe-div">
-                <div className="title">
+                <div className="title align-everything">
                     <IconBtn type="x" title="Lukk" onClick={showFormFiller} />
                     <h1>Forhåndsvisning</h1>
+                    <div className="pull-right">
+                        <Select
+                            value={selectedLanguage}
+                            options={languages}
+                            onChange={(e) => {
+                                setSelectedLanguage(e.target.value);
+                                reloadIframe();
+                            }}
+                            compact={true}
+                        />
+                    </div>
                 </div>
                 <iframe
                     id="schemeFrame"

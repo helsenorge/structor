@@ -1,14 +1,14 @@
 import './MetadataEditor.css';
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { formatISO, parseISO } from 'date-fns';
 import {
     canBePerformedBy,
-    metadataLanguage,
+    isValidId,
+    isValidTechnicalName,
     metadataOperators,
     presentationButtons,
 } from '../../helpers/MetadataHelper';
-
 import Accordion from '../Accordion/Accordion';
 import DateTimePicker from '../DatePicker/DateTimePicker';
 import FormField from '../FormField/FormField';
@@ -23,6 +23,10 @@ import { IExtentionType } from '../../types/IQuestionnareItemType';
 const MetadataEditor = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const { qMetadata } = state;
+    const [id, setId] = useState(qMetadata.id || '');
+    const [displayIdValidationError, setDisplayIdValidationError] = useState(false);
+    const [technicalName, setTechincalName] = useState(qMetadata.name || '');
+    const [displayNameValidationError, setDisplayNameValidationError] = useState(false);
 
     const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta | Extension[]) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
@@ -50,37 +54,50 @@ const MetadataEditor = (): JSX.Element => {
 
                 <FormField label="Id">
                     <input
-                        value={qMetadata.id || ''}
-                        onChange={(e) => updateMeta(IQuestionnaireMetadataType.id, e.target.value)}
-                    />
-                </FormField>
-                <FormField label="Språk">
-                    <Select
-                        value={qMetadata.language || ''}
-                        options={metadataLanguage}
+                        value={id}
                         onChange={(e) => {
-                            const display = metadataLanguage.find((x) => x.code === e.target.value)?.localDisplay;
-                            const newMeta = {
-                                ...qMetadata.meta,
-                                tag: qMetadata.meta?.tag?.map((x) =>
-                                    x.system === 'urn:ietf:bcp:47'
-                                        ? {
-                                              system: 'urn:ietf:bcp:47',
-                                              code: e.target.value,
-                                              display: display,
-                                          }
-                                        : x,
-                                ),
-                            };
-                            updateMeta(IQuestionnaireMetadataType.language, e.target.value);
-                            updateMeta(IQuestionnaireMetadataType.meta, newMeta);
+                            setId(e.target.value);
+                            setDisplayIdValidationError(!isValidId(e.target.value));
                         }}
-                    ></Select>
+                        onBlur={(e) => {
+                            if (isValidId(e.target.value)) {
+                                updateMeta(IQuestionnaireMetadataType.id, e.target.value);
+                            }
+                        }}
+                    />
+                    {displayIdValidationError && (
+                        <div className="msg-error" aria-live="polite">
+                            Id må være fra 1-64 tegn og kan kun inneholde bokstaver fra a-z, tall, - og .
+                        </div>
+                    )}
                 </FormField>
                 <FormField label="Teknisk navn">
                     <input
-                        value={qMetadata.name || ''}
-                        onChange={(e) => updateMeta(IQuestionnaireMetadataType.name, e.target.value)}
+                        value={technicalName}
+                        onChange={(e) => {
+                            setTechincalName(e.target.value);
+                            setDisplayNameValidationError(!isValidTechnicalName(e.target.value, state.qMetadata.name));
+                        }}
+                        onBlur={(e) => {
+                            if (isValidTechnicalName(e.target.value, state.qMetadata.name)) {
+                                updateMeta(IQuestionnaireMetadataType.name, e.target.value);
+                            }
+                        }}
+                    />
+                    {displayNameValidationError && (
+                        <div className="msg-error" aria-live="polite">
+                            Teknisk navn må ha stor forbokstav, fra 1-255 tegn og kan kun inneholde tall, _ og bokstaver
+                            fra a-z
+                        </div>
+                    )}
+                </FormField>
+                <FormField label="Versjon">
+                    <input
+                        placeholder="Versjonsnummer"
+                        defaultValue={qMetadata.version}
+                        onBlur={(e) => {
+                            updateMeta(IQuestionnaireMetadataType.version, e.target.value);
+                        }}
                     />
                 </FormField>
                 <FormField label="Helsenorge endpoint">
@@ -165,13 +182,13 @@ const MetadataEditor = (): JSX.Element => {
                 <FormField label="Formål">
                     <MarkdownEditor
                         data={qMetadata.purpose || ''}
-                        onChange={(purpose: string) => updateMeta(IQuestionnaireMetadataType.purpose, purpose)}
+                        onBlur={(purpose: string) => updateMeta(IQuestionnaireMetadataType.purpose, purpose)}
                     />
                 </FormField>
                 <FormField label="Copyright">
                     <MarkdownEditor
                         data={qMetadata.copyright || ''}
-                        onChange={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
+                        onBlur={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
                     />
                 </FormField>
             </Accordion>

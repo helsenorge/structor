@@ -11,8 +11,16 @@ import {
     Coding,
 } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
+import { TranslatableItemProperty } from '../../types/LanguageTypes';
 import { TreeState } from './treeStore';
 
+export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = 'addQuestionnaireLanguage';
+export const REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION = 'removeQuestionnaireLanguage';
+export const UPDATE_ITEM_TRANSLATION_ACTION = 'updateItemTranslation';
+export const UPDATE_ITEM_OPTION_TRANSLATION_ACTION = 'updateItemOptionTranslation';
+export const UPDATE_METADATA_TRANSLATION_ACTION = 'updateMetadataTranslation';
+export const UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION = 'updateContainedValueSetTranslation';
+export const UPDATE_SIDEBAR_TRANSLATION_ACTION = 'updateSidebarTranslation';
 export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata';
 export const NEW_ITEM_ACTION = 'newItem';
 export const REMOVE_ITEM_ATTRIBUTE_ACTION = 'removeItemAttribute';
@@ -21,6 +29,7 @@ export const UPDATE_ITEM_ACTION = 'updateItem';
 export const DUPLICATE_ITEM_ACTION = 'duplicateItem';
 export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
 export const REORDER_ITEM_ACTION = 'reorderItem';
+export const MOVE_ITEM_ACTION = 'moveItem';
 export const APPEND_VALUESET_ACTION = 'appendValueSet';
 export const UPDATE_LINK_ID_ACTION = 'updateLinkId';
 export const UPDATE_MARKED_LINK_ID = 'updateMarkedLinkId';
@@ -41,6 +50,54 @@ export interface UpdateMarkedLinkId {
     type: typeof UPDATE_MARKED_LINK_ID;
     linkId: string;
 }
+export interface AddQuestionnaireLanguageAction {
+    type: typeof ADD_QUESTIONNAIRE_LANGUAGE_ACTION;
+    additionalLanguageCode: string;
+}
+
+export interface RemoveQuestionnaireLanguageAction {
+    type: typeof REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION;
+    languageCode: string;
+}
+
+export interface UpdateItemTranslationAction {
+    type: typeof UPDATE_ITEM_TRANSLATION_ACTION;
+    languageCode: string;
+    linkId: string;
+    propertyName: TranslatableItemProperty;
+    value: string;
+}
+
+export interface UpdateItemOptionTranslationAction {
+    type: typeof UPDATE_ITEM_OPTION_TRANSLATION_ACTION;
+    languageCode: string;
+    linkId: string;
+    text: string;
+    optionCode: string;
+}
+
+export interface UpdateMetadataTranslationAction {
+    type: typeof UPDATE_METADATA_TRANSLATION_ACTION;
+    languageCode: string;
+    propertyName: string;
+    translation: string;
+}
+
+export interface UpdateContainedValueSetTranslationAction {
+    type: typeof UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION;
+    languageCode: string;
+    valueSetId: string;
+    conceptId: string;
+    translation: string;
+}
+
+export interface UpdateSidebarTranslationAction {
+    type: typeof UPDATE_SIDEBAR_TRANSLATION_ACTION;
+    languageCode: string;
+    linkId: string;
+    value: string;
+}
+
 export interface UpdateLinkIdAction {
     type: typeof UPDATE_LINK_ID_ACTION;
     oldLinkId: string;
@@ -97,15 +154,107 @@ export interface ReorderItemAction {
     newIndex: number;
 }
 
+export interface MoveItemAction {
+    type: typeof MOVE_ITEM_ACTION;
+    linkId: string;
+    oldOrder: string[];
+    newOrder: string[];
+}
+
 export interface AppendValueSetAction {
     type: typeof APPEND_VALUESET_ACTION;
-    valueSet: ValueSet[];
+    valueSet: ValueSet;
 }
 
 export const updateMarkedLinkIdAction = (markedLinkId: string): UpdateMarkedLinkId => {
     return {
         type: UPDATE_MARKED_LINK_ID,
         linkId: markedLinkId,
+    };
+};
+
+export const addQuestionnaireLanguageAction = (additionalLanguageCode: string): AddQuestionnaireLanguageAction => {
+    return {
+        type: ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
+        additionalLanguageCode,
+    };
+};
+
+export const removeQuestionnaireLanguageAction = (languageCode: string): RemoveQuestionnaireLanguageAction => {
+    return {
+        type: REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION,
+        languageCode,
+    };
+};
+
+export const updateItemTranslationAction = (
+    languageCode: string,
+    linkId: string,
+    propertyName: TranslatableItemProperty,
+    value: string,
+): UpdateItemTranslationAction => {
+    return {
+        type: UPDATE_ITEM_TRANSLATION_ACTION,
+        languageCode,
+        linkId,
+        propertyName,
+        value,
+    };
+};
+
+export const updateItemOptionTranslationAction = (
+    languageCode: string,
+    linkId: string,
+    text: string,
+    optionCode: string,
+): UpdateItemOptionTranslationAction => {
+    return {
+        type: UPDATE_ITEM_OPTION_TRANSLATION_ACTION,
+        languageCode,
+        linkId,
+        text,
+        optionCode,
+    };
+};
+
+export const updateMetadataTranslationAction = (
+    languageCode: string,
+    propertyName: string,
+    translation: string,
+): UpdateMetadataTranslationAction => {
+    return {
+        type: UPDATE_METADATA_TRANSLATION_ACTION,
+        languageCode,
+        propertyName,
+        translation,
+    };
+};
+
+export const updateContainedValueSetTranslationAction = (
+    languageCode: string,
+    valueSetId: string,
+    conceptId: string,
+    translation: string,
+): UpdateContainedValueSetTranslationAction => {
+    return {
+        type: UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION,
+        languageCode,
+        valueSetId,
+        conceptId,
+        translation,
+    };
+};
+
+export const updateSidebarTranslationAction = (
+    languageCode: string,
+    linkId: string,
+    value: string,
+): UpdateSidebarTranslationAction => {
+    return {
+        type: UPDATE_SIDEBAR_TRANSLATION_ACTION,
+        languageCode,
+        linkId,
+        value,
     };
 };
 
@@ -139,6 +288,7 @@ export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>
         type: type,
         text: '',
         extension: [],
+        required: true,
     } as QuestionnaireItem;
     return {
         type: NEW_ITEM_ACTION,
@@ -280,7 +430,16 @@ export const reorderItemAction = (linkId: string, order: Array<string>, newIndex
     };
 };
 
-export const appendValueSetAction = (valueSet: ValueSet[]): AppendValueSetAction => {
+export const moveItemAction = (linkId: string, newOrder: string[], oldOrder: string[]): MoveItemAction => {
+    return {
+        type: MOVE_ITEM_ACTION,
+        linkId,
+        newOrder,
+        oldOrder,
+    };
+};
+
+export const appendValueSetAction = (valueSet: ValueSet): AppendValueSetAction => {
     return {
         type: APPEND_VALUESET_ACTION,
         valueSet,

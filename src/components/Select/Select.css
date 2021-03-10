@@ -19,3 +19,8 @@
     width: 100%;
     z-index: 2;
 }
+
+.compact select {
+    padding-top: 0;
+    padding-bottom: 0;
+}

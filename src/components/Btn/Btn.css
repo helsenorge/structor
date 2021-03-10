@@ -67,10 +67,18 @@
 
 .regular-btn.small{
     font-size: initial;
-    padding: 8px;
+    padding: 8px 12px;
 }
 
 .regular-btn.large{
     font-size: 24px;
     padding: 16px;
+}
+
+.btn-group button{
+    margin-right: 10px;
+}
+
+.btn-group button:last-of-type{
+    margin-right: 0px;
 }

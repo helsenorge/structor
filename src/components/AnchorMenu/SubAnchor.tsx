@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Items, OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 
 import ReorderIcon from '../../images/icons/reorder-three-outline.svg';
@@ -8,7 +8,7 @@ import MessageIcon from '../../images/icons/information-circle-outline.svg';
 import QuestionIcon from '../../images/icons/help-circle-outline.svg';
 
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import { isItemControlHelp } from '../../helpers/itemControl';
+import { isIgnorableItem } from '../../helpers/itemControl';
 
 type SubAnchorProps = {
     parentItem: string;
@@ -16,6 +16,7 @@ type SubAnchorProps = {
     parentArray: Array<string>;
     qItems: Items;
     children?: JSX.Element | JSX.Element[];
+    parentQuestionNumber: string;
 };
 
 const SubAnchor = (props: SubAnchorProps): JSX.Element => {
@@ -71,7 +72,14 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
     };
 
     const removeUnsupportedChildren = (items: OrderItem[]) => {
-        return items.filter((x) => !isItemControlHelp(props.qItems[x.linkId]));
+        return items.filter((x) => !isIgnorableItem(props.qItems[x.linkId]));
+    };
+
+    const showHierarchy = (index: number) => {
+        if (props.parentQuestionNumber) {
+            return `${props.parentQuestionNumber}.${index + 1}`;
+        }
+        return `${index + 1}`;
     };
 
     return (
@@ -100,8 +108,9 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                             <span className="anchor-icon" style={{ paddingRight: 10 }}>
                                                 {getRelevantIcon(props.qItems[item.linkId].type)}
                                             </span>
-                                            <span className="truncate">
-                                                {props.qItems[item.linkId].text || <i>Legg inn spørsmål</i>}
+                                            <span className="truncate" title={props.qItems[item.linkId].text || ''}>
+                                                {showHierarchy(index)}{' '}
+                                                {props.qItems[item.linkId].text || <i>Legg inn tekst</i>}
                                             </span>
                                             <span {...provided.dragHandleProps} className="anchor-icon">
                                                 <img
@@ -119,6 +128,7 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                                     parentItem={item.linkId}
                                                     qItems={props.qItems}
                                                     parentArray={[...props.parentArray, item.linkId]}
+                                                    parentQuestionNumber={showHierarchy(index)}
                                                 />
                                             )}
                                         </div>

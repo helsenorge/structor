@@ -70,14 +70,14 @@ const Choice = ({ item }: Props): JSX.Element => {
     const renderRadioBtn = (answerOption: QuestionnaireItemAnswerOption, index: number): JSX.Element => {
         return (
             <RadioBtn
-                name={answerOption.valueCoding.system}
+                name={answerOption.valueCoding?.system}
                 key={index}
                 showDelete={index > 1}
-                value={answerOption.valueCoding.display}
+                value={answerOption.valueCoding?.display}
                 onChange={(event) => {
                     const newArray = updateAnswerOption(
                         item.answerOption || [],
-                        answerOption.valueCoding.code || '',
+                        answerOption.valueCoding?.code || '',
                         event.target.value,
                     );
                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
@@ -85,7 +85,7 @@ const Choice = ({ item }: Props): JSX.Element => {
                 deleteItem={() => {
                     const newArray = removeOptionFromAnswerOptionArray(
                         item.answerOption || [],
-                        answerOption.valueCoding.code || '',
+                        answerOption.valueCoding?.code || '',
                     );
                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                 }}

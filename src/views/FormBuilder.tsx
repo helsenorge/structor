@@ -15,8 +15,9 @@ import Navbar from '../components/Navbar/Navbar';
 import PublishModal from '../components/PublishModal/PublishModal';
 import Question from '../components/Question/Question';
 import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
-import { isItemControlHelp } from '../helpers/itemControl';
+import { isIgnorableItem } from '../helpers/itemControl';
 import Sidebar from '../components/Sidebar/Sidebar';
+import LanguageAccordion from '../components/Languages/LanguageAccordion';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -42,7 +43,7 @@ const FormBuilder = (): JSX.Element => {
     };
 
     const removeUnsupportedChildren = (items: OrderItem[]) => {
-        return items.filter((x) => !isItemControlHelp(state.qItems[x.linkId]));
+        return items.filter((x) => !isIgnorableItem(state.qItems[x.linkId]));
     };
 
     const renderTree = (
@@ -96,7 +97,10 @@ const FormBuilder = (): JSX.Element => {
                     <AnchorMenu qOrder={state.qOrder} qItems={state.qItems} dispatch={dispatch} />
                 </div>
                 {isIframeVisible ? (
-                    <FormFiller showFormFiller={() => setIsIframeVisible(!isIframeVisible)} />
+                    <FormFiller
+                        showFormFiller={() => setIsIframeVisible(!isIframeVisible)}
+                        language={state.qMetadata.language}
+                    />
                 ) : (
                     <>
                         <div className="page-wrapper">
@@ -122,6 +126,7 @@ const FormBuilder = (): JSX.Element => {
 
                                 <MetadataEditor />
                                 <Sidebar />
+                                <LanguageAccordion />
                             </div>
 
                             <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>{flatQuestionArray}</div>

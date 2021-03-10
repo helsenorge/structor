@@ -34,7 +34,7 @@ const EnableWhenAnswerTypes = ({
     const getChoices = (conditionItem: QuestionnaireItem): ValueSetComposeIncludeConcept[] => {
         if (conditionItem.answerOption) {
             return conditionItem.answerOption.map((x) => {
-                return { code: x.valueCoding.code || '', display: x.valueCoding.display };
+                return { code: x.valueCoding?.code || '', display: x.valueCoding?.display };
             });
         } else if (conditionItem.answerValueSet && containedResources) {
             const valueSet = containedResources.find((x) => `#${x.id}` === conditionItem.answerValueSet);
@@ -62,8 +62,8 @@ const EnableWhenAnswerTypes = ({
                                     ?.compose?.include[0].system;
                             } else {
                                 return conditionItem.answerOption?.find(
-                                    (x) => x.valueCoding.code === event.target.value,
-                                )?.valueCoding.system;
+                                    (x) => x.valueCoding?.code === event.target.value,
+                                )?.valueCoding?.system;
                             }
                         };
 

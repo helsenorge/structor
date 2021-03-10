@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { updateItemAction } from '../../../store/treeStore/treeActions';
+import { appendValueSetAction, updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
+import { ValueSetContext } from '../../../store/valueSetStore/ValueSetStore';
 import { ValueSetComposeIncludeConcept } from '../../../types/fhir';
 import { IItemProperty } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
@@ -13,11 +14,12 @@ type Props = {
 };
 
 const PredefinedValueSet = ({ linkId, selectedValueSet }: Props): JSX.Element => {
-    const { state, dispatch } = useContext(TreeContext);
-    const { qContained } = state;
+    const { dispatch } = useContext(TreeContext);
+    const { state } = useContext(ValueSetContext);
+    const { predefinedValueSet } = state;
 
     const getContainedValueSetValues = (valueSetId: string): Array<{ system?: string; display?: string }> => {
-        const valueSet = qContained?.find((x) => x.id === valueSetId);
+        const valueSet = predefinedValueSet?.find((x) => x.id === valueSetId);
         if (valueSet && valueSet.compose && valueSet.compose.include && valueSet.compose.include[0].concept) {
             return valueSet.compose.include[0].concept.map((x) => {
                 return { system: valueSet.compose?.include[0].system, display: x.display };
@@ -26,7 +28,7 @@ const PredefinedValueSet = ({ linkId, selectedValueSet }: Props): JSX.Element =>
         return [];
     };
 
-    const containedValueSets = qContained?.map((valueSet) => {
+    const containedValueSets = predefinedValueSet?.map((valueSet) => {
         return {
             code: valueSet.id,
             display: valueSet.title,
@@ -59,7 +61,11 @@ const PredefinedValueSet = ({ linkId, selectedValueSet }: Props): JSX.Element =>
                     options={containedValueSets || []}
                     onChange={(event) => {
                         const id = event.target.value;
-                        dispatch(updateItemAction(linkId, IItemProperty.answerValueSet, `#${id}`));
+                        const valueSet = predefinedValueSet.find((x) => x.id === id);
+                        if (valueSet) {
+                            dispatch(updateItemAction(linkId, IItemProperty.answerValueSet, `#${id}`));
+                            dispatch(appendValueSetAction(valueSet));
+                        }
                     }}
                     placeholder="Velg et alternativ.."
                 />

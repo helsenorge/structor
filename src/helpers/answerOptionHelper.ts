@@ -19,7 +19,7 @@ export const addEmptyOptionToAnswerOptionArray = (
     values: QuestionnaireItemAnswerOption[],
 ): QuestionnaireItemAnswerOption[] => {
     // find existing system, if any. Otherwise generate new system
-    const system = values.length > 0 ? values[0].valueCoding.system : createNewSystem();
+    const system = values.length > 0 ? values[0].valueCoding?.system : createNewSystem();
 
     // create new answerOption to add
     const newValueCoding = createNewAnswerOption(system);
@@ -32,7 +32,7 @@ export const updateAnswerOption = (
     displayValue: string,
 ): QuestionnaireItemAnswerOption[] => {
     return values.map((x) => {
-        return x.valueCoding.code === targetCode
+        return x.valueCoding?.code === targetCode
             ? ({
                   valueCoding: {
                       ...x.valueCoding,
@@ -47,5 +47,5 @@ export const removeOptionFromAnswerOptionArray = (
     values: QuestionnaireItemAnswerOption[],
     targetCode: string,
 ): QuestionnaireItemAnswerOption[] => {
-    return values.filter((x) => x.valueCoding.code !== targetCode);
+    return values.filter((x) => x.valueCoding?.code !== targetCode);
 };

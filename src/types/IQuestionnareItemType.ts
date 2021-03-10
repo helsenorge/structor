@@ -75,4 +75,5 @@ export enum IExtentionType {
     sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
     presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
     canBePerformedByValueSet = 'http://ehelse.no/fhir/ValueSet/CanBePerformedBy',
+    hidden = 'http://hl7.org/fhir/StructureDefinition/questionnaire-hidden',
 }

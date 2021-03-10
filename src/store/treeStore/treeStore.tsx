@@ -3,36 +3,57 @@ import produce from 'immer';
 
 import { QuestionnaireItem, ValueSet } from '../../types/fhir';
 import {
+    ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
+    AddQuestionnaireLanguageAction,
+    APPEND_VALUESET_ACTION,
+    AppendValueSetAction,
     DELETE_ITEM_ACTION,
     DeleteItemAction,
     DUPLICATE_ITEM_ACTION,
     DuplicateItemAction,
     NEW_ITEM_ACTION,
     NewItemAction,
+    REMOVE_ITEM_ATTRIBUTE_ACTION,
+    REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION,
+    RemoveItemAttributeAction,
+    RemoveQuestionnaireLanguageAction,
     REORDER_ITEM_ACTION,
     ReorderItemAction,
     RESET_QUESTIONNAIRE_ACTION,
     ResetQuestionnaireAction,
+    UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION,
     UPDATE_ITEM_ACTION,
+    UPDATE_ITEM_OPTION_TRANSLATION_ACTION,
+    UPDATE_ITEM_TRANSLATION_ACTION,
     UPDATE_LINK_ID_ACTION,
-    UPDATE_QUESTIONNAIRE_METADATA_ACTION,
-    UpdateItemAction,
-    UpdateLinkIdAction,
-    UpdateQuestionnaireMetadataAction,
-    AppendValueSetAction,
-    APPEND_VALUESET_ACTION,
-    REMOVE_ITEM_ATTRIBUTE_ACTION,
-    RemoveItemAttributeAction,
-    UpdateMarkedLinkId,
     UPDATE_MARKED_LINK_ID,
+    UPDATE_METADATA_TRANSLATION_ACTION,
+    UPDATE_QUESTIONNAIRE_METADATA_ACTION,
+    UPDATE_SIDEBAR_TRANSLATION_ACTION,
+    UpdateContainedValueSetTranslationAction,
+    UpdateItemAction,
+    UpdateItemOptionTranslationAction,
+    UpdateItemTranslationAction,
+    UpdateLinkIdAction,
+    UpdateMarkedLinkId,
+    UpdateMetadataTranslationAction,
+    UpdateQuestionnaireMetadataAction,
+    UpdateSidebarTranslationAction,
+    MoveItemAction,
+    MOVE_ITEM_ACTION,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOptionHelper';
-import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
+
+const INITIAL_LANGUAGE = 'nb-no';
 
 export type ActionType =
+    | AddQuestionnaireLanguageAction
+    | RemoveQuestionnaireLanguageAction
+    | UpdateItemTranslationAction
+    | UpdateItemOptionTranslationAction
     | ResetQuestionnaireAction
     | UpdateQuestionnaireMetadataAction
     | NewItemAction
@@ -40,13 +61,63 @@ export type ActionType =
     | UpdateItemAction
     | DuplicateItemAction
     | ReorderItemAction
+    | MoveItemAction
     | AppendValueSetAction
+    | UpdateContainedValueSetTranslationAction
     | UpdateLinkIdAction
+    | UpdateMetadataTranslationAction
+    | UpdateSidebarTranslationAction
     | RemoveItemAttributeAction
     | UpdateMarkedLinkId;
 
 export interface Items {
     [key: string]: QuestionnaireItem;
+}
+
+export interface CodeStringValue {
+    [code: string]: string;
+}
+
+export interface ItemTranslation {
+    text?: string;
+    validationText?: string;
+    entryFormatText?: string;
+    answerOptions?: CodeStringValue;
+}
+
+export interface ContainedTranslation {
+    concepts: CodeStringValue;
+}
+
+export interface ContainedTranslations {
+    [id: string]: ContainedTranslation;
+}
+
+export interface ItemTranslations {
+    [key: string]: ItemTranslation;
+}
+
+export interface MetadataTranslations {
+    [key: string]: string;
+}
+
+export interface SidebarItemTranslation {
+    markdown: string;
+}
+
+export interface SidebarItemTranslations {
+    [linkId: string]: SidebarItemTranslation;
+}
+
+export interface Translation {
+    items: ItemTranslations;
+    sidebarItems: SidebarItemTranslations;
+    metaData: MetadataTranslations;
+    contained: ContainedTranslations;
+}
+
+export interface Languages {
+    [key: string]: Translation;
 }
 
 export interface OrderItem {
@@ -58,8 +129,9 @@ export interface TreeState {
     qItems: Items;
     qOrder: OrderItem[];
     qMetadata: IQuestionnaireMetadata;
-    qContained?: Array<ValueSet>;
+    qContained?: ValueSet[];
     qCurrentItemId?: string;
+    qAdditionalLanguages?: Languages;
 }
 
 export const initialState: TreeState = {
@@ -69,7 +141,7 @@ export const initialState: TreeState = {
         title: '',
         description: '',
         resourceType: 'Questionnaire',
-        language: 'nb-NO',
+        language: INITIAL_LANGUAGE,
         name: '',
         status: 'draft',
         publisher: 'NHN',
@@ -78,7 +150,7 @@ export const initialState: TreeState = {
             tag: [
                 {
                     system: 'urn:ietf:bcp:47',
-                    code: 'nb-NO',
+                    code: INITIAL_LANGUAGE,
                     display: 'Norsk bokmål',
                 },
             ],
@@ -109,9 +181,28 @@ export const initialState: TreeState = {
         subjectType: ['Patient'],
         extension: [],
     },
-    qContained: initPredefinedValueSet,
+    qContained: [],
     qCurrentItemId: '',
+    qAdditionalLanguages: {},
 };
+
+function buildTranslationBase(): Translation {
+    return { items: {}, sidebarItems: {}, metaData: {}, contained: {} };
+}
+
+function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
+    if (!draft.qAdditionalLanguages) {
+        draft.qAdditionalLanguages = {};
+    }
+    draft.qAdditionalLanguages[action.additionalLanguageCode] = buildTranslationBase();
+}
+
+function removeLanguage(draft: TreeState, action: RemoveQuestionnaireLanguageAction) {
+    if (!draft.qAdditionalLanguages) {
+        draft.qAdditionalLanguages = {};
+    }
+    delete draft.qAdditionalLanguages[action.languageCode];
+}
 
 function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
     if (searchPath.length === 0) {
@@ -142,7 +233,29 @@ function newItem(draft: TreeState, action: NewItemAction): void {
     arrayToAddItemTo.push({ linkId: itemToAdd.linkId, items: [] });
 }
 
+function moveItem(draft: TreeState, action: MoveItemAction): void {
+    const arrayToDeleteItemFrom = findTreeArray(action.oldOrder, draft.qOrder);
+    const indexToDelete = arrayToDeleteItemFrom.findIndex((x) => x.linkId === action.linkId);
+    const subTree = arrayToDeleteItemFrom[indexToDelete].items;
+
+    // find the correct place to move the item
+    const arrayToAddItemTo = findTreeArray(action.newOrder, draft.qOrder);
+    arrayToAddItemTo.push({ linkId: action.linkId, items: subTree });
+
+    // delete node from qOrder
+    arrayToDeleteItemFrom.splice(indexToDelete, 1);
+}
+
 function deleteItem(draft: TreeState, action: DeleteItemAction): void {
+    const deleteItemTranslations = (linkIdToDelete: string, languages?: Languages) => {
+        if (!languages) {
+            return;
+        }
+        Object.values(languages).forEach((translation) => {
+            delete translation.items[linkIdToDelete];
+        });
+    };
+
     const arrayToDeleteItemFrom = findTreeArray(action.order, draft.qOrder);
     const indexToDelete = arrayToDeleteItemFrom.findIndex((x) => x.linkId === action.linkId);
 
@@ -150,6 +263,7 @@ function deleteItem(draft: TreeState, action: DeleteItemAction): void {
     const itemsToDelete = [action.linkId, ...getLinkIdOfAllSubItems(arrayToDeleteItemFrom[indexToDelete].items, [])];
     itemsToDelete.forEach((linkIdToDelete: string) => {
         delete draft.qItems[linkIdToDelete];
+        deleteItemTranslations(linkIdToDelete, draft.qAdditionalLanguages);
     });
 
     // delete node from qOrder
@@ -182,6 +296,51 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
     }
 }
 
+function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAction) {
+    if (draft.qAdditionalLanguages) {
+        if (!draft.qAdditionalLanguages[action.languageCode].items[action.linkId]) {
+            draft.qAdditionalLanguages[action.languageCode].items[action.linkId] = {};
+        }
+        draft.qAdditionalLanguages[action.languageCode].items[action.linkId][action.propertyName] = action.value;
+    }
+}
+
+function updateItemOptionTranslation(draft: TreeState, action: UpdateItemOptionTranslationAction) {
+    if (draft.qAdditionalLanguages) {
+        const item = draft.qAdditionalLanguages[action.languageCode].items[action.linkId];
+        if (!item.answerOptions) {
+            item.answerOptions = {};
+        }
+        item.answerOptions[action.optionCode] = action.text;
+    }
+}
+
+function updateMetadataTranslation(draft: TreeState, action: UpdateMetadataTranslationAction) {
+    if (draft.qAdditionalLanguages) {
+        draft.qAdditionalLanguages[action.languageCode].metaData[action.propertyName] = action.translation;
+    }
+}
+
+function updateContainedValueSetTranslation(draft: TreeState, action: UpdateContainedValueSetTranslationAction) {
+    if (draft.qAdditionalLanguages) {
+        const contained = draft.qAdditionalLanguages[action.languageCode].contained;
+        if (!contained[action.valueSetId]) {
+            contained[action.valueSetId] = { concepts: {} };
+        }
+        contained[action.valueSetId].concepts[action.conceptId] = action.translation;
+    }
+}
+
+function updateSidebarTranslation(draft: TreeState, action: UpdateSidebarTranslationAction) {
+    if (draft.qAdditionalLanguages) {
+        const sidebarItems = draft.qAdditionalLanguages[action.languageCode].sidebarItems;
+        if (!sidebarItems[action.linkId]) {
+            sidebarItems[action.linkId] = { markdown: '' };
+        }
+        sidebarItems[action.linkId].markdown = action.value;
+    }
+}
+
 function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value }: UpdateQuestionnaireMetadataAction) {
     draft.qMetadata = {
         ...draft.qMetadata,
@@ -199,18 +358,30 @@ function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value
     }
 }
 
-function resetQuestionnaireAction(draft: TreeState, action: ResetQuestionnaireAction): void {
+function resetQuestionnaire(draft: TreeState, action: ResetQuestionnaireAction): void {
     const newState: TreeState = action.newState || initialState;
     draft.qOrder = newState.qOrder;
     draft.qItems = newState.qItems;
     draft.qMetadata = newState.qMetadata;
     draft.qContained = newState.qContained;
+    draft.qAdditionalLanguages = newState.qAdditionalLanguages;
 }
 
 function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): void {
     // find index of item to duplicate
     const arrayToDuplicateInto = findTreeArray(action.order, draft.qOrder);
     const indexToDuplicate = arrayToDuplicateInto.findIndex((x) => x.linkId === action.linkId);
+
+    const copyItemTranslations = (linkIdToCopyFrom: string, newLinkId: string) => {
+        if (draft.qAdditionalLanguages) {
+            Object.values(draft.qAdditionalLanguages).forEach((translation) => {
+                const translationItemToCopyFrom = translation.items[linkIdToCopyFrom];
+                if (translationItemToCopyFrom) {
+                    translation.items[newLinkId] = translationItemToCopyFrom;
+                }
+            });
+        }
+    };
 
     const copyItemWithSubtrees = (itemToCopyFrom: OrderItem, parentMap: { [key: string]: string }): OrderItem => {
         const copyItem: QuestionnaireItem = JSON.parse(JSON.stringify(draft.qItems[itemToCopyFrom.linkId]));
@@ -227,6 +398,8 @@ function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): voi
 
         // add new item
         draft.qItems[copyItem.linkId] = copyItem;
+
+        copyItemTranslations(itemToCopyFrom.linkId, newId);
 
         // add item to tree and generate subtrees
         return {
@@ -252,15 +425,19 @@ function reorderItem(draft: TreeState, action: ReorderItemAction): void {
 }
 
 function appendValueSet(draft: TreeState, action: AppendValueSetAction): void {
+    const valueSetExists = draft.qContained && !!draft.qContained.find((x) => x.id === action.valueSet.id);
+    if (valueSetExists) {
+        return;
+    }
     if (draft.qContained && draft.qContained.length > 0) {
-        draft.qContained = [...draft.qContained, ...action.valueSet];
+        draft.qContained = [...draft.qContained, action.valueSet];
     } else {
-        draft.qContained = [...action.valueSet];
+        draft.qContained = [action.valueSet];
     }
 }
 
 function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
-    const { qItems, qOrder } = draft;
+    const { qItems, qOrder, qAdditionalLanguages } = draft;
     const { oldLinkId, newLinkId, parentArray } = action;
 
     // Replace in qItems
@@ -291,6 +468,14 @@ function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
             }
         });
     });
+
+    if (qAdditionalLanguages) {
+        Object.values(qAdditionalLanguages).forEach((translation) => {
+            const oldItemTranslation = translation.items[oldLinkId];
+            translation.items[newLinkId] = oldItemTranslation;
+            delete translation.items[oldLinkId];
+        });
+    }
 }
 
 function removeAttributeFromItem(draft: TreeState, action: RemoveItemAttributeAction): void {
@@ -301,8 +486,14 @@ function removeAttributeFromItem(draft: TreeState, action: RemoveItemAttributeAc
 
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
+        case ADD_QUESTIONNAIRE_LANGUAGE_ACTION:
+            addLanguage(draft, action);
+            break;
+        case REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION:
+            removeLanguage(draft, action);
+            break;
         case RESET_QUESTIONNAIRE_ACTION:
-            resetQuestionnaireAction(draft, action);
+            resetQuestionnaire(draft, action);
             break;
         case UPDATE_QUESTIONNAIRE_METADATA_ACTION:
             updateQuestionnaireMetadataProperty(draft, action);
@@ -316,11 +507,29 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
         case UPDATE_ITEM_ACTION:
             updateItem(draft, action);
             break;
+        case UPDATE_ITEM_TRANSLATION_ACTION:
+            updateItemTranslation(draft, action);
+            break;
+        case UPDATE_ITEM_OPTION_TRANSLATION_ACTION:
+            updateItemOptionTranslation(draft, action);
+            break;
+        case UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION:
+            updateContainedValueSetTranslation(draft, action);
+            break;
+        case UPDATE_METADATA_TRANSLATION_ACTION:
+            updateMetadataTranslation(draft, action);
+            break;
+        case UPDATE_SIDEBAR_TRANSLATION_ACTION:
+            updateSidebarTranslation(draft, action);
+            break;
         case DUPLICATE_ITEM_ACTION:
             duplicateItemAction(draft, action);
             break;
         case REORDER_ITEM_ACTION:
             reorderItem(draft, action);
+            break;
+        case MOVE_ITEM_ACTION:
+            moveItem(draft, action);
             break;
         case APPEND_VALUESET_ACTION:
             appendValueSet(draft, action);

@@ -8,11 +8,12 @@ type Props = {
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     value?: string;
     placeholder?: string;
+    compact?: boolean;
 };
 
-const Select = ({ options, onChange, value, placeholder }: Props): JSX.Element => {
+const Select = ({ options, onChange, value, placeholder, compact }: Props): JSX.Element => {
     return (
-        <div className="selector">
+        <div className={`selector ${compact ? 'compact' : ''}`}>
             <select onChange={onChange} value={value || ''}>
                 {placeholder && (
                     <option value="" disabled>

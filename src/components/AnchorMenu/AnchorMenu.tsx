@@ -31,7 +31,13 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
         <div className="anchor-menu">
             <p className="align-header">Skjemaoversikt</p>
             <DragDropContext onDragEnd={handleChange}>
-                <SubAnchor items={props.qOrder} parentItem="draggable" qItems={props.qItems} parentArray={[]} />
+                <SubAnchor
+                    items={props.qOrder}
+                    parentItem="draggable"
+                    qItems={props.qItems}
+                    parentArray={[]}
+                    parentQuestionNumber=""
+                />
             </DragDropContext>
             {props.qOrder.length === 0 && (
                 <p className="center-text" style={{ padding: '0px 25px' }}>

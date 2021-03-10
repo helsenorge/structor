@@ -1,0 +1,16 @@
+.language-bar {
+    display: flex;
+}
+
+.additional-languages {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.language-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
