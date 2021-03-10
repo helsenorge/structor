@@ -143,16 +143,16 @@ function translateItem(translationItem: QuestionnaireItem | undefined): ItemTran
 function translateItems(
     baseItems: QuestionnaireItem[] | undefined,
     translationItems: QuestionnaireItem[] | undefined,
+    items: ItemTranslations = {},
+    sidebarItems: SidebarItemTranslations = {},
 ): { items: ItemTranslations; sidebarItems: SidebarItemTranslations } {
-    const items: ItemTranslations = {};
-    const sidebarItems: SidebarItemTranslations = {};
-
     baseItems?.forEach((baseItem) => {
         const translationItem = translationItems?.find((tItem) => tItem.linkId === baseItem.linkId);
         if (isItemControlSidebar(baseItem)) {
             sidebarItems[baseItem.linkId] = translateSidebarItem(translationItem);
         } else {
             items[baseItem.linkId] = translateItem(translationItem);
+            translateItems(baseItem.item, translationItem?.item, items, sidebarItems);
         }
     });
 
