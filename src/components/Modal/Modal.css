@@ -1,0 +1,9 @@
+.modal-btn-bottom {
+    bottom: 10px;
+    position: sticky;
+    width: 100%;
+}
+
+.modal-btn-bottom button {
+    background: white;
+}

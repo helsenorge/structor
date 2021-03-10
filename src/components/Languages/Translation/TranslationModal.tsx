@@ -13,7 +13,6 @@ import TranslateSidebar from './TranslateSidebar';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
-import Btn from '../../Btn/Btn';
 import { IExtentionType } from '../../../types/IQuestionnareItemType';
 
 type TranslationModalProps = {
@@ -24,25 +23,32 @@ type TranslationModalProps = {
 interface FlattOrderTranslation {
     linkId: string;
     path: string;
+    helpItemLinkId?: string;
 }
 
 const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const { qItems, qOrder, qAdditionalLanguages, qMetadata, qContained } = state;
     const [flattOrder, setFlattOrder] = useState<FlattOrderTranslation[]>([]);
-
-    useEffect(() => {
-        flattenOrder();
-    }, []);
+    const [count, setLimit] = useState(20);
 
     const handleChild = (items: OrderItem[], path: string, tempHierarchy: FlattOrderTranslation[]) => {
+        let index = 1;
         items
-            .filter((x) => !isIgnorableItem(qItems[x.linkId]))
-            .forEach((child, childIndex) => {
-                const childPath = `${path}${childIndex + 1}`;
-                tempHierarchy.push({ linkId: child.linkId, path: childPath });
-                if (child.items) {
-                    handleChild(child.items, childPath, tempHierarchy);
+            .filter((x) => !isItemControlSidebar(qItems[x.linkId]))
+            .forEach((item) => {
+                const itemHasHelpChild = item.items.find((child) => isItemControlHelp(qItems[child.linkId]));
+                const childPath = `${path}${index}`;
+                const tempItem = { linkId: item.linkId, path: childPath } as FlattOrderTranslation;
+                if (itemHasHelpChild) {
+                    tempItem.helpItemLinkId = itemHasHelpChild.linkId;
+                }
+                if (!isItemControlHelp(qItems[item.linkId])) {
+                    tempHierarchy.push(tempItem);
+                    index++;
+                }
+                if (item.items) {
+                    handleChild(item.items, childPath, tempHierarchy);
                 }
             });
     };
@@ -51,11 +57,16 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         const temp = [] as FlattOrderTranslation[];
         qOrder
             .filter((x) => !isIgnorableItem(qItems[x.linkId]))
-            .forEach((x, index) => {
+            .forEach((item, index) => {
                 const itemPath = `${index + 1}.`;
-                temp.push({ linkId: x.linkId, path: itemPath });
-                if (x.items) {
-                    handleChild(x.items, itemPath, temp);
+                const tempItem = { linkId: item.linkId, path: itemPath } as FlattOrderTranslation;
+                const helpItem = item.items.find((child) => isItemControlHelp(qItems[child.linkId]));
+                if (helpItem) {
+                    tempItem.helpItemLinkId = helpItem.linkId;
+                }
+                temp.push(tempItem);
+                if (item.items) {
+                    handleChild(item.items, itemPath, temp);
                 }
             });
         setFlattOrder([...temp]);
@@ -85,16 +96,15 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         </div>
     );
 
-    const renderHelpText = (orderItems: OrderItem[]): JSX.Element | null => {
-        const helpTextItemId = orderItems.find((orderItem) => isItemControlHelp(qItems[orderItem.linkId]));
-        if (!helpTextItemId || !qAdditionalLanguages) {
+    const renderHelpText = (linkId: string): JSX.Element | null => {
+        if (!qAdditionalLanguages) {
             return null;
         }
-        const helpText = getHelpText(qItems[helpTextItemId.linkId]);
+        const helpText = getHelpText(qItems[linkId]);
         const translatedHelpText = getItemPropertyTranslation(
             props.targetLanguage,
             qAdditionalLanguages,
-            helpTextItemId.linkId,
+            linkId,
             TranslatableItemProperty.text,
         );
         return (
@@ -111,7 +121,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                                 dispatch(
                                     updateItemTranslationAction(
                                         props.targetLanguage,
-                                        helpTextItemId.linkId,
+                                        linkId,
                                         TranslatableItemProperty.text,
                                         value,
                                     ),
@@ -125,15 +135,16 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     };
 
     useEffect(() => {
+        flattenOrder();
         const options = {
             root: document.getElementById('translation-modal'),
             rootMargin: '63px 0px 0px 0px',
-            threshold: [0.5],
+            threshold: [0, 0.5, 1],
         };
 
         const observed = (elements: IntersectionObserverEntry[]) => {
             if (elements[0].intersectionRatio === 1) {
-                console.log('Fire!');
+                setLimit((prevState) => prevState + 25);
             }
         };
 
@@ -144,26 +155,27 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         if (myEl) {
             myObserver.observe(myEl);
         }
+
+        return function cleanup() {
+            myObserver.disconnect();
+        };
     }, []);
 
-    const renderItems = (orderItems: OrderItem[], parentNumber = ''): Array<JSX.Element | null> => {
+    const renderItems = (orderItems: FlattOrderTranslation[]): Array<JSX.Element | null> => {
         if (translatableItems && qAdditionalLanguages) {
-            return orderItems.map((orderItem, index) => {
+            return orderItems.map((orderItem) => {
                 const item = translatableItems.find((i) => i.linkId === orderItem.linkId);
-
-                if (item && !isItemControlHelp(item)) {
-                    const itemNumber = parentNumber === '' ? `${index + 1}` : `${parentNumber}.${index + 1}`;
+                if (item) {
                     return (
                         <div key={`${props.targetLanguage}-${item.linkId}`}>
                             <div className="translation-item">
                                 <TranslateItemRow
                                     item={item}
                                     targetLanguage={props.targetLanguage}
-                                    itemNumber={itemNumber}
+                                    itemNumber={orderItem.path}
                                 />
-                                {renderHelpText(orderItem.items)}
+                                {orderItem.helpItemLinkId && renderHelpText(orderItem.helpItemLinkId)}
                             </div>
-                            {renderItems(orderItem.items, itemNumber)}
                         </div>
                     );
                 }
@@ -173,13 +185,9 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         return [];
     };
 
-    const removeUnsupportedChildren = (items: OrderItem[]) => {
-        return items.filter((x) => !isIgnorableItem(state.qItems[x.linkId]));
-    };
-
     return (
         <div className="translation-modal">
-            <Modal close={props.close} title="Oversett skjema" id="translation-modal">
+            <Modal close={props.close} title="Oversett skjema" id="translation-modal" bottomCloseText="Lukk">
                 {getHeader()}
                 <div style={{ position: 'relative' }}>
                     <>
@@ -206,19 +214,12 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                                 )}
                                 <div>
                                     <div className="translation-section-header">Elementer</div>
-                                    {renderItems(removeUnsupportedChildren(state.qOrder))}
+                                    {renderItems(flattOrder.filter((val, i) => i <= count))}
                                 </div>
-                                <div>{flattOrder.length}</div>
-                                <div id="bottom-translation-modal" style={{ height: 1 }} />
-                                <div className="center-text">
-                                    <Btn
-                                        title="Lagre og lukk"
-                                        size="small"
-                                        type="button"
-                                        variant="secondary"
-                                        onClick={props.close}
-                                    />
-                                </div>
+                                <div
+                                    id="bottom-translation-modal"
+                                    style={{ height: 1, position: 'absolute', bottom: 500 }}
+                                />
                             </>
                         )}
                     </>
