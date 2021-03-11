@@ -121,7 +121,7 @@ const Choice = ({ item }: Props): JSX.Element => {
 
             if (fromIndex !== toIndex) {
                 const tempList = item.answerOption ? [...item.answerOption] : [];
-                console.log('dispatch new Order!', swapPositions(tempList, toIndex, fromIndex));
+                dispatchUpdateItem(IItemProperty.answerOption, swapPositions(tempList, toIndex, fromIndex));
             }
         };
 
