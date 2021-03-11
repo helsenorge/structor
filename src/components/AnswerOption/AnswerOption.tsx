@@ -8,14 +8,13 @@ import './AnswerOption.css';
 
 type Props = {
     answerOption: QuestionnaireItemAnswerOption;
-    index: number;
     handleDrag?: DraggableProvidedDragHandleProps;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     deleteItem?: () => void;
     showDelete?: boolean;
 };
 
-const AnswerOption = ({ answerOption, index, handleDrag, onChange, deleteItem, showDelete }: Props): JSX.Element => {
+const AnswerOption = ({ answerOption, handleDrag, onChange, deleteItem, showDelete }: Props): JSX.Element => {
     return (
         <div className="answer-option-item align-everything">
             <span {...handleDrag} className="anchor-icon">
