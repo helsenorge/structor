@@ -99,7 +99,6 @@ const Choice = ({ item }: Props): JSX.Element => {
                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                 }}
                 answerOption={answerOption}
-                index={index}
                 handleDrag={handleDrag}
                 showDelete={!!count && count > 2}
             />
