@@ -1,0 +1,15 @@
+.answer-option-item{
+    display: flex;
+}
+
+.answer-option-item input{
+    flex: 1;
+    margin: 5px 15px;
+}
+
+.answer-option-item button{
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+}

@@ -285,7 +285,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                 </FormField>
             )}
             {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.text) && (
-                <FormField label="Placeholder">
+                <FormField label="Skyggetekst">
                     <input
                         defaultValue={getPlaceholder}
                         onBlur={(e) =>
