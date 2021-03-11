@@ -414,8 +414,8 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <MarkdownEditor data={getLabelText()} onBlur={dispatchUpdateMarkdownLabel} />
                     ) : (
                         <input
-                            value={getLabelText()}
-                            onChange={(e) => {
+                            defaultValue={getLabelText()}
+                            onBlur={(e) => {
                                 dispatchUpdateItem(IItemProperty.text, e.target.value);
                             }}
                         />

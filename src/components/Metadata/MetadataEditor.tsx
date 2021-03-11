@@ -47,8 +47,8 @@ const MetadataEditor = (): JSX.Element => {
                 <FormField label="Description">
                     <textarea
                         placeholder="Beskrivelse av skjema"
-                        value={qMetadata.description || ''}
-                        onChange={(e) => updateMeta(IQuestionnaireMetadataType.description, e.target.value)}
+                        defaultValue={qMetadata.description || ''}
+                        onBlur={(e) => updateMeta(IQuestionnaireMetadataType.description, e.target.value)}
                     />
                 </FormField>
 
@@ -175,8 +175,8 @@ const MetadataEditor = (): JSX.Element => {
                 </FormField>
                 <FormField label="Utsteder">
                     <input
-                        value={qMetadata.publisher || ''}
-                        onChange={(e) => updateMeta(IQuestionnaireMetadataType.publisher, e.target.value)}
+                        defaultValue={qMetadata.publisher || ''}
+                        onBlur={(e) => updateMeta(IQuestionnaireMetadataType.publisher, e.target.value)}
                     />
                 </FormField>
                 <FormField label="Formål">

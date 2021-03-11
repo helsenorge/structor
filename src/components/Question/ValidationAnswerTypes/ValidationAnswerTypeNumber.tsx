@@ -98,7 +98,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                         <input
                             type="number"
                             defaultValue={maxDecimalPlaces}
-                            onChange={updateExtensionNumberElement(IExtentionType.maxDecimalPlaces)}
+                            onBlur={updateExtensionNumberElement(IExtentionType.maxDecimalPlaces)}
                         />
                     </div>
                 )}
@@ -110,7 +110,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     <input
                         type="number"
                         defaultValue={minValue}
-                        onChange={updateExtensionNumberElement(IExtentionType.minValue)}
+                        onBlur={updateExtensionNumberElement(IExtentionType.minValue)}
                     ></input>
                 </div>
 
@@ -119,7 +119,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     <input
                         type="number"
                         defaultValue={maxValue}
-                        onChange={updateExtensionNumberElement(IExtentionType.maxValue)}
+                        onBlur={updateExtensionNumberElement(IExtentionType.maxValue)}
                     ></input>
                 </div>
             </div>
@@ -130,7 +130,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     type="input"
                     defaultValue={validationText}
                     placeholder="feilmelding"
-                    onChange={updateExtensionInputElement(IExtentionType.validationtext)}
+                    onBlur={updateExtensionInputElement(IExtentionType.validationtext)}
                 ></input>
             </div>
         </>
