@@ -1,9 +1,6 @@
 import React from 'react';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { QuestionnaireItemAnswerOption } from '../../types/fhir';
-
-import ReorderIcon from '../../images/icons/reorder-three-outline.svg';
-import CloseIcon from '../../images/icons/close-outline.svg';
 import './AnswerOption.css';
 
 type Props = {
@@ -17,9 +14,7 @@ type Props = {
 const AnswerOption = ({ answerOption, handleDrag, onChange, deleteItem, showDelete }: Props): JSX.Element => {
     return (
         <div className="answer-option-item align-everything">
-            <span {...handleDrag} className="anchor-icon">
-                <img src={ReorderIcon} height={25} alt="reorder" aria-label="reorder item" />
-            </span>
+            <span {...handleDrag} className="reorder-icon" aria-label="reorder element" />
             <input
                 autoComplete="off"
                 type="text"
@@ -28,9 +23,7 @@ const AnswerOption = ({ answerOption, handleDrag, onChange, deleteItem, showDele
                 value={answerOption.valueCoding?.display}
             />
             {showDelete && (
-                <button type="button" name="Fjern element" onClick={deleteItem} className="align-everything">
-                    <img src={CloseIcon} height="25" width="25"></img>
-                </button>
+                <button type="button" name="Fjern element" onClick={deleteItem} className="align-everything" />
             )}
         </div>
     );

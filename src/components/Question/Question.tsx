@@ -357,15 +357,15 @@ const Question = (props: QuestionProps): JSX.Element => {
                     Element <span>{props.questionNumber}</span>
                 </h2>
                 <button className="pull-right question-button" onClick={dispatchDuplicateItem}>
-                    <img src={CopyIcon} height="25" width="25" /> Dupliser
+                    <i className="duplicate-icon" aria-label="duplicate element" /> Dupliser
                 </button>
                 {canCreateChild && (
                     <button className="question-button" onClick={() => dispatchNewChildItem()}>
-                        <img src={PlusIcon} height="25" width="25" /> Oppfølgingsspørsmål
+                        <i className="add-icon" aria-label="add child element" /> Oppfølgingsspørsmål
                     </button>
                 )}
                 <button className="question-button" onClick={dispatchDeleteItem}>
-                    <img src={Trashcan} height="25" width="25" /> Slett
+                    <i className="trash-icon" aria-label="remove element" /> Slett
                 </button>
             </div>
             <div className="question-form">

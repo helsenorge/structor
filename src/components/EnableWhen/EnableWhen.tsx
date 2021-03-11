@@ -160,7 +160,7 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
                                 dispatchUpdateItemEnableWhen(copy);
                             }}
                         >
-                            <img src={Trashcan} height="25" width="25" /> Fjern betingelse
+                            <i className="trash-icon" aria-label="remove" /> Fjern betingelse
                         </button>
                     </div>
                 );
@@ -173,7 +173,7 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
                     dispatchUpdateItemEnableWhen(copy.concat({} as QuestionnaireItemEnableWhen));
                 }}
             >
-                <img src={PlusIcon} height="25" width="25" /> Legg til betingelse
+                <i className="add-icon" aria-label="icon" /> Legg til betingelse
             </button>
             {enableWhen.length > 1 && (
                 <EnableBehavior

@@ -4,8 +4,6 @@ import './DatePicker.css';
 import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
 import React, { useState } from 'react';
 
-import Calendar from '../../images/icons/calendar-outline.svg';
-import Clock from '../../images/icons/time-outline.svg';
 import { nb } from 'date-fns/locale';
 
 type PickerProps = {
@@ -41,7 +39,7 @@ const Picker = ({ type, disabled = true, withPortal, nowButton, callback, select
                 dateFormat={type === 'date' ? 'dd.MM.yyyy' : 'HH:mm'}
                 timeCaption="Tid"
             />
-            <img src={type === 'time' ? Clock : Calendar} alt="datepicker icon" height="25" />
+            <i className={type === 'time' ? 'time-icon' : 'calendar-icon'} aria-label="datepicker" />
         </div>
     );
 };

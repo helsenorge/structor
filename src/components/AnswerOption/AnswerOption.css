@@ -12,4 +12,13 @@
     border: 0;
     cursor: pointer;
     padding: 0;
+    background: url("../../images/icons/close-outline.svg") no-repeat center;
+    height: 25px;
+    width: 25px;
+}
+
+.reorder-icon{
+    height: 25px;
+    width: 25px;
+    background: url("../../images/icons/reorder-three-outline.svg") no-repeat center;
 }

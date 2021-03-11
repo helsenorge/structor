@@ -181,16 +181,18 @@ const Choice = ({ item }: Props): JSX.Element => {
                 {renderAnswerOption()}
             </div>
             {!item.answerValueSet && (
-                <Btn
-                    title="+ Legg til alternativ"
-                    type="button"
-                    onClick={() => {
-                        const newArray = addEmptyOptionToAnswerOptionArray(item.answerOption || []);
-                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                    }}
-                    variant="secondary"
-                    size="small"
-                />
+                <div className="center-text">
+                    <Btn
+                        title="+ Legg til alternativ"
+                        type="button"
+                        onClick={() => {
+                            const newArray = addEmptyOptionToAnswerOptionArray(item.answerOption || []);
+                            dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                        }}
+                        variant="secondary"
+                        size="small"
+                    />
+                </div>
             )}
         </>
     );

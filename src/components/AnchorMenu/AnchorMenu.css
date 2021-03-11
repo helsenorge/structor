@@ -34,8 +34,20 @@
     text-align: center;
 }
 
-.anchor-icon {
-    display: 'block';
+.folder-icon{
     height: 25px;
-    width: 25px,
+    width: 25px;
+    background: url("../../images/icons/folder-outline.svg") no-repeat center;
+}
+
+.message-icon{
+    height: 25px;
+    width: 25px;
+    background: url("../../images/icons/information-circle-outline.svg") no-repeat center;
+}
+
+.question-icon{
+    height: 25px;
+    width: 25px;
+    background: url("../../images/icons/help-circle-outline.svg") no-repeat center;
 }

@@ -2,11 +2,6 @@ import React, { useContext } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Items, OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 
-import ReorderIcon from '../../images/icons/reorder-three-outline.svg';
-import FolderIcon from '../../images/icons/folder-outline.svg';
-import MessageIcon from '../../images/icons/information-circle-outline.svg';
-import QuestionIcon from '../../images/icons/help-circle-outline.svg';
-
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import { isIgnorableItem } from '../../helpers/itemControl';
 
@@ -56,11 +51,11 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
     const getRelevantIcon = (type: string) => {
         switch (type) {
             case IQuestionnaireItemType.group:
-                return <img src={FolderIcon} height={25} alt={`question type ${IQuestionnaireItemType.group}`} />;
+                return 'folder-icon';
             case IQuestionnaireItemType.display:
-                return <img src={MessageIcon} height={25} alt={`question type ${IQuestionnaireItemType.display}`} />;
+                return 'message-icon';
             default:
-                return <img src={QuestionIcon} height={25} alt="question" />;
+                return 'question-icon';
         }
     };
 
@@ -98,28 +93,24 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                             provided.draggableProps.style,
                                             item.linkId,
                                         )}
+                                        onClick={() => {
+                                            handleScrollTo(item.linkId);
+                                        }}
                                     >
-                                        <div
-                                            style={{ display: 'flex', alignItems: 'center' }}
-                                            onClick={() => {
-                                                handleScrollTo(item.linkId);
-                                            }}
-                                        >
-                                            <span className="anchor-icon" style={{ paddingRight: 10 }}>
-                                                {getRelevantIcon(props.qItems[item.linkId].type)}
-                                            </span>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <span
+                                                className={getRelevantIcon(props.qItems[item.linkId].type)}
+                                                style={{ marginRight: 10 }}
+                                            />
                                             <span className="truncate" title={props.qItems[item.linkId].text || ''}>
                                                 {showHierarchy(index)}{' '}
                                                 {props.qItems[item.linkId].text || <i>Legg inn tekst</i>}
                                             </span>
-                                            <span {...provided.dragHandleProps} className="anchor-icon">
-                                                <img
-                                                    src={ReorderIcon}
-                                                    height={25}
-                                                    alt="reorder"
-                                                    aria-label="reorder item"
-                                                />
-                                            </span>
+                                            <span
+                                                {...provided.dragHandleProps}
+                                                className="reorder-icon"
+                                                aria-label="reorder item"
+                                            />
                                         </div>
                                         <div>
                                             {removeUnsupportedChildren(item.items).length > 0 && (

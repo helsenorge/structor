@@ -45,7 +45,7 @@ const DateTimePicker = ({
                 dateFormat="dd.MM.yyyy HH:mm"
                 timeCaption="Tid"
             />
-            <img src={Calendar} alt="datepicker icon" height="25" />
+            <i className="calendar-icon" aria-label="date and time picker" />
         </div>
     );
 };
