@@ -49,3 +49,12 @@ export const removeOptionFromAnswerOptionArray = (
 ): QuestionnaireItemAnswerOption[] => {
     return values.filter((x) => x.valueCoding?.code !== targetCode);
 };
+
+export const swapPositions = (
+    list: QuestionnaireItemAnswerOption[],
+    to: number,
+    from: number,
+): QuestionnaireItemAnswerOption[] => {
+    [list[to], list[from]] = [list[from], list[to]];
+    return list;
+};

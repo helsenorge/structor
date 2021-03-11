@@ -9,6 +9,7 @@ import {
 import {
     addEmptyOptionToAnswerOptionArray,
     removeOptionFromAnswerOptionArray,
+    swapPositions,
     updateAnswerOption,
 } from '../../../helpers/answerOptionHelper';
 
@@ -77,7 +78,6 @@ const Choice = ({ item }: Props): JSX.Element => {
 
     const renderAnswerOptionItem = (
         answerOption: QuestionnaireItemAnswerOption,
-        index: number,
         handleDrag?: DraggableProvidedDragHandleProps,
         count?: number,
     ): JSX.Element => {
@@ -107,16 +107,12 @@ const Choice = ({ item }: Props): JSX.Element => {
 
     const renderAnswerOption = () => {
         const handleChange = (result: DropResult) => {
-            if (!result.destination || !result.draggableId) {
+            if (!result.source || !result.destination || !result.draggableId) {
                 return;
             }
 
             const fromIndex = result.source.index;
             const toIndex = result.destination.index;
-            const swapPositions = (array: QuestionnaireItemAnswerOption[], too: number, from: number) => {
-                [array[too], array[from]] = [array[from], array[too]];
-                return array;
-            };
 
             if (fromIndex !== toIndex) {
                 const tempList = item.answerOption ? [...item.answerOption] : [];
@@ -156,7 +152,6 @@ const Choice = ({ item }: Props): JSX.Element => {
                                             >
                                                 {renderAnswerOptionItem(
                                                     answerOption,
-                                                    index,
                                                     provided.dragHandleProps,
                                                     item.answerOption?.length,
                                                 )}
