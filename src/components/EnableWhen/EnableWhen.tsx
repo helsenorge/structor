@@ -20,9 +20,7 @@ import EnableBehavior from './EnableBehavior';
 import EnableWhenAnswerTypes from './EnableWhenAnswerTypes';
 import EnableWhenInfoBox from './EnableWhenInfoBox';
 import FormField from '../FormField/FormField';
-import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import Select from '../Select/Select';
-import Trashcan from '../../images/icons/trash-outline.svg';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateItemAction } from '../../store/treeStore/treeActions';
 

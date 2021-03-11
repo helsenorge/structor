@@ -178,7 +178,7 @@ const Choice = ({ item }: Props): JSX.Element => {
                     value={item.extension !== undefined && item.extension.length > 0}
                 />
                 {item.answerValueSet && !item.answerOption && renderValueSetValues()}
-                {renderAnswerOption()}
+                {item.answerOption && renderAnswerOption()}
             </div>
             {!item.answerValueSet && (
                 <div className="center-text">

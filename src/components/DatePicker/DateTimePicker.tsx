@@ -4,7 +4,6 @@ import './DatePicker.css';
 import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
 import React, { useState } from 'react';
 
-import Calendar from '../../images/icons/calendar-outline.svg';
 import { nb } from 'date-fns/locale';
 
 type DateTimePickerProps = {
