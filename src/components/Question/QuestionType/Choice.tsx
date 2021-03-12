@@ -144,15 +144,18 @@ const Choice = ({ item }: Props): JSX.Element => {
                                         draggableId={answerOption.valueCoding?.code || '1'}
                                         index={index}
                                     >
-                                        {(provided, snapshot) => (
+                                        {(providedDrag, snapshotDrag) => (
                                             <div
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                                                ref={providedDrag.innerRef}
+                                                {...providedDrag.draggableProps}
+                                                style={getItemStyle(
+                                                    snapshotDrag.isDragging,
+                                                    providedDrag.draggableProps.style,
+                                                )}
                                             >
                                                 {renderAnswerOptionItem(
                                                     answerOption,
-                                                    provided.dragHandleProps,
+                                                    providedDrag.dragHandleProps,
                                                     item.answerOption?.length,
                                                 )}
                                             </div>
