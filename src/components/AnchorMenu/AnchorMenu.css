@@ -34,20 +34,26 @@
     text-align: center;
 }
 
-.folder-icon{
+.folder-icon {
     height: 25px;
     width: 25px;
     background: url("../../images/icons/folder-outline.svg") no-repeat center;
 }
 
-.message-icon{
+.message-icon {
     height: 25px;
     width: 25px;
     background: url("../../images/icons/information-circle-outline.svg") no-repeat center;
 }
 
-.question-icon{
+.question-icon {
     height: 25px;
     width: 25px;
     background: url("../../images/icons/help-circle-outline.svg") no-repeat center;
+}
+
+.anchor-content {
+    padding: 16px;
+    display: flex;
+    align-items: center; 
 }

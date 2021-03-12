@@ -33,7 +33,6 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getItemStyle = (isDragging: boolean, draggableStyle: any, linkId: string) => ({
         userSelect: 'none',
-        padding: grid * 2,
         background: getBackgroundColor(isDragging, linkId),
         cursor: 'pointer',
 
@@ -93,11 +92,13 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                             provided.draggableProps.style,
                                             item.linkId,
                                         )}
-                                        onClick={() => {
-                                            handleScrollTo(item.linkId);
-                                        }}
                                     >
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        <div
+                                            className="anchor-content"
+                                            onClick={() => {
+                                                handleScrollTo(item.linkId);
+                                            }}
+                                        >
                                             <span
                                                 className={getRelevantIcon(props.qItems[item.linkId].type)}
                                                 style={{ marginRight: 10 }}

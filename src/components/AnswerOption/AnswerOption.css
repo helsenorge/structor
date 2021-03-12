@@ -2,9 +2,16 @@
     display: flex;
 }
 
-.answer-option-item input{
+.answer-option-item .answer-option-content{
     flex: 1;
     margin: 5px 15px;
+}
+
+.answer-option-content input {
+    width: 48%;
+}
+.answer-option-content input:first-of-type {
+    margin-right: 4%;
 }
 
 .answer-option-item button{

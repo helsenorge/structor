@@ -43,6 +43,24 @@ export const updateAnswerOption = (
     });
 };
 
+export const updateAnswerOptionCode = (
+    values: QuestionnaireItemAnswerOption[],
+    index: number,
+    code: string,
+): QuestionnaireItemAnswerOption[] => {
+    return values.map((x, currentIndex) => {
+        //TODO: validate unique code!
+        return currentIndex === index
+            ? ({
+                  valueCoding: {
+                      ...x.valueCoding,
+                      code,
+                  },
+              } as QuestionnaireItemAnswerOption)
+            : x;
+    });
+};
+
 export const removeOptionFromAnswerOptionArray = (
     values: QuestionnaireItemAnswerOption[],
     targetCode: string,

@@ -11,12 +11,12 @@ import {
     removeOptionFromAnswerOptionArray,
     swapPositions,
     updateAnswerOption,
+    updateAnswerOptionCode,
 } from '../../../helpers/answerOptionHelper';
 
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
 import Btn from '../../Btn/Btn';
 import { IItemProperty } from '../../../types/IQuestionnareItemType';
-import RadioBtn from '../../RadioBtn/RadioBtn';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { checkboxExtension } from '../../../helpers/QuestionHelper';
@@ -28,8 +28,7 @@ type Props = {
 };
 
 const Choice = ({ item }: Props): JSX.Element => {
-    const { state, dispatch } = useContext(TreeContext);
-    const { qContained } = state;
+    const { dispatch } = useContext(TreeContext);
 
     const dispatchExtentionUpdate = () => {
         if (item.extension && item.extension.length > 0) {
@@ -37,36 +36,6 @@ const Choice = ({ item }: Props): JSX.Element => {
         } else {
             dispatch(updateItemAction(item.linkId, IItemProperty.extension, checkboxExtension));
         }
-    };
-
-    const getContainedValueSetValues = (valueSetId: string): Array<{ system?: string; display?: string }> => {
-        const valueSet = qContained?.find((x) => `#${x.id}` === valueSetId);
-        if (valueSet && valueSet.compose && valueSet.compose.include && valueSet.compose.include[0].concept) {
-            return valueSet.compose.include[0].concept.map((x) => {
-                return { system: valueSet.compose?.include[0].system, display: x.display };
-            });
-        }
-        return [];
-    };
-
-    const renderValueSetValues = (): JSX.Element => {
-        return (
-            <>
-                {item.answerValueSet && item.answerValueSet.startsWith('#') && (
-                    <div>
-                        <p>Dette spørsmålet bruker følgende innebygde verdier, som ikke kan endres i skjemabyggeren:</p>
-                        {getContainedValueSetValues(item.answerValueSet).map((x, index) => {
-                            return (
-                                <RadioBtn name={x.system} key={index} disabled showDelete={false} value={x.display} />
-                            );
-                        })}
-                    </div>
-                )}
-                {item.answerValueSet && item.answerValueSet.startsWith('http') && (
-                    <div>{`Dette spørsmålet henter verdier fra ${item.answerValueSet}`}</div>
-                )}
-            </>
-        );
     };
 
     const dispatchUpdateItem = (
@@ -78,17 +47,22 @@ const Choice = ({ item }: Props): JSX.Element => {
 
     const renderAnswerOptionItem = (
         answerOption: QuestionnaireItemAnswerOption,
+        index: number,
         handleDrag?: DraggableProvidedDragHandleProps,
         count?: number,
     ): JSX.Element => {
         return (
             <AnswerOption
-                onChange={(event) => {
+                changeDisplay={(event) => {
                     const newArray = updateAnswerOption(
                         item.answerOption || [],
                         answerOption.valueCoding?.code || '',
                         event.target.value,
                     );
+                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                }}
+                changeCode={(event, index) => {
+                    const newArray = updateAnswerOptionCode(item.answerOption || [], index, event.target.value);
                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                 }}
                 deleteItem={() => {
@@ -101,6 +75,7 @@ const Choice = ({ item }: Props): JSX.Element => {
                 answerOption={answerOption}
                 handleDrag={handleDrag}
                 showDelete={!!count && count > 2}
+                index={index}
             />
         );
     };
@@ -155,6 +130,7 @@ const Choice = ({ item }: Props): JSX.Element => {
                                             >
                                                 {renderAnswerOptionItem(
                                                     answerOption,
+                                                    index,
                                                     providedDrag.dragHandleProps,
                                                     item.answerOption?.length,
                                                 )}
@@ -180,8 +156,7 @@ const Choice = ({ item }: Props): JSX.Element => {
                     initial
                     value={item.extension !== undefined && item.extension.length > 0}
                 />
-                {item.answerValueSet && !item.answerOption && renderValueSetValues()}
-                {item.answerOption && renderAnswerOption()}
+                {item.answerOption && item.answerOption?.length > 0 && renderAnswerOption()}
             </div>
             {!item.answerValueSet && (
                 <div className="center-text">
