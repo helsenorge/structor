@@ -7,11 +7,10 @@ type Props = {
     answerOption?: QuestionnaireItemAnswerOption;
     handleDrag?: DraggableProvidedDragHandleProps;
     changeDisplay: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    changeCode: (event: React.ChangeEvent<HTMLInputElement>, index: number) => void;
+    changeCode: (event: React.ChangeEvent<HTMLInputElement>) => void;
     deleteItem?: () => void;
     showDelete?: boolean;
     disabled?: boolean;
-    index: number;
 };
 
 const AnswerOption = ({
@@ -22,7 +21,6 @@ const AnswerOption = ({
     deleteItem,
     showDelete,
     disabled,
-    index,
 }: Props): JSX.Element => {
     return (
         <div className="answer-option-item align-everything">
@@ -35,15 +33,15 @@ const AnswerOption = ({
                     onBlur={(event) => changeDisplay(event)}
                     defaultValue={answerOption?.valueCoding?.display}
                     disabled={disabled}
-                    placeholder="Legg inn tittel"
+                    placeholder="Legg inn en tittel.."
                 />
                 <input
                     autoComplete="off"
                     type="text"
                     name="verdi"
                     defaultValue={answerOption?.valueCoding?.code}
-                    placeholder="Legg inn verdi.."
-                    onBlur={(event) => changeCode(event, index)}
+                    placeholder="Legg inn en verdi.."
+                    onBlur={(event) => changeCode(event)}
                 />
             </div>
             {showDelete && (

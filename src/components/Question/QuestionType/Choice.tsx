@@ -12,6 +12,7 @@ import {
     swapPositions,
     updateAnswerOption,
     updateAnswerOptionCode,
+    updateAnswerOptionSystem,
 } from '../../../helpers/answerOptionHelper';
 
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
@@ -22,6 +23,7 @@ import { TreeContext } from '../../../store/treeStore/treeStore';
 import { checkboxExtension } from '../../../helpers/QuestionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import AnswerOption from '../../AnswerOption/AnswerOption';
+import FormField from '../../FormField/FormField';
 
 type Props = {
     item: QuestionnaireItem;
@@ -45,9 +47,13 @@ const Choice = ({ item }: Props): JSX.Element => {
         dispatch(updateItemAction(item.linkId, name, value));
     };
 
+    const handleChangeSystem = (system: string) => {
+        const alteredAnswerOption = updateAnswerOptionSystem(item.answerOption || [], system);
+        dispatchUpdateItem(IItemProperty.answerOption, alteredAnswerOption);
+    };
+
     const renderAnswerOptionItem = (
         answerOption: QuestionnaireItemAnswerOption,
-        index: number,
         handleDrag?: DraggableProvidedDragHandleProps,
         count?: number,
     ): JSX.Element => {
@@ -56,26 +62,29 @@ const Choice = ({ item }: Props): JSX.Element => {
                 changeDisplay={(event) => {
                     const newArray = updateAnswerOption(
                         item.answerOption || [],
-                        answerOption.valueCoding?.code || '',
+                        answerOption.valueCoding?.id || '',
                         event.target.value,
                     );
                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                 }}
-                changeCode={(event, index) => {
-                    const newArray = updateAnswerOptionCode(item.answerOption || [], index, event.target.value);
+                changeCode={(event) => {
+                    const newArray = updateAnswerOptionCode(
+                        item.answerOption || [],
+                        answerOption.valueCoding?.id || '',
+                        event.target.value,
+                    );
                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                 }}
                 deleteItem={() => {
                     const newArray = removeOptionFromAnswerOptionArray(
                         item.answerOption || [],
-                        answerOption.valueCoding?.code || '',
+                        answerOption.valueCoding?.id || '',
                     );
                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                 }}
                 answerOption={answerOption}
                 handleDrag={handleDrag}
                 showDelete={!!count && count > 2}
-                index={index}
             />
         );
     };
@@ -115,8 +124,8 @@ const Choice = ({ item }: Props): JSX.Element => {
                             {item.answerOption?.map((answerOption, index) => {
                                 return (
                                     <Draggable
-                                        key={answerOption.valueCoding?.code}
-                                        draggableId={answerOption.valueCoding?.code || '1'}
+                                        key={answerOption.valueCoding?.id}
+                                        draggableId={answerOption.valueCoding?.id || '1'}
                                         index={index}
                                     >
                                         {(providedDrag, snapshotDrag) => (
@@ -130,7 +139,6 @@ const Choice = ({ item }: Props): JSX.Element => {
                                             >
                                                 {renderAnswerOptionItem(
                                                     answerOption,
-                                                    index,
                                                     providedDrag.dragHandleProps,
                                                     item.answerOption?.length,
                                                 )}
@@ -149,6 +157,17 @@ const Choice = ({ item }: Props): JSX.Element => {
 
     return (
         <>
+            <FormField label="System">
+                <input
+                    placeholder="Legg inn system.."
+                    defaultValue={
+                        item.answerOption && item.answerOption.length > 0
+                            ? item.answerOption[0]?.valueCoding?.system
+                            : ''
+                    }
+                    onBlur={(event) => handleChangeSystem(event.target.value)}
+                />
+            </FormField>
             <div className="form-field">
                 <SwitchBtn
                     label="Flere valg mulig"
