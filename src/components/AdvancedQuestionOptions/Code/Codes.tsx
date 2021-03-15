@@ -1,110 +1,92 @@
-import React, { useContext, useState } from 'react';
-import { TreeContext } from '../../../store/treeStore/treeStore';
-import { Coding } from '../../../types/fhir';
+import React, { useContext } from 'react';
+import {
+    addItemCodeAction,
+    deleteItemCodeAction,
+    updateItemCodePropertyAction,
+} from '../../../store/treeStore/treeActions';
 import Btn from '../../Btn/Btn';
-import { updateItemAction } from '../../../store/treeStore/treeActions';
-import { IItemProperty } from '../../../types/IQuestionnareItemType';
-
+import { Coding } from '../../../types/fhir';
+import createUUID from '../../../helpers/CreateUUID';
+import { ICodingProperty } from '../../../types/IQuestionnareItemType';
+import { TreeContext } from '../../../store/treeStore/treeStore';
 import './Codes.css';
 
 type CodeProps = {
     linkId: string;
 };
 
-// TODO Support multiple codes?
 const Codes = ({ linkId }: CodeProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
 
-    const getCode = (): Coding | undefined => {
-        const codes = state.qItems[linkId].code;
-        if (codes) {
-            return codes[0];
-        }
-        return undefined;
-    };
-
-    const code = getCode();
-    const [codeValue, setCodeValue] = useState(code ? code.code : '');
-    const [displayValue, setDisplayValue] = useState(code ? code.display : '');
-    const [systemValue, setSystemValue] = useState(code ? code.system : '');
-
-    const dispatchUpdateItemCode = (value: Coding[] | undefined) => {
-        dispatch(updateItemAction(linkId, IItemProperty.code, value));
-    };
+    const codes = state.qItems[linkId].code?.map((code) => {
+        // Add id (for internal usage) if not already set
+        return { ...code, id: code.id || createUUID() };
+    });
 
     const createEmptyCode = (): Coding => {
-        return { code: '', display: '', system: '' };
+        return { code: '', display: '', system: '', id: createUUID() };
     };
 
-    const removeCode = () => {
-        dispatchUpdateItemCode(undefined);
-        setCodeValue('');
-        setDisplayValue('');
-        setSystemValue('');
+    const updateCode = (index: number, prop: ICodingProperty, value: string) => {
+        dispatch(updateItemCodePropertyAction(linkId, index, prop, value));
     };
 
-    const updateContext = () => {
-        dispatchUpdateItemCode([
-            {
-                code: codeValue,
-                display: displayValue,
-                system: systemValue,
-            },
-        ]);
-    };
-
-    // TODO Norwegian labels for Code and Display?
-    return (
-        <div className="codes">
-            <div className="horizontal full">
-                <h4>Code</h4>
-                {!code && (
+    const renderCode = (code: Coding, index: number) => {
+        return (
+            <div key={`${code.id}`} className="code-section">
+                <div className="horizontal equal">
+                    <div className="form-field">
+                        <label>Display</label>
+                        <input
+                            defaultValue={code.display}
+                            onBlur={(event) => updateCode(index, ICodingProperty.display, event.target.value)}
+                        />
+                    </div>
+                    <div className="form-field">
+                        <label>Code</label>
+                        <input
+                            defaultValue={code.code}
+                            onBlur={(event) => updateCode(index, ICodingProperty.code, event.target.value)}
+                        />
+                    </div>
+                </div>
+                <div className="horizontal full">
+                    <div className="form-field">
+                        <label>System</label>
+                        <input
+                            defaultValue={code.system}
+                            onBlur={(event) => updateCode(index, ICodingProperty.system, event.target.value)}
+                        />
+                    </div>
+                </div>
+                <div className="center-text">
                     <Btn
-                        title="+ Legg til Code"
+                        title="- Fjern Code"
                         type="button"
-                        onClick={() => {
-                            dispatchUpdateItemCode([createEmptyCode()]);
-                        }}
+                        onClick={() => dispatch(deleteItemCodeAction(linkId, index))}
                         variant="secondary"
                         size="small"
                     />
-                )}
-                {code && (
-                    <Btn title="- Slett Code" type="button" onClick={removeCode} variant="secondary" size="small" />
-                )}
-            </div>
-            {code && (
-                <div className="code-section">
-                    <div className="horizontal equal">
-                        <div className="form-field">
-                            <label>Display</label>
-                            <input
-                                value={displayValue}
-                                onChange={(event) => setDisplayValue(event.target.value)}
-                                onBlur={updateContext}
-                            />
-                        </div>
-                        <div className="form-field">
-                            <label>Code</label>
-                            <input
-                                value={codeValue}
-                                onChange={(event) => setCodeValue(event.target.value)}
-                                onBlur={updateContext}
-                            />
-                        </div>
-                    </div>
-                    <div className="horizontal full">
-                        <div className="form-field">
-                            <label>System</label>
-                            <input
-                                value={systemValue}
-                                onChange={(event) => setSystemValue(event.target.value)}
-                                onBlur={updateContext}
-                            />
-                        </div>
-                    </div>
                 </div>
-            )}
+                <hr style={{ margin: '24px 0px' }} />
+            </div>
+        );
+    };
+
+    return (
+        <div className="codes">
+            {codes && codes.map((code, index) => renderCode(code, index))}
+            <div className="center-text">
+                <Btn
+                    title="+ Legg til Code"
+                    type="button"
+                    onClick={() => {
+                        dispatch(addItemCodeAction(linkId, createEmptyCode()));
+                    }}
+                    variant="primary"
+                    size="small"
+                />
+            </div>
         </div>
     );
 };

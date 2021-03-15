@@ -1,5 +1,11 @@
 import CreateUUID from '../../helpers/CreateUUID';
-import { IEnableWhen, IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import {
+    ICodingProperty,
+    IEnableWhen,
+    IExtentionType,
+    IItemProperty,
+    IQuestionnaireItemType,
+} from '../../types/IQuestionnareItemType';
 import {
     QuestionnaireItem,
     Extension,
@@ -14,7 +20,10 @@ import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataTy
 import { TranslatableItemProperty } from '../../types/LanguageTypes';
 import { TreeState } from './treeStore';
 
+export const ADD_ITEM_CODE_ACTION = 'addItemCode';
 export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = 'addQuestionnaireLanguage';
+export const DELETE_ITEM_CODE_ACTION = 'deleteItemCode';
+export const UPDATE_ITEM_CODE_PROPERTY_ACTION = 'updateItemCodeProperty';
 export const REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION = 'removeQuestionnaireLanguage';
 export const UPDATE_ITEM_TRANSLATION_ACTION = 'updateItemTranslation';
 export const UPDATE_ITEM_OPTION_TRANSLATION_ACTION = 'updateItemOptionTranslation';
@@ -45,6 +54,26 @@ type ItemValueType =
     | QuestionnaireItemInitial[]
     | Coding[]
     | undefined; // TODO: legg på alle lovlige verdier
+
+export interface AddItemCodeAction {
+    type: typeof ADD_ITEM_CODE_ACTION;
+    linkId: string;
+    code: Coding;
+}
+
+export interface DeleteItemCodeAction {
+    type: typeof DELETE_ITEM_CODE_ACTION;
+    linkId: string;
+    index: number;
+}
+
+export interface UpdateItemCodePropertyAction {
+    type: typeof UPDATE_ITEM_CODE_PROPERTY_ACTION;
+    linkId: string;
+    index: number;
+    property: ICodingProperty;
+    value: string;
+}
 
 export interface UpdateMarkedLinkId {
     type: typeof UPDATE_MARKED_LINK_ID;
@@ -170,6 +199,37 @@ export const updateMarkedLinkIdAction = (markedLinkId: string): UpdateMarkedLink
     return {
         type: UPDATE_MARKED_LINK_ID,
         linkId: markedLinkId,
+    };
+};
+
+export const addItemCodeAction = (linkId: string, code: Coding): AddItemCodeAction => {
+    return {
+        type: ADD_ITEM_CODE_ACTION,
+        linkId,
+        code,
+    };
+};
+
+export const deleteItemCodeAction = (linkId: string, index: number): DeleteItemCodeAction => {
+    return {
+        type: DELETE_ITEM_CODE_ACTION,
+        linkId,
+        index,
+    };
+};
+
+export const updateItemCodePropertyAction = (
+    linkId: string,
+    index: number,
+    property: ICodingProperty,
+    value: string,
+): UpdateItemCodePropertyAction => {
+    return {
+        type: UPDATE_ITEM_CODE_PROPERTY_ACTION,
+        linkId,
+        index,
+        property,
+        value,
     };
 };
 

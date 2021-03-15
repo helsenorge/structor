@@ -2,12 +2,12 @@ import React, { FocusEvent, useContext, useEffect, useState } from 'react';
 import { OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 import { Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import {
+    deleteItemAction,
+    moveItemAction,
     newItemHelpIconAction,
+    removeItemAttributeAction,
     updateItemAction,
     updateLinkIdAction,
-    deleteItemAction,
-    removeItemAttributeAction,
-    moveItemAction,
 } from '../../store/treeStore/treeActions';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
@@ -15,7 +15,6 @@ import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../typ
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
-import Codes from './Code/Codes';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import Select from '../Select/Select';
 import { EnrichmentSet } from '../../helpers/QuestionHelper';
@@ -327,7 +326,6 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     )}
                 </div>
             </div>
-            {item.type !== IQuestionnaireItemType.display && <Codes linkId={item.linkId} />}
             <div>
                 <FormField>
                     <SwitchBtn
