@@ -21,6 +21,12 @@ export enum IQuestionnaireItemType {
     number = 'number',
 }
 
+export enum ICodingProperty {
+    code = 'code',
+    system = 'system',
+    display = 'display',
+}
+
 export enum IItemProperty {
     linkId = 'linkId',
     definition = 'definition',

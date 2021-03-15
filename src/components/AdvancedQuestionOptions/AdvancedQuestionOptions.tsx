@@ -2,12 +2,12 @@ import React, { FocusEvent, useContext, useEffect, useState } from 'react';
 import { OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 import { Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import {
+    deleteItemAction,
+    moveItemAction,
     newItemHelpIconAction,
+    removeItemAttributeAction,
     updateItemAction,
     updateLinkIdAction,
-    deleteItemAction,
-    removeItemAttributeAction,
-    moveItemAction,
 } from '../../store/treeStore/treeActions';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';

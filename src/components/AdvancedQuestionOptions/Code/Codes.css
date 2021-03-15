@@ -1,0 +1,9 @@
+.horizontal.full > button {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.code-section {
+    padding: 8px 0;
+}

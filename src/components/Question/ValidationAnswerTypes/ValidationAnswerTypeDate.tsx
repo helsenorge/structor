@@ -42,7 +42,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
             <FormField label="Legg til egendefinert feilmelding:">
                 <input
                     defaultValue={validationText}
-                    onChange={(event) => {
+                    onBlur={(event) => {
                         const newExtention: Extension = {
                             url: IExtentionType.validationtext,
                             valueString: event.target.value,

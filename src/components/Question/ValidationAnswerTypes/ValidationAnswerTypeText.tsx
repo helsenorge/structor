@@ -20,10 +20,10 @@ const ValidationAnswerTypeText = ({ item }: ValidationTypeProp): JSX.Element => 
         <>
             <FormField label="Maximum antall tegn">
                 <input
-                    value={item.maxLength || ''}
+                    defaultValue={item.maxLength || ''}
                     type="input"
                     aria-label="maximum sign"
-                    onChange={(e) => updateMaxLength(parseInt(e.target.value.toString()))}
+                    onBlur={(e) => updateMaxLength(parseInt(e.target.value.toString()))}
                 ></input>
             </FormField>
         </>
