@@ -44,6 +44,7 @@ function extractMetadata(questionnaireObj: Questionnaire) {
         extension,
         purpose,
         copyright,
+        date,
     }: IQuestionnaireMetadata) => ({
         resourceType,
         language,
@@ -61,6 +62,7 @@ function extractMetadata(questionnaireObj: Questionnaire) {
         extension,
         purpose,
         copyright,
+        date,
     });
     return getMetadataParts(questionnaireObj);
 }
