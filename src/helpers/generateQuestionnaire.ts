@@ -199,7 +199,20 @@ const generateTranslatedQuestionnaire = (
     item: generateTreeWithTranslations(state.qOrder, state.qItems, languageCode, languages),
 });
 
+function cleanupContained(state: TreeState) {
+    const allValueSets = [] as string[];
+    Object.keys(state.qItems).forEach(function (linkId) {
+        const item = state.qItems[linkId];
+        if (item.type && item.answerValueSet) {
+            allValueSets.push(item.answerValueSet?.slice(1));
+        }
+    });
+
+    const usedValueSets = Array.from(new Set(allValueSets));
+}
+
 export const generateQuestionnaire = (state: TreeState): string => {
+    cleanupContained(state);
     function translateQuestionnaires(): Questionnaire[] {
         const questionnaires: Questionnaire[] = [];
 
