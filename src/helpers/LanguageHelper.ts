@@ -7,8 +7,10 @@ import {
 import { Languages, TreeState } from '../store/treeStore/treeStore';
 import { isValidId } from './MetadataHelper';
 
+export const INITIAL_LANGUAGE: Language = { code: 'nb-NO', display: 'Norsk Bokmål', localDisplay: 'Norsk bokmål' };
+
 export const supportedLanguages: Language[] = [
-    { code: 'nb-NO', display: 'Norsk Bokmål', localDisplay: 'Norsk bokmål' },
+    INITIAL_LANGUAGE,
     { code: 'nn-NO', display: 'Nynorsk', localDisplay: 'Norsk nynorsk' },
     { code: 'se-NO', display: 'Samisk', localDisplay: 'Davvisámegillii' },
     { code: 'en-GB', display: 'Engelsk', localDisplay: 'English' },
