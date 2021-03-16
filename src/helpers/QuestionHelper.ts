@@ -55,6 +55,10 @@ const itemType = [
         display: 'Antall med enhet',
         code: IQuestionnaireItemType.quantity,
     },
+    {
+        display: 'Vedlegg',
+        code: IQuestionnaireItemType.attachment,
+    },
 ];
 
 export const QUANTITY_UNIT_TYPE_NOT_SELECTED = 'QUANTITY_UNIT_TYPE_NOT_SELECTED';
@@ -203,6 +207,7 @@ export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
 
 export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolean => {
     const validTypes = [
+        IQuestionnaireItemType.attachment,
         IQuestionnaireItemType.integer,
         IQuestionnaireItemType.decimal,
         IQuestionnaireItemType.quantity,
