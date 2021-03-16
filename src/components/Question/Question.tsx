@@ -36,6 +36,7 @@ import PredefinedValueSet from './QuestionType/PredefinedValueSet';
 import Select from '../Select/Select';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
+import Codes from '../AdvancedQuestionOptions/Code/Codes';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -49,6 +50,8 @@ interface QuestionProps {
 
 const Question = (props: QuestionProps): JSX.Element => {
     const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(!!props.item._text);
+    const codeElements = props.item.code ? `(${props.item.code.length})` : '';
+
     const dispatchNewChildItem = (type?: IQuestionnaireItemType): void => {
         props.dispatch(newItemAction(type || IQuestionnaireItemType.group, [...props.parentArray, props.item.linkId]));
     };
@@ -314,8 +317,8 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <MarkdownEditor data={getLabelText()} onBlur={dispatchUpdateMarkdownLabel} />
                     ) : (
                         <input
-                            value={getLabelText()}
-                            onChange={(e) => {
+                            defaultValue={getLabelText()}
+                            onBlur={(e) => {
                                 dispatchUpdateItem(IItemProperty.text, e.target.value);
                             }}
                         />
@@ -346,6 +349,11 @@ const Question = (props: QuestionProps): JSX.Element => {
                         />
                     </div>
                 </Accordion>
+                {props.item.type !== IQuestionnaireItemType.display && (
+                    <Accordion title={`Code ${codeElements}`}>
+                        <Codes linkId={props.item.linkId} />
+                    </Accordion>
+                )}
                 <Accordion title="Avanserte innstillinger">
                     <AdvancedQuestionOptions item={props.item} parentArray={props.parentArray} />
                 </Accordion>

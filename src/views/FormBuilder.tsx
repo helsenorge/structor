@@ -113,9 +113,9 @@ const FormBuilder = (): JSX.Element => {
                                     <br />
                                     <input
                                         placeholder="Tittel"
-                                        value={state.qMetadata.title}
+                                        defaultValue={state.qMetadata.title}
                                         id="questionnaire-title"
-                                        onChange={(event) => {
+                                        onBlur={(event) => {
                                             dispatchUpdateQuestionnaireMetadata(
                                                 IQuestionnaireMetadataType.title,
                                                 event.target.value,

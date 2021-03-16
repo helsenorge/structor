@@ -150,7 +150,7 @@ const EnableWhenAnswerTypes = ({
                 <input
                     type="number"
                     defaultValue={enableWhen.answerInteger}
-                    onChange={(event) => {
+                    onBlur={(event) => {
                         const copy = itemEnableWhen?.map((x, ewIndex) => {
                             return index === ewIndex ? { ...x, answerInteger: parseInt(event.target.value, 10) } : x;
                         });
@@ -162,7 +162,7 @@ const EnableWhenAnswerTypes = ({
                 <input
                     type="number"
                     defaultValue={enableWhen.answerDecimal}
-                    onChange={(event) => {
+                    onBlur={(event) => {
                         const copy = itemEnableWhen?.map((x, ewIndex) => {
                             return index === ewIndex ? { ...x, answerDecimal: parseFloat(event.target.value) } : x;
                         });
@@ -173,8 +173,8 @@ const EnableWhenAnswerTypes = ({
             {conditionItem.type === IQuestionnaireItemType.quantity && (
                 <input
                     type="number"
-                    value={enableWhen.answerQuantity ? enableWhen.answerQuantity.value : ''}
-                    onChange={(event) => {
+                    defaultValue={enableWhen.answerQuantity ? enableWhen.answerQuantity.value : ''}
+                    onBlur={(event) => {
                         const extension = (conditionItem.extension || []).find(
                             (x) => x.url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
                         );
@@ -200,8 +200,8 @@ const EnableWhenAnswerTypes = ({
             {(conditionItem.type === IQuestionnaireItemType.string ||
                 conditionItem.type === IQuestionnaireItemType.text) && (
                 <input
-                    value={enableWhen.answerString || ''}
-                    onChange={(event) => {
+                    defaultValue={enableWhen.answerString || ''}
+                    onBlur={(event) => {
                         const copy = itemEnableWhen?.map((x, ewIndex) => {
                             return index === ewIndex ? { ...x, answerString: event.target.value } : x;
                         });

@@ -41,6 +41,12 @@ import {
     UpdateSidebarTranslationAction,
     MoveItemAction,
     MOVE_ITEM_ACTION,
+    AddItemCodeAction,
+    DeleteItemCodeAction,
+    UpdateItemCodePropertyAction,
+    ADD_ITEM_CODE_ACTION,
+    DELETE_ITEM_CODE_ACTION,
+    UPDATE_ITEM_CODE_PROPERTY_ACTION,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -50,8 +56,11 @@ import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOpti
 const INITIAL_LANGUAGE = 'nb-no';
 
 export type ActionType =
+    | AddItemCodeAction
     | AddQuestionnaireLanguageAction
+    | DeleteItemCodeAction
     | RemoveQuestionnaireLanguageAction
+    | UpdateItemCodePropertyAction
     | UpdateItemTranslationAction
     | UpdateItemOptionTranslationAction
     | ResetQuestionnaireAction
@@ -296,6 +305,42 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
     }
 }
 
+function addItemCode(draft: TreeState, action: AddItemCodeAction): void {
+    if (!draft.qItems[action.linkId]) {
+        console.error('Trying to add "code" to non-extistent item');
+        return;
+    }
+    if (!draft.qItems[action.linkId].code) {
+        draft.qItems[action.linkId].code = [];
+    }
+    draft.qItems[action.linkId].code?.push(action.code);
+}
+
+function deleteItemCode(draft: TreeState, action: DeleteItemCodeAction): void {
+    if (!draft.qItems[action.linkId]) {
+        console.error('Trying to delete "code" from non-extistent item');
+        return;
+    }
+    const { code } = draft.qItems[action.linkId];
+    if (code && code.length > 1) {
+        draft.qItems[action.linkId].code?.splice(action.index, 1);
+    } else {
+        delete draft.qItems[action.linkId].code;
+    }
+}
+
+function updateItemCodeProperty(draft: TreeState, action: UpdateItemCodePropertyAction): void {
+    const code = draft.qItems[action.linkId].code;
+    if (!code) {
+        console.error('Trying to update "code" from non-extistent item or code');
+        return;
+    }
+
+    if (code && code[action.index]) {
+        code[action.index][action.property] = action.value;
+    }
+}
+
 function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAction) {
     if (draft.qAdditionalLanguages) {
         if (!draft.qAdditionalLanguages[action.languageCode].items[action.linkId]) {
@@ -486,6 +531,15 @@ function removeAttributeFromItem(draft: TreeState, action: RemoveItemAttributeAc
 
 const reducer = produce((draft: TreeState, action: ActionType) => {
     switch (action.type) {
+        case ADD_ITEM_CODE_ACTION:
+            addItemCode(draft, action);
+            break;
+        case DELETE_ITEM_CODE_ACTION:
+            deleteItemCode(draft, action);
+            break;
+        case UPDATE_ITEM_CODE_PROPERTY_ACTION:
+            updateItemCodeProperty(draft, action);
+            break;
         case ADD_QUESTIONNAIRE_LANGUAGE_ACTION:
             addLanguage(draft, action);
             break;
