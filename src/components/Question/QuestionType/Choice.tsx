@@ -1,26 +1,36 @@
-import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
 import React, { useContext } from 'react';
+import {
+    DragDropContext,
+    Draggable,
+    DraggableProvidedDragHandleProps,
+    Droppable,
+    DropResult,
+} from 'react-beautiful-dnd';
 import {
     addEmptyOptionToAnswerOptionArray,
     removeOptionFromAnswerOptionArray,
+    swapPositions,
     updateAnswerOption,
+    updateAnswerOptionCode,
+    updateAnswerOptionSystem,
 } from '../../../helpers/answerOptionHelper';
 
+import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
 import Btn from '../../Btn/Btn';
 import { IItemProperty } from '../../../types/IQuestionnareItemType';
-import RadioBtn from '../../RadioBtn/RadioBtn';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { checkboxExtension } from '../../../helpers/QuestionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
+import AnswerOption from '../../AnswerOption/AnswerOption';
+import FormField from '../../FormField/FormField';
 
 type Props = {
     item: QuestionnaireItem;
 };
 
 const Choice = ({ item }: Props): JSX.Element => {
-    const { state, dispatch } = useContext(TreeContext);
-    const { qContained } = state;
+    const { dispatch } = useContext(TreeContext);
 
     const dispatchExtentionUpdate = () => {
         if (item.extension && item.extension.length > 0) {
@@ -30,36 +40,6 @@ const Choice = ({ item }: Props): JSX.Element => {
         }
     };
 
-    const getContainedValueSetValues = (valueSetId: string): Array<{ system?: string; display?: string }> => {
-        const valueSet = qContained?.find((x) => `#${x.id}` === valueSetId);
-        if (valueSet && valueSet.compose && valueSet.compose.include && valueSet.compose.include[0].concept) {
-            return valueSet.compose.include[0].concept.map((x) => {
-                return { system: valueSet.compose?.include[0].system, display: x.display };
-            });
-        }
-        return [];
-    };
-
-    const renderValueSetValues = (): JSX.Element => {
-        return (
-            <>
-                {item.answerValueSet && item.answerValueSet.startsWith('#') && (
-                    <div>
-                        <p>Dette spørsmålet bruker følgende innebygde verdier, som ikke kan endres i skjemabyggeren:</p>
-                        {getContainedValueSetValues(item.answerValueSet).map((x, index) => {
-                            return (
-                                <RadioBtn name={x.system} key={index} disabled showDelete={false} value={x.display} />
-                            );
-                        })}
-                    </div>
-                )}
-                {item.answerValueSet && item.answerValueSet.startsWith('http') && (
-                    <div>{`Dette spørsmålet henter verdier fra ${item.answerValueSet}`}</div>
-                )}
-            </>
-        );
-    };
-
     const dispatchUpdateItem = (
         name: IItemProperty,
         value: string | boolean | QuestionnaireItemAnswerOption[] | Element | undefined,
@@ -67,17 +47,30 @@ const Choice = ({ item }: Props): JSX.Element => {
         dispatch(updateItemAction(item.linkId, name, value));
     };
 
-    const renderRadioBtn = (answerOption: QuestionnaireItemAnswerOption, index: number): JSX.Element => {
+    const handleChangeSystem = (system: string) => {
+        const alteredAnswerOption = updateAnswerOptionSystem(item.answerOption || [], system);
+        dispatchUpdateItem(IItemProperty.answerOption, alteredAnswerOption);
+    };
+
+    const renderAnswerOptionItem = (
+        answerOption: QuestionnaireItemAnswerOption,
+        handleDrag?: DraggableProvidedDragHandleProps,
+        count?: number,
+    ): JSX.Element => {
         return (
-            <RadioBtn
-                name={answerOption.valueCoding?.system}
-                key={index}
-                showDelete={index > 1}
-                value={answerOption.valueCoding?.display}
-                onChange={(event) => {
+            <AnswerOption
+                changeDisplay={(event) => {
                     const newArray = updateAnswerOption(
                         item.answerOption || [],
-                        answerOption.valueCoding?.code || '',
+                        answerOption.valueCoding?.id || '',
+                        event.target.value,
+                    );
+                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                }}
+                changeCode={(event) => {
+                    const newArray = updateAnswerOptionCode(
+                        item.answerOption || [],
+                        answerOption.valueCoding?.id || '',
                         event.target.value,
                     );
                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
@@ -85,16 +78,96 @@ const Choice = ({ item }: Props): JSX.Element => {
                 deleteItem={() => {
                     const newArray = removeOptionFromAnswerOptionArray(
                         item.answerOption || [],
-                        answerOption.valueCoding?.code || '',
+                        answerOption.valueCoding?.id || '',
                     );
                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                 }}
+                answerOption={answerOption}
+                handleDrag={handleDrag}
+                showDelete={!!count && count > 2}
             />
+        );
+    };
+
+    const renderAnswerOption = () => {
+        const handleChange = (result: DropResult) => {
+            if (!result.source || !result.destination || !result.draggableId) {
+                return;
+            }
+
+            const fromIndex = result.source.index;
+            const toIndex = result.destination.index;
+
+            if (fromIndex !== toIndex) {
+                const tempList = item.answerOption ? [...item.answerOption] : [];
+                dispatchUpdateItem(IItemProperty.answerOption, swapPositions(tempList, toIndex, fromIndex));
+            }
+        };
+
+        const getListStyle = (isDraggingOver: boolean) => ({
+            background: isDraggingOver ? 'lightblue' : 'transparent',
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+            userSelect: 'none',
+            background: isDragging ? 'lightgreen' : 'transparent',
+            cursor: 'pointer',
+            ...draggableStyle,
+        });
+
+        return (
+            <DragDropContext onDragEnd={handleChange}>
+                <Droppable droppableId={`droppable-${item._linkId}-answer-options`} type="stuff">
+                    {(provided, snapshot) => (
+                        <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+                            {item.answerOption?.map((answerOption, index) => {
+                                return (
+                                    <Draggable
+                                        key={answerOption.valueCoding?.id}
+                                        draggableId={answerOption.valueCoding?.id || '1'}
+                                        index={index}
+                                    >
+                                        {(providedDrag, snapshotDrag) => (
+                                            <div
+                                                ref={providedDrag.innerRef}
+                                                {...providedDrag.draggableProps}
+                                                style={getItemStyle(
+                                                    snapshotDrag.isDragging,
+                                                    providedDrag.draggableProps.style,
+                                                )}
+                                            >
+                                                {renderAnswerOptionItem(
+                                                    answerOption,
+                                                    providedDrag.dragHandleProps,
+                                                    item.answerOption?.length,
+                                                )}
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                );
+                            })}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
         );
     };
 
     return (
         <>
+            <FormField label="System">
+                <input
+                    placeholder="Legg inn system.."
+                    defaultValue={
+                        item.answerOption && item.answerOption.length > 0
+                            ? item.answerOption[0]?.valueCoding?.system
+                            : ''
+                    }
+                    onBlur={(event) => handleChangeSystem(event.target.value)}
+                />
+            </FormField>
             <div className="form-field">
                 <SwitchBtn
                     label="Flere valg mulig"
@@ -102,20 +175,21 @@ const Choice = ({ item }: Props): JSX.Element => {
                     initial
                     value={item.extension !== undefined && item.extension.length > 0}
                 />
-                {item.answerValueSet && !item.answerOption && renderValueSetValues()}
-                {item.answerOption?.map((answerOption, index) => renderRadioBtn(answerOption, index))}
+                {item.answerOption && item.answerOption?.length > 0 && renderAnswerOption()}
             </div>
             {!item.answerValueSet && (
-                <Btn
-                    title="+ Legg til alternativ"
-                    type="button"
-                    onClick={() => {
-                        const newArray = addEmptyOptionToAnswerOptionArray(item.answerOption || []);
-                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                    }}
-                    variant="secondary"
-                    size="small"
-                />
+                <div className="center-text">
+                    <Btn
+                        title="+ Legg til alternativ"
+                        type="button"
+                        onClick={() => {
+                            const newArray = addEmptyOptionToAnswerOptionArray(item.answerOption || []);
+                            dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                        }}
+                        variant="secondary"
+                        size="small"
+                    />
+                </div>
             )}
         </>
     );

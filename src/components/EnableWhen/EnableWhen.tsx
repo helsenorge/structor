@@ -20,9 +20,7 @@ import EnableBehavior from './EnableBehavior';
 import EnableWhenAnswerTypes from './EnableWhenAnswerTypes';
 import EnableWhenInfoBox from './EnableWhenInfoBox';
 import FormField from '../FormField/FormField';
-import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import Select from '../Select/Select';
-import Trashcan from '../../images/icons/trash-outline.svg';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateItemAction } from '../../store/treeStore/treeActions';
 
@@ -160,7 +158,7 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
                                 dispatchUpdateItemEnableWhen(copy);
                             }}
                         >
-                            <img src={Trashcan} height="25" width="25" /> Fjern betingelse
+                            <i className="trash-icon" aria-label="remove" /> Fjern betingelse
                         </button>
                     </div>
                 );
@@ -173,7 +171,7 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
                     dispatchUpdateItemEnableWhen(copy.concat({} as QuestionnaireItemEnableWhen));
                 }}
             >
-                <img src={PlusIcon} height="25" width="25" /> Legg til betingelse
+                <i className="add-icon" aria-label="icon" /> Legg til betingelse
             </button>
             {enableWhen.length > 1 && (
                 <EnableBehavior

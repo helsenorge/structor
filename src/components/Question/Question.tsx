@@ -11,11 +11,6 @@ import {
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import React, { ChangeEvent, useEffect } from 'react';
 import {
-    addEmptyOptionToAnswerOptionArray,
-    removeOptionFromAnswerOptionArray,
-    updateAnswerOption,
-} from '../../helpers/answerOptionHelper';
-import {
     deleteItemAction,
     duplicateItemAction,
     newItemAction,
@@ -25,7 +20,6 @@ import {
 } from '../../store/treeStore/treeActions';
 import itemType, {
     QUANTITY_UNIT_TYPE_NOT_SELECTED,
-    checkboxExtension,
     quantityUnitTypes,
     typeIsSupportingValidation,
 } from '../../helpers/QuestionHelper';
@@ -34,18 +28,13 @@ import { removeExtensionValue, setExtensionValue } from '../../helpers/extension
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
 import AdvancedQuestionOptions from '../AdvancedQuestionOptions/AdvancedQuestionOptions';
-import Btn from '../Btn/Btn';
 import Choice from './QuestionType/Choice';
-import CopyIcon from '../../images/icons/copy-outline.svg';
 import EnableWhen from '../EnableWhen/EnableWhen';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import Picker from '../DatePicker/DatePicker';
-import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import PredefinedValueSet from './QuestionType/PredefinedValueSet';
-import RadioBtn from '../RadioBtn/RadioBtn';
 import Select from '../Select/Select';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
-import Trashcan from '../../images/icons/trash-outline.svg';
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
 import Codes from '../AdvancedQuestionOptions/Code/Codes';
 
@@ -86,14 +75,6 @@ const Question = (props: QuestionProps): JSX.Element => {
         props.dispatch(removeItemAttributeAction(props.item.linkId, name));
     };
 
-    const dispatchExtensionUpdate = (): void => {
-        if (props.item.extension && props.item.extension.length > 0) {
-            props.dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
-        } else {
-            props.dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, checkboxExtension));
-        }
-    };
-
     const dispatchClearExtension = (): void => {
         props.dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
     };
@@ -117,16 +98,6 @@ const Question = (props: QuestionProps): JSX.Element => {
         dispatchUpdateItem(IItemProperty._text, newValue);
         // update text with same value. Text is used in condition in enableWhen
         dispatchUpdateItem(IItemProperty.text, newLabel);
-    };
-
-    const getContainedValueSetValues = (valueSetId: string): Array<{ system?: string; display?: string }> => {
-        const valueSet = props.containedResources?.find((x) => `#${x.id}` === valueSetId);
-        if (valueSet && valueSet.compose && valueSet.compose.include && valueSet.compose.include[0].concept) {
-            return valueSet.compose.include[0].concept.map((x) => {
-                return { system: valueSet.compose?.include[0].system, display: x.display };
-            });
-        }
-        return [];
     };
 
     const getQuantityUnitType = (): string => {
@@ -155,51 +126,6 @@ const Question = (props: QuestionProps): JSX.Element => {
         dispatchUpdateItem(IItemProperty.extension, updatedExtensions);
     };
 
-    const renderValueSetValues = (): JSX.Element => {
-        return (
-            <>
-                {props.item.answerValueSet && props.item.answerValueSet.startsWith('#') && (
-                    <div>
-                        <p>Dette spørsmålet bruker følgende innebygde verdier, som ikke kan endres i skjemabyggeren:</p>
-                        {getContainedValueSetValues(props.item.answerValueSet).map((x, index) => {
-                            return (
-                                <RadioBtn name={x.system} key={index} disabled showDelete={false} value={x.display} />
-                            );
-                        })}
-                    </div>
-                )}
-                {props.item.answerValueSet && props.item.answerValueSet.startsWith('http') && (
-                    <div>{`Dette spørsmålet henter verdier fra ${props.item.answerValueSet}`}</div>
-                )}
-            </>
-        );
-    };
-
-    const renderRadioBtn = (answerOption: QuestionnaireItemAnswerOption, index: number): JSX.Element => {
-        return (
-            <RadioBtn
-                name={answerOption.valueCoding?.system}
-                key={index}
-                showDelete={index > 1}
-                value={answerOption.valueCoding?.display}
-                onChange={(event) => {
-                    const newArray = updateAnswerOption(
-                        props.item.answerOption || [],
-                        answerOption.valueCoding?.code || '',
-                        event.target.value,
-                    );
-                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                }}
-                deleteItem={() => {
-                    const newArray = removeOptionFromAnswerOptionArray(
-                        props.item.answerOption || [],
-                        answerOption.valueCoding?.code || '',
-                    );
-                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                }}
-            />
-        );
-    };
     const respondType = (param: string) => {
         if (
             props.item.answerValueSet &&
@@ -257,33 +183,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             case IQuestionnaireItemType.choice:
                 return <Choice item={props.item} />;
             case IQuestionnaireItemType.openChoice:
-                return (
-                    <>
-                        <div className="form-field">
-                            <SwitchBtn
-                                label="Flere valg mulig"
-                                onChange={() => dispatchExtensionUpdate()}
-                                initial
-                                value={props.item.extension !== undefined && props.item.extension.length > 0}
-                            />
-                            {props.item.answerValueSet && !props.item.answerOption && renderValueSetValues()}
-                            {props.item.answerOption?.map((answerOption, index) => renderRadioBtn(answerOption, index))}
-                            <RadioBtn value="eget svaralternativ for bruker" />
-                        </div>
-                        {!props.item.answerValueSet && (
-                            <Btn
-                                title="+ Legg til alternativ"
-                                type="button"
-                                onClick={() => {
-                                    const newArray = addEmptyOptionToAnswerOptionArray(props.item.answerOption || []);
-                                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                }}
-                                variant="secondary"
-                                size="small"
-                            />
-                        )}
-                    </>
-                );
+                return <Choice item={props.item} />;
             case IQuestionnaireItemType.quantity:
                 return (
                     <>
@@ -360,15 +260,15 @@ const Question = (props: QuestionProps): JSX.Element => {
                     Element <span>{props.questionNumber}</span>
                 </h2>
                 <button className="pull-right question-button" onClick={dispatchDuplicateItem}>
-                    <img src={CopyIcon} height="25" width="25" /> Dupliser
+                    <i className="duplicate-icon" aria-label="duplicate element" /> Dupliser
                 </button>
                 {canCreateChild && (
                     <button className="question-button" onClick={() => dispatchNewChildItem()}>
-                        <img src={PlusIcon} height="25" width="25" /> Oppfølgingsspørsmål
+                        <i className="add-icon" aria-label="add child element" /> Oppfølgingsspørsmål
                     </button>
                 )}
                 <button className="question-button" onClick={dispatchDeleteItem}>
-                    <img src={Trashcan} height="25" width="25" /> Slett
+                    <i className="trash-icon" aria-label="remove element" /> Slett
                 </button>
             </div>
             <div className="question-form">

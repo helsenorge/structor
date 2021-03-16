@@ -142,3 +142,21 @@
 .horizontal.full > div {
     width: 100%;
 }
+
+.duplicate-icon {
+    background: url('../../images/icons/copy-outline.svg') no-repeat center;
+    height: 25px;
+    width: 25px;
+}
+
+.add-icon {
+    background: url('../../images/icons/add-circle-outline.svg') no-repeat center;
+    height: 25px;
+    width: 25px;
+}
+
+.trash-icon {
+    background: url('../../images/icons/trash-outline.svg') no-repeat center;
+    height: 25px;
+    width: 25px;
+}

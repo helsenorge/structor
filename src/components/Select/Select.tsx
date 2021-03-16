@@ -1,6 +1,5 @@
 import React from 'react';
 import './Select.css';
-import downArrow from '../../images/icons/chevron-down-outline.svg';
 import { ValueSetComposeIncludeConcept } from '../../types/fhir';
 
 type Props = {
@@ -26,7 +25,7 @@ const Select = ({ options, onChange, value, placeholder, compact }: Props): JSX.
                     </option>
                 ))}
             </select>
-            <img src={downArrow} height="25" />
+            <span className="down-arrow-icon" />
         </div>
     );
 };

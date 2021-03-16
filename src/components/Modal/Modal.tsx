@@ -4,7 +4,7 @@ import IconBtn from '../IconBtn/IconBtn';
 import './Modal.css';
 
 type Props = {
-    close: () => void;
+    close?: () => void;
     title?: string;
     children: JSX.Element | JSX.Element[];
     size?: 'large' | 'small';

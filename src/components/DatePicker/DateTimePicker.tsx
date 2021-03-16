@@ -4,7 +4,6 @@ import './DatePicker.css';
 import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
 import React, { useState } from 'react';
 
-import Calendar from '../../images/icons/calendar-outline.svg';
 import { nb } from 'date-fns/locale';
 
 type DateTimePickerProps = {
@@ -45,7 +44,7 @@ const DateTimePicker = ({
                 dateFormat="dd.MM.yyyy HH:mm"
                 timeCaption="Tid"
             />
-            <img src={Calendar} alt="datepicker icon" height="25" />
+            <i className="calendar-icon" aria-label="date and time picker" />
         </div>
     );
 };

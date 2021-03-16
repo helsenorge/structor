@@ -8,7 +8,8 @@ export const createNewSystem = (): string => {
 export const createNewAnswerOption = (system?: string): QuestionnaireItemAnswerOption => {
     return {
         valueCoding: {
-            code: createUUID(),
+            id: createUUID(),
+            code: '',
             system: system,
             display: '',
         },
@@ -28,11 +29,11 @@ export const addEmptyOptionToAnswerOptionArray = (
 
 export const updateAnswerOption = (
     values: QuestionnaireItemAnswerOption[],
-    targetCode: string,
+    targetId: string,
     displayValue: string,
 ): QuestionnaireItemAnswerOption[] => {
     return values.map((x) => {
-        return x.valueCoding?.code === targetCode
+        return x.valueCoding?.id === targetId
             ? ({
                   valueCoding: {
                       ...x.valueCoding,
@@ -43,9 +44,50 @@ export const updateAnswerOption = (
     });
 };
 
+export const updateAnswerOptionCode = (
+    values: QuestionnaireItemAnswerOption[],
+    targetId: string,
+    codeValue: string,
+): QuestionnaireItemAnswerOption[] => {
+    return values.map((x) => {
+        return x.valueCoding?.id === targetId
+            ? ({
+                  valueCoding: {
+                      ...x.valueCoding,
+                      code: codeValue,
+                  },
+              } as QuestionnaireItemAnswerOption)
+            : x;
+    });
+};
+
+export const updateAnswerOptionSystem = (
+    values: QuestionnaireItemAnswerOption[],
+    system: string,
+): QuestionnaireItemAnswerOption[] => {
+    return values.map((x) => {
+        return {
+            valueCoding: {
+                ...x.valueCoding,
+                system,
+            },
+        } as QuestionnaireItemAnswerOption;
+    });
+};
+
 export const removeOptionFromAnswerOptionArray = (
     values: QuestionnaireItemAnswerOption[],
-    targetCode: string,
+    targetId: string,
 ): QuestionnaireItemAnswerOption[] => {
-    return values.filter((x) => x.valueCoding?.code !== targetCode);
+    return values.filter((x) => x.valueCoding?.id !== targetId);
+};
+
+export const swapPositions = (
+    list: QuestionnaireItemAnswerOption[],
+    to: number,
+    from: number,
+): QuestionnaireItemAnswerOption[] => {
+    const itemToMove = list.splice(from, 1);
+    list.splice(to, 0, itemToMove[0]);
+    return list;
 };

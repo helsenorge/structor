@@ -1,6 +1,6 @@
 import './MainMenu.css';
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import Btn from '../components/Btn/Btn';
 import { Link } from 'react-router-dom';
@@ -9,12 +9,16 @@ import { TreeContext } from '../store/treeStore/treeStore';
 import mapToTreeState from '../helpers/FhirToTreeStateMapper';
 import { resetQuestionnaireAction } from '../store/treeStore/treeActions';
 import { useHistory } from 'react-router-dom';
+import Modal from '../components/Modal/Modal';
+import SpinnerBox from '../components/Spinner/SpinnerBox';
 
 const MainMenu = (): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
+    const [showUpload, setShowUpload] = useState(false);
     const history = useHistory();
 
     function onChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setShowUpload(true);
         const reader = new FileReader();
         reader.onload = onReaderLoad;
         if (event.target.files && event.target.files[0]) reader.readAsText(event.target.files[0]);
@@ -35,6 +39,14 @@ const MainMenu = (): JSX.Element => {
 
     return (
         <>
+            {showUpload && (
+                <Modal>
+                    <div className="align-everything">
+                        <SpinnerBox />
+                    </div>
+                    <p className="center-text">Dokumentet lastes opp..</p>
+                </Modal>
+            )}
             <div className="main-header">
                 <div className="mainheader-top">
                     <div className="logo">

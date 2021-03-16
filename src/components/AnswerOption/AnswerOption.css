@@ -1,0 +1,30 @@
+.answer-option-item{
+    display: flex;
+}
+
+.answer-option-item .answer-option-content{
+    flex: 1;
+    margin: 5px 15px;
+}
+
+.answer-option-content input {
+    width: 48%;
+}
+.answer-option-content input:first-of-type {
+    margin-right: 4%;
+}
+
+.answer-option-item button{
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    background: url("../../images/icons/close-outline.svg") no-repeat center;
+    height: 25px;
+    width: 25px;
+}
+
+.reorder-icon{
+    height: 25px;
+    width: 25px;
+    background: url("../../images/icons/reorder-three-outline.svg") no-repeat center;
+}
