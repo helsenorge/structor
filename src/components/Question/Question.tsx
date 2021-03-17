@@ -19,6 +19,7 @@ import {
     updateMarkedLinkIdAction,
 } from '../../store/treeStore/treeActions';
 import itemType, {
+    ATTACHMENT_DEFAULT_MAX_SIZE,
     QUANTITY_UNIT_TYPE_NOT_SELECTED,
     quantityUnitTypes,
     typeIsSupportingValidation,
@@ -227,6 +228,19 @@ const Question = (props: QuestionProps): JSX.Element => {
             dispatchRemoveAttribute(IItemProperty.answerValueSet);
         }
         dispatchClearExtension();
+        addDefaultExtensionsForItemType(event.target.value);
+    };
+
+    const addDefaultExtensionsForItemType = (type: string) => {
+        if (type === IQuestionnaireItemType.attachment) {
+            dispatchUpdateItem(
+                IItemProperty.extension,
+                setExtensionValue(props.item, {
+                    url: IExtentionType.maxSize,
+                    valueDecimal: ATTACHMENT_DEFAULT_MAX_SIZE,
+                }).extension,
+            );
+        }
     };
 
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display;

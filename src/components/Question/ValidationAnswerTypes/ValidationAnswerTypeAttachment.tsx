@@ -4,6 +4,7 @@ import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemT
 import { QuestionnaireItem } from '../../../types/fhir';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
+import { setExtensionValue } from '../../../helpers/extensionHelper';
 
 type ValidationAnswerTypeAttachmentProps = {
     item: QuestionnaireItem;
@@ -14,18 +15,13 @@ const ValidationAnswerTypeAttachment = ({ item }: ValidationAnswerTypeAttachment
     const maxSize = item.extension?.find((ext) => ext.url === IExtentionType.maxSize)?.valueDecimal || '';
 
     function updateMaxSize(size: number) {
-        const { extension } = item;
-        let newExtension;
-        if (extension) {
-            newExtension = extension.filter((ext) => ext.url !== IExtentionType.maxSize);
-            newExtension.push({ url: IExtentionType.maxSize, valueDecimal: size });
-        }
+        const newExtension = setExtensionValue(item, { url: IExtentionType.maxSize, valueDecimal: size }).extension;
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, newExtension));
     }
 
     return (
         <>
-            <FormField label="Maksimal filstørrelse">
+            <FormField label="Maksimal filstørrelse i MB">
                 <input
                     defaultValue={maxSize}
                     type="number"
