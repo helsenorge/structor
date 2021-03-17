@@ -18,6 +18,7 @@ import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional
 import { isIgnorableItem } from '../helpers/itemControl';
 import Sidebar from '../components/Sidebar/Sidebar';
 import LanguageAccordion from '../components/Languages/LanguageAccordion';
+import PredefinedValueSetModal from '../components/PredefinedValueSetModal/PredefinedValueSetModal';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -25,6 +26,7 @@ const FormBuilder = (): JSX.Element => {
     const [isShowingFireStructure, setIsShowingFireStructure] = useState(false);
     const [showImportValueSet, setShowImportValueSet] = useState(false);
     const [showResults, setShowAdminMenu] = useState(false);
+    const [showContained, setShowContained] = useState(false);
 
     const dispatchNewRootItem = () => {
         dispatch(newItemAction(IQuestionnaireItemType.group, []));
@@ -84,6 +86,7 @@ const FormBuilder = (): JSX.Element => {
                 showFormFiller={() => setIsIframeVisible(!isIframeVisible)}
                 showJSONView={() => setIsShowingFireStructure(!isShowingFireStructure)}
                 showImportValueSet={() => setShowImportValueSet(!showImportValueSet)}
+                showContained={() => setShowContained(!showContained)}
             />
 
             {showResults && <PublishModal close={() => setShowAdminMenu(!showResults)} />}
@@ -91,6 +94,7 @@ const FormBuilder = (): JSX.Element => {
             {isShowingFireStructure && (
                 <JSONView showJSONView={() => setIsShowingFireStructure(!isShowingFireStructure)} />
             )}
+            {showContained && <PredefinedValueSetModal close={() => setShowContained(!showContained)} />}
 
             <div className="editor">
                 <div className="anchor-wrapper">
