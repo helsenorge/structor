@@ -178,9 +178,9 @@ const generateTreeWithTranslations = (
     });
 };
 
-const generateMainQuestionnaire = (state: TreeState): Questionnaire => ({
+const generateMainQuestionnaire = (state: TreeState, usedValueSet: string[]): Questionnaire => ({
     ...state.qMetadata,
-    contained: state.qContained,
+    contained: state.qContained?.filter((x) => x.id && usedValueSet?.includes(x.id) && x) as ValueSet[],
     resourceType: 'Questionnaire',
     status: 'draft',
     item: generateTree(state.qOrder, state.qItems),
@@ -199,7 +199,7 @@ const generateTranslatedQuestionnaire = (
     item: generateTreeWithTranslations(state.qOrder, state.qItems, languageCode, languages),
 });
 
-function cleanupContained(state: TreeState) {
+function getUsedValueSet(state: TreeState) {
     const allValueSets = [] as string[];
     Object.keys(state.qItems).forEach(function (linkId) {
         const item = state.qItems[linkId];
@@ -208,11 +208,11 @@ function cleanupContained(state: TreeState) {
         }
     });
 
-    const usedValueSets = Array.from(new Set(allValueSets));
+    return Array.from(new Set(allValueSets));
 }
 
 export const generateQuestionnaire = (state: TreeState): string => {
-    cleanupContained(state);
+    const usedValueSet = getUsedValueSet(state);
     function translateQuestionnaires(): Questionnaire[] {
         const questionnaires: Questionnaire[] = [];
 
@@ -231,19 +231,20 @@ export const generateQuestionnaire = (state: TreeState): string => {
             resourceType: 'Bundle',
             type: 'searchset',
             total: Object.keys(state.qAdditionalLanguages).length + 1,
-            entry: [generateMainQuestionnaire(state), ...translateQuestionnaires()],
+            entry: [generateMainQuestionnaire(state, usedValueSet), ...translateQuestionnaires()],
         };
 
         return JSON.stringify(bundle);
     }
 
-    return JSON.stringify(generateMainQuestionnaire(state));
+    return JSON.stringify(generateMainQuestionnaire(state, usedValueSet));
 };
 
 export const generateQuestionnaireForPreview = (state: TreeState, language?: string): string => {
+    const usedValueSet = getUsedValueSet(state);
     const { qAdditionalLanguages } = state;
     if (language && qAdditionalLanguages && qAdditionalLanguages[language]) {
         return JSON.stringify(generateTranslatedQuestionnaire(state, language, qAdditionalLanguages));
     }
-    return JSON.stringify(generateMainQuestionnaire(state));
+    return JSON.stringify(generateMainQuestionnaire(state, usedValueSet));
 };
