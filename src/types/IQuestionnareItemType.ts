@@ -64,10 +64,10 @@ export type IEnableWhen = {
 };
 
 export enum IExtentionType {
-    validationtext = 'https://ehelse.no/fhir/StructureDefinition/validationtext',
+    validationtext = 'http://ehelse.no/fhir/StructureDefinition/validationtext',
     minValue = 'http://hl7.org/fhir/StructureDefinition/minValue',
     maxValue = 'http://hl7.org/fhir/StructureDefinition/maxValue',
-    maxSize = 'http://hl7.org/fhir/StructureDefinition/maxSize', // NOSONAR
+    maxSize = 'http://hl7.org/fhir/StructureDefinition/maxSize',
     regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
     maxDecimalPlaces = 'http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces',
     markdown = 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
