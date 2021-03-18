@@ -52,8 +52,7 @@ import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/
 import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOptionHelper';
-
-const INITIAL_LANGUAGE = 'nb-no';
+import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -150,7 +149,7 @@ export const initialState: TreeState = {
         title: '',
         description: '',
         resourceType: 'Questionnaire',
-        language: INITIAL_LANGUAGE,
+        language: INITIAL_LANGUAGE.code,
         name: '',
         status: 'draft',
         publisher: 'NHN',
@@ -159,8 +158,8 @@ export const initialState: TreeState = {
             tag: [
                 {
                     system: 'urn:ietf:bcp:47',
-                    code: INITIAL_LANGUAGE,
-                    display: 'Norsk bokmål',
+                    code: INITIAL_LANGUAGE.code,
+                    display: INITIAL_LANGUAGE.display,
                 },
             ],
         },

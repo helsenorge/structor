@@ -4,7 +4,7 @@ import IconBtn from '../IconBtn/IconBtn';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionnaire';
 import Select from '../Select/Select';
-import { getLanguagesInUse } from '../../helpers/LanguageHelper';
+import { getLanguagesInUse, INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 
 type Props = {
     showFormFiller: () => void;
@@ -13,7 +13,9 @@ type Props = {
 
 const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
-    const [selectedLanguage, setSelectedLanguage] = useState(language || state.qMetadata.language || 'nb-no');
+    const [selectedLanguage, setSelectedLanguage] = useState(
+        language || state.qMetadata.language || INITIAL_LANGUAGE.code,
+    );
     const languages = getLanguagesInUse(state);
 
     function iFrameLoaded() {
