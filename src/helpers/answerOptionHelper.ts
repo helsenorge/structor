@@ -82,7 +82,7 @@ export const removeOptionFromAnswerOptionArray = (
     return values.filter((x) => x.valueCoding?.id !== targetId);
 };
 
-export const swapPositions = (
+export const reorderPositions = (
     list: QuestionnaireItemAnswerOption[],
     to: number,
     from: number,

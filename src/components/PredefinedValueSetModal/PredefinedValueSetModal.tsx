@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import createUUID from '../../helpers/CreateUUID';
 import { appendValueSetAction } from '../../store/valueSetStore/ValueSetAction';
 import { ValueSetContext } from '../../store/valueSetStore/ValueSetStore';
@@ -12,21 +13,20 @@ type Props = {
     close: () => void;
 };
 
-const id = createUUID();
-
 const initValueSet = () =>
     ({
         resourceType: 'ValueSet',
-        id: `pre-${id}`,
+        id: `pre-${createUUID()}`,
         version: '1.0',
         name: '',
         title: '',
+        date: new Date().toISOString(),
         status: 'draft',
         publisher: '',
         compose: {
             include: [
                 {
-                    system: `system-structor-1.0:${id}`,
+                    system: '',
                     concept: [
                         {
                             id: createUUID(),
@@ -85,6 +85,41 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
         setNewValueSet({ ...initValueSet() });
     };
 
+    const getListStyle = (isDraggingOver: boolean) => ({
+        background: isDraggingOver ? 'lightblue' : 'transparent',
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+        userSelect: 'none',
+        background: isDragging ? 'lightgreen' : 'transparent',
+        cursor: 'pointer',
+        ...draggableStyle,
+    });
+
+    const handleOrder = (result: DropResult) => {
+        if (!result.source || !result.destination || !result.draggableId) {
+            return;
+        }
+
+        const fromIndex = result.source.index;
+        const toIndex = result.destination.index;
+
+        const compose = { ...newValueSet.compose };
+        const itemToMove = compose.include[0].concept?.splice(fromIndex, 1);
+
+        if (fromIndex !== toIndex && itemToMove) {
+            compose.include[0].concept?.splice(toIndex, 0, itemToMove[0]);
+            setNewValueSet({ ...newValueSet, ...compose });
+        }
+    };
+
+    const handleSystem = (value: string) => {
+        const compose = { ...newValueSet.compose };
+        compose.include[0].system = value;
+        setNewValueSet({ ...newValueSet, ...compose });
+    };
+
     return (
         <Modal close={props.close} title="Predefinerte verdier" size="large" bottomCloseText="Lukk">
             <div className="predefined-container">
@@ -107,37 +142,82 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                             onChange={(event) => setNewValueSet({ ...newValueSet, publisher: event.target.value })}
                         />
                     </FormField>
+                    <FormField label="System">
+                        <input
+                            value={newValueSet.compose?.include[0].system}
+                            onChange={(event) => handleSystem(event.target.value)}
+                        />
+                    </FormField>
                     <div className="btn-group center-text">
                         <Btn onClick={addNewElement} title="+ Nytt valg" variant="secondary" size="small" />
                         <Btn onClick={dispatchValueSet} title="Opprett >" variant="primary" size="small" />
                     </div>
                     <div className="value-set">
-                        {newValueSet.compose?.include[0].concept?.map((x) => (
-                            <div key={x.id} className="answer-option-item align-everything">
-                                {/* <span className="reorder-icon" aria-label="reorder element" /> */}
-                                <div className="answer-option-content align-everything">
-                                    <input
-                                        value={x.display}
-                                        placeholder="Legg inn tittel.."
-                                        onChange={(event) => handleConceptItem(event.target.value, 'display', x.id)}
-                                    />
-                                    <input
-                                        value={x.code}
-                                        placeholder="Legg inn verdi.."
-                                        onChange={(event) => handleConceptItem(event.target.value, 'code', x.id)}
-                                    />
-                                </div>
-                                {newValueSet.compose?.include[0].concept?.length &&
-                                    newValueSet.compose?.include[0].concept?.length > 2 && (
-                                        <button
-                                            type="button"
-                                            onClick={() => removeElement(x.id)}
-                                            name="Fjern element"
-                                            className="align-everything"
-                                        />
-                                    )}
-                            </div>
-                        ))}
+                        <DragDropContext onDragEnd={handleOrder}>
+                            <Droppable droppableId={`droppable-new-value-set`} type="value-set">
+                                {(provided, snapshot) => (
+                                    <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+                                        {newValueSet.compose?.include[0].concept?.map((item, index) => {
+                                            return (
+                                                <Draggable key={item.id} draggableId={item.id || '1'} index={index}>
+                                                    {(providedDrag, snapshotDrag) => (
+                                                        <div
+                                                            ref={providedDrag.innerRef}
+                                                            {...providedDrag.draggableProps}
+                                                            style={getItemStyle(
+                                                                snapshotDrag.isDragging,
+                                                                providedDrag.draggableProps.style,
+                                                            )}
+                                                            className="answer-option-item align-everything"
+                                                        >
+                                                            <span
+                                                                className="reorder-icon"
+                                                                aria-label="reorder element"
+                                                                {...providedDrag.dragHandleProps}
+                                                            />
+                                                            <div className="answer-option-content align-everything">
+                                                                <input
+                                                                    value={item.display}
+                                                                    placeholder="Legg inn tittel.."
+                                                                    onChange={(event) =>
+                                                                        handleConceptItem(
+                                                                            event.target.value,
+                                                                            'display',
+                                                                            item.id,
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <input
+                                                                    value={item.code}
+                                                                    placeholder="Legg inn verdi.."
+                                                                    onChange={(event) =>
+                                                                        handleConceptItem(
+                                                                            event.target.value,
+                                                                            'code',
+                                                                            item.id,
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </div>
+                                                            {newValueSet.compose?.include[0].concept?.length &&
+                                                                newValueSet.compose?.include[0].concept?.length > 2 && (
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => removeElement(item.id)}
+                                                                        name="Fjern element"
+                                                                        className="align-everything"
+                                                                    />
+                                                                )}
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            );
+                                        })}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
                     </div>
                 </div>
                 <div>
