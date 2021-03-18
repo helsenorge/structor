@@ -5,6 +5,7 @@ import ValidationAnswerTypesText from './ValidationAnswerTypeText';
 import ValidationAnswerTypeString from './ValidationAnswerTypeString';
 import ValidationAnswerTypeDate from './ValidationAnswerTypeDate';
 import { QuestionnaireItem } from '../../../types/fhir';
+import ValidationAnswerTypeAttachment from './ValidationAnswerTypeAttachment';
 interface ValidationTypeProp {
     item: QuestionnaireItem;
 }
@@ -12,6 +13,8 @@ interface ValidationTypeProp {
 const ValidationAnswerTypes = ({ item }: ValidationTypeProp): JSX.Element => {
     const respondType = (itemType: string) => {
         switch (itemType) {
+            case IQuestionnaireItemType.attachment:
+                return <ValidationAnswerTypeAttachment item={item} />;
             case IQuestionnaireItemType.date:
                 return <ValidationAnswerTypeDate item={item} />;
             case IQuestionnaireItemType.string:
