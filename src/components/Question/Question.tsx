@@ -11,6 +11,7 @@ import {
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import React, { ChangeEvent, useEffect } from 'react';
 import {
+    deleteChildItemsAction,
     deleteItemAction,
     duplicateItemAction,
     newItemAction,
@@ -24,13 +25,15 @@ import itemType, {
     quantityUnitTypes,
     typeIsSupportingValidation,
 } from '../../helpers/QuestionHelper';
-import { removeExtensionValue, setExtensionValue } from '../../helpers/extensionHelper';
+import { removeExtensionValue, updateExtensionValue } from '../../helpers/extensionHelper';
+import { isItemControlInline } from '../../helpers/itemControl';
 
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
 import AdvancedQuestionOptions from '../AdvancedQuestionOptions/AdvancedQuestionOptions';
 import Choice from './QuestionType/Choice';
 import EnableWhen from '../EnableWhen/EnableWhen';
+import Inline from './QuestionType/Inline';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import Picker from '../DatePicker/DatePicker';
 import PredefinedValueSet from './QuestionType/PredefinedValueSet';
@@ -94,7 +97,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             url: IExtentionType.markdown,
             valueMarkdown: newLabel,
         };
-        const newValue = setExtensionValue(props.item._text, markdownValue);
+        const newValue = updateExtensionValue(props.item._text, markdownValue);
 
         dispatchUpdateItem(IItemProperty._text, newValue);
         // update text with same value. Text is used in condition in enableWhen
@@ -122,7 +125,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                 url: IExtentionType.questionnaireUnit,
                 valueCoding: coding,
             };
-            updatedExtensions = setExtensionValue(props.item, unitExtension).extension || [];
+            updatedExtensions = updateExtensionValue(props.item, unitExtension);
         }
         dispatchUpdateItem(IItemProperty.extension, updatedExtensions);
     };
@@ -134,6 +137,9 @@ const Question = (props: QuestionProps): JSX.Element => {
             param === IQuestionnaireItemType.choice
         ) {
             return <PredefinedValueSet linkId={props.item.linkId} selectedValueSet={props.item.answerValueSet} />;
+        }
+        if (isItemControlInline(props.item)) {
+            return <Inline linkId={props.item.linkId} parentArray={props.parentArray} />;
         }
 
         switch (param) {
@@ -212,33 +218,59 @@ const Question = (props: QuestionProps): JSX.Element => {
         if (props.item.type === IQuestionnaireItemType.integer || props.item.type === IQuestionnaireItemType.decimal) {
             return IQuestionnaireItemType.number;
         }
+        if (isItemControlInline(props.item)) {
+            return IQuestionnaireItemType.inline;
+        }
         return props.item.type;
     };
 
     const handleQuestionareTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        if (event.target.value === IQuestionnaireItemType.predefined) {
+        const previousType = props.item.type;
+        const newType = event.target.value;
+        if (newType === IQuestionnaireItemType.predefined) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
             dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
             dispatchRemoveAttribute(IItemProperty.answerOption);
-        } else if (event.target.value === IQuestionnaireItemType.number) {
+        } else if (newType === IQuestionnaireItemType.number) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
             dispatchRemoveAttribute(IItemProperty.answerValueSet);
+        } else if (newType === IQuestionnaireItemType.inline) {
+            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.text);
+            dispatchNewChildItem(IQuestionnaireItemType.display);
         } else {
-            dispatchUpdateItem(IItemProperty.type, event.target.value);
+            dispatchUpdateItem(IItemProperty.type, newType);
             dispatchRemoveAttribute(IItemProperty.answerValueSet);
         }
         dispatchClearExtension();
-        addDefaultExtensionsForItemType(event.target.value);
+        addDefaultExtensionsForItemType(newType);
+        cleanupChildItems(previousType);
     };
+
+    function cleanupChildItems(previousType: string) {
+        if (previousType === IQuestionnaireItemType.inline) {
+            props.dispatch(deleteChildItemsAction(props.item.linkId, props.parentArray));
+        }
+    }
 
     const addDefaultExtensionsForItemType = (type: string) => {
         if (type === IQuestionnaireItemType.attachment) {
             dispatchUpdateItem(
                 IItemProperty.extension,
-                setExtensionValue(props.item, {
+                updateExtensionValue(props.item, {
                     url: IExtentionType.maxSize,
                     valueDecimal: ATTACHMENT_DEFAULT_MAX_SIZE,
-                }).extension,
+                }),
+            );
+        }
+        if (type === IQuestionnaireItemType.inline) {
+            dispatchUpdateItem(
+                IItemProperty.extension,
+                updateExtensionValue(props.item, {
+                    url: IExtentionType.itemControl,
+                    valueCodeableConcept: {
+                        coding: [{ system: 'http://hl7.org/fhir/ValueSet/questionnaire-item-control', code: 'inline' }],
+                    },
+                }),
             );
         }
     };
@@ -341,7 +373,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                 {respondType(props.item.type)}
             </div>
             <div className="question-addons">
-                {typeIsSupportingValidation(props.item.type as IQuestionnaireItemType) && (
+                {typeIsSupportingValidation(handleDisplayQuestionType() as IQuestionnaireItemType) && (
                     <Accordion title="Legg til validering">
                         <ValidationAnswerTypes item={props.item} />
                     </Accordion>

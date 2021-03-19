@@ -47,6 +47,8 @@ import {
     ADD_ITEM_CODE_ACTION,
     DELETE_ITEM_CODE_ACTION,
     UPDATE_ITEM_CODE_PROPERTY_ACTION,
+    DeleteChildItemsAction,
+    DELETE_CHILD_ITEMS_ACTION,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -66,6 +68,7 @@ export type ActionType =
     | UpdateQuestionnaireMetadataAction
     | NewItemAction
     | DeleteItemAction
+    | DeleteChildItemsAction
     | UpdateItemAction
     | DuplicateItemAction
     | ReorderItemAction
@@ -254,16 +257,32 @@ function moveItem(draft: TreeState, action: MoveItemAction): void {
     arrayToDeleteItemFrom.splice(indexToDelete, 1);
 }
 
-function deleteItem(draft: TreeState, action: DeleteItemAction): void {
-    const deleteItemTranslations = (linkIdToDelete: string, languages?: Languages) => {
-        if (!languages) {
-            return;
-        }
-        Object.values(languages).forEach((translation) => {
-            delete translation.items[linkIdToDelete];
-        });
-    };
+function deleteItemTranslations(linkIdToDelete: string, languages?: Languages) {
+    if (!languages) {
+        return;
+    }
+    Object.values(languages).forEach((translation) => {
+        delete translation.items[linkIdToDelete];
+    });
+}
 
+function deleteChildItems(draft: TreeState, action: DeleteChildItemsAction): void {
+    const itemToDeleteChildrenFrom = findTreeArray(action.order, draft.qOrder).find(
+        (item) => item.linkId === action.linkId,
+    );
+    if (!itemToDeleteChildrenFrom) {
+        return;
+    }
+    const itemsToDelete = getLinkIdOfAllSubItems(itemToDeleteChildrenFrom.items, []);
+    itemsToDelete.forEach((linkIdToDelete: string) => {
+        delete draft.qItems[linkIdToDelete];
+        deleteItemTranslations(linkIdToDelete, draft.qAdditionalLanguages);
+    });
+    // delete node from qOrder
+    itemToDeleteChildrenFrom.items = [];
+}
+
+function deleteItem(draft: TreeState, action: DeleteItemAction): void {
     const arrayToDeleteItemFrom = findTreeArray(action.order, draft.qOrder);
     const indexToDelete = arrayToDeleteItemFrom.findIndex((x) => x.linkId === action.linkId);
 
@@ -556,6 +575,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case DELETE_ITEM_ACTION:
             deleteItem(draft, action);
+            break;
+        case DELETE_CHILD_ITEMS_ACTION:
+            deleteChildItems(draft, action);
             break;
         case UPDATE_ITEM_ACTION:
             updateItem(draft, action);

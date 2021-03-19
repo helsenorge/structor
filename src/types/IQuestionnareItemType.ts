@@ -19,6 +19,8 @@ export enum IQuestionnaireItemType {
     predefined = 'predifined',
     // number is not a fhir-type, but used internally for types integer, decimal and quantity
     number = 'number',
+    // inline is not a fhir-type, but used internally for text item with itemControl 'inline'
+    inline = 'inline',
 }
 
 export enum ICodingProperty {

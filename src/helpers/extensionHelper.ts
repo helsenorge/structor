@@ -1,16 +1,16 @@
 import { Element, Extension } from '../types/fhir';
 
 // set extension value. Update extension if it exists, otherwise add it.
-export const setExtensionValue = (extensionParent: Element | undefined, extensionValue: Extension): Element => {
+export const updateExtensionValue = (extensionParent: Element | undefined, extensionValue: Extension): Extension[] => {
     // copy existing extension, except extension to add
-    const newValue = {
-        extension: [...(extensionParent?.extension?.filter((x: Extension) => x.url !== extensionValue.url) || [])],
-    };
+    const updatedExtensions = [
+        ...(extensionParent?.extension?.filter((x: Extension) => x.url !== extensionValue.url) || []),
+    ];
 
-    // add new extension extension
-    newValue.extension.push(extensionValue);
+    // add new extension
+    updatedExtensions.push(extensionValue);
 
-    return newValue;
+    return updatedExtensions;
 };
 
 export const removeExtensionValue = (
