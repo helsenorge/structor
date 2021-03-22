@@ -275,7 +275,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
-    const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
+    const canCreateChild = props.item.type !== IQuestionnaireItemType.display && !isItemControlInline(props.item);
 
     const observed = (elements: IntersectionObserverEntry[]) => {
         if (elements[0].intersectionRatio > 0.5) {
