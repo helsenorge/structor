@@ -4,7 +4,7 @@ import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemT
 import { QuestionnaireItem } from '../../../types/fhir';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
-import { setExtensionValue } from '../../../helpers/extensionHelper';
+import { updateExtensionValue } from '../../../helpers/extensionHelper';
 
 type ValidationAnswerTypeAttachmentProps = {
     item: QuestionnaireItem;
@@ -15,7 +15,7 @@ const ValidationAnswerTypeAttachment = ({ item }: ValidationAnswerTypeAttachment
     const maxSize = item.extension?.find((ext) => ext.url === IExtentionType.maxSize)?.valueDecimal || '';
 
     function updateMaxSize(size: number) {
-        const newExtension = setExtensionValue(item, { url: IExtentionType.maxSize, valueDecimal: size }).extension;
+        const newExtension = updateExtensionValue(item, { url: IExtentionType.maxSize, valueDecimal: size });
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, newExtension));
     }
 

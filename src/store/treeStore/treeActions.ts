@@ -34,6 +34,7 @@ export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata
 export const NEW_ITEM_ACTION = 'newItem';
 export const REMOVE_ITEM_ATTRIBUTE_ACTION = 'removeItemAttribute';
 export const DELETE_ITEM_ACTION = 'deleteItem';
+export const DELETE_CHILD_ITEMS_ACTION = 'deleteChildItems';
 export const UPDATE_ITEM_ACTION = 'updateItem';
 export const DUPLICATE_ITEM_ACTION = 'duplicateItem';
 export const RESET_QUESTIONNAIRE_ACTION = 'resetQuestionnaire';
@@ -148,6 +149,12 @@ export interface NewItemAction {
 
 export interface DeleteItemAction {
     type: typeof DELETE_ITEM_ACTION;
+    linkId: string;
+    order: Array<string>;
+}
+
+export interface DeleteChildItemsAction {
+    type: typeof DELETE_CHILD_ITEMS_ACTION;
     linkId: string;
     order: Array<string>;
 }
@@ -440,6 +447,14 @@ export const newItemHelpIconAction = (order: Array<string>): NewItemAction => {
 export const deleteItemAction = (linkId: string, order: Array<string>): DeleteItemAction => {
     return {
         type: DELETE_ITEM_ACTION,
+        linkId,
+        order,
+    };
+};
+
+export const deleteChildItemsAction = (linkId: string, order: Array<string>): DeleteChildItemsAction => {
+    return {
+        type: DELETE_CHILD_ITEMS_ACTION,
         linkId,
         order,
     };

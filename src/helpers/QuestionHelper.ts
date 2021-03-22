@@ -59,6 +59,10 @@ const itemType = [
         display: 'Vedlegg',
         code: IQuestionnaireItemType.attachment,
     },
+    {
+        display: 'Utvidbar info',
+        code: IQuestionnaireItemType.inline,
+    },
 ];
 
 export const ATTACHMENT_DEFAULT_MAX_SIZE = 5.0;
@@ -210,8 +214,7 @@ export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
 export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolean => {
     const validTypes = [
         IQuestionnaireItemType.attachment,
-        IQuestionnaireItemType.integer,
-        IQuestionnaireItemType.decimal,
+        IQuestionnaireItemType.number,
         IQuestionnaireItemType.quantity,
         IQuestionnaireItemType.text,
         IQuestionnaireItemType.string,

@@ -65,8 +65,9 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
         }
     };
 
-    const removeUnsupportedChildren = (items: OrderItem[]) => {
-        return items.filter((x) => !isIgnorableItem(props.qItems[x.linkId]));
+    const removeUnsupportedChildren = (items: OrderItem[], parentLinkId?: string) => {
+        const parentItem = parentLinkId ? props.qItems[parentLinkId] : undefined;
+        return items.filter((x) => !isIgnorableItem(props.qItems[x.linkId], parentItem));
     };
 
     const showHierarchy = (index: number) => {
@@ -114,9 +115,9 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                             />
                                         </div>
                                         <div>
-                                            {removeUnsupportedChildren(item.items).length > 0 && (
+                                            {removeUnsupportedChildren(item.items, item.linkId).length > 0 && (
                                                 <SubAnchor
-                                                    items={removeUnsupportedChildren(item.items)}
+                                                    items={removeUnsupportedChildren(item.items, item.linkId)}
                                                     parentItem={item.linkId}
                                                     qItems={props.qItems}
                                                     parentArray={[...props.parentArray, item.linkId]}
