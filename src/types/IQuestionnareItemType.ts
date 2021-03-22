@@ -1,88 +1,88 @@
 export enum IQuestionnaireItemType {
-    group = 'group',
-    display = 'display',
+    attachment = 'attachment',
     boolean = 'boolean',
-    decimal = 'decimal',
-    integer = 'integer',
+    choice = 'choice',
     date = 'date',
     dateTime = 'dateTime',
-    time = 'time',
-    string = 'string',
-    text = 'text',
-    url = 'url',
-    choice = 'choice',
-    openChoice = 'open-choice',
-    attachment = 'attachment',
-    reference = 'reference',
-    quantity = 'quantity',
-    // extention
-    predefined = 'predifined',
-    // number is not a fhir-type, but used internally for types integer, decimal and quantity
-    number = 'number',
+    decimal = 'decimal',
+    display = 'display',
+    group = 'group',
     // inline is not a fhir-type, but used internally for text item with itemControl 'inline'
     inline = 'inline',
+    integer = 'integer',
+    // number is not a fhir-type, but used internally for types integer, decimal and quantity
+    number = 'number',
+    openChoice = 'open-choice',
+    // extention
+    predefined = 'predifined',
+    quantity = 'quantity',
+    reference = 'reference',
+    string = 'string',
+    text = 'text',
+    time = 'time',
+    url = 'url',
 }
 
 export enum ICodingProperty {
     code = 'code',
-    system = 'system',
     display = 'display',
+    system = 'system',
 }
 
 export enum IItemProperty {
-    linkId = 'linkId',
-    definition = 'definition',
+    answerOption = 'answerOption',
+    answerValueSet = 'answerValueSet',
     code = 'code',
+    definition = 'definition',
+    enableBehavior = 'enableBehavior',
+    enableWhen = 'enableWhen',
+    extension = 'extension',
+    initial = 'initial',
+    linkId = 'linkId',
+    maxLength = 'maxLength',
     prefix = 'prefix',
     text = 'text',
     _text = '_text',
-    type = 'type',
-    enableWhen = 'enableWhen',
-    enableBehavior = 'enableBehavior',
-    maxLength = 'maxLength',
-    answerOption = 'answerOption',
-    initial = 'initial',
-    answerValueSet = 'answerValueSet',
-    required = 'required',
-    repeats = 'repeats',
     readOnly = 'readOnly',
-    extension = 'extension',
+    repeats = 'repeats',
+    required = 'required',
+    type = 'type',
 }
 
 export enum IOperator {
-    exists = 'exists',
-    equal = '=',
-    notEqual = '!=',
     greaterThan = '>',
-    lessThan = '<',
     greaterThanOrEqual = '>=',
+    lessThan = '<',
     lessThanOrEqual = '<=',
+    notEqual = '!=',
+    equal = '=',
+    exists = 'exists',
 }
 
 export type IEnableWhen = {
-    question?: string;
-    operator?: string;
     answerInteger?: number;
+    operator?: string;
+    question?: string;
 };
 
 export enum IExtentionType {
-    validationtext = 'http://ehelse.no/fhir/StructureDefinition/validationtext',
-    minValue = 'http://hl7.org/fhir/StructureDefinition/minValue',
-    maxValue = 'http://hl7.org/fhir/StructureDefinition/maxValue',
-    maxSize = 'http://hl7.org/fhir/StructureDefinition/maxSize',
-    regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
-    maxDecimalPlaces = 'http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces',
-    markdown = 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
-    questionnaireUnit = 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
-    itemControl = 'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
-    fhirPath = 'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpath',
-    endpoint = 'http://ehelse.no/fhir/StructureDefinition/sdf-endpoint',
-    presentationbuttons = 'http://helsenorge.no/fhir/StructureDefinition/sdf-presentationbuttons',
     canBePerformedBy = 'http://ehelse.no/fhir/StructureDefinition/sdf-canbeperformedby',
-    entryFormat = 'http://hl7.org/fhir/StructureDefinition/entryFormat',
-    itemControlValueSet = 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
-    sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
-    presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
     canBePerformedByValueSet = 'http://ehelse.no/fhir/ValueSet/CanBePerformedBy',
+    endpoint = 'http://ehelse.no/fhir/StructureDefinition/sdf-endpoint',
+    entryFormat = 'http://hl7.org/fhir/StructureDefinition/entryFormat',
+    fhirPath = 'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpath',
     hidden = 'http://hl7.org/fhir/StructureDefinition/questionnaire-hidden',
+    itemControl = 'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
+    itemControlValueSet = 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
+    markdown = 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
+    maxDecimalPlaces = 'http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces',
+    maxSize = 'http://hl7.org/fhir/StructureDefinition/maxSize',
+    maxValue = 'http://hl7.org/fhir/StructureDefinition/maxValue',
+    minValue = 'http://hl7.org/fhir/StructureDefinition/minValue',
+    presentationbuttons = 'http://helsenorge.no/fhir/StructureDefinition/sdf-presentationbuttons',
+    presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
+    questionnaireUnit = 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
+    regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
+    sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
+    validationtext = 'http://ehelse.no/fhir/StructureDefinition/validationtext',
 }
