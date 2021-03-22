@@ -183,7 +183,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     const handleChild = (items: OrderItem[], parentPath: number[], tempHierarchy: FlattOrder[], linkId: string[]) => {
         items
-            .filter((x) => !isIgnorableItem(qItems[x.linkId]))
+            .filter((x) => !isIgnorableItem(qItems[x.linkId], qItems[linkId[linkId.length - 1]]))
             .forEach((child, childIndex) => {
                 const childTitle = childIndex + 1;
                 tempHierarchy.push({
@@ -215,6 +215,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     };
 
     const moveIsInvalid = (moveToPath: string[]) => {
+        if (isItemControlInline(qItems[linkIdMoveTo])) {
+            setMoveError(`Det er ikke mulig å flytte til element av type: ${IQuestionnaireItemType.inline}`);
+            return true;
+        }
         if (qItems[linkIdMoveTo]?.type === IQuestionnaireItemType.display) {
             setMoveError(`Det er ikke mulig å flytte til element av type: ${IQuestionnaireItemType.display}`);
             return true;
