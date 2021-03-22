@@ -8,7 +8,13 @@ import { getItemPropertyTranslation, getLanguageFromCode } from '../../../helper
 import { QuestionnaireItem } from '../../../types/fhir';
 import TranslateMetaData from './TranslateMetaData';
 import TranslateContainedValueSets from './TranslateContainedValueSets';
-import { getHelpText, isIgnorableItem, isItemControlHelp, isItemControlSidebar } from '../../../helpers/itemControl';
+import {
+    getHelpText,
+    isIgnorableItem,
+    isItemControlHelp,
+    isItemControlInline,
+    isItemControlSidebar,
+} from '../../../helpers/itemControl';
 import TranslateSidebar from './TranslateSidebar';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
@@ -24,6 +30,7 @@ interface FlattOrderTranslation {
     linkId: string;
     path: string;
     helpItemLinkId?: string;
+    inlineItemLinkId?: string;
 }
 
 const TranslationModal = (props: TranslationModalProps): JSX.Element => {
@@ -38,16 +45,20 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
             .filter((x) => !isItemControlSidebar(qItems[x.linkId]))
             .forEach((item) => {
                 const itemHasHelpChild = item.items.find((child) => isItemControlHelp(qItems[child.linkId]));
-                const childPath = `${path}${index}`;
+                const inlineItem = isItemControlInline(qItems[item.linkId]) ? item.items[0]?.linkId : undefined;
+                const childPath = `${path}.${index}`;
                 const tempItem = { linkId: item.linkId, path: childPath } as FlattOrderTranslation;
                 if (itemHasHelpChild) {
                     tempItem.helpItemLinkId = itemHasHelpChild.linkId;
+                }
+                if (inlineItem) {
+                    tempItem.inlineItemLinkId = inlineItem;
                 }
                 if (!isItemControlHelp(qItems[item.linkId])) {
                     tempHierarchy.push(tempItem);
                     index++;
                 }
-                if (item.items) {
+                if (item.items && !isItemControlInline(qItems[item.linkId])) {
                     handleChild(item.items, childPath, tempHierarchy);
                 }
             });
@@ -58,14 +69,18 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         qOrder
             .filter((x) => !isIgnorableItem(qItems[x.linkId]))
             .forEach((item, index) => {
-                const itemPath = `${index + 1}.`;
+                const itemPath = `${index + 1}`;
                 const tempItem = { linkId: item.linkId, path: itemPath } as FlattOrderTranslation;
                 const helpItem = item.items.find((child) => isItemControlHelp(qItems[child.linkId]));
                 if (helpItem) {
                     tempItem.helpItemLinkId = helpItem.linkId;
                 }
+                const inlineItem = isItemControlInline(qItems[item.linkId]) ? item.items[0]?.linkId : undefined;
+                if (inlineItem) {
+                    tempItem.inlineItemLinkId = inlineItem;
+                }
                 temp.push(tempItem);
-                if (item.items) {
+                if (item.items && !inlineItem) {
                     handleChild(item.items, itemPath, temp);
                 }
             });
@@ -95,6 +110,19 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
             )}
         </div>
     );
+
+    const renderInlineText = (linkId: string): JSX.Element | null => {
+        if (!qAdditionalLanguages) {
+            return null;
+        }
+        const inlineItem = qItems[linkId];
+        if (!inlineItem) {
+            return null;
+        }
+        return (
+            <TranslateItemRow targetLanguage={props.targetLanguage} item={inlineItem} itemHeading={'Utvidet tekst'} />
+        );
+    };
 
     const renderHelpText = (linkId: string): JSX.Element | null => {
         if (!qAdditionalLanguages) {
@@ -175,6 +203,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                                     itemHeading={`Element ${orderItem.path}`}
                                 />
                                 {orderItem.helpItemLinkId && renderHelpText(orderItem.helpItemLinkId)}
+                                {orderItem.inlineItemLinkId && renderInlineText(orderItem.inlineItemLinkId)}
                             </div>
                         </div>
                     );
