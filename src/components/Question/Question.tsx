@@ -225,7 +225,7 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     const handleQuestionareTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const previousType = props.item.type;
+        const previousType = handleDisplayQuestionType();
         const newType = event.target.value;
         if (newType === IQuestionnaireItemType.predefined) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
