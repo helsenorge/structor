@@ -41,6 +41,7 @@ import Select from '../Select/Select';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
 import Codes from '../AdvancedQuestionOptions/Code/Codes';
+import FormField from '../FormField/FormField';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -268,7 +269,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                 updateExtensionValue(props.item, {
                     url: IExtentionType.itemControl,
                     valueCodeableConcept: {
-                        coding: [{ system: 'http://hl7.org/fhir/ValueSet/questionnaire-item-control', code: 'inline' }],
+                        coding: [{ system: IExtentionType.itemControlValueSet, code: 'inline' }],
                     },
                 }),
             );
@@ -355,21 +356,18 @@ const Question = (props: QuestionProps): JSX.Element => {
                         />
                     </div>
                 </div>
-                <div className="form-field">
-                    <div className="form-field-label-wrapper">
-                        <label>Tekst</label>
-                    </div>
+                <FormField label="Tekst">
                     {isMarkdownActivated ? (
                         <MarkdownEditor data={getLabelText()} onBlur={dispatchUpdateMarkdownLabel} />
                     ) : (
-                        <input
+                        <textarea
                             defaultValue={getLabelText()}
                             onBlur={(e) => {
                                 dispatchUpdateItem(IItemProperty.text, e.target.value);
                             }}
                         />
                     )}
-                </div>
+                </FormField>
                 {respondType(props.item.type)}
             </div>
             <div className="question-addons">

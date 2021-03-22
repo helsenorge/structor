@@ -35,7 +35,7 @@ const Inline = ({ linkId, parentArray }: InlineProps): JSX.Element => {
     const markdownText = currentItem._text?.extension ? currentItem._text.extension[0].valueMarkdown || '' : '';
 
     return (
-        <FormField label="Tekst">
+        <FormField label="Utvidet tekst">
             <MarkdownEditor data={markdownText} onBlur={dispatchUpdateMarkdown} />
         </FormField>
     );

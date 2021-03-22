@@ -35,10 +35,8 @@ export const isItemControlSidebar = (item: QuestionnaireItem): boolean => {
     return getItemControlType(item) === ItemControlType.sidebar;
 };
 
-export const isItemControlInline = (parentItem?: QuestionnaireItem): boolean => {
-    return (
-        parentItem?.type === IQuestionnaireItemType.text && getItemControlType(parentItem) === ItemControlType.inline
-    );
+export const isItemControlInline = (item?: QuestionnaireItem): boolean => {
+    return item?.type === IQuestionnaireItemType.text && getItemControlType(item) === ItemControlType.inline;
 };
 
 export const getHelpText = (item: QuestionnaireItem): string => {
