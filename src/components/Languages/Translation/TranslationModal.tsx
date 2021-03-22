@@ -172,7 +172,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                                 <TranslateItemRow
                                     item={item}
                                     targetLanguage={props.targetLanguage}
-                                    itemNumber={orderItem.path}
+                                    itemHeading={`Element ${orderItem.path}`}
                                 />
                                 {orderItem.helpItemLinkId && renderHelpText(orderItem.helpItemLinkId)}
                             </div>

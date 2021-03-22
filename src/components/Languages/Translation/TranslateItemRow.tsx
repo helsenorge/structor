@@ -12,10 +12,10 @@ import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 type TranslationRowProps = {
     targetLanguage: string;
     item: QuestionnaireItem;
-    itemNumber: string;
+    itemHeading: string;
 };
 
-const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowProps): JSX.Element | null => {
+const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowProps): JSX.Element | null => {
     const { state, dispatch } = useContext(TreeContext);
 
     if (!state.qAdditionalLanguages) {
@@ -81,7 +81,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemNumber }: TranslationRowPr
 
     return (
         <>
-            <div className="translation-group-header">{`Element ${itemNumber}`}</div>
+            <div className="translation-group-header">{itemHeading}</div>
             <div className="translation-row">
                 <FormField>{getReadOnlyInputField()}</FormField>
                 <FormField>{getInputField()}</FormField>
