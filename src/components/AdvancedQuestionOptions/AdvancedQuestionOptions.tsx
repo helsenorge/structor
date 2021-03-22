@@ -206,7 +206,9 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             .filter((x) => !isIgnorableItem(qItems[x.linkId]))
             .forEach((x, index) => {
                 const parentPath = index + 1;
-                temp.push({ display: `${parentPath}. ${qItems[x.linkId].text}`, code: x.linkId, parent: [] });
+                const itemText = qItems[x.linkId].text || 'Ikke definert tittel';
+                const displayText = itemText.length > 120 ? `${itemText?.substr(0, 120)}...` : itemText;
+                temp.push({ display: `${parentPath}. ${displayText}`, code: x.linkId, parent: [] });
                 if (x.items) {
                     handleChild(x.items, [parentPath], temp, [x.linkId]);
                 }

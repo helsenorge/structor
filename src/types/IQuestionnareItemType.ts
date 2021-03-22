@@ -17,6 +17,7 @@ export enum IQuestionnaireItemType {
     quantity = 'quantity',
     // extention
     predefined = 'predifined',
+    address = 'address',
     // number is not a fhir-type, but used internally for types integer, decimal and quantity
     number = 'number',
 }
@@ -82,4 +83,5 @@ export enum IExtentionType {
     presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
     canBePerformedByValueSet = 'http://ehelse.no/fhir/ValueSet/CanBePerformedBy',
     hidden = 'http://hl7.org/fhir/StructureDefinition/questionnaire-hidden',
+    optionReference = 'http://ehelse.no/fhir/StructureDefinition/sdf-optionReference',
 }

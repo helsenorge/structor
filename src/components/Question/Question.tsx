@@ -23,7 +23,7 @@ import itemType, {
     quantityUnitTypes,
     typeIsSupportingValidation,
 } from '../../helpers/QuestionHelper';
-import { removeExtensionValue, setExtensionValue } from '../../helpers/extensionHelper';
+import { createDropdown, removeExtensionValue, setExtensionValue } from '../../helpers/extensionHelper';
 
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
@@ -37,6 +37,8 @@ import Select from '../Select/Select';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
 import Codes from '../AdvancedQuestionOptions/Code/Codes';
+import { isItemControlDropDown } from '../../helpers/itemControl';
+import OpenReferance from './QuestionType/OptionReference';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -135,6 +137,10 @@ const Question = (props: QuestionProps): JSX.Element => {
             return <PredefinedValueSet linkId={props.item.linkId} selectedValueSet={props.item.answerValueSet} />;
         }
 
+        if (isItemControlDropDown(props.item)) {
+            return <OpenReferance item={props.item} />;
+        }
+
         switch (param) {
             case IQuestionnaireItemType.string:
                 return (
@@ -211,10 +217,15 @@ const Question = (props: QuestionProps): JSX.Element => {
         if (props.item.type === IQuestionnaireItemType.integer || props.item.type === IQuestionnaireItemType.decimal) {
             return IQuestionnaireItemType.number;
         }
+        if (isItemControlDropDown(props.item)) {
+            return IQuestionnaireItemType.address;
+        }
         return props.item.type;
     };
 
     const handleQuestionareTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        dispatchClearExtension();
+
         if (event.target.value === IQuestionnaireItemType.predefined) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
             dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
@@ -222,11 +233,13 @@ const Question = (props: QuestionProps): JSX.Element => {
         } else if (event.target.value === IQuestionnaireItemType.number) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
             dispatchRemoveAttribute(IItemProperty.answerValueSet);
+        } else if (event.target.value === IQuestionnaireItemType.address) {
+            dispatchUpdateItem(IItemProperty.extension, [createDropdown]);
+            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
         } else {
             dispatchUpdateItem(IItemProperty.type, event.target.value);
             dispatchRemoveAttribute(IItemProperty.answerValueSet);
         }
-        dispatchClearExtension();
     };
 
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
