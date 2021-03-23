@@ -29,14 +29,7 @@ export const isIgnorableItem = (item: QuestionnaireItem, parentItem?: Questionna
 };
 
 export const isItemControlDropDown = (item: QuestionnaireItem): boolean => {
-    const hasItemControlExtention = item.extension?.find((x) => x.url === IExtentionType.itemControl);
-
-    return (
-        item.extension !== undefined &&
-        hasItemControlExtention !== undefined &&
-        hasItemControlExtention.valueCodeableConcept?.coding !== undefined &&
-        hasItemControlExtention.valueCodeableConcept.coding[0].code === ItemControlType.dropdown
-    );
+    return getItemControlType(item) === ItemControlType.dropdown;
 };
 
 export const isItemControlHelp = (item: QuestionnaireItem): boolean => {
