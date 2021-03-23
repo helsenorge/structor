@@ -261,6 +261,10 @@ export const getMarkdownText = (extensions?: Extension[]): string => {
     return extensions?.find((extension) => extension.url === IExtentionType.markdown)?.valueMarkdown || '';
 };
 
+export const getGuidanceAction = (item?: QuestionnaireItem): string => {
+    return item?.extension?.find((extension) => extension.url === IExtentionType.guidanceAction)?.valueString || '';
+};
+
 export const getGuidanceParameterName = (item?: QuestionnaireItem): string => {
     return item?.extension?.find((extension) => extension.url === IExtentionType.guidanceParam)?.valueString || '';
 };
