@@ -71,6 +71,8 @@ export enum IExtentionType {
     endpoint = 'http://ehelse.no/fhir/StructureDefinition/sdf-endpoint',
     entryFormat = 'http://hl7.org/fhir/StructureDefinition/entryFormat',
     fhirPath = 'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpath',
+    guidanceAction = 'http://helsenorge.no/fhir/StructureDefinition/sdf-guidanceaction',
+    guidanceParam = 'http://helsenorge.no/fhir/StructureDefinition/sdf-guidanceparameter',
     hidden = 'http://hl7.org/fhir/StructureDefinition/questionnaire-hidden',
     itemControl = 'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
     itemControlValueSet = 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',

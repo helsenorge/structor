@@ -20,6 +20,7 @@ import Select from '../Select/Select';
 import { EnrichmentSet } from '../../helpers/QuestionHelper';
 import Btn from '../Btn/Btn';
 import { isIgnorableItem, isItemControlHelp, isItemControlInline } from '../../helpers/itemControl';
+import GuidanceParam from './Guidance/GuidanceParam';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -354,6 +355,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     <SwitchBtn onChange={dispatchHighLight} value={!!getHighlight()} label="Highlight" initial />
                 </FormField>
             )}
+            <GuidanceParam item={item} />
             <div>
                 <FormField label="Flytt til element">
                     <Select
