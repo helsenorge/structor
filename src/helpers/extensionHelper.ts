@@ -1,6 +1,7 @@
 import { Element, Extension } from '../types/fhir';
 import { IExtentionType } from '../types/IQuestionnareItemType';
 import createUUID from './CreateUUID';
+import { ItemControlType } from './itemControl';
 
 // set extension value. Update extension if it exists, otherwise add it.
 export const updateExtensionValue = (extensionParent: Element | undefined, extensionValue: Extension): Extension[] => {
@@ -35,7 +36,7 @@ export const removeExtensionValue = (
     return newValue;
 };
 
-export const createOpenReferanceExtensions = [
+export const createOptionReferenceExtensions = [
     {
         url: IExtentionType.optionReference,
         valueReference: {
@@ -60,7 +61,7 @@ export const createDropdown = {
         coding: [
             {
                 system: IExtentionType.itemControlValueSet,
-                code: 'drop-down',
+                code: ItemControlType.dropdown,
             },
         ],
     },

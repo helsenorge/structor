@@ -56,7 +56,7 @@ import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOptionHelper';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { isItemControlDropDown } from '../../helpers/itemControl';
-import { createOpenReferanceExtensions } from '../../helpers/extensionHelper';
+import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -309,7 +309,7 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
         //handle dropdown!
         draft.qItems[action.linkId].extension = [
             ...(draft.qItems[action.linkId].extension || []),
-            ...createOpenReferanceExtensions,
+            ...createOptionReferenceExtensions,
         ];
     } else if (
         // add two empty options for choice and open-choice

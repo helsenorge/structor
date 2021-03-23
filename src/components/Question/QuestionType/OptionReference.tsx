@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import './OptionReferance.css';
+import './OptionReference.css';
 import { Extension, QuestionnaireItem } from '../../../types/fhir';
 import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
 import Btn from '../../Btn/Btn';
@@ -39,7 +39,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
         }
     };
 
-    const updateReferance = (type: 'display' | 'reference', value: string, id?: string) => {
+    const updateReference = (type: 'display' | 'reference', value: string, id?: string) => {
         const newExtension = item?.extension?.map((x) => {
             return x.valueReference?.id === id
                 ? {
@@ -69,7 +69,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
         background: isDraggingOver ? 'lightblue' : 'transparent',
     });
 
-    const optionReferances = item.extension?.filter((x) => x.url === IExtentionType.optionReference);
+    const optionReferences = item.extension?.filter((x) => x.url === IExtentionType.optionReference);
 
     const reorderExtension = (list: Extension[], to: number, from: number): Extension[] => {
         const itemToMove = list.splice(from, 1);
@@ -87,16 +87,16 @@ const OptionReference = ({ item }: Props): JSX.Element => {
 
         if (fromIndex !== toIndex) {
             const tempList = item.extension ? [...item.extension] : [];
-            const nonOptionReferances = tempList.filter((x) => x.url !== IExtentionType.optionReference);
-            const currentOptionReferances = tempList.filter((x) => x.url === IExtentionType.optionReference);
-            const reordered = reorderExtension(currentOptionReferances, toIndex, fromIndex);
-            dispatch(updateItemAction(item.linkId, IItemProperty.extension, [...nonOptionReferances, ...reordered]));
+            const nonOptionReferences = tempList.filter((x) => x.url !== IExtentionType.optionReference);
+            const currentOptionReferences = tempList.filter((x) => x.url === IExtentionType.optionReference);
+            const reordered = reorderExtension(currentOptionReferences, toIndex, fromIndex);
+            dispatch(updateItemAction(item.linkId, IItemProperty.extension, [...nonOptionReferences, ...reordered]));
         }
     };
 
     return (
         <>
-            <div className="center-text new-option-referance">
+            <div className="center-text new-option-reference">
                 <Btn
                     size="small"
                     type="button"
@@ -106,14 +106,14 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                 />
             </div>
             <DragDropContext onDragEnd={handleReorder}>
-                <Droppable droppableId={`droppable-${item.linkId}-option-referance`}>
+                <Droppable droppableId={`droppable-${item.linkId}-option-reference`}>
                     {(provided, snapshot) => (
                         <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
-                            {optionReferances?.map((referance, index) => {
+                            {optionReferences?.map((reference, index) => {
                                 return (
                                     <Draggable
-                                        key={referance.valueReference?.id}
-                                        draggableId={referance.valueReference?.id || '1'}
+                                        key={reference.valueReference?.id}
+                                        draggableId={reference.valueReference?.id || '1'}
                                         index={index}
                                     >
                                         {(providedDrag, snapshotDrag) => (
@@ -124,9 +124,9 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                     snapshotDrag.isDragging,
                                                     providedDrag.draggableProps.style,
                                                 )}
-                                                key={referance.valueReference?.id}
+                                                key={reference.valueReference?.id}
                                             >
-                                                <div className="option-referance align-everything">
+                                                <div className="option-reference align-everything">
                                                     <span
                                                         {...providedDrag.dragHandleProps}
                                                         className="reorder-icon"
@@ -137,12 +137,12 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                         type="text"
                                                         name="beskrivelse"
                                                         placeholder="Angi mottaker.."
-                                                        defaultValue={referance.valueReference?.display}
+                                                        defaultValue={reference.valueReference?.display}
                                                         onBlur={(event) =>
-                                                            updateReferance(
+                                                            updateReference(
                                                                 'display',
                                                                 event.target.value,
-                                                                referance.valueReference?.id,
+                                                                reference.valueReference?.id,
                                                             )
                                                         }
                                                     />
@@ -151,21 +151,21 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                         type="text"
                                                         name="verdi"
                                                         placeholder="Angi endpoint.."
-                                                        defaultValue={referance.valueReference?.reference}
+                                                        defaultValue={reference.valueReference?.reference}
                                                         onBlur={(event) =>
-                                                            updateReferance(
+                                                            updateReference(
                                                                 'reference',
                                                                 event.target.value,
-                                                                referance.valueReference?.id,
+                                                                reference.valueReference?.id,
                                                             )
                                                         }
                                                     />
-                                                    {optionReferances.length > 2 && (
+                                                    {optionReferences.length > 2 && (
                                                         <button
                                                             type="button"
                                                             name="Fjern element"
                                                             className="align-everything"
-                                                            onClick={() => removeItem(referance.valueReference?.id)}
+                                                            onClick={() => removeItem(reference.valueReference?.id)}
                                                         />
                                                     )}
                                                 </div>

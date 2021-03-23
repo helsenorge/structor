@@ -1,14 +1,14 @@
-.option-referance {
+.option-reference {
     display: flex;
     margin-bottom: 10px;
 }
 
-.option-referance input {
+.option-reference input {
     flex: 1;
     margin-right: 15px;
 }
 
-.option-referance button {
+.option-reference button {
     border: 0;
     cursor: pointer;
     padding: 0;
@@ -17,10 +17,10 @@
     width: 25px;
 }
 
-.new-option-referance {
+.new-option-reference {
     margin-bottom: 15px;
 }
 
-.option-referance .reorder-icon {
+.option-reference .reorder-icon {
     margin-right: 15px;
 }
