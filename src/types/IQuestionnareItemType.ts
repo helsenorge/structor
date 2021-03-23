@@ -17,6 +17,7 @@ export enum IQuestionnaireItemType {
     quantity = 'quantity',
     // extention
     predefined = 'predifined',
+    // address is not a fhir-type, but used internally for types choice
     address = 'address',
     // number is not a fhir-type, but used internally for types integer, decimal and quantity
     number = 'number',

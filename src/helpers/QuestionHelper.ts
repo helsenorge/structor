@@ -31,7 +31,7 @@ const itemType = [
         code: IQuestionnaireItemType.predefined,
     },
     {
-        display: 'Adresser',
+        display: 'Mottaker',
         code: IQuestionnaireItemType.address,
     },
     {

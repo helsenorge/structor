@@ -12,7 +12,7 @@ type Props = {
     item: QuestionnaireItem;
 };
 
-const OpenReferance = ({ item }: Props): JSX.Element => {
+const OptionReference = ({ item }: Props): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
 
     const dispatchNewItem = () => {
@@ -88,8 +88,8 @@ const OpenReferance = ({ item }: Props): JSX.Element => {
         if (fromIndex !== toIndex) {
             const tempList = item.extension ? [...item.extension] : [];
             const nonOptionReferances = tempList.filter((x) => x.url !== IExtentionType.optionReference);
-            const optionReferances = tempList.filter((x) => x.url === IExtentionType.optionReference);
-            const reordered = reorderExtension(optionReferances, toIndex, fromIndex);
+            const currentOptionReferances = tempList.filter((x) => x.url === IExtentionType.optionReference);
+            const reordered = reorderExtension(currentOptionReferances, toIndex, fromIndex);
             dispatch(updateItemAction(item.linkId, IItemProperty.extension, [...nonOptionReferances, ...reordered]));
         }
     };
@@ -136,7 +136,7 @@ const OpenReferance = ({ item }: Props): JSX.Element => {
                                                         autoComplete="off"
                                                         type="text"
                                                         name="beskrivelse"
-                                                        placeholder="Legg inn organisasjon.."
+                                                        placeholder="Angi mottaker.."
                                                         defaultValue={referance.valueReference?.display}
                                                         onBlur={(event) =>
                                                             updateReferance(
@@ -150,7 +150,7 @@ const OpenReferance = ({ item }: Props): JSX.Element => {
                                                         autoComplete="off"
                                                         type="text"
                                                         name="verdi"
-                                                        placeholder="Legg inn endpoint.."
+                                                        placeholder="Angi endpoint.."
                                                         defaultValue={referance.valueReference?.reference}
                                                         onBlur={(event) =>
                                                             updateReferance(
@@ -183,4 +183,4 @@ const OpenReferance = ({ item }: Props): JSX.Element => {
     );
 };
 
-export default OpenReferance;
+export default OptionReference;

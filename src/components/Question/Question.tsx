@@ -41,7 +41,7 @@ import Select from '../Select/Select';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
 import Codes from '../AdvancedQuestionOptions/Code/Codes';
-import OpenReferance from './QuestionType/OptionReference';
+import OptionReference from './QuestionType/OptionReference';
 import FormField from '../FormField/FormField';
 
 interface QuestionProps {
@@ -145,7 +145,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
 
         if (isItemControlDropDown(props.item)) {
-            return <OpenReferance item={props.item} />;
+            return <OptionReference item={props.item} />;
         }
 
         switch (param) {
