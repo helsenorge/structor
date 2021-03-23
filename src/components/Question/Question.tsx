@@ -11,6 +11,7 @@ import {
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import React, { ChangeEvent, useEffect } from 'react';
 import {
+    deleteChildItemsAction,
     deleteItemAction,
     duplicateItemAction,
     newItemAction,
@@ -19,17 +20,20 @@ import {
     updateMarkedLinkIdAction,
 } from '../../store/treeStore/treeActions';
 import itemType, {
+    ATTACHMENT_DEFAULT_MAX_SIZE,
     QUANTITY_UNIT_TYPE_NOT_SELECTED,
     quantityUnitTypes,
     typeIsSupportingValidation,
 } from '../../helpers/QuestionHelper';
-import { createDropdown, removeExtensionValue, setExtensionValue } from '../../helpers/extensionHelper';
+import { removeExtensionValue, updateExtensionValue, createDropdown } from '../../helpers/extensionHelper';
+import { isItemControlInline, isItemControlDropDown } from '../../helpers/itemControl';
 
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
 import AdvancedQuestionOptions from '../AdvancedQuestionOptions/AdvancedQuestionOptions';
 import Choice from './QuestionType/Choice';
 import EnableWhen from '../EnableWhen/EnableWhen';
+import Inline from './QuestionType/Inline';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import Picker from '../DatePicker/DatePicker';
 import PredefinedValueSet from './QuestionType/PredefinedValueSet';
@@ -37,8 +41,8 @@ import Select from '../Select/Select';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
 import Codes from '../AdvancedQuestionOptions/Code/Codes';
-import { isItemControlDropDown } from '../../helpers/itemControl';
 import OpenReferance from './QuestionType/OptionReference';
+import FormField from '../FormField/FormField';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -95,7 +99,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             url: IExtentionType.markdown,
             valueMarkdown: newLabel,
         };
-        const newValue = setExtensionValue(props.item._text, markdownValue);
+        const newValue = updateExtensionValue(props.item._text, markdownValue);
 
         dispatchUpdateItem(IItemProperty._text, newValue);
         // update text with same value. Text is used in condition in enableWhen
@@ -123,7 +127,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                 url: IExtentionType.questionnaireUnit,
                 valueCoding: coding,
             };
-            updatedExtensions = setExtensionValue(props.item, unitExtension).extension || [];
+            updatedExtensions = updateExtensionValue(props.item, unitExtension);
         }
         dispatchUpdateItem(IItemProperty.extension, updatedExtensions);
     };
@@ -135,6 +139,9 @@ const Question = (props: QuestionProps): JSX.Element => {
             param === IQuestionnaireItemType.choice
         ) {
             return <PredefinedValueSet linkId={props.item.linkId} selectedValueSet={props.item.answerValueSet} />;
+        }
+        if (isItemControlInline(props.item)) {
+            return <Inline linkId={props.item.linkId} parentArray={props.parentArray} />;
         }
 
         if (isItemControlDropDown(props.item)) {
@@ -217,8 +224,12 @@ const Question = (props: QuestionProps): JSX.Element => {
         if (props.item.type === IQuestionnaireItemType.integer || props.item.type === IQuestionnaireItemType.decimal) {
             return IQuestionnaireItemType.number;
         }
+
         if (isItemControlDropDown(props.item)) {
             return IQuestionnaireItemType.address;
+        }
+        if (isItemControlInline(props.item)) {
+            return IQuestionnaireItemType.inline;
         }
         return props.item.type;
     };
@@ -226,23 +237,60 @@ const Question = (props: QuestionProps): JSX.Element => {
     const handleQuestionareTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         dispatchClearExtension();
 
-        if (event.target.value === IQuestionnaireItemType.predefined) {
+        const previousType = handleDisplayQuestionType();
+        const newType = event.target.value;
+
+        if (newType === IQuestionnaireItemType.predefined) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
             dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
             dispatchRemoveAttribute(IItemProperty.answerOption);
-        } else if (event.target.value === IQuestionnaireItemType.number) {
+        } else if (newType === IQuestionnaireItemType.number) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
             dispatchRemoveAttribute(IItemProperty.answerValueSet);
-        } else if (event.target.value === IQuestionnaireItemType.address) {
+        } else if (newType === IQuestionnaireItemType.address) {
             dispatchUpdateItem(IItemProperty.extension, [createDropdown]);
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
+        } else if (newType === IQuestionnaireItemType.inline) {
+            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.text);
+            dispatchNewChildItem(IQuestionnaireItemType.display);
         } else {
-            dispatchUpdateItem(IItemProperty.type, event.target.value);
+            dispatchUpdateItem(IItemProperty.type, newType);
             dispatchRemoveAttribute(IItemProperty.answerValueSet);
+        }
+        addDefaultExtensionsForItemType(newType);
+        cleanupChildItems(previousType);
+    };
+
+    function cleanupChildItems(previousType: string) {
+        if (previousType === IQuestionnaireItemType.inline) {
+            props.dispatch(deleteChildItemsAction(props.item.linkId, props.parentArray));
+        }
+    }
+
+    const addDefaultExtensionsForItemType = (type: string) => {
+        if (type === IQuestionnaireItemType.attachment) {
+            dispatchUpdateItem(
+                IItemProperty.extension,
+                updateExtensionValue(props.item, {
+                    url: IExtentionType.maxSize,
+                    valueDecimal: ATTACHMENT_DEFAULT_MAX_SIZE,
+                }),
+            );
+        }
+        if (type === IQuestionnaireItemType.inline) {
+            dispatchUpdateItem(
+                IItemProperty.extension,
+                updateExtensionValue(props.item, {
+                    url: IExtentionType.itemControl,
+                    valueCodeableConcept: {
+                        coding: [{ system: IExtentionType.itemControlValueSet, code: 'inline' }],
+                    },
+                }),
+            );
         }
     };
 
-    const canCreateChild = props.item.type !== IQuestionnaireItemType.display;
+    const canCreateChild = props.item.type !== IQuestionnaireItemType.display && !isItemControlInline(props.item);
 
     const observed = (elements: IntersectionObserverEntry[]) => {
         if (elements[0].intersectionRatio > 0.5) {
@@ -322,25 +370,22 @@ const Question = (props: QuestionProps): JSX.Element => {
                         />
                     </div>
                 </div>
-                <div className="form-field">
-                    <div className="form-field-label-wrapper">
-                        <label>Tekst</label>
-                    </div>
+                <FormField label="Tekst">
                     {isMarkdownActivated ? (
                         <MarkdownEditor data={getLabelText()} onBlur={dispatchUpdateMarkdownLabel} />
                     ) : (
-                        <input
+                        <textarea
                             defaultValue={getLabelText()}
                             onBlur={(e) => {
                                 dispatchUpdateItem(IItemProperty.text, e.target.value);
                             }}
                         />
                     )}
-                </div>
+                </FormField>
                 {respondType(props.item.type)}
             </div>
             <div className="question-addons">
-                {typeIsSupportingValidation(props.item.type as IQuestionnaireItemType) && (
+                {typeIsSupportingValidation(handleDisplayQuestionType() as IQuestionnaireItemType) && (
                     <Accordion title="Legg til validering">
                         <ValidationAnswerTypes item={props.item} />
                     </Accordion>

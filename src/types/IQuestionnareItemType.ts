@@ -20,6 +20,8 @@ export enum IQuestionnaireItemType {
     address = 'address',
     // number is not a fhir-type, but used internally for types integer, decimal and quantity
     number = 'number',
+    // inline is not a fhir-type, but used internally for text item with itemControl 'inline'
+    inline = 'inline',
 }
 
 export enum ICodingProperty {
@@ -68,6 +70,7 @@ export enum IExtentionType {
     validationtext = 'http://ehelse.no/fhir/StructureDefinition/validationtext',
     minValue = 'http://hl7.org/fhir/StructureDefinition/minValue',
     maxValue = 'http://hl7.org/fhir/StructureDefinition/maxValue',
+    maxSize = 'http://hl7.org/fhir/StructureDefinition/maxSize',
     regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
     maxDecimalPlaces = 'http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces',
     markdown = 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',

@@ -42,8 +42,12 @@ const FormBuilder = (): JSX.Element => {
         return state.qItems[linkId];
     };
 
-    const removeUnsupportedChildren = (items: OrderItem[]) => {
-        return items.filter((x) => !isIgnorableItem(state.qItems[x.linkId]));
+    const removeUnsupportedChildren = (items: OrderItem[], parentArray: Array<string>) => {
+        let parentItem: QuestionnaireItem;
+        if (parentArray.length > 0) {
+            parentItem = state.qItems[parentArray[parentArray.length - 1]];
+        }
+        return items.filter((x) => !isIgnorableItem(state.qItems[x.linkId], parentItem));
     };
 
     const renderTree = (
@@ -52,7 +56,7 @@ const FormBuilder = (): JSX.Element => {
         parentArray: Array<string> = [],
         parentQuestionNumber = '',
     ): void => {
-        removeUnsupportedChildren(items).forEach((x, index) => {
+        removeUnsupportedChildren(items, parentArray).forEach((x, index) => {
             const questionNumber =
                 parentQuestionNumber === '' ? `${index + 1}` : `${parentQuestionNumber}.${index + 1}`;
 

@@ -59,7 +59,17 @@ const itemType = [
         display: 'Antall med enhet',
         code: IQuestionnaireItemType.quantity,
     },
+    {
+        display: 'Vedlegg',
+        code: IQuestionnaireItemType.attachment,
+    },
+    {
+        display: 'Utvidbar info',
+        code: IQuestionnaireItemType.inline,
+    },
 ];
+
+export const ATTACHMENT_DEFAULT_MAX_SIZE = 5.0;
 
 export const QUANTITY_UNIT_TYPE_NOT_SELECTED = 'QUANTITY_UNIT_TYPE_NOT_SELECTED';
 export const quantityUnitTypes = [
@@ -207,8 +217,8 @@ export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
 
 export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolean => {
     const validTypes = [
-        IQuestionnaireItemType.integer,
-        IQuestionnaireItemType.decimal,
+        IQuestionnaireItemType.attachment,
+        IQuestionnaireItemType.number,
         IQuestionnaireItemType.quantity,
         IQuestionnaireItemType.text,
         IQuestionnaireItemType.string,
