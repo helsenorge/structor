@@ -235,10 +235,12 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     const handleQuestionareTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        dispatchClearExtension();
-
         const previousType = handleDisplayQuestionType();
         const newType = event.target.value;
+
+        dispatchClearExtension();
+        addDefaultExtensionsForItemType(newType);
+        cleanupChildItems(previousType);
 
         if (newType === IQuestionnaireItemType.predefined) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
@@ -248,7 +250,6 @@ const Question = (props: QuestionProps): JSX.Element => {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
             dispatchRemoveAttribute(IItemProperty.answerValueSet);
         } else if (newType === IQuestionnaireItemType.address) {
-            dispatchUpdateItem(IItemProperty.extension, [createDropdown]);
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
         } else if (newType === IQuestionnaireItemType.inline) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.text);
@@ -257,8 +258,6 @@ const Question = (props: QuestionProps): JSX.Element => {
             dispatchUpdateItem(IItemProperty.type, newType);
             dispatchRemoveAttribute(IItemProperty.answerValueSet);
         }
-        addDefaultExtensionsForItemType(newType);
-        cleanupChildItems(previousType);
     };
 
     function cleanupChildItems(previousType: string) {
@@ -269,24 +268,27 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const addDefaultExtensionsForItemType = (type: string) => {
         if (type === IQuestionnaireItemType.attachment) {
-            dispatchUpdateItem(
-                IItemProperty.extension,
-                updateExtensionValue(props.item, {
+            dispatchUpdateItem(IItemProperty.extension, [
+                {
                     url: IExtentionType.maxSize,
                     valueDecimal: ATTACHMENT_DEFAULT_MAX_SIZE,
-                }),
-            );
+                },
+            ]);
         }
+
         if (type === IQuestionnaireItemType.inline) {
-            dispatchUpdateItem(
-                IItemProperty.extension,
-                updateExtensionValue(props.item, {
+            dispatchUpdateItem(IItemProperty.extension, [
+                {
                     url: IExtentionType.itemControl,
                     valueCodeableConcept: {
                         coding: [{ system: IExtentionType.itemControlValueSet, code: 'inline' }],
                     },
-                }),
-            );
+                },
+            ]);
+        }
+
+        if (type === IQuestionnaireItemType.address) {
+            dispatchUpdateItem(IItemProperty.extension, [createDropdown]);
         }
     };
 
