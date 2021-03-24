@@ -1,4 +1,5 @@
 import { Element, Extension } from '../types/fhir';
+import { IExtentionType } from '../types/IQuestionnareItemType';
 
 // set extension value. Update extension if it exists, otherwise add it.
 export const updateExtensionValue = (extensionParent: Element | undefined, extensionValue: Extension): Extension[] => {
@@ -32,3 +33,20 @@ export const removeExtensionValue = (
 
     return newValue;
 };
+
+export const hasExtension = (extensionParent: Element | undefined, extensionType: IExtentionType): boolean => {
+    if (extensionParent && extensionParent.extension) {
+        return extensionParent.extension.some((ext) => ext.url === extensionType);
+    }
+    return false;
+};
+
+export const createGuidanceActionExtension = (valueString = ''): Extension => ({
+    url: IExtentionType.guidanceAction,
+    valueString,
+});
+
+export const createGuidanceParameterExtension = (valueString = ''): Extension => ({
+    url: IExtentionType.guidanceParam,
+    valueString,
+});
