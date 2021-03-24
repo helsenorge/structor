@@ -23,6 +23,7 @@ export type MetadataProperty = {
 };
 
 export enum TranslatableItemProperty {
+    initial = 'initial',
     text = 'text',
     validationText = 'validationText',
     entryFormatText = 'entryFormatText',

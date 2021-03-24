@@ -253,6 +253,17 @@ export const EnrichmentSet: ValueSetComposeIncludeConcept[] = [
     },
 ];
 
+export const getInitialText = (item?: QuestionnaireItem): string => {
+    if (
+        (item?.type === IQuestionnaireItemType.text || item?.type === IQuestionnaireItemType.string) &&
+        item?.initial &&
+        item.initial[0]
+    ) {
+        return item.initial[0].valueString || '';
+    }
+    return '';
+};
+
 export const getValidationMessage = (item?: QuestionnaireItem): string => {
     return item?.extension?.find((extension) => extension.url === IExtentionType.validationtext)?.valueString || '';
 };
@@ -263,6 +274,19 @@ export const getPlaceHolderText = (item?: QuestionnaireItem): string => {
 
 export const getMarkdownText = (extensions?: Extension[]): string => {
     return extensions?.find((extension) => extension.url === IExtentionType.markdown)?.valueMarkdown || '';
+};
+
+export const getGuidanceAction = (item?: QuestionnaireItem): string => {
+    return item?.extension?.find((extension) => extension.url === IExtentionType.guidanceAction)?.valueString || '';
+};
+
+export const getGuidanceParameterName = (item?: QuestionnaireItem): string => {
+    return item?.extension?.find((extension) => extension.url === IExtentionType.guidanceParam)?.valueString || '';
+};
+
+export const isValidGuidanceParameterName = (name: string): boolean => {
+    const regExp = /^[A-Za-z0-9_]{1,254}$/;
+    return regExp.test(name);
 };
 
 export default itemType;

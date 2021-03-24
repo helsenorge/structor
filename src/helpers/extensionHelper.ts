@@ -66,3 +66,20 @@ export const createDropdown = {
         ],
     },
 };
+
+export const hasExtension = (extensionParent: Element | undefined, extensionType: IExtentionType): boolean => {
+    if (extensionParent && extensionParent.extension) {
+        return extensionParent.extension.some((ext) => ext.url === extensionType);
+    }
+    return false;
+};
+
+export const createGuidanceActionExtension = (valueString = ''): Extension => ({
+    url: IExtentionType.guidanceAction,
+    valueString,
+});
+
+export const createGuidanceParameterExtension = (valueString = ''): Extension => ({
+    url: IExtentionType.guidanceParam,
+    valueString,
+});
