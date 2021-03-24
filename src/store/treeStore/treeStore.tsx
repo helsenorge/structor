@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, useReducer } from 'react';
+import React, { createContext, Dispatch, useEffect, useReducer } from 'react';
 import produce from 'immer';
 
 import { QuestionnaireItem, ValueSet } from '../../types/fhir';
@@ -147,6 +147,10 @@ export interface TreeState {
     qCurrentItemId?: string;
     qAdditionalLanguages?: Languages;
 }
+
+const LOCAL_STORAGE_KEY = 'structor-working-questionnaire';
+
+const stateFromLocalStorage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) as string);
 
 export const initialState: TreeState = {
     qItems: {},
@@ -640,7 +644,12 @@ export const TreeContext = createContext<{
 });
 
 export const TreeContextProvider = (props: { children: JSX.Element }): JSX.Element => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, stateFromLocalStorage || initialState);
+
+    useEffect(() => {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
+    }, [state]);
+
     return (
         // eslint-disable-next-line
         // @ts-ignore

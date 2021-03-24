@@ -1,0 +1,7 @@
+.storage-bar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    height: 8px;
+    backgroundColor: 'white';
+}

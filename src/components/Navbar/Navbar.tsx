@@ -4,6 +4,7 @@ import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import Btn from '../Btn/Btn';
 import IconBtn from '../IconBtn/IconBtn';
+import LocalStorageMonitor from '../LocalStorage/LocalStorageMonitor';
 import MoreIcon from '../../images/icons/ellipsis-horizontal-outline.svg';
 import './Navbar.css';
 
@@ -63,36 +64,39 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet }:
     });
 
     return (
-        <header>
-            <Link to="/">
-                <IconBtn type="back" title="Tilbake" />
-            </Link>
+        <>
+            <header>
+                <Link to="/">
+                    <IconBtn type="back" title="Tilbake" />
+                </Link>
 
-            <div className="left"></div>
+                <div className="left"></div>
 
-            <div className="pull-right">
-                <Btn title="Forhåndsvisning" onClick={showFormFiller} />
-                <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
-                <div
-                    className="more-menu"
-                    tabIndex={0}
-                    role="button"
-                    aria-label="menu list"
-                    aria-pressed="false"
-                    onClick={() => setMenuIsVisible(!menuIsVisible)}
-                    onKeyPress={(e) => e.code === 'Enter' && setMenuIsVisible(!menuIsVisible)}
-                >
-                    <img className="more-menu-icon" src={MoreIcon} alt="more icon" height={25} />
+                <div className="pull-right">
+                    <Btn title="Forhåndsvisning" onClick={showFormFiller} />
+                    <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
+                    <div
+                        className="more-menu"
+                        tabIndex={0}
+                        role="button"
+                        aria-label="menu list"
+                        aria-pressed="false"
+                        onClick={() => setMenuIsVisible(!menuIsVisible)}
+                        onKeyPress={(e) => e.code === 'Enter' && setMenuIsVisible(!menuIsVisible)}
+                    >
+                        <img className="more-menu-icon" src={MoreIcon} alt="more icon" height={25} />
+                    </div>
                 </div>
-            </div>
-            {menuIsVisible && (
-                <div className="menu">
-                    <Btn title="JSON" onClick={showJSONView} />
-                    <Btn title="Publiser" onClick={showAdmin} />
-                    <Btn title="Importer valg" onClick={showImportValueSet} />
-                </div>
-            )}
-        </header>
+                {menuIsVisible && (
+                    <div className="menu">
+                        <Btn title="JSON" onClick={showJSONView} />
+                        <Btn title="Publiser" onClick={showAdmin} />
+                        <Btn title="Importer valg" onClick={showImportValueSet} />
+                    </div>
+                )}
+            </header>
+            <LocalStorageMonitor />
+        </>
     );
 };
 
