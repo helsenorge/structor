@@ -31,6 +31,10 @@ const itemType = [
         code: IQuestionnaireItemType.predefined,
     },
     {
+        display: 'Mottaker liste',
+        code: IQuestionnaireItemType.address,
+    },
+    {
         display: 'Dato',
         code: IQuestionnaireItemType.date,
     },

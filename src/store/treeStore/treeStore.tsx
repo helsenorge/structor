@@ -55,6 +55,8 @@ import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOptionHelper';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
+import { isItemControlDropDown } from '../../helpers/itemControl';
+import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -303,8 +305,15 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
         ...draft.qItems[action.linkId],
         [action.itemProperty]: action.itemValue,
     };
-    // add two empty options for choice and open-choice
-    if (
+
+    if (action.itemValue === 'choice' && isItemControlDropDown(draft.qItems[action.linkId])) {
+        //handle dropdown!
+        draft.qItems[action.linkId].extension = [
+            ...(draft.qItems[action.linkId].extension || []),
+            ...createOptionReferenceExtensions,
+        ];
+    } else if (
+        // add two empty options for choice and open-choice
         action.itemProperty === IItemProperty.type &&
         (action.itemValue === 'choice' || action.itemValue === 'open-choice') &&
         !draft.qItems[action.linkId].answerOption

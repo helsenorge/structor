@@ -118,7 +118,7 @@ const Choice = ({ item }: Props): JSX.Element => {
 
         return (
             <DragDropContext onDragEnd={handleChange}>
-                <Droppable droppableId={`droppable-${item._linkId}-answer-options`} type="stuff">
+                <Droppable droppableId={`droppable-${item.linkId}-answer-options`} type="stuff">
                     {(provided, snapshot) => (
                         <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
                             {item.answerOption?.map((answerOption, index) => {

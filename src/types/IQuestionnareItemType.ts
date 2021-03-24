@@ -1,5 +1,7 @@
 export enum IQuestionnaireItemType {
     attachment = 'attachment',
+    // address is not a fhir-type, but used internally for types choice
+    address = 'address',
     boolean = 'boolean',
     choice = 'choice',
     date = 'date',
@@ -81,6 +83,7 @@ export enum IExtentionType {
     maxSize = 'http://hl7.org/fhir/StructureDefinition/maxSize',
     maxValue = 'http://hl7.org/fhir/StructureDefinition/maxValue',
     minValue = 'http://hl7.org/fhir/StructureDefinition/minValue',
+    optionReference = 'http://ehelse.no/fhir/StructureDefinition/sdf-optionReference',
     presentationbuttons = 'http://helsenorge.no/fhir/StructureDefinition/sdf-presentationbuttons',
     presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
     questionnaireUnit = 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
