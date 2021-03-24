@@ -249,6 +249,17 @@ export const EnrichmentSet: ValueSetComposeIncludeConcept[] = [
     },
 ];
 
+export const getInitialText = (item?: QuestionnaireItem): string => {
+    if (
+        (item?.type === IQuestionnaireItemType.text || item?.type === IQuestionnaireItemType.string) &&
+        item?.initial &&
+        item.initial[0]
+    ) {
+        return item.initial[0].valueString || '';
+    }
+    return '';
+};
+
 export const getValidationMessage = (item?: QuestionnaireItem): string => {
     return item?.extension?.find((extension) => extension.url === IExtentionType.validationtext)?.valueString || '';
 };

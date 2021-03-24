@@ -90,10 +90,11 @@ export interface CodeStringValue {
 }
 
 export interface ItemTranslation {
+    answerOptions?: CodeStringValue;
+    entryFormatText?: string;
+    initial?: string;
     text?: string;
     validationText?: string;
-    entryFormatText?: string;
-    answerOptions?: CodeStringValue;
 }
 
 export interface ContainedTranslation {
