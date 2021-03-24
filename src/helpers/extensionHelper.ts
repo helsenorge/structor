@@ -40,3 +40,13 @@ export const hasExtension = (extensionParent: Element | undefined, extensionType
     }
     return false;
 };
+
+export const createGuidanceActionExtension = (valueString = ''): Extension => ({
+    url: IExtentionType.guidanceAction,
+    valueString,
+});
+
+export const createGuidanceParameterExtension = (valueString = ''): Extension => ({
+    url: IExtentionType.guidanceParam,
+    valueString,
+});

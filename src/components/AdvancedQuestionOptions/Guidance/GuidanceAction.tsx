@@ -1,7 +1,12 @@
 import React, { FocusEvent, useContext } from 'react';
 
 import { getGuidanceAction } from '../../../helpers/QuestionHelper';
-import { hasExtension, removeExtensionValue, updateExtensionValue } from '../../../helpers/extensionHelper';
+import {
+    createGuidanceActionExtension,
+    hasExtension,
+    removeExtensionValue,
+    updateExtensionValue,
+} from '../../../helpers/extensionHelper';
 import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import { TreeContext } from '../../../store/treeStore/treeStore';
@@ -18,10 +23,6 @@ const GuidanceAction = (props: GuidanceActionProps): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
     const hasGuidanceAction = hasExtension(props.item, IExtentionType.guidanceAction);
     const action = getGuidanceAction(props.item);
-
-    function createGuidanceActionExtension(valueString = '') {
-        return { url: IExtentionType.guidanceAction, valueString };
-    }
 
     const toggleGuidanceAction = () => {
         let newExtensions;
