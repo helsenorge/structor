@@ -5,9 +5,10 @@ import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { updateItemOptionTranslationAction, updateItemTranslationAction } from '../../../store/treeStore/treeActions';
 import { ItemTranslation, TreeContext } from '../../../store/treeStore/treeStore';
 import TranslateOptionRow from './TranslateOptionRow';
-import { getPlaceHolderText, getValidationMessage } from '../../../helpers/QuestionHelper';
+import { getInitialText, getPlaceHolderText, getValidationMessage } from '../../../helpers/QuestionHelper';
 import { getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
+import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 
 type TranslationRowProps = {
     targetLanguage: string;
@@ -110,28 +111,58 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                 </div>
             )}
             {getPlaceHolderText(item) && (
-                <div className="translation-row">
-                    <FormField>
-                        <textarea defaultValue={getPlaceHolderText(item)} disabled={true} />
-                    </FormField>
-                    <FormField>
-                        <textarea
-                            defaultValue={getItemPropertyTranslation(
-                                targetLanguage,
-                                state.qAdditionalLanguages,
-                                item.linkId,
-                                TranslatableItemProperty.entryFormatText,
-                            )}
-                            onBlur={(event) =>
-                                dispatchUpdateItemTranslation(
-                                    event.target.value,
+                <>
+                    <div className="translation-group-header">Skyggetekst</div>
+                    <div className="translation-row">
+                        <FormField>
+                            <textarea defaultValue={getPlaceHolderText(item)} disabled={true} />
+                        </FormField>
+                        <FormField>
+                            <textarea
+                                defaultValue={getItemPropertyTranslation(
+                                    targetLanguage,
+                                    state.qAdditionalLanguages,
+                                    item.linkId,
                                     TranslatableItemProperty.entryFormatText,
-                                )
-                            }
-                        />
-                    </FormField>
-                </div>
+                                )}
+                                onBlur={(event) =>
+                                    dispatchUpdateItemTranslation(
+                                        event.target.value,
+                                        TranslatableItemProperty.entryFormatText,
+                                    )
+                                }
+                            />
+                        </FormField>
+                    </div>
+                </>
             )}
+            {(item.type === IQuestionnaireItemType.text || item.type === IQuestionnaireItemType.string) &&
+                getInitialText(item) && (
+                    <>
+                        <div className="translation-group-header">Initiell verdi</div>
+                        <div className="translation-row">
+                            <FormField>
+                                <textarea defaultValue={getInitialText(item)} disabled={true} />
+                            </FormField>
+                            <FormField>
+                                <textarea
+                                    defaultValue={getItemPropertyTranslation(
+                                        targetLanguage,
+                                        state.qAdditionalLanguages,
+                                        item.linkId,
+                                        TranslatableItemProperty.initial,
+                                    )}
+                                    onBlur={(event) =>
+                                        dispatchUpdateItemTranslation(
+                                            event.target.value,
+                                            TranslatableItemProperty.initial,
+                                        )
+                                    }
+                                />
+                            </FormField>
+                        </div>
+                    </>
+                )}
             {item.answerOption && (
                 <>
                     {item.answerOption.map((option) => {
