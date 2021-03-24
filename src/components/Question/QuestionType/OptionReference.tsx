@@ -102,7 +102,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                     type="button"
                     variant="secondary"
                     onClick={() => dispatchNewItem()}
-                    title="+ Legg til endpoint"
+                    title="+ Legg til mottaker"
                 />
             </div>
             <DragDropContext onDragEnd={handleReorder}>
