@@ -38,6 +38,7 @@ export const updateAnswerOption = (
                   valueCoding: {
                       ...x.valueCoding,
                       display: displayValue,
+                      code: displayValue.replace(/\s/g, '-').toLocaleLowerCase(),
                   },
               } as QuestionnaireItemAnswerOption)
             : x;
