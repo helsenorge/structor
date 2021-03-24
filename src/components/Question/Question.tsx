@@ -98,7 +98,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             url: IExtentionType.markdown,
             valueMarkdown: newLabel,
         };
-        const newValue = updateExtensionValue(props.item._text, markdownValue);
+        const newValue = { extension: updateExtensionValue(props.item._text, markdownValue) };
 
         dispatchUpdateItem(IItemProperty._text, newValue);
         // update text with same value. Text is used in condition in enableWhen
