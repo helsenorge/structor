@@ -31,6 +31,10 @@ const itemType = [
         code: IQuestionnaireItemType.predefined,
     },
     {
+        display: 'Mottaker liste',
+        code: IQuestionnaireItemType.address,
+    },
+    {
         display: 'Dato',
         code: IQuestionnaireItemType.date,
     },
@@ -55,7 +59,17 @@ const itemType = [
         display: 'Antall med enhet',
         code: IQuestionnaireItemType.quantity,
     },
+    {
+        display: 'Vedlegg',
+        code: IQuestionnaireItemType.attachment,
+    },
+    {
+        display: 'Utvidbar info',
+        code: IQuestionnaireItemType.inline,
+    },
 ];
+
+export const ATTACHMENT_DEFAULT_MAX_SIZE = 5.0;
 
 export const QUANTITY_UNIT_TYPE_NOT_SELECTED = 'QUANTITY_UNIT_TYPE_NOT_SELECTED';
 export const quantityUnitTypes = [
@@ -203,8 +217,8 @@ export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
 
 export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolean => {
     const validTypes = [
-        IQuestionnaireItemType.integer,
-        IQuestionnaireItemType.decimal,
+        IQuestionnaireItemType.attachment,
+        IQuestionnaireItemType.number,
         IQuestionnaireItemType.quantity,
         IQuestionnaireItemType.text,
         IQuestionnaireItemType.string,
@@ -239,6 +253,17 @@ export const EnrichmentSet: ValueSetComposeIncludeConcept[] = [
     },
 ];
 
+export const getInitialText = (item?: QuestionnaireItem): string => {
+    if (
+        (item?.type === IQuestionnaireItemType.text || item?.type === IQuestionnaireItemType.string) &&
+        item?.initial &&
+        item.initial[0]
+    ) {
+        return item.initial[0].valueString || '';
+    }
+    return '';
+};
+
 export const getValidationMessage = (item?: QuestionnaireItem): string => {
     return item?.extension?.find((extension) => extension.url === IExtentionType.validationtext)?.valueString || '';
 };
@@ -249,6 +274,19 @@ export const getPlaceHolderText = (item?: QuestionnaireItem): string => {
 
 export const getMarkdownText = (extensions?: Extension[]): string => {
     return extensions?.find((extension) => extension.url === IExtentionType.markdown)?.valueMarkdown || '';
+};
+
+export const getGuidanceAction = (item?: QuestionnaireItem): string => {
+    return item?.extension?.find((extension) => extension.url === IExtentionType.guidanceAction)?.valueString || '';
+};
+
+export const getGuidanceParameterName = (item?: QuestionnaireItem): string => {
+    return item?.extension?.find((extension) => extension.url === IExtentionType.guidanceParam)?.valueString || '';
+};
+
+export const isValidGuidanceParameterName = (name: string): boolean => {
+    const regExp = /^[A-Za-z0-9_]{1,254}$/;
+    return regExp.test(name);
 };
 
 export default itemType;

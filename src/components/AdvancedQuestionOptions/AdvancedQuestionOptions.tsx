@@ -19,7 +19,9 @@ import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import Select from '../Select/Select';
 import { EnrichmentSet } from '../../helpers/QuestionHelper';
 import Btn from '../Btn/Btn';
-import { isIgnorableItem } from '../../helpers/itemControl';
+import { isIgnorableItem, isItemControlHelp, isItemControlInline } from '../../helpers/itemControl';
+import GuidanceAction from './Guidance/GuidanceAction';
+import GuidanceParam from './Guidance/GuidanceParam';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -61,10 +63,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         dispatch(updateItemAction(id, IItemProperty._text, newValue));
     };
 
-    const dispatchInlineHelp = () => {
-        const inlineHelp = itemInlineHelperItem();
-        if (inlineHelp.exist && inlineHelp.linkId) {
-            dispatch(deleteItemAction(inlineHelp.linkId, [...parentArray, item.linkId]));
+    const dispatchHelpText = () => {
+        const textItem = getHelpTextItem();
+        if (textItem.exist && textItem.linkId) {
+            dispatch(deleteItemAction(textItem.linkId, [...parentArray, item.linkId]));
         } else {
             dispatch(newItemHelpIconAction([...parentArray, item.linkId]));
         }
@@ -129,22 +131,22 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         return null;
     }
 
-    const handleInlineHelpText = (markdown: string) => {
+    const handleHelpText = (markdown: string) => {
         const children = search(item.linkId)?.items;
         children?.forEach((x) => {
-            if (qItems[x.linkId].extension?.find((y) => y.url === IExtentionType.itemControl)) {
+            if (isItemControlHelp(qItems[x.linkId])) {
                 dispatchUpdateItemHelpText(qItems[x.linkId].linkId, markdown);
             }
         });
     };
 
-    const itemInlineHelperItem = () => {
+    const getHelpTextItem = () => {
         const children = search(item.linkId)?.items;
         let _text = '';
         let exist = false;
         let linkId = '';
         children?.forEach((x) => {
-            if (qItems[x.linkId].extension?.find((y) => y.url === IExtentionType.itemControl)) {
+            if (isItemControlHelp(qItems[x.linkId])) {
                 _text =
                     qItems[x.linkId]._text?.extension?.find((ex) => ex.url === IExtentionType.markdown)
                         ?.valueMarkdown ?? '';
@@ -183,7 +185,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     const handleChild = (items: OrderItem[], parentPath: number[], tempHierarchy: FlattOrder[], linkId: string[]) => {
         items
-            .filter((x) => !isIgnorableItem(qItems[x.linkId]))
+            .filter((x) => !isIgnorableItem(qItems[x.linkId], qItems[linkId[linkId.length - 1]]))
             .forEach((child, childIndex) => {
                 const childTitle = childIndex + 1;
                 tempHierarchy.push({
@@ -206,7 +208,9 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             .filter((x) => !isIgnorableItem(qItems[x.linkId]))
             .forEach((x, index) => {
                 const parentPath = index + 1;
-                temp.push({ display: `${parentPath}. ${qItems[x.linkId].text}`, code: x.linkId, parent: [] });
+                const itemText = qItems[x.linkId].text || 'Ikke definert tittel';
+                const displayText = itemText.length > 120 ? `${itemText?.substr(0, 120)}...` : itemText;
+                temp.push({ display: `${parentPath}. ${displayText}`, code: x.linkId, parent: [] });
                 if (x.items) {
                     handleChild(x.items, [parentPath], temp, [x.linkId]);
                 }
@@ -215,6 +219,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     };
 
     const moveIsInvalid = (moveToPath: string[]) => {
+        if (isItemControlInline(qItems[linkIdMoveTo])) {
+            setMoveError(`Det er ikke mulig å flytte til element av type: ${IQuestionnaireItemType.inline}`);
+            return true;
+        }
         if (qItems[linkIdMoveTo]?.type === IQuestionnaireItemType.display) {
             setMoveError(`Det er ikke mulig å flytte til element av type: ${IQuestionnaireItemType.display}`);
             return true;
@@ -250,6 +258,8 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         }
     };
 
+    const isInlineItem = isItemControlInline(item);
+    const helpTextItem = getHelpTextItem();
     return (
         <>
             {isRepeatsAndReadOnlyApplicable && (
@@ -326,26 +336,30 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     )}
                 </div>
             </div>
-            <div>
-                <FormField>
-                    <SwitchBtn
-                        onChange={() => dispatchInlineHelp()}
-                        value={itemInlineHelperItem().exist}
-                        label="Skru på hjelpeikon"
-                        initial
-                    />
-                </FormField>
-                {itemInlineHelperItem().exist && (
-                    <FormField label="Skriv en hjelpende tekst">
-                        <MarkdownEditor data={itemInlineHelperItem()._text} onBlur={handleInlineHelpText} />
-                    </FormField>
-                )}
-            </div>
-            {item.type === IQuestionnaireItemType.text && (
+            {!isInlineItem && (
                 <div>
-                    <SwitchBtn onChange={dispatchHighLight} value={!!getHighlight()} label="Highlight" initial />
+                    <FormField>
+                        <SwitchBtn
+                            onChange={() => dispatchHelpText()}
+                            value={helpTextItem.exist}
+                            label="Skru på hjelpeikon"
+                            initial
+                        />
+                    </FormField>
+                    {helpTextItem.exist && (
+                        <FormField label="Skriv en hjelpende tekst">
+                            <MarkdownEditor data={helpTextItem._text} onBlur={handleHelpText} />
+                        </FormField>
+                    )}
                 </div>
             )}
+            {item.type === IQuestionnaireItemType.text && !isInlineItem && (
+                <FormField>
+                    <SwitchBtn onChange={dispatchHighLight} value={!!getHighlight()} label="Highlight" initial />
+                </FormField>
+            )}
+            <GuidanceAction item={item} />
+            <GuidanceParam item={item} />
             <div>
                 <FormField label="Flytt til element">
                     <Select

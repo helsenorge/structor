@@ -47,13 +47,16 @@ import {
     ADD_ITEM_CODE_ACTION,
     DELETE_ITEM_CODE_ACTION,
     UPDATE_ITEM_CODE_PROPERTY_ACTION,
+    DeleteChildItemsAction,
+    DELETE_CHILD_ITEMS_ACTION,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOptionHelper';
-
-const INITIAL_LANGUAGE = 'nb-no';
+import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
+import { isItemControlDropDown } from '../../helpers/itemControl';
+import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -67,6 +70,7 @@ export type ActionType =
     | UpdateQuestionnaireMetadataAction
     | NewItemAction
     | DeleteItemAction
+    | DeleteChildItemsAction
     | UpdateItemAction
     | DuplicateItemAction
     | ReorderItemAction
@@ -88,10 +92,11 @@ export interface CodeStringValue {
 }
 
 export interface ItemTranslation {
+    answerOptions?: CodeStringValue;
+    entryFormatText?: string;
+    initial?: string;
     text?: string;
     validationText?: string;
-    entryFormatText?: string;
-    answerOptions?: CodeStringValue;
 }
 
 export interface ContainedTranslation {
@@ -150,7 +155,7 @@ export const initialState: TreeState = {
         title: '',
         description: '',
         resourceType: 'Questionnaire',
-        language: INITIAL_LANGUAGE,
+        language: INITIAL_LANGUAGE.code,
         name: '',
         status: 'draft',
         publisher: 'NHN',
@@ -159,8 +164,8 @@ export const initialState: TreeState = {
             tag: [
                 {
                     system: 'urn:ietf:bcp:47',
-                    code: INITIAL_LANGUAGE,
-                    display: 'Norsk bokmål',
+                    code: INITIAL_LANGUAGE.code,
+                    display: INITIAL_LANGUAGE.display,
                 },
             ],
         },
@@ -255,16 +260,32 @@ function moveItem(draft: TreeState, action: MoveItemAction): void {
     arrayToDeleteItemFrom.splice(indexToDelete, 1);
 }
 
-function deleteItem(draft: TreeState, action: DeleteItemAction): void {
-    const deleteItemTranslations = (linkIdToDelete: string, languages?: Languages) => {
-        if (!languages) {
-            return;
-        }
-        Object.values(languages).forEach((translation) => {
-            delete translation.items[linkIdToDelete];
-        });
-    };
+function deleteItemTranslations(linkIdToDelete: string, languages?: Languages) {
+    if (!languages) {
+        return;
+    }
+    Object.values(languages).forEach((translation) => {
+        delete translation.items[linkIdToDelete];
+    });
+}
 
+function deleteChildItems(draft: TreeState, action: DeleteChildItemsAction): void {
+    const itemToDeleteChildrenFrom = findTreeArray(action.order, draft.qOrder).find(
+        (item) => item.linkId === action.linkId,
+    );
+    if (!itemToDeleteChildrenFrom) {
+        return;
+    }
+    const itemsToDelete = getLinkIdOfAllSubItems(itemToDeleteChildrenFrom.items, []);
+    itemsToDelete.forEach((linkIdToDelete: string) => {
+        delete draft.qItems[linkIdToDelete];
+        deleteItemTranslations(linkIdToDelete, draft.qAdditionalLanguages);
+    });
+    // delete node from qOrder
+    itemToDeleteChildrenFrom.items = [];
+}
+
+function deleteItem(draft: TreeState, action: DeleteItemAction): void {
     const arrayToDeleteItemFrom = findTreeArray(action.order, draft.qOrder);
     const indexToDelete = arrayToDeleteItemFrom.findIndex((x) => x.linkId === action.linkId);
 
@@ -284,8 +305,15 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
         ...draft.qItems[action.linkId],
         [action.itemProperty]: action.itemValue,
     };
-    // add two empty options for choice and open-choice
-    if (
+
+    if (action.itemValue === 'choice' && isItemControlDropDown(draft.qItems[action.linkId])) {
+        //handle dropdown!
+        draft.qItems[action.linkId].extension = [
+            ...(draft.qItems[action.linkId].extension || []),
+            ...createOptionReferenceExtensions,
+        ];
+    } else if (
+        // add two empty options for choice and open-choice
         action.itemProperty === IItemProperty.type &&
         (action.itemValue === 'choice' || action.itemValue === 'open-choice') &&
         !draft.qItems[action.linkId].answerOption
@@ -557,6 +585,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case DELETE_ITEM_ACTION:
             deleteItem(draft, action);
+            break;
+        case DELETE_CHILD_ITEMS_ACTION:
+            deleteChildItems(draft, action);
             break;
         case UPDATE_ITEM_ACTION:
             updateItem(draft, action);

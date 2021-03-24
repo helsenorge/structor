@@ -7,7 +7,7 @@ import {
     QuestionnaireItemAnswerOption,
     ValueSet,
 } from '../types/fhir';
-import { IExtentionType } from '../types/IQuestionnareItemType';
+import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { getLanguageFromCode, translatableMetadata } from './LanguageHelper';
 import { isItemControlSidebar } from './itemControl';
@@ -128,8 +128,12 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
     }
 
     const answerOption = getTranslatedAnswerOptions(currentItem.answerOption, itemTranslation?.answerOptions);
+    const initial =
+        currentItem.type === IQuestionnaireItemType.text || currentItem.type === IQuestionnaireItemType.string
+            ? [{ valueString: itemTranslation?.initial }]
+            : currentItem.initial;
 
-    return { ...currentItem, text: translatedText, _text, extension, answerOption };
+    return { ...currentItem, text: translatedText, _text, extension, answerOption, initial };
 };
 
 const getTranslatedMetadata = (qMetadata: IQuestionnaireMetadata, translation: Translation): IQuestionnaireMetadata => {

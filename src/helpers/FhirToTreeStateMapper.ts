@@ -24,7 +24,7 @@ import {
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { isSupportedLanguage, translatableMetadata } from './LanguageHelper';
 import { isItemControlSidebar } from './itemControl';
-import { getMarkdownText, getPlaceHolderText, getValidationMessage } from './QuestionHelper';
+import { getInitialText, getMarkdownText, getPlaceHolderText, getValidationMessage } from './QuestionHelper';
 
 function extractMetadata(questionnaireObj: Questionnaire) {
     const getMetadataParts = ({
@@ -44,6 +44,7 @@ function extractMetadata(questionnaireObj: Questionnaire) {
         extension,
         purpose,
         copyright,
+        date,
     }: IQuestionnaireMetadata) => ({
         resourceType,
         language,
@@ -61,6 +62,7 @@ function extractMetadata(questionnaireObj: Questionnaire) {
         extension,
         purpose,
         copyright,
+        date,
     });
     return getMetadataParts(questionnaireObj);
 }
@@ -137,7 +139,8 @@ function translateItem(translationItem: QuestionnaireItem | undefined): ItemTran
     const entryFormatText = getPlaceHolderText(translationItem);
     const text = translationItem?.text || '';
     const validationText = getValidationMessage(translationItem);
-    return { answerOptions, entryFormatText, text, validationText };
+    const initial = getInitialText(translationItem);
+    return { answerOptions, entryFormatText, text, validationText, initial };
 }
 
 function translateItems(
@@ -203,7 +206,7 @@ function extractTranslations(bundle: Bundle): Languages {
             }
             return;
         }
-        languages[questionnaire.language.toLowerCase()] = translateQuestionnaire(mainQuestionnaire, questionnaire);
+        languages[questionnaire.language] = translateQuestionnaire(mainQuestionnaire, questionnaire);
     });
     return languages;
 }
