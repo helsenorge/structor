@@ -1,7 +1,10 @@
 import { ValueSet } from '../types/fhir';
 
+export const predefinedValueSetUri = 'http://ehelse.no/fhir/ValueSet/Predefined';
+
 export const initPredefinedValueSet = [
     {
+        url: predefinedValueSetUri,
         resourceType: 'ValueSet',
         id: 'pre-1101',
         version: '1.0',
@@ -28,6 +31,7 @@ export const initPredefinedValueSet = [
         },
     },
     {
+        url: predefinedValueSetUri,
         resourceType: 'ValueSet',
         id: 'pre-1102',
         version: '1.0',
@@ -58,6 +62,7 @@ export const initPredefinedValueSet = [
         },
     },
     {
+        url: predefinedValueSetUri,
         resourceType: 'ValueSet',
         id: 'pre-1103',
         version: '1.0',

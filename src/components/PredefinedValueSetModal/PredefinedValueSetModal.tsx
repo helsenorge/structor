@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import createUUID from '../../helpers/CreateUUID';
-import { appendValueSetAction } from '../../store/valueSetStore/ValueSetAction';
+import { predefinedValueSetUri } from '../../helpers/initPredefinedValueSet';
+import { updateValueSetAction } from '../../store/valueSetStore/ValueSetAction';
 import { ValueSetContext } from '../../store/valueSetStore/ValueSetStore';
 import { ValueSet } from '../../types/fhir';
 import Btn from '../Btn/Btn';
@@ -50,13 +51,12 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
     const { predefinedValueSet } = state;
 
     const addNewElement = () => {
-        const compose = { ...newValueSet.compose };
-        compose.include[0].concept?.push({
+        newValueSet?.compose?.include[0].concept?.push({
             id: createUUID(),
             code: '',
             display: '',
         });
-        setNewValueSet({ ...newValueSet, ...compose });
+        setNewValueSet({ ...newValueSet });
     };
 
     const removeElement = (id?: string) => {
@@ -81,7 +81,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
     };
 
     const dispatchValueSet = () => {
-        dispatch(appendValueSetAction([newValueSet]));
+        dispatch(updateValueSetAction(newValueSet));
         setNewValueSet({ ...initValueSet() });
     };
 
@@ -120,6 +120,15 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
         setNewValueSet({ ...newValueSet, ...compose });
     };
 
+    const canEdit = (type?: string) => {
+        return type !== predefinedValueSetUri;
+    };
+
+    const handleEdit = (valueSet: ValueSet) => {
+        const o = JSON.stringify(valueSet);
+        setNewValueSet(JSON.parse(o));
+    };
+
     return (
         <Modal close={props.close} title="Predefinerte verdier" size="large" bottomCloseText="Lukk">
             <div className="predefined-container">
@@ -150,7 +159,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                     </FormField>
                     <div className="btn-group center-text">
                         <Btn onClick={addNewElement} title="+ Nytt valg" variant="secondary" size="small" />
-                        <Btn onClick={dispatchValueSet} title="Opprett >" variant="primary" size="small" />
+                        <Btn onClick={dispatchValueSet} title="Lagre >" variant="primary" size="small" />
                     </div>
                     <div className="value-set">
                         <DragDropContext onDragEnd={handleOrder}>
@@ -224,7 +233,16 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                     {predefinedValueSet.map((x) => (
                         <div key={x.id}>
                             <p>
-                                <strong>{x.title}</strong> ({x.name})
+                                <strong>{x.title}</strong> ({x.name}){' '}
+                                {canEdit(x.url) && (
+                                    <Btn
+                                        title="Endre"
+                                        type="button"
+                                        size="small"
+                                        variant="secondary"
+                                        onClick={() => handleEdit(x)}
+                                    />
+                                )}
                             </p>
                             <ul>
                                 {x?.compose?.include[0]?.concept?.map((y) => (

@@ -70,7 +70,7 @@ const PredefinedValueSet = ({ linkId, selectedValueSet }: Props): JSX.Element =>
                     placeholder="Velg et alternativ.."
                 />
             </FormField>
-            <FormField label="Svarene kan ikke redigeres">{renderPreDefinedValueSet()}</FormField>
+            <FormField label="Svarene kan redigeres her">{renderPreDefinedValueSet()}</FormField>
         </div>
     );
 };

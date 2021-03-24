@@ -7,7 +7,7 @@ import Modal from '../Modal/Modal';
 import './ImportValueSet.css';
 import AlertIcon from '../../images/icons/alert-circle-outline.svg';
 import { ValueSetContext } from '../../store/valueSetStore/ValueSetStore';
-import { appendValueSetAction } from '../../store/valueSetStore/ValueSetAction';
+import { importValueSetAction } from '../../store/valueSetStore/ValueSetAction';
 
 type Props = {
     close: () => void;
@@ -93,7 +93,7 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
 
     const handleAddNewValueSet = () => {
         if (valueSets) {
-            dispatch(appendValueSetAction(valueSets));
+            dispatch(importValueSetAction(valueSets));
         }
         close();
     };
