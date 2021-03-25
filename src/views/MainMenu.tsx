@@ -11,6 +11,7 @@ import { resetQuestionnaireAction } from '../store/treeStore/treeActions';
 import { useHistory } from 'react-router-dom';
 import Modal from '../components/Modal/Modal';
 import SpinnerBox from '../components/Spinner/SpinnerBox';
+import { addPredefinedValueSet } from '../helpers/valueSetHelper';
 
 const MainMenu = (): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
@@ -35,6 +36,7 @@ const MainMenu = (): JSX.Element => {
 
     function reuploadJSONFile(questionnaireObj: Questionnaire) {
         const importedState = mapToTreeState(questionnaireObj);
+        importedState.qContained = addPredefinedValueSet(importedState.qContained);
         dispatch(resetQuestionnaireAction(importedState));
     }
 

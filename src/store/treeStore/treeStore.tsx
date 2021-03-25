@@ -443,7 +443,7 @@ function resetQuestionnaire(draft: TreeState, action: ResetQuestionnaireAction):
     draft.qOrder = newState.qOrder;
     draft.qItems = newState.qItems;
     draft.qMetadata = newState.qMetadata;
-    draft.qContained = [...initPredefinedValueSet, ...(newState?.qContained || [])];
+    draft.qContained = newState?.qContained;
     draft.qAdditionalLanguages = newState.qAdditionalLanguages;
 }
 
