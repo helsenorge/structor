@@ -22,5 +22,5 @@ export const addPredefinedValueSet = (valueSets?: ValueSet[]): ValueSet[] => {
 
     const valueSetsToAdd = initPredefinedValueSet.filter((x) => !avalibleValueSets?.includes(x.id));
 
-    return [...(valueSets || []), ...valueSetsToAdd];
+    return [...valueSetsToAdd, ...(valueSets || [])];
 };
