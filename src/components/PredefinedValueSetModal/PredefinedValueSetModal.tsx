@@ -2,8 +2,8 @@ import React, { useContext, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import createUUID from '../../helpers/CreateUUID';
 import { predefinedValueSetUri } from '../../helpers/initPredefinedValueSet';
-import { updateValueSetAction } from '../../store/valueSetStore/ValueSetAction';
-import { ValueSetContext } from '../../store/valueSetStore/ValueSetStore';
+import { TreeContext } from '../../store/treeStore/treeStore';
+import { updateValueSetAction } from '../../store/treeStore/treeActions';
 import { ValueSet } from '../../types/fhir';
 import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
@@ -46,9 +46,9 @@ const initValueSet = () =>
     } as ValueSet);
 
 const PredefinedValueSetModal = (props: Props): JSX.Element => {
-    const { state, dispatch } = useContext(ValueSetContext);
+    const { state, dispatch } = useContext(TreeContext);
     const [newValueSet, setNewValueSet] = useState<ValueSet>({ ...initValueSet() });
-    const { predefinedValueSet } = state;
+    const { qContained } = state;
 
     const addNewElement = () => {
         newValueSet?.compose?.include[0].concept?.push({
@@ -66,7 +66,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
             compose.include[0].concept?.splice(conceptToDelete, 1);
         }
 
-        setNewValueSet({ ...newValueSet, ...compose });
+        setNewValueSet({ ...newValueSet });
     };
 
     const handleConceptItem = (value: string, updateField: 'code' | 'display', id?: string) => {
@@ -77,7 +77,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
             item[updateField] = value;
         }
 
-        setNewValueSet({ ...newValueSet, ...compose });
+        setNewValueSet({ ...newValueSet });
     };
 
     const dispatchValueSet = () => {
@@ -110,14 +110,14 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
 
         if (fromIndex !== toIndex && itemToMove) {
             compose.include[0].concept?.splice(toIndex, 0, itemToMove[0]);
-            setNewValueSet({ ...newValueSet, ...compose });
+            setNewValueSet({ ...newValueSet });
         }
     };
 
     const handleSystem = (value: string) => {
         const compose = { ...newValueSet.compose };
         compose.include[0].system = value;
-        setNewValueSet({ ...newValueSet, ...compose });
+        setNewValueSet({ ...newValueSet });
     };
 
     const canEdit = (type?: string) => {
@@ -230,7 +230,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                     </div>
                 </div>
                 <div>
-                    {predefinedValueSet.map((x) => (
+                    {qContained?.map((x) => (
                         <div key={x.id}>
                             <p>
                                 <strong>{x.title}</strong> ({x.name}){' '}
@@ -246,7 +246,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                             </p>
                             <ul>
                                 {x?.compose?.include[0]?.concept?.map((y) => (
-                                    <li key={y.code}>
+                                    <li key={y.id}>
                                         {y.display} ({y.code})
                                     </li>
                                 ))}

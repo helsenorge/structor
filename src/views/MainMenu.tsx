@@ -11,14 +11,9 @@ import { resetQuestionnaireAction } from '../store/treeStore/treeActions';
 import { useHistory } from 'react-router-dom';
 import Modal from '../components/Modal/Modal';
 import SpinnerBox from '../components/Spinner/SpinnerBox';
-import { handleImportValueSet } from '../helpers/valueSetHelper';
-import { ValueSetContext } from '../store/valueSetStore/ValueSetStore';
-import ImportValueSet from '../components/ImportValueSet/ImportValueSet';
-import { importValueSetAction } from '../store/valueSetStore/ValueSetAction';
 
 const MainMenu = (): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
-    const a = useContext(ValueSetContext);
 
     const [showUpload, setShowUpload] = useState(false);
     const history = useHistory();
@@ -40,7 +35,6 @@ const MainMenu = (): JSX.Element => {
 
     function reuploadJSONFile(questionnaireObj: Questionnaire) {
         const importedState = mapToTreeState(questionnaireObj);
-        a.dispatch(importValueSetAction(importedState?.qContained || []));
         dispatch(resetQuestionnaireAction(importedState));
     }
 

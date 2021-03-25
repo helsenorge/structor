@@ -6,20 +6,23 @@ import FormField from '../FormField/FormField';
 import Modal from '../Modal/Modal';
 import './ImportValueSet.css';
 import AlertIcon from '../../images/icons/alert-circle-outline.svg';
-import { ValueSetContext } from '../../store/valueSetStore/ValueSetStore';
-import { importValueSetAction } from '../../store/valueSetStore/ValueSetAction';
+import { TreeContext } from '../../store/treeStore/treeStore';
+import { importValueSetAction } from '../../store/treeStore/treeActions';
+import createUUID from '../../helpers/CreateUUID';
+import { addIDToValueSet } from '../../helpers/valueSetHelper';
 
 type Props = {
     close: () => void;
 };
 
 const ImportValueSet = ({ close }: Props): JSX.Element => {
-    const { dispatch } = useContext(ValueSetContext);
+    const { dispatch } = useContext(TreeContext);
 
     const [url, setUrl] = useState('');
     const [error, setError] = useState<string | null>();
     const [loading, setLoading] = useState(false);
     const [valueSets, setValueSets] = useState<ValueSet[] | null>();
+    const [valueSetToAdd, setValueSetToAdd] = useState<string[]>([]);
 
     async function fetchValueSets() {
         const response = await fetch(url, {
@@ -46,16 +49,18 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
             .map((x) => {
                 return {
                     resourceType: x.resourceType,
-                    id: `pre-${x.id}`,
+                    id: x.id ? `pre-${x.id}` : `pre-${createUUID()}`,
                     version: x.version || '1.0',
                     name: x.name,
                     title: x.title || x.name,
                     status: x.status,
                     publisher: x.publisher,
-                    compose: x.compose,
+                    compose: x.compose ? addIDToValueSet(x.compose) : x.compose,
                 };
             })
             .filter((x) => x.compose?.include[0].concept && x.compose?.include[0].concept?.length > 0);
+
+        setValueSetToAdd(valueSet.map((x) => x.id));
 
         return { valueSet };
     }
@@ -72,6 +77,10 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                 setLoading(false);
                 if (response.error) {
                     setError(response.error);
+                    return;
+                }
+                if (response.valueSet?.length === 0) {
+                    setError('Finner ingen Value Set på endepunktet.');
                     return;
                 }
                 setValueSets(response.valueSet);
@@ -92,10 +101,23 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
     };
 
     const handleAddNewValueSet = () => {
-        if (valueSets) {
-            dispatch(importValueSetAction(valueSets));
+        const valueSetsToImport = valueSets?.filter((x) => x.id && valueSetToAdd.includes(x.id));
+
+        if (valueSetsToImport && valueSetsToImport?.length > 0) {
+            dispatch(importValueSetAction(valueSetsToImport));
         }
         close();
+    };
+
+    const handleCheck = (checked: boolean, id?: string) => {
+        const itemToRemove = [...valueSetToAdd].findIndex((x) => x === id);
+        if (checked && id) {
+            setValueSetToAdd([...valueSetToAdd, id]);
+        } else {
+            const temList = [...valueSetToAdd];
+            temList.splice(itemToRemove, 1);
+            setValueSetToAdd(temList);
+        }
     };
 
     return (
@@ -111,6 +133,7 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                             type="url"
                             value={url}
                             required
+                            autoFocus
                         />
                         <Btn title="søk" variant="primary" type="submit" />
                     </form>
@@ -131,6 +154,12 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                             return (
                                 <div key={x.id}>
                                     <p>
+                                        <input
+                                            type="checkbox"
+                                            aria-label="Add or remove value-set"
+                                            defaultChecked
+                                            onChange={(event) => handleCheck(event.target.checked, x?.id)}
+                                        />{' '}
                                         <strong>{x.title}</strong>
                                     </p>
                                     <ul>
@@ -149,8 +178,14 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                 {valueSets && (
                     <div className="button-btn">
                         <div>
-                            <p>Legg til ({valueSets?.length} ValueSet) i predefinerte valg</p>
-                            <Btn title="Importer" variant="primary" onClick={handleAddNewValueSet} />
+                            <p>Legg til ({valueSetToAdd.length} ValueSet) i predefinerte valg</p>
+                            <Btn
+                                title="Importer"
+                                variant="primary"
+                                type="button"
+                                size="small"
+                                onClick={handleAddNewValueSet}
+                            />
                         </div>
                     </div>
                 )}

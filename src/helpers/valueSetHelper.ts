@@ -1,9 +1,17 @@
-import { useContext } from 'react';
-import { importValueSetAction } from '../store/valueSetStore/ValueSetAction';
-import { ValueSetContext } from '../store/valueSetStore/ValueSetStore';
-import { ValueSet } from '../types/fhir';
+import { ValueSetCompose } from '../types/fhir';
+import createUUID from './CreateUUID';
 
-export const handleImportValueSet = (contained: ValueSet[]): void => {
-    const { dispatch } = useContext(ValueSetContext);
-    dispatch(importValueSetAction(contained));
+export const addIDToValueSet = (compose: ValueSetCompose): ValueSetCompose => {
+    const concept = compose.include[0].concept;
+
+    const alteredConcept = concept?.map((x) => {
+        return {
+            ...x,
+            id: createUUID(),
+        };
+    });
+
+    return {
+        include: [{ ...compose.include[0], concept: alteredConcept }],
+    };
 };
