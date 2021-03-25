@@ -8,7 +8,7 @@ export const addIDToValueSet = (compose: ValueSetCompose): ValueSetCompose => {
     const alteredConcept = concept?.map((x) => {
         return {
             ...x,
-            id: createUUID(),
+            id: x.id || createUUID(),
         };
     });
 

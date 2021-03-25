@@ -6,7 +6,7 @@ export const initPredefinedValueSet = [
     {
         url: predefinedValueSetUri,
         resourceType: 'ValueSet',
-        id: 'pre-1101',
+        id: '1101',
         version: '1.0',
         name: 'structor-yes-no-1101',
         title: 'Ja / Nei',
@@ -33,7 +33,7 @@ export const initPredefinedValueSet = [
     {
         url: predefinedValueSetUri,
         resourceType: 'ValueSet',
-        id: 'pre-1102',
+        id: '1102',
         version: '1.0',
         name: 'structor-yes-no-maybe-1102',
         title: 'Ja / Nei / Usikker',
@@ -64,7 +64,7 @@ export const initPredefinedValueSet = [
     {
         url: predefinedValueSetUri,
         resourceType: 'ValueSet',
-        id: 'pre-1103',
+        id: '1103',
         version: '1.0',
         name: 'structor-sex-1103',
         title: 'Kjønn',

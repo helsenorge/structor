@@ -9,6 +9,7 @@ import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
 import Modal from '../Modal/Modal';
 import './PredefinedValueSetModal.css';
+import { removeSpace } from '../../helpers/formatHelper';
 
 type Props = {
     close: () => void;
@@ -17,7 +18,7 @@ type Props = {
 const initValueSet = () =>
     ({
         resourceType: 'ValueSet',
-        id: `pre-${createUUID()}`,
+        id: `${createUUID()}`,
         version: '1.0',
         name: '',
         title: '',
@@ -75,6 +76,10 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
 
         if (item) {
             item[updateField] = value;
+        }
+
+        if (updateField === 'display' && item) {
+            item.code = removeSpace(value);
         }
 
         setNewValueSet({ ...newValueSet });

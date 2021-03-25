@@ -34,7 +34,7 @@ const PredefinedValueSet = ({ linkId, selectedValueSet }: Props): JSX.Element =>
     });
 
     const handleDisplaySelected = () => {
-        if (selectedValueSet && selectedValueSet.indexOf('#pre-') >= 0) {
+        if (selectedValueSet && selectedValueSet.indexOf('#') >= 0) {
             return selectedValueSet.substring(1);
         }
         return '';
