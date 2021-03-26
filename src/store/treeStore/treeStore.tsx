@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, useReducer } from 'react';
+import React, { createContext, Dispatch, useEffect, useReducer } from 'react';
 import produce from 'immer';
 
 import { QuestionnaireItem, ValueSet } from '../../types/fhir';
@@ -61,6 +61,7 @@ import { isItemControlDropDown } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { createSystemUUID } from '../../helpers/systemHelper';
+import { saveStateToDb } from './indexedDbHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -650,6 +651,16 @@ export const TreeContext = createContext<{
 
 export const TreeContextProvider = (props: { children: JSX.Element }): JSX.Element => {
     const [state, dispatch] = useReducer(reducer, initialState);
+
+    useEffect(() => {
+        const startTime = performance.now();
+        const save = async () => {
+            await saveStateToDb(JSON.parse(JSON.stringify(state)));
+        };
+        save();
+        console.log(`State saved in ${Math.round(performance.now() - startTime)}ms`);
+    }, [state]);
+
     return (
         // eslint-disable-next-line
         // @ts-ignore
