@@ -1,23 +1,52 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useRef, useState } from 'react';
 import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import Btn from '../Btn/Btn';
-import IconBtn from '../IconBtn/IconBtn';
 import MoreIcon from '../../images/icons/ellipsis-horizontal-outline.svg';
+import useOutsideClick from '../../hooks/useOutsideClick';
 import './Navbar.css';
 
 type Props = {
+    newQuestionnaire: () => void;
     showAdmin: () => void;
     showFormFiller: () => void;
     showJSONView: () => void;
     showImportValueSet: () => void;
     showContained: () => void;
+    uploadQuestionnaire: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, showContained }: Props): JSX.Element => {
+enum MenuItem {
+    none = 'none',
+    file = 'file',
+    more = 'more',
+}
+
+const Navbar = ({
+    newQuestionnaire,
+    showAdmin,
+    showFormFiller,
+    showJSONView,
+    showImportValueSet,
+    showContained,
+    uploadQuestionnaire,
+}: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
-    const [menuIsVisible, setMenuIsVisible] = useState(false);
+    const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
+    const navBarRef = useRef<HTMLHeadingElement>(null);
+
+    useOutsideClick(navBarRef, () => {
+        hideMenu();
+    });
+
+    const hideMenu = () => {
+        setSelectedMenuItem(MenuItem.none);
+    };
+
+    const callbackAndHide = (callback: () => void) => {
+        callback();
+        hideMenu();
+    };
 
     const getFileName = (): string => {
         const technicalName = state.qMetadata.name || 'skjema';
@@ -49,25 +78,36 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, s
         }
     }
 
-    const handleClickOutside = (event: MouseEvent) => {
-        const currentClass = (event.target as Element).className;
-        if (menuIsVisible && currentClass.indexOf('more-menu') < 0) {
-            setTimeout(() => setMenuIsVisible(false), 200);
+    const handleMenuItemClick = (clickedItem: MenuItem) => {
+        if (selectedMenuItem !== clickedItem) {
+            setSelectedMenuItem(clickedItem);
+        } else {
+            hideMenu();
         }
     };
 
-    useEffect(() => {
-        document.addEventListener('click', handleClickOutside, true);
-        return () => {
-            document.removeEventListener('click', handleClickOutside, true);
-        };
-    });
-
     return (
-        <header>
-            <Link to="/">
-                <IconBtn type="back" title="Tilbake" />
-            </Link>
+        <header ref={navBarRef}>
+            <div>
+                <Btn title="Skjema" onClick={() => handleMenuItemClick(MenuItem.file)} />
+                {selectedMenuItem === MenuItem.file && (
+                    <div className="menu file">
+                        <Btn title="Nytt skjema" onClick={() => callbackAndHide(newQuestionnaire)} />
+                        <label className="regular-btn upload-btn">
+                            <input
+                                type="file"
+                                style={{ display: 'none' }}
+                                onChange={(event) => {
+                                    uploadQuestionnaire(event);
+                                    hideMenu();
+                                }}
+                                accept="application/JSON"
+                            />
+                            Last opp skjema
+                        </label>
+                    </div>
+                )}
+            </div>
 
             <div className="left"></div>
 
@@ -80,18 +120,18 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, s
                     role="button"
                     aria-label="menu list"
                     aria-pressed="false"
-                    onClick={() => setMenuIsVisible(!menuIsVisible)}
-                    onKeyPress={(e) => e.code === 'Enter' && setMenuIsVisible(!menuIsVisible)}
+                    onClick={() => handleMenuItemClick(MenuItem.more)}
+                    onKeyPress={(e) => e.code === 'Enter' && handleMenuItemClick(MenuItem.more)}
                 >
                     <img className="more-menu-icon" src={MoreIcon} alt="more icon" height={25} />
                 </div>
             </div>
-            {menuIsVisible && (
+            {selectedMenuItem === MenuItem.more && (
                 <div className="menu">
-                    <Btn title="JSON" onClick={showJSONView} />
-                    <Btn title="Publiser" onClick={showAdmin} />
-                    <Btn title="Importer valg" onClick={showImportValueSet} />
-                    <Btn title="Valg" onClick={showContained} />
+                    <Btn title="JSON" onClick={() => callbackAndHide(showJSONView)} />
+                    <Btn title="Publiser" onClick={() => callbackAndHide(showAdmin)} />
+                    <Btn title="Importer valg" onClick={() => callbackAndHide(showImportValueSet)} />
+                    <Btn title="Valg" onClick={() => callbackAndHide(showContained)} />
                 </div>
             )}
         </header>
