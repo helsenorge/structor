@@ -90,4 +90,5 @@ export enum IExtentionType {
     regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
     sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
     validationtext = 'http://ehelse.no/fhir/StructureDefinition/validationtext',
+    generatePDF = 'http://ehelse.no/fhir/StructureDefinition/sdf-generatepdf',
 }

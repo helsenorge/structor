@@ -29,7 +29,7 @@ const MetadataEditor = (): JSX.Element => {
     const [technicalName, setTechincalName] = useState(qMetadata.name || '');
     const [displayNameValidationError, setDisplayNameValidationError] = useState(false);
 
-    const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta | Extension[] | boolean) => {
+    const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta | Extension[]) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
@@ -194,8 +194,17 @@ const MetadataEditor = (): JSX.Element => {
                 </FormField>
                 <FormField label="Generer PDF ved besvarelse">
                     <SwitchBtn
-                        onChange={() => updateMeta(IQuestionnaireMetadataType.generatePDF, !qMetadata.generatePDF)}
-                        value={qMetadata.generatePDF || false}
+                        onChange={() =>
+                            updateMetaExtension({
+                                url: IExtentionType.generatePDF,
+                                valueBoolean: !qMetadata?.extension?.find((ex) => ex.url === IExtentionType.generatePDF)
+                                    ?.valueBoolean,
+                            })
+                        }
+                        value={
+                            qMetadata?.extension?.find((ex) => ex.url === IExtentionType.generatePDF)?.valueBoolean ||
+                            false
+                        }
                         label=""
                         initial
                     />
