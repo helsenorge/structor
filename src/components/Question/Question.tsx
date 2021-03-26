@@ -246,6 +246,8 @@ const Question = (props: QuestionProps): JSX.Element => {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
             dispatchRemoveAttribute(IItemProperty.answerValueSet);
         } else if (newType === IQuestionnaireItemType.address) {
+            dispatchRemoveAttribute(IItemProperty.answerValueSet);
+            dispatchRemoveAttribute(IItemProperty.answerOption);
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
         } else if (newType === IQuestionnaireItemType.inline) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.text);
