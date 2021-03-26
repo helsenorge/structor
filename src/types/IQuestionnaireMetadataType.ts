@@ -15,6 +15,7 @@ export enum IQuestionnaireMetadataType {
     meta = 'meta',
     extension = 'extension',
     version = 'version',
+    generatePDF = 'generatePDF',
 }
 
 export interface IQuestionnaireMetadata {
@@ -36,6 +37,7 @@ export interface IQuestionnaireMetadata {
     extension?: Array<Extension>;
     purpose?: string;
     copyright?: string;
+    generatePDF?: boolean;
 }
 
 export enum IQuestionnaireStatus {

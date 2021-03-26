@@ -140,7 +140,7 @@ export interface UpdateLinkIdAction {
 export interface UpdateQuestionnaireMetadataAction {
     type: typeof UPDATE_QUESTIONNAIRE_METADATA_ACTION;
     propName: IQuestionnaireMetadataType;
-    value: string | Meta | Extension[];
+    value: string | Meta | Extension[] | boolean;
 }
 
 export interface NewItemAction {
@@ -352,7 +352,7 @@ export const updateLinkIdAction = (
 
 export const updateQuestionnaireMetadataAction = (
     propName: IQuestionnaireMetadataType,
-    value: string | Meta | Extension[],
+    value: string | Meta | Extension[] | boolean,
 ): UpdateQuestionnaireMetadataAction => {
     return {
         type: UPDATE_QUESTIONNAIRE_METADATA_ACTION,

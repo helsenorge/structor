@@ -159,6 +159,7 @@ export const initialState: TreeState = {
     qItems: {},
     qOrder: [],
     qMetadata: {
+        generatePDF: false,
         title: '',
         description: '',
         resourceType: 'Questionnaire',

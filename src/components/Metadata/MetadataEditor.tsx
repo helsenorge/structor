@@ -19,6 +19,7 @@ import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
+import SwitchBtn from '../SwitchBtn/SwitchBtn';
 
 const MetadataEditor = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -28,7 +29,7 @@ const MetadataEditor = (): JSX.Element => {
     const [technicalName, setTechincalName] = useState(qMetadata.name || '');
     const [displayNameValidationError, setDisplayNameValidationError] = useState(false);
 
-    const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta | Extension[]) => {
+    const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta | Extension[] | boolean) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
@@ -189,6 +190,14 @@ const MetadataEditor = (): JSX.Element => {
                     <MarkdownEditor
                         data={qMetadata.copyright || ''}
                         onBlur={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
+                    />
+                </FormField>
+                <FormField label="Generer PDF ved besvarelse">
+                    <SwitchBtn
+                        onChange={() => updateMeta(IQuestionnaireMetadataType.generatePDF, !qMetadata.generatePDF)}
+                        value={qMetadata.generatePDF || false}
+                        label=""
+                        initial
                     />
                 </FormField>
             </Accordion>
