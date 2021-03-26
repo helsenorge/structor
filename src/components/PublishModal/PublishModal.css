@@ -1,8 +1,6 @@
 .modal {
     position: fixed;
     top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
     width: 900px;
     background: white;
     height: 600px;

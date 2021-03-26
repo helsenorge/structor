@@ -133,11 +133,7 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     const respondType = (param: string) => {
-        if (
-            props.item.answerValueSet &&
-            props.item.answerValueSet.indexOf('pre-') >= 0 &&
-            param === IQuestionnaireItemType.choice
-        ) {
+        if (props.item.answerValueSet && param === IQuestionnaireItemType.choice) {
             return <PredefinedValueSet linkId={props.item.linkId} selectedValueSet={props.item.answerValueSet} />;
         }
         if (isItemControlInline(props.item)) {
@@ -218,7 +214,7 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     const handleDisplayQuestionType = () => {
-        if (props.item.answerValueSet && props.item.answerValueSet.indexOf('pre-') >= 0) {
+        if (props.item.answerValueSet && props.item.type === IQuestionnaireItemType.choice) {
             return IQuestionnaireItemType.predefined;
         }
         if (props.item.type === IQuestionnaireItemType.integer || props.item.type === IQuestionnaireItemType.decimal) {
@@ -244,7 +240,7 @@ const Question = (props: QuestionProps): JSX.Element => {
 
         if (newType === IQuestionnaireItemType.predefined) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
-            dispatchUpdateItem(IItemProperty.answerValueSet, 'pre-');
+            dispatchUpdateItem(IItemProperty.answerValueSet, '#');
             dispatchRemoveAttribute(IItemProperty.answerOption);
         } else if (newType === IQuestionnaireItemType.number) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);

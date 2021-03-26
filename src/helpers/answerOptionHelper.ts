@@ -1,5 +1,6 @@
 import { QuestionnaireItemAnswerOption } from '../types/fhir';
 import createUUID from './CreateUUID';
+import { removeSpace } from './formatHelper';
 
 export const createNewSystem = (): string => {
     return `${createUUID()}-system`;
@@ -38,7 +39,7 @@ export const updateAnswerOption = (
                   valueCoding: {
                       ...x.valueCoding,
                       display: displayValue,
-                      code: displayValue.replace(/\s/g, '-').toLocaleLowerCase(),
+                      code: removeSpace(displayValue),
                   },
               } as QuestionnaireItemAnswerOption)
             : x;
@@ -83,7 +84,7 @@ export const removeOptionFromAnswerOptionArray = (
     return values.filter((x) => x.valueCoding?.id !== targetId);
 };
 
-export const swapPositions = (
+export const reorderPositions = (
     list: QuestionnaireItemAnswerOption[],
     to: number,
     from: number,

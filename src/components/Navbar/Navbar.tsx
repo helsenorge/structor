@@ -12,9 +12,10 @@ type Props = {
     showFormFiller: () => void;
     showJSONView: () => void;
     showImportValueSet: () => void;
+    showContained: () => void;
 };
 
-const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet }: Props): JSX.Element => {
+const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, showContained }: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
     const [menuIsVisible, setMenuIsVisible] = useState(false);
 
@@ -90,6 +91,7 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet }:
                     <Btn title="JSON" onClick={showJSONView} />
                     <Btn title="Publiser" onClick={showAdmin} />
                     <Btn title="Importer valg" onClick={showImportValueSet} />
+                    <Btn title="Valg" onClick={showContained} />
                 </div>
             )}
         </header>
