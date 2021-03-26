@@ -18,8 +18,6 @@ import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional
 import { isIgnorableItem } from '../helpers/itemControl';
 import Sidebar from '../components/Sidebar/Sidebar';
 import LanguageAccordion from '../components/Languages/LanguageAccordion';
-import Typeahead from '../components/Typeahead/Typeahead';
-import { ICPC2 } from '../components/Typeahead/icpc2';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -115,9 +113,6 @@ const FormBuilder = (): JSX.Element => {
                                     <h2>Skjemainformasjon</h2>
                                 </div>
                                 <div className="form-intro-field">
-                                    <div className="align-everything">
-                                        <Typeahead items={ICPC2} />
-                                    </div>
                                     <label htmlFor="questionnaire-title">Tittel:</label>
                                     <br />
                                     <input
