@@ -8,7 +8,7 @@
 
 .typeahead input {
     margin: 0;
-    width: 500px;
+    width: 100%;
     padding-left: 40px;
 }
 
@@ -26,7 +26,7 @@
     text-align: left;
     margin: 0;
     padding: 0;
-    width: 551px;
+    width: 100%;
     padding: 0px;
     background: white;
     border: 1px solid black;
@@ -35,6 +35,10 @@
 .typeahead li {
     padding: 10px 15px;
     cursor: pointer;
+}
+
+.typeahead li p{
+    margin: 0;
 }
 
 .typeahead li:hover {

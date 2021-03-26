@@ -1,35 +1,45 @@
 import React, { ChangeEvent, useState } from 'react';
+import { ValueSetComposeIncludeConcept } from '../../types/fhir';
 import './Typeahead.css';
 
 type Props = {
-    items: string[];
+    items: ValueSetComposeIncludeConcept[];
+    onChange: (value: string) => void;
+    defaultValue?: string;
 };
 
-const Typeahead = ({ items }: Props): JSX.Element => {
-    const [value, setValue] = useState<string>('');
-    const [suggestions, setSuggestions] = useState<string[]>([]);
+const Typeahead = ({ items, onChange, defaultValue }: Props): JSX.Element => {
+    const [value, setValue] = useState<string>(defaultValue || '');
+    const [suggestions, setSuggestions] = useState<ValueSetComposeIncludeConcept[]>([]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setValue(value);
         if (value.length >= 2) {
-            const matching = items.sort().filter((item) => item.toLowerCase().includes(value.toLowerCase()));
+            const matching = items
+                .sort()
+                .filter((item) => item.display && item.display.toLowerCase().includes(value.toLowerCase()));
             setSuggestions(matching.slice(0, 5));
         } else {
             setSuggestions([]);
         }
     };
 
-    const handleSelect = (selected: string) => {
-        setValue(selected);
+    const handleSelect = (selected: ValueSetComposeIncludeConcept) => {
+        if (selected.display) {
+            setValue(selected.display);
+        }
         setSuggestions([]);
+        onChange(selected.code);
     };
 
     const getHighlightedText = (text: string, highlight: string) => {
         // Split text on highlight term, include term itself into parts, ignore case
         const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
         return (
-            <span>{parts.map((part) => (part.toLowerCase() === highlight.toLowerCase() ? <b>{part}</b> : part))}</span>
+            <span>
+                {parts.map((part) => (part.toLowerCase() === highlight.toLowerCase() ? <strong>{part}</strong> : part))}
+            </span>
         );
     };
 
@@ -39,13 +49,13 @@ const Typeahead = ({ items }: Props): JSX.Element => {
                 {suggestions?.map((suggestion, index) => (
                     <li
                         key={index}
-                        aria-label={suggestion}
+                        aria-label={suggestion.display}
                         role="button"
                         tabIndex={0}
-                        onKeyUp={(e) => e.key === 'Enter' && handleSelect(suggestion)}
-                        onClick={() => handleSelect(suggestion)}
+                        onKeyUp={(e) => e.key === 'Enter' && suggestion?.display && handleSelect(suggestion)}
+                        onClick={() => suggestion.display && handleSelect(suggestion)}
                     >
-                        <p>{getHighlightedText(suggestion, value)}</p>
+                        {suggestion.display && <p>{getHighlightedText(suggestion.display, value)}</p>}
                     </li>
                 ))}
             </ul>
