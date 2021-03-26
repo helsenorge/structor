@@ -9,7 +9,7 @@ import {
 import {
     addEmptyOptionToAnswerOptionArray,
     removeOptionFromAnswerOptionArray,
-    swapPositions,
+    reorderPositions,
     updateAnswerOption,
     updateAnswerOptionCode,
     updateAnswerOptionSystem,
@@ -100,7 +100,7 @@ const Choice = ({ item }: Props): JSX.Element => {
 
             if (fromIndex !== toIndex) {
                 const tempList = item.answerOption ? [...item.answerOption] : [];
-                dispatchUpdateItem(IItemProperty.answerOption, swapPositions(tempList, toIndex, fromIndex));
+                dispatchUpdateItem(IItemProperty.answerOption, reorderPositions(tempList, toIndex, fromIndex));
             }
         };
 

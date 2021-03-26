@@ -1,0 +1,19 @@
+.predefined-container {
+    display: flex;
+    padding-bottom: 50px;
+}
+
+.predefined-container>div {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.predefined-container>div:first-child {
+    margin-right: 20px;
+    border: 1px dotted black;
+}
+
+.predefined-container .value-set {
+    padding-top: 10px;
+}

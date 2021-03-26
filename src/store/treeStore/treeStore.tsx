@@ -49,6 +49,10 @@ import {
     UPDATE_ITEM_CODE_PROPERTY_ACTION,
     DeleteChildItemsAction,
     DELETE_CHILD_ITEMS_ACTION,
+    UPDATE_VALUESET_ACTION,
+    UpdateValueSetAction,
+    IMPORT_VALUESET_ACTION,
+    ImportValueSetAction,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -57,11 +61,13 @@ import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOpti
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { isItemControlDropDown } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
+import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 
 export type ActionType =
     | AddItemCodeAction
     | AddQuestionnaireLanguageAction
     | DeleteItemCodeAction
+    | ImportValueSetAction
     | RemoveQuestionnaireLanguageAction
     | UpdateItemCodePropertyAction
     | UpdateItemTranslationAction
@@ -80,6 +86,7 @@ export type ActionType =
     | UpdateLinkIdAction
     | UpdateMetadataTranslationAction
     | UpdateSidebarTranslationAction
+    | UpdateValueSetAction
     | RemoveItemAttributeAction
     | UpdateMarkedLinkId;
 
@@ -195,7 +202,7 @@ export const initialState: TreeState = {
         subjectType: ['Patient'],
         extension: [],
     },
-    qContained: [],
+    qContained: initPredefinedValueSet,
     qCurrentItemId: '',
     qAdditionalLanguages: {},
 };
@@ -436,7 +443,7 @@ function resetQuestionnaire(draft: TreeState, action: ResetQuestionnaireAction):
     draft.qOrder = newState.qOrder;
     draft.qItems = newState.qItems;
     draft.qMetadata = newState.qMetadata;
-    draft.qContained = newState.qContained;
+    draft.qContained = newState?.qContained;
     draft.qAdditionalLanguages = newState.qAdditionalLanguages;
 }
 
@@ -507,6 +514,19 @@ function appendValueSet(draft: TreeState, action: AppendValueSetAction): void {
     } else {
         draft.qContained = [action.valueSet];
     }
+}
+
+function updateValueSet(draft: TreeState, action: UpdateValueSetAction): void {
+    const indexToUpdate = draft?.qContained?.findIndex((x) => x.id === action.item.id);
+    if (draft.qContained && indexToUpdate && indexToUpdate >= 0) {
+        draft.qContained[indexToUpdate] = action.item;
+    } else {
+        draft.qContained = [...(draft?.qContained || []), action.item];
+    }
+}
+
+function importValueSet(draft: TreeState, action: ImportValueSetAction): void {
+    draft.qContained = [...(draft?.qContained || []), ...action.items];
 }
 
 function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
@@ -618,6 +638,12 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case APPEND_VALUESET_ACTION:
             appendValueSet(draft, action);
+            break;
+        case UPDATE_VALUESET_ACTION:
+            updateValueSet(draft, action);
+            break;
+        case IMPORT_VALUESET_ACTION:
+            importValueSet(draft, action);
             break;
         case UPDATE_LINK_ID_ACTION:
             updateLinkId(draft, action);

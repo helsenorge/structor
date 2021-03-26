@@ -14,7 +14,7 @@ type Props = {
 
 const Modal = ({ close, children, title, size = 'small', id, bottomCloseText }: Props): JSX.Element => {
     return (
-        <div className="overlay">
+        <div className="overlay align-everything">
             <div className={`modal ${size}`} id={id}>
                 <div className="title">
                     <IconBtn type="x" title="Lukk" onClick={close} />

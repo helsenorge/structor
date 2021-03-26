@@ -43,6 +43,8 @@ export const MOVE_ITEM_ACTION = 'moveItem';
 export const APPEND_VALUESET_ACTION = 'appendValueSet';
 export const UPDATE_LINK_ID_ACTION = 'updateLinkId';
 export const UPDATE_MARKED_LINK_ID = 'updateMarkedLinkId';
+export const UPDATE_VALUESET_ACTION = 'UPDATE_VALUESET';
+export const IMPORT_VALUESET_ACTION = 'IMPORT_VALUESET';
 
 type ItemValueType =
     | string
@@ -200,6 +202,16 @@ export interface MoveItemAction {
 export interface AppendValueSetAction {
     type: typeof APPEND_VALUESET_ACTION;
     valueSet: ValueSet;
+}
+
+export interface UpdateValueSetAction {
+    type: typeof UPDATE_VALUESET_ACTION;
+    item: ValueSet;
+}
+
+export interface ImportValueSetAction {
+    type: typeof IMPORT_VALUESET_ACTION;
+    items: ValueSet[];
 }
 
 export const updateMarkedLinkIdAction = (markedLinkId: string): UpdateMarkedLinkId => {
@@ -518,5 +530,19 @@ export const appendValueSetAction = (valueSet: ValueSet): AppendValueSetAction =
     return {
         type: APPEND_VALUESET_ACTION,
         valueSet,
+    };
+};
+
+export const updateValueSetAction = (item: ValueSet): UpdateValueSetAction => {
+    return {
+        type: UPDATE_VALUESET_ACTION,
+        item,
+    };
+};
+
+export const importValueSetAction = (items: ValueSet[]): ImportValueSetAction => {
+    return {
+        type: IMPORT_VALUESET_ACTION,
+        items,
     };
 };
