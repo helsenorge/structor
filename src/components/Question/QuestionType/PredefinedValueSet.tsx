@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { appendValueSetAction, updateItemAction } from '../../../store/treeStore/treeActions';
+import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { ValueSetComposeIncludeConcept } from '../../../types/fhir';
 import { IItemProperty } from '../../../types/IQuestionnareItemType';
