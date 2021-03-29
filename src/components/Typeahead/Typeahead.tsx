@@ -10,7 +10,7 @@ type Props = {
 };
 
 const Typeahead = ({ items, onChange, defaultValue, placeholder }: Props): JSX.Element => {
-    const ref = useRef(null);
+    const ref = useRef(null) as React.RefObject<HTMLInputElement>;
 
     const [value, setValue] = useState<string>(defaultValue || '');
     const [suggestions, setSuggestions] = useState<ValueSetComposeIncludeConcept[]>([]);
@@ -40,7 +40,13 @@ const Typeahead = ({ items, onChange, defaultValue, placeholder }: Props): JSX.E
         const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
         return (
             <span>
-                {parts.map((part) => (part.toLowerCase() === highlight.toLowerCase() ? <strong>{part}</strong> : part))}
+                {parts.map((part, index) =>
+                    part.toLowerCase() === highlight.toLowerCase() ? (
+                        <strong key={`${index}-part`}>{part}</strong>
+                    ) : (
+                        part
+                    ),
+                )}
             </span>
         );
     };
@@ -57,9 +63,7 @@ const Typeahead = ({ items, onChange, defaultValue, placeholder }: Props): JSX.E
     };
 
     const handleClickOutside = (event: MouseEvent) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        if (ref.current.contains(event.target)) {
+        if (ref.current?.contains(event.target as Node)) {
             return;
         }
         setSuggestions([]);
@@ -82,7 +86,7 @@ const Typeahead = ({ items, onChange, defaultValue, placeholder }: Props): JSX.E
             <ul>
                 {suggestions?.map((suggestion, index) => (
                     <li
-                        key={index}
+                        key={`${index}-suggestion`}
                         aria-label={suggestion.display}
                         role="button"
                         tabIndex={0}
