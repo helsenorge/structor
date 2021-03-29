@@ -13,12 +13,12 @@ const Typeahead = ({ items, onChange, defaultValue }: Props): JSX.Element => {
     const [suggestions, setSuggestions] = useState<ValueSetComposeIncludeConcept[]>([]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setValue(value);
-        if (value.length >= 2) {
-            const matching = items
+        const target = e.target.value;
+        setValue(target);
+        if (target.length >= 2) {
+            const matching = [...items]
                 .sort()
-                .filter((item) => item.display && item.display.toLowerCase().includes(value.toLowerCase()));
+                .filter((item) => item.display && item.display.toLowerCase().includes(target.toLowerCase()));
             setSuggestions(matching.slice(0, 5));
         } else {
             setSuggestions([]);
