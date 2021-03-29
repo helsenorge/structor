@@ -1,5 +1,6 @@
 .typeahead {
     position: relative;
+    padding-top: 5px;
 }
 
 .typeahead .input-wrapper {
@@ -29,6 +30,8 @@
     width: 100%;
     background: white;
     border: 1px solid black;
+    max-height: 328px;
+    overflow-y: scroll;
 }
 
 .typeahead li {
