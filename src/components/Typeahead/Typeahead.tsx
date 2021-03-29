@@ -6,9 +6,10 @@ type Props = {
     items: ValueSetComposeIncludeConcept[];
     onChange: (value: string) => void;
     defaultValue?: string;
+    placeholder?: string;
 };
 
-const Typeahead = ({ items, onChange, defaultValue }: Props): JSX.Element => {
+const Typeahead = ({ items, onChange, defaultValue, placeholder }: Props): JSX.Element => {
     const [value, setValue] = useState<string>(defaultValue || '');
     const [suggestions, setSuggestions] = useState<ValueSetComposeIncludeConcept[]>([]);
 
@@ -34,7 +35,6 @@ const Typeahead = ({ items, onChange, defaultValue }: Props): JSX.Element => {
     };
 
     const getHighlightedText = (text: string, highlight: string) => {
-        // Split text on highlight term, include term itself into parts, ignore case
         const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
         return (
             <span>
@@ -66,7 +66,7 @@ const Typeahead = ({ items, onChange, defaultValue }: Props): JSX.Element => {
         <div className="typeahead">
             <div className="input-wrapper">
                 <i className="search-icon" />
-                <input onChange={handleChange} placeholder="Søk etter lykken.." value={value} type="text" />
+                <input onChange={handleChange} placeholder={placeholder || 'Søk..'} value={value} type="text" />
                 {value.length > 0 && (
                     <i
                         className="close-icon"
