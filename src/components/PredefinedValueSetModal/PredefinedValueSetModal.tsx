@@ -61,6 +61,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
     };
 
     const removeElement = (id?: string) => {
+        console.log(id, 'to remove');
         const compose = { ...newValueSet.compose };
         const conceptToDelete = compose.include[0].concept?.findIndex((x) => x && x.id === id);
         if (conceptToDelete || conceptToDelete === 0) {

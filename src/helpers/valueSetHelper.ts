@@ -20,7 +20,11 @@ export const addIDToValueSet = (compose: ValueSetCompose): ValueSetCompose => {
 export const addPredefinedValueSet = (valueSets?: ValueSet[]): ValueSet[] => {
     const avalibleValueSets = valueSets?.map((x) => x.id) || ([] as string[]);
 
-    const valueSetsToAdd = initPredefinedValueSet.filter((x) => !avalibleValueSets?.includes(x.id));
+    const predefinedValueSetsToAdd = initPredefinedValueSet.filter((x) => !avalibleValueSets?.includes(x.id));
 
-    return [...valueSetsToAdd, ...(valueSets || [])];
+    const importedValueSets = [...(valueSets || [])].map((x) => {
+        return { ...x, compose: x.compose ? addIDToValueSet(x.compose) : x.compose };
+    });
+
+    return [...predefinedValueSetsToAdd, ...importedValueSets];
 };
