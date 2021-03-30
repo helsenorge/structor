@@ -199,11 +199,6 @@ export interface MoveItemAction {
     newOrder: string[];
 }
 
-export interface AppendValueSetAction {
-    type: typeof APPEND_VALUESET_ACTION;
-    valueSet: ValueSet;
-}
-
 export interface UpdateValueSetAction {
     type: typeof UPDATE_VALUESET_ACTION;
     item: ValueSet;
@@ -523,13 +518,6 @@ export const moveItemAction = (linkId: string, newOrder: string[], oldOrder: str
         linkId,
         newOrder,
         oldOrder,
-    };
-};
-
-export const appendValueSetAction = (valueSet: ValueSet): AppendValueSetAction => {
-    return {
-        type: APPEND_VALUESET_ACTION,
-        valueSet,
     };
 };
 
