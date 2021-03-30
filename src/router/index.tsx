@@ -5,6 +5,7 @@ import TreeForm from '../views/treeForm';
 import FormBuilder from '../views/FormBuilder';
 import { TreeContextProvider } from '../store/treeStore/treeStore';
 import MainMenu from '../views/MainMenu';
+import Login from '../views/Login';
 
 export default function Routes(): JSX.Element {
     return (
@@ -23,6 +24,9 @@ export default function Routes(): JSX.Element {
                 <TreeContextProvider>
                     <FormBuilder />
                 </TreeContextProvider>
+            </Route>
+            <Route path="/login" exact>
+                <Login />
             </Route>
         </Switch>
     );

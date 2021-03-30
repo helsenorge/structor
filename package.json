@@ -20,7 +20,8 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "lint": "eslint ./src/**/*.{js,ts,tsx} --quiet --fix",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "functions": "netlify dev"
     },
     "eslintConfig": {
         "extends": [

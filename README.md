@@ -11,3 +11,8 @@ The FHIR specification defines [Questionnaires](https://www.hl7.org/fhir/questio
 ## Quickstart
 
 Either open the demo at [formdesigner.helsenorgelab.no/](https://formdesigner.helsenorgelab.no/) or clone this repo, install Typescript, run `npm install` and run `npm start`.
+
+
+## Netlify functions
+
+Run `npm install -g netlify-cli` before running npm run functions :)
