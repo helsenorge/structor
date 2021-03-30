@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import { appendValueSetAction, updateItemAction } from '../../../store/treeStore/treeActions';
+import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { ValueSetComposeIncludeConcept } from '../../../types/fhir';
 import { IItemProperty } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
 import RadioBtn from '../../RadioBtn/RadioBtn';
 import Select from '../../Select/Select';
+import Typeahead from '../../Typeahead/Typeahead';
 
 type Props = {
     linkId: string;
@@ -26,16 +27,25 @@ const PredefinedValueSet = ({ linkId, selectedValueSet }: Props): JSX.Element =>
         return [];
     };
 
-    const containedValueSets = qContained?.map((valueSet) => {
-        return {
-            code: valueSet.id,
-            display: valueSet.title,
-        } as ValueSetComposeIncludeConcept;
-    });
+    const containedValueSets =
+        qContained?.map((valueSet) => {
+            return {
+                code: valueSet.id,
+                display: valueSet.title,
+            } as ValueSetComposeIncludeConcept;
+        }) || [];
 
     const handleDisplaySelected = () => {
         if (selectedValueSet && selectedValueSet.indexOf('#') >= 0) {
             return selectedValueSet.substring(1);
+        }
+        return '';
+    };
+
+    const handleDisplaySelectedTitle = () => {
+        if (selectedValueSet && selectedValueSet.indexOf('#') >= 0) {
+            const id = selectedValueSet.substring(1);
+            return qContained?.find((x) => x.id === id)?.title || '';
         }
         return '';
     };
@@ -51,23 +61,37 @@ const PredefinedValueSet = ({ linkId, selectedValueSet }: Props): JSX.Element =>
         return undefined;
     };
 
+    const handleSelectedValueSet = (id: string) => {
+        const valueSet = qContained?.find((x) => x.id === id);
+        if (valueSet) {
+            dispatch(updateItemAction(linkId, IItemProperty.answerValueSet, `#${id}`));
+        }
+    };
+
+    const handleSelect = () => {
+        if (containedValueSets.length > 5) {
+            return (
+                <Typeahead
+                    defaultValue={handleDisplaySelectedTitle()}
+                    items={containedValueSets}
+                    onChange={handleSelectedValueSet}
+                />
+            );
+        }
+
+        return (
+            <Select
+                value={handleDisplaySelected()}
+                options={containedValueSets || []}
+                onChange={(event) => handleSelectedValueSet(event.target.value)}
+                placeholder="Velg et alternativ.."
+            />
+        );
+    };
+
     return (
         <div>
-            <FormField label="Velg spørsmål">
-                <Select
-                    value={handleDisplaySelected()}
-                    options={containedValueSets || []}
-                    onChange={(event) => {
-                        const id = event.target.value;
-                        const valueSet = qContained?.find((x) => x.id === id);
-                        if (valueSet) {
-                            dispatch(updateItemAction(linkId, IItemProperty.answerValueSet, `#${id}`));
-                            dispatch(appendValueSetAction(valueSet));
-                        }
-                    }}
-                    placeholder="Velg et alternativ.."
-                />
-            </FormField>
+            <FormField label="Velg spørsmålsett">{handleSelect()}</FormField>
             <FormField>{renderPreDefinedValueSet()}</FormField>
         </div>
     );

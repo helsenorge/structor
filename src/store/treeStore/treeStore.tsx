@@ -5,8 +5,6 @@ import { QuestionnaireItem, ValueSet } from '../../types/fhir';
 import {
     ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
     AddQuestionnaireLanguageAction,
-    APPEND_VALUESET_ACTION,
-    AppendValueSetAction,
     DELETE_ITEM_ACTION,
     DeleteItemAction,
     DUPLICATE_ITEM_ACTION,
@@ -82,7 +80,6 @@ export type ActionType =
     | DuplicateItemAction
     | ReorderItemAction
     | MoveItemAction
-    | AppendValueSetAction
     | UpdateContainedValueSetTranslationAction
     | UpdateLinkIdAction
     | UpdateMetadataTranslationAction
@@ -505,18 +502,6 @@ function reorderItem(draft: TreeState, action: ReorderItemAction): void {
     arrayToReorderFrom.splice(action.newIndex, 0, movedOrderItem[0]);
 }
 
-function appendValueSet(draft: TreeState, action: AppendValueSetAction): void {
-    const valueSetExists = draft.qContained && !!draft.qContained.find((x) => x.id === action.valueSet.id);
-    if (valueSetExists) {
-        return;
-    }
-    if (draft.qContained && draft.qContained.length > 0) {
-        draft.qContained = [...draft.qContained, action.valueSet];
-    } else {
-        draft.qContained = [action.valueSet];
-    }
-}
-
 function updateValueSet(draft: TreeState, action: UpdateValueSetAction): void {
     const indexToUpdate = draft?.qContained?.findIndex((x) => x.id === action.item.id);
     if (draft.qContained && indexToUpdate && indexToUpdate >= 0) {
@@ -636,9 +621,6 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case MOVE_ITEM_ACTION:
             moveItem(draft, action);
-            break;
-        case APPEND_VALUESET_ACTION:
-            appendValueSet(draft, action);
             break;
         case UPDATE_VALUESET_ACTION:
             updateValueSet(draft, action);
