@@ -9,6 +9,7 @@ import PublishModal from '../PublishModal/PublishModal';
 import JSONView from '../JSONView/JSONView';
 import PredefinedValueSetModal from '../PredefinedValueSetModal/PredefinedValueSetModal';
 import ImportValueSet from '../ImportValueSet/ImportValueSet';
+import { saveAction } from '../../store/treeStore/treeActions';
 
 type Props = {
     newQuestionnaire: () => void;
@@ -23,7 +24,7 @@ enum MenuItem {
 }
 
 const Navbar = ({ newQuestionnaire, showFormFiller, uploadQuestionnaire }: Props): JSX.Element => {
-    const { state } = useContext(TreeContext);
+    const { state, dispatch } = useContext(TreeContext);
     const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
     const [showContained, setShowContained] = useState(false);
     const [showImportValueSet, setShowImportValueSet] = useState(false);
@@ -72,6 +73,7 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadQuestionnaire }: Props
             a.click();
             document.body.removeChild(a);
         }
+        dispatch(saveAction());
     }
 
     const handleMenuItemClick = (clickedItem: MenuItem) => {

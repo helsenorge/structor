@@ -226,6 +226,7 @@ function mapToTreeState(resource: Bundle | Questionnaire): TreeState {
     const { qItems, qOrder } = extractItemsAndOrder(mainQuestionnaire.item);
 
     const newState: TreeState = {
+        isDirty: false,
         qItems,
         qOrder,
         qMetadata,

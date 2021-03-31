@@ -21,6 +21,7 @@ const FormBuilder = (): JSX.Element => {
     const [isLoading, setIsLoading] = useState(false);
     const [stateFromStorage, setStateFromStorage] = useState<TreeState>();
     const [internalQId, setInternalQId] = useState(createUUID());
+    const [displayVerifyReset, setDisplayVerifyReset] = useState(false);
 
     const getStoredQuestionnaire = async () => {
         const indexedDbState = await getStateFromDb();
@@ -31,7 +32,7 @@ const FormBuilder = (): JSX.Element => {
         return stateFromStorage?.qItems ? Object.keys(stateFromStorage.qItems).length > 0 : false;
     };
 
-    const getConfirmContent = (): JSX.Element => {
+    const getConfirmRestoreContent = (): JSX.Element => {
         return (
             <div>
                 <p>Det ser ut til at du har jobbet med et skjema tidligere:</p>
@@ -50,6 +51,15 @@ const FormBuilder = (): JSX.Element => {
                 <p>Ønsker du å fortsette med dette skjemaet?</p>
             </div>
         );
+    };
+
+    const resetQuestionnaire = () => {
+        if (state.isDirty && state.qItems && Object.keys(state.qItems).length > 0) {
+            setDisplayVerifyReset(true);
+        } else {
+            setInternalQId(createUUID());
+            dispatch(resetQuestionnaireAction());
+        }
     };
 
     useEffect(() => {
@@ -82,10 +92,7 @@ const FormBuilder = (): JSX.Element => {
     return (
         <>
             <Navbar
-                newQuestionnaire={() => {
-                    setInternalQId(createUUID());
-                    dispatch(resetQuestionnaireAction());
-                }}
+                newQuestionnaire={resetQuestionnaire}
                 showFormFiller={() => setShowPreview(!showPreview)}
                 uploadQuestionnaire={uploadQuestionnaire}
             />
@@ -102,7 +109,24 @@ const FormBuilder = (): JSX.Element => {
                     title="Gjenopprett skjema..."
                     id="confirm-use-stored-state"
                 >
-                    {getConfirmContent()}
+                    {getConfirmRestoreContent()}
+                </Confirm>
+            )}
+            {displayVerifyReset && (
+                <Confirm
+                    onConfirm={() => {
+                        setInternalQId(createUUID());
+                        dispatch(resetQuestionnaireAction());
+                        setDisplayVerifyReset(false);
+                    }}
+                    onDeny={() => {
+                        setDisplayVerifyReset(false);
+                    }}
+                    title="Husk å lagre..."
+                    id="confirm-reset"
+                >
+                    Du har gjort endringer som ikke er lagret. Ønsker du allikevel å begynne på et nytt skjema?
+                    (Endringene vil gå tapt)
                 </Confirm>
             )}
             {isLoading && (

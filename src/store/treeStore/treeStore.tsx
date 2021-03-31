@@ -3,12 +3,22 @@ import produce from 'immer';
 
 import { QuestionnaireItem, ValueSet } from '../../types/fhir';
 import {
+    ADD_ITEM_CODE_ACTION,
     ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
+    AddItemCodeAction,
     AddQuestionnaireLanguageAction,
+    DELETE_CHILD_ITEMS_ACTION,
     DELETE_ITEM_ACTION,
+    DELETE_ITEM_CODE_ACTION,
+    DeleteChildItemsAction,
     DeleteItemAction,
+    DeleteItemCodeAction,
     DUPLICATE_ITEM_ACTION,
     DuplicateItemAction,
+    IMPORT_VALUESET_ACTION,
+    ImportValueSetAction,
+    MOVE_ITEM_ACTION,
+    MoveItemAction,
     NEW_ITEM_ACTION,
     NewItemAction,
     REMOVE_ITEM_ATTRIBUTE_ACTION,
@@ -19,8 +29,11 @@ import {
     ReorderItemAction,
     RESET_QUESTIONNAIRE_ACTION,
     ResetQuestionnaireAction,
+    SAVE_ACTION,
+    SaveAction,
     UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION,
     UPDATE_ITEM_ACTION,
+    UPDATE_ITEM_CODE_PROPERTY_ACTION,
     UPDATE_ITEM_OPTION_TRANSLATION_ACTION,
     UPDATE_ITEM_TRANSLATION_ACTION,
     UPDATE_LINK_ID_ACTION,
@@ -28,8 +41,10 @@ import {
     UPDATE_METADATA_TRANSLATION_ACTION,
     UPDATE_QUESTIONNAIRE_METADATA_ACTION,
     UPDATE_SIDEBAR_TRANSLATION_ACTION,
+    UPDATE_VALUESET_ACTION,
     UpdateContainedValueSetTranslationAction,
     UpdateItemAction,
+    UpdateItemCodePropertyAction,
     UpdateItemOptionTranslationAction,
     UpdateItemTranslationAction,
     UpdateLinkIdAction,
@@ -37,20 +52,7 @@ import {
     UpdateMetadataTranslationAction,
     UpdateQuestionnaireMetadataAction,
     UpdateSidebarTranslationAction,
-    MoveItemAction,
-    MOVE_ITEM_ACTION,
-    AddItemCodeAction,
-    DeleteItemCodeAction,
-    UpdateItemCodePropertyAction,
-    ADD_ITEM_CODE_ACTION,
-    DELETE_ITEM_CODE_ACTION,
-    UPDATE_ITEM_CODE_PROPERTY_ACTION,
-    DeleteChildItemsAction,
-    DELETE_CHILD_ITEMS_ACTION,
-    UPDATE_VALUESET_ACTION,
     UpdateValueSetAction,
-    IMPORT_VALUESET_ACTION,
-    ImportValueSetAction,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -87,6 +89,7 @@ export type ActionType =
     | UpdateSidebarTranslationAction
     | UpdateValueSetAction
     | RemoveItemAttributeAction
+    | SaveAction
     | UpdateMarkedLinkId;
 
 export interface Items {
@@ -146,6 +149,7 @@ export interface OrderItem {
 }
 
 export interface TreeState {
+    isDirty: boolean;
     qItems: Items;
     qOrder: OrderItem[];
     qMetadata: IQuestionnaireMetadata;
@@ -155,6 +159,7 @@ export interface TreeState {
 }
 
 export const initialState: TreeState = {
+    isDirty: false,
     qItems: {},
     qOrder: [],
     qMetadata: {
@@ -439,6 +444,8 @@ function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value
 
 function resetQuestionnaire(draft: TreeState, action: ResetQuestionnaireAction): void {
     const newState: TreeState = action.newState || initialState;
+    draft.isDirty = newState.isDirty;
+    draft.qCurrentItemId = newState.qCurrentItemId;
     draft.qOrder = newState.qOrder;
     draft.qItems = newState.qItems;
     draft.qMetadata = newState.qMetadata;
@@ -565,6 +572,14 @@ function removeAttributeFromItem(draft: TreeState, action: RemoveItemAttributeAc
 }
 
 const reducer = produce((draft: TreeState, action: ActionType) => {
+    // Flag as dirty on all changes except reset, save and "scroll"
+    if (
+        action.type !== RESET_QUESTIONNAIRE_ACTION &&
+        action.type !== SAVE_ACTION &&
+        action.type !== UPDATE_MARKED_LINK_ID
+    ) {
+        draft.isDirty = true;
+    }
     switch (action.type) {
         case ADD_ITEM_CODE_ACTION:
             addItemCode(draft, action);
@@ -583,6 +598,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case RESET_QUESTIONNAIRE_ACTION:
             resetQuestionnaire(draft, action);
+            break;
+        case SAVE_ACTION:
+            draft.isDirty = false;
             break;
         case UPDATE_QUESTIONNAIRE_METADATA_ACTION:
             updateQuestionnaireMetadataProperty(draft, action);
