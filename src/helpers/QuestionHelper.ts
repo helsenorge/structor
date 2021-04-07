@@ -126,7 +126,7 @@ export const checkboxExtension = [
 export const enableWhenOperatorBoolean: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
-        display: 'Eksisterer',
+        display: 'Er besvart',
     },
     {
         code: IOperator.equal,
@@ -141,7 +141,7 @@ export const enableWhenOperatorBoolean: ValueSetComposeIncludeConcept[] = [
 export const enableWhenOperatorChoice: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
-        display: 'Eksisterer',
+        display: 'Er besvart',
     },
     {
         code: IOperator.equal,
@@ -156,7 +156,7 @@ export const enableWhenOperatorChoice: ValueSetComposeIncludeConcept[] = [
 export const enableWhenOperatorDate: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
-        display: 'Eksisterer',
+        display: 'Er besvart',
     },
     {
         code: IOperator.equal,
@@ -187,7 +187,7 @@ export const enableWhenOperatorDate: ValueSetComposeIncludeConcept[] = [
 export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
-        display: 'Eksisterer',
+        display: 'Er besvart',
     },
     {
         code: IOperator.equal,
