@@ -113,9 +113,15 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
                                                             item = {
                                                                 question: x.question,
                                                                 operator: event.target.value,
+                                                                answerBoolean: true,
                                                             } as QuestionnaireItemEnableWhen;
                                                         } else if (index === ewIndex) {
                                                             item = { ...x, operator: event.target.value };
+                                                            if (item.answerBoolean) {
+                                                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                                                //@ts-expect-error
+                                                                delete item.answerBoolean;
+                                                            }
                                                         }
                                                         return item;
                                                     });
