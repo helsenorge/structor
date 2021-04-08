@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { ItemControlType } from '../../helpers/itemControl';
 import { deleteItemAction, newItemSidebar, updateItemAction } from '../../store/treeStore/treeActions';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { Coding } from '../../types/fhir';
@@ -24,7 +25,7 @@ const Sidebar = (): JSX.Element => {
             state.qItems[x.linkId].type === IQuestionnaireItemType.text &&
             state.qItems[x.linkId].extension
                 ?.find((ex) => ex.url === IExtentionType.itemControl)
-                ?.valueCodeableConcept?.coding?.find((y) => y.code === 'sidebar'),
+                ?.valueCodeableConcept?.coding?.find((y) => y.code === ItemControlType.sidebar),
     );
 
     const findCurrentCode = (linkId: string) => {
