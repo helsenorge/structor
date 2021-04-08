@@ -6,7 +6,7 @@ import { isItemControlHelp, isItemControlHighlight, isItemControlInline, isItemC
 export const getEnableWhenConditionals = (
     state: TreeState,
     parentArray: string[],
-    linkId: string,
+    itemLinkId: string,
 ): ValueSetComposeIncludeConcept[] => {
     const createValueSetComposeIncludeConcept = (
         linkId: string,
@@ -72,5 +72,5 @@ export const getEnableWhenConditionals = (
             .concat(search(order[stopIndex].items, searchArray.slice(1), [...idArray, stopIndex + 1]));
     };
 
-    return search(state.qOrder, [...parentArray, linkId], []);
+    return search(state.qOrder, [...parentArray, itemLinkId], []);
 };
