@@ -19,6 +19,7 @@ import {
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TranslatableItemProperty } from '../../types/LanguageTypes';
 import { TreeState } from './treeStore';
+import { ItemControlType } from '../../helpers/itemControl';
 
 export const ADD_ITEM_CODE_ACTION = 'addItemCode';
 export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = 'addQuestionnaireLanguage';
@@ -380,7 +381,7 @@ export const newItemSidebar = (order: Array<string>): NewItemAction => {
                     coding: [
                         {
                             system: IExtentionType.itemControlValueSet,
-                            code: 'sidebar',
+                            code: ItemControlType.sidebar,
                         },
                     ],
                 },
@@ -437,7 +438,7 @@ export const newItemHelpIconAction = (order: Array<string>): NewItemAction => {
                     coding: [
                         {
                             system: IExtentionType.itemControlValueSet,
-                            code: 'help',
+                            code: ItemControlType.help,
                         },
                     ],
                 },

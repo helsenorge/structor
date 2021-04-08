@@ -7,6 +7,7 @@ export enum ItemControlType {
     help = 'help',
     sidebar = 'sidebar',
     dropdown = 'drop-down',
+    highlight = 'highlight',
 }
 
 const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefined => {
@@ -34,6 +35,10 @@ export const isItemControlDropDown = (item: QuestionnaireItem): boolean => {
 
 export const isItemControlHelp = (item: QuestionnaireItem): boolean => {
     return getItemControlType(item) === ItemControlType.help;
+};
+
+export const isItemControlHighlight = (item: QuestionnaireItem): boolean => {
+    return getItemControlType(item) === ItemControlType.highlight;
 };
 
 export const isItemControlSidebar = (item: QuestionnaireItem): boolean => {

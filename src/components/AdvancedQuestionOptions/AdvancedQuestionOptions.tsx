@@ -19,7 +19,7 @@ import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import Select from '../Select/Select';
 import { EnrichmentSet } from '../../helpers/QuestionHelper';
 import Btn from '../Btn/Btn';
-import { isIgnorableItem, isItemControlHelp, isItemControlInline } from '../../helpers/itemControl';
+import { isIgnorableItem, isItemControlHelp, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
 
@@ -74,7 +74,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     const getHighlight = () => {
         const hasItemControl = item?.extension?.find((x) => x.url === IExtentionType.itemControl);
-        return hasItemControl?.valueCodeableConcept?.coding?.find((x) => x.code === 'highlight');
+        return hasItemControl?.valueCodeableConcept?.coding?.find((x) => x.code === ItemControlType.highlight);
     };
 
     const dispatchHighLight = () => {
@@ -88,7 +88,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         coding: [
                             {
                                 system: IExtentionType.itemControlValueSet,
-                                code: 'highlight',
+                                code: ItemControlType.highlight,
                             },
                         ],
                     },

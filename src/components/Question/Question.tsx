@@ -26,7 +26,7 @@ import itemType, {
     typeIsSupportingValidation,
 } from '../../helpers/QuestionHelper';
 import { removeExtensionValue, updateExtensionValue, createDropdown } from '../../helpers/extensionHelper';
-import { isItemControlInline, isItemControlDropDown } from '../../helpers/itemControl';
+import { isItemControlInline, isItemControlDropDown, ItemControlType } from '../../helpers/itemControl';
 
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
@@ -279,7 +279,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                 {
                     url: IExtentionType.itemControl,
                     valueCodeableConcept: {
-                        coding: [{ system: IExtentionType.itemControlValueSet, code: 'inline' }],
+                        coding: [{ system: IExtentionType.itemControlValueSet, code: ItemControlType.inline }],
                     },
                 },
             ]);

@@ -1,30 +1,47 @@
 import { OrderItem, TreeState } from '../store/treeStore/treeStore';
-import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
+import { ValueSetComposeIncludeConcept } from '../types/fhir';
+import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { isItemControlHelp, isItemControlHighlight, isItemControlInline, isItemControlSidebar } from './itemControl';
 
 export const getEnableWhenConditionals = (
     state: TreeState,
     parentArray: string[],
     linkId: string,
 ): ValueSetComposeIncludeConcept[] => {
-    const createValueSetComposeIncludeConcept = (linkId: string, idArray: Array<number>, index: number) => {
-        const getQItem = (linkId: string): QuestionnaireItem => {
-            return state.qItems[linkId];
-        };
+    const createValueSetComposeIncludeConcept = (
+        linkId: string,
+        idArray: Array<number>,
+        index: number,
+    ): ValueSetComposeIncludeConcept[] => {
+        const qItem = state.qItems[linkId];
+
+        // ignore itemControl = help, itemControl = highlight, itemControl = sidebar, itemControl = inline, type = display
+        if (
+            isItemControlHelp(qItem) ||
+            isItemControlHighlight(qItem) ||
+            isItemControlSidebar(qItem) ||
+            isItemControlInline(qItem) ||
+            qItem.type === IQuestionnaireItemType.display
+        ) {
+            return [];
+        }
 
         // TODO: ignore items which cannot have enableWhen? (display, group, text.help, text.highlight...)
-        const itemText = `${'\xA0'.repeat(idArray.length * 4)}${getQItem(linkId).text || 'Ikke definert tittel'}`;
+        const itemText = `${'\xA0'.repeat(idArray.length * 4)}${qItem.text || 'Ikke definert tittel'}`;
         const displayText = itemText.length > 120 ? `${itemText?.substr(0, 120)}...` : itemText;
-        return {
-            code: linkId,
-            display: `${[...idArray, index + 1].join('.')} ${displayText}`,
-        };
+        return [
+            {
+                code: linkId,
+                display: `${[...idArray, index + 1].join('.')} ${displayText}`,
+            },
+        ];
     };
 
     const expandSubTree = (order: OrderItem, idArray: Array<number>): ValueSetComposeIncludeConcept[] => {
         return order.items.reduce((acc: ValueSetComposeIncludeConcept[], current: OrderItem, index: number) => {
             return [
                 ...acc,
-                createValueSetComposeIncludeConcept(current.linkId, idArray, index),
+                ...createValueSetComposeIncludeConcept(current.linkId, idArray, index),
                 ...expandSubTree(current, [...idArray, index + 1]),
             ];
         }, []);
@@ -46,7 +63,11 @@ export const getEnableWhenConditionals = (
             .reduce((acc: ValueSetComposeIncludeConcept[], current: OrderItem, index: number) => {
                 const expandedPart =
                     current.linkId === currentLinkId ? [] : expandSubTree(current, [...idArray, index + 1]);
-                return [...acc, createValueSetComposeIncludeConcept(current.linkId, idArray, index), ...expandedPart];
+                return [
+                    ...acc,
+                    ...createValueSetComposeIncludeConcept(current.linkId, idArray, index),
+                    ...expandedPart,
+                ];
             }, [])
             .concat(search(order[stopIndex].items, searchArray.slice(1), [...idArray, stopIndex + 1]));
     };
