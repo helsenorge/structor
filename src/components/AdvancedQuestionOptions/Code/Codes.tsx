@@ -9,6 +9,8 @@ import { Coding } from '../../../types/fhir';
 import createUUID from '../../../helpers/CreateUUID';
 import { ICodingProperty } from '../../../types/IQuestionnareItemType';
 import { TreeContext } from '../../../store/treeStore/treeStore';
+import SystemField from '../../FormField/SystemField';
+import { createSystemUUID } from '../../../helpers/systemHelper';
 import './Codes.css';
 
 type CodeProps = {
@@ -24,7 +26,7 @@ const Codes = ({ linkId }: CodeProps): JSX.Element => {
     });
 
     const createEmptyCode = (): Coding => {
-        return { code: '', display: '', system: '', id: createUUID() };
+        return { code: '', display: '', system: createSystemUUID(), id: createUUID() };
     };
 
     const updateCode = (index: number, prop: ICodingProperty, value: string) => {
@@ -51,13 +53,10 @@ const Codes = ({ linkId }: CodeProps): JSX.Element => {
                     </div>
                 </div>
                 <div className="horizontal full">
-                    <div className="form-field">
-                        <label>System</label>
-                        <input
-                            defaultValue={code.system}
-                            onBlur={(event) => updateCode(index, ICodingProperty.system, event.target.value)}
-                        />
-                    </div>
+                    <SystemField
+                        value={code.system}
+                        onBlur={(event) => updateCode(index, ICodingProperty.system, event.target.value)}
+                    />
                 </div>
                 <div className="center-text">
                     <Btn

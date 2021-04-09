@@ -55,11 +55,12 @@ import {
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
-import { createNewAnswerOption, createNewSystem } from '../../helpers/answerOptionHelper';
+import { createNewAnswerOption } from '../../helpers/answerOptionHelper';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { isItemControlDropDown } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
+import { createSystemUUID } from '../../helpers/systemHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -322,7 +323,7 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
         (action.itemValue === 'choice' || action.itemValue === 'open-choice') &&
         !draft.qItems[action.linkId].answerOption
     ) {
-        const system = createNewSystem();
+        const system = createSystemUUID();
         draft.qItems[action.linkId] = {
             ...draft.qItems[action.linkId],
             answerOption: [createNewAnswerOption(system), createNewAnswerOption(system)],

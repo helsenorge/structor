@@ -10,6 +10,8 @@ import FormField from '../FormField/FormField';
 import Modal from '../Modal/Modal';
 import './PredefinedValueSetModal.css';
 import { removeSpace } from '../../helpers/formatHelper';
+import SystemField from '../FormField/SystemField';
+import { createSystemUUID } from '../../helpers/systemHelper';
 
 type Props = {
     close: () => void;
@@ -28,7 +30,7 @@ const initValueSet = () =>
         compose: {
             include: [
                 {
-                    system: '',
+                    system: createSystemUUID(),
                     concept: [
                         {
                             id: createUUID(),
@@ -156,12 +158,10 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                             onChange={(event) => setNewValueSet({ ...newValueSet, publisher: event.target.value })}
                         />
                     </FormField>
-                    <FormField label="System">
-                        <input
-                            value={newValueSet.compose?.include[0].system}
-                            onChange={(event) => handleSystem(event.target.value)}
-                        />
-                    </FormField>
+                    <SystemField
+                        value={newValueSet.compose?.include[0].system}
+                        onBlur={(event) => handleSystem(event.target.value)}
+                    />
                     <div className="btn-group center-text">
                         <Btn onClick={addNewElement} title="+ Nytt valg" variant="secondary" size="small" />
                         <Btn onClick={dispatchValueSet} title="Lagre >" variant="primary" size="small" />
