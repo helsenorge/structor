@@ -23,7 +23,7 @@ import { TreeContext } from '../../../store/treeStore/treeStore';
 import { checkboxExtension } from '../../../helpers/QuestionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import AnswerOption from '../../AnswerOption/AnswerOption';
-import FormField from '../../FormField/FormField';
+import SystemField from '../../FormField/SystemField';
 
 type Props = {
     item: QuestionnaireItem;
@@ -157,17 +157,12 @@ const Choice = ({ item }: Props): JSX.Element => {
 
     return (
         <>
-            <FormField label="System">
-                <input
-                    placeholder="Legg inn system.."
-                    defaultValue={
-                        item.answerOption && item.answerOption.length > 0
-                            ? item.answerOption[0]?.valueCoding?.system
-                            : ''
-                    }
-                    onBlur={(event) => handleChangeSystem(event.target.value)}
-                />
-            </FormField>
+            <SystemField
+                value={
+                    item.answerOption && item.answerOption.length > 0 ? item.answerOption[0]?.valueCoding?.system : ''
+                }
+                onBlur={(event) => handleChangeSystem(event.target.value)}
+            />
             <div className="form-field">
                 <SwitchBtn
                     label="Flere valg mulig"
