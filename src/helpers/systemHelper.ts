@@ -1,7 +1,7 @@
 import createUUID from './CreateUUID';
 
 export const createSystemUUID = (): string => {
-    return `urn:uid:${createUUID()}-system`;
+    return `urn:uuid:${createUUID()}`;
 };
 
 export const isSystemValid = (system: string): boolean => {
