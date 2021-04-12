@@ -16,6 +16,7 @@ const SystemField = ({ value, onBlur }: Props): JSX.Element => {
         if (ref.current) {
             ref.current.value = value || '';
         }
+        setHasValidSystem(isSystemValid(value || ''));
     }, [value]);
 
     return (
@@ -31,7 +32,7 @@ const SystemField = ({ value, onBlur }: Props): JSX.Element => {
             />
             {!hasValidSystem && (
                 <div className="msg-error" aria-live="polite">
-                    System må begynne med urn:, http: eller https:
+                    System må begynne med http://, https:// eller urn:
                 </div>
             )}
         </FormField>
