@@ -10,6 +10,7 @@ import { reorderItemAction } from '../../store/treeStore/treeActions';
 interface AnchorMenuProps {
     qOrder: OrderItem[];
     qItems: Items;
+    toggleFormDetails: () => void;
     dispatch: React.Dispatch<ActionType>;
 }
 
@@ -30,6 +31,9 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     return (
         <div className="anchor-menu">
             <p className="align-header">Skjemaoversikt</p>
+            <div>
+                <button onClick={props.toggleFormDetails}>Detaljer</button>
+            </div>
             <DragDropContext onDragEnd={handleChange}>
                 <SubAnchor
                     items={props.qOrder}
@@ -61,5 +65,5 @@ export default React.memo(AnchorMenu, (prevProps: AnchorMenuProps, nextProps: An
                 (key: string) => `${nextProps.qItems[key].text}${nextProps.qItems[key].type}`,
             ),
         );
-    return isOrderEqual && areItemsEqual;
+    return isOrderEqual && areItemsEqual && prevProps.toggleFormDetails === nextProps.toggleFormDetails;
 });

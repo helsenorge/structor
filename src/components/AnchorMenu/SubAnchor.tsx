@@ -4,6 +4,7 @@ import { Items, OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import { isIgnorableItem } from '../../helpers/itemControl';
+import { updateMarkedLinkIdAction } from '../../store/treeStore/treeActions';
 
 type SubAnchorProps = {
     parentItem: string;
@@ -17,14 +18,14 @@ type SubAnchorProps = {
 const SubAnchor = (props: SubAnchorProps): JSX.Element => {
     const grid = 8;
 
-    const { state } = useContext(TreeContext);
+    const { state, dispatch } = useContext(TreeContext);
 
     const getBackgroundColor = (isDragging: boolean, linkId: string) => {
         if (isDragging) {
             return 'lightgreen';
         }
 
-        if (linkId === state.qCurrentItemId) {
+        if (linkId === state.qCurrentItem?.linkId) {
             return '#93bdd4';
         }
 
@@ -58,11 +59,8 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
         }
     };
 
-    const handleScrollTo = (id: string) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
-        }
+    const selectItem = (id: string) => {
+        dispatch(updateMarkedLinkIdAction(id, props.parentArray));
     };
 
     const removeUnsupportedChildren = (items: OrderItem[], parentLinkId?: string) => {
@@ -97,7 +95,7 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                         <div
                                             className="anchor-content"
                                             onClick={() => {
-                                                handleScrollTo(item.linkId);
+                                                selectItem(item.linkId);
                                             }}
                                         >
                                             <span

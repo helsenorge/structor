@@ -9,7 +9,7 @@ import {
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { ChangeEvent } from 'react';
 import {
     deleteChildItemsAction,
     deleteItemAction,
@@ -17,7 +17,6 @@ import {
     newItemAction,
     removeItemAttributeAction,
     updateItemAction,
-    updateMarkedLinkIdAction,
 } from '../../store/treeStore/treeActions';
 import itemType, {
     ATTACHMENT_DEFAULT_MAX_SIZE,
@@ -26,8 +25,8 @@ import itemType, {
     typeIsSupportingValidation,
     valueSetTqqcCoding,
 } from '../../helpers/QuestionHelper';
-import { removeExtensionValue, updateExtensionValue, createDropdown } from '../../helpers/extensionHelper';
-import { isItemControlInline, isItemControlDropDown, ItemControlType } from '../../helpers/itemControl';
+import { createDropdown, removeExtensionValue, updateExtensionValue } from '../../helpers/extensionHelper';
+import { isItemControlDropDown, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
 
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
@@ -297,30 +296,8 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const canCreateChild = props.item.type !== IQuestionnaireItemType.display && !isItemControlInline(props.item);
 
-    const observed = (elements: IntersectionObserverEntry[]) => {
-        if (elements[0].intersectionRatio > 0.5) {
-            props.dispatch(updateMarkedLinkIdAction(props.item.linkId));
-        }
-    };
-
-    useEffect(() => {
-        const options = {
-            root: null,
-            rootMargin: '52px 0px 0px 0px',
-            threshold: [0.5],
-        };
-
-        const myObserver = new IntersectionObserver(observed, options);
-
-        const myEl = document.getElementById(props.item.linkId);
-
-        if (myEl) {
-            myObserver.observe(myEl);
-        }
-    }, []);
-
     return (
-        <div className="question" style={{ marginLeft: props.parentArray.length * 32 }} id={props.item.linkId}>
+        <div className="question" id={props.item.linkId}>
             <div className="question-header">
                 <h2>
                     Element <span>{props.questionNumber}</span>

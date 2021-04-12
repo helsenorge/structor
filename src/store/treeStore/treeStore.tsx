@@ -144,12 +144,17 @@ export interface OrderItem {
     items: Array<OrderItem>;
 }
 
+export interface MarkedItem {
+    linkId: string;
+    parentArray: Array<string>;
+}
+
 export interface TreeState {
     qItems: Items;
     qOrder: OrderItem[];
     qMetadata: IQuestionnaireMetadata;
     qContained?: ValueSet[];
-    qCurrentItemId?: string;
+    qCurrentItem?: MarkedItem;
     qAdditionalLanguages?: Languages;
 }
 
@@ -201,7 +206,7 @@ export const initialState: TreeState = {
         extension: [],
     },
     qContained: initPredefinedValueSet,
-    qCurrentItemId: '',
+    qCurrentItem: undefined,
     qAdditionalLanguages: {},
 };
 
@@ -241,7 +246,7 @@ function getLinkIdOfAllSubItems(items: Array<OrderItem>, linkIds: Array<string>)
 }
 
 function updateMarkedItemId(draft: TreeState, action: UpdateMarkedLinkId): void {
-    draft.qCurrentItemId = action.linkId;
+    draft.qCurrentItem = { linkId: action.linkId, parentArray: action.parentArray };
 }
 
 function newItem(draft: TreeState, action: NewItemAction): void {
@@ -250,6 +255,7 @@ function newItem(draft: TreeState, action: NewItemAction): void {
     // find the correct place to add the new item
     const arrayToAddItemTo = findTreeArray(action.order, draft.qOrder);
     arrayToAddItemTo.push({ linkId: itemToAdd.linkId, items: [] });
+    draft.qCurrentItem = { linkId: itemToAdd.linkId, parentArray: action.order };
 }
 
 function moveItem(draft: TreeState, action: MoveItemAction): void {
@@ -263,6 +269,11 @@ function moveItem(draft: TreeState, action: MoveItemAction): void {
 
     // delete node from qOrder
     arrayToDeleteItemFrom.splice(indexToDelete, 1);
+
+    // update currentItem
+    if (draft.qCurrentItem) {
+        draft.qCurrentItem = { ...draft.qCurrentItem, parentArray: action.newOrder };
+    }
 }
 
 function deleteItemTranslations(linkIdToDelete: string, languages?: Languages) {
@@ -303,6 +314,7 @@ function deleteItem(draft: TreeState, action: DeleteItemAction): void {
 
     // delete node from qOrder
     arrayToDeleteItemFrom.splice(indexToDelete, 1);
+    draft.qCurrentItem = undefined;
 }
 
 function updateItem(draft: TreeState, action: UpdateItemAction): void {
@@ -443,6 +455,7 @@ function resetQuestionnaire(draft: TreeState, action: ResetQuestionnaireAction):
     draft.qMetadata = newState.qMetadata;
     draft.qContained = newState?.qContained;
     draft.qAdditionalLanguages = newState.qAdditionalLanguages;
+    draft.qCurrentItem = newState.qCurrentItem;
 }
 
 function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): void {
@@ -554,6 +567,11 @@ function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
             translation.items[newLinkId] = oldItemTranslation;
             delete translation.items[oldLinkId];
         });
+    }
+
+    // Update currentItem
+    if (draft.qCurrentItem) {
+        draft.qCurrentItem = { ...draft.qCurrentItem, linkId: newLinkId };
     }
 }
 
