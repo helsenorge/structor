@@ -6,11 +6,12 @@ import {
     ValueSet,
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
-import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IExtentionType, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import Picker from '../DatePicker/DatePicker';
 import DateTimePicker from '../DatePicker/DateTimePicker';
 import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
+import { isRecipientList } from '../../helpers/QuestionHelper';
 
 interface Props {
     conditionItem: QuestionnaireItem;
@@ -43,6 +44,14 @@ const EnableWhenAnswerTypes = ({
                     return { code: x.code, display: x.display };
                 });
             }
+        } else if (isRecipientList(conditionItem)) {
+            return (
+                conditionItem.extension
+                    ?.filter((ext) => ext.url === IExtentionType.optionReference)
+                    .map((ext) => {
+                        return { code: ext.valueReference?.reference || '', display: ext.valueReference?.display };
+                    }) || []
+            );
         }
         return [];
     };
@@ -54,7 +63,7 @@ const EnableWhenAnswerTypes = ({
                 <Select
                     placeholder="Velg et alternativ.."
                     options={getChoices(conditionItem)}
-                    value={enableWhen.answerCoding?.code}
+                    value={enableWhen.answerCoding?.code || enableWhen.answerReference?.reference}
                     onChange={(event) => {
                         const getSystem = () => {
                             if (conditionItem.answerValueSet) {
@@ -67,16 +76,25 @@ const EnableWhenAnswerTypes = ({
                             }
                         };
 
-                        const copy = itemEnableWhen?.map((x, ewIndex) => {
-                            return index === ewIndex
+                        const getUpdatedEnableWhen = (ew: QuestionnaireItemEnableWhen, value: string) => {
+                            return isRecipientList(conditionItem)
                                 ? {
-                                      ...x,
-                                      answerCoding: {
-                                          system: getSystem(),
-                                          code: event.target.value,
+                                      ...ew,
+                                      answerReference: {
+                                          reference: value,
                                       },
                                   }
-                                : x;
+                                : {
+                                      ...ew,
+                                      answerCoding: {
+                                          system: getSystem(),
+                                          code: value,
+                                      },
+                                  };
+                        };
+
+                        const copy = itemEnableWhen?.map((x, ewIndex) => {
+                            return index === ewIndex ? getUpdatedEnableWhen(x, event.target.value) : x;
                         });
                         dispatchUpdateItemEnableWhen(copy);
                     }}
