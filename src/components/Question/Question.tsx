@@ -24,6 +24,7 @@ import itemType, {
     QUANTITY_UNIT_TYPE_NOT_SELECTED,
     quantityUnitTypes,
     typeIsSupportingValidation,
+    valueSetTqqcCoding,
 } from '../../helpers/QuestionHelper';
 import { removeExtensionValue, updateExtensionValue, createDropdown } from '../../helpers/extensionHelper';
 import { isItemControlInline, isItemControlDropDown, ItemControlType } from '../../helpers/itemControl';
@@ -235,7 +236,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         const newType = event.target.value;
 
         dispatchClearExtension();
-        addDefaultExtensionsForItemType(newType);
+        addDefaultExtensionsAndAttributesForItemType(newType);
         cleanupChildItems(previousType);
 
         if (newType === IQuestionnaireItemType.predefined) {
@@ -259,12 +260,15 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     function cleanupChildItems(previousType: string) {
+        if (previousType === IQuestionnaireItemType.address) {
+            dispatchRemoveAttribute(IItemProperty.code);
+        }
         if (previousType === IQuestionnaireItemType.inline) {
             props.dispatch(deleteChildItemsAction(props.item.linkId, props.parentArray));
         }
     }
 
-    const addDefaultExtensionsForItemType = (type: string) => {
+    const addDefaultExtensionsAndAttributesForItemType = (type: string) => {
         if (type === IQuestionnaireItemType.attachment) {
             dispatchUpdateItem(IItemProperty.extension, [
                 {
@@ -287,6 +291,7 @@ const Question = (props: QuestionProps): JSX.Element => {
 
         if (type === IQuestionnaireItemType.address) {
             dispatchUpdateItem(IItemProperty.extension, [createDropdown]);
+            dispatchUpdateItem(IItemProperty.code, [valueSetTqqcCoding]);
         }
     };
 

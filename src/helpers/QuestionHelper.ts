@@ -1,5 +1,6 @@
-import { Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
+import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { CodingSystemType } from './systemHelper';
 
 const itemType = [
     {
@@ -31,7 +32,7 @@ const itemType = [
         code: IQuestionnaireItemType.predefined,
     },
     {
-        display: 'Mottaker liste',
+        display: 'Mottakerliste',
         code: IQuestionnaireItemType.address,
     },
     {
@@ -287,6 +288,16 @@ export const getGuidanceParameterName = (item?: QuestionnaireItem): string => {
 export const isValidGuidanceParameterName = (name: string): boolean => {
     const regExp = /^[A-Za-z0-9_]{1,254}$/;
     return regExp.test(name);
+};
+
+export const valueSetTqqcCoding: Coding = {
+    system: CodingSystemType.valueSetTqqc,
+    code: '1',
+    display: 'Technical endpoint for receiving QuestionnaireResponse',
+};
+
+export const isRecipientList = (item?: QuestionnaireItem): boolean => {
+    return (item?.code && item.code[0].system === CodingSystemType.valueSetTqqc) || false;
 };
 
 export default itemType;
