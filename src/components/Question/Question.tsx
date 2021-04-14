@@ -312,6 +312,11 @@ const Question = (props: QuestionProps): JSX.Element => {
         if (myEl) {
             myObserver.observe(myEl);
         }
+
+        return function cleanup() {
+            alert('cleanUP!');
+            myObserver.disconnect();
+        };
     }, []);
 
     return (

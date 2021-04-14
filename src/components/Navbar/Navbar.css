@@ -1,4 +1,11 @@
-.more-menu{
+header p {
+    margin: 0;
+    padding-right: 5px;
+    color: #d2d0d0;
+    line-height: 32px;
+}
+
+.more-menu {
     height: 32px;
     width: 32px;
     border-radius: 32px;
@@ -7,20 +14,20 @@
     cursor: pointer;
 }
 
-.more-menu:focus{
+.more-menu:focus {
     outline: none;
     background-color: #ffffff36;
 }
 
-.more-menu:hover{
+.more-menu:hover {
     background-color: #ffffff36;
 }
 
-.more-menu > img {
+.more-menu>img {
     filter: invert(100%);
 }
 
-.menu{
+.menu {
     position: absolute;
     top: 54px;
     width: 130px;
@@ -30,6 +37,6 @@
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.menu > button{
+.menu>button {
     width: 100%;
 }

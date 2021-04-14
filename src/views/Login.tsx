@@ -1,30 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import './Login.css';
+
 import SpinnerBox from '../components/Spinner/SpinnerBox';
+
+interface AuthPayload extends Response {
+    code_verifier: string;
+    auth_url: string;
+}
 
 const Login = (): JSX.Element => {
     const [error, setError] = useState('');
     useEffect(() => {
-        function delay(n: number) {
-            return new Promise(function (resolve) {
-                setTimeout(resolve, n * 1000);
-            });
-        }
-
         async function doFetch() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-            await delay(5);
-            if (code) {
-                try {
-                    let response = await fetch(`.netlify/functions/authorization-code?code=${code}`);
-                    response = await response.json();
-                    console.log(response);
-                    window.location.href = '/';
-                } catch (err) {
-                    console.error('Error!', err);
-                    setError(() => `Æsj da, koden: ${code} fungerte ikke som forventet, kontakt admin.`);
-                }
+            try {
+                const response = await fetch('.netlify/functions/authorization-code');
+                const payload = (await response.json()) as AuthPayload;
+                localStorage.setItem('code_verifier', payload.code_verifier);
+                location.href = payload.auth_url;
+            } catch (err) {
+                console.error('Error!', err);
+                setError(() => `Æsj da, noe gikk galt, kontakt admin.`);
             }
         }
 

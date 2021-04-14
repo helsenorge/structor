@@ -1,0 +1,15 @@
+{
+  "name": "authorization-code",
+  "version": "1.0.0",
+  "description": "",
+  "main": "authorization-code.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "openid-client": "^4.6.0"
+  }
+}

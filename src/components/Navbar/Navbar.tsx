@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import Btn from '../Btn/Btn';
@@ -18,6 +18,7 @@ type Props = {
 const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, showContained }: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
     const [menuIsVisible, setMenuIsVisible] = useState(false);
+    const history = useHistory();
 
     const getFileName = (): string => {
         const technicalName = state.qMetadata.name || 'skjema';
@@ -56,12 +57,23 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, s
         }
     };
 
+    function handleLogin() {
+        history.push('/login');
+    }
+
+    function handleEndSession() {
+        alert('ending session!');
+    }
+
     useEffect(() => {
         document.addEventListener('click', handleClickOutside, true);
         return () => {
             document.removeEventListener('click', handleClickOutside, true);
         };
     });
+
+    const cachedProfile = sessionStorage.getItem('profile');
+    const profile = cachedProfile ? JSON.parse(cachedProfile) : null;
 
     return (
         <header>
@@ -72,6 +84,7 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, s
             <div className="left"></div>
 
             <div className="pull-right">
+                {profile && <p title={`Du er logget inn som ${profile.name}`}>{profile.name}</p>}
                 <Btn title="Forhåndsvisning" onClick={showFormFiller} />
                 <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
                 <div
@@ -92,6 +105,8 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, s
                     <Btn title="Publiser" onClick={showAdmin} />
                     <Btn title="Importer valg" onClick={showImportValueSet} />
                     <Btn title="Valg" onClick={showContained} />
+                    {!profile && <Btn title="Logg inn" onClick={handleLogin} />}
+                    {profile && <Btn title="Logg ut" onClick={handleEndSession} />}
                 </div>
             )}
         </header>

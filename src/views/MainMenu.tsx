@@ -51,7 +51,7 @@ const MainMenu = (): JSX.Element => {
             }
         }
 
-        doFetch();
+        // doFetch();
     }, []);
 
     return (
