@@ -1,4 +1,5 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import Btn from '../Btn/Btn';
@@ -22,6 +23,10 @@ enum MenuItem {
     more = 'more',
 }
 
+type EndSessionPayload = {
+    url: string;
+};
+
 const Navbar = ({
     newQuestionnaire,
     showAdmin,
@@ -32,6 +37,7 @@ const Navbar = ({
     uploadQuestionnaire,
 }: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
+    const history = useHistory();
     const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
     const navBarRef = useRef<HTMLHeadingElement>(null);
 
@@ -86,6 +92,28 @@ const Navbar = ({
         }
     };
 
+    function handleLogin() {
+        history.push('/login');
+    }
+
+    async function endSession() {
+        try {
+            const response = await fetch('.netlify/functions/end-session');
+            const payload = (await response.json()) as EndSessionPayload;
+            location.href = payload.url;
+            sessionStorage.clear();
+        } catch (err) {
+            console.error('Error!', err);
+        }
+    }
+
+    async function handleEndSession() {
+        endSession();
+    }
+
+    const cachedProfile = sessionStorage.getItem('profile');
+    const profile = cachedProfile ? JSON.parse(cachedProfile) : null;
+
     return (
         <header ref={navBarRef}>
             <div>
@@ -112,6 +140,7 @@ const Navbar = ({
             <div className="left"></div>
 
             <div className="pull-right">
+                {profile && <p title={`Du er logget inn som ${profile.name}`}>{profile.name}</p>}
                 <Btn title="Forhåndsvisning" onClick={showFormFiller} />
                 <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
                 <div
@@ -132,6 +161,8 @@ const Navbar = ({
                     <Btn title="Publiser" onClick={() => callbackAndHide(showAdmin)} />
                     <Btn title="Importer valg" onClick={() => callbackAndHide(showImportValueSet)} />
                     <Btn title="Valg" onClick={() => callbackAndHide(showContained)} />
+                    {!profile && <Btn title="Logg inn" onClick={handleLogin} />}
+                    {profile && <Btn title="Logg ut" onClick={handleEndSession} />}
                 </div>
             )}
         </header>
