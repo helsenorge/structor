@@ -18,19 +18,20 @@ type Props = {
 const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, showContained }: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
     const [menuIsVisible, setMenuIsVisible] = useState(false);
+    const fileExtension = 'json';
 
     const getFileName = (): string => {
         const technicalName = state.qMetadata.name || 'skjema';
         const version = state.qMetadata.version ? `-v${state.qMetadata.version}` : '';
         if (state.qAdditionalLanguages && Object.values(state.qAdditionalLanguages).length < 1) {
-            return `${technicalName}-${state.qMetadata.language}${version}.json`;
+            return `${technicalName}-${state.qMetadata.language}${version}`;
         }
-        return `${technicalName}${version}.json`;
+        return `${technicalName}${version}`;
     };
 
     function exportToJsonAndDownload() {
         const questionnaire = generateQuestionnaire(state);
-        const filename = getFileName();
+        const filename = `${getFileName()}.${fileExtension}`;
         const contentType = 'application/json;charset=utf-8;';
 
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
@@ -70,6 +71,10 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, s
             </Link>
 
             <div className="left"></div>
+
+            <div style={{ width: '100%' }}>
+                <h1>{getFileName()}</h1>
+            </div>
 
             <div className="pull-right">
                 <Btn title="Forhåndsvisning" onClick={showFormFiller} />

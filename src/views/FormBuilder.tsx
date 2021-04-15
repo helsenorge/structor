@@ -3,10 +3,9 @@ import './FormBuilder.css';
 import { TreeContext } from '../store/treeStore/treeStore';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import React, { useCallback, useContext, useState } from 'react';
-import { newItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
+import { updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import FormFiller from '../components/FormFiller/FormFiller';
-import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import ImportValueSet from '../components/ImportValueSet/ImportValueSet';
 import JSONView from '../components/JSONView/JSONView';
@@ -27,11 +26,7 @@ const FormBuilder = (): JSX.Element => {
     const [showImportValueSet, setShowImportValueSet] = useState(false);
     const [showResults, setShowAdminMenu] = useState(false);
     const [showContained, setShowContained] = useState(false);
-    const [showFormDetails, setShowFormDetails] = useState(false);
-
-    const dispatchNewRootItem = () => {
-        dispatch(newItemAction(IQuestionnaireItemType.group, []));
-    };
+    const [showFormDetails, setShowFormDetails] = useState(true);
 
     const dispatchUpdateQuestionnaireMetadata = (propName: IQuestionnaireMetadataType, value: string) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
@@ -79,6 +74,7 @@ const FormBuilder = (): JSX.Element => {
                         qOrder={state.qOrder}
                         qItems={state.qItems}
                         toggleFormDetails={toggleFormDetails}
+                        areFormDetailsVisible={showFormDetails}
                     />
                 </div>
                 <div className="page-wrapper">
@@ -131,9 +127,6 @@ const FormBuilder = (): JSX.Element => {
                             />
                         )}
                     </div>
-                    <button className="section-button" onClick={dispatchNewRootItem}>
-                        Legg til element
-                    </button>
                 </div>
             </div>
         </>

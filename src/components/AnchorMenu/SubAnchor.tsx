@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
+
+import ItemButtons from './ItemButtons/ItemButtons';
+
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Items, OrderItem, TreeContext } from '../../store/treeStore/treeStore';
-
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import { isIgnorableItem } from '../../helpers/itemControl';
 import { updateMarkedLinkIdAction } from '../../store/treeStore/treeActions';
@@ -106,6 +108,11 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                                 {showHierarchy(index)}{' '}
                                                 {props.qItems[item.linkId].text || <i>Legg inn tekst</i>}
                                             </span>
+                                            <ItemButtons
+                                                item={props.qItems[item.linkId]}
+                                                parentArray={props.parentArray}
+                                                dispatch={dispatch}
+                                            />
                                             <span
                                                 {...provided.dragHandleProps}
                                                 className="reorder-icon"

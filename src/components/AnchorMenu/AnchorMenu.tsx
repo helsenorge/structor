@@ -4,17 +4,24 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import React from 'react';
 
 import SubAnchor from './SubAnchor';
+import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import { ActionType, Items, OrderItem } from '../../store/treeStore/treeStore';
-import { reorderItemAction } from '../../store/treeStore/treeActions';
+import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { newItemAction, reorderItemAction } from '../../store/treeStore/treeActions';
 
 interface AnchorMenuProps {
     qOrder: OrderItem[];
     qItems: Items;
+    areFormDetailsVisible: boolean;
     toggleFormDetails: () => void;
     dispatch: React.Dispatch<ActionType>;
 }
 
 const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
+    const dispatchNewRootItem = () => {
+        props.dispatch(newItemAction(IQuestionnaireItemType.group, []));
+    };
+
     const dispatchReorderItem = (linkId: string, newIndex: number, order: string[] = []) => {
         props.dispatch(reorderItemAction(linkId, order, newIndex));
     };
@@ -31,8 +38,13 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     return (
         <div className="anchor-menu">
             <p className="align-header">Skjemaoversikt</p>
-            <div>
-                <button onClick={props.toggleFormDetails}>Detaljer</button>
+            <div className="toggle">
+                <SwitchBtn
+                    onChange={props.toggleFormDetails}
+                    value={props.areFormDetailsVisible}
+                    label="Vis skjemainformasjon"
+                    initial
+                />
             </div>
             <DragDropContext onDragEnd={handleChange}>
                 <SubAnchor
@@ -48,6 +60,12 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                     Her vil du finne en oversikt over elementene i skjemaet.
                 </p>
             )}
+            <div className="floating-button">
+                <button className="new-item-button" onClick={dispatchNewRootItem}>
+                    <i className="add-icon large" aria-label="add element" title="Opprett element" />
+                    Legg til element på toppnivå
+                </button>
+            </div>
         </div>
     );
 };

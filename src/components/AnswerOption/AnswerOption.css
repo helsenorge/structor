@@ -26,5 +26,6 @@
 .reorder-icon{
     height: 25px;
     width: 25px;
+    min-width: 25px;
     background: url("../../images/icons/reorder-three-outline.svg") no-repeat center;
 }

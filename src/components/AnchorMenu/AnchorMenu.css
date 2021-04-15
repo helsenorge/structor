@@ -37,18 +37,21 @@
 .folder-icon {
     height: 25px;
     width: 25px;
+    min-width: 25px;
     background: url("../../images/icons/folder-outline.svg") no-repeat center;
 }
 
 .message-icon {
     height: 25px;
     width: 25px;
+    min-width: 25px;
     background: url("../../images/icons/information-circle-outline.svg") no-repeat center;
 }
 
 .question-icon {
     height: 25px;
     width: 25px;
+    min-width: 25px;
     background: url("../../images/icons/help-circle-outline.svg") no-repeat center;
 }
 
@@ -56,4 +59,38 @@
     padding: 16px;
     display: flex;
     align-items: center; 
+}
+
+.add-icon.large {
+    height: 60px;
+    width: 60px;
+}
+
+.floating-button {
+    background-color: white;
+    bottom: 0;
+    left: 0;
+    opacity: 80%;
+    position: fixed;
+    width: 380px;
+}
+
+.new-item-button {
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    font: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    margin: auto;
+    outline: inherit;
+    padding: 0;
+}
+
+.toggle {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px;
 }

@@ -12,8 +12,6 @@ import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../typ
 import React, { ChangeEvent } from 'react';
 import {
     deleteChildItemsAction,
-    deleteItemAction,
-    duplicateItemAction,
     newItemAction,
     removeItemAttributeAction,
     updateItemAction,
@@ -60,14 +58,6 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const dispatchNewChildItem = (type?: IQuestionnaireItemType): void => {
         props.dispatch(newItemAction(type || IQuestionnaireItemType.group, [...props.parentArray, props.item.linkId]));
-    };
-
-    const dispatchDeleteItem = (): void => {
-        props.dispatch(deleteItemAction(props.item.linkId, props.parentArray));
-    };
-
-    const dispatchDuplicateItem = (): void => {
-        props.dispatch(duplicateItemAction(props.item.linkId, props.parentArray));
     };
 
     const dispatchUpdateItem = (
@@ -294,25 +284,12 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
-    const canCreateChild = props.item.type !== IQuestionnaireItemType.display && !isItemControlInline(props.item);
-
     return (
         <div className="question" id={props.item.linkId}>
             <div className="question-header">
                 <h2>
                     Element <span>{props.questionNumber}</span>
                 </h2>
-                <button className="pull-right question-button" onClick={dispatchDuplicateItem}>
-                    <i className="duplicate-icon" aria-label="duplicate element" /> Dupliser
-                </button>
-                {canCreateChild && (
-                    <button className="question-button" onClick={() => dispatchNewChildItem()}>
-                        <i className="add-icon" aria-label="add child element" /> Oppfølgingsspørsmål
-                    </button>
-                )}
-                <button className="question-button" onClick={dispatchDeleteItem}>
-                    <i className="trash-icon" aria-label="remove element" /> Slett
-                </button>
             </div>
             <div className="question-form">
                 <div className="form-field">
