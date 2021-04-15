@@ -5,8 +5,12 @@
     "dependencies": {
         "@ckeditor/ckeditor5-react": "^3.0.0",
         "@helsenorge/ckeditor5-build-markdown": "^24.0.0",
+        "axios": "^0.21.1",
         "date-fns": "^2.17.0",
         "immer": "^8.0.1",
+        "jose": "^3.11.3",
+        "openid-client": "^4.6.0",
+        "qs": "^6.10.1",
         "react": "^17.0.1",
         "react-beautiful-dnd": "^13.0.0",
         "react-datepicker": "^3.5.0",

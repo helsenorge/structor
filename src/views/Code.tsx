@@ -1,37 +1,32 @@
 import React, { useEffect, useState } from 'react';
 
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import SpinnerBox from '../components/Spinner/SpinnerBox';
 
 const Code = (): JSX.Element => {
     const [error, setError] = useState('');
-    function useQuery() {
-        return new URLSearchParams(useLocation().search);
-    }
 
     const history = useHistory();
 
-    useEffect(() => {
-        async function getToken() {
-            const urlParams = window.location.search;
-            const code_verifier = localStorage.getItem('code_verifier');
+    async function getToken() {
+        const urlParams = window.location.search;
+        const code_verifier = localStorage.getItem('code_verifier');
 
-            if (urlParams && code_verifier) {
-                try {
-                    let response = await fetch(
-                        `.netlify/functions/get-token${urlParams}&code_verifier=${code_verifier}`,
-                    );
-                    response = await response.json();
-                    localStorage.setItem('code_verifier', '');
-                    sessionStorage.setItem('profile', JSON.stringify(response));
-                    history.replace('/new-create-form');
-                } catch (err) {
-                    console.error('Error!', err);
-                    setError(() => `Noe gikk galt, kontakt admin.`);
-                }
+        if (urlParams && code_verifier) {
+            try {
+                let response = await fetch(`.netlify/functions/get-token${urlParams}&code_verifier=${code_verifier}`);
+                response = await response.json();
+                localStorage.setItem('code_verifier', '');
+                sessionStorage.setItem('profile', JSON.stringify(response));
+                history.replace('/new-create-form');
+            } catch (err) {
+                console.error('Error!', err);
+                setError(() => `Noe gikk galt, kontakt admin.`);
             }
         }
+    }
 
+    useEffect(() => {
         getToken();
     }, []);
 

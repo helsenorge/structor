@@ -15,6 +15,10 @@ type Props = {
     showContained: () => void;
 };
 
+type EndSessionPayload = {
+    url: string;
+};
+
 const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, showContained }: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
     const [menuIsVisible, setMenuIsVisible] = useState(false);
@@ -61,8 +65,19 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, s
         history.push('/login');
     }
 
-    function handleEndSession() {
-        alert('ending session!');
+    async function endSession() {
+        try {
+            const response = await fetch('.netlify/functions/end-session');
+            const payload = (await response.json()) as EndSessionPayload;
+            location.href = payload.url;
+            sessionStorage.clear();
+        } catch (err) {
+            console.error('Error!', err);
+        }
+    }
+
+    async function handleEndSession() {
+        endSession();
     }
 
     useEffect(() => {
