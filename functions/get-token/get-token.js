@@ -20,6 +20,7 @@ function createCookie(token) {
     return cookieCreated;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 exports.handler = async (event, context) => {
     const ehelseIssuer = await Issuer.discover(`${process.env.OPENID_ISSUER}/.well-known/openid-configuration`);
     const client = new ehelseIssuer.Client({

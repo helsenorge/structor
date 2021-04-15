@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { generators, Issuer } = require('openid-client');
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 exports.handler = async (event, context) => {
     const code_verifier = generators.codeVerifier();
     const code_challenge = generators.codeChallenge(code_verifier);

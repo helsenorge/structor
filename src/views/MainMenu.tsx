@@ -1,6 +1,6 @@
 import './MainMenu.css';
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import Btn from '../components/Btn/Btn';
 import { Link } from 'react-router-dom';
@@ -39,20 +39,6 @@ const MainMenu = (): JSX.Element => {
         importedState.qContained = addPredefinedValueSet(importedState.qContained);
         dispatch(resetQuestionnaireAction(importedState));
     }
-
-    useEffect(() => {
-        async function doFetch() {
-            try {
-                let response = await fetch('.netlify/functions/authorization-code?code=1337');
-                response = await response.json();
-                console.log(response);
-            } catch (err) {
-                console.error('Error!', err);
-            }
-        }
-
-        // doFetch();
-    }, []);
 
     return (
         <>

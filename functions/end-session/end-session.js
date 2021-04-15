@@ -2,6 +2,7 @@
 const { Issuer } = require('openid-client');
 const cookie = require('cookie');
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 exports.handler = async (event, context) => {
     const cookies = cookie.parse(event.headers.cookie);
 
