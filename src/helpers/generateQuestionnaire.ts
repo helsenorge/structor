@@ -186,7 +186,7 @@ const generateMainQuestionnaire = (state: TreeState, usedValueSet: string[]): Qu
     ...state.qMetadata,
     contained: state.qContained?.filter((x) => x.id && usedValueSet?.includes(x.id) && x) as ValueSet[],
     resourceType: 'Questionnaire',
-    status: 'draft',
+    status: state.qMetadata.status || 'draft',
     item: generateTree(state.qOrder, state.qItems),
 });
 
@@ -202,7 +202,7 @@ const generateTranslatedQuestionnaire = (
         (x) => x.id && usedValueSet?.includes(x.id),
     ),
     resourceType: 'Questionnaire',
-    status: 'draft',
+    status: state.qMetadata.status || 'draft',
     item: generateTreeWithTranslations(state.qOrder, state.qItems, languageCode, languages),
 });
 
