@@ -218,6 +218,35 @@ const MetadataEditor = (): JSX.Element => {
                         initial
                     />
                 </FormField>
+                <FormField label="Bruk navigator">
+                    <SwitchBtn
+                        onChange={() => {
+                            const hasNavigatorExtension = !!qMetadata?.extension?.find(
+                                (ex) => ex.url === IExtentionType.navigator,
+                            );
+                            if (hasNavigatorExtension) {
+                                // remove extension
+                                removeMetaExtension(IExtentionType.navigator);
+                            } else {
+                                // set extension
+                                updateMetaExtension({
+                                    url: IExtentionType.navigator,
+                                    valueCodeableConcept: {
+                                        coding: [
+                                            {
+                                                system: IExtentionType.navigatorCodeSystem,
+                                                code: 'navigator',
+                                            },
+                                        ],
+                                    },
+                                });
+                            }
+                        }}
+                        value={!!qMetadata?.extension?.find((ex) => ex.url === IExtentionType.navigator) || false}
+                        label=""
+                        initial
+                    />
+                </FormField>
             </Accordion>
         </div>
     );

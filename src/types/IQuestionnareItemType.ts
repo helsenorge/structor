@@ -91,4 +91,6 @@ export enum IExtentionType {
     regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
     sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
     validationtext = 'http://ehelse.no/fhir/StructureDefinition/validationtext',
+    navigator = 'http://helsenorge.no/fhir/StructureDefinition/sdf-questionnaire-navgiator-state',
+    navigatorCodeSystem = 'http://helsenorge.no/fhir/CodeSystem/sdf-questionnaire-navigator-state ',
 }
