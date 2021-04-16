@@ -5,16 +5,17 @@ const { parseJwk } = require('jose/jwk/parse');
 const { Issuer } = require('openid-client');
 const qs = require('qs');
 const cookie = require('cookie');
-// const key = require('./jwk.json');
+const CryptoJS = require('crypto-js');
 
 function createCookie(token) {
     const hour = 3600000;
-    const oneWeeks = 7 * 24 * hour;
-    const cookieCreated = cookie.serialize('auth_cookie', token, {
+    const eightHours = 1 * 8 * hour;
+    const ciphertext = CryptoJS.AES.encrypt(token, process.env.CINCINNO).toString();
+    const cookieCreated = cookie.serialize('auth_cookie', ciphertext, {
         secure: true,
         httpOnly: true,
         path: '/',
-        maxAge: oneWeeks,
+        maxAge: eightHours,
     });
 
     return cookieCreated;
@@ -29,11 +30,10 @@ exports.handler = async (event, context) => {
         response_types: ['code'],
     });
 
-    var code = event.queryStringParameters.code;
-    var verifyCode = event.queryStringParameters.code_verifier;
+    const code = event.queryStringParameters.code;
+    const verifyCode = event.queryStringParameters.code_verifier;
 
     if (!code || !verifyCode) {
-        // console.log(JSON.parse(process.env.CLAVIS).d === key.d, 'cla cla');
         return {
             statusCode: 400,
             body: JSON.stringify({

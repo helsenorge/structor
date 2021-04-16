@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { Issuer } = require('openid-client');
 const cookie = require('cookie');
+const CryptoJS = require('crypto-js');
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 exports.handler = async (event, context) => {
@@ -9,6 +10,9 @@ exports.handler = async (event, context) => {
     if (!cookies || !cookies.auth_cookie) {
         return { statusCode: 400, body: 'missing cookie..' };
     }
+
+    const bytes = CryptoJS.AES.decrypt(cookies.auth_cookie, process.env.CINCINNO);
+    const originalToken = bytes.toString(CryptoJS.enc.Utf8);
 
     const ehelseIssuer = await Issuer.discover(`${process.env.OPENID_ISSUER}/.well-known/openid-configuration`);
 
@@ -19,7 +23,7 @@ exports.handler = async (event, context) => {
     });
 
     const redirectUri = client.endSessionUrl({
-        id_token_hint: cookies.auth_cookie,
+        id_token_hint: originalToken,
         post_logout_redirect_uri: `${process.env.REACT_APP_URL}/`,
     });
 
