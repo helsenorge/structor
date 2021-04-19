@@ -42,6 +42,11 @@ const MetadataEditor = (): JSX.Element => {
         }
     };
 
+    const removeMetaExtension = (extensionUrl: string) => {
+        const extensions = qMetadata.extension ? qMetadata.extension.filter((x) => x.url !== extensionUrl) : [];
+        updateMeta(IQuestionnaireMetadataType.extension, extensions);
+    };
+
     return (
         <div id="metadata-editor">
             <Accordion title="Skjemadetaljer">
@@ -108,14 +113,18 @@ const MetadataEditor = (): JSX.Element => {
                             qMetadata?.extension?.find((ex) => ex.url === IExtentionType.endpoint)?.valueReference
                                 ?.reference ?? ''
                         }
-                        onBlur={(e) =>
-                            updateMetaExtension({
-                                url: IExtentionType.endpoint,
-                                valueReference: {
-                                    reference: e.target.value,
-                                },
-                            })
-                        }
+                        onBlur={(e) => {
+                            if (!e.target.value) {
+                                removeMetaExtension(IExtentionType.endpoint);
+                            } else {
+                                updateMetaExtension({
+                                    url: IExtentionType.endpoint,
+                                    valueReference: {
+                                        reference: e.target.value,
+                                    },
+                                });
+                            }
+                        }}
                     />
                 </FormField>
                 <FormField label="Visning av knapperad">
@@ -205,6 +214,35 @@ const MetadataEditor = (): JSX.Element => {
                             qMetadata?.extension?.find((ex) => ex.url === IExtentionType.generatePDF)?.valueBoolean ||
                             false
                         }
+                        label=""
+                        initial
+                    />
+                </FormField>
+                <FormField label="Bruk navigator">
+                    <SwitchBtn
+                        onChange={() => {
+                            const hasNavigatorExtension = !!qMetadata?.extension?.find(
+                                (ex) => ex.url === IExtentionType.navigator,
+                            );
+                            if (hasNavigatorExtension) {
+                                // remove extension
+                                removeMetaExtension(IExtentionType.navigator);
+                            } else {
+                                // set extension
+                                updateMetaExtension({
+                                    url: IExtentionType.navigator,
+                                    valueCodeableConcept: {
+                                        coding: [
+                                            {
+                                                system: IExtentionType.navigatorCodeSystem,
+                                                code: 'navigator',
+                                            },
+                                        ],
+                                    },
+                                });
+                            }
+                        }}
+                        value={!!qMetadata?.extension?.find((ex) => ex.url === IExtentionType.navigator) || false}
                         label=""
                         initial
                     />
