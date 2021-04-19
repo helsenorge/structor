@@ -246,7 +246,11 @@ function getLinkIdOfAllSubItems(items: Array<OrderItem>, linkIds: Array<string>)
 }
 
 function updateMarkedItemId(draft: TreeState, action: UpdateMarkedLinkId): void {
-    draft.qCurrentItem = { linkId: action.linkId, parentArray: action.parentArray };
+    if (action.linkId) {
+        draft.qCurrentItem = { linkId: action.linkId, parentArray: action.parentArray || [] };
+    } else {
+        draft.qCurrentItem = undefined;
+    }
 }
 
 function newItem(draft: TreeState, action: NewItemAction): void {

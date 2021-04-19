@@ -30,7 +30,7 @@ const MainMenu = (): JSX.Element => {
         if (event.target && event.target.result) {
             const obj = JSON.parse(event.target.result as string);
             reuploadJSONFile(obj);
-            history.push('/new-create-form');
+            history.push('/create-form');
         }
     }
 
@@ -72,7 +72,7 @@ const MainMenu = (): JSX.Element => {
             </div>
             <div className="main-menu align-everything">
                 <div className="align-everything">
-                    <Link to="/new-create-form">
+                    <Link to="/create-form">
                         <Btn
                             title="Lag nytt skjema"
                             icon="ion-plus-round"

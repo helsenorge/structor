@@ -5,6 +5,7 @@ import TreeForm from '../views/treeForm';
 import FormBuilder from '../views/FormBuilder';
 import { TreeContextProvider } from '../store/treeStore/treeStore';
 import MainMenu from '../views/MainMenu';
+import FormBuilderWithDrawers from '../views/FormBuilderWithDrawers';
 
 export default function Routes(): JSX.Element {
     return (
@@ -22,6 +23,11 @@ export default function Routes(): JSX.Element {
             <Route path="/new-create-form" exact>
                 <TreeContextProvider>
                     <FormBuilder />
+                </TreeContextProvider>
+            </Route>
+            <Route path="/create-form" exact>
+                <TreeContextProvider>
+                    <FormBuilderWithDrawers />
                 </TreeContextProvider>
             </Route>
         </Switch>

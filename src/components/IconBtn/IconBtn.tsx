@@ -2,7 +2,7 @@ import React from 'react';
 import './IconBtn.css';
 
 type IconBtnProps = {
-    type?: 'back' | 'x';
+    type?: 'back' | 'forward' | 'x';
     title?: string;
     onClick?: () => void;
 };
@@ -13,6 +13,10 @@ const IconBtn = ({ type, title, onClick }: IconBtnProps): JSX.Element => {
     switch (type) {
         case 'back': {
             icon = 'ion-ios-arrow-back';
+            break;
+        }
+        case 'forward': {
+            icon = 'ion-ios-arrow-forward';
             break;
         }
         default:

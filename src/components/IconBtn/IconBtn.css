@@ -13,7 +13,7 @@
 .iconBtn i{
     display: block;
     min-width: 34px;
-    height: 80%;
+    min-height: 34px;
     border-radius: 25px;
     margin: 0 15px;
 }
