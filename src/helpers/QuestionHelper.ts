@@ -1,6 +1,7 @@
 import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { CodingSystemType } from './systemHelper';
+import { Options } from '../types/OptionTypes';
 
 const itemType = [
     {
@@ -229,30 +230,115 @@ export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolea
     return validTypes.includes(type);
 };
 
-export const EnrichmentSet: ValueSetComposeIncludeConcept[] = [
-    {
-        code: "Patient.name.where(use = 'official').select(given.join(' ') & ' ' & family)",
-        display: 'Navn',
-    },
-    {
-        code:
-            "Patient.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
-        display: 'Fødselsnummer',
-    },
-    {
-        code: "Patient.telecom.where(use = 'home' and system = 'email').value",
-        display: 'Epost',
-    },
-    {
-        code:
-            "RelatedPerson.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
-        display: 'På vegne av innbygger (Fødselsnummer)',
-    },
-    {
-        code: "RelatedPerson.name.where(use = 'official').select(given.join(' ') & ' ' & family)",
-        display: 'På vegne av innbygger (Navn)',
-    },
-];
+export const EnrichmentSet: Options = {
+    options: [
+        {
+            display: 'Pasient',
+            options: [
+                {
+                    code:
+                        "Patient.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
+                    display: 'Fødselsnummer',
+                },
+                {
+                    code: "Patient.name.where(use = 'official').select(given.join(' ') & ' ' & family)",
+                    display: 'Fullt navn',
+                },
+                {
+                    code:
+                        "Patient.name.where(use = 'official').select(iif(given.count() > 1, given.take(count()-1), given).join(' '))",
+                    display: 'Fornavn',
+                },
+                {
+                    code: "Patient.name.where(use = 'official').family",
+                    display: 'Etternavn',
+                },
+                {
+                    code: "Patient.telecom.where(use = 'mobile' and system = 'phone').value",
+                    display: 'Mobiltelefonnummer',
+                },
+                {
+                    code: "Patient.telecom.where(use = 'home' and system = 'email').value",
+                    display: 'Epost',
+                },
+                {
+                    code: "Patient.address.where(use = 'home').line.first()",
+                    display: 'Adresse',
+                },
+                {
+                    code: "Patient.address.where(use = 'home').postalCode",
+                    display: 'Postnummer',
+                },
+                {
+                    code: "Patient.address.where(use = 'home').city",
+                    display: 'Poststed',
+                },
+                {
+                    code: "Patient.address.where(use = 'temp').line[0]",
+                    display: 'Midlertidig c/o',
+                },
+                {
+                    code: "Patient.address.where(use = 'temp').line[1]",
+                    display: 'Midlertidig adresse',
+                },
+                {
+                    code: "Patient.address.where(use = 'temp').line[2]",
+                    display: 'Midlertidig postnummer',
+                },
+                {
+                    code: "Patient.address.where(use = 'temp').line[3]",
+                    display: 'Midlertidig poststed',
+                },
+            ],
+        },
+        {
+            display: 'På vegne av innbygger',
+            options: [
+                {
+                    code:
+                        "RelatedPerson.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
+                    display: 'På vegne av innbygger (Fødselsnummer)',
+                },
+                {
+                    code: "RelatedPerson.name.where(use = 'official').select(given.join(' ') & ' ' & family)",
+                    display: 'På vegne av innbygger (Navn)',
+                },
+                {
+                    code: "RelatedPerson.telecom.where(use = 'mobile' and system = 'phone').value",
+                    display: 'På vegne av innbygger (Mobiltelefonnummer)',
+                },
+                {
+                    code: "RelatedPerson.address.where(use = 'home').line.first()",
+                    display: 'På vegne av innbygger (Adresse)',
+                },
+                {
+                    code: "RelatedPerson.address.where(use = 'home').postalCode",
+                    display: 'På vegne av innbygger (Postnummer)',
+                },
+                {
+                    code: "RelatedPerson.address.where(use = 'home').city",
+                    display: 'På vegne av innbygger (Poststed)',
+                },
+                {
+                    code: "RelatedPerson.address.where(use = 'temp').line[0]",
+                    display: 'På vegne av innbygger (Midlertidig c/o)',
+                },
+                {
+                    code: "RelatedPerson.address.where(use = 'temp').line[1]",
+                    display: 'På vegne av innbygger (Midlertidig adresse)',
+                },
+                {
+                    code: "RelatedPerson.address.where(use = 'temp').line[2]",
+                    display: 'På vegne av innbygger (Midlertidig postnummer)',
+                },
+                {
+                    code: "RelatedPerson.address.where(use = 'temp').line[3]",
+                    display: 'På vegne av innbygger (Midlertidig poststed)',
+                },
+            ],
+        },
+    ],
+};
 
 export const getInitialText = (item?: QuestionnaireItem): string => {
     if (
