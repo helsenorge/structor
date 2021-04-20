@@ -1,9 +1,9 @@
 import React from 'react';
-import { isOptionGroup, Option, OptionGroup, Options } from '../../types/OptionTypes';
+import { isOptionGroup, Option, OptionGroup } from '../../types/OptionTypes';
 import './Select.css';
 
 type GroupedSelectProps = {
-    options: Options;
+    options: Array<Option | OptionGroup>;
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     value?: string;
     placeholder?: string;
@@ -27,7 +27,7 @@ const GroupedSelect = ({
                         {placeholder}
                     </option>
                 )}
-                {options.options.map((optionElement, groupIndex) => {
+                {options.map((optionElement, groupIndex) => {
                     if (isOptionGroup(optionElement)) {
                         const group = optionElement as OptionGroup;
                         return (

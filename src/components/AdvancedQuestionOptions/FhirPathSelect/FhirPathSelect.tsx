@@ -6,7 +6,7 @@ import FormField from '../../FormField/FormField';
 import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
 import { Extension, QuestionnaireItem } from '../../../types/fhir';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
-import { updateExtensionValue } from '../../../helpers/extensionHelper';
+import { removeExtensionValue, updateExtensionValue } from '../../../helpers/extensionHelper';
 
 type FhirPathSelectProps = {
     item: QuestionnaireItem;
@@ -26,12 +26,22 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
     };
 
     const handleFhirpath = (fhirpath: string) => {
-        const extension = {
-            url: IExtentionType.fhirPath,
-            valueString: fhirpath,
-        };
-        handleExtension(extension);
-        dispatchUpdateItem(IItemProperty.readOnly, true);
+        if (fhirpath === '') {
+            dispatch(
+                updateItemAction(
+                    props.item.linkId,
+                    IItemProperty.extension,
+                    removeExtensionValue(props.item, IExtentionType.fhirPath),
+                ),
+            );
+        } else {
+            const extension = {
+                url: IExtentionType.fhirPath,
+                valueString: fhirpath,
+            };
+            handleExtension(extension);
+            dispatchUpdateItem(IItemProperty.readOnly, true);
+        }
     };
 
     const fhirPath = props.item.extension?.find((x) => x.url === IExtentionType.fhirPath)?.valueString ?? '';
@@ -40,8 +50,7 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
         <FormField label="Beriking">
             <GroupedSelect
                 value={fhirPath}
-                options={EnrichmentSet}
-                placeholder="Legg til en formel.."
+                options={[{ display: 'Ingen beriking', code: '' }, ...EnrichmentSet.options]}
                 onChange={(event) => {
                     handleFhirpath(event.target.value);
                 }}
