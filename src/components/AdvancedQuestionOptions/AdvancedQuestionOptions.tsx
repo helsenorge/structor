@@ -272,7 +272,9 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     </div>
                 </div>
             )}
-            {item.type === IQuestionnaireItemType.string && <FhirPathSelect item={item} />}
+            {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.boolean) && (
+                <FhirPathSelect item={item} />
+            )}
             {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.text) && (
                 <FormField label="Skyggetekst">
                     <input

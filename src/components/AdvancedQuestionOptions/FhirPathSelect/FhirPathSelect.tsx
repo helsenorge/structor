@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import GroupedSelect from '../../Select/GroupedSelect';
 import { EnrichmentSet } from '../../../helpers/QuestionHelper';
@@ -7,55 +7,119 @@ import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemT
 import { Extension, QuestionnaireItem } from '../../../types/fhir';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { removeExtensionValue, updateExtensionValue } from '../../../helpers/extensionHelper';
+import { isOptionGroup, Option, OptionGroup } from '../../../types/OptionTypes';
 
 type FhirPathSelectProps = {
     item: QuestionnaireItem;
 };
 
+enum FhirPathOptionEnum {
+    NONE = 'NONE',
+    CUSTOM = 'CUSTOM',
+}
+
 const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
+    const [isBlankButCustom, setIsBlankButCustom] = useState(false);
+    const [predefinedOptionIds, setPredifinedOptionIds] = useState<Array<string>>([]);
+
+    useEffect(() => {
+        const flattened = EnrichmentSet.options.flatMap((element) => {
+            if (isOptionGroup(element)) {
+                return (element as OptionGroup).options.map((childElement) => childElement.code);
+            }
+            return (element as Option).code;
+        });
+        setPredifinedOptionIds(flattened);
+    }, []);
 
     const dispatchUpdateItem = (name: IItemProperty, value: boolean) => {
         dispatch(updateItemAction(props.item.linkId, name, value));
     };
 
-    const handleExtension = (extension: Extension) => {
+    const dispatchUpdateExtension = (extension: Extension) => {
         dispatch(
             updateItemAction(props.item.linkId, IItemProperty.extension, updateExtensionValue(props.item, extension)),
         );
     };
 
-    const handleFhirpath = (fhirpath: string) => {
-        if (fhirpath === '') {
-            dispatch(
-                updateItemAction(
-                    props.item.linkId,
-                    IItemProperty.extension,
-                    removeExtensionValue(props.item, IExtentionType.fhirPath),
-                ),
-            );
+    const dispatchRemoveFhirPath = () => {
+        dispatch(
+            updateItemAction(
+                props.item.linkId,
+                IItemProperty.extension,
+                removeExtensionValue(props.item, IExtentionType.fhirPath)?.extension,
+            ),
+        );
+    };
+
+    const dispatchUpdateFhirPath = (value: string) => {
+        const extension = {
+            url: IExtentionType.fhirPath,
+            valueString: value,
+        };
+        dispatchUpdateExtension(extension);
+    };
+
+    const handleSelect = (selectedValue: string) => {
+        if (selectedValue === FhirPathOptionEnum.NONE) {
+            setIsBlankButCustom(false);
+            dispatchRemoveFhirPath();
+        } else if (selectedValue === FhirPathOptionEnum.CUSTOM) {
+            setIsBlankButCustom(true);
         } else {
-            const extension = {
-                url: IExtentionType.fhirPath,
-                valueString: fhirpath,
-            };
-            handleExtension(extension);
+            setIsBlankButCustom(false);
+            dispatchUpdateFhirPath(selectedValue);
             dispatchUpdateItem(IItemProperty.readOnly, true);
         }
     };
 
+    const isCustomFhirPath = (value: string): boolean => {
+        if (value === '') {
+            return false;
+        }
+
+        return !predefinedOptionIds.includes(value);
+    };
+
+    const getSelectValue = (): string => {
+        if (isCustom || isBlankButCustom) {
+            return FhirPathOptionEnum.CUSTOM;
+        } else if (!fhirPath) {
+            return FhirPathOptionEnum.NONE;
+        }
+        return fhirPath;
+    };
+
     const fhirPath = props.item.extension?.find((x) => x.url === IExtentionType.fhirPath)?.valueString ?? '';
+    const isCustom = isCustomFhirPath(fhirPath);
 
     return (
         <FormField label="Beriking">
             <GroupedSelect
-                value={fhirPath}
-                options={[{ display: 'Ingen beriking', code: '' }, ...EnrichmentSet.options]}
+                value={getSelectValue()}
+                options={[
+                    { display: 'Ingen beriking', code: FhirPathOptionEnum.NONE },
+                    ...EnrichmentSet.options,
+                    { display: 'Egendefinert', code: FhirPathOptionEnum.CUSTOM },
+                ]}
                 onChange={(event) => {
-                    handleFhirpath(event.target.value);
+                    handleSelect(event.target.value);
                 }}
-                displaySelectedValue={true}
+                displaySelectedValue={!!fhirPath && !isCustom && !isBlankButCustom}
             />
+            {(isCustom || isBlankButCustom) && (
+                <textarea
+                    defaultValue={fhirPath}
+                    placeholder="Legg inn egendefinert beriking"
+                    onBlur={(e) => {
+                        if (e.target.value) {
+                            setIsBlankButCustom(false);
+                            dispatchUpdateFhirPath(e.target.value);
+                        }
+                    }}
+                />
+            )}
         </FormField>
     );
 };
