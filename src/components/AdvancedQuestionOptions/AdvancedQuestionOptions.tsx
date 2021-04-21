@@ -277,12 +277,14 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                 <FormField label="Skyggetekst">
                     <input
                         defaultValue={getPlaceholder}
-                        onBlur={(e) =>
-                            handleExtension({
-                                url: IExtentionType.entryFormat,
-                                valueString: e.target.value,
-                            })
-                        }
+                        onBlur={(e) => {
+                            if (e.target.value) {
+                                handleExtension({
+                                    url: IExtentionType.entryFormat,
+                                    valueString: e.target.value,
+                                });
+                            }
+                        }}
                     />
                 </FormField>
             )}
