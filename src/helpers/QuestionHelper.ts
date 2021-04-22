@@ -1,6 +1,7 @@
 import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { CodingSystemType } from './systemHelper';
+import { Option, Options } from '../types/OptionTypes';
 
 const itemType = [
     {
@@ -229,30 +230,77 @@ export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolea
     return validTypes.includes(type);
 };
 
-export const EnrichmentSet: ValueSetComposeIncludeConcept[] = [
-    {
-        code: "Patient.name.where(use = 'official').select(given.join(' ') & ' ' & family)",
-        display: 'Navn',
-    },
-    {
-        code:
-            "Patient.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
-        display: 'Fødselsnummer',
-    },
-    {
-        code: "Patient.telecom.where(use = 'home' and system = 'email').value",
-        display: 'Epost',
-    },
-    {
-        code:
-            "RelatedPerson.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
-        display: 'På vegne av innbygger (Fødselsnummer)',
-    },
-    {
-        code: "RelatedPerson.name.where(use = 'official').select(given.join(' ') & ' ' & family)",
-        display: 'På vegne av innbygger (Navn)',
-    },
-];
+const makeOption = (display: string, code: string): Option => {
+    return { display, code };
+};
+
+export const EnrichmentSet: Options = {
+    options: [
+        {
+            display: 'Pasient',
+            options: [
+                makeOption(
+                    'Fødselsnummer',
+                    "Patient.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
+                ),
+                makeOption('Fullt navn', "Patient.name.where(use = 'official').select(given.join(' ') & ' ' & family)"),
+                makeOption(
+                    'Fornavn',
+                    "Patient.name.where(use = 'official').select(iif(given.count() > 1, given.take(count()-1), given).join(' '))",
+                ),
+                makeOption('Etternavn', "Patient.name.where(use = 'official').family"),
+                makeOption('Mobiltelefonnummer', "Patient.telecom.where(use = 'mobile' and system = 'phone').value"),
+                makeOption('Epost', "Patient.telecom.where(use = 'home' and system = 'email').value"),
+                makeOption('Adresse', "Patient.address.where(use = 'home').line.first()"),
+                makeOption('Postnummer', "Patient.address.where(use = 'home').postalCode"),
+                makeOption('Poststed', "Patient.address.where(use = 'home').city"),
+                makeOption('Midlertidig c/o', "Patient.address.where(use = 'temp').line[0]"),
+                makeOption('Midlertidig adresse', "Patient.address.where(use = 'temp').line[1]"),
+                makeOption('Midlertidig postnummer', "Patient.address.where(use = 'temp').line[2]"),
+                makeOption('Midlertidig poststed', "Patient.address.where(use = 'temp').line[3]"),
+            ],
+        },
+        {
+            display: 'På vegne av innbygger',
+            options: [
+                makeOption(
+                    'På vegne av innbygger (Fødselsnummer)',
+                    "RelatedPerson.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
+                ),
+                makeOption(
+                    'På vegne av innbygger (Navn)',
+                    "RelatedPerson.name.where(use = 'official').select(given.join(' ') & ' ' & family)",
+                ),
+                makeOption(
+                    'På vegne av innbygger (Mobiltelefonnummer)',
+                    "RelatedPerson.telecom.where(use = 'mobile' and system = 'phone').value",
+                ),
+                makeOption('På vegne av innbygger (Adresse)', "RelatedPerson.address.where(use = 'home').line.first()"),
+                makeOption(
+                    'På vegne av innbygger (Postnummer)',
+                    "RelatedPerson.address.where(use = 'home').postalCode",
+                ),
+                makeOption('På vegne av innbygger (Poststed)', "RelatedPerson.address.where(use = 'home').city"),
+                makeOption(
+                    'På vegne av innbygger (Midlertidig c/o)',
+                    "RelatedPerson.address.where(use = 'temp').line[0]",
+                ),
+                makeOption(
+                    'På vegne av innbygger (Midlertidig adresse)',
+                    "RelatedPerson.address.where(use = 'temp').line[1]",
+                ),
+                makeOption(
+                    'På vegne av innbygger (Midlertidig postnummer)',
+                    "RelatedPerson.address.where(use = 'temp').line[2]",
+                ),
+                makeOption(
+                    'På vegne av innbygger (Midlertidig poststed)',
+                    "RelatedPerson.address.where(use = 'temp').line[3]",
+                ),
+            ],
+        },
+    ],
+};
 
 export const getInitialText = (item?: QuestionnaireItem): string => {
     if (

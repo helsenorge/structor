@@ -17,11 +17,11 @@ import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import Select from '../Select/Select';
-import { EnrichmentSet } from '../../helpers/QuestionHelper';
 import Btn from '../Btn/Btn';
 import { isIgnorableItem, isItemControlHelp, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
+import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -158,15 +158,6 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         return { exist, linkId, _text };
     };
 
-    const handleFhirpath = (fhirpath: string) => {
-        const extension = {
-            url: IExtentionType.fhirPath,
-            valueString: fhirpath,
-        };
-        handleExtension(extension);
-        dispatchUpdateItem(IItemProperty.readOnly, true);
-    };
-
     const handleExtension = (extension: Extension) => {
         if (item?.extension && item?.extension?.length > 0) {
             const newExtension = [...item.extension.filter((x) => x.url !== extension.url), extension];
@@ -176,7 +167,6 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         }
     };
 
-    const getFhirpath = item?.extension?.find((x) => x.url === IExtentionType.fhirPath)?.valueString ?? '';
     const getPlaceholder = item?.extension?.find((x) => x.url === IExtentionType.entryFormat)?.valueString ?? '';
 
     useEffect(() => {
@@ -282,28 +272,21 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     </div>
                 </div>
             )}
-            {item.type === IQuestionnaireItemType.string && (
-                <FormField label="Beriking">
-                    <Select
-                        value={getFhirpath}
-                        options={EnrichmentSet}
-                        placeholder="Legg til en formel.."
-                        onChange={(event) => {
-                            handleFhirpath(event.target.value);
-                        }}
-                    />
-                </FormField>
+            {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.boolean) && (
+                <FhirPathSelect item={item} />
             )}
             {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.text) && (
                 <FormField label="Skyggetekst">
                     <input
                         defaultValue={getPlaceholder}
-                        onBlur={(e) =>
-                            handleExtension({
-                                url: IExtentionType.entryFormat,
-                                valueString: e.target.value,
-                            })
-                        }
+                        onBlur={(e) => {
+                            if (e.target.value) {
+                                handleExtension({
+                                    url: IExtentionType.entryFormat,
+                                    valueString: e.target.value,
+                                });
+                            }
+                        }}
                     />
                 </FormField>
             )}

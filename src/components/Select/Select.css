@@ -1,6 +1,5 @@
 .selector {
     position: relative;
-    height: 50px;
 }
 
 .selector img {
@@ -34,4 +33,10 @@
     top: 15px;
     z-index: 1;
     pointer-events: none;
+}
+
+.select-display-value {
+    font-size: 12px;
+    color: #696969;
+    margin: 4px;
 }
