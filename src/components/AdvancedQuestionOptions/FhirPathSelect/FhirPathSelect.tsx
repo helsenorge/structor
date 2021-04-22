@@ -65,8 +65,10 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
         if (selectedValue === FhirPathOptionEnum.NONE) {
             setIsBlankButCustom(false);
             dispatchRemoveFhirPath();
+            dispatchUpdateItem(IItemProperty.readOnly, false);
         } else if (selectedValue === FhirPathOptionEnum.CUSTOM) {
             setIsBlankButCustom(true);
+            dispatchUpdateItem(IItemProperty.readOnly, true);
         } else {
             setIsBlankButCustom(false);
             dispatchUpdateFhirPath(selectedValue);
