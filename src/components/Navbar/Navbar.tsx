@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { RefObject, useContext, useRef, useState } from 'react';
 import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import Btn from '../Btn/Btn';
@@ -10,11 +10,12 @@ import JSONView from '../JSONView/JSONView';
 import PredefinedValueSetModal from '../PredefinedValueSetModal/PredefinedValueSetModal';
 import ImportValueSet from '../ImportValueSet/ImportValueSet';
 import { saveAction } from '../../store/treeStore/treeActions';
+import ConfirmFileUpload from '../FileUpload/ConfirmFileUpload';
 
 type Props = {
     newQuestionnaire: () => void;
     showFormFiller: () => void;
-    uploadQuestionnaire: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    uploadRef: RefObject<HTMLInputElement>;
 };
 
 enum MenuItem {
@@ -23,13 +24,14 @@ enum MenuItem {
     more = 'more',
 }
 
-const Navbar = ({ newQuestionnaire, showFormFiller, uploadQuestionnaire }: Props): JSX.Element => {
+const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
     const [showContained, setShowContained] = useState(false);
     const [showImportValueSet, setShowImportValueSet] = useState(false);
     const [showJSONView, setShowJSONView] = useState(false);
     const [showPublish, setShowPublish] = useState(false);
+    const [confirmUpload, setConfirmUpload] = useState(false);
     const navBarRef = useRef<HTMLHeadingElement>(null);
 
     useOutsideClick(navBarRef, () => {
@@ -84,6 +86,14 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadQuestionnaire }: Props
         }
     };
 
+    const triggerUpload = () => {
+        if (state.isDirty && state.qItems && Object.keys(state.qItems).length > 0) {
+            setConfirmUpload(true);
+        } else {
+            uploadRef.current?.click();
+        }
+    };
+
     return (
         <>
             <header ref={navBarRef}>
@@ -92,18 +102,7 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadQuestionnaire }: Props
                     {selectedMenuItem === MenuItem.file && (
                         <div className="menu file">
                             <Btn title="Nytt skjema" onClick={() => callbackAndHide(newQuestionnaire)} />
-                            <label className="regular-btn upload-btn">
-                                <input
-                                    type="file"
-                                    style={{ display: 'none' }}
-                                    onChange={(event) => {
-                                        uploadQuestionnaire(event);
-                                        hideMenu();
-                                    }}
-                                    accept="application/JSON"
-                                />
-                                Last opp skjema
-                            </label>
+                            <Btn title="Last opp skjema" onClick={() => callbackAndHide(triggerUpload)} />
                         </div>
                     )}
                 </div>
@@ -141,6 +140,7 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadQuestionnaire }: Props
             {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
             {showJSONView && <JSONView showJSONView={() => setShowJSONView(!showJSONView)} />}
             {showPublish && <PublishModal close={() => setShowPublish(!showPublish)} />}
+            {confirmUpload && <ConfirmFileUpload close={() => setConfirmUpload(false)} uploadRef={uploadRef} />}
         </>
     );
 };

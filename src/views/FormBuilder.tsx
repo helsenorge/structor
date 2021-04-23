@@ -2,7 +2,7 @@ import './FormBuilder.css';
 
 import { TreeContext, TreeState } from '../store/treeStore/treeStore';
 import { Questionnaire } from '../types/fhir';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { resetQuestionnaireAction } from '../store/treeStore/treeActions';
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import FormFiller from '../components/FormFiller/FormFiller';
@@ -22,6 +22,7 @@ const FormBuilder = (): JSX.Element => {
     const [stateFromStorage, setStateFromStorage] = useState<TreeState>();
     const [internalQId, setInternalQId] = useState(createUUID());
     const [displayVerifyReset, setDisplayVerifyReset] = useState(false);
+    const uploadRef = useRef<HTMLInputElement>(null);
 
     const getStoredQuestionnaire = async () => {
         const indexedDbState = await getStateFromDb();
@@ -78,6 +79,10 @@ const FormBuilder = (): JSX.Element => {
             const obj = JSON.parse(event.target.result as string);
             reuploadJSONFile(obj);
             setIsLoading(false);
+            // Reset file input
+            if (uploadRef.current) {
+                uploadRef.current.value = '';
+            }
         }
     };
 
@@ -94,7 +99,7 @@ const FormBuilder = (): JSX.Element => {
             <Navbar
                 newQuestionnaire={resetQuestionnaire}
                 showFormFiller={() => setShowPreview(!showPreview)}
-                uploadQuestionnaire={uploadQuestionnaire}
+                uploadRef={uploadRef}
             />
             {suggestRestore() && (
                 <Confirm
@@ -139,17 +144,23 @@ const FormBuilder = (): JSX.Element => {
             )}
 
             <div className="editor">
+                <input
+                    type="file"
+                    ref={uploadRef}
+                    onChange={uploadQuestionnaire}
+                    accept="application/JSON"
+                    style={{ display: 'none' }}
+                />
                 <div className="anchor-wrapper">
                     <AnchorMenu qOrder={state.qOrder} qItems={state.qItems} dispatch={dispatch} />
                 </div>
-                {showPreview ? (
+                {showPreview && (
                     <FormFiller
                         showFormFiller={() => setShowPreview(!showPreview)}
                         language={state.qMetadata.language}
                     />
-                ) : (
-                    <QuestionnaireEditor key={internalQId} />
                 )}
+                <QuestionnaireEditor key={internalQId} />
             </div>
         </>
     );
