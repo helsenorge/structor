@@ -24,6 +24,12 @@ h1 {
     margin: 0;
 }
 
+.align-everything {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .left {
     padding-left: 10px;
     align-items: center;

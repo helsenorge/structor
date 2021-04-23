@@ -24,9 +24,7 @@ import SwitchBtn from '../SwitchBtn/SwitchBtn';
 const MetadataEditor = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const { qMetadata } = state;
-    const [id, setId] = useState(qMetadata.id || '');
     const [displayIdValidationError, setDisplayIdValidationError] = useState(false);
-    const [technicalName, setTechincalName] = useState(qMetadata.name || '');
     const [displayNameValidationError, setDisplayNameValidationError] = useState(false);
 
     const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta | Extension[]) => {
@@ -60,9 +58,8 @@ const MetadataEditor = (): JSX.Element => {
 
                 <FormField label="Id">
                     <input
-                        value={id}
+                        defaultValue={qMetadata.id}
                         onChange={(e) => {
-                            setId(e.target.value);
                             setDisplayIdValidationError(!isValidId(e.target.value));
                         }}
                         onBlur={(e) => {
@@ -79,13 +76,12 @@ const MetadataEditor = (): JSX.Element => {
                 </FormField>
                 <FormField label="Teknisk navn">
                     <input
-                        value={technicalName}
+                        defaultValue={qMetadata.name}
                         onChange={(e) => {
-                            setTechincalName(e.target.value);
                             setDisplayNameValidationError(!isValidTechnicalName(e.target.value, state.qMetadata.name));
                         }}
                         onBlur={(e) => {
-                            if (isValidTechnicalName(e.target.value, state.qMetadata.name)) {
+                            if (isValidTechnicalName(e.target.value, qMetadata.name)) {
                                 updateMeta(IQuestionnaireMetadataType.name, e.target.value);
                             }
                         }}
