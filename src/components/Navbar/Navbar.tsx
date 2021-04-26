@@ -1,4 +1,5 @@
 import React, { RefObject, useContext, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import Btn from '../Btn/Btn';
@@ -24,8 +25,13 @@ enum MenuItem {
     more = 'more',
 }
 
+type EndSessionPayload = {
+    url: string;
+};
+
 const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
+    const history = useHistory();
     const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
     const [showContained, setShowContained] = useState(false);
     const [showImportValueSet, setShowImportValueSet] = useState(false);
@@ -94,6 +100,24 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
         }
     };
 
+    function handleLogin() {
+        history.push('/login');
+    }
+
+    async function endSession() {
+        try {
+            const response = await fetch('.netlify/functions/end-session');
+            const payload = (await response.json()) as EndSessionPayload;
+            location.href = payload.url;
+            sessionStorage.clear();
+        } catch (err) {
+            console.error('Error!', err);
+        }
+    }
+
+    const cachedProfile = sessionStorage.getItem('profile');
+    const profile = cachedProfile ? JSON.parse(cachedProfile) : null;
+
     return (
         <>
             <header ref={navBarRef}>
@@ -110,6 +134,7 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
                 <div className="left"></div>
 
                 <div className="pull-right">
+                    {profile && <p title={`Du er logget inn som ${profile.name}`}>{profile.name}</p>}
                     <Btn title="Forhåndsvisning" onClick={showFormFiller} />
                     <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
                     <div
@@ -133,6 +158,8 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
                             onClick={() => callbackAndHide(() => setShowImportValueSet(!showImportValueSet))}
                         />
                         <Btn title="Valg" onClick={() => callbackAndHide(() => setShowContained(!showContained))} />
+                        {!profile && <Btn title="Logg inn" onClick={handleLogin} />}
+                        {profile && <Btn title="Logg ut" onClick={endSession} />}
                     </div>
                 )}
             </header>
