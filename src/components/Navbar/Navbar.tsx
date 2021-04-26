@@ -108,8 +108,8 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
         try {
             const response = await fetch('.netlify/functions/end-session');
             const payload = (await response.json()) as EndSessionPayload;
-            location.href = payload.url;
             sessionStorage.clear();
+            location.href = payload.url;
         } catch (err) {
             console.error('Error!', err);
         }
@@ -134,7 +134,7 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
                 <div className="left"></div>
 
                 <div className="pull-right">
-                    {profile && <p title={`Du er logget inn som ${profile.name}`}>{profile.name}</p>}
+                    {profile && profile.name && <p title={`Du er logget inn som ${profile.name}`}>{profile.name}</p>}
                     <Btn title="Forhåndsvisning" onClick={showFormFiller} />
                     <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
                     <div

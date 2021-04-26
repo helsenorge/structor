@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { generators } = require('openid-client');
 const clientContext = require('./util/client-context');
-const CryptoJS = require('crypto-js');
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 exports.handler = async (event, context) => {
@@ -18,7 +17,5 @@ exports.handler = async (event, context) => {
         code_challenge_method: 'S256',
     });
 
-    const key = CryptoJS.AES.encrypt(code_verifier, process.env.CINCINNO).toString();
-
-    return { statusCode: 200, body: JSON.stringify({ code_verifier: key, auth_url: authUrl }) };
+    return { statusCode: 200, body: JSON.stringify({ code_verifier, auth_url: authUrl }) };
 };

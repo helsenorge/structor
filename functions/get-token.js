@@ -11,14 +11,12 @@ function createCookie(token) {
     const hour = 3600000;
     const eightHours = 1 * 8 * hour;
     const ciphertext = CryptoJS.AES.encrypt(token, process.env.CINCINNO).toString();
-    const cookieCreated = cookie.serialize('auth_cookie', ciphertext, {
+    return cookie.serialize('auth_cookie', ciphertext, {
         secure: true,
         httpOnly: true,
         path: '/',
         maxAge: eightHours,
     });
-
-    return cookieCreated;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -37,7 +35,7 @@ exports.handler = async (event, context) => {
         };
     }
 
-    const rsaPublicKey = await parseJwk(JSON.parse(process.env.CLAVIS), 'PS256');
+    const privateKey = await parseJwk(JSON.parse(process.env.CLAVIS), 'PS256');
 
     const clientAssertionjwt = await new SignJWT({
         sub: process.env.CLIENT_ID,
@@ -48,16 +46,14 @@ exports.handler = async (event, context) => {
         .setAudience(`${process.env.OPENID_ISSUER}/connect/token`)
         .setIssuer(process.env.CLIENT_ID || 'SET-CLIENT-ID')
         .setExpirationTime('60s')
-        .sign(rsaPublicKey);
-
-    const code_verifier = CryptoJS.AES.decrypt(verifyCode, process.env.CINCINNO).toString(CryptoJS.enc.Utf8);
+        .sign(privateKey);
 
     const body = {
         grant_type: 'authorization_code',
         code: code,
         redirect_uri: `${process.env.REACT_APP_URL}/code`,
         client_id: process.env.CLIENT_ID,
-        code_verifier: code_verifier,
+        code_verifier: verifyCode,
         scope: 'openid profile helseid://scopes/identity/pid helseid://scopes/identity/security_level',
         client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
         client_assertion: clientAssertionjwt,

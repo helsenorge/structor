@@ -12,12 +12,12 @@ exports.handler = async (event, context) => {
     }
 
     const bytes = CryptoJS.AES.decrypt(cookies.auth_cookie, process.env.CINCINNO);
-    const originalToken = bytes.toString(CryptoJS.enc.Utf8);
+    const access_token = bytes.toString(CryptoJS.enc.Utf8);
 
     const client = await clientContext.createClient();
 
     const redirectUri = client.endSessionUrl({
-        id_token_hint: originalToken,
+        id_token_hint: access_token,
         post_logout_redirect_uri: `${process.env.REACT_APP_URL}/`,
     });
 
