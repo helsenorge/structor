@@ -46,6 +46,7 @@ export const UPDATE_LINK_ID_ACTION = 'updateLinkId';
 export const UPDATE_MARKED_LINK_ID = 'updateMarkedLinkId';
 export const UPDATE_VALUESET_ACTION = 'UPDATE_VALUESET';
 export const IMPORT_VALUESET_ACTION = 'IMPORT_VALUESET';
+export const SAVE_ACTION = 'save';
 
 type ItemValueType =
     | string
@@ -209,6 +210,10 @@ export interface UpdateValueSetAction {
 export interface ImportValueSetAction {
     type: typeof IMPORT_VALUESET_ACTION;
     items: ValueSet[];
+}
+
+export interface SaveAction {
+    type: typeof SAVE_ACTION;
 }
 
 export const updateMarkedLinkIdAction = (markedLinkId?: string, parentArray?: Array<string>): UpdateMarkedLinkId => {
@@ -536,4 +541,8 @@ export const importValueSetAction = (items: ValueSet[]): ImportValueSetAction =>
         type: IMPORT_VALUESET_ACTION,
         items,
     };
+};
+
+export const saveAction = (): SaveAction => {
+    return { type: SAVE_ACTION };
 };

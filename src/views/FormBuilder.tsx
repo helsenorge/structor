@@ -1,73 +1,161 @@
-import './FormBuilder.css';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
-import { TreeContext } from '../store/treeStore/treeStore';
-import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
-import React, { useCallback, useContext, useState } from 'react';
-import { updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
+import { TreeContext, TreeState } from '../store/treeStore/treeStore';
+import { getStateFromDb } from '../store/treeStore/indexedDbHelper';
+import { Questionnaire } from '../types/fhir';
+import { resetQuestionnaireAction } from '../store/treeStore/treeActions';
+import mapToTreeState from '../helpers/FhirToTreeStateMapper';
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
+import Confirm from '../components/Modal/Confirm';
 import FormFiller from '../components/FormFiller/FormFiller';
-import { IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import ImportValueSet from '../components/ImportValueSet/ImportValueSet';
-import JSONView from '../components/JSONView/JSONView';
-import MetadataEditor from '../components/Metadata/MetadataEditor';
+import Modal from '../components/Modal/Modal';
 import Navbar from '../components/Navbar/Navbar';
-import PublishModal from '../components/PublishModal/PublishModal';
-import Question from '../components/Question/Question';
-import { getEnableWhenConditionals } from '../helpers/enableWhenValidConditional';
-import Sidebar from '../components/Sidebar/Sidebar';
-import LanguageAccordion from '../components/Languages/LanguageAccordion';
-import PredefinedValueSetModal from '../components/PredefinedValueSetModal/PredefinedValueSetModal';
-import { calculateItemNumber } from '../helpers/treeHelper';
+import QuestionDrawer from '../components/QuestionDrawer/QuestionDrawer';
+import SpinnerBox from '../components/Spinner/SpinnerBox';
+
+import './FormBuilder.css';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
-    const [isIframeVisible, setIsIframeVisible] = useState(false);
-    const [isShowingFireStructure, setIsShowingFireStructure] = useState(false);
-    const [showImportValueSet, setShowImportValueSet] = useState(false);
-    const [showResults, setShowAdminMenu] = useState(false);
-    const [showContained, setShowContained] = useState(false);
     const [showFormDetails, setShowFormDetails] = useState(true);
 
-    const dispatchUpdateQuestionnaireMetadata = (propName: IQuestionnaireMetadataType, value: string) => {
-        dispatch(updateQuestionnaireMetadataAction(propName, value));
-    };
-
-    const getConditional = (parentArray: string[], linkId: string): ValueSetComposeIncludeConcept[] => {
-        return getEnableWhenConditionals(state, parentArray, linkId);
-    };
-
-    const getQItem = (linkId: string): QuestionnaireItem => {
-        return state.qItems[linkId];
-    };
+    const [stateFromStorage, setStateFromStorage] = useState<TreeState>();
+    const [isLoading, setIsLoading] = useState(false);
+    const [displayVerifyReset, setDisplayVerifyReset] = useState(false);
+    const [showPreview, setShowPreview] = useState(false);
+    const uploadRef = useRef<HTMLInputElement>(null);
 
     const toggleFormDetails = useCallback(() => {
         setShowFormDetails(!showFormDetails);
     }, [showFormDetails]);
 
+    const getStoredQuestionnaire = async () => {
+        const indexedDbState = await getStateFromDb();
+        setStateFromStorage(indexedDbState);
+    };
+
+    const suggestRestore = (): boolean => {
+        return stateFromStorage?.qItems ? Object.keys(stateFromStorage.qItems).length > 0 : false;
+    };
+
+    const getConfirmRestoreContent = (): JSX.Element => {
+        return (
+            <div>
+                <p>Det ser ut til at du har jobbet med et skjema tidligere:</p>
+                <div className="key-value">
+                    <div>Tittel:</div>
+                    <div>{stateFromStorage?.qMetadata.title}</div>
+                </div>
+                <div className="key-value">
+                    <div>Teknisk navn:</div>
+                    <div>{stateFromStorage?.qMetadata.name}</div>
+                </div>
+                <div className="key-value">
+                    <div>Versjon:</div>
+                    <div>{stateFromStorage?.qMetadata.version}</div>
+                </div>
+                <p>Ønsker du å fortsette med dette skjemaet?</p>
+            </div>
+        );
+    };
+
+    const resetQuestionnaire = () => {
+        if (state.isDirty && state.qItems && Object.keys(state.qItems).length > 0) {
+            setDisplayVerifyReset(true);
+        } else {
+            dispatch(resetQuestionnaireAction());
+        }
+    };
+
+    useEffect(() => {
+        const startTime = performance.now();
+        getStoredQuestionnaire();
+        console.log(`Loading state from indexedDb took ${Math.round(performance.now() - startTime)}ms`);
+    }, []);
+
+    const reuploadJSONFile = (questionnaireObj: Questionnaire) => {
+        const importedState = mapToTreeState(questionnaireObj);
+        dispatch(resetQuestionnaireAction(importedState));
+    };
+
+    const onReaderLoad = (event: ProgressEvent<FileReader>) => {
+        if (event.target?.result) {
+            const obj = JSON.parse(event.target.result as string);
+            reuploadJSONFile(obj);
+            setIsLoading(false);
+            // Reset file input
+            if (uploadRef.current) {
+                uploadRef.current.value = '';
+            }
+        }
+    };
+
+    const uploadQuestionnaire = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIsLoading(true);
+        const reader = new FileReader();
+        reader.onload = onReaderLoad;
+        if (event.target.files && event.target.files[0]) reader.readAsText(event.target.files[0]);
+    };
+
     return (
         <>
             <Navbar
-                showAdmin={() => setShowAdminMenu(!showResults)}
-                showFormFiller={() => setIsIframeVisible(!isIframeVisible)}
-                showJSONView={() => setIsShowingFireStructure(!isShowingFireStructure)}
-                showImportValueSet={() => setShowImportValueSet(!showImportValueSet)}
-                showContained={() => setShowContained(!showContained)}
+                newQuestionnaire={resetQuestionnaire}
+                showFormFiller={() => setShowPreview(!showPreview)}
+                uploadRef={uploadRef}
             />
 
-            {showResults && <PublishModal close={() => setShowAdminMenu(!showResults)} />}
-            {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
-            {isShowingFireStructure && (
-                <JSONView showJSONView={() => setIsShowingFireStructure(!isShowingFireStructure)} />
+            {suggestRestore() && (
+                <Confirm
+                    onConfirm={() => {
+                        dispatch(resetQuestionnaireAction(stateFromStorage));
+                        setStateFromStorage(undefined);
+                    }}
+                    onDeny={() => {
+                        dispatch(resetQuestionnaireAction());
+                        setStateFromStorage(undefined);
+                    }}
+                    title="Gjenopprett skjema..."
+                    id="confirm-use-stored-state"
+                >
+                    {getConfirmRestoreContent()}
+                </Confirm>
             )}
-            {showContained && <PredefinedValueSetModal close={() => setShowContained(!showContained)} />}
-            {isIframeVisible && (
-                <FormFiller
-                    showFormFiller={() => setIsIframeVisible(!isIframeVisible)}
-                    language={state.qMetadata.language}
-                />
+
+            {displayVerifyReset && (
+                <Confirm
+                    onConfirm={() => {
+                        dispatch(resetQuestionnaireAction());
+                        setDisplayVerifyReset(false);
+                    }}
+                    onDeny={() => {
+                        setDisplayVerifyReset(false);
+                    }}
+                    title="Husk å lagre..."
+                    id="confirm-reset"
+                >
+                    Du har gjort endringer som ikke er lagret. Ønsker du allikevel å begynne på et nytt skjema?
+                    (Endringene vil gå tapt)
+                </Confirm>
+            )}
+
+            {isLoading && (
+                <Modal>
+                    <div className="align-everything">
+                        <SpinnerBox />
+                    </div>
+                    <p className="center-text">Leser inn skjema...</p>
+                </Modal>
             )}
 
             <div className="editor">
+                <input
+                    type="file"
+                    ref={uploadRef}
+                    onChange={uploadQuestionnaire}
+                    accept="application/JSON"
+                    style={{ display: 'none' }}
+                />
                 <div className="anchor-wrapper">
                     <AnchorMenu
                         dispatch={dispatch}
@@ -77,56 +165,14 @@ const FormBuilder = (): JSX.Element => {
                         areFormDetailsVisible={showFormDetails}
                     />
                 </div>
+                {showPreview && (
+                    <FormFiller
+                        showFormFiller={() => setShowPreview(!showPreview)}
+                        language={state.qMetadata.language}
+                    />
+                )}
                 <div className="page-wrapper">
-                    {showFormDetails && (
-                        <div className="form-intro">
-                            <div className="form-intro-header">
-                                <h2>Skjemainformasjon</h2>
-                            </div>
-                            <div className="form-intro-field">
-                                <label htmlFor="questionnaire-title">Tittel:</label>
-                                <br />
-                                <input
-                                    placeholder="Tittel"
-                                    defaultValue={state.qMetadata.title}
-                                    id="questionnaire-title"
-                                    onBlur={(event) => {
-                                        dispatchUpdateQuestionnaireMetadata(
-                                            IQuestionnaireMetadataType.title,
-                                            event.target.value,
-                                        );
-                                    }}
-                                />
-                            </div>
-
-                            <MetadataEditor />
-                            <Sidebar />
-                            <LanguageAccordion />
-                        </div>
-                    )}
-
-                    <div style={{ textAlign: 'left', whiteSpace: 'pre' }}>
-                        {state.qCurrentItem && (
-                            <Question
-                                key={`${state.qCurrentItem.linkId}`}
-                                item={state.qItems[state.qCurrentItem.linkId]}
-                                parentArray={state.qCurrentItem.parentArray}
-                                questionNumber={calculateItemNumber(
-                                    state.qCurrentItem.linkId,
-                                    state.qCurrentItem.parentArray,
-                                    state.qOrder,
-                                    state.qItems,
-                                )}
-                                conditionalArray={getConditional(
-                                    state.qCurrentItem.parentArray,
-                                    state.qCurrentItem.linkId,
-                                )}
-                                getItem={getQItem}
-                                containedResources={state.qContained}
-                                dispatch={dispatch}
-                            />
-                        )}
-                    </div>
+                    <QuestionDrawer />
                 </div>
             </div>
         </>

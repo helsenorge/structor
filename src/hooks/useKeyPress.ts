@@ -6,6 +6,7 @@ export const useKeyPress = (targetKey: string, callback: () => void): void => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const keyPressHandler = ({ key }) => {
+        console.log(key);
         if (key === targetKey) {
             callback();
         }

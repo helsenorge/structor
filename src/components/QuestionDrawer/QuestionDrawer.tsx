@@ -15,12 +15,13 @@ import { useKeyPress } from '../../hooks/useKeyPress';
 const QuestionDrawer = (/*props: QuestionDrawerProps*/): JSX.Element | null => {
     const { state, dispatch } = useContext(TreeContext);
     const { previous, next, hasNext, hasPrevious } = useItemNavigation();
-    useKeyPress('ArrowLeft', previous);
-    useKeyPress('ArrowRight', next);
-
     const close = () => {
         dispatch(updateMarkedLinkIdAction());
     };
+
+    useKeyPress('ArrowLeft', previous);
+    useKeyPress('ArrowRight', next);
+    useKeyPress('Escape', close);
 
     const getConditional = (parentArray: string[], linkId: string): ValueSetComposeIncludeConcept[] => {
         return getEnableWhenConditionals(state, parentArray, linkId);
@@ -39,9 +40,9 @@ const QuestionDrawer = (/*props: QuestionDrawerProps*/): JSX.Element | null => {
             {item && <div className="overlay" />}
             <div className={`right-drawer ${additionalClassNames}`}>
                 <div className="drawer-header">
-                    <IconBtn type="x" title="Lukk" onClick={close} />
-                    {hasPrevious() && <IconBtn type="back" title="Forrige" onClick={previous} />}
-                    {hasNext() && <IconBtn type="forward" title="Neste" onClick={next} />}
+                    <IconBtn type="x" title="Lukk (Esc)" onClick={close} />
+                    {hasPrevious() && <IconBtn type="back" title="Forrige (Pil venstre)" onClick={previous} />}
+                    {hasNext() && <IconBtn type="forward" title="Neste (Pil høyre)" onClick={next} />}
                 </div>
                 {item && (
                     <Question

@@ -1,24 +1,52 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { RefObject, useContext, useRef, useState } from 'react';
 import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import Btn from '../Btn/Btn';
-import IconBtn from '../IconBtn/IconBtn';
 import MoreIcon from '../../images/icons/ellipsis-horizontal-outline.svg';
+import useOutsideClick from '../../hooks/useOutsideClick';
 import './Navbar.css';
+import PublishModal from '../PublishModal/PublishModal';
+import JSONView from '../JSONView/JSONView';
+import PredefinedValueSetModal from '../PredefinedValueSetModal/PredefinedValueSetModal';
+import ImportValueSet from '../ImportValueSet/ImportValueSet';
+import { saveAction } from '../../store/treeStore/treeActions';
+import ConfirmFileUpload from '../FileUpload/ConfirmFileUpload';
 
 type Props = {
-    showAdmin: () => void;
+    newQuestionnaire: () => void;
     showFormFiller: () => void;
-    showJSONView: () => void;
-    showImportValueSet: () => void;
-    showContained: () => void;
+    uploadRef: RefObject<HTMLInputElement>;
 };
 
-const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, showContained }: Props): JSX.Element => {
-    const { state } = useContext(TreeContext);
-    const [menuIsVisible, setMenuIsVisible] = useState(false);
+enum MenuItem {
+    none = 'none',
+    file = 'file',
+    more = 'more',
+}
+
+const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Element => {
+    const { state, dispatch } = useContext(TreeContext);
+    const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
+    const [showContained, setShowContained] = useState(false);
+    const [showImportValueSet, setShowImportValueSet] = useState(false);
+    const [showJSONView, setShowJSONView] = useState(false);
+    const [showPublish, setShowPublish] = useState(false);
+    const [confirmUpload, setConfirmUpload] = useState(false);
+    const navBarRef = useRef<HTMLHeadingElement>(null);
     const fileExtension = 'json';
+
+    useOutsideClick(navBarRef, () => {
+        hideMenu();
+    });
+
+    const hideMenu = () => {
+        setSelectedMenuItem(MenuItem.none);
+    };
+
+    const callbackAndHide = (callback: () => void) => {
+        callback();
+        hideMenu();
+    };
 
     const getFileName = (): string => {
         const technicalName = state.qMetadata.name || 'skjema';
@@ -48,58 +76,77 @@ const Navbar = ({ showAdmin, showFormFiller, showJSONView, showImportValueSet, s
             a.click();
             document.body.removeChild(a);
         }
+        dispatch(saveAction());
     }
 
-    const handleClickOutside = (event: MouseEvent) => {
-        const currentClass = (event.target as Element).className;
-        if (menuIsVisible && currentClass.indexOf('more-menu') < 0) {
-            setTimeout(() => setMenuIsVisible(false), 200);
+    const handleMenuItemClick = (clickedItem: MenuItem) => {
+        if (selectedMenuItem !== clickedItem) {
+            setSelectedMenuItem(clickedItem);
+        } else {
+            hideMenu();
         }
     };
 
-    useEffect(() => {
-        document.addEventListener('click', handleClickOutside, true);
-        return () => {
-            document.removeEventListener('click', handleClickOutside, true);
-        };
-    });
+    const triggerUpload = () => {
+        if (state.isDirty && state.qItems && Object.keys(state.qItems).length > 0) {
+            setConfirmUpload(true);
+        } else {
+            uploadRef.current?.click();
+        }
+    };
 
     return (
-        <header>
-            <Link to="/">
-                <IconBtn type="back" title="Tilbake" />
-            </Link>
+        <>
+            <header ref={navBarRef}>
+                <div>
+                    <Btn title="Skjema" onClick={() => handleMenuItemClick(MenuItem.file)} />
+                    {selectedMenuItem === MenuItem.file && (
+                        <div className="menu file">
+                            <Btn title="Nytt skjema" onClick={() => callbackAndHide(newQuestionnaire)} />
+                            <Btn title="Last opp skjema" onClick={() => callbackAndHide(triggerUpload)} />
+                        </div>
+                    )}
+                </div>
 
-            <div className="left"></div>
+                <div className="left"></div>
 
-            <div style={{ width: '100%' }}>
+                <div style={{ width: '100%' }}>
                 <h1>{getFileName()}</h1>
             </div>
 
             <div className="pull-right">
-                <Btn title="Forhåndsvisning" onClick={showFormFiller} />
-                <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
-                <div
-                    className="more-menu"
-                    tabIndex={0}
-                    role="button"
-                    aria-label="menu list"
-                    aria-pressed="false"
-                    onClick={() => setMenuIsVisible(!menuIsVisible)}
-                    onKeyPress={(e) => e.code === 'Enter' && setMenuIsVisible(!menuIsVisible)}
-                >
-                    <img className="more-menu-icon" src={MoreIcon} alt="more icon" height={25} />
+                    <Btn title="Forhåndsvisning" onClick={showFormFiller} />
+                    <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
+                    <div
+                        className="more-menu"
+                        tabIndex={0}
+                        role="button"
+                        aria-label="menu list"
+                        aria-pressed="false"
+                        onClick={() => handleMenuItemClick(MenuItem.more)}
+                        onKeyPress={(e) => e.code === 'Enter' && handleMenuItemClick(MenuItem.more)}
+                    >
+                        <img className="more-menu-icon" src={MoreIcon} alt="more icon" height={25} />
+                    </div>
                 </div>
-            </div>
-            {menuIsVisible && (
-                <div className="menu">
-                    <Btn title="JSON" onClick={showJSONView} />
-                    <Btn title="Publiser" onClick={showAdmin} />
-                    <Btn title="Importer valg" onClick={showImportValueSet} />
-                    <Btn title="Valg" onClick={showContained} />
-                </div>
-            )}
-        </header>
+                {selectedMenuItem === MenuItem.more && (
+                    <div className="menu">
+                        <Btn title="JSON" onClick={() => callbackAndHide(() => setShowJSONView(!showJSONView))} />
+                        <Btn title="Publiser" onClick={() => callbackAndHide(() => setShowPublish(!showPublish))} />
+                        <Btn
+                            title="Importer valg"
+                            onClick={() => callbackAndHide(() => setShowImportValueSet(!showImportValueSet))}
+                        />
+                        <Btn title="Valg" onClick={() => callbackAndHide(() => setShowContained(!showContained))} />
+                    </div>
+                )}
+            </header>
+            {showContained && <PredefinedValueSetModal close={() => setShowContained(!showContained)} />}
+            {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
+            {showJSONView && <JSONView showJSONView={() => setShowJSONView(!showJSONView)} />}
+            {showPublish && <PublishModal close={() => setShowPublish(!showPublish)} />}
+            {confirmUpload && <ConfirmFileUpload close={() => setConfirmUpload(false)} uploadRef={uploadRef} />}
+        </>
     );
 };
 
