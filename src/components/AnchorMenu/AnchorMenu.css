@@ -1,3 +1,11 @@
+.questionnaire-overview {
+    text-align: center;
+    margin-top: 63px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
 .anchor-menu {
     background: white;
     color: black;

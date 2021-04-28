@@ -1,0 +1,47 @@
+import React, { useContext } from 'react';
+import { TreeContext } from '../../../store/treeStore/treeStore';
+import MetadataEditor from '../../Metadata/MetadataEditor';
+import Sidebar from '../../Sidebar/Sidebar';
+import LanguageAccordion from '../../Languages/LanguageAccordion';
+import { IQuestionnaireMetadataType } from '../../../types/IQuestionnaireMetadataType';
+import { updateQuestionnaireMetadataAction } from '../../../store/treeStore/treeActions';
+import Drawer from '../Drawer';
+import { useKeyPress } from '../../../hooks/useKeyPress';
+
+type FormDetailsDrawerProps = {
+    closeDrawer: () => void;
+    isOpen?: boolean;
+};
+
+const FormDetailsDrawer = ({ closeDrawer, isOpen = false }: FormDetailsDrawerProps): JSX.Element => {
+    const { state, dispatch } = useContext(TreeContext);
+
+    useKeyPress('Escape', closeDrawer, !isOpen);
+
+    const dispatchUpdateQuestionnaireMetadata = (propName: IQuestionnaireMetadataType, value: string) => {
+        dispatch(updateQuestionnaireMetadataAction(propName, value));
+    };
+
+    return (
+        <Drawer position="left" visible={isOpen} hide={closeDrawer}>
+            <div className="form-intro-field">
+                <label htmlFor="questionnaire-title">Tittel:</label>
+                <br />
+                <input
+                    placeholder="Tittel"
+                    value={state.qMetadata.title}
+                    id="questionnaire-title"
+                    onChange={(event) => {
+                        dispatchUpdateQuestionnaireMetadata(IQuestionnaireMetadataType.title, event.target.value);
+                    }}
+                />
+            </div>
+
+            <MetadataEditor />
+            <Sidebar />
+            <LanguageAccordion />
+        </Drawer>
+    );
+};
+
+export default FormDetailsDrawer;

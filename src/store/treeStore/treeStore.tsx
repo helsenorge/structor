@@ -59,7 +59,7 @@ import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption } from '../../helpers/answerOptionHelper';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
-import { isItemControlDropDown } from '../../helpers/itemControl';
+import { isIgnorableItem, isItemControlDropDown } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { createSystemUUID } from '../../helpers/systemHelper';
@@ -259,13 +259,17 @@ function updateMarkedItemId(draft: TreeState, action: UpdateMarkedLinkId): void 
     }
 }
 
-function newItem(draft: TreeState, action: NewItemAction): void {
+function createNewItem(draft: TreeState, action: NewItemAction): void {
     const itemToAdd = action.item;
     draft.qItems[itemToAdd.linkId] = itemToAdd;
     // find the correct place to add the new item
     const arrayToAddItemTo = findTreeArray(action.order, draft.qOrder);
     arrayToAddItemTo.push({ linkId: itemToAdd.linkId, items: [] });
-    draft.qCurrentItem = { linkId: itemToAdd.linkId, parentArray: action.order };
+
+    const parentItem = draft.qItems[action.order[action.order.length - 1]];
+    if (!isIgnorableItem(itemToAdd, parentItem)) {
+        draft.qCurrentItem = { linkId: itemToAdd.linkId, parentArray: action.order };
+    }
 }
 
 function moveItem(draft: TreeState, action: MoveItemAction): void {
@@ -520,7 +524,7 @@ function reorderItem(draft: TreeState, action: ReorderItemAction): void {
     const arrayToReorderFrom = findTreeArray(action.order, draft.qOrder);
     const indexToMove = arrayToReorderFrom.findIndex((x) => x.linkId === action.linkId);
     if (indexToMove === -1) {
-        throw 'Could not find item to move';
+        throw new Error('Could not find item to move');
     }
     const movedOrderItem = arrayToReorderFrom.splice(indexToMove, 1);
     arrayToReorderFrom.splice(action.newIndex, 0, movedOrderItem[0]);
@@ -556,7 +560,7 @@ function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
     const arrayToUpdateIn = findTreeArray(parentArray, qOrder);
     const itemToUpdate = arrayToUpdateIn.find((item) => item.linkId === oldLinkId);
     if (!itemToUpdate) {
-        throw `Trying to update linkId that doesn't exist`;
+        throw new Error(`Trying to update linkId that doesn't exist`);
     }
     itemToUpdate.linkId = newLinkId;
 
@@ -627,7 +631,7 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             updateQuestionnaireMetadataProperty(draft, action);
             break;
         case NEW_ITEM_ACTION:
-            newItem(draft, action);
+            createNewItem(draft, action);
             break;
         case DELETE_ITEM_ACTION:
             deleteItem(draft, action);

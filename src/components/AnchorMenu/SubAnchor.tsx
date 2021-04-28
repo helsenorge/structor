@@ -84,13 +84,13 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                     <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
                         {removeUnsupportedChildren(props.items).map((item, index) => (
                             <Draggable key={item.linkId} draggableId={item.linkId} index={index}>
-                                {(provided, snapshot) => (
+                                {(subProvided, subSnapshot) => (
                                     <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
+                                        ref={subProvided.innerRef}
+                                        {...subProvided.draggableProps}
                                         style={getItemStyle(
-                                            snapshot.isDragging,
-                                            provided.draggableProps.style,
+                                            subSnapshot.isDragging,
+                                            subProvided.draggableProps.style,
                                             item.linkId,
                                         )}
                                     >
@@ -108,16 +108,18 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                                 {showHierarchy(index)}{' '}
                                                 {props.qItems[item.linkId].text || <i>Legg inn tekst</i>}
                                             </span>
-                                            <ItemButtons
-                                                item={props.qItems[item.linkId]}
-                                                parentArray={props.parentArray}
-                                                dispatch={dispatch}
-                                            />
-                                            <span
-                                                {...provided.dragHandleProps}
-                                                className="reorder-icon"
-                                                aria-label="reorder item"
-                                            />
+                                            <div className="pull-right">
+                                                <ItemButtons
+                                                    item={props.qItems[item.linkId]}
+                                                    parentArray={props.parentArray}
+                                                    dispatch={dispatch}
+                                                />
+                                                <span
+                                                    {...subProvided.dragHandleProps}
+                                                    className="reorder-icon"
+                                                    aria-label="reorder item"
+                                                />
+                                            </div>
                                         </div>
                                         <div>
                                             {removeUnsupportedChildren(item.items, item.linkId).length > 0 && (

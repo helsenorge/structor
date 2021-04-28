@@ -1,33 +1,36 @@
-.right-drawer {
+.drawer {
+    display: block;
     height: 100%;
     background: white;
     position: fixed;
-    top: 0;
-    right: 0;
+    top: 64px;
     width: 45%;
     min-width: 600px;
     z-index: 200;
     box-shadow: 1px 0px 7px rgba(0,0,0,0.5);
-    transform: translateX(100%);
     transition: transform 0.3s ease-out;
     overflow-y: auto;
 }
 
-.right-drawer.open {
+.drawer.left-drawer {
+    left: 0;
+    right: auto;
+    transform: translateX(-100%);
+}
+
+.drawer.right-drawer {
+    right: 0;
+    left: auto;
+    transform: translateX(100%);
+}
+
+.drawer.open {
     transform: translateX(0);
+    display: block;
 }
 
 .drawer-header {
     background-color: var(--primary-2);
     display: flex;
     padding: 10px 0;
-}
-
-.item-navigation-buttons {
-    display: flex;
-}
-
-.item-navigation-buttons div {
-    height: 34px;
-    width: 64px;
 }

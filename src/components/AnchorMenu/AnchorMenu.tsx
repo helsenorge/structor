@@ -4,7 +4,6 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import React from 'react';
 
 import SubAnchor from './SubAnchor';
-import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import { ActionType, Items, OrderItem } from '../../store/treeStore/treeStore';
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import { newItemAction, reorderItemAction } from '../../store/treeStore/treeActions';
@@ -12,8 +11,6 @@ import { newItemAction, reorderItemAction } from '../../store/treeStore/treeActi
 interface AnchorMenuProps {
     qOrder: OrderItem[];
     qItems: Items;
-    areFormDetailsVisible: boolean;
-    toggleFormDetails: () => void;
     dispatch: React.Dispatch<ActionType>;
 }
 
@@ -36,16 +33,8 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     };
 
     return (
-        <div className="anchor-menu">
+        <div className="questionnaire-overview">
             <p className="align-header">Skjemaoversikt</p>
-            <div className="toggle">
-                <SwitchBtn
-                    onChange={props.toggleFormDetails}
-                    value={props.areFormDetailsVisible}
-                    label="Vis skjemainformasjon"
-                    initial
-                />
-            </div>
             <DragDropContext onDragEnd={handleChange}>
                 <SubAnchor
                     items={props.qOrder}
@@ -83,5 +72,5 @@ export default React.memo(AnchorMenu, (prevProps: AnchorMenuProps, nextProps: An
                 (key: string) => `${nextProps.qItems[key].text}${nextProps.qItems[key].type}`,
             ),
         );
-    return isOrderEqual && areItemsEqual && prevProps.toggleFormDetails === nextProps.toggleFormDetails;
+    return isOrderEqual && areItemsEqual;
 });

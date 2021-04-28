@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import './QuestionDrawer.css';
@@ -9,40 +9,50 @@ import { updateMarkedLinkIdAction } from '../../store/treeStore/treeActions';
 import IconBtn from '../IconBtn/IconBtn';
 import { useItemNavigation } from '../../hooks/useItemNavigation';
 import { useKeyPress } from '../../hooks/useKeyPress';
+import useOutsideClick from '../../hooks/useOutsideClick';
+import Drawer from '../Drawer/Drawer';
 
-// type QuestionDrawerProps = {};
-
-const QuestionDrawer = (/*props: QuestionDrawerProps*/): JSX.Element | null => {
+const QuestionDrawer = (): JSX.Element | null => {
     const { state, dispatch } = useContext(TreeContext);
     const { previous, next, hasNext, hasPrevious } = useItemNavigation();
-    const close = () => {
+    const closeDrawer = () => {
         dispatch(updateMarkedLinkIdAction());
     };
 
-    useKeyPress('ArrowLeft', previous);
-    useKeyPress('ArrowRight', next);
-    useKeyPress('Escape', close);
+    const disableEventListeners = !state.qCurrentItem?.linkId;
 
-    const getConditional = (parentArray: string[], linkId: string): ValueSetComposeIncludeConcept[] => {
-        return getEnableWhenConditionals(state, parentArray, linkId);
+    // Click outside
+    const drawerRef = useRef<HTMLDivElement>(null);
+    useOutsideClick(drawerRef, closeDrawer, disableEventListeners);
+
+    // Keyboard navigation
+    useKeyPress('ArrowLeft', previous, disableEventListeners);
+    useKeyPress('ArrowRight', next, disableEventListeners);
+    useKeyPress('Escape', closeDrawer, disableEventListeners);
+
+    const getConditional = (ancestors: string[], linkId: string): ValueSetComposeIncludeConcept[] => {
+        return getEnableWhenConditionals(state, ancestors, linkId);
     };
 
     const getQItem = (linkId: string): QuestionnaireItem => {
         return state.qItems[linkId];
     };
 
-    const additionalClassNames = state.qCurrentItem ? 'open' : '';
     const item = state.qCurrentItem?.linkId ? state.qItems[state.qCurrentItem?.linkId] : undefined;
     const parentArray = state.qCurrentItem?.parentArray || [];
 
     return (
         <>
-            {item && <div className="overlay" />}
-            <div className={`right-drawer ${additionalClassNames}`}>
-                <div className="drawer-header">
-                    <IconBtn type="x" title="Lukk (Esc)" onClick={close} />
-                    {hasPrevious() && <IconBtn type="back" title="Forrige (Pil venstre)" onClick={previous} />}
-                    {hasNext() && <IconBtn type="forward" title="Neste (Pil høyre)" onClick={next} />}
+            <Drawer visible={!!item} position="right" hide={closeDrawer}>
+                <div className="item-navigation-buttons">
+                    <div>
+                        {hasPrevious() && (
+                            <IconBtn type="back" title="Forrige (Pil venstre)" onClick={previous} color="black" />
+                        )}
+                    </div>
+                    <div>
+                        {hasNext() && <IconBtn type="forward" title="Neste (Pil høyre)" onClick={next} color="black" />}
+                    </div>
                 </div>
                 {item && (
                     <Question
@@ -56,7 +66,7 @@ const QuestionDrawer = (/*props: QuestionDrawerProps*/): JSX.Element | null => {
                         dispatch={dispatch}
                     />
                 )}
-            </div>
+            </Drawer>
         </>
     );
 };

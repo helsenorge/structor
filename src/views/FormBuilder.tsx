@@ -7,7 +7,9 @@ import { resetQuestionnaireAction } from '../store/treeStore/treeActions';
 import mapToTreeState from '../helpers/FhirToTreeStateMapper';
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import Confirm from '../components/Modal/Confirm';
+import FormDetailsDrawer from '../components/Drawer/FormDetailsDrawer/FormDetailsDrawer';
 import FormFiller from '../components/FormFiller/FormFiller';
+import IconBtn from '../components/IconBtn/IconBtn';
 import Modal from '../components/Modal/Modal';
 import Navbar from '../components/Navbar/Navbar';
 import QuestionDrawer from '../components/QuestionDrawer/QuestionDrawer';
@@ -17,8 +19,7 @@ import './FormBuilder.css';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
-    const [showFormDetails, setShowFormDetails] = useState(true);
-
+    const [showFormDetails, setShowFormDetails] = useState(false);
     const [stateFromStorage, setStateFromStorage] = useState<TreeState>();
     const [isLoading, setIsLoading] = useState(false);
     const [displayVerifyReset, setDisplayVerifyReset] = useState(false);
@@ -32,10 +33,6 @@ const FormBuilder = (): JSX.Element => {
     const getStoredQuestionnaire = async () => {
         const indexedDbState = await getStateFromDb();
         setStateFromStorage(indexedDbState);
-    };
-
-    const suggestRestore = (): boolean => {
-        return stateFromStorage?.qItems ? Object.keys(stateFromStorage.qItems).length > 0 : false;
     };
 
     const getConfirmRestoreContent = (): JSX.Element => {
@@ -68,10 +65,15 @@ const FormBuilder = (): JSX.Element => {
     };
 
     useEffect(() => {
-        const startTime = performance.now();
         getStoredQuestionnaire();
-        console.log(`Loading state from indexedDb took ${Math.round(performance.now() - startTime)}ms`);
     }, []);
+
+    useEffect(() => {
+        // Show form details if new questionnaire
+        if (!stateFromStorage && (!state.qItems || Object.keys(state.qItems).length < 1)) {
+            setShowFormDetails(true);
+        }
+    }, [stateFromStorage, state.qItems]);
 
     const reuploadJSONFile = (questionnaireObj: Questionnaire) => {
         const importedState = mapToTreeState(questionnaireObj);
@@ -97,6 +99,9 @@ const FormBuilder = (): JSX.Element => {
         if (event.target.files && event.target.files[0]) reader.readAsText(event.target.files[0]);
     };
 
+    const suggestRestore: boolean = stateFromStorage?.qItems ? Object.keys(stateFromStorage.qItems).length > 0 : false;
+    const displayDetailsDrawer: boolean = showFormDetails && !suggestRestore && !state.qCurrentItem;
+
     return (
         <>
             <Navbar
@@ -105,7 +110,7 @@ const FormBuilder = (): JSX.Element => {
                 uploadRef={uploadRef}
             />
 
-            {suggestRestore() && (
+            {suggestRestore && (
                 <Confirm
                     onConfirm={() => {
                         dispatch(resetQuestionnaireAction(stateFromStorage));
@@ -156,15 +161,7 @@ const FormBuilder = (): JSX.Element => {
                     accept="application/JSON"
                     style={{ display: 'none' }}
                 />
-                <div className="anchor-wrapper">
-                    <AnchorMenu
-                        dispatch={dispatch}
-                        qOrder={state.qOrder}
-                        qItems={state.qItems}
-                        toggleFormDetails={toggleFormDetails}
-                        areFormDetailsVisible={showFormDetails}
-                    />
-                </div>
+                <AnchorMenu dispatch={dispatch} qOrder={state.qOrder} qItems={state.qItems} />
                 {showPreview && (
                     <FormFiller
                         showFormFiller={() => setShowPreview(!showPreview)}
@@ -172,6 +169,16 @@ const FormBuilder = (): JSX.Element => {
                     />
                 )}
                 <div className="page-wrapper">
+                    <div className="details-button">
+                        <IconBtn
+                            type="info"
+                            title="Skjemadetaljer"
+                            color="black"
+                            onClick={toggleFormDetails}
+                            size="large"
+                        />
+                    </div>
+                    <FormDetailsDrawer closeDrawer={toggleFormDetails} isOpen={displayDetailsDrawer} />
                     <QuestionDrawer />
                 </div>
             </div>

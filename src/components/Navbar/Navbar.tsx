@@ -32,16 +32,14 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
     const [showJSONView, setShowJSONView] = useState(false);
     const [showPublish, setShowPublish] = useState(false);
     const [confirmUpload, setConfirmUpload] = useState(false);
-    const navBarRef = useRef<HTMLHeadingElement>(null);
+    const navBarRef = useRef<HTMLDivElement>(null);
     const fileExtension = 'json';
-
-    useOutsideClick(navBarRef, () => {
-        hideMenu();
-    });
 
     const hideMenu = () => {
         setSelectedMenuItem(MenuItem.none);
     };
+
+    useOutsideClick(navBarRef, hideMenu, selectedMenuItem === MenuItem.none);
 
     const callbackAndHide = (callback: () => void) => {
         callback();
@@ -111,10 +109,10 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
                 <div className="left"></div>
 
                 <div style={{ width: '100%' }}>
-                <h1>{getFileName()}</h1>
-            </div>
+                    <h1>{getFileName()}</h1>
+                </div>
 
-            <div className="pull-right">
+                <div className="pull-right">
                     <Btn title="Forhåndsvisning" onClick={showFormFiller} />
                     <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
                     <div

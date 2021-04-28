@@ -1,12 +1,7 @@
 @import '/src/index.css';
 @import 'https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css';
 .editor {
-    display: flex;
     padding-bottom: 60px;
-}
-
-.anchor-wrapper {
-    width: 400px;
 }
 
 header {
@@ -136,8 +131,8 @@ select {
     transition: 1s ease-in-out;
 }
 
-@media only screen and (max-width: 1300px) {
-    .anchor-wrapper {
-        display: none;
-    }
+.details-button {
+    position: fixed;
+    left: 0;
+    top: 64px;
 }
