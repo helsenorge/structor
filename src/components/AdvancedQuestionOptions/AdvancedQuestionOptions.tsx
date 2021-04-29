@@ -167,7 +167,15 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         }
     };
 
+    const removeExtension = (extensionUrl: string) => {
+        const extensions = item.extension ? item.extension.filter((x) => x.url !== extensionUrl) : [];
+        dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensions));
+    };
+
     const getPlaceholder = item?.extension?.find((x) => x.url === IExtentionType.entryFormat)?.valueString ?? '';
+    const hasSummaryExtension = !!item?.extension?.find((x) =>
+        x.valueCodeableConcept?.coding?.filter((y) => y.code === ItemControlType.summary),
+    );
 
     useEffect(() => {
         const handleChild = (
@@ -293,6 +301,8 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                     url: IExtentionType.entryFormat,
                                     valueString: e.target.value,
                                 });
+                            } else {
+                                removeExtension(IExtentionType.entryFormat);
                             }
                         }}
                     />
@@ -351,6 +361,32 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             )}
             <GuidanceAction item={item} />
             <GuidanceParam item={item} />
+            {item.type === IQuestionnaireItemType.group && (
+                <FormField>
+                    <SwitchBtn
+                        onChange={() => {
+                            if (hasSummaryExtension) {
+                                removeExtension(IExtentionType.itemControl);
+                            } else {
+                                handleExtension({
+                                    url: IExtentionType.itemControl,
+                                    valueCodeableConcept: {
+                                        coding: [
+                                            {
+                                                system: IExtentionType.itemControlValueSet,
+                                                code: ItemControlType.summary,
+                                            },
+                                        ],
+                                    },
+                                });
+                            }
+                        }}
+                        value={hasSummaryExtension}
+                        label="Skru på oppsummering"
+                        initial
+                    />
+                </FormField>
+            )}
             <div>
                 <FormField label="Flytt til element">
                     <Select
