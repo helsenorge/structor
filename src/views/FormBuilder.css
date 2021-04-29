@@ -62,8 +62,12 @@ h1 {
     padding: 20px 70px;
 }
 
+.form-intro-field {
+    margin-top: 20px;
+}
+
 .form-intro-field input, .form-intro-field label {
-    margin: 20px 70px;
+    margin: 10px 70px;
     width: 66%;
 }
 

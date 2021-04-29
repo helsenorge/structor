@@ -34,7 +34,6 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
     return (
         <div className="questionnaire-overview">
-            <p className="align-header">Skjemaoversikt</p>
             <DragDropContext onDragEnd={handleChange}>
                 <SubAnchor
                     items={props.qOrder}

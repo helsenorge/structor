@@ -701,7 +701,7 @@ export const TreeContextProvider = (props: { children: JSX.Element }): JSX.Eleme
             await saveStateToDb(JSON.parse(JSON.stringify(state)));
         };
         save();
-        console.log(`State saved in ${Math.round(performance.now() - startTime)}ms`);
+        console.debug(`State saved in ${Math.round(performance.now() - startTime)}ms`);
     }, [state]);
 
     return (

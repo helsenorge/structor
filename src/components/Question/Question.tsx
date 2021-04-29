@@ -45,7 +45,6 @@ import FormField from '../FormField/FormField';
 interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
-    questionNumber: string;
     containedResources?: Array<ValueSet>;
     conditionalArray: ValueSetComposeIncludeConcept[];
     getItem: (linkId: string) => QuestionnaireItem;
@@ -284,13 +283,11 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
+    const enableWhenCount =
+        props.item.enableWhen && props.item.enableWhen.length > 0 ? `(${props.item.enableWhen?.length})` : '';
+
     return (
         <div className="question" id={props.item.linkId}>
-            <div className="question-header">
-                <h2>
-                    Element <span>{props.questionNumber}</span>
-                </h2>
-            </div>
             <div className="question-form">
                 <div className="form-field">
                     <label>Velg type</label>
@@ -349,13 +346,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <ValidationAnswerTypes item={props.item} />
                     </Accordion>
                 )}
-                <Accordion
-                    title={`Betinget visning ${
-                        props.item.enableWhen && props.item.enableWhen.length > 0
-                            ? `(${props.item.enableWhen?.length})`
-                            : ''
-                    }`}
-                >
+                <Accordion title={`Betinget visning ${enableWhenCount}`}>
                     <div>
                         <EnableWhen
                             getItem={props.getItem}
@@ -385,14 +376,7 @@ export default React.memo(Question, (prevProps: QuestionProps, nextProps: Questi
     const isParentArrayIdentical = JSON.stringify(prevProps.parentArray) === JSON.stringify(nextProps.parentArray);
     const isConditionalArrayIdentical =
         JSON.stringify(prevProps.conditionalArray) === JSON.stringify(nextProps.conditionalArray);
-    const isQuestionNumberIdentical = prevProps.questionNumber === nextProps.questionNumber;
     const isContainedResourcesIdentical =
         JSON.stringify(prevProps.containedResources) === JSON.stringify(nextProps.containedResources);
-    return (
-        isItemIdentical &&
-        isParentArrayIdentical &&
-        isConditionalArrayIdentical &&
-        isQuestionNumberIdentical &&
-        isContainedResourcesIdentical
-    );
+    return isItemIdentical && isParentArrayIdentical && isConditionalArrayIdentical && isContainedResourcesIdentical;
 });

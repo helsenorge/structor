@@ -11,6 +11,7 @@ import { useItemNavigation } from '../../hooks/useItemNavigation';
 import { useKeyPress } from '../../hooks/useKeyPress';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import Drawer from '../Drawer/Drawer';
+import ItemButtons, { ItemButtonType } from '../AnchorMenu/ItemButtons/ItemButtons';
 
 const QuestionDrawer = (): JSX.Element | null => {
     const { state, dispatch } = useContext(TreeContext);
@@ -40,26 +41,39 @@ const QuestionDrawer = (): JSX.Element | null => {
 
     const item = state.qCurrentItem?.linkId ? state.qItems[state.qCurrentItem?.linkId] : undefined;
     const parentArray = state.qCurrentItem?.parentArray || [];
+    const elementNumber = !!item
+        ? calculateItemNumber(item.linkId, parentArray, state.qOrder, state.qItems)
+        : undefined;
+    const title = elementNumber ? `Element ${elementNumber}` : '';
 
     return (
         <>
-            <Drawer visible={!!item} position="right" hide={closeDrawer}>
-                <div className="item-navigation-buttons">
-                    <div>
+            <Drawer visible={!!item} position="right" hide={closeDrawer} title={title}>
+                <div className="item-button-row">
+                    <div className="item-button-wrapper">
                         {hasPrevious() && (
                             <IconBtn type="back" title="Forrige (Pil venstre)" onClick={previous} color="black" />
                         )}
                     </div>
-                    <div>
+                    <div className="item-button-wrapper">
                         {hasNext() && <IconBtn type="forward" title="Neste (Pil høyre)" onClick={next} color="black" />}
                     </div>
+                    {item && (
+                        <div className="pull-right">
+                            <ItemButtons
+                                item={item}
+                                parentArray={parentArray}
+                                dispatch={dispatch}
+                                buttons={[ItemButtonType.addChild, ItemButtonType.delete]}
+                            />
+                        </div>
+                    )}
                 </div>
                 {item && (
                     <Question
                         key={`${item.linkId}`}
                         item={item}
                         parentArray={parentArray}
-                        questionNumber={calculateItemNumber(item.linkId, parentArray, state.qOrder, state.qItems)}
                         conditionalArray={getConditional(parentArray, item.linkId)}
                         getItem={getQItem}
                         containedResources={state.qContained}

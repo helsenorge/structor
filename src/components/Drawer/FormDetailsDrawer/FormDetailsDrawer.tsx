@@ -23,10 +23,9 @@ const FormDetailsDrawer = ({ closeDrawer, isOpen = false }: FormDetailsDrawerPro
     };
 
     return (
-        <Drawer position="left" visible={isOpen} hide={closeDrawer}>
+        <Drawer title="Skjemadetaljer" position="left" visible={isOpen} hide={closeDrawer}>
             <div className="form-intro-field">
                 <label htmlFor="questionnaire-title">Tittel:</label>
-                <br />
                 <input
                     placeholder="Tittel"
                     value={state.qMetadata.title}

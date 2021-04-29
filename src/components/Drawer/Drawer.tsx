@@ -8,6 +8,7 @@ type DrawerProps = {
     position: 'left' | 'right';
     visible: boolean;
     hide: () => void;
+    title?: string;
     children?: ReactNode;
 };
 
@@ -24,6 +25,7 @@ const Drawer = (props: DrawerProps): JSX.Element => {
             <div className={classNames} ref={drawerRef}>
                 <div className="drawer-header">
                     <IconBtn type="x" title="Lukk (Esc)" onClick={props.hide} />
+                    {props.title && <h1>{props.title}</h1>}
                 </div>
                 {props.children}
             </div>

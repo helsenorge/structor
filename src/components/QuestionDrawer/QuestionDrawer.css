@@ -23,11 +23,15 @@
     padding: 10px 0;
 }
 
-.item-navigation-buttons {
+.item-button-row {
     display: flex;
 }
 
-.item-navigation-buttons div {
+.item-button-row .item-button-wrapper {
     height: 34px;
     width: 64px;
+}
+
+.item-button-row .item-buttons {
+    display: flex;
 }
