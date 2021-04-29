@@ -8,6 +8,7 @@ export enum ItemControlType {
     sidebar = 'sidebar',
     dropdown = 'drop-down',
     highlight = 'highlight',
+    summary = 'summary',
 }
 
 const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefined => {
