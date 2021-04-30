@@ -9,15 +9,12 @@ import {
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { ChangeEvent } from 'react';
 import {
     deleteChildItemsAction,
-    deleteItemAction,
-    duplicateItemAction,
     newItemAction,
     removeItemAttributeAction,
     updateItemAction,
-    updateMarkedLinkIdAction,
 } from '../../store/treeStore/treeActions';
 import itemType, {
     ATTACHMENT_DEFAULT_MAX_SIZE,
@@ -26,8 +23,8 @@ import itemType, {
     typeIsSupportingValidation,
     valueSetTqqcCoding,
 } from '../../helpers/QuestionHelper';
-import { removeExtensionValue, updateExtensionValue, createDropdown } from '../../helpers/extensionHelper';
-import { isItemControlInline, isItemControlDropDown, ItemControlType } from '../../helpers/itemControl';
+import { createDropdown, removeExtensionValue, updateExtensionValue } from '../../helpers/extensionHelper';
+import { isItemControlDropDown, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
 
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
@@ -48,7 +45,6 @@ import FormField from '../FormField/FormField';
 interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
-    questionNumber: string;
     containedResources?: Array<ValueSet>;
     conditionalArray: ValueSetComposeIncludeConcept[];
     getItem: (linkId: string) => QuestionnaireItem;
@@ -61,14 +57,6 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const dispatchNewChildItem = (type?: IQuestionnaireItemType): void => {
         props.dispatch(newItemAction(type || IQuestionnaireItemType.group, [...props.parentArray, props.item.linkId]));
-    };
-
-    const dispatchDeleteItem = (): void => {
-        props.dispatch(deleteItemAction(props.item.linkId, props.parentArray));
-    };
-
-    const dispatchDuplicateItem = (): void => {
-        props.dispatch(duplicateItemAction(props.item.linkId, props.parentArray));
     };
 
     const dispatchUpdateItem = (
@@ -295,52 +283,11 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
-    const canCreateChild = props.item.type !== IQuestionnaireItemType.display && !isItemControlInline(props.item);
-
-    const observed = (elements: IntersectionObserverEntry[]) => {
-        if (elements[0].intersectionRatio > 0.5) {
-            props.dispatch(updateMarkedLinkIdAction(props.item.linkId));
-        }
-    };
-
-    useEffect(() => {
-        const options = {
-            root: null,
-            rootMargin: '52px 0px 0px 0px',
-            threshold: [0.5],
-        };
-
-        const myObserver = new IntersectionObserver(observed, options);
-
-        const myEl = document.getElementById(props.item.linkId);
-
-        if (myEl) {
-            myObserver.observe(myEl);
-        }
-
-        return function cleanup() {
-            myObserver.disconnect();
-        };
-    }, []);
+    const enableWhenCount =
+        props.item.enableWhen && props.item.enableWhen.length > 0 ? `(${props.item.enableWhen?.length})` : '';
 
     return (
-        <div className="question" style={{ marginLeft: props.parentArray.length * 32 }} id={props.item.linkId}>
-            <div className="question-header">
-                <h2>
-                    Element <span>{props.questionNumber}</span>
-                </h2>
-                <button className="pull-right question-button" onClick={dispatchDuplicateItem}>
-                    <i className="duplicate-icon" aria-label="duplicate element" /> Dupliser
-                </button>
-                {canCreateChild && (
-                    <button className="question-button" onClick={() => dispatchNewChildItem()}>
-                        <i className="add-icon" aria-label="add child element" /> Oppfølgingsspørsmål
-                    </button>
-                )}
-                <button className="question-button" onClick={dispatchDeleteItem}>
-                    <i className="trash-icon" aria-label="remove element" /> Slett
-                </button>
-            </div>
+        <div className="question" id={props.item.linkId}>
             <div className="question-form">
                 <div className="form-field">
                     <label>Velg type</label>
@@ -399,13 +346,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         <ValidationAnswerTypes item={props.item} />
                     </Accordion>
                 )}
-                <Accordion
-                    title={`Betinget visning ${
-                        props.item.enableWhen && props.item.enableWhen.length > 0
-                            ? `(${props.item.enableWhen?.length})`
-                            : ''
-                    }`}
-                >
+                <Accordion title={`Betinget visning ${enableWhenCount}`}>
                     <div>
                         <EnableWhen
                             getItem={props.getItem}
@@ -435,14 +376,7 @@ export default React.memo(Question, (prevProps: QuestionProps, nextProps: Questi
     const isParentArrayIdentical = JSON.stringify(prevProps.parentArray) === JSON.stringify(nextProps.parentArray);
     const isConditionalArrayIdentical =
         JSON.stringify(prevProps.conditionalArray) === JSON.stringify(nextProps.conditionalArray);
-    const isQuestionNumberIdentical = prevProps.questionNumber === nextProps.questionNumber;
     const isContainedResourcesIdentical =
         JSON.stringify(prevProps.containedResources) === JSON.stringify(nextProps.containedResources);
-    return (
-        isItemIdentical &&
-        isParentArrayIdentical &&
-        isConditionalArrayIdentical &&
-        isQuestionNumberIdentical &&
-        isContainedResourcesIdentical
-    );
+    return isItemIdentical && isParentArrayIdentical && isConditionalArrayIdentical && isContainedResourcesIdentical;
 });

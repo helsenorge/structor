@@ -59,7 +59,7 @@ import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption } from '../../helpers/answerOptionHelper';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
-import { isItemControlDropDown } from '../../helpers/itemControl';
+import { isIgnorableItem, isItemControlDropDown } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { createSystemUUID } from '../../helpers/systemHelper';
@@ -148,13 +148,18 @@ export interface OrderItem {
     items: Array<OrderItem>;
 }
 
+export interface MarkedItem {
+    linkId: string;
+    parentArray: Array<string>;
+}
+
 export interface TreeState {
     isDirty: boolean;
     qItems: Items;
     qOrder: OrderItem[];
     qMetadata: IQuestionnaireMetadata;
     qContained?: ValueSet[];
-    qCurrentItemId?: string;
+    qCurrentItem?: MarkedItem;
     qAdditionalLanguages?: Languages;
 }
 
@@ -207,7 +212,7 @@ export const initialState: TreeState = {
         extension: [],
     },
     qContained: initPredefinedValueSet,
-    qCurrentItemId: '',
+    qCurrentItem: undefined,
     qAdditionalLanguages: {},
 };
 
@@ -247,15 +252,24 @@ function getLinkIdOfAllSubItems(items: Array<OrderItem>, linkIds: Array<string>)
 }
 
 function updateMarkedItemId(draft: TreeState, action: UpdateMarkedLinkId): void {
-    draft.qCurrentItemId = action.linkId;
+    if (action.linkId) {
+        draft.qCurrentItem = { linkId: action.linkId, parentArray: action.parentArray || [] };
+    } else {
+        draft.qCurrentItem = undefined;
+    }
 }
 
-function newItem(draft: TreeState, action: NewItemAction): void {
+function createNewItem(draft: TreeState, action: NewItemAction): void {
     const itemToAdd = action.item;
     draft.qItems[itemToAdd.linkId] = itemToAdd;
     // find the correct place to add the new item
     const arrayToAddItemTo = findTreeArray(action.order, draft.qOrder);
     arrayToAddItemTo.push({ linkId: itemToAdd.linkId, items: [] });
+
+    const parentItem = draft.qItems[action.order[action.order.length - 1]];
+    if (!isIgnorableItem(itemToAdd, parentItem)) {
+        draft.qCurrentItem = { linkId: itemToAdd.linkId, parentArray: action.order };
+    }
 }
 
 function moveItem(draft: TreeState, action: MoveItemAction): void {
@@ -269,6 +283,11 @@ function moveItem(draft: TreeState, action: MoveItemAction): void {
 
     // delete node from qOrder
     arrayToDeleteItemFrom.splice(indexToDelete, 1);
+
+    // update currentItem
+    if (draft.qCurrentItem) {
+        draft.qCurrentItem = { ...draft.qCurrentItem, parentArray: action.newOrder };
+    }
 }
 
 function deleteItemTranslations(linkIdToDelete: string, languages?: Languages) {
@@ -309,6 +328,7 @@ function deleteItem(draft: TreeState, action: DeleteItemAction): void {
 
     // delete node from qOrder
     arrayToDeleteItemFrom.splice(indexToDelete, 1);
+    draft.qCurrentItem = undefined;
 }
 
 function updateItem(draft: TreeState, action: UpdateItemAction): void {
@@ -445,12 +465,12 @@ function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value
 function resetQuestionnaire(draft: TreeState, action: ResetQuestionnaireAction): void {
     const newState: TreeState = action.newState || initialState;
     draft.isDirty = newState.isDirty;
-    draft.qCurrentItemId = newState.qCurrentItemId;
     draft.qOrder = newState.qOrder;
     draft.qItems = newState.qItems;
     draft.qMetadata = newState.qMetadata;
     draft.qContained = newState?.qContained;
     draft.qAdditionalLanguages = newState.qAdditionalLanguages;
+    draft.qCurrentItem = newState.qCurrentItem;
 }
 
 function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): void {
@@ -504,7 +524,7 @@ function reorderItem(draft: TreeState, action: ReorderItemAction): void {
     const arrayToReorderFrom = findTreeArray(action.order, draft.qOrder);
     const indexToMove = arrayToReorderFrom.findIndex((x) => x.linkId === action.linkId);
     if (indexToMove === -1) {
-        throw 'Could not find item to move';
+        throw new Error('Could not find item to move');
     }
     const movedOrderItem = arrayToReorderFrom.splice(indexToMove, 1);
     arrayToReorderFrom.splice(action.newIndex, 0, movedOrderItem[0]);
@@ -540,7 +560,7 @@ function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
     const arrayToUpdateIn = findTreeArray(parentArray, qOrder);
     const itemToUpdate = arrayToUpdateIn.find((item) => item.linkId === oldLinkId);
     if (!itemToUpdate) {
-        throw `Trying to update linkId that doesn't exist`;
+        throw new Error(`Trying to update linkId that doesn't exist`);
     }
     itemToUpdate.linkId = newLinkId;
 
@@ -562,6 +582,11 @@ function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
             translation.items[newLinkId] = oldItemTranslation;
             delete translation.items[oldLinkId];
         });
+    }
+
+    // Update currentItem
+    if (draft.qCurrentItem) {
+        draft.qCurrentItem = { ...draft.qCurrentItem, linkId: newLinkId };
     }
 }
 
@@ -606,7 +631,7 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             updateQuestionnaireMetadataProperty(draft, action);
             break;
         case NEW_ITEM_ACTION:
-            newItem(draft, action);
+            createNewItem(draft, action);
             break;
         case DELETE_ITEM_ACTION:
             deleteItem(draft, action);
@@ -676,7 +701,7 @@ export const TreeContextProvider = (props: { children: JSX.Element }): JSX.Eleme
             await saveStateToDb(JSON.parse(JSON.stringify(state)));
         };
         save();
-        console.log(`State saved in ${Math.round(performance.now() - startTime)}ms`);
+        console.debug(`State saved in ${Math.round(performance.now() - startTime)}ms`);
     }, [state]);
 
     return (

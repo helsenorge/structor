@@ -16,15 +16,14 @@ type TranslationRowProps = {
     itemHeading: string;
 };
 
-const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowProps): JSX.Element | null => {
+const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
 
-    if (!state.qAdditionalLanguages) {
-        console.error('TranslationRow: should never get here if no translations exist');
-        return null;
-    }
+    const qAdditionalLanguages = state.qAdditionalLanguages || {};
 
-    const itemTranslation: ItemTranslation = state.qAdditionalLanguages[targetLanguage].items[item.linkId] || {};
+    const itemTranslation: ItemTranslation = qAdditionalLanguages
+        ? qAdditionalLanguages[targetLanguage].items[item.linkId] || {}
+        : {};
     const [translatedText, setTranslatedText] = useState(itemTranslation.text || '');
     const isMarkdown: boolean = item._text ? true : false;
 
@@ -96,7 +95,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                         <textarea
                             defaultValue={getItemPropertyTranslation(
                                 targetLanguage,
-                                state.qAdditionalLanguages,
+                                qAdditionalLanguages,
                                 item.linkId,
                                 TranslatableItemProperty.validationText,
                             )}
@@ -121,7 +120,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                             <textarea
                                 defaultValue={getItemPropertyTranslation(
                                     targetLanguage,
-                                    state.qAdditionalLanguages,
+                                    qAdditionalLanguages,
                                     item.linkId,
                                     TranslatableItemProperty.entryFormatText,
                                 )}
@@ -148,7 +147,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                                 <textarea
                                     defaultValue={getItemPropertyTranslation(
                                         targetLanguage,
-                                        state.qAdditionalLanguages,
+                                        qAdditionalLanguages,
                                         item.linkId,
                                         TranslatableItemProperty.initial,
                                     )}

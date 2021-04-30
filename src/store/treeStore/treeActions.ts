@@ -82,7 +82,8 @@ export interface UpdateItemCodePropertyAction {
 
 export interface UpdateMarkedLinkId {
     type: typeof UPDATE_MARKED_LINK_ID;
-    linkId: string;
+    linkId?: string;
+    parentArray?: Array<string>;
 }
 export interface AddQuestionnaireLanguageAction {
     type: typeof ADD_QUESTIONNAIRE_LANGUAGE_ACTION;
@@ -215,10 +216,11 @@ export interface SaveAction {
     type: typeof SAVE_ACTION;
 }
 
-export const updateMarkedLinkIdAction = (markedLinkId: string): UpdateMarkedLinkId => {
+export const updateMarkedLinkIdAction = (markedLinkId?: string, parentArray?: Array<string>): UpdateMarkedLinkId => {
     return {
         type: UPDATE_MARKED_LINK_ID,
         linkId: markedLinkId,
+        parentArray,
     };
 };
 

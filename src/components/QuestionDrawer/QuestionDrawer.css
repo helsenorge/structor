@@ -1,0 +1,42 @@
+.right-drawer {
+    height: 100%;
+    background: white;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 45%;
+    min-width: 600px;
+    z-index: 200;
+    box-shadow: 1px 0px 7px rgba(0,0,0,0.5);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+    overflow-y: auto;
+}
+
+.right-drawer.open {
+    transform: translateX(0);
+}
+
+.drawer-header {
+    background-color: var(--primary-2);
+    display: flex;
+    padding: 10px 0;
+}
+
+.item-button-row {
+    display: flex;
+    line-height: 55px;
+}
+
+.item-button-row .item-button-wrapper {
+    height: 34px;
+    width: 64px;
+}
+
+.item-button-row .item-buttons {
+    display: flex;
+}
+
+.item-button-row .item-buttons .item-button {
+    padding: 5px;
+}

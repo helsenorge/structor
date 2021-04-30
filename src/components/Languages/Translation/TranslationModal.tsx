@@ -39,54 +39,6 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     const [flattOrder, setFlattOrder] = useState<FlattOrderTranslation[]>([]);
     const [count, setLimit] = useState(20);
 
-    const handleChild = (items: OrderItem[], path: string, tempHierarchy: FlattOrderTranslation[]) => {
-        let index = 1;
-        items
-            .filter((x) => !isItemControlSidebar(qItems[x.linkId]))
-            .forEach((item) => {
-                const itemHasHelpChild = item.items.find((child) => isItemControlHelp(qItems[child.linkId]));
-                const inlineItem = isItemControlInline(qItems[item.linkId]) ? item.items[0]?.linkId : undefined;
-                const childPath = `${path}.${index}`;
-                const tempItem = { linkId: item.linkId, path: childPath } as FlattOrderTranslation;
-                if (itemHasHelpChild) {
-                    tempItem.helpItemLinkId = itemHasHelpChild.linkId;
-                }
-                if (inlineItem) {
-                    tempItem.inlineItemLinkId = inlineItem;
-                }
-                if (!isItemControlHelp(qItems[item.linkId])) {
-                    tempHierarchy.push(tempItem);
-                    index++;
-                }
-                if (item.items && !isItemControlInline(qItems[item.linkId])) {
-                    handleChild(item.items, childPath, tempHierarchy);
-                }
-            });
-    };
-
-    const flattenOrder = () => {
-        const temp = [] as FlattOrderTranslation[];
-        qOrder
-            .filter((x) => !isIgnorableItem(qItems[x.linkId]))
-            .forEach((item, index) => {
-                const itemPath = `${index + 1}`;
-                const tempItem = { linkId: item.linkId, path: itemPath } as FlattOrderTranslation;
-                const helpItem = item.items.find((child) => isItemControlHelp(qItems[child.linkId]));
-                if (helpItem) {
-                    tempItem.helpItemLinkId = helpItem.linkId;
-                }
-                const inlineItem = isItemControlInline(qItems[item.linkId]) ? item.items[0]?.linkId : undefined;
-                if (inlineItem) {
-                    tempItem.inlineItemLinkId = inlineItem;
-                }
-                temp.push(tempItem);
-                if (item.items && !inlineItem) {
-                    handleChild(item.items, itemPath, temp);
-                }
-            });
-        setFlattOrder([...temp]);
-    };
-
     const isTranslatableItem = (item: QuestionnaireItem): boolean =>
         // Hidden items
         !item.extension?.some((ext) => ext.url === IExtentionType.hidden && ext.valueBoolean) &&
@@ -163,7 +115,56 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     };
 
     useEffect(() => {
+        const handleChild = (items: OrderItem[], path: string, tempHierarchy: FlattOrderTranslation[]) => {
+            let index = 1;
+            items
+                .filter((x) => !isItemControlSidebar(qItems[x.linkId]))
+                .forEach((item) => {
+                    const itemHasHelpChild = item.items.find((child) => isItemControlHelp(qItems[child.linkId]));
+                    const inlineItem = isItemControlInline(qItems[item.linkId]) ? item.items[0]?.linkId : undefined;
+                    const childPath = `${path}.${index}`;
+                    const tempItem = { linkId: item.linkId, path: childPath } as FlattOrderTranslation;
+                    if (itemHasHelpChild) {
+                        tempItem.helpItemLinkId = itemHasHelpChild.linkId;
+                    }
+                    if (inlineItem) {
+                        tempItem.inlineItemLinkId = inlineItem;
+                    }
+                    if (!isItemControlHelp(qItems[item.linkId])) {
+                        tempHierarchy.push(tempItem);
+                        index++;
+                    }
+                    if (item.items && !isItemControlInline(qItems[item.linkId])) {
+                        handleChild(item.items, childPath, tempHierarchy);
+                    }
+                });
+        };
+
+        const flattenOrder = () => {
+            const temp = [] as FlattOrderTranslation[];
+            qOrder
+                .filter((x) => !isIgnorableItem(qItems[x.linkId]))
+                .forEach((item, index) => {
+                    const itemPath = `${index + 1}`;
+                    const tempItem = { linkId: item.linkId, path: itemPath } as FlattOrderTranslation;
+                    const helpItem = item.items.find((child) => isItemControlHelp(qItems[child.linkId]));
+                    if (helpItem) {
+                        tempItem.helpItemLinkId = helpItem.linkId;
+                    }
+                    const inlineItem = isItemControlInline(qItems[item.linkId]) ? item.items[0]?.linkId : undefined;
+                    if (inlineItem) {
+                        tempItem.inlineItemLinkId = inlineItem;
+                    }
+                    temp.push(tempItem);
+                    if (item.items && !inlineItem) {
+                        handleChild(item.items, itemPath, temp);
+                    }
+                });
+            setFlattOrder([...temp]);
+        };
+
         flattenOrder();
+
         const options = {
             root: document.getElementById('translation-modal'),
             rootMargin: '63px 0px 0px 0px',
@@ -187,7 +188,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         return function cleanup() {
             myObserver.disconnect();
         };
-    }, []);
+    }, [qItems, qOrder]);
 
     const renderItems = (orderItems: FlattOrderTranslation[]): Array<JSX.Element | null> => {
         if (translatableItems && qAdditionalLanguages) {

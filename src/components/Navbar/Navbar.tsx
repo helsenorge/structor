@@ -38,15 +38,14 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
     const [showJSONView, setShowJSONView] = useState(false);
     const [showPublish, setShowPublish] = useState(false);
     const [confirmUpload, setConfirmUpload] = useState(false);
-    const navBarRef = useRef<HTMLHeadingElement>(null);
-
-    useOutsideClick(navBarRef, () => {
-        hideMenu();
-    });
+    const navBarRef = useRef<HTMLDivElement>(null);
+    const fileExtension = 'json';
 
     const hideMenu = () => {
         setSelectedMenuItem(MenuItem.none);
     };
+
+    useOutsideClick(navBarRef, hideMenu, selectedMenuItem === MenuItem.none);
 
     const callbackAndHide = (callback: () => void) => {
         callback();
@@ -54,17 +53,18 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
     };
 
     const getFileName = (): string => {
-        const technicalName = state.qMetadata.name || 'skjema';
+        let technicalName = state.qMetadata.name || 'skjema';
+        technicalName = technicalName.length > 40 ? technicalName.substring(0, 40) + '...' : technicalName;
         const version = state.qMetadata.version ? `-v${state.qMetadata.version}` : '';
         if (state.qAdditionalLanguages && Object.values(state.qAdditionalLanguages).length < 1) {
-            return `${technicalName}-${state.qMetadata.language}${version}.json`;
+            return `${technicalName}-${state.qMetadata.language}${version}`;
         }
-        return `${technicalName}${version}.json`;
+        return `${technicalName}${version}`;
     };
 
     function exportToJsonAndDownload() {
         const questionnaire = generateQuestionnaire(state);
-        const filename = getFileName();
+        const filename = `${getFileName()}.${fileExtension}`;
         const contentType = 'application/json;charset=utf-8;';
 
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
@@ -118,6 +118,10 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
     const cachedProfile = sessionStorage.getItem('profile');
     const profile = cachedProfile ? JSON.parse(cachedProfile) : null;
 
+    function getProfileName(): string {
+        return `${profile.given_name} ${profile.family_name}`;
+    }
+
     return (
         <>
             <header ref={navBarRef}>
@@ -133,8 +137,16 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
 
                 <div className="left"></div>
 
+                <div className="form-title" style={{ width: '100%' }}>
+                    <h1>{getFileName()}</h1>
+                </div>
+
                 <div className="pull-right">
-                    {profile && profile.name && <p title={`Du er logget inn som ${profile.name}`}>{profile.name}</p>}
+                    {profile && profile.name && (
+                        <p className="truncate profile-name" title={`Du er logget inn som ${profile.name}`}>
+                            {getProfileName()}
+                        </p>
+                    )}
                     <Btn title="Forhåndsvisning" onClick={showFormFiller} />
                     <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
                     <div

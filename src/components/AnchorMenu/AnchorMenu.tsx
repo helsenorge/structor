@@ -5,7 +5,8 @@ import React from 'react';
 
 import SubAnchor from './SubAnchor';
 import { ActionType, Items, OrderItem } from '../../store/treeStore/treeStore';
-import { reorderItemAction } from '../../store/treeStore/treeActions';
+import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { newItemAction, reorderItemAction } from '../../store/treeStore/treeActions';
 
 interface AnchorMenuProps {
     qOrder: OrderItem[];
@@ -14,6 +15,10 @@ interface AnchorMenuProps {
 }
 
 const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
+    const dispatchNewRootItem = () => {
+        props.dispatch(newItemAction(IQuestionnaireItemType.group, []));
+    };
+
     const dispatchReorderItem = (linkId: string, newIndex: number, order: string[] = []) => {
         props.dispatch(reorderItemAction(linkId, order, newIndex));
     };
@@ -28,8 +33,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     };
 
     return (
-        <div className="anchor-menu">
-            <p className="align-header">Skjemaoversikt</p>
+        <div className="questionnaire-overview">
             <DragDropContext onDragEnd={handleChange}>
                 <SubAnchor
                     items={props.qOrder}
@@ -44,6 +48,12 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                     Her vil du finne en oversikt over elementene i skjemaet.
                 </p>
             )}
+            <div className="floating-button">
+                <button className="new-item-button" onClick={dispatchNewRootItem}>
+                    <i className="add-icon large" aria-label="add element" title="Opprett element" />
+                    Legg til element på toppnivå
+                </button>
+            </div>
         </div>
     );
 };

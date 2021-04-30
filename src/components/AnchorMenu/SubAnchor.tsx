@@ -1,9 +1,12 @@
 import React, { useContext } from 'react';
+
+import ItemButtons from './ItemButtons/ItemButtons';
+
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Items, OrderItem, TreeContext } from '../../store/treeStore/treeStore';
-
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import { isIgnorableItem } from '../../helpers/itemControl';
+import { updateMarkedLinkIdAction } from '../../store/treeStore/treeActions';
 
 type SubAnchorProps = {
     parentItem: string;
@@ -17,14 +20,14 @@ type SubAnchorProps = {
 const SubAnchor = (props: SubAnchorProps): JSX.Element => {
     const grid = 8;
 
-    const { state } = useContext(TreeContext);
+    const { state, dispatch } = useContext(TreeContext);
 
     const getBackgroundColor = (isDragging: boolean, linkId: string) => {
         if (isDragging) {
             return 'lightgreen';
         }
 
-        if (linkId === state.qCurrentItemId) {
+        if (linkId === state.qCurrentItem?.linkId) {
             return '#93bdd4';
         }
 
@@ -58,11 +61,8 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
         }
     };
 
-    const handleScrollTo = (id: string) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
-        }
+    const selectItem = (id: string) => {
+        dispatch(updateMarkedLinkIdAction(id, props.parentArray));
     };
 
     const removeUnsupportedChildren = (items: OrderItem[], parentLinkId?: string) => {
@@ -84,20 +84,20 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                     <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
                         {removeUnsupportedChildren(props.items).map((item, index) => (
                             <Draggable key={item.linkId} draggableId={item.linkId} index={index}>
-                                {(provided, snapshot) => (
+                                {(subProvided, subSnapshot) => (
                                     <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
+                                        ref={subProvided.innerRef}
+                                        {...subProvided.draggableProps}
                                         style={getItemStyle(
-                                            snapshot.isDragging,
-                                            provided.draggableProps.style,
+                                            subSnapshot.isDragging,
+                                            subProvided.draggableProps.style,
                                             item.linkId,
                                         )}
                                     >
                                         <div
                                             className="anchor-content"
                                             onClick={() => {
-                                                handleScrollTo(item.linkId);
+                                                selectItem(item.linkId);
                                             }}
                                         >
                                             <span
@@ -108,11 +108,18 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                                 {showHierarchy(index)}{' '}
                                                 {props.qItems[item.linkId].text || <i>Legg inn tekst</i>}
                                             </span>
-                                            <span
-                                                {...provided.dragHandleProps}
-                                                className="reorder-icon"
-                                                aria-label="reorder item"
-                                            />
+                                            <div className="pull-right">
+                                                <ItemButtons
+                                                    item={props.qItems[item.linkId]}
+                                                    parentArray={props.parentArray}
+                                                    dispatch={dispatch}
+                                                />
+                                                <span
+                                                    {...subProvided.dragHandleProps}
+                                                    className="reorder-icon"
+                                                    aria-label="reorder item"
+                                                />
+                                            </div>
                                         </div>
                                         <div>
                                             {removeUnsupportedChildren(item.items, item.linkId).length > 0 && (

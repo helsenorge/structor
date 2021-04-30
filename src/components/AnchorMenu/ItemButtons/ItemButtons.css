@@ -1,0 +1,49 @@
+.item-buttons {
+    display: none;
+}
+
+.anchor-content:hover .item-buttons {
+    display: flex;
+}
+
+.item-button {
+    align-items: center;
+    background: none;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    margin: 0 12px;
+    outline: inherit;
+    padding: 0;
+}
+
+.item-button label {
+    padding-left: 2px;
+    cursor: pointer;
+} 
+
+.item-button:hover {
+    background: #c0d7dc;
+}
+
+.duplicate-icon {
+    background: url('../../../images/icons/copy-outline.svg') no-repeat center;
+    margin: auto;
+    height: 25px;
+    width: 25px;
+}
+
+.add-icon {
+    background: url('../../../images/icons/add-circle-outline.svg') no-repeat center;
+    margin: auto;
+    height: 25px;
+    width: 25px;
+}
+
+.trash-icon {
+    background: url('../../../images/icons/trash-outline.svg') no-repeat center;
+    margin: auto;
+    height: 25px;
+    width: 25px;
+}

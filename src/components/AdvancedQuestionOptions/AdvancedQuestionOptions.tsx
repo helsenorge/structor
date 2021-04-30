@@ -106,8 +106,8 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         dispatch(updateLinkIdAction(item.linkId, event.target.value, parentArray));
     }
 
-    function validateLinkId(linkId: string) {
-        if (qItems[linkId] === undefined || linkId === item.linkId) {
+    function validateLinkId(linkIdToValidate: string) {
+        if (qItems[linkIdToValidate] === undefined || linkIdToValidate === item.linkId) {
             setDuplicateLinkId(false);
         } else {
             setDuplicateLinkId(true);
@@ -144,18 +144,18 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         const children = search(item.linkId)?.items;
         let _text = '';
         let exist = false;
-        let linkId = '';
+        let helpTextLinkId = '';
         children?.forEach((x) => {
             if (isItemControlHelp(qItems[x.linkId])) {
                 _text =
                     qItems[x.linkId]._text?.extension?.find((ex) => ex.url === IExtentionType.markdown)
                         ?.valueMarkdown ?? '';
                 exist = true;
-                linkId = x.linkId;
+                helpTextLinkId = x.linkId;
             }
         });
 
-        return { exist, linkId, _text };
+        return { exist, linkId: helpTextLinkId, _text };
     };
 
     const handleExtension = (extension: Extension) => {
@@ -178,43 +178,51 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     );
 
     useEffect(() => {
-        flattenOrder();
-    }, [qOrder]);
-
-    const handleChild = (items: OrderItem[], parentPath: number[], tempHierarchy: FlattOrder[], linkId: string[]) => {
-        items
-            .filter((x) => !isIgnorableItem(qItems[x.linkId], qItems[linkId[linkId.length - 1]]))
-            .forEach((child, childIndex) => {
-                const childTitle = childIndex + 1;
-                tempHierarchy.push({
-                    display: `${'\xA0'.repeat(parentPath.length * 2)}${parentPath.join('.')}.${childTitle} ${
-                        qItems[child.linkId].text
-                    }`,
-                    code: child.linkId,
-                    parent: linkId,
+        const handleChild = (
+            items: OrderItem[],
+            parentPath: number[],
+            tempHierarchy: FlattOrder[],
+            parentLinkIds: string[],
+        ) => {
+            items
+                .filter((x) => !isIgnorableItem(qItems[x.linkId], qItems[parentLinkIds[parentLinkIds.length - 1]]))
+                .forEach((child, childIndex) => {
+                    const childTitle = childIndex + 1;
+                    tempHierarchy.push({
+                        display: `${'\xA0'.repeat(parentPath.length * 2)}${parentPath.join('.')}.${childTitle} ${
+                            qItems[child.linkId].text
+                        }`,
+                        code: child.linkId,
+                        parent: parentLinkIds,
+                    });
+                    if (child.items) {
+                        handleChild(child.items, [...parentPath, childTitle], tempHierarchy, [
+                            ...parentLinkIds,
+                            child.linkId,
+                        ]);
+                    }
                 });
-                if (child.items) {
-                    handleChild(child.items, [...parentPath, childTitle], tempHierarchy, [...linkId, child.linkId]);
-                }
-            });
-    };
+        };
 
-    const flattenOrder = () => {
-        const temp = [] as FlattOrder[];
-        temp.push({ display: 'Toppnivå', code: 'top-level', parent: [] });
-        qOrder
-            .filter((x) => !isIgnorableItem(qItems[x.linkId]))
-            .forEach((x, index) => {
-                const parentPath = index + 1;
-                const itemText = qItems[x.linkId].text || 'Ikke definert tittel';
-                const displayText = itemText.length > 120 ? `${itemText?.substr(0, 120)}...` : itemText;
-                temp.push({ display: `${parentPath}. ${displayText}`, code: x.linkId, parent: [] });
-                if (x.items) {
-                    handleChild(x.items, [parentPath], temp, [x.linkId]);
-                }
-            });
-        setHierarchy([...temp]);
-    };
+        const flattenOrder = () => {
+            const temp = [] as FlattOrder[];
+            temp.push({ display: 'Toppnivå', code: 'top-level', parent: [] });
+            qOrder
+                .filter((x) => !isIgnorableItem(qItems[x.linkId]))
+                .forEach((x, index) => {
+                    const parentPath = index + 1;
+                    const itemText = qItems[x.linkId].text || 'Ikke definert tittel';
+                    const displayText = itemText.length > 120 ? `${itemText?.substr(0, 120)}...` : itemText;
+                    temp.push({ display: `${parentPath}. ${displayText}`, code: x.linkId, parent: [] });
+                    if (x.items) {
+                        handleChild(x.items, [parentPath], temp, [x.linkId]);
+                    }
+                });
+            setHierarchy([...temp]);
+        };
+
+        flattenOrder();
+    }, [qOrder, qItems]);
 
     const moveIsInvalid = (moveToPath: string[]) => {
         if (isItemControlInline(qItems[linkIdMoveTo])) {

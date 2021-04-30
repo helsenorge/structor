@@ -1,36 +1,38 @@
-import './FormBuilder.css';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { TreeContext, TreeState } from '../store/treeStore/treeStore';
-import { Questionnaire } from '../types/fhir';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { resetQuestionnaireAction } from '../store/treeStore/treeActions';
-import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
-import FormFiller from '../components/FormFiller/FormFiller';
-import Navbar from '../components/Navbar/Navbar';
-import mapToTreeState from '../helpers/FhirToTreeStateMapper';
-import Modal from '../components/Modal/Modal';
-import SpinnerBox from '../components/Spinner/SpinnerBox';
 import { getStateFromDb } from '../store/treeStore/indexedDbHelper';
+import { Questionnaire } from '../types/fhir';
+import { resetQuestionnaireAction } from '../store/treeStore/treeActions';
+import mapToTreeState from '../helpers/FhirToTreeStateMapper';
+import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import Confirm from '../components/Modal/Confirm';
-import QuestionnaireEditor from './QuestionnaireEditor';
-import createUUID from '../helpers/CreateUUID';
+import FormDetailsDrawer from '../components/Drawer/FormDetailsDrawer/FormDetailsDrawer';
+import FormFiller from '../components/FormFiller/FormFiller';
+import IconBtn from '../components/IconBtn/IconBtn';
+import Modal from '../components/Modal/Modal';
+import Navbar from '../components/Navbar/Navbar';
+import QuestionDrawer from '../components/QuestionDrawer/QuestionDrawer';
+import SpinnerBox from '../components/Spinner/SpinnerBox';
+
+import './FormBuilder.css';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
-    const [showPreview, setShowPreview] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [showFormDetails, setShowFormDetails] = useState(false);
     const [stateFromStorage, setStateFromStorage] = useState<TreeState>();
-    const [internalQId, setInternalQId] = useState(createUUID());
+    const [isLoading, setIsLoading] = useState(false);
     const [displayVerifyReset, setDisplayVerifyReset] = useState(false);
+    const [showPreview, setShowPreview] = useState(false);
     const uploadRef = useRef<HTMLInputElement>(null);
+
+    const toggleFormDetails = useCallback(() => {
+        setShowFormDetails(!showFormDetails);
+    }, [showFormDetails]);
 
     const getStoredQuestionnaire = async () => {
         const indexedDbState = await getStateFromDb();
         setStateFromStorage(indexedDbState);
-    };
-
-    const suggestRestore = (): boolean => {
-        return stateFromStorage?.qItems ? Object.keys(stateFromStorage.qItems).length > 0 : false;
     };
 
     const getConfirmRestoreContent = (): JSX.Element => {
@@ -58,16 +60,20 @@ const FormBuilder = (): JSX.Element => {
         if (state.isDirty && state.qItems && Object.keys(state.qItems).length > 0) {
             setDisplayVerifyReset(true);
         } else {
-            setInternalQId(createUUID());
             dispatch(resetQuestionnaireAction());
         }
     };
 
     useEffect(() => {
-        const startTime = performance.now();
         getStoredQuestionnaire();
-        console.log(`Loading state from indexedDb took ${Math.round(performance.now() - startTime)}ms`);
     }, []);
+
+    useEffect(() => {
+        // Show form details if new questionnaire
+        if (!stateFromStorage && (!state.qItems || Object.keys(state.qItems).length < 1)) {
+            setShowFormDetails(true);
+        }
+    }, [stateFromStorage, state.qItems]);
 
     const reuploadJSONFile = (questionnaireObj: Questionnaire) => {
         const importedState = mapToTreeState(questionnaireObj);
@@ -88,11 +94,13 @@ const FormBuilder = (): JSX.Element => {
 
     const uploadQuestionnaire = (event: React.ChangeEvent<HTMLInputElement>) => {
         setIsLoading(true);
-        setInternalQId(createUUID());
         const reader = new FileReader();
         reader.onload = onReaderLoad;
         if (event.target.files && event.target.files[0]) reader.readAsText(event.target.files[0]);
     };
+
+    const suggestRestore: boolean = stateFromStorage?.qItems ? Object.keys(stateFromStorage.qItems).length > 0 : false;
+    const displayDetailsDrawer: boolean = showFormDetails && !suggestRestore && !state.qCurrentItem;
 
     return (
         <>
@@ -101,7 +109,8 @@ const FormBuilder = (): JSX.Element => {
                 showFormFiller={() => setShowPreview(!showPreview)}
                 uploadRef={uploadRef}
             />
-            {suggestRestore() && (
+
+            {suggestRestore && (
                 <Confirm
                     onConfirm={() => {
                         dispatch(resetQuestionnaireAction(stateFromStorage));
@@ -117,10 +126,10 @@ const FormBuilder = (): JSX.Element => {
                     {getConfirmRestoreContent()}
                 </Confirm>
             )}
+
             {displayVerifyReset && (
                 <Confirm
                     onConfirm={() => {
-                        setInternalQId(createUUID());
                         dispatch(resetQuestionnaireAction());
                         setDisplayVerifyReset(false);
                     }}
@@ -134,6 +143,7 @@ const FormBuilder = (): JSX.Element => {
                     (Endringene vil gå tapt)
                 </Confirm>
             )}
+
             {isLoading && (
                 <Modal>
                     <div className="align-everything">
@@ -151,16 +161,26 @@ const FormBuilder = (): JSX.Element => {
                     accept="application/JSON"
                     style={{ display: 'none' }}
                 />
-                <div className="anchor-wrapper">
-                    <AnchorMenu qOrder={state.qOrder} qItems={state.qItems} dispatch={dispatch} />
-                </div>
+                <AnchorMenu dispatch={dispatch} qOrder={state.qOrder} qItems={state.qItems} />
                 {showPreview && (
                     <FormFiller
                         showFormFiller={() => setShowPreview(!showPreview)}
                         language={state.qMetadata.language}
                     />
                 )}
-                <QuestionnaireEditor key={internalQId} />
+                <div className="page-wrapper">
+                    <div className="details-button">
+                        <IconBtn
+                            type="info"
+                            title="Skjemadetaljer"
+                            color="black"
+                            onClick={toggleFormDetails}
+                            size="large"
+                        />
+                    </div>
+                    <FormDetailsDrawer closeDrawer={toggleFormDetails} isOpen={displayDetailsDrawer} />
+                    <QuestionDrawer />
+                </div>
             </div>
         </>
     );
