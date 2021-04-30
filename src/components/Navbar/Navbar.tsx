@@ -119,8 +119,7 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
     const profile = cachedProfile ? JSON.parse(cachedProfile) : null;
 
     function getProfileName(): string {
-        const name = `${profile.given_name} ${profile.family_name}`;
-        return name;
+        return `${profile.given_name} ${profile.family_name}`;
     }
 
     return (
