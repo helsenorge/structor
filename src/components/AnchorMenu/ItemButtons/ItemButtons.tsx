@@ -19,6 +19,7 @@ type ItemButtonsProps = {
     parentArray: Array<string>;
     dispatch: React.Dispatch<ActionType>;
     buttons?: Array<ItemButtonType>;
+    showLabel?: boolean;
 };
 
 const ItemButtons = (props: ItemButtonsProps): JSX.Element => {
@@ -45,18 +46,30 @@ const ItemButtons = (props: ItemButtonsProps): JSX.Element => {
     return (
         <div className="item-buttons">
             {displayAddButton && canCreateChild && (
-                <button className="item-button" onClick={dispatchAddChildItem}>
-                    <i className="add-icon" aria-label="Add child element" title="Oppfølgingsspørsmål" />
+                <button
+                    className="item-button"
+                    onClick={dispatchAddChildItem}
+                    aria-label="Add child element"
+                    title="Oppfølgingsspørsmål"
+                >
+                    <i className="add-icon" />
+                    {props.showLabel && <label>Opprett oppfølgingsspørsmål</label>}
                 </button>
             )}
             {displayCopyButton && (
-                <button className="item-button" onClick={dispatchDuplicateItem}>
-                    <i className="duplicate-icon" aria-label="Duplicate element" title="Dupliser" />
+                <button
+                    className="item-button"
+                    onClick={dispatchDuplicateItem}
+                    aria-label="Duplicate element"
+                    title="Dupliser"
+                >
+                    <i className="duplicate-icon" />
                 </button>
             )}
             {displayDeleteButton && (
-                <button className="item-button" onClick={dispatchDeleteItem}>
-                    <i className="trash-icon" aria-label="Delete element" title="Slett" />
+                <button className="item-button" onClick={dispatchDeleteItem} aria-label="Delete element" title="Slett">
+                    <i className="trash-icon" />
+                    {props.showLabel && <label>Slett</label>}
                 </button>
             )}
         </div>

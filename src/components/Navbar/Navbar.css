@@ -23,7 +23,7 @@ header p {
     background-color: #ffffff36;
 }
 
-.more-menu > img {
+.more-menu>img {
     filter: invert(100%);
 }
 
@@ -43,6 +43,14 @@ header p {
     width: 146px;
 }
 
-.menu > button {
+.menu>button {
     width: 100%;
+}
+
+.form-title h1 {
+    font-size: 24px;
+}
+
+.profile-name {
+    max-width: 160px;
 }

@@ -65,6 +65,7 @@ const QuestionDrawer = (): JSX.Element | null => {
                                 parentArray={parentArray}
                                 dispatch={dispatch}
                                 buttons={[ItemButtonType.addChild, ItemButtonType.delete]}
+                                showLabel
                             />
                         </div>
                     )}

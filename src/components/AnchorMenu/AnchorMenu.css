@@ -1,6 +1,6 @@
 .questionnaire-overview {
     text-align: center;
-    margin-top: 63px;
+    margin-top: 80px;
     margin-left: auto;
     margin-right: auto;
     width: 70%;
@@ -74,12 +74,12 @@
 }
 
 .floating-button {
-    background-color: white;
+    background-color: #fafafa;
     bottom: 0;
     left: 0;
-    opacity: 80%;
+    opacity: 0.8;
     position: fixed;
-    width: 380px;
+    padding: 15px;
 }
 
 .new-item-button {

@@ -25,6 +25,7 @@
 
 .item-button-row {
     display: flex;
+    line-height: 55px;
 }
 
 .item-button-row .item-button-wrapper {
@@ -34,4 +35,8 @@
 
 .item-button-row .item-buttons {
     display: flex;
+}
+
+.item-button-row .item-buttons .item-button {
+    padding: 5px;
 }
