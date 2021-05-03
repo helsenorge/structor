@@ -32,7 +32,7 @@ export const isIgnorableItem = (item: QuestionnaireItem, parentItem?: Questionna
     return isItemControlHelp(item) || isItemControlSidebar(item) || isItemControlInline(parentItem);
 };
 
-export const isItemControlDropDownAndTechnicalEndpointList = (item: QuestionnaireItem): boolean => {
+export const isItemControlDropDownAndOptionReference = (item: QuestionnaireItem): boolean => {
     return (
         getItemControlType(item) === ItemControlType.dropdown &&
         item.code?.find((x) => x.system === CodingSystemType.valueSetTqqc) !== undefined

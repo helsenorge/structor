@@ -25,8 +25,7 @@ import itemType, {
 } from '../../helpers/QuestionHelper';
 import { createDropdown, removeExtensionValue, updateExtensionValue } from '../../helpers/extensionHelper';
 import {
-    isItemControlDropDown,
-    isItemControlDropDownAndTechnicalEndpointList,
+    isItemControlDropDownAndOptionReference,
     isItemControlInline,
     ItemControlType,
 } from '../../helpers/itemControl';
@@ -134,7 +133,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             return <Inline linkId={props.item.linkId} parentArray={props.parentArray} />;
         }
 
-        if (isItemControlDropDownAndTechnicalEndpointList(props.item)) {
+        if (isItemControlDropDownAndOptionReference(props.item)) {
             return <OptionReference item={props.item} />;
         }
 
@@ -215,7 +214,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             return IQuestionnaireItemType.number;
         }
 
-        if (isItemControlDropDownAndTechnicalEndpointList(props.item)) {
+        if (isItemControlDropDownAndOptionReference(props.item)) {
             return IQuestionnaireItemType.address;
         }
         if (isItemControlInline(props.item)) {
