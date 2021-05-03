@@ -20,10 +20,11 @@ import Btn from '../../Btn/Btn';
 import { IItemProperty } from '../../../types/IQuestionnareItemType';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { checkboxExtension } from '../../../helpers/QuestionHelper';
+import { checkboxExtension, dropdownExtension } from '../../../helpers/QuestionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import AnswerOption from '../../AnswerOption/AnswerOption';
 import SystemField from '../../FormField/SystemField';
+import { isItemControlCheckbox, isItemControlDropDown, ItemControlType } from '../../../helpers/itemControl';
 
 type Props = {
     item: QuestionnaireItem;
@@ -32,11 +33,12 @@ type Props = {
 const Choice = ({ item }: Props): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
 
-    const dispatchExtentionUpdate = () => {
-        if (item.extension && item.extension.length > 0) {
-            dispatch(updateItemAction(item.linkId, IItemProperty.extension, []));
-        } else {
+    const dispatchExtentionUpdate = (type: ItemControlType.checkbox | ItemControlType.dropdown) => {
+        dispatch(updateItemAction(item.linkId, IItemProperty.extension, []));
+        if (type === ItemControlType.checkbox && !isItemControlCheckbox(item)) {
             dispatch(updateItemAction(item.linkId, IItemProperty.extension, checkboxExtension));
+        } else if (type === ItemControlType.dropdown && !isItemControlDropDown(item)) {
+            dispatch(updateItemAction(item.linkId, IItemProperty.extension, dropdownExtension));
         }
     };
 
@@ -163,13 +165,25 @@ const Choice = ({ item }: Props): JSX.Element => {
                 }
                 onBlur={(event) => handleChangeSystem(event.target.value)}
             />
+            <div className="horizontal">
+                <div className="form-field">
+                    <SwitchBtn
+                        label="Flere valg mulig"
+                        onChange={() => dispatchExtentionUpdate(ItemControlType.checkbox)}
+                        initial
+                        value={isItemControlCheckbox(item)}
+                    />
+                </div>
+                <div className="form-field">
+                    <SwitchBtn
+                        label="Nedtreksmeny"
+                        onChange={() => dispatchExtentionUpdate(ItemControlType.dropdown)}
+                        initial
+                        value={isItemControlDropDown(item)}
+                    />
+                </div>
+            </div>
             <div className="form-field">
-                <SwitchBtn
-                    label="Flere valg mulig"
-                    onChange={() => dispatchExtentionUpdate()}
-                    initial
-                    value={item.extension !== undefined && item.extension.length > 0}
-                />
                 {item.answerOption && item.answerOption?.length > 0 && renderAnswerOption()}
             </div>
             {!item.answerValueSet && (

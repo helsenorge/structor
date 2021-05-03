@@ -2,6 +2,7 @@ import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } f
 import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { CodingSystemType } from './systemHelper';
 import { Option, Options } from '../types/OptionTypes';
+import { ItemControlType } from './itemControl';
 
 const itemType = [
     {
@@ -109,16 +110,34 @@ export const quantityUnitTypes = [
 
 export const checkboxExtension = [
     {
-        url: 'http://ehelse.no/fhir/StructureDefinition/validationtext',
+        url: IExtentionType.validationtext,
         valueString: 'Velg ett eller flere av alternativene.',
     },
     {
-        url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
+        url: IExtentionType.itemControl,
         valueCodeableConcept: {
             coding: [
                 {
-                    system: 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
-                    code: 'check-box',
+                    system: IExtentionType.itemControlValueSet,
+                    code: ItemControlType.checkbox,
+                },
+            ],
+        },
+    },
+];
+
+export const dropdownExtension = [
+    {
+        url: IExtentionType.validationtext,
+        valueString: 'Velg ett eller flere av alternativene.',
+    },
+    {
+        url: IExtentionType.itemControl,
+        valueCodeableConcept: {
+            coding: [
+                {
+                    system: IExtentionType.itemControlValueSet,
+                    code: ItemControlType.dropdown,
                 },
             ],
         },
