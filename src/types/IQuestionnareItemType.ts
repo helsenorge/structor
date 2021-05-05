@@ -68,6 +68,7 @@ export type IEnableWhen = {
 };
 
 export enum IExtentionType {
+    calculatedExpression = 'http://ehelse.no/fhir/StructureDefinition/sdf-calculatedExpression',
     canBePerformedBy = 'http://ehelse.no/fhir/StructureDefinition/sdf-canbeperformedby',
     canBePerformedByValueSet = 'http://ehelse.no/fhir/ValueSet/CanBePerformedBy',
     endpoint = 'http://ehelse.no/fhir/StructureDefinition/sdf-endpoint',
