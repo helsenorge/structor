@@ -75,11 +75,12 @@ const itemType = [
 export const ATTACHMENT_DEFAULT_MAX_SIZE = 5.0;
 
 export const QUANTITY_UNIT_TYPE_NOT_SELECTED = 'QUANTITY_UNIT_TYPE_NOT_SELECTED';
+export const QUANTITY_UNIT_TYPE_CUSTOM = 'QUANTITY_UNIT_TYPE_CUSTOM';
 export const quantityUnitTypes = [
     {
         system: '',
         code: QUANTITY_UNIT_TYPE_NOT_SELECTED,
-        display: 'Velg enhet',
+        display: 'Ingen enhet',
     },
     {
         system: 'http://unitsofmeasure.org',
@@ -105,6 +106,11 @@ export const quantityUnitTypes = [
         system: 'http://unitsofmeasure.org',
         code: 'd',
         display: 'dag',
+    },
+    {
+        system: '',
+        code: QUANTITY_UNIT_TYPE_CUSTOM,
+        display: 'Egendefinert',
     },
 ];
 

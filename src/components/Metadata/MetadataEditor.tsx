@@ -3,6 +3,7 @@ import './MetadataEditor.css';
 import React, { useContext, useState } from 'react';
 import { formatISO, parseISO } from 'date-fns';
 import {
+    authenticationRequirement,
     canBePerformedBy,
     isValidId,
     isValidTechnicalName,
@@ -125,40 +126,71 @@ const MetadataEditor = (): JSX.Element => {
                 </FormField>
                 <FormField label="Visning av knapperad">
                     <Select
-                        placeholder="Velg en visning.."
                         value={
                             qMetadata?.extension?.find((ex) => ex.url === IExtentionType.presentationbuttons)
                                 ?.valueCoding?.code ?? ''
                         }
-                        onChange={(e) =>
-                            updateMetaExtension({
-                                url: IExtentionType.presentationbuttons,
-                                valueCoding: {
-                                    system: IExtentionType.presentationbuttonsValueSet,
-                                    code: e.target.value,
-                                },
-                            })
+                        onChange={(e) => {
+                            if (e.target.value) {
+                                updateMetaExtension({
+                                    url: IExtentionType.presentationbuttons,
+                                    valueCoding: {
+                                        system: IExtentionType.presentationbuttonsValueSet,
+                                        code: e.target.value,
+                                    },
+                                });
+                            } else {
+                                removeMetaExtension(IExtentionType.presentationbuttons);
+                            }
+                        }}
+                        options={[{ code: '', display: 'Ikke valgt (standard oppførsel)' }, ...presentationButtons]}
+                    />
+                </FormField>
+                <FormField label="Beskriver om innlogging kreves for å besvare skjemaet">
+                    <Select
+                        value={
+                            qMetadata?.extension?.find((ex) => ex.url === IExtentionType.authenticationRequirement)
+                                ?.valueCoding?.code ?? ''
                         }
-                        options={presentationButtons}
+                        onChange={(e) => {
+                            if (e.target.value) {
+                                updateMetaExtension({
+                                    url: IExtentionType.authenticationRequirement,
+                                    valueCoding: {
+                                        system: IExtentionType.authenticationRequirementValueSet,
+                                        code: e.target.value,
+                                    },
+                                });
+                            } else {
+                                removeMetaExtension(IExtentionType.authenticationRequirement);
+                            }
+                        }}
+                        options={[
+                            { code: '', display: 'Ikke valgt (standard oppførsel)' },
+                            ...authenticationRequirement,
+                        ]}
                     />
                 </FormField>
                 <FormField label="Beskriver om andre enn pasienten kan besvare skjemaet">
                     <Select
-                        placeholder="Velg en.."
                         value={
                             qMetadata?.extension?.find((ex) => ex.url === IExtentionType.canBePerformedBy)?.valueCoding
                                 ?.code ?? ''
                         }
-                        onChange={(e) =>
-                            updateMetaExtension({
-                                url: IExtentionType.canBePerformedBy,
-                                valueCoding: {
-                                    system: IExtentionType.canBePerformedByValueSet,
-                                    code: e.target.value,
-                                },
-                            })
-                        }
-                        options={canBePerformedBy}
+                        onChange={(e) => {
+                            if (e.target.value) {
+                                updateMetaExtension({
+                                    url: IExtentionType.canBePerformedBy,
+                                    valueCoding: {
+                                        system: IExtentionType.canBePerformedByValueSet,
+                                        code: e.target.value,
+                                    },
+                                });
+                            } else {
+                                removeMetaExtension(IExtentionType.canBePerformedBy);
+                            }
+                        }}
+                        options={[{ code: '', display: 'Ikke valgt (standard oppførsel)' }, ...canBePerformedBy]}
                     />
                 </FormField>
                 <FormField label="Dato">

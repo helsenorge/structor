@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch, useEffect, useReducer } from 'react';
 import produce from 'immer';
 
-import { QuestionnaireItem, ValueSet } from '../../types/fhir';
+import { Extension, QuestionnaireItem, ValueSet } from '../../types/fhir';
 import {
     ADD_ITEM_CODE_ACTION,
     ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
@@ -332,6 +332,19 @@ function deleteItem(draft: TreeState, action: DeleteItemAction): void {
 }
 
 function updateItem(draft: TreeState, action: UpdateItemAction): void {
+    const isEmptyArray = (): boolean => {
+        const { itemProperty, itemValue } = action;
+        if (itemProperty === IItemProperty.extension && (itemValue as Array<Extension>).length === 0) {
+            return true;
+        }
+        return false;
+    };
+
+    if (!action.itemValue || isEmptyArray()) {
+        delete draft.qItems[action.linkId][action.itemProperty];
+        return;
+    }
+
     draft.qItems[action.linkId] = {
         ...draft.qItems[action.linkId],
         [action.itemProperty]: action.itemValue,

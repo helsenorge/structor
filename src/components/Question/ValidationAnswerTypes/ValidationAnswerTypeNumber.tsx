@@ -48,12 +48,17 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
 
     const updateExtensionInputElement = (url: string) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
+            const removedExt = item.extension?.filter((ext) => ext.url !== url) ?? [];
+            if (!e.target.value) {
+                dispatchExtensionUpdate(removedExt);
+                return;
+            }
+
             const validationTextExtension = {
                 url: url,
                 valueString: e.target.value,
             };
             const extensionToUpdate = item.extension?.find((ext) => ext.url === validationTextExtension.url);
-            const removedExt = item.extension?.filter((ext) => ext.url !== validationTextExtension.url) ?? [];
             const newExtension =
                 extensionToUpdate === undefined
                     ? validationTextExtension
@@ -65,12 +70,17 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
 
     const updateExtensionNumberElement = (url: string) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
+            const removedExt = item.extension?.filter((ext) => ext.url !== url) ?? [];
+            if (!e.target.value) {
+                dispatchExtensionUpdate(removedExt);
+                return;
+            }
+
             const validationTextExtension = {
                 url: url,
                 valueInteger: parseInt(e.target.value),
             };
             const extensionToUpdate = item.extension?.find((ext) => ext.url === validationTextExtension.url);
-            const removedExt = item.extension?.filter((ext) => ext.url !== validationTextExtension.url) ?? [];
             const newExtension =
                 extensionToUpdate === undefined
                     ? validationTextExtension

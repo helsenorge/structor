@@ -22,6 +22,7 @@ import { isIgnorableItem, isItemControlHelp, isItemControlInline, ItemControlTyp
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
+import CalculatedExpression from './CalculatedExpression/CalculatedExpression';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -45,6 +46,11 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     const isInitialApplicable =
         item.type !== IQuestionnaireItemType.display && item.type !== IQuestionnaireItemType.group;
+
+    const isCalculatedExpressionApplicable =
+        item.type === IQuestionnaireItemType.integer ||
+        item.type === IQuestionnaireItemType.decimal ||
+        item.type === IQuestionnaireItemType.quantity;
 
     const dispatchUpdateItem = (name: IItemProperty, value: boolean) => {
         dispatch(updateItemAction(item.linkId, name, value));
@@ -167,8 +173,8 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         }
     };
 
-    const removeExtension = (extensionUrl: string) => {
-        const extensions = item.extension ? item.extension.filter((x) => x.url !== extensionUrl) : [];
+    const removeExtension = (extensionType: IExtentionType) => {
+        const extensions = item.extension ? item.extension.filter((x) => x.url !== extensionType) : [];
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensions));
     };
 
@@ -287,6 +293,9 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         />
                     </div>
                 </div>
+            )}
+            {isCalculatedExpressionApplicable && (
+                <CalculatedExpression item={item} updateExtension={handleExtension} removeExtension={removeExtension} />
             )}
             {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.boolean) && (
                 <FhirPathSelect item={item} />

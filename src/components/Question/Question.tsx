@@ -9,7 +9,7 @@ import {
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import {
     deleteChildItemsAction,
     newItemAction,
@@ -18,8 +18,6 @@ import {
 } from '../../store/treeStore/treeActions';
 import itemType, {
     ATTACHMENT_DEFAULT_MAX_SIZE,
-    QUANTITY_UNIT_TYPE_NOT_SELECTED,
-    quantityUnitTypes,
     typeIsSupportingValidation,
     valueSetTqqcCoding,
 } from '../../helpers/QuestionHelper';
@@ -45,6 +43,7 @@ import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes
 import Codes from '../AdvancedQuestionOptions/Code/Codes';
 import OptionReference from './QuestionType/OptionReference';
 import FormField from '../FormField/FormField';
+import UnitTypeSelector from './UnitType/UnitTypeSelector';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -97,32 +96,6 @@ const Question = (props: QuestionProps): JSX.Element => {
         dispatchUpdateItem(IItemProperty._text, newValue);
         // update text with same value. Text is used in condition in enableWhen
         dispatchUpdateItem(IItemProperty.text, newLabel);
-    };
-
-    const getQuantityUnitType = (): string => {
-        const quantityUnitType = props.item.extension?.find((extension) => {
-            return extension.url === IExtentionType.questionnaireUnit;
-        })?.valueCoding?.code;
-
-        return quantityUnitType || QUANTITY_UNIT_TYPE_NOT_SELECTED;
-    };
-
-    const updateQuantityUnitType = (event: ChangeEvent<HTMLSelectElement>): void => {
-        const {
-            target: { value: quantityUnitTypeCode },
-        } = event;
-        let updatedExtensions: Extension[];
-        if (quantityUnitTypeCode === QUANTITY_UNIT_TYPE_NOT_SELECTED) {
-            updatedExtensions = removeExtensionValue(props.item, IExtentionType.questionnaireUnit)?.extension || [];
-        } else {
-            const coding = quantityUnitTypes.find(({ code }) => code === quantityUnitTypeCode);
-            const unitExtension: Extension = {
-                url: IExtentionType.questionnaireUnit,
-                valueCoding: coding,
-            };
-            updatedExtensions = updateExtensionValue(props.item, unitExtension);
-        }
-        dispatchUpdateItem(IItemProperty.extension, updatedExtensions);
     };
 
     const respondType = (param: string) => {
@@ -187,20 +160,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             case IQuestionnaireItemType.openChoice:
                 return <Choice item={props.item} />;
             case IQuestionnaireItemType.quantity:
-                return (
-                    <>
-                        <div className="form-field">
-                            <div>
-                                <label>Legg til enhet</label>
-                                <Select
-                                    options={quantityUnitTypes}
-                                    onChange={updateQuantityUnitType}
-                                    value={getQuantityUnitType()}
-                                />
-                            </div>
-                        </div>
-                    </>
-                );
+                return <UnitTypeSelector item={props.item} dispatchUpdateItem={dispatchUpdateItem} />;
             default:
                 return '';
         }
