@@ -22,7 +22,11 @@ import itemType, {
     valueSetTqqcCoding,
 } from '../../helpers/QuestionHelper';
 import { createDropdown, removeExtensionValue, updateExtensionValue } from '../../helpers/extensionHelper';
-import { isItemControlDropDown, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
+import {
+    isItemControlDropDownAndOptionReference,
+    isItemControlInline,
+    ItemControlType,
+} from '../../helpers/itemControl';
 
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
@@ -102,7 +106,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             return <Inline linkId={props.item.linkId} parentArray={props.parentArray} />;
         }
 
-        if (isItemControlDropDown(props.item)) {
+        if (isItemControlDropDownAndOptionReference(props.item)) {
             return <OptionReference item={props.item} />;
         }
 
@@ -170,7 +174,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             return IQuestionnaireItemType.number;
         }
 
-        if (isItemControlDropDown(props.item)) {
+        if (isItemControlDropDownAndOptionReference(props.item)) {
             return IQuestionnaireItemType.address;
         }
         if (isItemControlInline(props.item)) {

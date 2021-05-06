@@ -1,6 +1,7 @@
 import { QuestionnaireItem } from '../types/fhir';
 import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { getEnumKeyByString } from './enumHelper';
+import { CodingSystemType } from './systemHelper';
 
 export enum ItemControlType {
     inline = 'inline',
@@ -9,6 +10,7 @@ export enum ItemControlType {
     dropdown = 'drop-down',
     highlight = 'highlight',
     summary = 'summary',
+    checkbox = 'check-box',
 }
 
 const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefined => {
@@ -30,8 +32,19 @@ export const isIgnorableItem = (item: QuestionnaireItem, parentItem?: Questionna
     return isItemControlHelp(item) || isItemControlSidebar(item) || isItemControlInline(parentItem);
 };
 
+export const isItemControlDropDownAndOptionReference = (item: QuestionnaireItem): boolean => {
+    return (
+        getItemControlType(item) === ItemControlType.dropdown &&
+        item.code?.find((x) => x.system === CodingSystemType.valueSetTqqc) !== undefined
+    );
+};
+
 export const isItemControlDropDown = (item: QuestionnaireItem): boolean => {
     return getItemControlType(item) === ItemControlType.dropdown;
+};
+
+export const isItemControlCheckbox = (item: QuestionnaireItem): boolean => {
+    return getItemControlType(item) === ItemControlType.checkbox;
 };
 
 export const isItemControlHelp = (item: QuestionnaireItem): boolean => {
