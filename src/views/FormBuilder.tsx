@@ -68,13 +68,6 @@ const FormBuilder = (): JSX.Element => {
         getStoredQuestionnaire();
     }, []);
 
-    useEffect(() => {
-        // Show form details if new questionnaire
-        if (!stateFromStorage && (!state.qItems || Object.keys(state.qItems).length < 1)) {
-            setShowFormDetails(true);
-        }
-    }, [stateFromStorage, state.qItems]);
-
     const reuploadJSONFile = (questionnaireObj: Questionnaire) => {
         const importedState = mapToTreeState(questionnaireObj);
         dispatch(resetQuestionnaireAction(importedState));
@@ -100,7 +93,6 @@ const FormBuilder = (): JSX.Element => {
     };
 
     const suggestRestore: boolean = stateFromStorage?.qItems ? Object.keys(stateFromStorage.qItems).length > 0 : false;
-    const displayDetailsDrawer: boolean = showFormDetails && !suggestRestore && !state.qCurrentItem;
 
     return (
         <>
@@ -178,7 +170,7 @@ const FormBuilder = (): JSX.Element => {
                             size="large"
                         />
                     </div>
-                    <FormDetailsDrawer closeDrawer={toggleFormDetails} isOpen={displayDetailsDrawer} />
+                    <FormDetailsDrawer closeDrawer={toggleFormDetails} isOpen={showFormDetails} />
                     <QuestionDrawer />
                 </div>
             </div>
