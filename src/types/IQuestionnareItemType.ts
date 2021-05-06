@@ -68,6 +68,8 @@ export type IEnableWhen = {
 };
 
 export enum IExtentionType {
+    authenticationRequirement = 'http://ehelse.no/fhir/StructureDefinition/sdf-authenticationrequirement',
+    authenticationRequirementValueSet = 'http://ehelse.no/fhir/ValueSet/AuthenticationRequirement',
     calculatedExpression = 'http://ehelse.no/fhir/StructureDefinition/sdf-calculatedExpression',
     canBePerformedBy = 'http://ehelse.no/fhir/StructureDefinition/sdf-canbeperformedby',
     canBePerformedByValueSet = 'http://ehelse.no/fhir/ValueSet/CanBePerformedBy',

@@ -30,6 +30,12 @@ export const canBePerformedBy = [
     { code: '2', display: 'SubjectOnly' },
 ];
 
+export const authenticationRequirement = [
+    { code: '1', display: 'Anonymous' },
+    { code: '2', display: 'Optional' },
+    { code: '3', display: 'Required' },
+];
+
 export const isValidId = (value: string): boolean => {
     const regExp = /^[A-Za-z0-9-.]{1,64}$/;
     return regExp.test(value);
