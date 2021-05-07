@@ -17,7 +17,9 @@ const QuestionDrawer = (): JSX.Element | null => {
     const { state, dispatch } = useContext(TreeContext);
     const { previous, next, hasNext, hasPrevious } = useItemNavigation();
     const closeDrawer = () => {
-        dispatch(updateMarkedLinkIdAction());
+        setTimeout(() => {
+            dispatch(updateMarkedLinkIdAction());
+        }, 100);
     };
 
     const disableEventListeners = !state.qCurrentItem?.linkId;
