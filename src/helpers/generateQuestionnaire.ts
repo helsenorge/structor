@@ -11,6 +11,7 @@ import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareIt
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { getLanguageFromCode, translatableMetadata } from './LanguageHelper';
 import { isItemControlSidebar } from './itemControl';
+import { emptyPropertyReplacer } from './emptyPropertyReplacer';
 
 const getExtension = (extensions: Extension[] | undefined, extensionType: IExtentionType): Extension | undefined => {
     return extensions?.find((ext) => ext.url === extensionType);
@@ -243,17 +244,20 @@ export const generateQuestionnaire = (state: TreeState): string => {
             entry: [generateMainQuestionnaire(state, usedValueSet), ...translateQuestionnaires()],
         };
 
-        return JSON.stringify(bundle);
+        return JSON.stringify(bundle, emptyPropertyReplacer);
     }
 
-    return JSON.stringify(generateMainQuestionnaire(state, usedValueSet));
+    return JSON.stringify(generateMainQuestionnaire(state, usedValueSet), emptyPropertyReplacer);
 };
 
 export const generateQuestionnaireForPreview = (state: TreeState, language?: string): string => {
     const usedValueSet = getUsedValueSet(state);
     const { qAdditionalLanguages } = state;
     if (language && qAdditionalLanguages && qAdditionalLanguages[language]) {
-        return JSON.stringify(generateTranslatedQuestionnaire(state, language, qAdditionalLanguages, usedValueSet));
+        return JSON.stringify(
+            generateTranslatedQuestionnaire(state, language, qAdditionalLanguages, usedValueSet),
+            emptyPropertyReplacer,
+        );
     }
-    return JSON.stringify(generateMainQuestionnaire(state, usedValueSet));
+    return JSON.stringify(generateMainQuestionnaire(state, usedValueSet), emptyPropertyReplacer);
 };
