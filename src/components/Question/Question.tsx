@@ -262,14 +262,17 @@ const Question = (props: QuestionProps): JSX.Element => {
                     />
                 </div>
                 <div className="horizontal">
-                    <div className="form-field ">
-                        <SwitchBtn
-                            label="Obligatorisk"
-                            initial
-                            value={props.item.required || false}
-                            onChange={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
-                        />
-                    </div>
+                    {props.item.type !== IQuestionnaireItemType.group &&
+                        props.item.type !== IQuestionnaireItemType.display && (
+                            <div className="form-field ">
+                                <SwitchBtn
+                                    label="Obligatorisk"
+                                    initial
+                                    value={props.item.required || false}
+                                    onChange={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
+                                />
+                            </div>
+                        )}
                     <div className="form-field">
                         <SwitchBtn
                             label="Tekstformatering"
