@@ -176,7 +176,7 @@ const Choice = ({ item }: Props): JSX.Element => {
                 </div>
                 <div className="form-field">
                     <SwitchBtn
-                        label="Nedtreksmeny"
+                        label="Nedtrekksmeny"
                         onChange={() => dispatchExtentionUpdate(ItemControlType.dropdown)}
                         initial
                         value={isItemControlDropDown(item)}

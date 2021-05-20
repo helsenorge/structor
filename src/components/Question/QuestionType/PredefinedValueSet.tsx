@@ -1,21 +1,33 @@
 import React, { useContext } from 'react';
+import { isItemControlCheckbox, isItemControlDropDown, ItemControlType } from '../../../helpers/itemControl';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { ValueSetComposeIncludeConcept } from '../../../types/fhir';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../../types/fhir';
+import { checkboxExtension, dropdownExtension } from '../../../helpers/QuestionHelper';
 import { IItemProperty } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
 import RadioBtn from '../../RadioBtn/RadioBtn';
 import Select from '../../Select/Select';
+import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import Typeahead from '../../Typeahead/Typeahead';
 
 type Props = {
-    linkId: string;
+    item: QuestionnaireItem;
     selectedValueSet?: string;
 };
 
-const PredefinedValueSet = ({ linkId, selectedValueSet }: Props): JSX.Element => {
+const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const { qContained } = state;
+
+    const dispatchExtentionUpdate = (type: ItemControlType.checkbox | ItemControlType.dropdown) => {
+        dispatch(updateItemAction(item.linkId, IItemProperty.extension, []));
+        if (type === ItemControlType.checkbox && !isItemControlCheckbox(item)) {
+            dispatch(updateItemAction(item.linkId, IItemProperty.extension, checkboxExtension));
+        } else if (type === ItemControlType.dropdown && !isItemControlDropDown(item)) {
+            dispatch(updateItemAction(item.linkId, IItemProperty.extension, dropdownExtension));
+        }
+    };
 
     const getContainedValueSetValues = (valueSetId: string): Array<{ system?: string; display?: string }> => {
         const valueSet = qContained?.find((x) => x.id === valueSetId);
@@ -64,7 +76,7 @@ const PredefinedValueSet = ({ linkId, selectedValueSet }: Props): JSX.Element =>
     const handleSelectedValueSet = (id: string) => {
         const valueSet = qContained?.find((x) => x.id === id);
         if (valueSet) {
-            dispatch(updateItemAction(linkId, IItemProperty.answerValueSet, `#${id}`));
+            dispatch(updateItemAction(item.linkId, IItemProperty.answerValueSet, `#${id}`));
         }
     };
 
@@ -91,6 +103,24 @@ const PredefinedValueSet = ({ linkId, selectedValueSet }: Props): JSX.Element =>
 
     return (
         <div>
+            <div className="horizontal">
+                <div className="form-field">
+                    <SwitchBtn
+                        label="Flere valg mulig"
+                        onChange={() => dispatchExtentionUpdate(ItemControlType.checkbox)}
+                        initial
+                        value={isItemControlCheckbox(item)}
+                    />
+                </div>
+                <div className="form-field">
+                    <SwitchBtn
+                        label="Nedtrekksmeny"
+                        onChange={() => dispatchExtentionUpdate(ItemControlType.dropdown)}
+                        initial
+                        value={isItemControlDropDown(item)}
+                    />
+                </div>
+            </div>
             <FormField label="Velg spørsmålsett">{handleSelect()}</FormField>
             <FormField>{renderPreDefinedValueSet()}</FormField>
         </div>

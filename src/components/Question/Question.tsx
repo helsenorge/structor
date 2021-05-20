@@ -100,7 +100,7 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const respondType = (param: string) => {
         if (props.item.answerValueSet && param === IQuestionnaireItemType.choice) {
-            return <PredefinedValueSet linkId={props.item.linkId} selectedValueSet={props.item.answerValueSet} />;
+            return <PredefinedValueSet item={props.item} selectedValueSet={props.item.answerValueSet} />;
         }
         if (isItemControlInline(props.item)) {
             return <Inline linkId={props.item.linkId} parentArray={props.parentArray} />;
