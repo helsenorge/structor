@@ -100,7 +100,7 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const respondType = (param: string) => {
         if (props.item.answerValueSet && param === IQuestionnaireItemType.choice) {
-            return <PredefinedValueSet linkId={props.item.linkId} selectedValueSet={props.item.answerValueSet} />;
+            return <PredefinedValueSet item={props.item} selectedValueSet={props.item.answerValueSet} />;
         }
         if (isItemControlInline(props.item)) {
             return <Inline linkId={props.item.linkId} parentArray={props.parentArray} />;
@@ -262,14 +262,17 @@ const Question = (props: QuestionProps): JSX.Element => {
                     />
                 </div>
                 <div className="horizontal">
-                    <div className="form-field ">
-                        <SwitchBtn
-                            label="Obligatorisk"
-                            initial
-                            value={props.item.required || false}
-                            onChange={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
-                        />
-                    </div>
+                    {props.item.type !== IQuestionnaireItemType.group &&
+                        props.item.type !== IQuestionnaireItemType.display && (
+                            <div className="form-field ">
+                                <SwitchBtn
+                                    label="Obligatorisk"
+                                    initial
+                                    value={props.item.required || false}
+                                    onChange={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
+                                />
+                            </div>
+                        )}
                     <div className="form-field">
                         <SwitchBtn
                             label="Tekstformatering"
