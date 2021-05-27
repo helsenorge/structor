@@ -29,7 +29,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
         errors.push({ linkId: qItem.linkId, errorProperty: 'linkId' });
     }
 
-    // validate initial:
+    // validate initial for Coding (choice + open-choice):
     if (qItem.initial && qItem.initial[0].valueCoding) {
         if (qItem.answerOption) {
             const isMatch = qItem.answerOption.find(
@@ -76,7 +76,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
         }
 
         // does the quantity system and code match?
-        if (qItems[ew.question].type === 'quantity') {
+        if (itemExists && qItems[ew.question].type === 'quantity') {
             const quantityExtension = qItems[ew.question].extension?.find(
                 (x) => x.url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
             );
@@ -128,7 +128,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                 if (valueSetToCheck) {
                     const system = valueSetToCheck.compose?.include[0].system;
                     const isMatch = valueSetToCheck.compose?.include[0].concept?.find(
-                        (x) => x.code === ew.answerCoding.code && system === ew.answerCoding.system,
+                        (x) => ew.answerCoding && x.code === ew.answerCoding.code && system === ew.answerCoding.system,
                     );
                     if (!isMatch) {
                         errors.push({
