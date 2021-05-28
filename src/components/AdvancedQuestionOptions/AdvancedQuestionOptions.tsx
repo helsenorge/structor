@@ -264,6 +264,8 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     const isInlineItem = isItemControlInline(item);
     const helpTextItem = getHelpTextItem();
+    const isHiddenItem = item.extension?.some((ext) => ext.url === IExtentionType.hidden && ext.valueBoolean);
+
     return (
         <>
             {isRepeatsAndReadOnlyApplicable && (
@@ -286,6 +288,24 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     </div>
                 </div>
             )}
+            <div className="form-field">
+                <SwitchBtn
+                    onChange={() => {
+                        if (isHiddenItem) {
+                            removeItemExtension(item, IExtentionType.hidden, dispatch);
+                        } else {
+                            const extension = {
+                                url: IExtentionType.hidden,
+                                valueBoolean: true,
+                            };
+                            setItemExtension(item, extension, dispatch);
+                        }
+                    }}
+                    value={isHiddenItem || false}
+                    label="Gjemt felt"
+                    initial
+                />
+            </div>
             {isCalculatedExpressionApplicable && (
                 <CalculatedExpression item={item} updateExtension={handleExtension} removeExtension={removeExtension} />
             )}
