@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useContext } from 'react';
 import FormField from '../../FormField/FormField';
 import Select from '../../Select/Select';
 import {
@@ -6,25 +6,26 @@ import {
     QUANTITY_UNIT_TYPE_NOT_SELECTED,
     quantityUnitTypes,
 } from '../../../helpers/QuestionHelper';
-import { removeExtensionValue, updateExtensionValue } from '../../../helpers/extensionHelper';
-import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
+import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
+import { IExtentionType } from '../../../types/IQuestionnareItemType';
 import { Coding, Extension, QuestionnaireItem } from '../../../types/fhir';
 import SystemField from '../../FormField/SystemField';
 import { createSystemUUID } from '../../../helpers/systemHelper';
+import { TreeContext } from '../../../store/treeStore/treeStore';
 
 type UnitTypeSelectorProps = {
     item: QuestionnaireItem;
-    dispatchUpdateItem: (itemProperty: IItemProperty, extension: Array<Extension>) => void;
 };
 
 const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
+    const { dispatch } = useContext(TreeContext);
+
     const updateQuantityUnitType = (event: ChangeEvent<HTMLSelectElement>): void => {
         const {
             target: { value: quantityUnitTypeCode },
         } = event;
-        let updatedExtensions: Extension[];
         if (quantityUnitTypeCode === QUANTITY_UNIT_TYPE_NOT_SELECTED) {
-            updatedExtensions = removeExtensionValue(props.item, IExtentionType.questionnaireUnit)?.extension || [];
+            removeItemExtension(props.item, IExtentionType.questionnaireUnit, dispatch);
         } else {
             const coding =
                 quantityUnitTypeCode === QUANTITY_UNIT_TYPE_CUSTOM
@@ -34,9 +35,8 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
                 url: IExtentionType.questionnaireUnit,
                 valueCoding: coding,
             };
-            updatedExtensions = updateExtensionValue(props.item, unitExtension);
+            setItemExtension(props.item, unitExtension, dispatch);
         }
-        props.dispatchUpdateItem(IItemProperty.extension, updatedExtensions);
     };
 
     const getCurrentQuantityUnitTypeCoding = () => {
@@ -60,7 +60,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
             url: IExtentionType.questionnaireUnit,
             valueCoding: newValueCoding,
         };
-        props.dispatchUpdateItem(IItemProperty.extension, updateExtensionValue(props.item, unitExtension));
+        setItemExtension(props.item, unitExtension, dispatch);
     };
 
     const getQuantityUnitType = (): string => {

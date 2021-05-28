@@ -4,12 +4,13 @@ import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../../types/fhir';
 import { checkboxExtension, dropdownExtension } from '../../../helpers/QuestionHelper';
-import { IItemProperty } from '../../../types/IQuestionnareItemType';
+import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
 import RadioBtn from '../../RadioBtn/RadioBtn';
 import Select from '../../Select/Select';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import Typeahead from '../../Typeahead/Typeahead';
+import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 
 type Props = {
     item: QuestionnaireItem;
@@ -21,11 +22,11 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
     const { qContained } = state;
 
     const dispatchExtentionUpdate = (type: ItemControlType.checkbox | ItemControlType.dropdown) => {
-        dispatch(updateItemAction(item.linkId, IItemProperty.extension, []));
+        removeItemExtension(item, IExtentionType.itemControl, dispatch);
         if (type === ItemControlType.checkbox && !isItemControlCheckbox(item)) {
-            dispatch(updateItemAction(item.linkId, IItemProperty.extension, checkboxExtension));
+            setItemExtension(item, checkboxExtension, dispatch);
         } else if (type === ItemControlType.dropdown && !isItemControlDropDown(item)) {
-            dispatch(updateItemAction(item.linkId, IItemProperty.extension, dropdownExtension));
+            setItemExtension(item, dropdownExtension, dispatch);
         }
     };
 

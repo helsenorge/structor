@@ -12,6 +12,7 @@ import PredefinedValueSetModal from '../PredefinedValueSetModal/PredefinedValueS
 import ImportValueSet from '../ImportValueSet/ImportValueSet';
 import { saveAction } from '../../store/treeStore/treeActions';
 import ConfirmFileUpload from '../FileUpload/ConfirmFileUpload';
+import { validateOrphanedElements } from '../../helpers/orphanValidation';
 
 type Props = {
     newQuestionnaire: () => void;
@@ -147,6 +148,10 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
                             {getProfileName()}
                         </p>
                     )}
+                    <Btn
+                        title="Valider"
+                        onClick={() => validateOrphanedElements(state.qOrder, state.qItems, state.qContained || [])}
+                    />
                     <Btn title="Forhåndsvisning" onClick={showFormFiller} />
                     <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
                     <div

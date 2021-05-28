@@ -21,6 +21,7 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
+import { removeQuestionnaireExtension, setQuestionnaireExtension } from '../../helpers/extensionHelper';
 
 const MetadataEditor = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -33,17 +34,11 @@ const MetadataEditor = (): JSX.Element => {
     };
 
     const updateMetaExtension = (extension: Extension) => {
-        if (qMetadata?.extension && qMetadata?.extension?.length > 0) {
-            const newExtension = [...qMetadata.extension.filter((x) => x.url !== extension.url), extension];
-            updateMeta(IQuestionnaireMetadataType.extension, newExtension);
-        } else {
-            updateMeta(IQuestionnaireMetadataType.extension, [extension]);
-        }
+        setQuestionnaireExtension(qMetadata, extension, dispatch);
     };
 
     const removeMetaExtension = (extensionUrl: string) => {
-        const extensions = qMetadata.extension ? qMetadata.extension.filter((x) => x.url !== extensionUrl) : [];
-        updateMeta(IQuestionnaireMetadataType.extension, extensions);
+        removeQuestionnaireExtension(qMetadata, extensionUrl, dispatch);
     };
 
     return (

@@ -5,7 +5,6 @@ import {
     deleteItemAction,
     moveItemAction,
     newItemHelpIconAction,
-    removeItemAttributeAction,
     updateItemAction,
     updateLinkIdAction,
 } from '../../store/treeStore/treeActions';
@@ -23,6 +22,7 @@ import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
 import CalculatedExpression from './CalculatedExpression/CalculatedExpression';
+import { removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -85,22 +85,20 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     const dispatchHighLight = () => {
         if (!!getHighlight()) {
-            dispatch(removeItemAttributeAction(item.linkId, IItemProperty.extension));
+            removeExtension(IExtentionType.itemControl);
         } else {
-            const extension = [
-                {
-                    url: IExtentionType.itemControl,
-                    valueCodeableConcept: {
-                        coding: [
-                            {
-                                system: IExtentionType.itemControlValueSet,
-                                code: ItemControlType.highlight,
-                            },
-                        ],
-                    },
+            const extension = {
+                url: IExtentionType.itemControl,
+                valueCodeableConcept: {
+                    coding: [
+                        {
+                            system: IExtentionType.itemControlValueSet,
+                            code: ItemControlType.highlight,
+                        },
+                    ],
                 },
-            ];
-            dispatch(updateItemAction(item.linkId, IItemProperty.extension, extension));
+            };
+            handleExtension(extension);
         }
     };
 
@@ -165,17 +163,11 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     };
 
     const handleExtension = (extension: Extension) => {
-        if (item?.extension && item?.extension?.length > 0) {
-            const newExtension = [...item.extension.filter((x) => x.url !== extension.url), extension];
-            dispatch(updateItemAction(item.linkId, IItemProperty.extension, newExtension));
-        } else {
-            dispatch(updateItemAction(item.linkId, IItemProperty.extension, [extension]));
-        }
+        setItemExtension(item, extension, dispatch);
     };
 
-    const removeExtension = (extensionType: IExtentionType) => {
-        const extensions = item.extension ? item.extension.filter((x) => x.url !== extensionType) : [];
-        dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensions));
+    const removeExtension = (extensionUrl: IExtentionType) => {
+        removeItemExtension(item, extensionUrl, dispatch);
     };
 
     const getPlaceholder = item?.extension?.find((x) => x.url === IExtentionType.entryFormat)?.valueString ?? '';

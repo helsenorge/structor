@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { Extension, QuestionnaireItem } from '../../../types/fhir';
@@ -12,25 +13,6 @@ type Props = {
 
 const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
-
-    const dispatchExtentionUpdate = (extention: Extension) => {
-        const newExtention = new Array<Extension>();
-
-        if (item.extension === undefined || item.extension.length === 0) {
-            newExtention.push(extention);
-        }
-
-        if (item.extension && item.extension.length > 0) {
-            item.extension.forEach((x) => {
-                if (x.url !== extention.url) {
-                    newExtention.push(x);
-                }
-            });
-            newExtention.push(extention);
-        }
-
-        dispatch(updateItemAction(item.linkId, IItemProperty.extension, newExtention));
-    };
 
     const updateMaxLength = (number: number) => {
         dispatch(updateItemAction(item.linkId, IItemProperty.maxLength, number));
@@ -64,25 +46,31 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                         { display: 'Postnummer', code: '^(000[1-9]|0[1-9][0-9][0-9]|[1-9][0-9][0-9][0-8])$' },
                     ]}
                     onChange={(event) => {
-                        const newExtention: Extension = {
-                            url: IExtentionType.regEx,
-                            valueString: event.target.value,
-                        };
-
-                        dispatchExtentionUpdate(newExtention);
+                        if (!event.target.value) {
+                            removeItemExtension(item, IExtentionType.regEx, dispatch);
+                        } else {
+                            const newExtention: Extension = {
+                                url: IExtentionType.regEx,
+                                valueString: event.target.value,
+                            };
+                            setItemExtension(item, newExtention, dispatch);
+                        }
                     }}
                 ></Select>
             </FormField>
             <FormField label="Legg til egendefinert feilmelding:">
                 <input
                     defaultValue={validationText}
-                    onBlur={(event) => {
-                        const newExtention: Extension = {
-                            url: IExtentionType.validationtext,
-                            valueString: event.target.value,
-                        };
-
-                        dispatchExtentionUpdate(newExtention);
+                    onChange={(event) => {
+                        if (!event.target.value) {
+                            removeItemExtension(item, IExtentionType.validationtext, dispatch);
+                        } else {
+                            const newExtention: Extension = {
+                                url: IExtentionType.validationtext,
+                                valueString: event.target.value,
+                            };
+                            setItemExtension(item, newExtention, dispatch);
+                        }
                     }}
                 />
             </FormField>

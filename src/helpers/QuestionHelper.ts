@@ -114,41 +114,29 @@ export const quantityUnitTypes = [
     },
 ];
 
-export const checkboxExtension = [
-    {
-        url: IExtentionType.validationtext,
-        valueString: 'Velg ett eller flere av alternativene.',
+export const checkboxExtension = {
+    url: IExtentionType.itemControl,
+    valueCodeableConcept: {
+        coding: [
+            {
+                system: IExtentionType.itemControlValueSet,
+                code: ItemControlType.checkbox,
+            },
+        ],
     },
-    {
-        url: IExtentionType.itemControl,
-        valueCodeableConcept: {
-            coding: [
-                {
-                    system: IExtentionType.itemControlValueSet,
-                    code: ItemControlType.checkbox,
-                },
-            ],
-        },
-    },
-];
+};
 
-export const dropdownExtension = [
-    {
-        url: IExtentionType.validationtext,
-        valueString: 'Velg ett eller flere av alternativene.',
+export const dropdownExtension = {
+    url: IExtentionType.itemControl,
+    valueCodeableConcept: {
+        coding: [
+            {
+                system: IExtentionType.itemControlValueSet,
+                code: ItemControlType.dropdown,
+            },
+        ],
     },
-    {
-        url: IExtentionType.itemControl,
-        valueCodeableConcept: {
-            coding: [
-                {
-                    system: IExtentionType.itemControlValueSet,
-                    code: ItemControlType.dropdown,
-                },
-            ],
-        },
-    },
-];
+};
 
 export const enableWhenOperatorBoolean: ValueSetComposeIncludeConcept[] = [
     {

@@ -4,13 +4,12 @@ import { getGuidanceAction } from '../../../helpers/QuestionHelper';
 import {
     createGuidanceActionExtension,
     hasExtension,
-    removeExtensionValue,
-    updateExtensionValue,
+    removeItemExtension,
+    setItemExtension,
 } from '../../../helpers/extensionHelper';
-import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
+import { IExtentionType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { updateItemAction } from '../../../store/treeStore/treeActions';
 
 import FormField from '../../FormField/FormField';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
@@ -24,19 +23,16 @@ const GuidanceAction = (props: GuidanceActionProps): JSX.Element => {
     const hasGuidanceAction = hasExtension(props.item, IExtentionType.guidanceAction);
     const action = getGuidanceAction(props.item);
 
-    const toggleGuidanceAction = () => {
-        let newExtensions;
+    const toggleGuidanceAction = (): void => {
         if (hasGuidanceAction) {
-            newExtensions = removeExtensionValue(props.item, IExtentionType.guidanceAction)?.extension;
+            removeItemExtension(props.item, IExtentionType.guidanceAction, dispatch);
         } else {
-            newExtensions = updateExtensionValue(props.item, createGuidanceActionExtension());
+            setItemExtension(props.item, createGuidanceActionExtension(), dispatch);
         }
-        dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, newExtensions));
     };
 
     const updateGuidanceAction = (event: FocusEvent<HTMLInputElement>) => {
-        const newExtensions = updateExtensionValue(props.item, createGuidanceActionExtension(event.target.value));
-        dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, newExtensions));
+        setItemExtension(props.item, createGuidanceActionExtension(event.target.value), dispatch);
     };
 
     return (
