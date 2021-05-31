@@ -59,6 +59,7 @@ export enum IOperator {
     notEqual = '!=',
     equal = '=',
     exists = 'exists',
+    notExists = 'notexists', // only used internally, not valid in FHIR
 }
 
 export type IEnableWhen = {

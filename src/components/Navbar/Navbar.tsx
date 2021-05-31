@@ -12,12 +12,14 @@ import PredefinedValueSetModal from '../PredefinedValueSetModal/PredefinedValueS
 import ImportValueSet from '../ImportValueSet/ImportValueSet';
 import { saveAction } from '../../store/treeStore/treeActions';
 import ConfirmFileUpload from '../FileUpload/ConfirmFileUpload';
-import { validateOrphanedElements } from '../../helpers/orphanValidation';
+import { validateOrphanedElements, ValidationErrors } from '../../helpers/orphanValidation';
 
 type Props = {
     newQuestionnaire: () => void;
     showFormFiller: () => void;
+    setValidationErrors: (errors: ValidationErrors[]) => void;
     uploadRef: RefObject<HTMLInputElement>;
+    validationErrors: ValidationErrors[];
 };
 
 enum MenuItem {
@@ -30,7 +32,13 @@ type EndSessionPayload = {
     url: string;
 };
 
-const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Element => {
+const Navbar = ({
+    newQuestionnaire,
+    showFormFiller,
+    setValidationErrors,
+    uploadRef,
+    validationErrors,
+}: Props): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const history = useHistory();
     const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
@@ -148,10 +156,6 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
                             {getProfileName()}
                         </p>
                     )}
-                    <Btn
-                        title="Valider"
-                        onClick={() => validateOrphanedElements(state.qOrder, state.qItems, state.qContained || [])}
-                    />
                     <Btn title="Forhåndsvisning" onClick={showFormFiller} />
                     <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
                     <div
@@ -168,6 +172,14 @@ const Navbar = ({ newQuestionnaire, showFormFiller, uploadRef }: Props): JSX.Ele
                 </div>
                 {selectedMenuItem === MenuItem.more && (
                     <div className="menu">
+                        <Btn
+                            title={`Valider ${validationErrors.length > 0 ? `(${validationErrors.length} feil)` : ''}`}
+                            onClick={() =>
+                                setValidationErrors(
+                                    validateOrphanedElements(state.qOrder, state.qItems, state.qContained || []),
+                                )
+                            }
+                        />
                         <Btn title="JSON" onClick={() => callbackAndHide(() => setShowJSONView(!showJSONView))} />
                         <Btn title="Publiser" onClick={() => callbackAndHide(() => setShowPublish(!showPublish))} />
                         <Btn

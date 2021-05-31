@@ -1,6 +1,5 @@
 import { Items, OrderItem } from '../store/treeStore/treeStore';
 import { ValueSet } from '../types/fhir';
-import { IOperator } from '../types/IQuestionnareItemType';
 import { isRecipientList } from './QuestionHelper';
 
 export interface ValidationErrors {
@@ -114,15 +113,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
         }
 
         // does enableWhen object have the correct keys?
-        if (ew.operator === IOperator.exists && Object.keys(ew).length !== 2) {
-            errors.push({
-                linkId: qItem.linkId,
-                index: index,
-                errorProperty: 'enableWhen',
-                errorReadableText: 'enableWhen er ikke fyllt ut riktig',
-            });
-        }
-        if (ew.operator !== IOperator.exists && Object.keys(ew).length !== 3) {
+        if (Object.keys(ew).length !== 3) {
             errors.push({
                 linkId: qItem.linkId,
                 index: index,

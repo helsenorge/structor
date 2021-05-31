@@ -265,6 +265,12 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     const isInlineItem = isItemControlInline(item);
     const helpTextItem = getHelpTextItem();
     const isHiddenItem = item.extension?.some((ext) => ext.url === IExtentionType.hidden && ext.valueBoolean);
+    const isBerikingSupported =
+        item.type === IQuestionnaireItemType.string ||
+        item.type === IQuestionnaireItemType.boolean ||
+        item.type === IQuestionnaireItemType.quantity ||
+        item.type === IQuestionnaireItemType.integer ||
+        item.type === IQuestionnaireItemType.decimal;
 
     return (
         <>
@@ -309,9 +315,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             {isCalculatedExpressionApplicable && (
                 <CalculatedExpression item={item} updateExtension={handleExtension} removeExtension={removeExtension} />
             )}
-            {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.boolean) && (
-                <FhirPathSelect item={item} />
-            )}
+            {isBerikingSupported && <FhirPathSelect item={item} />}
             {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.text) && (
                 <FormField label="Skyggetekst">
                     <input

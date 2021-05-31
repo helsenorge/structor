@@ -37,15 +37,11 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
     return (
         <>
             <div className="horizontal equal">
-                <div className="form-field">
-                    <SwitchBtn
-                        label="Tillat desimaltall"
-                        initial
-                        value={isDecimal}
-                        onChange={changeItemType}
-                        disabled={item?.type === IQuestionnaireItemType.quantity}
-                    />
-                </div>
+                {item?.type !== IQuestionnaireItemType.quantity && (
+                    <div className="form-field">
+                        <SwitchBtn label="Tillat desimaltall" initial value={isDecimal} onChange={changeItemType} />
+                    </div>
+                )}
                 {isDecimal && (
                     <div className="form-field">
                         <label className="#">Max antall desimaler</label>

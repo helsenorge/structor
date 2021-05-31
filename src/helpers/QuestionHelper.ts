@@ -144,6 +144,10 @@ export const enableWhenOperatorBoolean: ValueSetComposeIncludeConcept[] = [
         display: 'Er besvart',
     },
     {
+        code: IOperator.notExists,
+        display: 'Ikke er besvart',
+    },
+    {
         code: IOperator.equal,
         display: 'Er lik',
     },
@@ -159,6 +163,10 @@ export const enableWhenOperatorChoice: ValueSetComposeIncludeConcept[] = [
         display: 'Er besvart',
     },
     {
+        code: IOperator.notExists,
+        display: 'Ikke er besvart',
+    },
+    {
         code: IOperator.equal,
         display: 'Er lik',
     },
@@ -172,6 +180,10 @@ export const enableWhenOperatorDate: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
         display: 'Er besvart',
+    },
+    {
+        code: IOperator.notExists,
+        display: 'Ikke er besvart',
     },
     {
         code: IOperator.equal,
@@ -203,6 +215,10 @@ export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
         display: 'Er besvart',
+    },
+    {
+        code: IOperator.notExists,
+        display: 'Ikke er besvart',
     },
     {
         code: IOperator.equal,

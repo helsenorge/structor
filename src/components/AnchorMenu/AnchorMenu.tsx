@@ -7,10 +7,12 @@ import SubAnchor from './SubAnchor';
 import { ActionType, Items, OrderItem } from '../../store/treeStore/treeStore';
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import { newItemAction, reorderItemAction } from '../../store/treeStore/treeActions';
+import { ValidationErrors } from '../../helpers/orphanValidation';
 
 interface AnchorMenuProps {
     qOrder: OrderItem[];
     qItems: Items;
+    validationErrors: ValidationErrors[];
     dispatch: React.Dispatch<ActionType>;
 }
 
@@ -41,6 +43,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                     qItems={props.qItems}
                     parentArray={[]}
                     parentQuestionNumber=""
+                    validationErrors={props.validationErrors}
                 />
             </DragDropContext>
             {props.qOrder.length === 0 && (
@@ -71,5 +74,7 @@ export default React.memo(AnchorMenu, (prevProps: AnchorMenuProps, nextProps: An
                 (key: string) => `${nextProps.qItems[key].text}${nextProps.qItems[key].type}`,
             ),
         );
-    return isOrderEqual && areItemsEqual;
+    const areValidationErrors =
+        JSON.stringify(prevProps.validationErrors) === JSON.stringify(nextProps.validationErrors);
+    return isOrderEqual && areItemsEqual && areValidationErrors;
 });
