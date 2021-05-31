@@ -42,8 +42,6 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     const [linkIdMoveTo, setLinkIdMoveTo] = useState('');
     const [moveError, setMoveError] = useState('');
 
-    const isRepeatsAndReadOnlyApplicable = item.type !== IQuestionnaireItemType.display;
-
     const isInitialApplicable =
         item.type !== IQuestionnaireItemType.display && item.type !== IQuestionnaireItemType.group;
 
@@ -171,6 +169,9 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     };
 
     const getPlaceholder = item?.extension?.find((x) => x.url === IExtentionType.entryFormat)?.valueString ?? '';
+    const getRepeatsText = item?.extension?.find((x) => x.url === IExtentionType.repeatstext)?.valueString ?? '';
+    const minOccurs = item?.extension?.find((x) => x.url === IExtentionType.minOccurs)?.valueInteger;
+    const maxOccurs = item?.extension?.find((x) => x.url === IExtentionType.maxOccurs)?.valueInteger;
     const hasSummaryExtension = !!item?.extension?.find((x) =>
         x.valueCodeableConcept?.coding?.filter((y) => y.code === ItemControlType.summary),
     );
@@ -274,44 +275,116 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     return (
         <>
-            {isRepeatsAndReadOnlyApplicable && (
-                <div className="horizontal equal">
+            {item.type !== IQuestionnaireItemType.display && (
+                <>
+                    <div className="horizontal equal">
+                        <div className="form-field">
+                            <SwitchBtn
+                                onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
+                                value={item.readOnly || false}
+                                label="Skrivebeskyttet"
+                                initial
+                            />
+                        </div>
+                        <div className="form-field">
+                            <SwitchBtn
+                                onChange={() => {
+                                    if (isHiddenItem) {
+                                        removeItemExtension(item, IExtentionType.hidden, dispatch);
+                                    } else {
+                                        const extension = {
+                                            url: IExtentionType.hidden,
+                                            valueBoolean: true,
+                                        };
+                                        setItemExtension(item, extension, dispatch);
+                                    }
+                                }}
+                                value={isHiddenItem || false}
+                                label="Gjemt felt"
+                                initial
+                            />
+                        </div>
+                    </div>
                     <div className="form-field">
                         <SwitchBtn
-                            onChange={() => dispatchUpdateItem(IItemProperty.repeats, !item.repeats)}
+                            onChange={(): void => {
+                                if (item.repeats) {
+                                    removeItemExtension(
+                                        item,
+                                        [
+                                            IExtentionType.repeatstext,
+                                            IExtentionType.minOccurs,
+                                            IExtentionType.maxOccurs,
+                                        ],
+                                        dispatch,
+                                    );
+                                }
+                                dispatchUpdateItem(IItemProperty.repeats, !item.repeats);
+                            }}
                             value={item.repeats || false}
                             label="Kan gjentas"
                             initial
                         />
+                        {item.repeats && (
+                            <>
+                                <FormField label="Kan gjentas knappetekst">
+                                    <input
+                                        defaultValue={getRepeatsText}
+                                        onBlur={(e) => {
+                                            if (e.target.value) {
+                                                handleExtension({
+                                                    url: IExtentionType.repeatstext,
+                                                    valueString: e.target.value,
+                                                });
+                                            } else {
+                                                removeExtension(IExtentionType.repeatstext);
+                                            }
+                                        }}
+                                    />
+                                </FormField>
+                                <div className="horizontal equal">
+                                    <div className="form-field">
+                                        <label className="#">Min antall svar</label>
+                                        <input
+                                            type="number"
+                                            defaultValue={minOccurs}
+                                            onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                                if (!event.target.value) {
+                                                    removeExtension(IExtentionType.minOccurs);
+                                                } else {
+                                                    const extension = {
+                                                        url: IExtentionType.minOccurs,
+                                                        valueInteger: parseInt(event.target.value),
+                                                    };
+                                                    handleExtension(extension);
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="form-field">
+                                        <label className="#">Max antall svar</label>
+                                        <input
+                                            type="number"
+                                            defaultValue={maxOccurs}
+                                            onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                                if (!event.target.value) {
+                                                    removeExtension(IExtentionType.maxOccurs);
+                                                } else {
+                                                    const extension = {
+                                                        url: IExtentionType.maxOccurs,
+                                                        valueInteger: parseInt(event.target.value),
+                                                    };
+                                                    handleExtension(extension);
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
-                    <div className="form-field">
-                        <SwitchBtn
-                            onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
-                            value={item.readOnly || false}
-                            label="Skrivebeskyttet"
-                            initial
-                        />
-                    </div>
-                </div>
+                </>
             )}
-            <div className="form-field">
-                <SwitchBtn
-                    onChange={() => {
-                        if (isHiddenItem) {
-                            removeItemExtension(item, IExtentionType.hidden, dispatch);
-                        } else {
-                            const extension = {
-                                url: IExtentionType.hidden,
-                                valueBoolean: true,
-                            };
-                            setItemExtension(item, extension, dispatch);
-                        }
-                    }}
-                    value={isHiddenItem || false}
-                    label="Gjemt felt"
-                    initial
-                />
-            </div>
             {isCalculatedExpressionApplicable && (
                 <CalculatedExpression item={item} updateExtension={handleExtension} removeExtension={removeExtension} />
             )}

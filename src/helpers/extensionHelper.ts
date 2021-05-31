@@ -18,10 +18,12 @@ export const setItemExtension = (
 
 export const removeItemExtension = (
     item: QuestionnaireItem,
-    extensionUrl: string,
+    extensionUrl: string | string[],
     dispatch: (value: ActionType) => void,
 ): void => {
-    const extensionsToSet = (item.extension || []).filter((x: Extension) => x.url !== extensionUrl);
+    const extensionsToSet = Array.isArray(extensionUrl)
+        ? (item.extension || []).filter((x: Extension) => extensionUrl.indexOf(x.url) === -1)
+        : (item.extension || []).filter((x: Extension) => x.url !== extensionUrl);
     dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensionsToSet));
 };
 
