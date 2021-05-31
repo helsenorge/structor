@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
-import { Extension, QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem } from '../../../types/fhir';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
+import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 
 interface ValidationTypeProp {
     item: QuestionnaireItem;
@@ -21,19 +22,6 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
         dispatch(updateItemAction(item.linkId, IItemProperty.type, value));
     };
 
-    const dispatchExtensionUpdate = (value: Extension[]) => {
-        dispatch(updateItemAction(item.linkId, IItemProperty.extension, value));
-    };
-
-    const dispatchRemoveMaxDecimalsExtension = () => {
-        const updatedExtensions = item.extension?.filter(
-            (extension: Extension) => extension.url !== IExtentionType.maxDecimalPlaces,
-        );
-        if (updatedExtensions) {
-            dispatchExtensionUpdate([...updatedExtensions]);
-        }
-    };
-
     const changeItemType = () => {
         const newItemType =
             item?.type === IQuestionnaireItemType.decimal
@@ -42,73 +30,35 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
 
         dispatchUpdateItemType(newItemType);
         if (newItemType === IQuestionnaireItemType.integer) {
-            dispatchRemoveMaxDecimalsExtension();
+            removeItemExtension(item, IExtentionType.maxDecimalPlaces, dispatch);
         }
-    };
-
-    const updateExtensionInputElement = (url: string) => {
-        return (e: React.ChangeEvent<HTMLInputElement>) => {
-            const removedExt = item.extension?.filter((ext) => ext.url !== url) ?? [];
-            if (!e.target.value) {
-                dispatchExtensionUpdate(removedExt);
-                return;
-            }
-
-            const validationTextExtension = {
-                url: url,
-                valueString: e.target.value,
-            };
-            const extensionToUpdate = item.extension?.find((ext) => ext.url === validationTextExtension.url);
-            const newExtension =
-                extensionToUpdate === undefined
-                    ? validationTextExtension
-                    : { url: extensionToUpdate.url, valueString: e.target.value };
-
-            dispatchExtensionUpdate([...removedExt, newExtension]);
-        };
-    };
-
-    const updateExtensionNumberElement = (url: string) => {
-        return (e: React.ChangeEvent<HTMLInputElement>) => {
-            const removedExt = item.extension?.filter((ext) => ext.url !== url) ?? [];
-            if (!e.target.value) {
-                dispatchExtensionUpdate(removedExt);
-                return;
-            }
-
-            const validationTextExtension = {
-                url: url,
-                valueInteger: parseInt(e.target.value),
-            };
-            const extensionToUpdate = item.extension?.find((ext) => ext.url === validationTextExtension.url);
-            const newExtension =
-                extensionToUpdate === undefined
-                    ? validationTextExtension
-                    : { url: extensionToUpdate.url, valueInteger: parseInt(e.target.value) };
-
-            dispatchExtensionUpdate([...removedExt, newExtension]);
-        };
     };
 
     return (
         <>
             <div className="horizontal equal">
-                <div className="form-field">
-                    <SwitchBtn
-                        label="Tillat desimaltall"
-                        initial
-                        value={isDecimal}
-                        onChange={changeItemType}
-                        disabled={item?.type === IQuestionnaireItemType.quantity}
-                    />
-                </div>
+                {item?.type !== IQuestionnaireItemType.quantity && (
+                    <div className="form-field">
+                        <SwitchBtn label="Tillat desimaltall" initial value={isDecimal} onChange={changeItemType} />
+                    </div>
+                )}
                 {isDecimal && (
                     <div className="form-field">
                         <label className="#">Max antall desimaler</label>
                         <input
                             type="number"
                             defaultValue={maxDecimalPlaces}
-                            onBlur={updateExtensionNumberElement(IExtentionType.maxDecimalPlaces)}
+                            onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                if (!event.target.value) {
+                                    removeItemExtension(item, IExtentionType.maxDecimalPlaces, dispatch);
+                                } else {
+                                    const extension = {
+                                        url: IExtentionType.maxDecimalPlaces,
+                                        valueInteger: parseInt(event.target.value),
+                                    };
+                                    setItemExtension(item, extension, dispatch);
+                                }
+                            }}
                         />
                     </div>
                 )}
@@ -120,7 +70,17 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     <input
                         type="number"
                         defaultValue={minValue}
-                        onBlur={updateExtensionNumberElement(IExtentionType.minValue)}
+                        onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            if (!event.target.value) {
+                                removeItemExtension(item, IExtentionType.minValue, dispatch);
+                            } else {
+                                const extension = {
+                                    url: IExtentionType.minValue,
+                                    valueInteger: parseInt(event.target.value),
+                                };
+                                setItemExtension(item, extension, dispatch);
+                            }
+                        }}
                     ></input>
                 </div>
 
@@ -129,7 +89,17 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     <input
                         type="number"
                         defaultValue={maxValue}
-                        onBlur={updateExtensionNumberElement(IExtentionType.maxValue)}
+                        onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            if (!event.target.value) {
+                                removeItemExtension(item, IExtentionType.maxValue, dispatch);
+                            } else {
+                                const extension = {
+                                    url: IExtentionType.maxValue,
+                                    valueInteger: parseInt(event.target.value),
+                                };
+                                setItemExtension(item, extension, dispatch);
+                            }
+                        }}
                     ></input>
                 </div>
             </div>
@@ -140,7 +110,17 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     type="input"
                     defaultValue={validationText}
                     placeholder="feilmelding"
-                    onBlur={updateExtensionInputElement(IExtentionType.validationtext)}
+                    onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        if (!event.target.value) {
+                            removeItemExtension(item, IExtentionType.validationtext, dispatch);
+                        } else {
+                            const extension = {
+                                url: IExtentionType.validationtext,
+                                valueString: event.target.value,
+                            };
+                            setItemExtension(item, extension, dispatch);
+                        }
+                    }}
                 ></input>
             </div>
         </>

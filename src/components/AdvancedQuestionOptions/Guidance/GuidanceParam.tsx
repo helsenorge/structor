@@ -4,13 +4,12 @@ import { getGuidanceParameterName, isValidGuidanceParameterName } from '../../..
 import {
     createGuidanceParameterExtension,
     hasExtension,
-    removeExtensionValue,
-    updateExtensionValue,
+    removeItemExtension,
+    setItemExtension,
 } from '../../../helpers/extensionHelper';
-import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
+import { IExtentionType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { updateItemAction } from '../../../store/treeStore/treeActions';
 
 import FormField from '../../FormField/FormField';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
@@ -26,23 +25,17 @@ const GuidanceParam = (props: GuidanceParamProps): JSX.Element => {
     const [validationMessage, setValidationMessage] = useState('');
 
     const toggleGuidanceParam = () => {
-        let newExtensions;
         if (hasGuidanceParam) {
-            newExtensions = removeExtensionValue(props.item, IExtentionType.guidanceParam)?.extension;
+            removeItemExtension(props.item, IExtentionType.guidanceParam, dispatch);
         } else {
-            newExtensions = updateExtensionValue(props.item, createGuidanceParameterExtension());
+            setItemExtension(props.item, createGuidanceParameterExtension(), dispatch);
         }
-        dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, newExtensions));
     };
 
     const updateParameterName = (event: FocusEvent<HTMLInputElement>) => {
         validateParameterName(event.target.value);
         if (isValidGuidanceParameterName(event.target.value)) {
-            const newExtensions = updateExtensionValue(
-                props.item,
-                createGuidanceParameterExtension(event.target.value),
-            );
-            dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, newExtensions));
+            setItemExtension(props.item, createGuidanceParameterExtension(event.target.value), dispatch);
         }
     };
 

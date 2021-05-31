@@ -17,7 +17,7 @@ import {
 
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
 import Btn from '../../Btn/Btn';
-import { IItemProperty } from '../../../types/IQuestionnareItemType';
+import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { checkboxExtension, dropdownExtension } from '../../../helpers/QuestionHelper';
@@ -25,6 +25,7 @@ import { updateItemAction } from '../../../store/treeStore/treeActions';
 import AnswerOption from '../../AnswerOption/AnswerOption';
 import SystemField from '../../FormField/SystemField';
 import { isItemControlCheckbox, isItemControlDropDown, ItemControlType } from '../../../helpers/itemControl';
+import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 
 type Props = {
     item: QuestionnaireItem;
@@ -34,11 +35,11 @@ const Choice = ({ item }: Props): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
 
     const dispatchExtentionUpdate = (type: ItemControlType.checkbox | ItemControlType.dropdown) => {
-        dispatch(updateItemAction(item.linkId, IItemProperty.extension, []));
+        removeItemExtension(item, IExtentionType.itemControl, dispatch);
         if (type === ItemControlType.checkbox && !isItemControlCheckbox(item)) {
-            dispatch(updateItemAction(item.linkId, IItemProperty.extension, checkboxExtension));
+            setItemExtension(item, checkboxExtension, dispatch);
         } else if (type === ItemControlType.dropdown && !isItemControlDropDown(item)) {
-            dispatch(updateItemAction(item.linkId, IItemProperty.extension, dropdownExtension));
+            setItemExtension(item, dropdownExtension, dispatch);
         }
     };
 

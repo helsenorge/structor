@@ -3,6 +3,7 @@
     color: #4a5568;
     margin-top: 1rem;
     padding: 1rem 2.5rem;
+    white-space: normal;
 }
 
 .enablewhen-box {
@@ -19,6 +20,10 @@
 .enableWhen-condition__answer {
     flex: 1;
     padding-left: 1rem;
+}
+
+.enableWhen-condition__answer > input {
+    width: 100%;
 }
 
 .enablebehavior {

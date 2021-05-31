@@ -7,10 +7,12 @@ import { Items, OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import { isIgnorableItem } from '../../helpers/itemControl';
 import { updateMarkedLinkIdAction } from '../../store/treeStore/treeActions';
+import { ValidationErrors } from '../../helpers/orphanValidation';
 
 type SubAnchorProps = {
     parentItem: string;
     items: OrderItem[];
+    validationErrors: ValidationErrors[];
     parentArray: Array<string>;
     qItems: Items;
     children?: JSX.Element | JSX.Element[];
@@ -96,6 +98,13 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                     >
                                         <div
                                             className="anchor-content"
+                                            style={{
+                                                border: props.validationErrors.some(
+                                                    (error) => error.linkId === item.linkId,
+                                                )
+                                                    ? '4px solid red'
+                                                    : 'none',
+                                            }}
                                             onClick={() => {
                                                 selectItem(item.linkId);
                                             }}
@@ -129,6 +138,7 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                                     qItems={props.qItems}
                                                     parentArray={[...props.parentArray, item.linkId]}
                                                     parentQuestionNumber={showHierarchy(index)}
+                                                    validationErrors={props.validationErrors}
                                                 />
                                             )}
                                         </div>

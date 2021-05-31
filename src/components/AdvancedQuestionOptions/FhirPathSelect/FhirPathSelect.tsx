@@ -4,9 +4,9 @@ import GroupedSelect from '../../Select/GroupedSelect';
 import { EnrichmentSet } from '../../../helpers/QuestionHelper';
 import FormField from '../../FormField/FormField';
 import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
-import { Extension, QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem } from '../../../types/fhir';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
-import { removeExtensionValue, updateExtensionValue } from '../../../helpers/extensionHelper';
+import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import { isOptionGroup, Option, OptionGroup } from '../../../types/OptionTypes';
 
 type FhirPathSelectProps = {
@@ -37,20 +37,8 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
         dispatch(updateItemAction(props.item.linkId, name, value));
     };
 
-    const dispatchUpdateExtension = (extension: Extension) => {
-        dispatch(
-            updateItemAction(props.item.linkId, IItemProperty.extension, updateExtensionValue(props.item, extension)),
-        );
-    };
-
     const dispatchRemoveFhirPath = () => {
-        dispatch(
-            updateItemAction(
-                props.item.linkId,
-                IItemProperty.extension,
-                removeExtensionValue(props.item, IExtentionType.fhirPath)?.extension,
-            ),
-        );
+        removeItemExtension(props.item, IExtentionType.fhirPath, dispatch);
     };
 
     const dispatchUpdateFhirPath = (value: string) => {
@@ -58,7 +46,7 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
             url: IExtentionType.fhirPath,
             valueString: value,
         };
-        dispatchUpdateExtension(extension);
+        setItemExtension(props.item, extension, dispatch);
     };
 
     const handleSelect = (selectedValue: string) => {

@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
 import FormField from '../../FormField/FormField';
-import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
+import { IExtentionType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { updateItemAction } from '../../../store/treeStore/treeActions';
-import { updateExtensionValue } from '../../../helpers/extensionHelper';
+import { setItemExtension } from '../../../helpers/extensionHelper';
 
 type ValidationAnswerTypeAttachmentProps = {
     item: QuestionnaireItem;
@@ -15,8 +14,8 @@ const ValidationAnswerTypeAttachment = ({ item }: ValidationAnswerTypeAttachment
     const maxSize = item.extension?.find((ext) => ext.url === IExtentionType.maxSize)?.valueDecimal || '';
 
     function updateMaxSize(size: number) {
-        const newExtension = updateExtensionValue(item, { url: IExtentionType.maxSize, valueDecimal: size });
-        dispatch(updateItemAction(item.linkId, IItemProperty.extension, newExtension));
+        const extension = { url: IExtentionType.maxSize, valueDecimal: size };
+        setItemExtension(item, extension, dispatch);
     }
 
     return (

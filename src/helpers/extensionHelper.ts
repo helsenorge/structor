@@ -1,39 +1,49 @@
-import { Element, Extension } from '../types/fhir';
-import { IExtentionType } from '../types/IQuestionnareItemType';
+import { updateItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
+import { ActionType } from '../store/treeStore/treeStore';
+import { Element, Extension, QuestionnaireItem } from '../types/fhir';
+import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
+import { IExtentionType, IItemProperty } from '../types/IQuestionnareItemType';
 import createUUID from './CreateUUID';
 import { ItemControlType } from './itemControl';
 
-// set extension value. Update extension if it exists, otherwise add it.
-export const updateExtensionValue = (extensionParent: Element | undefined, extensionValue: Extension): Extension[] => {
-    // copy existing extension, except extension to add
-    const updatedExtensions = [
-        ...(extensionParent?.extension?.filter((x: Extension) => x.url !== extensionValue.url) || []),
-    ];
-
-    // add new extension
-    updatedExtensions.push(extensionValue);
-
-    return updatedExtensions;
+export const setItemExtension = (
+    item: QuestionnaireItem,
+    extensionValue: Extension,
+    dispatch: (value: ActionType) => void,
+): void => {
+    const extensionsToSet = (item.extension || []).filter((x: Extension) => x.url !== extensionValue.url);
+    extensionsToSet.push(extensionValue);
+    dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensionsToSet));
 };
 
-export const removeExtensionValue = (
-    extensionParent: Element | undefined,
-    extensionUrlToRemove: string,
-): Element | undefined => {
-    // remove extension with extensionUrlToRemove, but keep other extensions
-    let newValue: Element | undefined;
-    if (extensionParent) {
-        newValue = {
-            ...extensionParent,
-            extension: (extensionParent.extension || []).filter((x: Extension) => x.url !== extensionUrlToRemove),
-        };
-    }
-    // if there are no extension, clear extensionParent
-    if (newValue && newValue.extension && newValue.extension.length === 0) {
-        newValue = undefined;
-    }
+export const removeItemExtension = (
+    item: QuestionnaireItem,
+    extensionUrl: string | string[],
+    dispatch: (value: ActionType) => void,
+): void => {
+    const extensionsToSet = Array.isArray(extensionUrl)
+        ? (item.extension || []).filter((x: Extension) => extensionUrl.indexOf(x.url) === -1)
+        : (item.extension || []).filter((x: Extension) => x.url !== extensionUrl);
+    dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensionsToSet));
+};
 
-    return newValue;
+export const setQuestionnaireExtension = (
+    qMetadata: IQuestionnaireMetadata,
+    extensionValue: Extension,
+    dispatch: (value: ActionType) => void,
+): void => {
+    const extensionsToSet = (qMetadata.extension || []).filter((x: Extension) => x.url !== extensionValue.url);
+    extensionsToSet.push(extensionValue);
+    dispatch(updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.extension, extensionsToSet));
+};
+
+export const removeQuestionnaireExtension = (
+    qMetadata: IQuestionnaireMetadata,
+    extensionUrl: string,
+    dispatch: (value: ActionType) => void,
+): void => {
+    const extensionsToSet = (qMetadata.extension || []).filter((x: Extension) => x.url !== extensionUrl);
+    dispatch(updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.extension, extensionsToSet));
 };
 
 export const createOptionReferenceExtensions = [

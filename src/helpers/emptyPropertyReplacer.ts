@@ -10,7 +10,7 @@ will give:
 }
  */
 export const emptyPropertyReplacer = (key: string, value: unknown): unknown => {
-    if (!value) {
+    if (value === undefined || value === null || value === '') {
         return undefined;
     }
     if (Array.isArray(value) && value.length === 0) {

@@ -59,6 +59,7 @@ export enum IOperator {
     notEqual = '!=',
     equal = '=',
     exists = 'exists',
+    notExists = 'notexists', // only used internally, not valid in FHIR
 }
 
 export type IEnableWhen = {
@@ -92,6 +93,9 @@ export enum IExtentionType {
     presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
     questionnaireUnit = 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
     regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
+    repeatstext = 'http://ehelse.no/fhir/StructureDefinition/repeatstext',
+    maxOccurs = 'http://hl7.org/fhir/StructureDefinition/questionnaire-maxOccurs',
+    minOccurs = 'http://hl7.org/fhir/StructureDefinition/questionnaire-minOccurs',
     sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
     validationtext = 'http://ehelse.no/fhir/StructureDefinition/validationtext',
     navigator = 'http://helsenorge.no/fhir/StructureDefinition/sdf-questionnaire-navgiator-state',

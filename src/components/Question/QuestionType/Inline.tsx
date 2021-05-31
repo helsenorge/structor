@@ -4,7 +4,6 @@ import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { findElementInTreeArray } from '../../../helpers/treeHelper';
 import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
-import { updateExtensionValue } from '../../../helpers/extensionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 
 type InlineProps = {
@@ -20,11 +19,14 @@ const Inline = ({ linkId, parentArray }: InlineProps): JSX.Element => {
 
     const dispatchUpdateMarkdown = (markdown: string) => {
         const markdownValue = {
-            url: IExtentionType.markdown,
-            valueMarkdown: markdown,
+            extension: [
+                {
+                    url: IExtentionType.markdown,
+                    valueMarkdown: markdown,
+                },
+            ],
         };
-        const newExtension = updateExtensionValue(currentItem._text, markdownValue);
-        dispatch(updateItemAction(currentItem.linkId, IItemProperty._text, { extension: newExtension }));
+        dispatch(updateItemAction(currentItem.linkId, IItemProperty._text, markdownValue));
         dispatch(updateItemAction(currentItem.linkId, IItemProperty.text, markdown));
     };
 

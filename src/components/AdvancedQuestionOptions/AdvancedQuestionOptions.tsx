@@ -5,7 +5,6 @@ import {
     deleteItemAction,
     moveItemAction,
     newItemHelpIconAction,
-    removeItemAttributeAction,
     updateItemAction,
     updateLinkIdAction,
 } from '../../store/treeStore/treeActions';
@@ -23,6 +22,7 @@ import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
 import CalculatedExpression from './CalculatedExpression/CalculatedExpression';
+import { removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -41,8 +41,6 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     const { qItems, qOrder } = state;
     const [linkIdMoveTo, setLinkIdMoveTo] = useState('');
     const [moveError, setMoveError] = useState('');
-
-    const isRepeatsAndReadOnlyApplicable = item.type !== IQuestionnaireItemType.display;
 
     const isInitialApplicable =
         item.type !== IQuestionnaireItemType.display && item.type !== IQuestionnaireItemType.group;
@@ -85,22 +83,20 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     const dispatchHighLight = () => {
         if (!!getHighlight()) {
-            dispatch(removeItemAttributeAction(item.linkId, IItemProperty.extension));
+            removeExtension(IExtentionType.itemControl);
         } else {
-            const extension = [
-                {
-                    url: IExtentionType.itemControl,
-                    valueCodeableConcept: {
-                        coding: [
-                            {
-                                system: IExtentionType.itemControlValueSet,
-                                code: ItemControlType.highlight,
-                            },
-                        ],
-                    },
+            const extension = {
+                url: IExtentionType.itemControl,
+                valueCodeableConcept: {
+                    coding: [
+                        {
+                            system: IExtentionType.itemControlValueSet,
+                            code: ItemControlType.highlight,
+                        },
+                    ],
                 },
-            ];
-            dispatch(updateItemAction(item.linkId, IItemProperty.extension, extension));
+            };
+            handleExtension(extension);
         }
     };
 
@@ -165,20 +161,17 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     };
 
     const handleExtension = (extension: Extension) => {
-        if (item?.extension && item?.extension?.length > 0) {
-            const newExtension = [...item.extension.filter((x) => x.url !== extension.url), extension];
-            dispatch(updateItemAction(item.linkId, IItemProperty.extension, newExtension));
-        } else {
-            dispatch(updateItemAction(item.linkId, IItemProperty.extension, [extension]));
-        }
+        setItemExtension(item, extension, dispatch);
     };
 
-    const removeExtension = (extensionType: IExtentionType) => {
-        const extensions = item.extension ? item.extension.filter((x) => x.url !== extensionType) : [];
-        dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensions));
+    const removeExtension = (extensionUrl: IExtentionType) => {
+        removeItemExtension(item, extensionUrl, dispatch);
     };
 
     const getPlaceholder = item?.extension?.find((x) => x.url === IExtentionType.entryFormat)?.valueString ?? '';
+    const getRepeatsText = item?.extension?.find((x) => x.url === IExtentionType.repeatstext)?.valueString ?? '';
+    const minOccurs = item?.extension?.find((x) => x.url === IExtentionType.minOccurs)?.valueInteger;
+    const maxOccurs = item?.extension?.find((x) => x.url === IExtentionType.maxOccurs)?.valueInteger;
     const hasSummaryExtension = !!item?.extension?.find((x) =>
         x.valueCodeableConcept?.coding?.filter((y) => y.code === ItemControlType.summary),
     );
@@ -272,34 +265,130 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     const isInlineItem = isItemControlInline(item);
     const helpTextItem = getHelpTextItem();
+    const isHiddenItem = item.extension?.some((ext) => ext.url === IExtentionType.hidden && ext.valueBoolean);
+    const isBerikingSupported =
+        item.type === IQuestionnaireItemType.string ||
+        item.type === IQuestionnaireItemType.boolean ||
+        item.type === IQuestionnaireItemType.quantity ||
+        item.type === IQuestionnaireItemType.integer ||
+        item.type === IQuestionnaireItemType.decimal;
+
     return (
         <>
-            {isRepeatsAndReadOnlyApplicable && (
-                <div className="horizontal equal">
+            {item.type !== IQuestionnaireItemType.display && (
+                <>
+                    <div className="horizontal equal">
+                        <div className="form-field">
+                            <SwitchBtn
+                                onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
+                                value={item.readOnly || false}
+                                label="Skrivebeskyttet"
+                                initial
+                            />
+                        </div>
+                        <div className="form-field">
+                            <SwitchBtn
+                                onChange={() => {
+                                    if (isHiddenItem) {
+                                        removeItemExtension(item, IExtentionType.hidden, dispatch);
+                                    } else {
+                                        const extension = {
+                                            url: IExtentionType.hidden,
+                                            valueBoolean: true,
+                                        };
+                                        setItemExtension(item, extension, dispatch);
+                                    }
+                                }}
+                                value={isHiddenItem || false}
+                                label="Gjemt felt"
+                                initial
+                            />
+                        </div>
+                    </div>
                     <div className="form-field">
                         <SwitchBtn
-                            onChange={() => dispatchUpdateItem(IItemProperty.repeats, !item.repeats)}
+                            onChange={(): void => {
+                                if (item.repeats) {
+                                    removeItemExtension(
+                                        item,
+                                        [
+                                            IExtentionType.repeatstext,
+                                            IExtentionType.minOccurs,
+                                            IExtentionType.maxOccurs,
+                                        ],
+                                        dispatch,
+                                    );
+                                }
+                                dispatchUpdateItem(IItemProperty.repeats, !item.repeats);
+                            }}
                             value={item.repeats || false}
                             label="Kan gjentas"
                             initial
                         />
+                        {item.repeats && (
+                            <>
+                                <FormField label="Kan gjentas knappetekst">
+                                    <input
+                                        defaultValue={getRepeatsText}
+                                        onBlur={(e) => {
+                                            if (e.target.value) {
+                                                handleExtension({
+                                                    url: IExtentionType.repeatstext,
+                                                    valueString: e.target.value,
+                                                });
+                                            } else {
+                                                removeExtension(IExtentionType.repeatstext);
+                                            }
+                                        }}
+                                    />
+                                </FormField>
+                                <div className="horizontal equal">
+                                    <div className="form-field">
+                                        <label className="#">Min antall svar</label>
+                                        <input
+                                            type="number"
+                                            defaultValue={minOccurs}
+                                            onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                                if (!event.target.value) {
+                                                    removeExtension(IExtentionType.minOccurs);
+                                                } else {
+                                                    const extension = {
+                                                        url: IExtentionType.minOccurs,
+                                                        valueInteger: parseInt(event.target.value),
+                                                    };
+                                                    handleExtension(extension);
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="form-field">
+                                        <label className="#">Max antall svar</label>
+                                        <input
+                                            type="number"
+                                            defaultValue={maxOccurs}
+                                            onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                                if (!event.target.value) {
+                                                    removeExtension(IExtentionType.maxOccurs);
+                                                } else {
+                                                    const extension = {
+                                                        url: IExtentionType.maxOccurs,
+                                                        valueInteger: parseInt(event.target.value),
+                                                    };
+                                                    handleExtension(extension);
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
-                    <div className="form-field">
-                        <SwitchBtn
-                            onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
-                            value={item.readOnly || false}
-                            label="Skrivebeskyttet"
-                            initial
-                        />
-                    </div>
-                </div>
+                </>
             )}
             {isCalculatedExpressionApplicable && (
                 <CalculatedExpression item={item} updateExtension={handleExtension} removeExtension={removeExtension} />
             )}
-            {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.boolean) && (
-                <FhirPathSelect item={item} />
-            )}
+            {isBerikingSupported && <FhirPathSelect item={item} />}
             {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.text) && (
                 <FormField label="Skyggetekst">
                     <input

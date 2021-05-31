@@ -9,12 +9,6 @@ import {
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
 import React, { useContext } from 'react';
-import {
-    enableWhenOperator,
-    enableWhenOperatorBoolean,
-    enableWhenOperatorChoice,
-    enableWhenOperatorDate,
-} from '../../helpers/QuestionHelper';
 
 import EnableBehavior from './EnableBehavior';
 import EnableWhenAnswerTypes from './EnableWhenAnswerTypes';
@@ -23,6 +17,7 @@ import FormField from '../FormField/FormField';
 import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateItemAction } from '../../store/treeStore/treeActions';
+import EnableWhenOperator from './EnableWhenOperator';
 
 type Props = {
     getItem: (linkId: string) => QuestionnaireItem;
@@ -39,17 +34,6 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
     };
     const dispatchUpdateItemEnableBehavior = (value: QuestionnaireItemEnableBehaviorCodes | undefined) => {
         dispatch(updateItemAction(linkId, IItemProperty.enableBehavior, value));
-    };
-
-    const getOperatorsForType = (qType: string): ValueSetComposeIncludeConcept[] => {
-        if (qType === IQuestionnaireItemType.boolean) {
-            return enableWhenOperatorBoolean;
-        } else if (qType === IQuestionnaireItemType.choice || qType === IQuestionnaireItemType.openChoice) {
-            return enableWhenOperatorChoice;
-        } else if (qType === IQuestionnaireItemType.date || qType === IQuestionnaireItemType.dateTime) {
-            return enableWhenOperatorDate;
-        }
-        return enableWhenOperator;
     };
 
     // TODO: support most of these item types
@@ -98,35 +82,12 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
                                 {!!conditionItem && isSupportedType(conditionItem.type) && (
                                     <FormField label="Vis hvis svaret:">
                                         <div className="enablewhen-condition">
-                                            <Select
-                                                placeholder="Velg en operator"
-                                                options={getOperatorsForType(conditionItem.type)}
-                                                value={x.operator}
-                                                onChange={(event) => {
-                                                    const copy = getItem(linkId).enableWhen?.map((x, ewIndex) => {
-                                                        let item = x;
-                                                        if (
-                                                            index === ewIndex &&
-                                                            event.target.value === IOperator.exists
-                                                        ) {
-                                                            // remove answer[x] if operator is changed to exists
-                                                            item = {
-                                                                question: x.question,
-                                                                operator: event.target.value,
-                                                                answerBoolean: true,
-                                                            } as QuestionnaireItemEnableWhen;
-                                                        } else if (index === ewIndex) {
-                                                            item = { ...x, operator: event.target.value };
-                                                            if (item.answerBoolean) {
-                                                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                                                //@ts-expect-error
-                                                                delete item.answerBoolean;
-                                                            }
-                                                        }
-                                                        return item;
-                                                    });
-                                                    dispatchUpdateItemEnableWhen(copy);
-                                                }}
+                                            <EnableWhenOperator
+                                                conditionItem={conditionItem}
+                                                thisItem={getItem(linkId)}
+                                                ew={x}
+                                                ewIndex={index}
+                                                dispatchUpdateItemEnableWhen={dispatchUpdateItemEnableWhen}
                                             />
                                             <div className="enableWhen-condition__answer">
                                                 {x.operator !== IOperator.exists && (

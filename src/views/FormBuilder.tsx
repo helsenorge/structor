@@ -16,6 +16,7 @@ import QuestionDrawer from '../components/QuestionDrawer/QuestionDrawer';
 import SpinnerBox from '../components/Spinner/SpinnerBox';
 
 import './FormBuilder.css';
+import { ValidationErrors } from '../helpers/orphanValidation';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -24,6 +25,7 @@ const FormBuilder = (): JSX.Element => {
     const [isLoading, setIsLoading] = useState(false);
     const [displayVerifyReset, setDisplayVerifyReset] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
+    const [validationErrors, setValidationErrors] = useState<Array<ValidationErrors>>([]);
     const uploadRef = useRef<HTMLInputElement>(null);
 
     const toggleFormDetails = useCallback(() => {
@@ -100,6 +102,8 @@ const FormBuilder = (): JSX.Element => {
                 newQuestionnaire={resetQuestionnaire}
                 showFormFiller={() => setShowPreview(!showPreview)}
                 uploadRef={uploadRef}
+                validationErrors={validationErrors}
+                setValidationErrors={setValidationErrors}
             />
 
             {suggestRestore && (
@@ -153,7 +157,12 @@ const FormBuilder = (): JSX.Element => {
                     accept="application/JSON"
                     style={{ display: 'none' }}
                 />
-                <AnchorMenu dispatch={dispatch} qOrder={state.qOrder} qItems={state.qItems} />
+                <AnchorMenu
+                    dispatch={dispatch}
+                    qOrder={state.qOrder}
+                    qItems={state.qItems}
+                    validationErrors={validationErrors}
+                />
                 {showPreview && (
                     <FormFiller
                         showFormFiller={() => setShowPreview(!showPreview)}
@@ -171,7 +180,7 @@ const FormBuilder = (): JSX.Element => {
                         />
                     </div>
                     <FormDetailsDrawer closeDrawer={toggleFormDetails} isOpen={showFormDetails} />
-                    <QuestionDrawer />
+                    <QuestionDrawer validationErrors={validationErrors} />
                 </div>
             </div>
         </>

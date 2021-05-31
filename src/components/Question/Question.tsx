@@ -21,7 +21,7 @@ import itemType, {
     typeIsSupportingValidation,
     valueSetTqqcCoding,
 } from '../../helpers/QuestionHelper';
-import { createDropdown, removeExtensionValue, updateExtensionValue } from '../../helpers/extensionHelper';
+import { createDropdown, setItemExtension } from '../../helpers/extensionHelper';
 import {
     isItemControlDropDownAndOptionReference,
     isItemControlInline,
@@ -73,7 +73,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         props.dispatch(removeItemAttributeAction(props.item.linkId, name));
     };
 
-    const dispatchClearExtension = (): void => {
+    const dispatchClearExtensions = (): void => {
         props.dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
     };
 
@@ -88,12 +88,15 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const dispatchUpdateMarkdownLabel = (newLabel: string): void => {
         const markdownValue = {
-            url: IExtentionType.markdown,
-            valueMarkdown: newLabel,
+            extension: [
+                {
+                    url: IExtentionType.markdown,
+                    valueMarkdown: newLabel,
+                },
+            ],
         };
-        const newValue = { extension: updateExtensionValue(props.item._text, markdownValue) };
 
-        dispatchUpdateItem(IItemProperty._text, newValue);
+        dispatchUpdateItem(IItemProperty._text, markdownValue);
         // update text with same value. Text is used in condition in enableWhen
         dispatchUpdateItem(IItemProperty.text, newLabel);
     };
@@ -160,7 +163,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             case IQuestionnaireItemType.openChoice:
                 return <Choice item={props.item} />;
             case IQuestionnaireItemType.quantity:
-                return <UnitTypeSelector item={props.item} dispatchUpdateItem={dispatchUpdateItem} />;
+                return <UnitTypeSelector item={props.item} />;
             default:
                 return '';
         }
@@ -187,7 +190,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         const previousType = handleDisplayQuestionType();
         const newType = event.target.value;
 
-        dispatchClearExtension();
+        dispatchClearExtensions();
         addDefaultExtensionsAndAttributesForItemType(newType);
         cleanupChildItems(previousType);
 
@@ -222,27 +225,26 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const addDefaultExtensionsAndAttributesForItemType = (type: string) => {
         if (type === IQuestionnaireItemType.attachment) {
-            dispatchUpdateItem(IItemProperty.extension, [
-                {
-                    url: IExtentionType.maxSize,
-                    valueDecimal: ATTACHMENT_DEFAULT_MAX_SIZE,
-                },
-            ]);
+            const extension = {
+                url: IExtentionType.maxSize,
+                valueDecimal: ATTACHMENT_DEFAULT_MAX_SIZE,
+            };
+            setItemExtension(props.item, extension, props.dispatch);
         }
 
         if (type === IQuestionnaireItemType.inline) {
-            dispatchUpdateItem(IItemProperty.extension, [
-                {
-                    url: IExtentionType.itemControl,
-                    valueCodeableConcept: {
-                        coding: [{ system: IExtentionType.itemControlValueSet, code: ItemControlType.inline }],
-                    },
+            const extension = {
+                url: IExtentionType.itemControl,
+                valueCodeableConcept: {
+                    coding: [{ system: IExtentionType.itemControlValueSet, code: ItemControlType.inline }],
                 },
-            ]);
+            };
+
+            setItemExtension(props.item, extension, props.dispatch);
         }
 
         if (type === IQuestionnaireItemType.address) {
-            dispatchUpdateItem(IItemProperty.extension, [createDropdown]);
+            setItemExtension(props.item, createDropdown, props.dispatch);
             dispatchUpdateItem(IItemProperty.code, [valueSetTqqcCoding]);
         }
     };
@@ -282,9 +284,8 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 const newIsMarkdownEnabled = !isMarkdownActivated;
                                 setIsMarkdownActivated(newIsMarkdownEnabled);
                                 if (!newIsMarkdownEnabled) {
-                                    // remove markdown extension, but keep other extensions
-                                    const newValue = removeExtensionValue(props.item._text, IExtentionType.markdown);
-                                    dispatchUpdateItem(IItemProperty._text, newValue);
+                                    // remove markdown extension
+                                    dispatchUpdateItem(IItemProperty._text, undefined);
                                 } else {
                                     // set existing text as markdown value
                                     dispatchUpdateMarkdownLabel(props.item.text || '');
@@ -337,13 +338,4 @@ const Question = (props: QuestionProps): JSX.Element => {
     );
 };
 
-export default React.memo(Question, (prevProps: QuestionProps, nextProps: QuestionProps) => {
-    // if ALL of these props are identical, do not re-render the question
-    const isItemIdentical = JSON.stringify(prevProps.item) === JSON.stringify(nextProps.item);
-    const isParentArrayIdentical = JSON.stringify(prevProps.parentArray) === JSON.stringify(nextProps.parentArray);
-    const isConditionalArrayIdentical =
-        JSON.stringify(prevProps.conditionalArray) === JSON.stringify(nextProps.conditionalArray);
-    const isContainedResourcesIdentical =
-        JSON.stringify(prevProps.containedResources) === JSON.stringify(nextProps.containedResources);
-    return isItemIdentical && isParentArrayIdentical && isConditionalArrayIdentical && isContainedResourcesIdentical;
-});
+export default Question;

@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import { QuestionnaireItem, Extension } from '../../../types/fhir';
 import FormField from '../../FormField/FormField';
 import Picker from '../../DatePicker/DatePicker';
-import { updateItemAction } from '../../../store/treeStore/treeActions';
-import { IItemProperty, IExtentionType } from '../../../types/IQuestionnareItemType';
+import { IExtentionType } from '../../../types/IQuestionnareItemType';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { format, parse } from 'date-fns';
+import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 
 type Props = {
     item: QuestionnaireItem;
@@ -13,25 +13,6 @@ type Props = {
 
 const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
-
-    const dispatchExtentionUpdate = (extention: Extension) => {
-        const newExtention = new Array<Extension>();
-
-        if (item.extension === undefined || item.extension.length === 0) {
-            newExtention.push(extention);
-        }
-
-        if (item.extension && item.extension.length > 0) {
-            item.extension.forEach((x) => {
-                if (x.url !== extention.url) {
-                    newExtention.push(x);
-                }
-            });
-            newExtention.push(extention);
-        }
-
-        dispatch(updateItemAction(item.linkId, IItemProperty.extension, newExtention));
-    };
 
     const validationText = item?.extension?.find((x) => x.url === IExtentionType.validationtext)?.valueString || '';
     const minDate = item?.extension?.find((x) => x.url === IExtentionType.minValue)?.valueDate;
@@ -43,12 +24,15 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                 <input
                     defaultValue={validationText}
                     onBlur={(event) => {
-                        const newExtention: Extension = {
-                            url: IExtentionType.validationtext,
-                            valueString: event.target.value,
-                        };
-
-                        dispatchExtentionUpdate(newExtention);
+                        if (event.target.value) {
+                            const newExtention: Extension = {
+                                url: IExtentionType.validationtext,
+                                valueString: event.target.value,
+                            };
+                            setItemExtension(item, newExtention, dispatch);
+                        } else {
+                            removeItemExtension(item, IExtentionType.validationtext, dispatch);
+                        }
                     }}
                 />
             </FormField>
@@ -60,12 +44,15 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                         disabled={false}
                         withPortal
                         callback={(date) => {
-                            const newExtention: Extension = {
-                                url: IExtentionType.minValue,
-                                valueDate: format(date, 'yyyy-MM-dd'),
-                            };
-
-                            dispatchExtentionUpdate(newExtention);
+                            if (date) {
+                                const newExtention: Extension = {
+                                    url: IExtentionType.minValue,
+                                    valueDate: format(date, 'yyyy-MM-dd'),
+                                };
+                                setItemExtension(item, newExtention, dispatch);
+                            } else {
+                                removeItemExtension(item, IExtentionType.minValue, dispatch);
+                            }
                         }}
                     />
                 </FormField>
@@ -76,11 +63,15 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                         disabled={false}
                         withPortal
                         callback={(date) => {
-                            const newExtention: Extension = {
-                                url: IExtentionType.maxValue,
-                                valueDate: format(date, 'yyyy-MM-dd'),
-                            };
-                            dispatchExtentionUpdate(newExtention);
+                            if (date) {
+                                const newExtention: Extension = {
+                                    url: IExtentionType.maxValue,
+                                    valueDate: format(date, 'yyyy-MM-dd'),
+                                };
+                                setItemExtension(item, newExtention, dispatch);
+                            } else {
+                                removeItemExtension(item, IExtentionType.maxValue, dispatch);
+                            }
                         }}
                     />
                 </FormField>

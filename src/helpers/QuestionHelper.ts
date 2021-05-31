@@ -114,46 +114,38 @@ export const quantityUnitTypes = [
     },
 ];
 
-export const checkboxExtension = [
-    {
-        url: IExtentionType.validationtext,
-        valueString: 'Velg ett eller flere av alternativene.',
+export const checkboxExtension = {
+    url: IExtentionType.itemControl,
+    valueCodeableConcept: {
+        coding: [
+            {
+                system: IExtentionType.itemControlValueSet,
+                code: ItemControlType.checkbox,
+            },
+        ],
     },
-    {
-        url: IExtentionType.itemControl,
-        valueCodeableConcept: {
-            coding: [
-                {
-                    system: IExtentionType.itemControlValueSet,
-                    code: ItemControlType.checkbox,
-                },
-            ],
-        },
-    },
-];
+};
 
-export const dropdownExtension = [
-    {
-        url: IExtentionType.validationtext,
-        valueString: 'Velg ett eller flere av alternativene.',
+export const dropdownExtension = {
+    url: IExtentionType.itemControl,
+    valueCodeableConcept: {
+        coding: [
+            {
+                system: IExtentionType.itemControlValueSet,
+                code: ItemControlType.dropdown,
+            },
+        ],
     },
-    {
-        url: IExtentionType.itemControl,
-        valueCodeableConcept: {
-            coding: [
-                {
-                    system: IExtentionType.itemControlValueSet,
-                    code: ItemControlType.dropdown,
-                },
-            ],
-        },
-    },
-];
+};
 
 export const enableWhenOperatorBoolean: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
         display: 'Er besvart',
+    },
+    {
+        code: IOperator.notExists,
+        display: 'Ikke er besvart',
     },
     {
         code: IOperator.equal,
@@ -171,6 +163,10 @@ export const enableWhenOperatorChoice: ValueSetComposeIncludeConcept[] = [
         display: 'Er besvart',
     },
     {
+        code: IOperator.notExists,
+        display: 'Ikke er besvart',
+    },
+    {
         code: IOperator.equal,
         display: 'Er lik',
     },
@@ -184,6 +180,10 @@ export const enableWhenOperatorDate: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
         display: 'Er besvart',
+    },
+    {
+        code: IOperator.notExists,
+        display: 'Ikke er besvart',
     },
     {
         code: IOperator.equal,
@@ -215,6 +215,10 @@ export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
         display: 'Er besvart',
+    },
+    {
+        code: IOperator.notExists,
+        display: 'Ikke er besvart',
     },
     {
         code: IOperator.equal,

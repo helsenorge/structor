@@ -32,6 +32,7 @@ const EnableWhenAnswerTypes = ({
 }: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
     const { qContained } = state;
+
     const getChoices = (conditionItem: QuestionnaireItem): ValueSetComposeIncludeConcept[] => {
         if (conditionItem.answerOption) {
             return conditionItem.answerOption.map((x) => {
@@ -56,6 +57,26 @@ const EnableWhenAnswerTypes = ({
         return [];
     };
 
+    const getSystem = (codeValue: string): string | undefined => {
+        if (conditionItem.answerValueSet) {
+            return qContained?.find((x) => x.id === conditionItem.answerValueSet?.replace('#', ''))?.compose?.include[0]
+                .system;
+        } else {
+            return conditionItem.answerOption?.find((x) => x.valueCoding?.code === codeValue)?.valueCoding?.system;
+        }
+    };
+
+    const getSelectedChoiceValue = (): string | undefined => {
+        const selectedValue = enableWhen.answerCoding?.code || enableWhen.answerReference?.reference;
+        let systemMatch = true;
+        if (!isRecipientList(conditionItem)) {
+            const system = getSystem(selectedValue || '');
+            systemMatch = !!system && system === enableWhen.answerCoding?.system;
+        }
+
+        return systemMatch ? getChoices(conditionItem).find((x) => x.code === selectedValue)?.code : undefined;
+    };
+
     return (
         <>
             {(conditionItem.type === IQuestionnaireItemType.choice ||
@@ -63,19 +84,8 @@ const EnableWhenAnswerTypes = ({
                 <Select
                     placeholder="Velg et alternativ.."
                     options={getChoices(conditionItem)}
-                    value={enableWhen.answerCoding?.code || enableWhen.answerReference?.reference}
+                    value={getSelectedChoiceValue()}
                     onChange={(event) => {
-                        const getSystem = () => {
-                            if (conditionItem.answerValueSet) {
-                                return qContained?.find((x) => x.id === conditionItem.answerValueSet?.replace('#', ''))
-                                    ?.compose?.include[0].system;
-                            } else {
-                                return conditionItem.answerOption?.find(
-                                    (x) => x.valueCoding?.code === event.target.value,
-                                )?.valueCoding?.system;
-                            }
-                        };
-
                         const getUpdatedEnableWhen = (ew: QuestionnaireItemEnableWhen, value: string) => {
                             return isRecipientList(conditionItem)
                                 ? {
@@ -87,7 +97,7 @@ const EnableWhenAnswerTypes = ({
                                 : {
                                       ...ew,
                                       answerCoding: {
-                                          system: getSystem(),
+                                          system: getSystem(event.target.value),
                                           code: value,
                                       },
                                   };
