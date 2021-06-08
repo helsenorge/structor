@@ -46,13 +46,19 @@ const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, en
             display = codingItem?.valueCoding?.display;
         } else if (item.answerValueSet && containedResources) {
             const valueSet = containedResources.find((x) => `#${x.id}` === item.answerValueSet);
-            if (valueSet && valueSet.compose && valueSet.compose.include && valueSet.compose.include[0].concept) {
+            if (
+                valueSet &&
+                valueSet.compose &&
+                valueSet.compose.include &&
+                valueSet.compose.include[0].concept &&
+                valueSet.compose.include[0].system === coding.system
+            ) {
                 const codingItem = valueSet.compose.include[0].concept.find((x) => x.code === coding.code);
                 display = codingItem?.display;
             }
         }
 
-        return display || '';
+        return display || '<ikke satt>';
     };
 
     const getQuantityDisplay = (answerQuantity: Quantity): string => {
@@ -108,7 +114,7 @@ const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, en
         return (
             <div key={`${linkId}-${enableWhen.question}-${enableWhen.operator}-${answerCondition}`}>
                 {enableBehaviorText && <p>{enableBehaviorText}</p>}
-                <strong>{getItem(enableWhen.question).text}</strong> {operatorMap[enableWhen.operator]}{' '}
+                <strong>{getItem(enableWhen.question).text}</strong> {operatorMap[enableWhen.operator] || '<operator>'}{' '}
                 <strong>{answerCondition}</strong>
             </div>
         );
