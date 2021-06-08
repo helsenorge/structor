@@ -41,6 +41,11 @@ const MetadataEditor = (): JSX.Element => {
         removeQuestionnaireExtension(qMetadata, extensionUrl, dispatch);
     };
 
+    const getGeneratePdfValue = (): boolean => {
+        const extension = qMetadata?.extension?.find((ex) => ex.url === IExtentionType.generatePDF);
+        return extension ? extension.valueBoolean || false : true;
+    };
+
     return (
         <div id="metadata-editor">
             <Accordion title="Skjemadetaljer">
@@ -229,14 +234,10 @@ const MetadataEditor = (): JSX.Element => {
                         onChange={() =>
                             updateMetaExtension({
                                 url: IExtentionType.generatePDF,
-                                valueBoolean: !qMetadata?.extension?.find((ex) => ex.url === IExtentionType.generatePDF)
-                                    ?.valueBoolean,
+                                valueBoolean: !getGeneratePdfValue(),
                             })
                         }
-                        value={
-                            qMetadata?.extension?.find((ex) => ex.url === IExtentionType.generatePDF)?.valueBoolean ||
-                            false
-                        }
+                        value={getGeneratePdfValue()}
                         label=""
                         initial
                     />
