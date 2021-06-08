@@ -20,6 +20,7 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
 
     const validationText = item?.extension?.find((x) => x.url === IExtentionType.validationtext)?.valueString || '';
     const selectedRegEx = item?.extension?.find((x) => x.url === IExtentionType.regEx)?.valueString || '';
+    const minLength = item?.extension?.find((x) => x.url === IExtentionType.minLength)?.valueInteger;
 
     return (
         <>
@@ -74,14 +75,38 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                     }}
                 />
             </FormField>
-            <FormField label="Maximum antall tegn">
-                <input
-                    defaultValue={item.maxLength || ''}
-                    type="input"
-                    aria-label="maximum sign"
-                    onBlur={(e) => updateMaxLength(parseInt(e.target.value.toString()))}
-                ></input>
-            </FormField>
+            <div className="horizontal equal">
+                <FormField label="Maksimum antall tegn">
+                    <input
+                        defaultValue={item.maxLength || ''}
+                        type="number"
+                        aria-label="maximum sign"
+                        onBlur={(e) => updateMaxLength(parseInt(e.target.value.toString()))}
+                    />
+                </FormField>
+                <FormField label="Minimum antall tegn">
+                    <input
+                        defaultValue={minLength}
+                        type="number"
+                        aria-label="minimum sign"
+                        onBlur={(e) => {
+                            const newValue = parseInt(e.target.value);
+                            if (!newValue) {
+                                removeItemExtension(item, IExtentionType.minLength, dispatch);
+                            } else {
+                                setItemExtension(
+                                    item,
+                                    {
+                                        url: IExtentionType.minLength,
+                                        valueInteger: newValue,
+                                    },
+                                    dispatch,
+                                );
+                            }
+                        }}
+                    />
+                </FormField>
+            </div>
         </>
     );
 };

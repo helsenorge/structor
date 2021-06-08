@@ -88,6 +88,7 @@ export enum IExtentionType {
     maxSize = 'http://hl7.org/fhir/StructureDefinition/maxSize',
     maxValue = 'http://hl7.org/fhir/StructureDefinition/maxValue',
     minValue = 'http://hl7.org/fhir/StructureDefinition/minValue',
+    minLength = 'http://hl7.org/fhir/StructureDefinition/minLength',
     optionReference = 'http://ehelse.no/fhir/StructureDefinition/sdf-optionReference',
     presentationbuttons = 'http://helsenorge.no/fhir/StructureDefinition/sdf-presentationbuttons',
     presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
