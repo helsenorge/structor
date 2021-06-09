@@ -1,5 +1,6 @@
 import { Items, OrderItem } from '../store/treeStore/treeStore';
 import { ValueSet } from '../types/fhir';
+import { IExtentionType } from '../types/IQuestionnareItemType';
 import { isRecipientList } from './QuestionHelper';
 
 export interface ValidationErrors {
@@ -28,6 +29,26 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
     const hasLinkIdCollision = Object.keys(qItems).filter((x) => x === qItem.linkId).length > 1;
     if (hasLinkIdCollision) {
         errors.push({ linkId: qItem.linkId, errorProperty: 'linkId', errorReadableText: 'LinkId er allerede i bruk' });
+    }
+
+    // validate fhirpath date extensions
+    if (qItem.type === 'date' || qItem.type === 'dateTime') {
+        (qItem.extension || []).forEach((extension, index) => {
+            const isFhirPathExtension =
+                extension.url === IExtentionType.fhirPathMinValue || extension.url === IExtentionType.fhirPathMaxValue;
+            if (
+                isFhirPathExtension &&
+                extension.valueString?.split(' ').filter(Boolean).length !== 1 &&
+                extension.valueString?.split(' ').filter(Boolean).length !== 4
+            ) {
+                errors.push({
+                    linkId: qItem.linkId,
+                    index: index,
+                    errorProperty: 'extension',
+                    errorReadableText: 'Feil i datovalidering med FhirPath',
+                });
+            }
+        });
     }
 
     // validate dead extensions

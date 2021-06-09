@@ -15,6 +15,7 @@ const ValidationAnswerTypes = ({ item }: ValidationTypeProp): JSX.Element => {
             case IQuestionnaireItemType.attachment:
                 return <ValidationAnswerTypeAttachment item={item} />;
             case IQuestionnaireItemType.date:
+            case IQuestionnaireItemType.dateTime:
                 return <ValidationAnswerTypeDate item={item} />;
             case IQuestionnaireItemType.string:
             case IQuestionnaireItemType.text:

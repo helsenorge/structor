@@ -254,6 +254,7 @@ export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolea
         IQuestionnaireItemType.text,
         IQuestionnaireItemType.string,
         IQuestionnaireItemType.date,
+        IQuestionnaireItemType.dateTime,
     ];
 
     return validTypes.includes(type);

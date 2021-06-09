@@ -143,3 +143,8 @@
     width: 100%;
 }
 
+.form-field .date-validation-input {
+    width: 70px;
+    margin-left: 25px;
+    padding-left: 10px;
+}
