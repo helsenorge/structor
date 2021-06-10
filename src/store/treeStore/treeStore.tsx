@@ -59,7 +59,7 @@ import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption } from '../../helpers/answerOptionHelper';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
-import { isIgnorableItem, isItemControlDropDown } from '../../helpers/itemControl';
+import { isIgnorableItem, isTqqcOptionReferenceItem } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { createSystemUUID } from '../../helpers/systemHelper';
@@ -205,7 +205,7 @@ export const initialState: TreeState = {
         ],
         contact: [
             {
-                name: 'https://fhi.no/',
+                name: 'http://www.nhn.no',
             },
         ],
         subjectType: ['Patient'],
@@ -328,7 +328,11 @@ function deleteItem(draft: TreeState, action: DeleteItemAction): void {
 
     // delete node from qOrder
     arrayToDeleteItemFrom.splice(indexToDelete, 1);
-    draft.qCurrentItem = undefined;
+
+    // set no item selected if the selected item was deleted
+    if (draft.qCurrentItem?.linkId === action.linkId) {
+        draft.qCurrentItem = undefined;
+    }
 }
 
 function updateItem(draft: TreeState, action: UpdateItemAction): void {
@@ -350,7 +354,7 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
         [action.itemProperty]: action.itemValue,
     };
 
-    if (action.itemValue === 'choice' && isItemControlDropDown(draft.qItems[action.linkId])) {
+    if (action.itemValue === 'choice' && isTqqcOptionReferenceItem(draft.qItems[action.linkId])) {
         //handle dropdown!
         draft.qItems[action.linkId].extension = [
             ...(draft.qItems[action.linkId].extension || []),
