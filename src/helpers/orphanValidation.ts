@@ -139,7 +139,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                 linkId: qItem.linkId,
                 index: index,
                 errorProperty: 'enableWhen',
-                errorReadableText: 'enableWhen er ikke fyllt ut riktig',
+                errorReadableText: 'enableWhen er ikke fyllt ut riktig. Det finnes for mange answer[x]-properties',
             });
         }
 

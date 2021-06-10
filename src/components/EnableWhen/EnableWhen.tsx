@@ -18,6 +18,7 @@ import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateItemAction } from '../../store/treeStore/treeActions';
 import EnableWhenOperator from './EnableWhenOperator';
+import { ValidationErrors } from '../../helpers/orphanValidation';
 
 type Props = {
     getItem: (linkId: string) => QuestionnaireItem;
@@ -25,9 +26,17 @@ type Props = {
     linkId: string;
     enableWhen: QuestionnaireItemEnableWhen[];
     containedResources?: Array<ValueSet>;
+    itemValidationErrors: ValidationErrors[];
 };
 
-const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedResources }: Props): JSX.Element => {
+const EnableWhen = ({
+    getItem,
+    conditionalArray,
+    linkId,
+    enableWhen,
+    containedResources,
+    itemValidationErrors,
+}: Props): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
     const dispatchUpdateItemEnableWhen = (value: QuestionnaireItemEnableWhen[] | undefined) => {
         dispatch(updateItemAction(linkId, IItemProperty.enableWhen, value));
@@ -55,9 +64,15 @@ const EnableWhen = ({ getItem, conditionalArray, linkId, enableWhen, containedRe
             <p>Sett betingelser for visning av elementet.</p>
             {enableWhen.map((x, index) => {
                 const conditionItem = getItem(x.question);
+                const hasValidationError = itemValidationErrors.some(
+                    (x) => x.errorProperty === 'enableWhen' && index === x.index,
+                );
                 return (
                     // we cannot use index as key, since we can also delete elements. Try to find a better index...
-                    <div key={`${linkId}-${x.question}-${x.operator}-${index}`} className="enablewhen-box">
+                    <div
+                        key={`${linkId}-${x.question}-${x.operator}-${index}`}
+                        className={`enablewhen-box ${hasValidationError ? 'validation-error' : ''}`}
+                    >
                         {!x.question || conditionCanBeEdited(x.question) ? (
                             <>
                                 <FormField label="Velg tidligere spørsmål:">

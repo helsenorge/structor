@@ -97,14 +97,11 @@ const SubAnchor = (props: SubAnchorProps): JSX.Element => {
                                         )}
                                     >
                                         <div
-                                            className="anchor-content"
-                                            style={{
-                                                border: props.validationErrors.some(
-                                                    (error) => error.linkId === item.linkId,
-                                                )
-                                                    ? '4px solid red'
-                                                    : 'none',
-                                            }}
+                                            className={`anchor-content ${
+                                                props.validationErrors.some((error) => error.linkId === item.linkId)
+                                                    ? 'validation-error'
+                                                    : ''
+                                            }`}
                                             onClick={() => {
                                                 selectItem(item.linkId);
                                             }}

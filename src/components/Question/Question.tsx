@@ -41,12 +41,14 @@ import OptionReference from './QuestionType/OptionReference';
 import FormField from '../FormField/FormField';
 import UnitTypeSelector from './UnitType/UnitTypeSelector';
 import { DateType } from './QuestionType/DateType';
+import { ValidationErrors } from '../../helpers/orphanValidation';
 
 interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
     containedResources?: Array<ValueSet>;
     conditionalArray: ValueSetComposeIncludeConcept[];
+    itemValidationErrors: ValidationErrors[];
     getItem: (linkId: string) => QuestionnaireItem;
     dispatch: React.Dispatch<ActionType>;
 }
@@ -351,6 +353,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                             linkId={props.item.linkId}
                             enableWhen={props.item.enableWhen || []}
                             containedResources={props.containedResources}
+                            itemValidationErrors={props.itemValidationErrors}
                         />
                     </div>
                 </Accordion>
