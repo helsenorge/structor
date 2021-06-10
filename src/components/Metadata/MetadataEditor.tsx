@@ -15,7 +15,7 @@ import DateTimePicker from '../DatePicker/DateTimePicker';
 import FormField from '../FormField/FormField';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import { Extension, Meta } from '../../types/fhir';
+import { ContactDetail, Extension, Meta } from '../../types/fhir';
 import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
@@ -29,7 +29,7 @@ const MetadataEditor = (): JSX.Element => {
     const [displayIdValidationError, setDisplayIdValidationError] = useState(false);
     const [displayNameValidationError, setDisplayNameValidationError] = useState(false);
 
-    const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta | Extension[]) => {
+    const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta | Extension[] | ContactDetail[]) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
@@ -49,7 +49,7 @@ const MetadataEditor = (): JSX.Element => {
     return (
         <div id="metadata-editor">
             <Accordion title="Skjemadetaljer">
-                <FormField label="Description">
+                <FormField label="Beskrivelse">
                     <textarea
                         placeholder="Beskrivelse av skjema"
                         defaultValue={qMetadata.description || ''}
@@ -215,6 +215,14 @@ const MetadataEditor = (): JSX.Element => {
                     <input
                         defaultValue={qMetadata.publisher || ''}
                         onBlur={(e) => updateMeta(IQuestionnaireMetadataType.publisher, e.target.value)}
+                    />
+                </FormField>
+                <FormField label="Kontakt (URL til kontaktadresse)">
+                    <input
+                        defaultValue={
+                            qMetadata.contact && qMetadata.contact.length > 0 ? qMetadata.contact[0].name : ''
+                        }
+                        onBlur={(e) => updateMeta(IQuestionnaireMetadataType.contact, [{ name: e.target.value }])}
                     />
                 </FormField>
                 <FormField label="Formål">

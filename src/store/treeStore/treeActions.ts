@@ -15,6 +15,7 @@ import {
     ValueSet,
     Meta,
     Coding,
+    ContactDetail,
 } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TranslatableItemProperty } from '../../types/LanguageTypes';
@@ -143,7 +144,7 @@ export interface UpdateLinkIdAction {
 export interface UpdateQuestionnaireMetadataAction {
     type: typeof UPDATE_QUESTIONNAIRE_METADATA_ACTION;
     propName: IQuestionnaireMetadataType;
-    value: string | Meta | Extension[];
+    value: string | Meta | Extension[] | ContactDetail[];
 }
 
 export interface NewItemAction {
@@ -355,7 +356,7 @@ export const updateLinkIdAction = (
 
 export const updateQuestionnaireMetadataAction = (
     propName: IQuestionnaireMetadataType,
-    value: string | Meta | Extension[],
+    value: string | Meta | Extension[] | ContactDetail[],
 ): UpdateQuestionnaireMetadataAction => {
     return {
         type: UPDATE_QUESTIONNAIRE_METADATA_ACTION,
