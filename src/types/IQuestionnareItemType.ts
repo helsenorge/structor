@@ -104,4 +104,5 @@ export enum IExtentionType {
     fhirPathValidation = 'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpathvalidation',
     fhirPathMaxValue = 'http://ehelse.no/fhir/StructureDefinition/sdf-maxvalue',
     fhirPathMinValue = 'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue',
+    sublabel = 'http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel',
 }

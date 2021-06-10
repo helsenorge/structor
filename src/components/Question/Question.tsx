@@ -21,7 +21,7 @@ import itemType, {
     typeIsSupportingValidation,
     valueSetTqqcCoding,
 } from '../../helpers/QuestionHelper';
-import { createDropdown, setItemExtension } from '../../helpers/extensionHelper';
+import { createDropdown, removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
 import { isTqqcOptionReferenceItem, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
 
 import Accordion from '../Accordion/Accordion';
@@ -81,6 +81,10 @@ const Question = (props: QuestionProps): JSX.Element => {
                 props.item._text?.extension?.find((x) => x.url === IExtentionType.markdown)?.valueMarkdown || '';
         }
         return labelText || props.item.text || '';
+    };
+
+    const getSublabelText = (): string => {
+        return props.item.extension?.find((x) => x.url === IExtentionType.sublabel)?.valueMarkdown || '';
     };
 
     const dispatchUpdateMarkdownLabel = (newLabel: string): void => {
@@ -246,6 +250,16 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
+    const isSublabelSupported = (): boolean => {
+        const isInlineItem = isItemControlInline(props.item);
+        return (
+            !isInlineItem &&
+            props.item.type !== IQuestionnaireItemType.group &&
+            props.item.type !== IQuestionnaireItemType.display &&
+            props.item.type !== IQuestionnaireItemType.boolean
+        );
+    };
+
     const enableWhenCount =
         props.item.enableWhen && props.item.enableWhen.length > 0 ? `(${props.item.enableWhen?.length})` : '';
 
@@ -303,6 +317,24 @@ const Question = (props: QuestionProps): JSX.Element => {
                         />
                     )}
                 </FormField>
+                {isSublabelSupported() && (
+                    <FormField label="Innstruks">
+                        <textarea
+                            defaultValue={getSublabelText()}
+                            onBlur={(e) => {
+                                if (e.target.value) {
+                                    const newExtension = {
+                                        url: IExtentionType.sublabel,
+                                        valueMarkdown: e.target.value,
+                                    };
+                                    setItemExtension(props.item, newExtension, props.dispatch);
+                                } else {
+                                    removeItemExtension(props.item, IExtentionType.sublabel, props.dispatch);
+                                }
+                            }}
+                        />
+                    </FormField>
+                )}
                 {respondType(props.item.type)}
             </div>
             <div className="question-addons">
