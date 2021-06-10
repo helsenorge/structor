@@ -40,6 +40,7 @@ import Codes from '../AdvancedQuestionOptions/Code/Codes';
 import OptionReference from './QuestionType/OptionReference';
 import FormField from '../FormField/FormField';
 import UnitTypeSelector from './UnitType/UnitTypeSelector';
+import { DateType } from './QuestionType/DateType';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -128,7 +129,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                 return (
                     <div className="form-field">
                         <label></label>
-                        <Picker />
+                        <DateType item={props.item} dispatch={props.dispatch} />
                     </div>
                 );
             case IQuestionnaireItemType.time:

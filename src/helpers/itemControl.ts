@@ -11,6 +11,8 @@ export enum ItemControlType {
     highlight = 'highlight',
     summary = 'summary',
     checkbox = 'check-box',
+    yearMonth = 'yearMonth',
+    year = 'year',
 }
 
 const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefined => {
