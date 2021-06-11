@@ -12,12 +12,14 @@ import { TreeContext } from '../../../store/treeStore/treeStore';
 import SystemField from '../../FormField/SystemField';
 import { createSystemUUID } from '../../../helpers/systemHelper';
 import './Codes.css';
+import { ValidationErrors } from '../../../helpers/orphanValidation';
 
 type CodeProps = {
     linkId: string;
+    itemValidationErrors: ValidationErrors[];
 };
 
-const Codes = ({ linkId }: CodeProps): JSX.Element => {
+const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
 
     const codes = state.qItems[linkId].code?.map((code) => {
@@ -34,41 +36,44 @@ const Codes = ({ linkId }: CodeProps): JSX.Element => {
     };
 
     const renderCode = (code: Coding, index: number) => {
+        const hasValidationError = itemValidationErrors.some((x) => x.errorProperty === 'code' && index === x.index);
         return (
-            <div key={`${code.id}`} className="code-section">
-                <div className="horizontal equal">
-                    <div className="form-field">
-                        <label>Display</label>
-                        <input
-                            defaultValue={code.display}
-                            onBlur={(event) => updateCode(index, ICodingProperty.display, event.target.value)}
+            <>
+                <div key={`${code.id}`} className={`code-section ${hasValidationError ? 'validation-error' : ''}`}>
+                    <div className="horizontal equal">
+                        <div className="form-field">
+                            <label>Display</label>
+                            <input
+                                defaultValue={code.display}
+                                onBlur={(event) => updateCode(index, ICodingProperty.display, event.target.value)}
+                            />
+                        </div>
+                        <div className="form-field">
+                            <label>Code</label>
+                            <input
+                                defaultValue={code.code}
+                                onBlur={(event) => updateCode(index, ICodingProperty.code, event.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className="horizontal full">
+                        <SystemField
+                            value={code.system}
+                            onBlur={(event) => updateCode(index, ICodingProperty.system, event.target.value)}
                         />
                     </div>
-                    <div className="form-field">
-                        <label>Code</label>
-                        <input
-                            defaultValue={code.code}
-                            onBlur={(event) => updateCode(index, ICodingProperty.code, event.target.value)}
+                    <div className="center-text">
+                        <Btn
+                            title="- Fjern Code"
+                            type="button"
+                            onClick={() => dispatch(deleteItemCodeAction(linkId, index))}
+                            variant="secondary"
+                            size="small"
                         />
                     </div>
-                </div>
-                <div className="horizontal full">
-                    <SystemField
-                        value={code.system}
-                        onBlur={(event) => updateCode(index, ICodingProperty.system, event.target.value)}
-                    />
-                </div>
-                <div className="center-text">
-                    <Btn
-                        title="- Fjern Code"
-                        type="button"
-                        onClick={() => dispatch(deleteItemCodeAction(linkId, index))}
-                        variant="secondary"
-                        size="small"
-                    />
                 </div>
                 <hr style={{ margin: '24px 0px' }} />
-            </div>
+            </>
         );
     };
 

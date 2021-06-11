@@ -359,7 +359,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                 </Accordion>
                 {props.item.type !== IQuestionnaireItemType.display && (
                     <Accordion title={`Code ${codeElements}`}>
-                        <Codes linkId={props.item.linkId} />
+                        <Codes linkId={props.item.linkId} itemValidationErrors={props.itemValidationErrors} />
                     </Accordion>
                 )}
                 <Accordion title="Avanserte innstillinger">

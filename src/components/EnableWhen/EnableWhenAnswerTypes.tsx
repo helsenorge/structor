@@ -204,7 +204,7 @@ const EnableWhenAnswerTypes = ({
                     defaultValue={enableWhen.answerQuantity ? enableWhen.answerQuantity.value : ''}
                     onBlur={(event) => {
                         const extension = (conditionItem.extension || []).find(
-                            (x) => x.url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
+                            (x) => x.url === IExtentionType.questionnaireUnit,
                         );
                         // get code and system from extension
                         const system = extension ? extension.valueCoding?.system : '';
