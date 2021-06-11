@@ -1,4 +1,6 @@
 import { FhirPathDateOperator } from '../components/Question/ValidationAnswerTypes/FhirPathDateValidation';
+import { Extension } from '../types/fhir';
+import { IExtentionType } from '../types/IQuestionnareItemType';
 
 export const getDateOperator = (extensionString: string | undefined): string => {
     let operator = '';
@@ -19,12 +21,28 @@ export const getDateUnit = (extensionString: string | undefined): string => {
     return extensionString ? extensionString.split(' ')[3] || '' : '';
 };
 
-export const generateFhirPathValueString = (operator: string, value: string, unit: string): string => {
+export const generateFhirPathValueString = (
+    operator: string | undefined,
+    value: string | undefined,
+    unit: string | undefined,
+): string => {
     if (operator === FhirPathDateOperator.NOVALIDATION) {
         return '';
     }
     if (operator === FhirPathDateOperator.EXACT) {
         return 'today()';
     }
-    return `today() ${operator} ${value} ${unit}`;
+    return `today() ${operator || ''} ${value || ''} ${unit || ''}`;
+};
+
+export const generateFhirPathValidationExtension = (minDateString: string, maxDateString: string): Extension => {
+    const andExpression = minDateString && maxDateString ? 'and' : '';
+    const minDateExperssion = minDateString ? `this.value >= ${minDateString}` : '';
+    const maxDateExperssion = maxDateString ? `this.value <= ${maxDateString}` : '';
+    const expression = `${maxDateExperssion} ${andExpression} ${minDateExperssion}`;
+
+    return {
+        url: IExtentionType.fhirPathValidation,
+        valueString: expression.trim(),
+    };
 };

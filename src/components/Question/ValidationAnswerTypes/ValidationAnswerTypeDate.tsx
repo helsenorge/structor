@@ -9,6 +9,7 @@ import { removeItemExtension, setItemExtension } from '../../../helpers/extensio
 import { FhirPathDateValidation } from './FhirPathDateValidation';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import {
+    generateFhirPathValidationExtension,
     generateFhirPathValueString,
     getDateNumber,
     getDateOperator,
@@ -62,19 +63,35 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensionsToSet));
     };
 
-    const generateFhirPathValidationExtension = (minDateString: string, maxDateString: string): Extension => {
-        const andExpression = minDateString && maxDateString ? 'and' : '';
-        const minDateExperssion = minDateString ? `this.value >= ${minDateString}` : '';
-        const maxDateExperssion = maxDateString ? `this.value <= ${maxDateString}` : '';
-        const expression = `${maxDateExperssion} ${andExpression} ${minDateExperssion}`;
+    const setFhirPathExtension = (
+        fhirPathMinValue: string,
+        fhirPathMaxValue: string,
+        updatedValue: string,
+        extensionUrl: string,
+    ) => {
+        const extensionsToSet = (item.extension || []).filter(
+            (x: Extension) => x.url !== extensionUrl && x.url !== IExtentionType.fhirPathValidation,
+        );
 
-        return {
-            url: IExtentionType.fhirPathValidation,
-            valueString: expression.trim(),
-        };
+        if (updatedValue) {
+            const newMinDateExtention = {
+                url: extensionUrl,
+                valueString: updatedValue,
+            };
+            extensionsToSet.push(newMinDateExtention);
+        }
+
+        if (updatedValue || fhirPathMaxValue) {
+            extensionsToSet.push(generateFhirPathValidationExtension(fhirPathMinValue, fhirPathMaxValue));
+        }
+        dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensionsToSet));
     };
 
-    const setMinDateExpression = (operator: string, value: string, unit: string) => {
+    const setMinDateExpression = (
+        operator: string | undefined,
+        value: string | undefined,
+        unit: string | undefined,
+    ) => {
         const newFhirPathMinValue = generateFhirPathValueString(operator, value, unit);
         const fhirPathMaxValue = generateFhirPathValueString(
             fhirPathMaxDateOperator,
@@ -82,25 +99,19 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
             fhirPathMaxDateUnit,
         );
 
-        const extensionsToSet = (item.extension || []).filter(
-            (x: Extension) => x.url !== IExtentionType.fhirPathMinValue && x.url !== IExtentionType.fhirPathValidation,
+        setFhirPathExtension(
+            newFhirPathMinValue,
+            fhirPathMaxValue,
+            newFhirPathMinValue,
+            IExtentionType.fhirPathMinValue,
         );
-
-        if (newFhirPathMinValue) {
-            const newMinDateExtention = {
-                url: IExtentionType.fhirPathMinValue,
-                valueString: newFhirPathMinValue,
-            };
-            extensionsToSet.push(newMinDateExtention);
-        }
-
-        if (newFhirPathMinValue || fhirPathMaxValue) {
-            extensionsToSet.push(generateFhirPathValidationExtension(newFhirPathMinValue, fhirPathMaxValue));
-        }
-        dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensionsToSet));
     };
 
-    const setMaxDateExpression = (operator: string, value: string, unit: string) => {
+    const setMaxDateExpression = (
+        operator: string | undefined,
+        value: string | undefined,
+        unit: string | undefined,
+    ) => {
         const fhirPathMinValue = generateFhirPathValueString(
             fhirPathMinDateOperator,
             fhirPathMinDateNumber,
@@ -108,22 +119,12 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
         );
         const newFhirPathMaxValue = generateFhirPathValueString(operator, value, unit);
 
-        const extensionsToSet = (item.extension || []).filter(
-            (x: Extension) => x.url !== IExtentionType.fhirPathMaxValue && x.url !== IExtentionType.fhirPathValidation,
+        setFhirPathExtension(
+            fhirPathMinValue,
+            newFhirPathMaxValue,
+            newFhirPathMaxValue,
+            IExtentionType.fhirPathMaxValue,
         );
-
-        if (newFhirPathMaxValue) {
-            const newMaxDateExtention = {
-                url: IExtentionType.fhirPathMaxValue,
-                valueString: newFhirPathMaxValue,
-            };
-            extensionsToSet.push(newMaxDateExtention);
-        }
-
-        if (fhirPathMinValue || newFhirPathMaxValue) {
-            extensionsToSet.push(generateFhirPathValidationExtension(fhirPathMinValue, newFhirPathMaxValue));
-        }
-        dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensionsToSet));
     };
 
     return (
@@ -180,19 +181,15 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                         operatorValue={fhirPathMinDateOperator}
                         onChangeNumberValue={(newValue: string) => {
                             setFhirPathMinDateNumber(newValue);
-                            setMinDateExpression(fhirPathMinDateOperator || '', newValue, fhirPathMinDateUnit || '');
+                            setMinDateExpression(fhirPathMinDateOperator, newValue, fhirPathMinDateUnit);
                         }}
                         onChangeUnitValue={(newValue: string) => {
                             setFhirPathMinDateUnit(newValue);
-                            setMinDateExpression(fhirPathMinDateOperator || '', fhirPathMinDateNumber || '', newValue);
+                            setMinDateExpression(fhirPathMinDateOperator, fhirPathMinDateNumber, newValue);
                         }}
                         onChangeOperatorValue={(newValue: string) => {
                             setFhirPathMinDateOperator(newValue);
-                            setMinDateExpression(
-                                newValue || '',
-                                fhirPathMinDateNumber || '',
-                                fhirPathMinDateUnit || '',
-                            );
+                            setMinDateExpression(newValue, fhirPathMinDateNumber, fhirPathMinDateUnit);
                         }}
                     />
                     <FhirPathDateValidation
@@ -202,19 +199,15 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                         operatorValue={fhirPathMaxDateOperator}
                         onChangeNumberValue={(newValue: string) => {
                             setFhirPathMaxDateNumber(newValue);
-                            setMaxDateExpression(fhirPathMaxDateOperator || '', newValue, fhirPathMaxDateUnit || '');
+                            setMaxDateExpression(fhirPathMaxDateOperator, newValue, fhirPathMaxDateUnit);
                         }}
                         onChangeUnitValue={(newValue: string) => {
                             setFhirPathMaxDateUnit(newValue);
-                            setMaxDateExpression(fhirPathMaxDateOperator || '', fhirPathMaxDateNumber || '', newValue);
+                            setMaxDateExpression(fhirPathMaxDateOperator, fhirPathMaxDateNumber, newValue);
                         }}
                         onChangeOperatorValue={(newValue: string) => {
                             setFhirPathMaxDateOperator(newValue);
-                            setMaxDateExpression(
-                                newValue || '',
-                                fhirPathMaxDateNumber || '',
-                                fhirPathMaxDateUnit || '',
-                            );
+                            setMaxDateExpression(newValue, fhirPathMaxDateNumber, fhirPathMaxDateUnit);
                         }}
                     />
                 </div>
