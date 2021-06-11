@@ -13,6 +13,7 @@ import ImportValueSet from '../ImportValueSet/ImportValueSet';
 import { saveAction } from '../../store/treeStore/treeActions';
 import ConfirmFileUpload from '../FileUpload/ConfirmFileUpload';
 import { validateOrphanedElements, ValidationErrors } from '../../helpers/orphanValidation';
+import { ValidationErrorsModal } from '../ValidationErrorsModal/validationErrorsModal';
 
 type Props = {
     newQuestionnaire: () => void;
@@ -47,6 +48,7 @@ const Navbar = ({
     const [showJSONView, setShowJSONView] = useState(false);
     const [showPublish, setShowPublish] = useState(false);
     const [confirmUpload, setConfirmUpload] = useState(false);
+    const [showValidationErrors, setShowValidationErrors] = useState<boolean>(false);
     const navBarRef = useRef<HTMLDivElement>(null);
     const fileExtension = 'json';
 
@@ -173,12 +175,13 @@ const Navbar = ({
                 {selectedMenuItem === MenuItem.more && (
                     <div className="menu">
                         <Btn
-                            title={`Valider ${validationErrors.length > 0 ? `(${validationErrors.length} feil)` : ''}`}
-                            onClick={() =>
+                            title="Valider"
+                            onClick={() => {
                                 setValidationErrors(
                                     validateOrphanedElements(state.qOrder, state.qItems, state.qContained || []),
-                                )
-                            }
+                                );
+                                setShowValidationErrors(true);
+                            }}
                         />
                         <Btn title="JSON" onClick={() => callbackAndHide(() => setShowJSONView(!showJSONView))} />
                         <Btn title="Publiser" onClick={() => callbackAndHide(() => setShowPublish(!showPublish))} />
@@ -192,6 +195,12 @@ const Navbar = ({
                     </div>
                 )}
             </header>
+            {showValidationErrors && (
+                <ValidationErrorsModal
+                    validationErrors={validationErrors}
+                    onClose={() => setShowValidationErrors(false)}
+                />
+            )}
             {showContained && <PredefinedValueSetModal close={() => setShowContained(!showContained)} />}
             {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
             {showJSONView && <JSONView showJSONView={() => setShowJSONView(!showJSONView)} />}

@@ -65,7 +65,7 @@ const EnableWhen = ({
             {enableWhen.map((x, index) => {
                 const conditionItem = getItem(x.question);
                 const hasValidationError = itemValidationErrors.some(
-                    (x) => x.errorProperty === 'enableWhen' && index === x.index,
+                    (x) => x.errorProperty.substr(0, 10) === 'enableWhen' && index === x.index,
                 );
                 return (
                     // we cannot use index as key, since we can also delete elements. Try to find a better index...

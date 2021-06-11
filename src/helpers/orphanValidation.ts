@@ -54,12 +54,20 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
 
     // validate item.code
     (qItem.code || []).forEach((code, index) => {
-        if (!code.system || !code.code) {
+        if (!code.code) {
             errors.push({
                 linkId: qItem.linkId,
                 index: index,
-                errorProperty: 'code',
-                errorReadableText: 'Code har ikke "system" eller "code" property',
+                errorProperty: 'code.code',
+                errorReadableText: 'Code har ikke "code" property',
+            });
+        }
+        if (!code.system) {
+            errors.push({
+                linkId: qItem.linkId,
+                index: index,
+                errorProperty: 'code.system',
+                errorReadableText: 'Code har ikke "system" property',
             });
         }
         if (code.system && !isSystemValid(code.system)) {

@@ -36,7 +36,9 @@ const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
     };
 
     const renderCode = (code: Coding, index: number) => {
-        const hasValidationError = itemValidationErrors.some((x) => x.errorProperty === 'code' && index === x.index);
+        const hasValidationError = itemValidationErrors.some(
+            (x) => x.errorProperty.substr(0, 4) === 'code' && index === x.index,
+        );
         return (
             <>
                 <div key={`${code.id}`} className={`code-section ${hasValidationError ? 'validation-error' : ''}`}>
