@@ -24,6 +24,22 @@ const regexOptions = [
         code:
             '^((((0[1-9]|[12]\\d|3[01])([04][13578]|[15][02]))|((0[1-9]|[12]\\d|30)([04][469]|[15]1))|((0[1-9]|[12]\\d)([04]2)))|((([0-7][1-9]|[12]\\d|3[01])(0[13578]|1[02]))|(([0-7][1-9]|[12]\\d|30)(0[469]|11))|(([0-7][1-9]|[12]\\d)(02))))\\d{7}$',
     },
+    {
+        display: 'Telefonnummer',
+        code: '^((\\+|00)(\\d{1,3}))?\\d{5,12}$',
+    },
+    {
+        display: 'Kun norske bokstaver',
+        code: '^[æøåÆØÅa-zA-Z ]*$',
+    },
+    {
+        display: 'Kun norske bokstaver + bindestrek og mellomrom (benyttes ved navn)',
+        code: '^[æøåÆØÅa-zA-Z\\- ]*$',
+    },
+    {
+        display: 'Kun norske bokstaver med linjeskift',
+        code: '^(?:[æøåÆØÅa-zA-Z0-9,.!?@()+\\-\\/*]|[ \r\n\t])*$',
+    },
     { display: 'Postnummer', code: '^(000[1-9]|0[1-9][0-9][0-9]|[1-9][0-9][0-9][0-8])$' },
 ];
 
@@ -59,7 +75,7 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                 <Select
                     value={isCustomRegex ? CUSTOM_REGEX_OPTION : selectedRegEx}
                     options={[
-                        { display: 'Velg kriterie', code: '' },
+                        { display: 'Uten tegn-validering', code: '' },
                         ...regexOptions,
                         { display: 'Egendefinert regulært uttrykk', code: CUSTOM_REGEX_OPTION },
                     ]}
