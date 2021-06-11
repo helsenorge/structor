@@ -96,6 +96,7 @@ const QuestionDrawer = ({ validationErrors }: Props): JSX.Element | null => {
                     getItem={getQItem}
                     containedResources={state.qContained}
                     dispatch={dispatch}
+                    itemValidationErrors={itemValidationErrors}
                 />
             )}
         </Drawer>

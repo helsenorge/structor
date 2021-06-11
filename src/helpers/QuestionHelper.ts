@@ -254,6 +254,7 @@ export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolea
         IQuestionnaireItemType.text,
         IQuestionnaireItemType.string,
         IQuestionnaireItemType.date,
+        IQuestionnaireItemType.dateTime,
     ];
 
     return validTypes.includes(type);
@@ -278,6 +279,10 @@ export const EnrichmentSet: Options = {
                     "Patient.name.where(use = 'official').select(iif(given.count() > 1, given.take(count()-1), given).join(' '))",
                 ),
                 makeOption('Etternavn', "Patient.name.where(use = 'official').family"),
+                makeOption(
+                    'Alder',
+                    "Patient.extension.where(url = 'http://helsenorge.no/fhir/StructureDefinition/sdf-age').value",
+                ),
                 makeOption('Mobiltelefonnummer', "Patient.telecom.where(use = 'mobile' and system = 'phone').value"),
                 makeOption('Epost', "Patient.telecom.where(use = 'home' and system = 'email').value"),
                 makeOption('Adresse', "Patient.address.where(use = 'home').line.first()"),

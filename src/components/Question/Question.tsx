@@ -21,12 +21,8 @@ import itemType, {
     typeIsSupportingValidation,
     valueSetTqqcCoding,
 } from '../../helpers/QuestionHelper';
-import { createDropdown, setItemExtension } from '../../helpers/extensionHelper';
-import {
-    isItemControlDropDownAndOptionReference,
-    isItemControlInline,
-    ItemControlType,
-} from '../../helpers/itemControl';
+import { createDropdown, removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
+import { isTqqcOptionReferenceItem, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
 
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
@@ -44,12 +40,15 @@ import Codes from '../AdvancedQuestionOptions/Code/Codes';
 import OptionReference from './QuestionType/OptionReference';
 import FormField from '../FormField/FormField';
 import UnitTypeSelector from './UnitType/UnitTypeSelector';
+import { DateType } from './QuestionType/DateType';
+import { ValidationErrors } from '../../helpers/orphanValidation';
 
 interface QuestionProps {
     item: QuestionnaireItem;
     parentArray: Array<string>;
     containedResources?: Array<ValueSet>;
     conditionalArray: ValueSetComposeIncludeConcept[];
+    itemValidationErrors: ValidationErrors[];
     getItem: (linkId: string) => QuestionnaireItem;
     dispatch: React.Dispatch<ActionType>;
 }
@@ -86,6 +85,10 @@ const Question = (props: QuestionProps): JSX.Element => {
         return labelText || props.item.text || '';
     };
 
+    const getSublabelText = (): string => {
+        return props.item.extension?.find((x) => x.url === IExtentionType.sublabel)?.valueMarkdown || '';
+    };
+
     const dispatchUpdateMarkdownLabel = (newLabel: string): void => {
         const markdownValue = {
             extension: [
@@ -109,7 +112,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             return <Inline linkId={props.item.linkId} parentArray={props.parentArray} />;
         }
 
-        if (isItemControlDropDownAndOptionReference(props.item)) {
+        if (isTqqcOptionReferenceItem(props.item)) {
             return <OptionReference item={props.item} />;
         }
 
@@ -132,7 +135,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                 return (
                     <div className="form-field">
                         <label></label>
-                        <Picker />
+                        <DateType item={props.item} dispatch={props.dispatch} />
                     </div>
                 );
             case IQuestionnaireItemType.time:
@@ -177,7 +180,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             return IQuestionnaireItemType.number;
         }
 
-        if (isItemControlDropDownAndOptionReference(props.item)) {
+        if (isTqqcOptionReferenceItem(props.item)) {
             return IQuestionnaireItemType.address;
         }
         if (isItemControlInline(props.item)) {
@@ -249,6 +252,16 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
     };
 
+    const isSublabelSupported = (): boolean => {
+        const isInlineItem = isItemControlInline(props.item);
+        return (
+            !isInlineItem &&
+            props.item.type !== IQuestionnaireItemType.group &&
+            props.item.type !== IQuestionnaireItemType.display &&
+            props.item.type !== IQuestionnaireItemType.boolean
+        );
+    };
+
     const enableWhenCount =
         props.item.enableWhen && props.item.enableWhen.length > 0 ? `(${props.item.enableWhen?.length})` : '';
 
@@ -306,6 +319,24 @@ const Question = (props: QuestionProps): JSX.Element => {
                         />
                     )}
                 </FormField>
+                {isSublabelSupported() && (
+                    <FormField label="Innstruks">
+                        <textarea
+                            defaultValue={getSublabelText()}
+                            onBlur={(e) => {
+                                if (e.target.value) {
+                                    const newExtension = {
+                                        url: IExtentionType.sublabel,
+                                        valueMarkdown: e.target.value,
+                                    };
+                                    setItemExtension(props.item, newExtension, props.dispatch);
+                                } else {
+                                    removeItemExtension(props.item, IExtentionType.sublabel, props.dispatch);
+                                }
+                            }}
+                        />
+                    </FormField>
+                )}
                 {respondType(props.item.type)}
             </div>
             <div className="question-addons">
@@ -322,12 +353,13 @@ const Question = (props: QuestionProps): JSX.Element => {
                             linkId={props.item.linkId}
                             enableWhen={props.item.enableWhen || []}
                             containedResources={props.containedResources}
+                            itemValidationErrors={props.itemValidationErrors}
                         />
                     </div>
                 </Accordion>
                 {props.item.type !== IQuestionnaireItemType.display && (
                     <Accordion title={`Code ${codeElements}`}>
-                        <Codes linkId={props.item.linkId} />
+                        <Codes linkId={props.item.linkId} itemValidationErrors={props.itemValidationErrors} />
                     </Accordion>
                 )}
                 <Accordion title="Avanserte innstillinger">

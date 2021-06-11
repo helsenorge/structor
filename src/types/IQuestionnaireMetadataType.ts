@@ -8,6 +8,7 @@ export enum IQuestionnaireMetadataType {
     status = 'status',
     date = 'date',
     publisher = 'publisher',
+    contact = 'contact',
     language = 'language',
     url = 'url',
     purpose = 'purpose',

@@ -116,3 +116,6 @@ p {
 .icon-buttons:hover {
     background-color: #e0e0e0 !important;
 }
+.validation-error {
+    box-shadow: 0 0 0 4px red;
+}

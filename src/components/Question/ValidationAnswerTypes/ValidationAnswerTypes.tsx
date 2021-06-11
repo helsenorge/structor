@@ -1,7 +1,6 @@
 import React from 'react';
 import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import ValidationAnswerTypeNumber from './ValidationAnswerTypeNumber';
-import ValidationAnswerTypesText from './ValidationAnswerTypeText';
 import ValidationAnswerTypeString from './ValidationAnswerTypeString';
 import ValidationAnswerTypeDate from './ValidationAnswerTypeDate';
 import { QuestionnaireItem } from '../../../types/fhir';
@@ -16,11 +15,11 @@ const ValidationAnswerTypes = ({ item }: ValidationTypeProp): JSX.Element => {
             case IQuestionnaireItemType.attachment:
                 return <ValidationAnswerTypeAttachment item={item} />;
             case IQuestionnaireItemType.date:
+            case IQuestionnaireItemType.dateTime:
                 return <ValidationAnswerTypeDate item={item} />;
             case IQuestionnaireItemType.string:
-                return <ValidationAnswerTypeString item={item} />;
             case IQuestionnaireItemType.text:
-                return <ValidationAnswerTypesText item={item} />;
+                return <ValidationAnswerTypeString item={item} />;
             case IQuestionnaireItemType.integer:
             case IQuestionnaireItemType.decimal:
             case IQuestionnaireItemType.quantity:
