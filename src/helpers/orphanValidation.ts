@@ -1,6 +1,7 @@
 import { Items, OrderItem } from '../store/treeStore/treeStore';
 import { ValueSet } from '../types/fhir';
 import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { isItemControlHelp, isItemControlHighlight, isItemControlInline, isItemControlSidebar } from './itemControl';
 import { isRecipientList } from './QuestionHelper';
 import { isSystemValid } from './systemHelper';
 
@@ -30,6 +31,23 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
     const hasLinkIdCollision = Object.keys(qItems).filter((x) => x === qItem.linkId).length > 1;
     if (hasLinkIdCollision) {
         errors.push({ linkId: qItem.linkId, errorProperty: 'linkId', errorReadableText: 'LinkId er allerede i bruk' });
+    }
+
+    // validate required item which cannot have an answer
+    if (
+        (qItem.type === IQuestionnaireItemType.group ||
+            qItem.type === IQuestionnaireItemType.display ||
+            isItemControlInline(qItem) ||
+            isItemControlHighlight(qItem) ||
+            isItemControlHelp(qItem) ||
+            isItemControlSidebar(qItem)) &&
+        qItem.required
+    ) {
+        errors.push({
+            linkId: qItem.linkId,
+            errorProperty: 'required',
+            errorReadableText: 'Spørsmålet er satt som required, men kan ikke være required',
+        });
     }
 
     // validate fhirpath date extensions
