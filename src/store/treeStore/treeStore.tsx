@@ -535,6 +535,8 @@ function duplicateItemAction(draft: TreeState, action: DuplicateItemAction): voi
 
     // insert duplicated item below item that was copied from
     arrayToDuplicateInto.splice(indexToDuplicate + 1, 0, duplictedItem);
+
+    draft.qCurrentItem = { linkId: duplictedItem.linkId, parentArray: action.order };
 }
 
 function reorderItem(draft: TreeState, action: ReorderItemAction): void {

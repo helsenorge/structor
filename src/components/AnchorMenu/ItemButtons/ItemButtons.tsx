@@ -64,6 +64,7 @@ const ItemButtons = (props: ItemButtonsProps): JSX.Element => {
                     title="Dupliser"
                 >
                     <i className="duplicate-icon" />
+                    {props.showLabel && <label>Dupliser</label>}
                 </button>
             )}
             {displayDeleteButton && (
