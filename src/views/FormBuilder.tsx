@@ -17,6 +17,7 @@ import SpinnerBox from '../components/Spinner/SpinnerBox';
 
 import './FormBuilder.css';
 import { ValidationErrors } from '../helpers/orphanValidation';
+import TranslationModal from '../components/Languages/Translation/TranslationModal';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -26,6 +27,7 @@ const FormBuilder = (): JSX.Element => {
     const [displayVerifyReset, setDisplayVerifyReset] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
     const [validationErrors, setValidationErrors] = useState<Array<ValidationErrors>>([]);
+    const [translateLang, setTranslateLang] = useState('');
     const uploadRef = useRef<HTMLInputElement>(null);
 
     const toggleFormDetails = useCallback(() => {
@@ -179,9 +181,19 @@ const FormBuilder = (): JSX.Element => {
                             size="large"
                         />
                     </div>
-                    <FormDetailsDrawer closeDrawer={toggleFormDetails} isOpen={showFormDetails} />
+                    <FormDetailsDrawer
+                        setTranslateLang={(language: string) => {
+                            setTranslateLang(language);
+                            toggleFormDetails();
+                        }}
+                        closeDrawer={toggleFormDetails}
+                        isOpen={showFormDetails}
+                    />
                     <QuestionDrawer validationErrors={validationErrors} />
                 </div>
+                {translateLang && (
+                    <TranslationModal close={() => setTranslateLang('')} targetLanguage={translateLang} />
+                )}
             </div>
         </>
     );

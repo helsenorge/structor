@@ -105,6 +105,7 @@ export interface ItemTranslation {
     entryFormatText?: string;
     initial?: string;
     text?: string;
+    markdownText?: string;
     validationText?: string;
 }
 

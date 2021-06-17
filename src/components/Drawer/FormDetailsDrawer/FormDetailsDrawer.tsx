@@ -9,11 +9,12 @@ import Drawer from '../Drawer';
 import { useKeyPress } from '../../../hooks/useKeyPress';
 
 type FormDetailsDrawerProps = {
+    setTranslateLang: (language: string) => void;
     closeDrawer: () => void;
     isOpen?: boolean;
 };
 
-const FormDetailsDrawer = ({ closeDrawer, isOpen = false }: FormDetailsDrawerProps): JSX.Element => {
+const FormDetailsDrawer = ({ setTranslateLang, closeDrawer, isOpen = false }: FormDetailsDrawerProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
 
     useKeyPress('Escape', closeDrawer, !isOpen);
@@ -38,7 +39,7 @@ const FormDetailsDrawer = ({ closeDrawer, isOpen = false }: FormDetailsDrawerPro
 
             <MetadataEditor />
             <Sidebar />
-            <LanguageAccordion />
+            <LanguageAccordion setTranslateLang={setTranslateLang} />
         </Drawer>
     );
 };
