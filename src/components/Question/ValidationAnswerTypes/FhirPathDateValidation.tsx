@@ -23,7 +23,6 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
         <div className="horizontal">
             <span>{`${props.descriptionText} er `}</span>
             <Select
-                placeholder="operator"
                 options={[
                     {
                         code: FhirPathDateOperator.NOVALIDATION,

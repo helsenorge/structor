@@ -26,7 +26,7 @@ export const generateFhirPathValueString = (
     value: string | undefined,
     unit: string | undefined,
 ): string => {
-    if (operator === FhirPathDateOperator.NOVALIDATION) {
+    if (operator === FhirPathDateOperator.NOVALIDATION || operator === '') {
         return '';
     }
     if (operator === FhirPathDateOperator.EXACT) {
