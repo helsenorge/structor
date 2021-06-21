@@ -27,4 +27,6 @@ export enum TranslatableItemProperty {
     text = 'text',
     validationText = 'validationText',
     entryFormatText = 'entryFormatText',
+    sublabel = 'sublabel',
+    repeatsText = 'repeatsText',
 }
