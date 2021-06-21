@@ -5,7 +5,13 @@ import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { updateItemOptionTranslationAction, updateItemTranslationAction } from '../../../store/treeStore/treeActions';
 import { ItemTranslation, TreeContext } from '../../../store/treeStore/treeStore';
 import TranslateOptionRow from './TranslateOptionRow';
-import { getInitialText, getPlaceHolderText, getValidationMessage } from '../../../helpers/QuestionHelper';
+import {
+    getInitialText,
+    getPlaceHolderText,
+    getRepeatsText,
+    getSublabel,
+    getValidationMessage,
+} from '../../../helpers/QuestionHelper';
 import { getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 import { IExtentionType, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
@@ -88,28 +94,80 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                 <FormField>{getReadOnlyInputField()}</FormField>
                 <FormField>{getInputField()}</FormField>
             </div>
+            {getSublabel(item) && (
+                <>
+                    <div className="translation-group-header">Innstruks</div>
+                    <div className="translation-row">
+                        <FormField>
+                            <MarkdownEditor data={getSublabel(item)} disabled={true} />
+                        </FormField>
+                        <FormField>
+                            <MarkdownEditor
+                                data={getItemPropertyTranslation(
+                                    targetLanguage,
+                                    qAdditionalLanguages,
+                                    item.linkId,
+                                    TranslatableItemProperty.sublabel,
+                                )}
+                                onBlur={(newValue: string) =>
+                                    dispatchUpdateItemTranslation(newValue, TranslatableItemProperty.sublabel)
+                                }
+                            />
+                        </FormField>
+                    </div>
+                </>
+            )}
+            {getRepeatsText(item) && (
+                <>
+                    <div className="translation-group-header">Kan gjentas knappetekst</div>
+                    <div className="translation-row">
+                        <FormField>
+                            <textarea defaultValue={getRepeatsText(item)} disabled={true} />
+                        </FormField>
+                        <FormField>
+                            <input
+                                defaultValue={getItemPropertyTranslation(
+                                    targetLanguage,
+                                    qAdditionalLanguages,
+                                    item.linkId,
+                                    TranslatableItemProperty.repeatsText,
+                                )}
+                                onBlur={(event) =>
+                                    dispatchUpdateItemTranslation(
+                                        event.target.value,
+                                        TranslatableItemProperty.repeatsText,
+                                    )
+                                }
+                            />
+                        </FormField>
+                    </div>
+                </>
+            )}
             {getValidationMessage(item) && (
-                <div className="translation-row">
-                    <FormField>
-                        <textarea defaultValue={getValidationMessage(item)} disabled={true} />
-                    </FormField>
-                    <FormField>
-                        <textarea
-                            defaultValue={getItemPropertyTranslation(
-                                targetLanguage,
-                                qAdditionalLanguages,
-                                item.linkId,
-                                TranslatableItemProperty.validationText,
-                            )}
-                            onBlur={(event) =>
-                                dispatchUpdateItemTranslation(
-                                    event.target.value,
+                <>
+                    <div className="translation-group-header">Feilmelding for valideringsfeil</div>
+                    <div className="translation-row">
+                        <FormField>
+                            <textarea defaultValue={getValidationMessage(item)} disabled={true} />
+                        </FormField>
+                        <FormField>
+                            <textarea
+                                defaultValue={getItemPropertyTranslation(
+                                    targetLanguage,
+                                    qAdditionalLanguages,
+                                    item.linkId,
                                     TranslatableItemProperty.validationText,
-                                )
-                            }
-                        />
-                    </FormField>
-                </div>
+                                )}
+                                onBlur={(event) =>
+                                    dispatchUpdateItemTranslation(
+                                        event.target.value,
+                                        TranslatableItemProperty.validationText,
+                                    )
+                                }
+                            />
+                        </FormField>
+                    </div>
+                </>
             )}
             {getPlaceHolderText(item) && (
                 <>

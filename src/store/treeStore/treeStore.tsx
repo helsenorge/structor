@@ -107,6 +107,8 @@ export interface ItemTranslation {
     text?: string;
     markdownText?: string;
     validationText?: string;
+    sublabel?: string;
+    repeatsText?: string;
 }
 
 export interface ContainedTranslation {

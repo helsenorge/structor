@@ -321,13 +321,13 @@ const Question = (props: QuestionProps): JSX.Element => {
                 </FormField>
                 {isSublabelSupported() && (
                     <FormField label="Innstruks">
-                        <textarea
-                            defaultValue={getSublabelText()}
-                            onBlur={(e) => {
-                                if (e.target.value) {
+                        <MarkdownEditor
+                            data={getSublabelText()}
+                            onBlur={(newValue: string) => {
+                                if (newValue) {
                                     const newExtension = {
                                         url: IExtentionType.sublabel,
-                                        valueMarkdown: e.target.value,
+                                        valueMarkdown: newValue,
                                     };
                                     setItemExtension(props.item, newExtension, props.dispatch);
                                 } else {

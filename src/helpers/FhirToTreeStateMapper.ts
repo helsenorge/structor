@@ -24,7 +24,14 @@ import {
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { isSupportedLanguage, translatableMetadata } from './LanguageHelper';
 import { isItemControlSidebar } from './itemControl';
-import { getInitialText, getMarkdownText, getPlaceHolderText, getValidationMessage } from './QuestionHelper';
+import {
+    getInitialText,
+    getMarkdownText,
+    getPlaceHolderText,
+    getSublabel,
+    getRepeatsText,
+    getValidationMessage,
+} from './QuestionHelper';
 import { IExtentionType } from '../types/IQuestionnareItemType';
 
 function extractMetadata(questionnaireObj: Questionnaire) {
@@ -143,7 +150,9 @@ function translateItem(translationItem: QuestionnaireItem | undefined): ItemTran
     const text = markdownValue || translationItem?.text || '';
     const validationText = getValidationMessage(translationItem);
     const initial = getInitialText(translationItem);
-    return { answerOptions, entryFormatText, text, validationText, initial };
+    const sublabel = getSublabel(translationItem);
+    const repeatsText = getRepeatsText(translationItem);
+    return { answerOptions, entryFormatText, text, validationText, initial, sublabel, repeatsText };
 }
 
 function translateItems(

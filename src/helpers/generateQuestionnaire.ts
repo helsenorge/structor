@@ -128,9 +128,30 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
         extension = updateTranslatedExtension(extension, translatedEntryFormatExtension);
     }
 
+    // Sublabel
+    const sublabelExtension = getExtension(extension, IExtentionType.sublabel);
+    if (sublabelExtension) {
+        const translatedSublabelExtension = {
+            ...sublabelExtension,
+            valueMarkdown: itemTranslation?.sublabel,
+        };
+        extension = updateTranslatedExtension(extension, translatedSublabelExtension);
+    }
+
+    // Repeatstext
+    const repeatsTextExtension = getExtension(extension, IExtentionType.repeatstext);
+    if (repeatsTextExtension) {
+        const translatedRepeatsTextExtension = {
+            ...repeatsTextExtension,
+            valueString: itemTranslation?.repeatsText,
+        };
+        extension = updateTranslatedExtension(extension, translatedRepeatsTextExtension);
+    }
+
     const answerOption = getTranslatedAnswerOptions(currentItem.answerOption, itemTranslation?.answerOptions);
     const initial =
-        currentItem.type === IQuestionnaireItemType.text || currentItem.type === IQuestionnaireItemType.string
+        (currentItem.type === IQuestionnaireItemType.text || currentItem.type === IQuestionnaireItemType.string) &&
+        itemTranslation?.initial
             ? [{ valueString: itemTranslation?.initial }]
             : currentItem.initial;
 

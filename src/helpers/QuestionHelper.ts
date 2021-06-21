@@ -347,6 +347,14 @@ export const getInitialText = (item?: QuestionnaireItem): string => {
     return '';
 };
 
+export const getSublabel = (item?: QuestionnaireItem): string => {
+    return item?.extension?.find((extension) => extension.url === IExtentionType.sublabel)?.valueMarkdown || '';
+};
+
+export const getRepeatsText = (item?: QuestionnaireItem): string => {
+    return item?.extension?.find((extension) => extension.url === IExtentionType.repeatstext)?.valueString || '';
+};
+
 export const getValidationMessage = (item?: QuestionnaireItem): string => {
     return item?.extension?.find((extension) => extension.url === IExtentionType.validationtext)?.valueString || '';
 };
