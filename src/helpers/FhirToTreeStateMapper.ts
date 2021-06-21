@@ -25,6 +25,7 @@ import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { isSupportedLanguage, translatableMetadata } from './LanguageHelper';
 import { isItemControlSidebar } from './itemControl';
 import { getInitialText, getMarkdownText, getPlaceHolderText, getValidationMessage } from './QuestionHelper';
+import { IExtentionType } from '../types/IQuestionnareItemType';
 
 function extractMetadata(questionnaireObj: Questionnaire) {
     const getMetadataParts = ({
@@ -137,7 +138,9 @@ function translateContained(base: Array<ValueSet>, translation: Array<ValueSet>)
 function translateItem(translationItem: QuestionnaireItem | undefined): ItemTranslation {
     const answerOptions = translateAnswerOptions(translationItem?.answerOption);
     const entryFormatText = getPlaceHolderText(translationItem);
-    const text = translationItem?.text || '';
+    const markdownValue = translationItem?._text?.extension?.find((ext) => ext.url === IExtentionType.markdown)
+        ?.valueMarkdown;
+    const text = markdownValue || translationItem?.text || '';
     const validationText = getValidationMessage(translationItem);
     const initial = getInitialText(translationItem);
     return { answerOptions, entryFormatText, text, validationText, initial };

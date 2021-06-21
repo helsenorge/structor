@@ -81,7 +81,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
             extensionsToSet.push(newMinDateExtention);
         }
 
-        if (updatedValue || fhirPathMaxValue) {
+        if (updatedValue || fhirPathMinValue || fhirPathMaxValue) {
             extensionsToSet.push(generateFhirPathValidationExtension(fhirPathMinValue, fhirPathMaxValue));
         }
         dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensionsToSet));

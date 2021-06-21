@@ -12,15 +12,16 @@ import Accordion from '../Accordion/Accordion';
 import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
 import Select from '../Select/Select';
-import TranslationModal from './Translation/TranslationModal';
 
-const LanguageAccordion = (): JSX.Element => {
+interface LanguageAccordionProps {
+    setTranslateLang: (language: string) => void;
+}
+
+const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const { qMetadata, qAdditionalLanguages } = state;
 
-    const [showModal, setModal] = useState(false);
     const [selectedLang, setSelectedLang] = useState('');
-    const [translateLang, setTranslateLang] = useState('');
 
     const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
@@ -50,7 +51,6 @@ const LanguageAccordion = (): JSX.Element => {
 
     return (
         <>
-            {showModal && <TranslationModal close={() => setModal(false)} targetLanguage={translateLang} />}
             <Accordion title="Språk">
                 <FormField label="Hovedspråk:">
                     <Select
@@ -121,8 +121,7 @@ const LanguageAccordion = (): JSX.Element => {
                                         size="small"
                                         variant="primary"
                                         onClick={() => {
-                                            setModal(true);
-                                            setTranslateLang(language);
+                                            props.setTranslateLang(language);
                                         }}
                                     />
                                 </div>

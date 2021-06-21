@@ -8,7 +8,7 @@ import TranslateOptionRow from './TranslateOptionRow';
 import { getInitialText, getPlaceHolderText, getValidationMessage } from '../../../helpers/QuestionHelper';
 import { getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
-import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { IExtentionType, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 
 type TranslationRowProps = {
     targetLanguage: string;
@@ -57,7 +57,9 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
 
     function getReadOnlyInputField(): JSX.Element {
         if (isMarkdown) {
-            return <MarkdownEditor data={item.text || ''} disabled={true} />;
+            const valueMarkdown = item._text?.extension?.find((extension) => extension.url === IExtentionType.markdown)
+                ?.valueMarkdown;
+            return <MarkdownEditor data={valueMarkdown || item.text || ''} disabled={true} />;
         }
         return <textarea defaultValue={item.text} disabled={true} />;
     }

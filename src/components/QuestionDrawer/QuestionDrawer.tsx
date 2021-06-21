@@ -71,7 +71,7 @@ const QuestionDrawer = ({ validationErrors }: Props): JSX.Element | null => {
                             item={item}
                             parentArray={parentArray}
                             dispatch={dispatch}
-                            buttons={[ItemButtonType.addChild, ItemButtonType.delete]}
+                            buttons={[ItemButtonType.addChild, ItemButtonType.copy, ItemButtonType.delete]}
                             showLabel
                         />
                     </div>
