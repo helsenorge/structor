@@ -68,6 +68,10 @@ export type IEnableWhen = {
     question?: string;
 };
 
+export enum IValueSetSystem {
+    saveCapabilityValueSet = 'http://helsenorge.no/fhir/ValueSet/sdf-savecapabilites',
+}
+
 export enum IExtentionType {
     authenticationRequirement = 'http://ehelse.no/fhir/StructureDefinition/sdf-authenticationrequirement',
     authenticationRequirementValueSet = 'http://ehelse.no/fhir/ValueSet/AuthenticationRequirement',
@@ -105,4 +109,5 @@ export enum IExtentionType {
     fhirPathMaxValue = 'http://ehelse.no/fhir/StructureDefinition/sdf-maxvalue',
     fhirPathMinValue = 'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue',
     sublabel = 'http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel',
+    saveCapability = 'http://helsenorge.no/fhir/StructureDefinition/sdf-save-capabilities',
 }

@@ -19,7 +19,7 @@ import { ContactDetail, Extension, Meta } from '../../types/fhir';
 import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
-import { IExtentionType } from '../../types/IQuestionnareItemType';
+import { IExtentionType, IValueSetSystem } from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import { removeQuestionnaireExtension, setQuestionnaireExtension } from '../../helpers/extensionHelper';
 
@@ -44,6 +44,21 @@ const MetadataEditor = (): JSX.Element => {
     const getGeneratePdfValue = (): boolean => {
         const extension = qMetadata?.extension?.find((ex) => ex.url === IExtentionType.generatePDF);
         return extension ? extension.valueBoolean || false : true;
+    };
+
+    const getSaveCapability = (): string => {
+        const saveCapability = qMetadata?.extension?.find((x) => x.url === IExtentionType.saveCapability);
+        return saveCapability?.valueCoding?.code || '';
+    };
+
+    const setSaveCapability = (code: string) => {
+        updateMetaExtension({
+            url: IExtentionType.saveCapability,
+            valueCoding: {
+                system: IValueSetSystem.saveCapabilityValueSet,
+                code: code,
+            },
+        });
     };
 
     return (
@@ -236,6 +251,41 @@ const MetadataEditor = (): JSX.Element => {
                         data={qMetadata.copyright || ''}
                         onBlur={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
                     />
+                </FormField>
+                <FormField label="Lagring og mellomlagring">
+                    <label>
+                        <input
+                            type="radio"
+                            checked={!getSaveCapability()}
+                            name="save-capability-radio"
+                            onChange={() => {
+                                removeMetaExtension(IExtentionType.saveCapability);
+                            }}
+                        />
+                        <span> Lagring av endelig versjon og mellomlagring</span>
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            checked={getSaveCapability() === '2'}
+                            name="save-capability-radio"
+                            onChange={() => {
+                                setSaveCapability('2');
+                            }}
+                        />
+                        <span> Kun lagring av endelig versjon</span>
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            checked={getSaveCapability() === '3'}
+                            name="save-capability-radio"
+                            onChange={() => {
+                                setSaveCapability('3');
+                            }}
+                        />
+                        <span> Ingen lagring</span>
+                    </label>
                 </FormField>
                 <FormField label="Generer PDF ved besvarelse">
                     <SwitchBtn
