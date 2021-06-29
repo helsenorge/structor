@@ -70,14 +70,17 @@ export type IEnableWhen = {
 
 export enum IValueSetSystem {
     saveCapabilityValueSet = 'http://helsenorge.no/fhir/ValueSet/sdf-savecapabilites',
+    authenticationRequirementValueSet = 'http://ehelse.no/fhir/ValueSet/AuthenticationRequirement',
+    canBePerformedByValueSet = 'http://ehelse.no/fhir/ValueSet/CanBePerformedBy',
+    itemControlValueSet = 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
+    presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
+    sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
 }
 
 export enum IExtentionType {
     authenticationRequirement = 'http://ehelse.no/fhir/StructureDefinition/sdf-authenticationrequirement',
-    authenticationRequirementValueSet = 'http://ehelse.no/fhir/ValueSet/AuthenticationRequirement',
     calculatedExpression = 'http://ehelse.no/fhir/StructureDefinition/sdf-calculatedExpression',
     canBePerformedBy = 'http://ehelse.no/fhir/StructureDefinition/sdf-canbeperformedby',
-    canBePerformedByValueSet = 'http://ehelse.no/fhir/ValueSet/CanBePerformedBy',
     endpoint = 'http://ehelse.no/fhir/StructureDefinition/sdf-endpoint',
     entryFormat = 'http://hl7.org/fhir/StructureDefinition/entryFormat',
     fhirPath = 'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpath',
@@ -86,7 +89,6 @@ export enum IExtentionType {
     guidanceParam = 'http://helsenorge.no/fhir/StructureDefinition/sdf-guidanceparameter',
     hidden = 'http://hl7.org/fhir/StructureDefinition/questionnaire-hidden',
     itemControl = 'http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl',
-    itemControlValueSet = 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
     markdown = 'http://hl7.org/fhir/StructureDefinition/rendering-markdown',
     maxDecimalPlaces = 'http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces',
     maxSize = 'http://hl7.org/fhir/StructureDefinition/maxSize',
@@ -95,13 +97,11 @@ export enum IExtentionType {
     minLength = 'http://hl7.org/fhir/StructureDefinition/minLength',
     optionReference = 'http://ehelse.no/fhir/StructureDefinition/sdf-optionReference',
     presentationbuttons = 'http://helsenorge.no/fhir/StructureDefinition/sdf-presentationbuttons',
-    presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
     questionnaireUnit = 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
     regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
     repeatstext = 'http://ehelse.no/fhir/StructureDefinition/repeatstext',
     maxOccurs = 'http://hl7.org/fhir/StructureDefinition/questionnaire-maxOccurs',
     minOccurs = 'http://hl7.org/fhir/StructureDefinition/questionnaire-minOccurs',
-    sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
     validationtext = 'http://ehelse.no/fhir/StructureDefinition/validationtext',
     navigator = 'http://helsenorge.no/fhir/StructureDefinition/sdf-questionnaire-navgiator-state',
     navigatorCodeSystem = 'http://helsenorge.no/fhir/CodeSystem/sdf-questionnaire-navigator-state ',

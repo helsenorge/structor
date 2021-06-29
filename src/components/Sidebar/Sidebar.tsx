@@ -3,7 +3,12 @@ import { ItemControlType } from '../../helpers/itemControl';
 import { deleteItemAction, newItemSidebar, updateItemAction } from '../../store/treeStore/treeActions';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { Coding } from '../../types/fhir';
-import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import {
+    IExtentionType,
+    IItemProperty,
+    IQuestionnaireItemType,
+    IValueSetSystem,
+} from '../../types/IQuestionnareItemType';
 import Accordion from '../Accordion/Accordion';
 import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
@@ -29,7 +34,7 @@ const Sidebar = (): JSX.Element => {
     );
 
     const findCurrentCode = (linkId: string) => {
-        return state.qItems[linkId].code?.find((x) => x.system === IExtentionType.sotHeader);
+        return state.qItems[linkId].code?.find((x) => x.system === IValueSetSystem.sotHeader);
     };
 
     const handleChangeCode = (code: string, linkId: string) => {

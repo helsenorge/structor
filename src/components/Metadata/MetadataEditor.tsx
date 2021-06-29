@@ -150,7 +150,7 @@ const MetadataEditor = (): JSX.Element => {
                                 updateMetaExtension({
                                     url: IExtentionType.presentationbuttons,
                                     valueCoding: {
-                                        system: IExtentionType.presentationbuttonsValueSet,
+                                        system: IValueSetSystem.presentationbuttonsValueSet,
                                         code: e.target.value,
                                     },
                                 });
@@ -172,7 +172,7 @@ const MetadataEditor = (): JSX.Element => {
                                 updateMetaExtension({
                                     url: IExtentionType.authenticationRequirement,
                                     valueCoding: {
-                                        system: IExtentionType.authenticationRequirementValueSet,
+                                        system: IValueSetSystem.authenticationRequirementValueSet,
                                         code: e.target.value,
                                     },
                                 });
@@ -197,7 +197,7 @@ const MetadataEditor = (): JSX.Element => {
                                 updateMetaExtension({
                                     url: IExtentionType.canBePerformedBy,
                                     valueCoding: {
-                                        system: IExtentionType.canBePerformedByValueSet,
+                                        system: IValueSetSystem.canBePerformedByValueSet,
                                         code: e.target.value,
                                     },
                                 });

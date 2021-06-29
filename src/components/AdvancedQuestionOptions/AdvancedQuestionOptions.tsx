@@ -10,7 +10,12 @@ import {
 } from '../../store/treeStore/treeActions';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
-import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import {
+    IExtentionType,
+    IItemProperty,
+    IQuestionnaireItemType,
+    IValueSetSystem,
+} from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
@@ -90,7 +95,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                 valueCodeableConcept: {
                     coding: [
                         {
-                            system: IExtentionType.itemControlValueSet,
+                            system: IValueSetSystem.itemControlValueSet,
                             code: ItemControlType.highlight,
                         },
                     ],
@@ -471,7 +476,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                     valueCodeableConcept: {
                                         coding: [
                                             {
-                                                system: IExtentionType.itemControlValueSet,
+                                                system: IValueSetSystem.itemControlValueSet,
                                                 code: ItemControlType.summary,
                                             },
                                         ],

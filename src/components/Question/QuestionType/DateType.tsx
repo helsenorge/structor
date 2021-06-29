@@ -3,7 +3,7 @@ import { removeItemExtension, setItemExtension } from '../../../helpers/extensio
 import { ItemControlType } from '../../../helpers/itemControl';
 import { ActionType } from '../../../store/treeStore/treeStore';
 import { QuestionnaireItem } from '../../../types/fhir';
-import { IExtentionType } from '../../../types/IQuestionnareItemType';
+import { IExtentionType, IValueSetSystem } from '../../../types/IQuestionnareItemType';
 import Picker from '../../DatePicker/DatePicker';
 import FormField from '../../FormField/FormField';
 
@@ -24,7 +24,7 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
             valueCodeableConcept: {
                 coding: [
                     {
-                        system: IExtentionType.itemControlValueSet,
+                        system: IValueSetSystem.itemControlValueSet,
                         code: code,
                     },
                 ],
