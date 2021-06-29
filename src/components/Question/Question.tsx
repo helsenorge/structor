@@ -8,7 +8,12 @@ import {
     ValueSet,
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
-import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import {
+    IExtentionType,
+    IItemProperty,
+    IQuestionnaireItemType,
+    IValueSetSystem,
+} from '../../types/IQuestionnareItemType';
 import React from 'react';
 import {
     deleteChildItemsAction,
@@ -239,7 +244,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             const extension = {
                 url: IExtentionType.itemControl,
                 valueCodeableConcept: {
-                    coding: [{ system: IExtentionType.itemControlValueSet, code: ItemControlType.inline }],
+                    coding: [{ system: IValueSetSystem.itemControlValueSet, code: ItemControlType.inline }],
                 },
             };
 

@@ -1,5 +1,5 @@
 import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
-import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IExtentionType, IOperator, IQuestionnaireItemType, IValueSetSystem } from '../types/IQuestionnareItemType';
 import { CodingSystemType } from './systemHelper';
 import { Option, Options } from '../types/OptionTypes';
 import { ItemControlType } from './itemControl';
@@ -119,7 +119,7 @@ export const checkboxExtension = {
     valueCodeableConcept: {
         coding: [
             {
-                system: IExtentionType.itemControlValueSet,
+                system: IValueSetSystem.itemControlValueSet,
                 code: ItemControlType.checkbox,
             },
         ],
@@ -131,7 +131,7 @@ export const dropdownExtension = {
     valueCodeableConcept: {
         coding: [
             {
-                system: IExtentionType.itemControlValueSet,
+                system: IValueSetSystem.itemControlValueSet,
                 code: ItemControlType.dropdown,
             },
         ],

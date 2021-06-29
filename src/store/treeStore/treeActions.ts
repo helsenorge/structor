@@ -5,6 +5,7 @@ import {
     IExtentionType,
     IItemProperty,
     IQuestionnaireItemType,
+    IValueSetSystem,
 } from '../../types/IQuestionnareItemType';
 import {
     QuestionnaireItem,
@@ -388,7 +389,7 @@ export const newItemSidebar = (order: Array<string>): NewItemAction => {
                 valueCodeableConcept: {
                     coding: [
                         {
-                            system: IExtentionType.itemControlValueSet,
+                            system: IValueSetSystem.itemControlValueSet,
                             code: ItemControlType.sidebar,
                         },
                     ],
@@ -398,7 +399,7 @@ export const newItemSidebar = (order: Array<string>): NewItemAction => {
         linkId: CreateUUID(),
         code: [
             {
-                system: IExtentionType.sotHeader,
+                system: IValueSetSystem.sotHeader,
                 code: '',
                 display: '',
             },
@@ -445,7 +446,7 @@ export const newItemHelpIconAction = (order: Array<string>): NewItemAction => {
                 valueCodeableConcept: {
                     coding: [
                         {
-                            system: IExtentionType.itemControlValueSet,
+                            system: IValueSetSystem.itemControlValueSet,
                             code: ItemControlType.help,
                         },
                     ],

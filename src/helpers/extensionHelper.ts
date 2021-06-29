@@ -2,7 +2,7 @@ import { updateItemAction, updateQuestionnaireMetadataAction } from '../store/tr
 import { ActionType } from '../store/treeStore/treeStore';
 import { Element, Extension, QuestionnaireItem } from '../types/fhir';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import { IExtentionType, IItemProperty } from '../types/IQuestionnareItemType';
+import { IExtentionType, IItemProperty, IValueSetSystem } from '../types/IQuestionnareItemType';
 import createUUID from './CreateUUID';
 import { ItemControlType } from './itemControl';
 
@@ -70,7 +70,7 @@ export const createDropdown = {
     valueCodeableConcept: {
         coding: [
             {
-                system: IExtentionType.itemControlValueSet,
+                system: IValueSetSystem.itemControlValueSet,
                 code: ItemControlType.dropdown,
             },
         ],
