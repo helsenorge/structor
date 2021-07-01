@@ -26,7 +26,7 @@ export const presentationButtons = [
 ];
 
 export const canBePerformedBy = [
-    { code: '', display: 'Kan også utfylles av andre på vegne av pasienten (standard innstilling)' },
+    { code: '', display: 'Kan også utfylles av andre på vegne av pasienten (standardinnstilling)' },
     { code: '2', display: 'Må fylles ut av pasienten selv' },
 ];
 
@@ -37,7 +37,7 @@ export const authenticationRequirement = [
 ];
 
 export const saveCapability = [
-    { code: '', display: 'Lagring av endelig versjon og mellomlagring (standard innstilling)' },
+    { code: '', display: 'Lagring av endelig versjon og mellomlagring (standardinnstilling)' },
     { code: '2', display: 'Kun lagring av endelig versjon' },
     { code: '3', display: 'Ingen lagring' },
 ];
