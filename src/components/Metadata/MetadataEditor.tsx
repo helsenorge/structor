@@ -48,8 +48,8 @@ const MetadataEditor = (): JSX.Element => {
     };
 
     const getSaveCapability = (): string => {
-        const saveCapability = qMetadata?.extension?.find((x) => x.url === IExtentionType.saveCapability);
-        return saveCapability?.valueCoding?.code || '';
+        const saveCapabilityValue = qMetadata?.extension?.find((x) => x.url === IExtentionType.saveCapability);
+        return saveCapabilityValue?.valueCoding?.code || '';
     };
 
     return (
