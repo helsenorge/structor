@@ -31,7 +31,7 @@ export const canBePerformedBy = [
 ];
 
 export const authenticationRequirement = [
-    { code: '', display: 'Påkrevd (standard innstilling)' },
+    { code: '', display: 'Påkrevd (standardinnstilling)' },
     { code: '1', display: 'Anonym' },
     { code: '2', display: 'Valgfritt' },
 ];
