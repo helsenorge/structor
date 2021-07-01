@@ -20,20 +20,26 @@ export const metadataOperators = [
 ];
 
 export const presentationButtons = [
-    { code: 'none', display: 'Ingen' },
-    { code: 'static', display: 'Fast' },
-    { code: 'sticky', display: 'Flytende' },
+    { code: '', display: 'Flytende nederst på skjermen (standard innstilling)' },
+    { code: 'none', display: 'Ingen knapperad' },
+    { code: 'static', display: 'Fast (kun nederst i skjema)' },
 ];
 
 export const canBePerformedBy = [
-    { code: '1', display: 'Default' },
-    { code: '2', display: 'SubjectOnly' },
+    { code: '', display: 'Kan også utfylles av andre på vegne av pasienten (standard innstilling)' },
+    { code: '2', display: 'Må fylles ut av pasienten selv' },
 ];
 
 export const authenticationRequirement = [
-    { code: '1', display: 'Anonymous' },
-    { code: '2', display: 'Optional' },
-    { code: '3', display: 'Required' },
+    { code: '', display: 'Påkrevd (standard innstilling)' },
+    { code: '1', display: 'Anonym' },
+    { code: '2', display: 'Valgfritt' },
+];
+
+export const saveCapability = [
+    { code: '', display: 'Lagring av endelig versjon og mellomlagring (standard innstilling)' },
+    { code: '2', display: 'Kun lagring av endelig versjon' },
+    { code: '3', display: 'Ingen lagring' },
 ];
 
 export const isValidId = (value: string): boolean => {

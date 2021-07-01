@@ -9,6 +9,7 @@ import {
     isValidTechnicalName,
     metadataOperators,
     presentationButtons,
+    saveCapability,
 } from '../../helpers/MetadataHelper';
 import Accordion from '../Accordion/Accordion';
 import DateTimePicker from '../DatePicker/DateTimePicker';
@@ -49,16 +50,6 @@ const MetadataEditor = (): JSX.Element => {
     const getSaveCapability = (): string => {
         const saveCapability = qMetadata?.extension?.find((x) => x.url === IExtentionType.saveCapability);
         return saveCapability?.valueCoding?.code || '';
-    };
-
-    const setSaveCapability = (code: string) => {
-        updateMetaExtension({
-            url: IExtentionType.saveCapability,
-            valueCoding: {
-                system: IValueSetSystem.saveCapabilityValueSet,
-                code: code,
-            },
-        });
     };
 
     return (
@@ -158,7 +149,7 @@ const MetadataEditor = (): JSX.Element => {
                                 removeMetaExtension(IExtentionType.presentationbuttons);
                             }
                         }}
-                        options={[{ code: '', display: 'Ikke valgt (standard oppførsel)' }, ...presentationButtons]}
+                        options={presentationButtons}
                     />
                 </FormField>
                 <FormField label="Beskriver om innlogging kreves for å besvare skjemaet">
@@ -180,10 +171,7 @@ const MetadataEditor = (): JSX.Element => {
                                 removeMetaExtension(IExtentionType.authenticationRequirement);
                             }
                         }}
-                        options={[
-                            { code: '', display: 'Ikke valgt (standard oppførsel)' },
-                            ...authenticationRequirement,
-                        ]}
+                        options={authenticationRequirement}
                     />
                 </FormField>
                 <FormField label="Beskriver om andre enn pasienten kan besvare skjemaet">
@@ -205,7 +193,26 @@ const MetadataEditor = (): JSX.Element => {
                                 removeMetaExtension(IExtentionType.canBePerformedBy);
                             }
                         }}
-                        options={[{ code: '', display: 'Ikke valgt (standard oppførsel)' }, ...canBePerformedBy]}
+                        options={canBePerformedBy}
+                    />
+                </FormField>
+                <FormField label="Lagring og mellomlagring">
+                    <Select
+                        value={getSaveCapability()}
+                        onChange={(e) => {
+                            if (e.target.value) {
+                                updateMetaExtension({
+                                    url: IExtentionType.saveCapability,
+                                    valueCoding: {
+                                        system: IValueSetSystem.saveCapabilityValueSet,
+                                        code: e.target.value,
+                                    },
+                                });
+                            } else {
+                                removeMetaExtension(IExtentionType.saveCapability);
+                            }
+                        }}
+                        options={saveCapability}
                     />
                 </FormField>
                 <FormField label="Dato">
@@ -251,41 +258,6 @@ const MetadataEditor = (): JSX.Element => {
                         data={qMetadata.copyright || ''}
                         onBlur={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
                     />
-                </FormField>
-                <FormField label="Lagring og mellomlagring">
-                    <label>
-                        <input
-                            type="radio"
-                            checked={!getSaveCapability()}
-                            name="save-capability-radio"
-                            onChange={() => {
-                                removeMetaExtension(IExtentionType.saveCapability);
-                            }}
-                        />
-                        <span> Lagring av endelig versjon og mellomlagring</span>
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            checked={getSaveCapability() === '2'}
-                            name="save-capability-radio"
-                            onChange={() => {
-                                setSaveCapability('2');
-                            }}
-                        />
-                        <span> Kun lagring av endelig versjon</span>
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            checked={getSaveCapability() === '3'}
-                            name="save-capability-radio"
-                            onChange={() => {
-                                setSaveCapability('3');
-                            }}
-                        />
-                        <span> Ingen lagring</span>
-                    </label>
                 </FormField>
                 <FormField label="Generer PDF ved besvarelse">
                     <SwitchBtn

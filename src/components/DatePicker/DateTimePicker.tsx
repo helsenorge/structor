@@ -42,7 +42,7 @@ const DateTimePicker = ({
                 locale="nb"
                 showTimeSelect
                 dateFormat="dd.MM.yyyy HH:mm"
-                timeCaption="Tid"
+                timeCaption="Klokkeslett"
             />
             <i className="calendar-icon" aria-label="date and time picker" />
         </div>

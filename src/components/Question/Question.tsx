@@ -325,7 +325,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     )}
                 </FormField>
                 {isSublabelSupported() && (
-                    <FormField label="Innstruks">
+                    <FormField label="Instruks">
                         <MarkdownEditor
                             data={getSublabelText()}
                             onBlur={(newValue: string) => {
