@@ -42,11 +42,11 @@ const itemType = [
         code: IQuestionnaireItemType.date,
     },
     {
-        display: 'Tid',
+        display: 'Klokkeslett',
         code: IQuestionnaireItemType.time,
     },
     {
-        display: 'Tid og dato',
+        display: 'Dato og klokkeslett',
         code: IQuestionnaireItemType.dateTime,
     },
     {

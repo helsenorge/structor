@@ -96,7 +96,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
             </div>
             {getSublabel(item) && (
                 <>
-                    <div className="translation-group-header">Innstruks</div>
+                    <div className="translation-group-header">Instruks</div>
                     <div className="translation-row">
                         <FormField>
                             <MarkdownEditor data={getSublabel(item)} disabled={true} />

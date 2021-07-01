@@ -37,7 +37,7 @@ const Picker = ({ type, disabled = true, withPortal, nowButton, callback, select
                 showTimeSelect={type === 'time'}
                 showTimeSelectOnly={type === 'time'}
                 dateFormat={type === 'date' ? 'dd.MM.yyyy' : 'HH:mm'}
-                timeCaption="Tid"
+                timeCaption="Klokkeslett"
             />
             <i className={type === 'time' ? 'time-icon' : 'calendar-icon'} aria-label="datepicker" />
         </div>
