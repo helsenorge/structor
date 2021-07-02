@@ -20,7 +20,7 @@ export const metadataOperators = [
 ];
 
 export const presentationButtons = [
-    { code: '', display: 'Flytende nederst på skjermen (standard innstilling)' },
+    { code: '', display: 'Flytende nederst på skjermen (standardinnstilling)' },
     { code: 'none', display: 'Ingen knapperad' },
     { code: 'static', display: 'Fast (kun nederst i skjema)' },
 ];
