@@ -3,7 +3,6 @@ import { OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 import { Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import {
     deleteItemAction,
-    moveItemAction,
     newItemHelpIconAction,
     updateItemAction,
     updateLinkIdAction,
@@ -20,8 +19,6 @@ import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import Select from '../Select/Select';
-import Btn from '../Btn/Btn';
 import { isIgnorableItem, isItemControlHelp, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
@@ -41,11 +38,8 @@ interface FlattOrder extends ValueSetComposeIncludeConcept {
 const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const [isDuplicateLinkId, setDuplicateLinkId] = useState(false);
-    const [hierarchy, setHierarchy] = useState<FlattOrder[]>([]);
     const [linkId, setLinkId] = useState(item.linkId);
     const { qItems, qOrder } = state;
-    const [linkIdMoveTo, setLinkIdMoveTo] = useState('');
-    const [moveError, setMoveError] = useState('');
 
     const isInitialApplicable =
         item.type !== IQuestionnaireItemType.display && item.type !== IQuestionnaireItemType.group;
@@ -222,51 +216,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         handleChild(x.items, [parentPath], temp, [x.linkId]);
                     }
                 });
-            setHierarchy([...temp]);
         };
 
         flattenOrder();
     }, [qOrder, qItems]);
-
-    const moveIsInvalid = (moveToPath: string[]) => {
-        if (isItemControlInline(qItems[linkIdMoveTo])) {
-            setMoveError(`Det er ikke mulig å flytte til element av type: ${IQuestionnaireItemType.inline}`);
-            return true;
-        }
-        if (qItems[linkIdMoveTo]?.type === IQuestionnaireItemType.display) {
-            setMoveError(`Det er ikke mulig å flytte til element av type: ${IQuestionnaireItemType.display}`);
-            return true;
-        }
-        if (linkIdMoveTo === item.linkId) {
-            setMoveError('Det er ikke mulig å flytte elementet til seg selv');
-            return true;
-        }
-        if (moveToPath.includes(item.linkId)) {
-            setMoveError('Det er ikke mulig å flytte mor-node til barn-node');
-            return true;
-        }
-        if (parentArray.length === 0 && moveToPath.length === 1 && moveToPath.find((x) => x === 'top-level')) {
-            setMoveError('Det er ikke mulig å flytte element fra topp-node til topp-node');
-            return true;
-        }
-        return false;
-    };
-
-    const handleMove = () => {
-        setMoveError('');
-        const toParent = hierarchy.find((x) => x.code === linkIdMoveTo)?.parent || [];
-        const moveToPath = [...toParent, linkIdMoveTo];
-
-        if (moveIsInvalid(moveToPath)) {
-            return;
-        }
-
-        if (linkIdMoveTo === 'top-level') {
-            dispatch(moveItemAction(item.linkId, [], parentArray));
-        } else {
-            dispatch(moveItemAction(item.linkId, moveToPath, parentArray));
-        }
-    };
 
     const isInlineItem = isItemControlInline(item);
     const helpTextItem = getHelpTextItem();
@@ -490,22 +443,6 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     />
                 </FormField>
             )}
-            <div>
-                <FormField label="Flytt til element">
-                    <Select
-                        placeholder="Hvor skal elementet flyttes til?"
-                        options={hierarchy}
-                        value={linkIdMoveTo}
-                        onChange={(event) => setLinkIdMoveTo(event.target.value)}
-                    />
-                    {moveError && (
-                        <div className="msg-error" aria-live="polite">
-                            {moveError}
-                        </div>
-                    )}
-                    <Btn onClick={() => handleMove()} title="Flytt" type="button" variant="primary" size="small" />
-                </FormField>
-            </div>
         </>
     );
 };
