@@ -96,12 +96,12 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
         }
     };
 
-    const treeData = mapToTreeData(props.qOrder, '');
+    const orderTreeData = mapToTreeData(props.qOrder, '');
     return (
         <div className="questionnaire-overview">
             {props.qOrder.length > 0 && (
                 <SortableTree
-                    treeData={treeData}
+                    treeData={orderTreeData}
                     onChange={() => {
                         /* dummy */
                     }}
