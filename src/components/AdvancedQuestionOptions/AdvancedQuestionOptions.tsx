@@ -75,30 +75,6 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         }
     };
 
-    const getHighlight = () => {
-        const hasItemControl = item?.extension?.find((x) => x.url === IExtentionType.itemControl);
-        return hasItemControl?.valueCodeableConcept?.coding?.find((x) => x.code === ItemControlType.highlight);
-    };
-
-    const dispatchHighLight = () => {
-        if (!!getHighlight()) {
-            removeExtension(IExtentionType.itemControl);
-        } else {
-            const extension = {
-                url: IExtentionType.itemControl,
-                valueCodeableConcept: {
-                    coding: [
-                        {
-                            system: IValueSetSystem.itemControlValueSet,
-                            code: ItemControlType.highlight,
-                        },
-                    ],
-                },
-            };
-            handleExtension(extension);
-        }
-    };
-
     function dispatchUpdateLinkId(event: FocusEvent<HTMLInputElement>) {
         // Verify no duplicates
         if (isDuplicateLinkId || event.target.value === item.linkId) {
@@ -409,11 +385,6 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         </FormField>
                     )}
                 </div>
-            )}
-            {item.type === IQuestionnaireItemType.text && !isInlineItem && (
-                <FormField>
-                    <SwitchBtn onChange={dispatchHighLight} value={!!getHighlight()} label="Highlight" initial />
-                </FormField>
             )}
             <GuidanceAction item={item} />
             <GuidanceParam item={item} />

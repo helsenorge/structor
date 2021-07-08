@@ -6,7 +6,12 @@ import { QuestionnaireItem } from '../../../types/fhir';
 import './ItemButtons.css';
 import { deleteItemAction, duplicateItemAction, newItemAction } from '../../../store/treeStore/treeActions';
 import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
-import { isItemControlInline } from '../../../helpers/itemControl';
+import {
+    isItemControlHelp,
+    isItemControlHighlight,
+    isItemControlInline,
+    isItemControlSidebar,
+} from '../../../helpers/itemControl';
 
 export const generateItemButtons = (
     item: QuestionnaireItem,
@@ -33,7 +38,12 @@ export const generateItemButtons = (
         return `item-button ${showLabel ? 'item-button--visible' : ''}`;
     };
 
-    const canCreateChild = item.type !== IQuestionnaireItemType.display && !isItemControlInline(item);
+    const canCreateChild =
+        item.type !== IQuestionnaireItemType.display &&
+        !isItemControlInline(item) &&
+        !isItemControlHighlight(item) &&
+        !isItemControlSidebar(item) &&
+        !isItemControlHelp(item);
 
     return [
         ...(canCreateChild
