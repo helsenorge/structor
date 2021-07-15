@@ -3,8 +3,10 @@ import {
     DragDropContext,
     Draggable,
     DraggableProvidedDragHandleProps,
+    DraggingStyle,
     Droppable,
     DropResult,
+    NotDraggingStyle,
 } from 'react-beautiful-dnd';
 import {
     addEmptyOptionToAnswerOptionArray,
@@ -111,8 +113,10 @@ const Choice = ({ item }: Props): JSX.Element => {
             background: isDraggingOver ? 'lightblue' : 'transparent',
         });
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+        const getItemStyle = (
+            isDragging: boolean,
+            draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
+        ): React.CSSProperties => ({
             userSelect: 'none',
             background: isDragging ? 'lightgreen' : 'transparent',
             cursor: 'pointer',

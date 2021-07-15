@@ -6,7 +6,14 @@ import Btn from '../../Btn/Btn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import createUUID from '../../../helpers/CreateUUID';
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import {
+    DragDropContext,
+    Draggable,
+    DraggingStyle,
+    Droppable,
+    DropResult,
+    NotDraggingStyle,
+} from 'react-beautiful-dnd';
 
 type Props = {
     item: QuestionnaireItem;
@@ -57,8 +64,10 @@ const OptionReference = ({ item }: Props): JSX.Element => {
         }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+    const getItemStyle = (
+        isDragging: boolean,
+        draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
+    ): React.CSSProperties => ({
         userSelect: 'none',
         background: isDragging ? 'lightgreen' : 'transparent',
         cursor: 'pointer',

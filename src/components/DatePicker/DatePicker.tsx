@@ -19,8 +19,7 @@ setDefaultLocale('nb');
 registerLocale('nb', nb);
 
 const Picker = ({ type, disabled = true, withPortal, nowButton, callback, selected }: PickerProps): JSX.Element => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [startDate, setStartDate] = useState<any>();
+    const [startDate, setStartDate] = useState<Date>();
     return (
         <div className="datepicker">
             <DatePicker

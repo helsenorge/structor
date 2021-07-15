@@ -24,8 +24,7 @@ const DateTimePicker = ({
     nowButton,
     selected,
 }: DateTimePickerProps): JSX.Element => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [startDate, setStartDate] = useState<any>();
+    const [startDate, setStartDate] = useState<Date>();
     return (
         <div className="datepicker">
             <DatePicker

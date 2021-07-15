@@ -1,5 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import {
+    DragDropContext,
+    Draggable,
+    DraggingStyle,
+    Droppable,
+    DropResult,
+    NotDraggingStyle,
+} from 'react-beautiful-dnd';
 import createUUID from '../../helpers/CreateUUID';
 import { predefinedValueSetUri } from '../../helpers/initPredefinedValueSet';
 import { TreeContext } from '../../store/treeStore/treeStore';
@@ -96,8 +103,10 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
         background: isDraggingOver ? 'lightblue' : 'transparent',
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+    const getItemStyle = (
+        isDragging: boolean,
+        draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
+    ): React.CSSProperties => ({
         userSelect: 'none',
         background: isDragging ? 'lightgreen' : 'transparent',
         cursor: 'pointer',
