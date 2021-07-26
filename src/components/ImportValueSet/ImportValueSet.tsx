@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { BundleEntry, ValueSet } from '../../types/fhir';
 import Btn from '../Btn/Btn';
@@ -16,6 +17,7 @@ type Props = {
 };
 
 const ImportValueSet = ({ close }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 
     const [url, setUrl] = useState('');
@@ -33,14 +35,14 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
         });
 
         if (!response.ok || !response.json) {
-            const message = `Det skjedde en feil med status: ${response.status}`;
+            const message = `${t('Det skjedde en feil med status:')} ${response.status}`;
             return { error: message };
         }
 
         const bundle = await response.json();
 
         if (bundle.resourceType !== 'Bundle' || bundle.entry.length == 0) {
-            return { error: 'Ressursen støtter ikke FHIR protokollen.' };
+            return { error: t('Ressursen støtter ikke FHIR protokollen.') };
         }
 
         const valueSetFHIR = bundle.entry.map((x: BundleEntry) => x.resource) as ValueSet[];
@@ -80,13 +82,13 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                     return;
                 }
                 if (response.valueSet?.length === 0) {
-                    setError('Finner ingen Value Set på endepunktet.');
+                    setError(t('Finner ingen Value Set på endepunktet.'));
                     return;
                 }
                 setValueSets(response.valueSet);
             }, 1200);
         } catch {
-            setError('Ressursen støtter ikke FHIR protokollen.');
+            setError(t('Ressursen støtter ikke FHIR protokollen.'));
             setLoading(false);
         }
     };
@@ -121,13 +123,13 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
     };
 
     return (
-        <Modal close={close} title="Importer Value Set">
+        <Modal close={close} title={t('Importer Value Set')}>
             <div>
-                <FormField label="Skriv inn en url som finner ressursen">
+                <FormField label={t('Skriv inn en url som finner ressursen')}>
                     <form className="input-btn" onSubmit={(e) => handleSubmit(e)}>
                         <input
                             placeholder="https://.."
-                            title="Kun url"
+                            title={t('Kun url')}
                             onChange={(e) => handleChangeUrl(e.target.value)}
                             pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
                             type="url"
@@ -135,7 +137,7 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                             required
                             autoFocus
                         />
-                        <Btn title="søk" variant="primary" type="submit" />
+                        <Btn title={t('søk')} variant="primary" type="submit" />
                     </form>
                 </FormField>
                 {loading && (
@@ -178,9 +180,14 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                 {valueSets && (
                     <div className="button-btn">
                         <div>
-                            <p>Legg til ({valueSetToAdd.length} ValueSet) i predefinerte valg</p>
+                            <p>
+                                {t('Legg til ({0} ValueSet) i predefinerte valg').replace(
+                                    '{0}',
+                                    valueSetToAdd.length.toString(),
+                                )}
+                            </p>
                             <Btn
-                                title="Importer"
+                                title={t('Importer')}
                                 variant="primary"
                                 type="button"
                                 size="small"

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import './OptionReference.css';
 import { Extension, QuestionnaireItem } from '../../../types/fhir';
 import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
@@ -20,6 +21,7 @@ type Props = {
 };
 
 const OptionReference = ({ item }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 
     const dispatchNewItem = () => {
@@ -111,7 +113,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                     type="button"
                     variant="secondary"
                     onClick={() => dispatchNewItem()}
-                    title="+ Legg til mottaker"
+                    title={t('+ Legg til mottaker')}
                 />
             </div>
             <DragDropContext onDragEnd={handleReorder}>
@@ -145,7 +147,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                         autoComplete="off"
                                                         type="text"
                                                         name="beskrivelse"
-                                                        placeholder="Angi mottaker.."
+                                                        placeholder={t('Angi mottaker..')}
                                                         defaultValue={reference.valueReference?.display}
                                                         onBlur={(event) =>
                                                             updateReference(
@@ -159,7 +161,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                         autoComplete="off"
                                                         type="text"
                                                         name="verdi"
-                                                        placeholder="Angi endpoint.."
+                                                        placeholder={t('Angi endpoint..')}
                                                         defaultValue={reference.valueReference?.reference}
                                                         onBlur={(event) =>
                                                             updateReference(

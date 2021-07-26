@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import GroupedSelect from '../../Select/GroupedSelect';
 import { EnrichmentSet } from '../../../helpers/QuestionHelper';
@@ -19,6 +20,7 @@ enum FhirPathOptionEnum {
 }
 
 const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
+    const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const [isBlankButCustom, setIsBlankButCustom] = useState(false);
     const [predefinedOptionIds, setPredifinedOptionIds] = useState<Array<string>>([]);
@@ -85,13 +87,13 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
     const isCustom = isCustomFhirPath(fhirPath);
 
     return (
-        <FormField label="Beriking">
+        <FormField label={t('Beriking')}>
             <GroupedSelect
                 value={getSelectValue()}
                 options={[
-                    { display: 'Ingen beriking', code: FhirPathOptionEnum.NONE },
+                    { display: t('Ingen Beriking'), code: FhirPathOptionEnum.NONE },
                     ...EnrichmentSet.options,
-                    { display: 'Egendefinert', code: FhirPathOptionEnum.CUSTOM },
+                    { display: t('Egendefinert'), code: FhirPathOptionEnum.CUSTOM },
                 ]}
                 onChange={(event) => {
                     handleSelect(event.target.value);
@@ -101,7 +103,7 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
             {(isCustom || isBlankButCustom) && (
                 <textarea
                     defaultValue={fhirPath}
-                    placeholder="Legg inn egendefinert beriking"
+                    placeholder={t('Legg inn egendefinert beriking')}
                     onBlur={(e) => {
                         if (e.target.value) {
                             setIsBlankButCustom(false);

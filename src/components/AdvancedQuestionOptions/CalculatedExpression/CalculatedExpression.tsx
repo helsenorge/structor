@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Extension, QuestionnaireItem } from '../../../types/fhir';
 import { IExtentionType } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
@@ -10,6 +11,7 @@ type CalculatedExpressionProps = {
 };
 
 const CalculatedExpression = (props: CalculatedExpressionProps): JSX.Element => {
+    const { t } = useTranslation();
     const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>) => {
         if (!event.target.value) {
             props.removeExtension(IExtentionType.calculatedExpression);
@@ -25,7 +27,7 @@ const CalculatedExpression = (props: CalculatedExpressionProps): JSX.Element => 
     const calculatedExpression =
         props.item.extension?.find((ext) => ext.url === IExtentionType.calculatedExpression)?.valueString || '';
     return (
-        <FormField label="Kalkuleringsformel">
+        <FormField label={t('Kalkuleringsformel')}>
             <textarea defaultValue={calculatedExpression} onBlur={handleBlur} />
         </FormField>
     );

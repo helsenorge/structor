@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Btn from '../Btn/Btn';
 import IconBtn from '../IconBtn/IconBtn';
 import './Modal.css';
@@ -13,11 +14,12 @@ type Props = {
 };
 
 const Modal = ({ close, children, title, size = 'small', id, bottomCloseText }: Props): JSX.Element => {
+    const { t } = useTranslation();
     return (
         <div className="overlay align-everything">
             <div className={`modal ${size}`} id={id}>
                 <div className="title">
-                    <IconBtn type="x" title="Lukk" onClick={close} />
+                    <IconBtn type="x" title={t('Lukk')} onClick={close} />
                     <h1>{title}</h1>
                 </div>
                 <div className="content">{children}</div>

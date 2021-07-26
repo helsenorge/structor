@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { isItemControlCheckbox, isItemControlDropDown, ItemControlType } from '../../../helpers/itemControl';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
@@ -18,6 +19,7 @@ type Props = {
 };
 
 const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const { qContained } = state;
 
@@ -97,7 +99,7 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
                 value={handleDisplaySelected()}
                 options={containedValueSets || []}
                 onChange={(event) => handleSelectedValueSet(event.target.value)}
-                placeholder="Velg et alternativ.."
+                placeholder={t('Velg et alternativ..')}
             />
         );
     };
@@ -107,7 +109,7 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
             <div className="horizontal">
                 <div className="form-field">
                     <SwitchBtn
-                        label="Flere valg mulig"
+                        label={t('Flere valg mulig')}
                         onChange={() => dispatchExtentionUpdate(ItemControlType.checkbox)}
                         initial
                         value={isItemControlCheckbox(item)}
@@ -115,7 +117,7 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
                 </div>
                 <div className="form-field">
                     <SwitchBtn
-                        label="Nedtrekksmeny"
+                        label={t('Nedtrekksmeny')}
                         onChange={() => dispatchExtentionUpdate(ItemControlType.dropdown)}
                         initial
                         value={isItemControlDropDown(item)}

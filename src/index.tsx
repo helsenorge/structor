@@ -6,6 +6,7 @@ import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { UserProvider } from './contexts/UserContext';
+import './helpers/i18n';
 //import { debugContextDevtool } from 'react-context-devtool';
 
 const container = document.getElementById('root');

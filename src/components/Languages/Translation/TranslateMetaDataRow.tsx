@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MetadataProperty } from '../../../types/LanguageTypes';
 import { ActionType, TreeState } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
@@ -18,6 +19,7 @@ const TranslateMetaDataRow = ({
     state,
     targetLanguage,
 }: TranslateMetaDataRowProps): JSX.Element => {
+    const { t } = useTranslation();
     const { propertyName, label, markdown, validate } = metadataProperty;
     const baseValue = state.qMetadata[propertyName];
     const translatedMetadata =
@@ -48,7 +50,7 @@ const TranslateMetaDataRow = ({
                     onBlur={(value) => {
                         dispatchPropertyUpdate(value);
                     }}
-                    placeholder="Legg inn oversettelse.."
+                    placeholder={t('Legg inn oversettelse..')}
                 />
             ) : (
                 <textarea
@@ -59,7 +61,7 @@ const TranslateMetaDataRow = ({
                     onChange={(event) => {
                         setTranslatedValue(event.target.value);
                     }}
-                    placeholder="Legg inn oversettelse.."
+                    placeholder={t('Legg inn oversettelse..')}
                 />
             )}
         </>

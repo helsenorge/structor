@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './Login.css';
 
 import SpinnerBox from '../components/Spinner/SpinnerBox';
@@ -9,6 +10,7 @@ interface AuthPayload extends Response {
 }
 
 const Login = (): JSX.Element => {
+    const { t } = useTranslation();
     const [error, setError] = useState('');
     useEffect(() => {
         async function doFetch() {
@@ -28,7 +30,7 @@ const Login = (): JSX.Element => {
 
     return (
         <div className="login">
-            <h1>Logger inn..</h1>
+            <h1>{t('Logger inn..')}</h1>
             <div className="align-everything">
                 {!error && <SpinnerBox />} {error && <p className="error-text">{error}</p>}
             </div>

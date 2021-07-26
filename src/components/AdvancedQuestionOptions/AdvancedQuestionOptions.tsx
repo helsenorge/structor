@@ -1,6 +1,7 @@
-import React, { FocusEvent, useContext, useEffect, useState } from 'react';
-import { OrderItem, TreeContext } from '../../store/treeStore/treeStore';
-import { Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
+import React, { FocusEvent, useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TreeContext } from '../../store/treeStore/treeStore';
+import { Extension, QuestionnaireItem } from '../../types/fhir';
 import {
     deleteItemAction,
     newItemHelpIconAction,
@@ -19,7 +20,7 @@ import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import { isIgnorableItem, isItemControlHelp, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
+import { isItemControlHelp, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
@@ -31,11 +32,8 @@ type AdvancedQuestionOptionsProps = {
     parentArray: Array<string>;
 };
 
-interface FlattOrder extends ValueSetComposeIncludeConcept {
-    parent: Array<string>;
-}
-
 const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsProps): JSX.Element => {
+    const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const [isDuplicateLinkId, setDuplicateLinkId] = useState(false);
     const [linkId, setLinkId] = useState(item.linkId);
@@ -151,52 +149,6 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         x.valueCodeableConcept?.coding?.filter((y) => y.code === ItemControlType.summary),
     );
 
-    useEffect(() => {
-        const handleChild = (
-            items: OrderItem[],
-            parentPath: number[],
-            tempHierarchy: FlattOrder[],
-            parentLinkIds: string[],
-        ) => {
-            items
-                .filter((x) => !isIgnorableItem(qItems[x.linkId], qItems[parentLinkIds[parentLinkIds.length - 1]]))
-                .forEach((child, childIndex) => {
-                    const childTitle = childIndex + 1;
-                    tempHierarchy.push({
-                        display: `${'\xA0'.repeat(parentPath.length * 2)}${parentPath.join('.')}.${childTitle} ${
-                            qItems[child.linkId].text
-                        }`,
-                        code: child.linkId,
-                        parent: parentLinkIds,
-                    });
-                    if (child.items) {
-                        handleChild(child.items, [...parentPath, childTitle], tempHierarchy, [
-                            ...parentLinkIds,
-                            child.linkId,
-                        ]);
-                    }
-                });
-        };
-
-        const flattenOrder = () => {
-            const temp = [] as FlattOrder[];
-            temp.push({ display: 'Toppnivå', code: 'top-level', parent: [] });
-            qOrder
-                .filter((x) => !isIgnorableItem(qItems[x.linkId]))
-                .forEach((x, index) => {
-                    const parentPath = index + 1;
-                    const itemText = qItems[x.linkId].text || 'Ikke definert tittel';
-                    const displayText = itemText.length > 120 ? `${itemText?.substr(0, 120)}...` : itemText;
-                    temp.push({ display: `${parentPath}. ${displayText}`, code: x.linkId, parent: [] });
-                    if (x.items) {
-                        handleChild(x.items, [parentPath], temp, [x.linkId]);
-                    }
-                });
-        };
-
-        flattenOrder();
-    }, [qOrder, qItems]);
-
     const isInlineItem = isItemControlInline(item);
     const helpTextItem = getHelpTextItem();
     const isHiddenItem = item.extension?.some((ext) => ext.url === IExtentionType.hidden && ext.valueBoolean);
@@ -216,7 +168,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                             <SwitchBtn
                                 onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
                                 value={item.readOnly || false}
-                                label="Skrivebeskyttet"
+                                label={t('Skrivebeskyttet')}
                                 initial
                             />
                         </div>
@@ -234,7 +186,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                     }
                                 }}
                                 value={isHiddenItem || false}
-                                label="Gjemt felt"
+                                label={t('Gjemt felt')}
                                 initial
                             />
                         </div>
@@ -256,12 +208,12 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                 dispatchUpdateItem(IItemProperty.repeats, !item.repeats);
                             }}
                             value={item.repeats || false}
-                            label="Kan gjentas"
+                            label={t('Kan gjentas')}
                             initial
                         />
                         {item.repeats && (
                             <>
-                                <FormField label="Kan gjentas knappetekst">
+                                <FormField label={t('Kan gjentas knappetekst')}>
                                     <input
                                         defaultValue={getRepeatsText}
                                         onBlur={(e) => {
@@ -278,7 +230,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                 </FormField>
                                 <div className="horizontal equal">
                                     <div className="form-field">
-                                        <label className="#">Min antall svar</label>
+                                        <label className="#">{t('Min antall svar')}</label>
                                         <input
                                             type="number"
                                             defaultValue={minOccurs}
@@ -296,7 +248,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                         />
                                     </div>
                                     <div className="form-field">
-                                        <label className="#">Max antall svar</label>
+                                        <label className="#">{t('Max antall svar')}</label>
                                         <input
                                             type="number"
                                             defaultValue={maxOccurs}
@@ -324,7 +276,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             )}
             {isBerikingSupported && <FhirPathSelect item={item} />}
             {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.text) && (
-                <FormField label="Skyggetekst">
+                <FormField label={t('Skyggetekst')}>
                     <input
                         defaultValue={getPlaceholder}
                         onBlur={(e) => {
@@ -347,7 +299,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             )}
             <div className="horizontal full">
                 <div className={`form-field ${isDuplicateLinkId ? 'field-error' : ''}`}>
-                    <label>LinkId</label>
+                    <label>{t('LinkId')}</label>
                     <input
                         value={linkId}
                         onChange={(event) => {
@@ -361,9 +313,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     />
                     {isDuplicateLinkId && (
                         <div className="msg-error" aria-live="polite">
-                            LinkId er allerede i bruk{' '}
+                            {`${t('LinkId er allerede i bruk')} `}
                             <button onClick={resetLinkId}>
-                                <img src={UndoIcon} height={16} /> Sett tilbake til opprinnelig verdi
+                                <img src={UndoIcon} height={16} />
+                                {` ${t('Sett tilbake til opprinnelig verdi')}`}
                             </button>
                         </div>
                     )}
@@ -375,12 +328,12 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         <SwitchBtn
                             onChange={() => dispatchHelpText()}
                             value={helpTextItem.exist}
-                            label="Skru på hjelpeikon"
+                            label={t('Skru på hjelpeikon')}
                             initial
                         />
                     </FormField>
                     {helpTextItem.exist && (
-                        <FormField label="Skriv en hjelpende tekst">
+                        <FormField label={t('Skriv en hjelpende tekst')}>
                             <MarkdownEditor data={helpTextItem._text} onBlur={handleHelpText} />
                         </FormField>
                     )}
@@ -409,7 +362,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                             }
                         }}
                         value={hasSummaryExtension}
-                        label="Skru på oppsummering"
+                        label={t('Skru på oppsummering')}
                         initial
                     />
                 </FormField>

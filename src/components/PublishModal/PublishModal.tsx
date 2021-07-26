@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import { TreeContext } from '../../store/treeStore/treeStore';
@@ -14,6 +15,7 @@ type Props = {
 };
 
 const PublishModal = ({ close }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
 
     const updateMeta = (propName: IQuestionnaireMetadataType, value: string) => {
@@ -41,10 +43,10 @@ const PublishModal = ({ close }: Props): JSX.Element => {
                 .then((res) => {
                     if (res.status >= 200 && res.status < 300) {
                         setUpload('success');
-                        setFormState('Skjema er lastet opp');
+                        setFormState(t('Skjema er lastet opp'));
                     } else {
                         setUpload('error');
-                        setFormState('Skjema har en eller flere feil');
+                        setFormState(t('Skjema har en eller flere feil'));
                     }
 
                     if (res.status === 404) {
@@ -62,19 +64,19 @@ const PublishModal = ({ close }: Props): JSX.Element => {
     };
 
     return (
-        <Modal close={close} title="Publiser">
-            <p>Er du klar for å publisere?</p>
+        <Modal close={close} title={t('Publiser')}>
+            <p>{t('Er du klar for å publisere?')}</p>
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
                     pushToServer();
                 }}
             >
-                <FormField label="Url til publiseringen:">
+                <FormField label={t('Url til publiseringen:')}>
                     <input
                         value={state.qMetadata.url || ''}
-                        placeholder="Skriv inn en url.."
-                        title="Kun url"
+                        placeholder={t('Skriv inn en url..')}
+                        title={t('Kun url')}
                         onChange={(e) => updateMeta(IQuestionnaireMetadataType.url, e.target.value || '')}
                         pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
                         type="url"
@@ -82,10 +84,10 @@ const PublishModal = ({ close }: Props): JSX.Element => {
                     />
                 </FormField>
 
-                <FormField label="Skriv inn id: ">
+                <FormField label={t('Skriv inn id: ')}>
                     <input
                         pattern="[A-Z0-9_]{1,63}"
-                        title="Kun store bokstaver og tall"
+                        title={t('Kun store bokstaver og tall')}
                         value={state.qMetadata.id || ''}
                         maxLength={64}
                         onChange={(e) => updateMeta(IQuestionnaireMetadataType.id, e.target.value || '')}
@@ -93,7 +95,7 @@ const PublishModal = ({ close }: Props): JSX.Element => {
                     />
                 </FormField>
 
-                <Btn title="Publiser skjema" type="submit" />
+                <Btn title={t('Publiser skjema')} type="submit" />
             </form>
             <div className="feedback">
                 <Spinner state={upload} />

@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import IconBtn from '../IconBtn/IconBtn';
 import { TreeContext } from '../../store/treeStore/treeStore';
@@ -12,6 +13,7 @@ type Props = {
 };
 
 const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const { state } = useContext(TreeContext);
     const [selectedLanguage, setSelectedLanguage] = useState(
         language || state.qMetadata.language || INITIAL_LANGUAGE.code,
@@ -45,8 +47,8 @@ const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
         <div className="overlay">
             <div className="iframe-div">
                 <div className="title align-everything">
-                    <IconBtn type="x" title="Lukk" onClick={showFormFiller} />
-                    <h1>Forhåndsvisning</h1>
+                    <IconBtn type="x" title={t('Lukk')} onClick={showFormFiller} />
+                    <h1>{t('Forhåndsvisning')}</h1>
                     <div className="pull-right">
                         <Select
                             value={selectedLanguage}

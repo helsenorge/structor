@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import { ItemControlType } from '../../../helpers/itemControl';
 import { ActionType } from '../../../store/treeStore/treeStore';
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export const DateType = ({ item, dispatch }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const getItemControlCode = (): string => {
         const itemControl = item?.extension?.find((x) => x.url === IExtentionType.itemControl);
         return itemControl?.valueCodeableConcept?.coding?.find((x) => !!x.code)?.code || '';
@@ -35,7 +37,7 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
 
     return (
         <>
-            <FormField label="Datotype">
+            <FormField label={t('Datotype')}>
                 <label>
                     <input
                         type="radio"
@@ -45,7 +47,7 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
                             removeItemExtension(item, IExtentionType.itemControl, dispatch);
                         }}
                     />
-                    <span> Dag, måned og år</span>
+                    <span>{` ${t('Dag, måned og år')}`}</span>
                 </label>
                 <label>
                     <input
@@ -56,7 +58,7 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
                             setItemControlExtension(ItemControlType.yearMonth);
                         }}
                     />
-                    <span> Måned og år</span>
+                    <span>{` ${t('Måned og år')}`}</span>
                 </label>
                 <label>
                     <input
@@ -67,7 +69,7 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
                             setItemControlExtension(ItemControlType.year);
                         }}
                     />
-                    <span> År</span>
+                    <span>{` ${t('År')}`}</span>
                 </label>
             </FormField>
             <Picker />

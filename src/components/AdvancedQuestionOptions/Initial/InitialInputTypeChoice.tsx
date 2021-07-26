@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { QuestionnaireItem, QuestionnaireItemInitial } from '../../../types/fhir';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
@@ -15,6 +16,7 @@ interface IInitialOption {
 }
 
 const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element => {
+    const { t } = useTranslation();
     const { state } = useContext(TreeContext);
     const { qContained } = state;
 
@@ -111,7 +113,7 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
             <div className="form-field">
                 <SwitchBtn
                     initial
-                    label="Initiell verdi"
+                    label={t('Initiell verdi')}
                     onChange={() => {
                         const newInitialValueEnabled = !initialValueEnabled;
                         setInitialValueEnabled(newInitialValueEnabled);

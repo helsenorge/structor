@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { IOperator, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import Select from '../Select/Select';
 import {
@@ -18,6 +19,7 @@ interface EnableWhenOperatorProps {
 }
 
 const EnableWhenOperator = (props: EnableWhenOperatorProps): JSX.Element => {
+    const { t } = useTranslation();
     const getOperatorsForType = (qType: string): ValueSetComposeIncludeConcept[] => {
         if (qType === IQuestionnaireItemType.boolean) {
             return enableWhenOperatorBoolean;
@@ -38,7 +40,7 @@ const EnableWhenOperator = (props: EnableWhenOperatorProps): JSX.Element => {
 
     return (
         <Select
-            placeholder="Velg en operator"
+            placeholder={t('Velg en operator')}
             options={getOperatorsForType(props.conditionItem.type)}
             value={getSelectedOperator(props.ew)}
             onChange={(event) => {

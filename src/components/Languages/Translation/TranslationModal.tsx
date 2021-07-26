@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Modal from '../../Modal/Modal';
 import { OrderItem, TreeContext } from '../../../store/treeStore/treeStore';
 import { updateItemTranslationAction } from '../../../store/treeStore/treeActions';
@@ -34,6 +35,7 @@ interface FlattOrderTranslation {
 }
 
 const TranslationModal = (props: TranslationModalProps): JSX.Element => {
+    const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const { qItems, qOrder, qAdditionalLanguages, qMetadata, qContained } = state;
     const [flattOrder, setFlattOrder] = useState<FlattOrderTranslation[]>([]);
@@ -89,7 +91,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         );
         return (
             <>
-                <div className="translation-group-header">Hjelpetekst</div>
+                <div className="translation-group-header">{t('Hjelpetekst')}</div>
                 <div className="translation-row">
                     <FormField>
                         <MarkdownEditor data={helpText} disabled={true} />
@@ -201,7 +203,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                                 <TranslateItemRow
                                     item={item}
                                     targetLanguage={props.targetLanguage}
-                                    itemHeading={`Element ${orderItem.path}`}
+                                    itemHeading={`${t('Element')} ${orderItem.path}`}
                                 />
                                 {orderItem.helpItemLinkId && renderHelpText(orderItem.helpItemLinkId)}
                                 {orderItem.inlineItemLinkId && renderInlineText(orderItem.inlineItemLinkId)}
@@ -217,7 +219,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
 
     return (
         <div className="translation-modal">
-            <Modal close={props.close} title="Oversett skjema" id="translation-modal" bottomCloseText="Lukk">
+            <Modal close={props.close} title={t('Oversett skjema')} id="translation-modal" bottomCloseText={t('Lukk')}>
                 {getHeader()}
                 <div style={{ position: 'relative' }}>
                     <>
@@ -243,7 +245,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                                     />
                                 )}
                                 <div>
-                                    <div className="translation-section-header">Elementer</div>
+                                    <div className="translation-section-header">{t('Elementer')}</div>
                                     {renderItems(flattOrder.filter((val, i) => i <= count))}
                                 </div>
                                 <div

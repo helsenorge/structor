@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import Btn from '../Btn/Btn';
 import './Confirm.css';
 
@@ -11,6 +12,7 @@ type ConfirmProps = {
 };
 
 const Confirm = ({ onConfirm, onDeny, children, id, title }: ConfirmProps): JSX.Element => {
+    const { t } = useTranslation();
     return (
         <div className="overlay">
             <div className="modal small" id={id}>
@@ -20,8 +22,8 @@ const Confirm = ({ onConfirm, onDeny, children, id, title }: ConfirmProps): JSX.
                 <div className="content">{children}</div>
                 <div className="modal-btn-bottom">
                     <div className="center-text">
-                        <Btn title="Ja" type="button" variant="primary" size="small" onClick={onConfirm} />{' '}
-                        <Btn title="Nei" type="button" variant="secondary" size="small" onClick={onDeny} />
+                        <Btn title={t('Ja')} type="button" variant="primary" size="small" onClick={onConfirm} />{' '}
+                        <Btn title={t('Nei')} type="button" variant="secondary" size="small" onClick={onDeny} />
                     </div>
                 </div>
             </div>

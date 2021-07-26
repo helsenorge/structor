@@ -1,4 +1,5 @@
 import React, { FocusEvent, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { getGuidanceAction } from '../../../helpers/QuestionHelper';
 import {
@@ -19,6 +20,7 @@ type GuidanceActionProps = {
 };
 
 const GuidanceAction = (props: GuidanceActionProps): JSX.Element => {
+    const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const hasGuidanceAction = hasExtension(props.item, IExtentionType.guidanceAction);
     const action = getGuidanceAction(props.item);
@@ -41,13 +43,13 @@ const GuidanceAction = (props: GuidanceActionProps): JSX.Element => {
                 <SwitchBtn
                     onChange={toggleGuidanceAction}
                     value={hasGuidanceAction}
-                    label="Send bruker videre etter fullført skjema"
+                    label={t('Send bruker videre etter fullført skjema')}
                     initial
                 />
             </FormField>
             {hasGuidanceAction && (
-                <FormField label="Mål">
-                    <input defaultValue={action} placeholder="F.eks. /infoside" onBlur={updateGuidanceAction} />
+                <FormField label={t('Mål')}>
+                    <input defaultValue={action} placeholder={t('F.eks. /infoside')} onBlur={updateGuidanceAction} />
                 </FormField>
             )}
         </div>

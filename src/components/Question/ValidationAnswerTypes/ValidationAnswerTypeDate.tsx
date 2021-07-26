@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { QuestionnaireItem, Extension } from '../../../types/fhir';
 import FormField from '../../FormField/FormField';
 import Picker from '../../DatePicker/DatePicker';
@@ -21,6 +22,7 @@ type Props = {
 };
 
 const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 
     const validationText = item?.extension?.find((x) => x.url === IExtentionType.validationtext)?.valueString || '';
@@ -129,7 +131,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
 
     return (
         <>
-            <FormField label="Legg til egendefinert feilmelding:">
+            <FormField label={t('Legg til egendefinert feilmelding:')}>
                 <input
                     defaultValue={validationText}
                     onBlur={(event) => {
@@ -156,7 +158,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                             clearDateValidationExtensions();
                         }}
                     />
-                    <span> Absolutt datovalidering</span>
+                    <span>{` ${t('Absolutt datovalidering')}`}</span>
                 </label>
                 <label>
                     <input
@@ -168,14 +170,14 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                             clearDateValidationExtensions();
                         }}
                     />
-                    <span> Datovalidering beregnet ut fra dagens dato</span>
+                    <span>{` ${t('Datovalidering beregnet ut fra dagens dato')}`}</span>
                 </label>
             </div>
             <div>{` `}</div>
             {!isAbsDateValidation && (
                 <div className="form-field">
                     <FhirPathDateValidation
-                        descriptionText="Min dato"
+                        descriptionText={t('Min dato')}
                         numberValue={fhirPathMinDateNumber}
                         unitValue={fhirPathMinDateUnit}
                         operatorValue={fhirPathMinDateOperator}
@@ -193,7 +195,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                         }}
                     />
                     <FhirPathDateValidation
-                        descriptionText="Max dato"
+                        descriptionText={t('Max dato')}
                         numberValue={fhirPathMaxDateNumber}
                         unitValue={fhirPathMaxDateUnit}
                         operatorValue={fhirPathMaxDateOperator}
@@ -214,7 +216,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
             )}
             {isAbsDateValidation && (
                 <div className="horizontal">
-                    <FormField label="Min dato:">
+                    <FormField label={`${t('Min dato')}:`}>
                         <Picker
                             selected={minDate ? parse(minDate, 'yyyy-MM-dd', new Date()) : undefined}
                             type="date"
@@ -232,7 +234,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                             }}
                         />
                     </FormField>
-                    <FormField label="Max dato:">
+                    <FormField label={`${t('Max dato')}:`}>
                         <Picker
                             selected={maxDate ? parse(maxDate, 'yyyy-MM-dd', new Date()) : undefined}
                             type="date"

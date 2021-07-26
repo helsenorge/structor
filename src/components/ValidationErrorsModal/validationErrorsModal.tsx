@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ValidationErrors } from '../../helpers/orphanValidation';
 import Modal from '../Modal/Modal';
 
@@ -8,14 +9,18 @@ interface ValidationErrorsModalProps {
 }
 
 export const ValidationErrorsModal = (props: ValidationErrorsModalProps): JSX.Element => {
+    const { t } = useTranslation();
     return (
         <Modal close={props.onClose} title="Validering" size="small" bottomCloseText="Lukk">
             {props.validationErrors.length > 0 ? (
                 <div className="msg-error">
-                    Fant <b>{props.validationErrors.length}</b> feil. Spørsmål med feil er markert med rød ramme.
+                    {t('Fant {0} feil. Spørsmål med feil er markert med rød ramme.').replace(
+                        '{0}',
+                        props.validationErrors.length.toString(),
+                    )}
                 </div>
             ) : (
-                <div>Fant ingen valideringsfeil!</div>
+                <div>{t('Fant ingen valideringsfeil!')}</div>
             )}
         </Modal>
     );

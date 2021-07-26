@@ -1,6 +1,7 @@
 import './AnchorMenu.css';
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionType, Items, OrderItem } from '../../store/treeStore/treeStore';
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import {
@@ -47,6 +48,7 @@ interface NodeVisibilityToggleEvent {
 }
 
 const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
+    const { t } = useTranslation();
     const [collapsedNodes, setCollapsedNodes] = React.useState<string[]>([]);
 
     const mapToTreeData = (item: OrderItem[], hierarchy: string, parentLinkId?: string): Node[] => {
@@ -167,7 +169,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
             {props.qOrder.length === 0 && (
                 <p className="center-text" style={{ padding: '0px 25px' }}>
-                    Her vil du finne en oversikt over elementene i skjemaet.
+                    {t('Her vil du finne en oversikt over elementene i skjemaet')}
                 </p>
             )}
             <div className="floating-button">
@@ -177,8 +179,8 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                         props.dispatch(newItemAction(IQuestionnaireItemType.group, []));
                     }}
                 >
-                    <i className="add-icon large" aria-label="add element" title="Opprett element" />
-                    Legg til element på toppnivå
+                    <i className="add-icon large" aria-label="add element" title={t('Opprett element')} />
+                    {t('Legg til element på toppnivå')}
                 </button>
             </div>
         </div>

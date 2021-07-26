@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { QuestionnaireItemInitial } from '../../../types/fhir';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 
@@ -8,6 +9,7 @@ type InitialInputTypeBooleanProps = {
 };
 
 const InitialInputTypeBoolean = (props: InitialInputTypeBooleanProps): JSX.Element => {
+    const { t } = useTranslation();
     const [initialValue, setInitialValue] = useState(getValue(props.initial));
 
     function getValue(initial: QuestionnaireItemInitial | undefined): boolean {
@@ -29,7 +31,7 @@ const InitialInputTypeBoolean = (props: InitialInputTypeBooleanProps): JSX.Eleme
                     props.dispatchAction(newInitial);
                 }}
                 value={initialValue}
-                label="Initiell verdi"
+                label={t('Initiell verdi')}
                 initial={true}
             />
         </div>

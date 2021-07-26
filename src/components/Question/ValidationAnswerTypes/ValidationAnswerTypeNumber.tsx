@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
@@ -11,6 +12,7 @@ interface ValidationTypeProp {
 }
 
 const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element => {
+    const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const validationText = item?.extension?.find((x) => x.url === IExtentionType.validationtext)?.valueString || '';
     const minValue = item?.extension?.find((x) => x.url === IExtentionType.minValue)?.valueInteger;
@@ -39,12 +41,17 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
             <div className="horizontal equal">
                 {item?.type !== IQuestionnaireItemType.quantity && (
                     <div className="form-field">
-                        <SwitchBtn label="Tillat desimaltall" initial value={isDecimal} onChange={changeItemType} />
+                        <SwitchBtn
+                            label={t('Tillat desimaltall')}
+                            initial
+                            value={isDecimal}
+                            onChange={changeItemType}
+                        />
                     </div>
                 )}
                 {isDecimal && (
                     <div className="form-field">
-                        <label className="#">Max antall desimaler</label>
+                        <label className="#">{t('Max antall desimaler')}</label>
                         <input
                             type="number"
                             defaultValue={maxDecimalPlaces}
@@ -66,7 +73,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
 
             <div className="horizontal equal">
                 <div className="form-field" id="number">
-                    <label className="#">Min verdi</label>
+                    <label className="#">{t('Min verdi')}</label>
                     <input
                         type="number"
                         defaultValue={minValue}
@@ -85,7 +92,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                 </div>
 
                 <div className="form-field" id="number">
-                    <label className="#">Max verdi</label>
+                    <label className="#">{t('Max verdi')}</label>
                     <input
                         type="number"
                         defaultValue={maxValue}
@@ -105,11 +112,11 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
             </div>
 
             <div className="form-field custom-input-error-message">
-                <label className="#">Legg til egendefinert feilmelding:</label>
+                <label className="#">{t('Legg til egendefinert feilmelding:')}</label>
                 <input
                     type="input"
                     defaultValue={validationText}
-                    placeholder="feilmelding"
+                    placeholder={t('feilmelding')}
                     onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
                         if (!event.target.value) {
                             removeItemExtension(item, IExtentionType.validationtext, dispatch);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { isSystemValid } from '../../helpers/systemHelper';
 import FormField from './FormField';
 
@@ -8,6 +9,7 @@ type Props = {
 };
 
 const SystemField = ({ value, onBlur }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const ref = React.useRef<HTMLInputElement>(null);
     const [hasValidSystem, setHasValidSystem] = React.useState<boolean>(isSystemValid(value || ''));
 
@@ -20,10 +22,10 @@ const SystemField = ({ value, onBlur }: Props): JSX.Element => {
     }, [value]);
 
     return (
-        <FormField label="System">
+        <FormField label={t('System')}>
             <input
                 ref={ref}
-                placeholder="Legg inn system.."
+                placeholder={t('Legg inn system..')}
                 defaultValue={value || ''}
                 onBlur={onBlur}
                 onChange={(event) => {
@@ -32,7 +34,7 @@ const SystemField = ({ value, onBlur }: Props): JSX.Element => {
             />
             {!hasValidSystem && (
                 <div className="msg-error" aria-live="polite">
-                    System må begynne med http://, https:// eller urn:
+                    {t('System må begynne med http://, https:// eller urn:')}
                 </div>
             )}
         </FormField>

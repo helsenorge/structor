@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     DragDropContext,
     Draggable,
@@ -56,6 +57,7 @@ const initValueSet = () =>
     } as ValueSet);
 
 const PredefinedValueSetModal = (props: Props): JSX.Element => {
+    const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const [newValueSet, setNewValueSet] = useState<ValueSet>({ ...initValueSet() });
     const { qContained } = state;
@@ -146,22 +148,22 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
     };
 
     return (
-        <Modal close={props.close} title="Predefinerte verdier" size="large" bottomCloseText="Lukk">
+        <Modal close={props.close} title={t('Predefinerte verdier')} size="large" bottomCloseText="Lukk">
             <div className="predefined-container">
                 <div>
-                    <FormField label="Tittel">
+                    <FormField label={t('Tittel')}>
                         <input
                             value={newValueSet.title}
                             onChange={(event) => setNewValueSet({ ...newValueSet, title: event.target.value })}
                         />
                     </FormField>
-                    <FormField label="Teknisk-navn">
+                    <FormField label={t('Teknisk-navn')}>
                         <input
                             value={newValueSet.name}
                             onChange={(event) => setNewValueSet({ ...newValueSet, name: event.target.value })}
                         />
                     </FormField>
-                    <FormField label="Distributør">
+                    <FormField label={t('Distributør')}>
                         <input
                             value={newValueSet.publisher}
                             onChange={(event) => setNewValueSet({ ...newValueSet, publisher: event.target.value })}
@@ -172,8 +174,8 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                         onBlur={(event) => handleSystem(event.target.value)}
                     />
                     <div className="btn-group center-text">
-                        <Btn onClick={addNewElement} title="+ Nytt valg" variant="secondary" size="small" />
-                        <Btn onClick={dispatchValueSet} title="Lagre >" variant="primary" size="small" />
+                        <Btn onClick={addNewElement} title={t('+ Nytt valg')} variant="secondary" size="small" />
+                        <Btn onClick={dispatchValueSet} title={t('Lagre >')} variant="primary" size="small" />
                     </div>
                     <div className="value-set">
                         <DragDropContext onDragEnd={handleOrder}>
@@ -201,7 +203,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                                                             <div className="answer-option-content align-everything">
                                                                 <input
                                                                     value={item.display}
-                                                                    placeholder="Legg inn tittel.."
+                                                                    placeholder={t('Legg inn tittel..')}
                                                                     onChange={(event) =>
                                                                         handleConceptItem(
                                                                             event.target.value,
@@ -212,7 +214,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                                                                 />
                                                                 <input
                                                                     value={item.code}
-                                                                    placeholder="Legg inn verdi.."
+                                                                    placeholder={t('Legg inn verdi..')}
                                                                     onChange={(event) =>
                                                                         handleConceptItem(
                                                                             event.target.value,
@@ -227,7 +229,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                                                                     <button
                                                                         type="button"
                                                                         onClick={() => removeElement(item.id)}
-                                                                        name="Fjern element"
+                                                                        name={t('Fjern element')}
                                                                         className="align-everything"
                                                                     />
                                                                 )}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Select from '../../Select/Select';
 
 export enum FhirPathDateOperator {
@@ -19,26 +20,27 @@ interface FhirPathDateValidationProps {
 }
 
 export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.Element => {
+    const { t } = useTranslation();
     return (
         <div className="horizontal">
-            <span>{`${props.descriptionText} er `}</span>
+            <span>{`${props.descriptionText} ${t('er')} `}</span>
             <Select
                 options={[
                     {
                         code: FhirPathDateOperator.NOVALIDATION,
-                        display: '<uten validering>',
+                        display: t('<uten validering>'),
                     },
                     {
                         code: FhirPathDateOperator.EXACT,
-                        display: 'dagens dato',
+                        display: t('dagens dato'),
                     },
                     {
                         code: FhirPathDateOperator.PLUSS,
-                        display: 'dagens dato pluss',
+                        display: t('dagens dato pluss'),
                     },
                     {
                         code: FhirPathDateOperator.MINUS,
-                        display: 'dagens dato minus',
+                        display: t('dagens dato minus'),
                     },
                 ]}
                 value={props.operatorValue}
@@ -51,7 +53,7 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
                 <>
                     <input
                         type="number"
-                        placeholder="tall"
+                        placeholder={t('tall')}
                         className="date-validation-input"
                         defaultValue={props.numberValue}
                         onChange={(event) => {
@@ -63,19 +65,19 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
                         options={[
                             {
                                 code: 'days',
-                                display: 'dager',
+                                display: t('dager'),
                             },
                             {
                                 code: 'weeks',
-                                display: 'uker',
+                                display: t('uker'),
                             },
                             {
                                 code: 'months',
-                                display: 'måneder',
+                                display: t('måneder'),
                             },
                             {
                                 code: 'years',
-                                display: 'år',
+                                display: t('år'),
                             },
                         ]}
                         value={props.unitValue}

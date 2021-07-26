@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { QuestionnaireItem, QuestionnaireItemEnableBehaviorCodes } from '../../types/fhir';
 
 type Props = {
@@ -7,6 +8,7 @@ type Props = {
 };
 
 const EnableBehavior = ({ currentItem, dispatchUpdateItemEnableBehavior }: Props): JSX.Element => {
+    const { t } = useTranslation();
     return (
         <div className="enablebehavior">
             <label>
@@ -23,7 +25,7 @@ const EnableBehavior = ({ currentItem, dispatchUpdateItemEnableBehavior }: Props
                         );
                     }}
                 />
-                <span> Minst en betingelse må være oppfylt</span>
+                <span>{` ${t('Minst en betingelse må være oppfylt')}`}</span>
             </label>
             <label>
                 <input
@@ -36,7 +38,7 @@ const EnableBehavior = ({ currentItem, dispatchUpdateItemEnableBehavior }: Props
                         );
                     }}
                 />
-                <span> Alle betingelser må være oppfylt</span>
+                <span>{` ${t('Alle betingelser må være oppfylt')}`}</span>
             </label>
         </div>
     );

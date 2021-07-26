@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     DragDropContext,
     Draggable,
@@ -34,6 +35,7 @@ type Props = {
 };
 
 const Choice = ({ item }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 
     const dispatchExtentionUpdate = (type: ItemControlType.checkbox | ItemControlType.dropdown) => {
@@ -173,7 +175,7 @@ const Choice = ({ item }: Props): JSX.Element => {
             <div className="horizontal">
                 <div className="form-field">
                     <SwitchBtn
-                        label="Flere valg mulig"
+                        label={t('Flere valg mulig')}
                         onChange={() => dispatchExtentionUpdate(ItemControlType.checkbox)}
                         initial
                         value={isItemControlCheckbox(item)}
@@ -181,7 +183,7 @@ const Choice = ({ item }: Props): JSX.Element => {
                 </div>
                 <div className="form-field">
                     <SwitchBtn
-                        label="Nedtrekksmeny"
+                        label={t('Nedtrekksmeny')}
                         onChange={() => dispatchExtentionUpdate(ItemControlType.dropdown)}
                         initial
                         value={isItemControlDropDown(item)}
@@ -194,7 +196,7 @@ const Choice = ({ item }: Props): JSX.Element => {
             {!item.answerValueSet && (
                 <div className="center-text">
                     <Btn
-                        title="+ Legg til alternativ"
+                        title={t('+ Legg til alternativ')}
                         type="button"
                         onClick={() => {
                             const newArray = addEmptyOptionToAnswerOptionArray(item.answerOption || []);
