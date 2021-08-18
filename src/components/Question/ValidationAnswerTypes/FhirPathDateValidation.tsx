@@ -1,9 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { format, parse } from 'date-fns';
+import Picker from '../../DatePicker/DatePicker';
 import Select from '../../Select/Select';
 
 export enum FhirPathDateOperator {
     NOVALIDATION = 'no_validation',
+    ABSOLUTE = 'abs',
     EXACT = 'exact',
     PLUSS = '+',
     MINUS = '-',
@@ -14,6 +17,8 @@ interface FhirPathDateValidationProps {
     numberValue: string;
     unitValue: string;
     operatorValue: string;
+    absoluteDateValue?: string;
+    onChangeAbsoluteValue: (newValue: string) => void;
     onChangeNumberValue: (newValue: string) => void;
     onChangeUnitValue: (newValue: string) => void;
     onChangeOperatorValue: (newValue: string) => void;
@@ -29,6 +34,10 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
                     {
                         code: FhirPathDateOperator.NOVALIDATION,
                         display: t('<uten validering>'),
+                    },
+                    {
+                        code: FhirPathDateOperator.ABSOLUTE,
+                        display: 'fast dato',
                     },
                     {
                         code: FhirPathDateOperator.EXACT,
@@ -48,6 +57,19 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
                     props.onChangeOperatorValue(event.target.value);
                 }}
             />
+            {props.operatorValue === FhirPathDateOperator.ABSOLUTE && (
+                <Picker
+                    selected={
+                        props.absoluteDateValue ? parse(props.absoluteDateValue, 'yyyy-MM-dd', new Date()) : undefined
+                    }
+                    type="date"
+                    disabled={false}
+                    callback={(date) => {
+                        const newDateString = date ? format(date, 'yyyy-MM-dd') : '';
+                        props.onChangeAbsoluteValue(newDateString);
+                    }}
+                />
+            )}
             {(props.operatorValue === FhirPathDateOperator.PLUSS ||
                 props.operatorValue === FhirPathDateOperator.MINUS) && (
                 <>
