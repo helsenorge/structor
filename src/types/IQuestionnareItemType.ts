@@ -105,7 +105,6 @@ export enum IExtentionType {
     validationtext = 'http://ehelse.no/fhir/StructureDefinition/validationtext',
     navigator = 'http://helsenorge.no/fhir/StructureDefinition/sdf-questionnaire-navgiator-state',
     navigatorCodeSystem = 'http://helsenorge.no/fhir/CodeSystem/sdf-questionnaire-navigator-state ',
-    fhirPathValidation = 'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpathvalidation',
     fhirPathMaxValue = 'http://ehelse.no/fhir/StructureDefinition/sdf-maxvalue',
     fhirPathMinValue = 'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue',
     sublabel = 'http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel',
