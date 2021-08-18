@@ -65,17 +65,6 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
                     callback={(date) => {
                         const newDateString = date ? format(date, 'yyyy-MM-dd') : '';
                         props.onChangeAbsoluteValue(newDateString);
-                        /*
-                        if (date) {
-                            const newExtention: Extension = {
-                                url: IExtentionType.minValue,
-                                valueDate: format(date, 'yyyy-MM-dd'),
-                            };
-                            setItemExtension(item, newExtention, dispatch);
-                        } else {
-                            removeItemExtension(item, IExtentionType.minValue, dispatch);
-                        }
-                        */
                     }}
                 />
             )}
