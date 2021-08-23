@@ -69,7 +69,7 @@ const QuestionDrawer = ({ validationErrors }: Props): JSX.Element | null => {
                         <IconBtn type="forward" title={t('Neste (Pil høyre)')} onClick={next} color="black" />
                     )}
                 </div>
-                {item && <div className="pull-right">{generateItemButtons(item, parentArray, true, dispatch)}</div>}
+                {item && <div className="pull-right">{generateItemButtons(t, item, parentArray, true, dispatch)}</div>}
             </div>
             {itemValidationErrors.length > 0 && (
                 <div className="item-validation-error-summary">

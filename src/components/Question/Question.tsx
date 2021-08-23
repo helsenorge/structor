@@ -291,7 +291,8 @@ const Question = (props: QuestionProps): JSX.Element => {
                 </div>
                 <div className="horizontal">
                     {props.item.type !== IQuestionnaireItemType.group &&
-                        props.item.type !== IQuestionnaireItemType.display && (
+                        props.item.type !== IQuestionnaireItemType.display &&
+                        !isItemControlInline(props.item) && (
                             <div className="form-field ">
                                 <SwitchBtn
                                     label={t('Obligatorisk')}

@@ -37,7 +37,7 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
                     },
                     {
                         code: FhirPathDateOperator.ABSOLUTE,
-                        display: 'fast dato',
+                        display: t('fast dato'),
                     },
                     {
                         code: FhirPathDateOperator.EXACT,
@@ -83,7 +83,7 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
                         }}
                     />
                     <Select
-                        placeholder="Enhet"
+                        placeholder={t('Enhet')}
                         options={[
                             {
                                 code: 'days',

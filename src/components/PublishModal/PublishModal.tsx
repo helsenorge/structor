@@ -72,7 +72,7 @@ const PublishModal = ({ close }: Props): JSX.Element => {
                     pushToServer();
                 }}
             >
-                <FormField label={t('Url til publiseringen:')}>
+                <FormField label={t('Url til server:')}>
                     <input
                         value={state.qMetadata.url || ''}
                         placeholder={t('Skriv inn en url..')}

@@ -141,108 +141,108 @@ export const dropdownExtension = {
 export const enableWhenOperatorBoolean: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
-        display: 'Er besvart',
+        display: 'er besvart',
     },
     {
         code: IOperator.notExists,
-        display: 'Ikke er besvart',
+        display: 'ikke er besvart',
     },
     {
         code: IOperator.equal,
-        display: 'Er lik',
+        display: 'er lik',
     },
     {
         code: IOperator.notEqual,
-        display: 'Ikke er lik',
+        display: 'ikke er lik',
     },
 ];
 
 export const enableWhenOperatorChoice: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
-        display: 'Er besvart',
+        display: 'er besvart',
     },
     {
         code: IOperator.notExists,
-        display: 'Ikke er besvart',
+        display: 'ikke er besvart',
     },
     {
         code: IOperator.equal,
-        display: 'Er lik',
+        display: 'er lik',
     },
     {
         code: IOperator.notEqual,
-        display: 'Ikke er lik',
+        display: 'ikke er lik',
     },
 ];
 
 export const enableWhenOperatorDate: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
-        display: 'Er besvart',
+        display: 'er besvart',
     },
     {
         code: IOperator.notExists,
-        display: 'Ikke er besvart',
+        display: 'ikke er besvart',
     },
     {
         code: IOperator.equal,
-        display: 'Er lik',
+        display: 'er lik',
     },
     {
         code: IOperator.notEqual,
-        display: 'Ikke er lik',
+        display: 'ikke er lik',
     },
     {
         code: IOperator.greaterThan,
-        display: 'Er etter',
+        display: 'er etter',
     },
     {
         code: IOperator.lessThan,
-        display: 'Er før',
+        display: 'er før',
     },
     {
         code: IOperator.greaterThanOrEqual,
-        display: 'Er etter eller lik',
+        display: 'er etter eller lik',
     },
     {
         code: IOperator.lessThanOrEqual,
-        display: 'Er før eller lik',
+        display: 'er før eller lik',
     },
 ];
 
 export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
-        display: 'Er besvart',
+        display: 'er besvart',
     },
     {
         code: IOperator.notExists,
-        display: 'Ikke er besvart',
+        display: 'ikke er besvart',
     },
     {
         code: IOperator.equal,
-        display: 'Er lik',
+        display: 'er lik',
     },
     {
         code: IOperator.notEqual,
-        display: 'Ikke er lik',
+        display: 'ikke er lik',
     },
     {
         code: IOperator.greaterThan,
-        display: 'Er større enn',
+        display: 'er større enn',
     },
     {
         code: IOperator.lessThan,
-        display: 'Er mindre enn',
+        display: 'er mindre enn',
     },
     {
         code: IOperator.greaterThanOrEqual,
-        display: 'Er større enn eller lik',
+        display: 'er større enn eller lik',
     },
     {
         code: IOperator.lessThanOrEqual,
-        display: 'Er mindre enn eller lik',
+        display: 'er mindre enn eller lik',
     },
 ];
 

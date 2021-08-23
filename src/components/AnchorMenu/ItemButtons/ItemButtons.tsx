@@ -1,4 +1,5 @@
 import React, { MouseEvent } from 'react';
+import { TFunction } from 'react-i18next';
 
 import { ActionType } from '../../../store/treeStore/treeStore';
 import { QuestionnaireItem } from '../../../types/fhir';
@@ -14,6 +15,7 @@ import {
 } from '../../../helpers/itemControl';
 
 export const generateItemButtons = (
+    t: TFunction<'translation'>,
     item: QuestionnaireItem,
     parentArray: Array<string>,
     showLabel: boolean,
@@ -53,10 +55,10 @@ export const generateItemButtons = (
                       className={getClassNames()}
                       onClick={dispatchAddChildItem}
                       aria-label="Add child element"
-                      title="Oppfølgingsspørsmål"
+                      title={t('Oppfølgingsspørsmål')}
                   >
                       <i className="add-icon" />
-                      {showLabel && <label>Opprett oppfølgingsspørsmål</label>}
+                      {showLabel && <label>{t('Opprett oppfølgingsspørsmål')}</label>}
                   </button>,
               ]
             : []),
@@ -65,20 +67,20 @@ export const generateItemButtons = (
             className={getClassNames()}
             onClick={dispatchDuplicateItem}
             aria-label="Duplicate element"
-            title="Dupliser"
+            title={t('Dupliser')}
         >
             <i className="duplicate-icon" />
-            {showLabel && <label>Dupliser</label>}
+            {showLabel && <label>{t('Dupliser')}</label>}
         </button>,
         <button
             key="delete-item-button"
             className={getClassNames()}
             onClick={dispatchDeleteItem}
             aria-label="Delete element"
-            title="Slett"
+            title={t('Slett')}
         >
             <i className="trash-icon" />
-            {showLabel && <label>Slett</label>}
+            {showLabel && <label>{t('Slett')}</label>}
         </button>,
     ];
 };

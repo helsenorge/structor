@@ -183,7 +183,7 @@ const Navbar = ({
                             title={t('Valider')}
                             onClick={() => {
                                 setValidationErrors(
-                                    validateOrphanedElements(state.qOrder, state.qItems, state.qContained || []),
+                                    validateOrphanedElements(t, state.qOrder, state.qItems, state.qContained || []),
                                 );
                                 setShowValidationErrors(true);
                             }}

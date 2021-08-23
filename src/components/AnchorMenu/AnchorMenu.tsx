@@ -158,6 +158,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                             </span>
                         ),
                         buttons: generateItemButtons(
+                            t,
                             props.qItems[extendedNode.node.title],
                             treePathToOrderArray(extendedNode.path),
                             false,

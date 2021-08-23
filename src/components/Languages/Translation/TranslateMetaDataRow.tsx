@@ -27,7 +27,7 @@ const TranslateMetaDataRow = ({
             ? state.qAdditionalLanguages[targetLanguage].metaData
             : {};
     const [translatedValue, setTranslatedValue] = useState(translatedMetadata[propertyName]);
-    const validationMessage = validate ? validate(translatedValue, state, targetLanguage) : '';
+    const validationMessage = validate ? t(validate(translatedValue, state, targetLanguage)) : '';
 
     const dispatchPropertyUpdate = (text: string) => {
         if (!validationMessage) {
@@ -69,7 +69,7 @@ const TranslateMetaDataRow = ({
 
     return (
         <div key={`${targetLanguage}-${propertyName}`}>
-            <div className="translation-group-header">{label}</div>
+            <div className="translation-group-header">{t(label)}</div>
             <div className="translation-row">
                 <FormField>{renderBaseValue()}</FormField>
                 <FormField>

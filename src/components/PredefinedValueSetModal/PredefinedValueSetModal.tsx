@@ -148,7 +148,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
     };
 
     return (
-        <Modal close={props.close} title={t('Predefinerte verdier')} size="large" bottomCloseText="Lukk">
+        <Modal close={props.close} title={t('Predefinerte verdier')} size="large" bottomCloseText={t('Lukk')}>
             <div className="predefined-container">
                 <div>
                     <FormField label={t('Tittel')}>
@@ -163,7 +163,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                             onChange={(event) => setNewValueSet({ ...newValueSet, name: event.target.value })}
                         />
                     </FormField>
-                    <FormField label={t('Distributør')}>
+                    <FormField label={t('Utsteder')}>
                         <input
                             value={newValueSet.publisher}
                             onChange={(event) => setNewValueSet({ ...newValueSet, publisher: event.target.value })}

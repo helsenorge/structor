@@ -11,7 +11,7 @@ interface ValidationErrorsModalProps {
 export const ValidationErrorsModal = (props: ValidationErrorsModalProps): JSX.Element => {
     const { t } = useTranslation();
     return (
-        <Modal close={props.onClose} title="Validering" size="small" bottomCloseText="Lukk">
+        <Modal close={props.onClose} title={t('Validering')} size="small" bottomCloseText={t('Lukk')}>
             {props.validationErrors.length > 0 ? (
                 <div className="msg-error">
                     {t('Fant {0} feil. Spørsmål med feil er markert med rød ramme.').replace(
