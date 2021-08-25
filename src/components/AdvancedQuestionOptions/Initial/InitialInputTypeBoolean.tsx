@@ -31,7 +31,7 @@ const InitialInputTypeBoolean = (props: InitialInputTypeBooleanProps): JSX.Eleme
                     props.dispatchAction(newInitial);
                 }}
                 value={initialValue}
-                label={t('Initiell verdi')}
+                label={t('Initial value')}
                 initial={true}
             />
         </div>

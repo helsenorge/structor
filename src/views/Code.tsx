@@ -40,7 +40,7 @@ const Code = (): JSX.Element => {
 
     return (
         <div className="login">
-            <h1>{t('Logger inn..')}</h1>
+            <h1>{t('Logging in..')}</h1>
             <div className="align-everything">
                 {!error && <SpinnerBox />} {error && <p className="error-text">{error}</p>}
             </div>

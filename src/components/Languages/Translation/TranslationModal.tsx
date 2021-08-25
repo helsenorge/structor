@@ -74,7 +74,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
             return null;
         }
         return (
-            <TranslateItemRow targetLanguage={props.targetLanguage} item={inlineItem} itemHeading={'Utvidet tekst'} />
+            <TranslateItemRow targetLanguage={props.targetLanguage} item={inlineItem} itemHeading={'Expanded text'} />
         );
     };
 
@@ -91,7 +91,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         );
         return (
             <>
-                <div className="translation-group-header">{t('Hjelpetekst')}</div>
+                <div className="translation-group-header">{t('Help text')}</div>
                 <div className="translation-row">
                     <FormField>
                         <MarkdownEditor data={helpText} disabled={true} />
@@ -219,7 +219,12 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
 
     return (
         <div className="translation-modal">
-            <Modal close={props.close} title={t('Oversett skjema')} id="translation-modal" bottomCloseText={t('Lukk')}>
+            <Modal
+                close={props.close}
+                title={t('Translate questionnaire')}
+                id="translation-modal"
+                bottomCloseText={t('Close')}
+            >
                 {getHeader()}
                 <div style={{ position: 'relative' }}>
                     <>
@@ -245,7 +250,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                                     />
                                 )}
                                 <div>
-                                    <div className="translation-section-header">{t('Elementer')}</div>
+                                    <div className="translation-section-header">{t('Elements')}</div>
                                     {renderItems(flattOrder.filter((val, i) => i <= count))}
                                 </div>
                                 <div

@@ -28,9 +28,9 @@ const FormDetailsDrawer = ({ setTranslateLang, closeDrawer, isOpen = false }: Fo
     return (
         <Drawer title="Skjemadetaljer" position="left" visible={isOpen} hide={closeDrawer}>
             <div className="form-intro-field">
-                <label htmlFor="questionnaire-title">{t('Tittel')}:</label>
+                <label htmlFor="questionnaire-title">{t('Title')}:</label>
                 <input
-                    placeholder={t('Tittel')}
+                    placeholder={t('Title')}
                     value={state.qMetadata.title}
                     id="questionnaire-title"
                     onChange={(event) => {

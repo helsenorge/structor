@@ -40,7 +40,7 @@ const EnableWhenOperator = (props: EnableWhenOperatorProps): JSX.Element => {
 
     return (
         <Select
-            placeholder={t('Velg en operator')}
+            placeholder={t('Select an operator')}
             options={getOperatorsForType(props.conditionItem.type)}
             value={getSelectedOperator(props.ew)}
             onChange={(event) => {

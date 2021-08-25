@@ -170,7 +170,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
             {props.qOrder.length === 0 && (
                 <p className="center-text" style={{ padding: '0px 25px' }}>
-                    {t('Her vil du finne en oversikt over elementene i skjemaet')}
+                    {t('Here you will find a summary of questionnaire elements')}
                 </p>
             )}
             <div className="floating-button">
@@ -180,8 +180,8 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                         props.dispatch(newItemAction(IQuestionnaireItemType.group, []));
                     }}
                 >
-                    <i className="add-icon large" aria-label="add element" title={t('Opprett element')} />
-                    {t('Legg til element på toppnivå')}
+                    <i className="add-icon large" aria-label="add element" title={t('Create element')} />
+                    {t('Add top-level element')}
                 </button>
             </div>
         </div>

@@ -56,10 +56,10 @@ const MetadataEditor = (): JSX.Element => {
 
     return (
         <div id="metadata-editor">
-            <Accordion title={t('Skjemadetaljer')}>
-                <FormField label={t('Beskrivelse')}>
+            <Accordion title={t('Questionnaire details')}>
+                <FormField label={t('Description')}>
                     <textarea
-                        placeholder={t('Beskrivelse av skjema')}
+                        placeholder={t('Description of questionnaire')}
                         defaultValue={qMetadata.description || ''}
                         onBlur={(e) => updateMeta(IQuestionnaireMetadataType.description, e.target.value)}
                     />
@@ -79,7 +79,7 @@ const MetadataEditor = (): JSX.Element => {
                     />
                     {displayIdValidationError && (
                         <div className="msg-error" aria-live="polite">
-                            {t('Id må være fra 1-64 tegn og kan kun inneholde bokstaver fra a-z, tall, - og .')}
+                            {t('Id must be 1-64 characters and only letters a-z, numbers, - and .')}
                         </div>
                     )}
                 </FormField>
@@ -98,14 +98,14 @@ const MetadataEditor = (): JSX.Element => {
                     {displayNameValidationError && (
                         <div className="msg-error" aria-live="polite">
                             {t(
-                                'Teknisk navn må ha stor forbokstav, fra 1-255 tegn og kan kun inneholde tall, _ og bokstaver fra a-z',
+                                'Technical name must start with a captital letter, 1-255 characters and can only contain numbers and characters a-z',
                             )}
                         </div>
                     )}
                 </FormField>
                 <FormField label={t('Versjon')}>
                     <input
-                        placeholder={t('Versjonsnummer')}
+                        placeholder={t('Version number')}
                         defaultValue={qMetadata.version}
                         onBlur={(e) => {
                             updateMeta(IQuestionnaireMetadataType.version, e.target.value);
@@ -114,7 +114,7 @@ const MetadataEditor = (): JSX.Element => {
                 </FormField>
                 <FormField label={t('Helsenorge endpoint')}>
                     <input
-                        placeholder={t('F.eks Endpoint/35')}
+                        placeholder={t('For example Endpoint/35')}
                         defaultValue={
                             qMetadata?.extension?.find((ex) => ex.url === IExtentionType.endpoint)?.valueReference
                                 ?.reference ?? ''
@@ -133,7 +133,7 @@ const MetadataEditor = (): JSX.Element => {
                         }}
                     />
                 </FormField>
-                <FormField label={t('Visning av knapperad')}>
+                <FormField label={t('Button bar display')}>
                     <Select
                         value={
                             qMetadata?.extension?.find((ex) => ex.url === IExtentionType.presentationbuttons)
@@ -155,7 +155,7 @@ const MetadataEditor = (): JSX.Element => {
                         options={presentationButtons}
                     />
                 </FormField>
-                <FormField label={t('Beskriver om innlogging kreves for å besvare skjemaet')}>
+                <FormField label={t('Describes if user must be logged in to answer questionnaire')}>
                     <Select
                         value={
                             qMetadata?.extension?.find((ex) => ex.url === IExtentionType.authenticationRequirement)
@@ -177,7 +177,7 @@ const MetadataEditor = (): JSX.Element => {
                         options={authenticationRequirement}
                     />
                 </FormField>
-                <FormField label={t('Beskriver om andre enn pasienten kan besvare skjemaet')}>
+                <FormField label={t('Describes if representative can answer questionnaire')}>
                     <Select
                         value={
                             qMetadata?.extension?.find((ex) => ex.url === IExtentionType.canBePerformedBy)?.valueCoding
@@ -199,7 +199,7 @@ const MetadataEditor = (): JSX.Element => {
                         options={canBePerformedBy}
                     />
                 </FormField>
-                <FormField label={t('Lagring og mellomlagring')}>
+                <FormField label={t('Save capabilities')}>
                     <Select
                         value={getSaveCapability()}
                         onChange={(e) => {
@@ -218,7 +218,7 @@ const MetadataEditor = (): JSX.Element => {
                         options={saveCapability}
                     />
                 </FormField>
-                <FormField label={t('Dato')}>
+                <FormField label={t('Date')}>
                     <DateTimePicker
                         selected={qMetadata.date ? parseISO(qMetadata.date) : undefined}
                         disabled={false}
@@ -236,13 +236,13 @@ const MetadataEditor = (): JSX.Element => {
                         onChange={(e) => updateMeta(IQuestionnaireMetadataType.status, e.target.value)}
                     ></Select>
                 </FormField>
-                <FormField label={t('Utsteder')}>
+                <FormField label={t('Publisher')}>
                     <input
                         defaultValue={qMetadata.publisher || ''}
                         onBlur={(e) => updateMeta(IQuestionnaireMetadataType.publisher, e.target.value)}
                     />
                 </FormField>
-                <FormField label={t('Kontakt (URL til kontaktadresse)')}>
+                <FormField label={t('Contact (URL to contact adress)')}>
                     <input
                         defaultValue={
                             qMetadata.contact && qMetadata.contact.length > 0 ? qMetadata.contact[0].name : ''
@@ -250,7 +250,7 @@ const MetadataEditor = (): JSX.Element => {
                         onBlur={(e) => updateMeta(IQuestionnaireMetadataType.contact, [{ name: e.target.value }])}
                     />
                 </FormField>
-                <FormField label={t('Formål')}>
+                <FormField label={t('Purpose')}>
                     <MarkdownEditor
                         data={qMetadata.purpose || ''}
                         onBlur={(purpose: string) => updateMeta(IQuestionnaireMetadataType.purpose, purpose)}
@@ -262,7 +262,7 @@ const MetadataEditor = (): JSX.Element => {
                         onBlur={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
                     />
                 </FormField>
-                <FormField label={t('Generer PDF ved besvarelse')}>
+                <FormField label={t('Generate PDF on submit')}>
                     <SwitchBtn
                         onChange={() =>
                             updateMetaExtension({
@@ -275,7 +275,7 @@ const MetadataEditor = (): JSX.Element => {
                         initial
                     />
                 </FormField>
-                <FormField label={t('Bruk navigator')}>
+                <FormField label={t('Use navigator')}>
                     <SwitchBtn
                         onChange={() => {
                             const hasNavigatorExtension = !!qMetadata?.extension?.find(

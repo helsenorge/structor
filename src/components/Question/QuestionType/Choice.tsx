@@ -175,7 +175,7 @@ const Choice = ({ item }: Props): JSX.Element => {
             <div className="horizontal">
                 <div className="form-field">
                     <SwitchBtn
-                        label={t('Flere valg mulig')}
+                        label={t('Allow selection of multiple values')}
                         onChange={() => dispatchExtentionUpdate(ItemControlType.checkbox)}
                         initial
                         value={isItemControlCheckbox(item)}
@@ -183,7 +183,7 @@ const Choice = ({ item }: Props): JSX.Element => {
                 </div>
                 <div className="form-field">
                     <SwitchBtn
-                        label={t('Nedtrekksmeny')}
+                        label={t('Dropdown')}
                         onChange={() => dispatchExtentionUpdate(ItemControlType.dropdown)}
                         initial
                         value={isItemControlDropDown(item)}
@@ -196,7 +196,7 @@ const Choice = ({ item }: Props): JSX.Element => {
             {!item.answerValueSet && (
                 <div className="center-text">
                     <Btn
-                        title={t('+ Legg til alternativ')}
+                        title={t('+ Add option')}
                         type="button"
                         onClick={() => {
                             const newArray = addEmptyOptionToAnswerOptionArray(item.answerOption || []);

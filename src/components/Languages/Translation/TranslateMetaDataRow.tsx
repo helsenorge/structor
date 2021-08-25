@@ -50,7 +50,7 @@ const TranslateMetaDataRow = ({
                     onBlur={(value) => {
                         dispatchPropertyUpdate(value);
                     }}
-                    placeholder={t('Legg inn oversettelse..')}
+                    placeholder={t('Enter translation..')}
                 />
             ) : (
                 <textarea
@@ -61,7 +61,7 @@ const TranslateMetaDataRow = ({
                     onChange={(event) => {
                         setTranslatedValue(event.target.value);
                     }}
-                    placeholder={t('Legg inn oversettelse..')}
+                    placeholder={t('Enter translation..')}
                 />
             )}
         </>

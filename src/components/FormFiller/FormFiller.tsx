@@ -47,8 +47,8 @@ const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
         <div className="overlay">
             <div className="iframe-div">
                 <div className="title align-everything">
-                    <IconBtn type="x" title={t('Lukk')} onClick={showFormFiller} />
-                    <h1>{t('Forhåndsvisning')}</h1>
+                    <IconBtn type="x" title={t('Close')} onClick={showFormFiller} />
+                    <h1>{t('Preview')}</h1>
                     <div className="pull-right">
                         <Select
                             value={selectedLanguage}

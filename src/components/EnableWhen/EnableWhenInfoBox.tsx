@@ -19,13 +19,13 @@ type OperatorMapType = {
 };
 
 const operatorMap: OperatorMapType = {
-    [IOperator.exists]: 'eksisterer',
-    [IOperator.equal]: 'er lik',
-    [IOperator.notEqual]: 'ikke er lik',
-    [IOperator.greaterThan]: 'er større enn',
-    [IOperator.lessThan]: 'er mindre enn',
-    [IOperator.greaterThanOrEqual]: 'er større enn eller lik',
-    [IOperator.lessThanOrEqual]: 'er mindre enn eller lik',
+    [IOperator.exists]: 'exists',
+    [IOperator.equal]: 'is equal to',
+    [IOperator.notEqual]: 'is not equal',
+    [IOperator.greaterThan]: 'is greater than',
+    [IOperator.lessThan]: 'is less than',
+    [IOperator.greaterThanOrEqual]: 'is greater than or equal',
+    [IOperator.lessThanOrEqual]: 'is less than or equal',
 };
 
 interface Props {
@@ -60,7 +60,7 @@ const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, en
             }
         }
 
-        return display || t('<ikke satt>');
+        return display || t('<not set>');
     };
 
     const getQuantityDisplay = (answerQuantity: Quantity): string => {
@@ -81,18 +81,18 @@ const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, en
         if (!conditionItem) {
             // if this happens, this enableWhen refers to a question which does not exist
             console.warn(
-                t('Feil i betinget visning: item med linkId {0} finnes ikke.').replace('{0}', enableWhen.question),
+                t('Error in enableWhen: item with linkId {0} does not exist').replace('{0}', enableWhen.question),
             );
             return (
                 <div key={`${linkId}-${enableWhen.question}-${enableWhen.operator}-notfound`}>
-                    {t('Feil i betinget visning: item med linkId {0} finnes ikke.').replace('{0}', enableWhen.question)}
+                    {t('Error in enableWhen: item with linkId {0} does not exist').replace('{0}', enableWhen.question)}
                 </div>
             );
         }
 
         let answerCondition: string;
         if (enableWhen.hasOwnProperty('answerBoolean')) {
-            answerCondition = enableWhen.answerBoolean === true ? t('Sant') : t('Usant');
+            answerCondition = enableWhen.answerBoolean === true ? t('True') : t('Not true');
         } else if (enableWhen.hasOwnProperty('answerDecimal')) {
             answerCondition = enableWhen.answerDecimal.toString();
         } else if (enableWhen.hasOwnProperty('answerInteger')) {
@@ -123,10 +123,10 @@ const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, en
             </div>
         );
     };
-    const enableBehaviorText = enableBehavior === QuestionnaireItemEnableBehaviorCodes.ALL ? t('og') : t('eller');
+    const enableBehaviorText = enableBehavior === QuestionnaireItemEnableBehaviorCodes.ALL ? t('and') : t('or');
 
     return (
-        <Infobox title={t('Elementet vil vises dersom:')}>
+        <Infobox title={t('Element will be shown if:')}>
             {enableWhen.map((condition, index) => {
                 return generateCondition(condition, index > 0 ? enableBehaviorText : '');
             })}

@@ -3,43 +3,43 @@ import { IQuestionnaireStatus } from '../types/IQuestionnaireMetadataType';
 export const metadataOperators = [
     {
         code: IQuestionnaireStatus.active,
-        display: 'Aktiv',
+        display: 'Active',
     },
     {
         code: IQuestionnaireStatus.draft,
-        display: 'Skisse',
+        display: 'Draft',
     },
     {
         code: IQuestionnaireStatus.retired,
-        display: 'Avsluttet',
+        display: 'Retired',
     },
     {
         code: IQuestionnaireStatus.unknown,
-        display: 'Ukjent',
+        display: 'Unknown',
     },
 ];
 
 export const presentationButtons = [
-    { code: '', display: 'Flytende nederst på skjermen (standardinnstilling)' },
-    { code: 'none', display: 'Ingen knapperad' },
-    { code: 'static', display: 'Fast (kun nederst i skjema)' },
+    { code: '', display: 'Floating at the bottom of the screen (standard setting)' },
+    { code: 'none', display: 'No button bar' },
+    { code: 'static', display: 'Static (at the bottom of the questionnaire)' },
 ];
 
 export const canBePerformedBy = [
-    { code: '', display: 'Kan også utfylles av andre på vegne av pasienten (standardinnstilling)' },
-    { code: '2', display: 'Må fylles ut av pasienten selv' },
+    { code: '', display: 'Questionnaire can be answered by a representative (standard setting)' },
+    { code: '2', display: 'Can only be answered by logged in patient' },
 ];
 
 export const authenticationRequirement = [
-    { code: '', display: 'Påkrevd (standardinnstilling)' },
-    { code: '1', display: 'Anonym' },
-    { code: '2', display: 'Valgfritt' },
+    { code: '', display: 'Required (standard setting)' },
+    { code: '1', display: 'Anonymous' },
+    { code: '2', display: 'Optional' },
 ];
 
 export const saveCapability = [
-    { code: '', display: 'Lagring av endelig versjon og mellomlagring (standardinnstilling)' },
-    { code: '2', display: 'Kun lagring av endelig versjon' },
-    { code: '3', display: 'Ingen lagring' },
+    { code: '', display: 'Save submitted questionnaire and intermediate save (standard setting)' },
+    { code: '2', display: 'Only submitted questionnaire is saved' },
+    { code: '3', display: 'No saving' },
 ];
 
 export const isValidId = (value: string): boolean => {

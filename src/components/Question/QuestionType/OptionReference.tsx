@@ -113,7 +113,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                     type="button"
                     variant="secondary"
                     onClick={() => dispatchNewItem()}
-                    title={t('+ Legg til mottaker')}
+                    title={t('+ Add recipient')}
                 />
             </div>
             <DragDropContext onDragEnd={handleReorder}>
@@ -147,7 +147,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                         autoComplete="off"
                                                         type="text"
                                                         name="beskrivelse"
-                                                        placeholder={t('Angi mottaker..')}
+                                                        placeholder={t('Select recipient..')}
                                                         defaultValue={reference.valueReference?.display}
                                                         onBlur={(event) =>
                                                             updateReference(
@@ -161,7 +161,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                         autoComplete="off"
                                                         type="text"
                                                         name="verdi"
-                                                        placeholder={t('Angi endpoint..')}
+                                                        placeholder={t('Select endpoint..')}
                                                         defaultValue={reference.valueReference?.reference}
                                                         onBlur={(event) =>
                                                             updateReference(

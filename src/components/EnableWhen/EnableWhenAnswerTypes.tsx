@@ -84,7 +84,7 @@ const EnableWhenAnswerTypes = ({
             {(conditionItem.type === IQuestionnaireItemType.choice ||
                 conditionItem.type === IQuestionnaireItemType.openChoice) && (
                 <Select
-                    placeholder={t('Velg et alternativ..')}
+                    placeholder={t('Choose an option..')}
                     options={getChoices(conditionItem)}
                     value={getSelectedChoiceValue()}
                     onChange={(event) => {
@@ -114,10 +114,10 @@ const EnableWhenAnswerTypes = ({
             )}
             {conditionItem.type === IQuestionnaireItemType.boolean && (
                 <Select
-                    placeholder={t('Velg et alternativ..')}
+                    placeholder={t('Choose an option..')}
                     options={[
-                        { display: t('Sant'), code: 'true' },
-                        { display: t('Usant'), code: 'false' },
+                        { display: t('True'), code: 'true' },
+                        { display: t('Not true'), code: 'false' },
                     ]}
                     value={(enableWhen.answerBoolean || '').toString()}
                     onChange={(event) => {

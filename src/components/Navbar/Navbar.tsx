@@ -139,11 +139,11 @@ const Navbar = ({
         <>
             <header ref={navBarRef}>
                 <div>
-                    <Btn title={t('Skjema')} onClick={() => handleMenuItemClick(MenuItem.file)} />
+                    <Btn title={t('Questionnaire')} onClick={() => handleMenuItemClick(MenuItem.file)} />
                     {selectedMenuItem === MenuItem.file && (
                         <div className="menu file">
-                            <Btn title={t('Nytt skjema')} onClick={() => callbackAndHide(newQuestionnaire)} />
-                            <Btn title={t('Last opp skjema')} onClick={() => callbackAndHide(triggerUpload)} />
+                            <Btn title={t('New questionnaire')} onClick={() => callbackAndHide(newQuestionnaire)} />
+                            <Btn title={t('Upload questionnaire')} onClick={() => callbackAndHide(triggerUpload)} />
                         </div>
                     )}
                 </div>
@@ -158,13 +158,13 @@ const Navbar = ({
                     {profile && profile.name && (
                         <p
                             className="truncate profile-name"
-                            title={t('Du er logget inn som {0}').replace('{0}', profile.name)}
+                            title={t('You are logged in as {0}').replace('{0}', profile.name)}
                         >
                             {getProfileName()}
                         </p>
                     )}
-                    <Btn title={t('Forhåndsvisning')} onClick={showFormFiller} />
-                    <Btn title={t('Lagre')} onClick={() => exportToJsonAndDownload()} />
+                    <Btn title={t('Preview')} onClick={showFormFiller} />
+                    <Btn title={t('Save')} onClick={() => exportToJsonAndDownload()} />
                     <div
                         className="more-menu"
                         tabIndex={0}
@@ -180,7 +180,7 @@ const Navbar = ({
                 {selectedMenuItem === MenuItem.more && (
                     <div className="menu">
                         <Btn
-                            title={t('Valider')}
+                            title={t('Validate')}
                             onClick={() => {
                                 setValidationErrors(
                                     validateOrphanedElements(t, state.qOrder, state.qItems, state.qContained || []),
@@ -189,28 +189,25 @@ const Navbar = ({
                             }}
                         />
                         <Btn title={t('JSON')} onClick={() => callbackAndHide(() => setShowJSONView(!showJSONView))} />
+                        <Btn title={t('Publish')} onClick={() => callbackAndHide(() => setShowPublish(!showPublish))} />
                         <Btn
-                            title={t('Publiser')}
-                            onClick={() => callbackAndHide(() => setShowPublish(!showPublish))}
-                        />
-                        <Btn
-                            title={t('Importer valg')}
+                            title={t('Import choices')}
                             onClick={() => callbackAndHide(() => setShowImportValueSet(!showImportValueSet))}
                         />
                         <Btn
-                            title={t('Valg')}
+                            title={t('Choices')}
                             onClick={() => callbackAndHide(() => setShowContained(!showContained))}
                         />
-                        {!profile && <Btn title={t('Logg inn')} onClick={handleLogin} />}
-                        {profile && <Btn title={t('Logg ut')} onClick={endSession} />}
+                        {!profile && <Btn title={t('Log in')} onClick={handleLogin} />}
+                        {profile && <Btn title={t('Log out')} onClick={endSession} />}
                         {i18n.language !== 'en-US' ? (
                             <Btn
-                                title={t('Bytt til engelsk')}
+                                title={t('Change to English')}
                                 onClick={() => callbackAndHide(() => i18n.changeLanguage('en-US'))}
                             />
                         ) : (
                             <Btn
-                                title={t('Bytt til norsk')}
+                                title={t('Change to norwegian')}
                                 onClick={() => callbackAndHide(() => i18n.changeLanguage('nb-NO'))}
                             />
                         )}

@@ -47,7 +47,7 @@ const AnswerOption = ({
                 />
             </div>
             {showDelete && (
-                <button type="button" name={t('Fjern element')} onClick={deleteItem} className="align-everything" />
+                <button type="button" name={t('Remove element')} onClick={deleteItem} className="align-everything" />
             )}
         </div>
     );

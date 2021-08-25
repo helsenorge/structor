@@ -25,7 +25,7 @@ const SystemField = ({ value, onBlur }: Props): JSX.Element => {
         <FormField label={t('System')}>
             <input
                 ref={ref}
-                placeholder={t('Legg inn system..')}
+                placeholder={t('Enter system..')}
                 defaultValue={value || ''}
                 onBlur={onBlur}
                 onChange={(event) => {
@@ -34,7 +34,7 @@ const SystemField = ({ value, onBlur }: Props): JSX.Element => {
             />
             {!hasValidSystem && (
                 <div className="msg-error" aria-live="polite">
-                    {t('System må begynne med http://, https:// eller urn:')}
+                    {t('System must start with http://, https:// or urn:')}
                 </div>
             )}
         </FormField>

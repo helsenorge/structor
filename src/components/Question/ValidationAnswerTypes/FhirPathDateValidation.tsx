@@ -28,28 +28,28 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
     const { t } = useTranslation();
     return (
         <div className="horizontal">
-            <span>{`${props.descriptionText} ${t('er')} `}</span>
+            <span>{`${props.descriptionText} ${t('is')} `}</span>
             <Select
                 options={[
                     {
                         code: FhirPathDateOperator.NOVALIDATION,
-                        display: t('<uten validering>'),
+                        display: t('<no validation>'),
                     },
                     {
                         code: FhirPathDateOperator.ABSOLUTE,
-                        display: t('fast dato'),
+                        display: t('a set date'),
                     },
                     {
                         code: FhirPathDateOperator.EXACT,
-                        display: t('dagens dato'),
+                        display: t('today'),
                     },
                     {
                         code: FhirPathDateOperator.PLUSS,
-                        display: t('dagens dato pluss'),
+                        display: t('today plus'),
                     },
                     {
                         code: FhirPathDateOperator.MINUS,
-                        display: t('dagens dato minus'),
+                        display: t('today minus'),
                     },
                 ]}
                 value={props.operatorValue}
@@ -75,7 +75,7 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
                 <>
                     <input
                         type="number"
-                        placeholder={t('tall')}
+                        placeholder={t('number')}
                         className="date-validation-input"
                         defaultValue={props.numberValue}
                         onChange={(event) => {
@@ -83,23 +83,23 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
                         }}
                     />
                     <Select
-                        placeholder={t('Enhet')}
+                        placeholder={t('Unit')}
                         options={[
                             {
                                 code: 'days',
-                                display: t('dager'),
+                                display: t('days'),
                             },
                             {
                                 code: 'weeks',
-                                display: t('uker'),
+                                display: t('weeks'),
                             },
                             {
                                 code: 'months',
-                                display: t('måneder'),
+                                display: t('months'),
                             },
                             {
                                 code: 'years',
-                                display: t('år'),
+                                display: t('year'),
                             },
                         ]}
                         value={props.unitValue}

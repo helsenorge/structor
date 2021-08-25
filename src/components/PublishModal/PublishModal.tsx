@@ -43,10 +43,10 @@ const PublishModal = ({ close }: Props): JSX.Element => {
                 .then((res) => {
                     if (res.status >= 200 && res.status < 300) {
                         setUpload('success');
-                        setFormState(t('Skjema er lastet opp'));
+                        setFormState(t('Questionnaire uploaded'));
                     } else {
                         setUpload('error');
-                        setFormState(t('Skjema har en eller flere feil'));
+                        setFormState(t('Questionnaire has one or more errors'));
                     }
 
                     if (res.status === 404) {
@@ -64,19 +64,19 @@ const PublishModal = ({ close }: Props): JSX.Element => {
     };
 
     return (
-        <Modal close={close} title={t('Publiser')}>
-            <p>{t('Er du klar for å publisere?')}</p>
+        <Modal close={close} title={t('Publish')}>
+            <p>{t('Are you ready to publish?')}</p>
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
                     pushToServer();
                 }}
             >
-                <FormField label={t('Url til server:')}>
+                <FormField label={t('Url to server')}>
                     <input
                         value={state.qMetadata.url || ''}
-                        placeholder={t('Skriv inn en url..')}
-                        title={t('Kun url')}
+                        placeholder={t('Enter a url..')}
+                        title={t('Only url')}
                         onChange={(e) => updateMeta(IQuestionnaireMetadataType.url, e.target.value || '')}
                         pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
                         type="url"
@@ -84,10 +84,10 @@ const PublishModal = ({ close }: Props): JSX.Element => {
                     />
                 </FormField>
 
-                <FormField label={t('Skriv inn id: ')}>
+                <FormField label={t('Enter an id:')}>
                     <input
                         pattern="[A-Z0-9_]{1,63}"
-                        title={t('Kun store bokstaver og tall')}
+                        title={t('Only capital letters and numbers')}
                         value={state.qMetadata.id || ''}
                         maxLength={64}
                         onChange={(e) => updateMeta(IQuestionnaireMetadataType.id, e.target.value || '')}
@@ -95,7 +95,7 @@ const PublishModal = ({ close }: Props): JSX.Element => {
                     />
                 </FormField>
 
-                <Btn title={t('Publiser skjema')} type="submit" />
+                <Btn title={t('Publish questionnaire')} type="submit" />
             </form>
             <div className="feedback">
                 <Spinner state={upload} />

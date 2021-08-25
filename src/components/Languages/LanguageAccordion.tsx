@@ -53,8 +53,8 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
 
     return (
         <>
-            <Accordion title={t('Språk')}>
-                <FormField label={t('Hovedspråk:')}>
+            <Accordion title={t('Translations')}>
+                <FormField label={t('Main language')}>
                     <Select
                         value={qMetadata.language || ''}
                         options={supportedLanguages}
@@ -80,9 +80,9 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                 {getUnusedLanguage.length > 0 && (
                     <div className="horizontal equal">
                         <div style={{ marginBottom: 10, width: '100%' }}>
-                            <FormField label={t('Legg til støtte for tilleggsspråk')}>
+                            <FormField label={t('Add support for additional language')}>
                                 <Select
-                                    placeholder={t('Velg et språk..')}
+                                    placeholder={t('Select a language..')}
                                     options={getUnusedLanguage}
                                     value={selectedLang}
                                     onChange={(event) => setSelectedLang(event.target.value)}
@@ -91,7 +91,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                         </div>
                         <div style={{ marginBottom: 10 }}>
                             <Btn
-                                title={t('+ Legg til nytt språk')}
+                                title={t('+ Add new language')}
                                 type="button"
                                 size="small"
                                 variant="primary"
@@ -105,20 +105,20 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                 )}
                 {additionalLanguagesInUse.length > 0 && (
                     <div>
-                        <p>{t('Tilleggsspråk:')}</p>
+                        <p>{t('Additional languages')}</p>
                         {additionalLanguagesInUse.map((language, index) => (
                             <div key={index} className="enablewhen-box align-everything">
                                 <div>{getLanguageFromCode(language)?.display} </div>
                                 <div className="pull-right btn-group">
                                     <Btn
-                                        title={t('Slett')}
+                                        title={t('Delete')}
                                         type="button"
                                         size="small"
                                         variant="secondary"
                                         onClick={() => removeAdditionalLanguage(language)}
                                     />
                                     <Btn
-                                        title={t('Oversett')}
+                                        title={t('Translate')}
                                         type="button"
                                         size="small"
                                         variant="primary"

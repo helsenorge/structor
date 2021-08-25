@@ -37,7 +37,7 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
 
     return (
         <>
-            <FormField label={t('Datotype')}>
+            <FormField label={t('Date type')}>
                 <label>
                     <input
                         type="radio"
@@ -47,7 +47,7 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
                             removeItemExtension(item, IExtentionType.itemControl, dispatch);
                         }}
                     />
-                    <span>{` ${t('Dag, måned og år')}`}</span>
+                    <span>{` ${t('Day, month and year')}`}</span>
                 </label>
                 <label>
                     <input
@@ -58,7 +58,7 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
                             setItemControlExtension(ItemControlType.yearMonth);
                         }}
                     />
-                    <span>{` ${t('Måned og år')}`}</span>
+                    <span>{` ${t('Month and year')}`}</span>
                 </label>
                 <label>
                     <input
@@ -69,7 +69,7 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
                             setItemControlExtension(ItemControlType.year);
                         }}
                     />
-                    <span>{` ${t('År')}`}</span>
+                    <span>{` ${t('Year')}`}</span>
                 </label>
             </FormField>
             <Picker />
