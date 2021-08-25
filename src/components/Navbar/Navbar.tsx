@@ -200,15 +200,15 @@ const Navbar = ({
                         />
                         {!profile && <Btn title={t('Log in')} onClick={handleLogin} />}
                         {profile && <Btn title={t('Log out')} onClick={endSession} />}
-                        {i18n.language !== 'en-US' ? (
-                            <Btn
-                                title={t('Change to English')}
-                                onClick={() => callbackAndHide(() => i18n.changeLanguage('en-US'))}
-                            />
-                        ) : (
+                        {i18n.language !== 'nb-NO' ? (
                             <Btn
                                 title={t('Change to norwegian')}
                                 onClick={() => callbackAndHide(() => i18n.changeLanguage('nb-NO'))}
+                            />
+                        ) : (
+                            <Btn
+                                title={t('Change to English')}
+                                onClick={() => callbackAndHide(() => i18n.changeLanguage('en-US'))}
                             />
                         )}
                     </div>
