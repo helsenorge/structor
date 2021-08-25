@@ -1,4 +1,6 @@
 import './AnchorMenu.css';
+import { DndProvider, DragSource } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +13,7 @@ import {
     updateMarkedLinkIdAction,
 } from '../../store/treeStore/treeActions';
 import { ValidationErrors } from '../../helpers/orphanValidation';
-import SortableTree from '@nosferatu500/react-sortable-tree';
+import { SortableTreeWithoutDndContext as SortableTree } from '@nosferatu500/react-sortable-tree';
 import '@nosferatu500/react-sortable-tree/style.css';
 import { isIgnorableItem, isItemControlInline } from '../../helpers/itemControl';
 import { generateItemButtons } from './ItemButtons/ItemButtons';
@@ -26,6 +28,7 @@ interface AnchorMenuProps {
 interface Node {
     title: string;
     hierarchy: string;
+    nodeType?: IQuestionnaireItemType;
     children: Node[];
 }
 
@@ -46,6 +49,47 @@ interface NodeVisibilityToggleEvent {
     node: Node;
     expanded: boolean;
 }
+
+const externalNodeType = 'yourNodeType';
+const externalNodeSpec = {
+    // This needs to return an object with a property `node` in it.
+    // Object rest spread is recommended to avoid side effects of
+    // referencing the same object in different trees.
+    beginDrag: (componentProps: any) => ({ node: { ...componentProps.node } }),
+};
+const externalNodeCollect = (connect: any) => ({
+    connectDragSource: connect.dragSource(),
+    // Add props via react-dnd APIs to enable more visual
+    // customization of your component
+    // isDragging: monitor.isDragging(),
+    // didDrop: monitor.didDrop(),
+});
+
+class externalNodeBaseComponent extends React.Component<any> {
+    render() {
+        const { connectDragSource, node } = this.props;
+
+        return connectDragSource(
+            <div
+                style={{
+                    padding: '10px',
+                    background: 'lightblue',
+                    margin: '10px',
+                    color: 'black',
+                }}
+            >
+                {node.nodeType}
+            </div>,
+            { dropEffect: 'copy' },
+        );
+    }
+}
+
+const YourExternalNodeComponent = DragSource(
+    externalNodeType,
+    externalNodeSpec,
+    externalNodeCollect,
+)(externalNodeBaseComponent);
 
 const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     const { t } = useTranslation();
@@ -74,7 +118,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
     const canCreateChild = (linkId: string): boolean => {
         const item = props.qItems[linkId];
-        return item.type !== IQuestionnaireItemType.display && !isItemControlInline(item);
+        return item && item.type !== IQuestionnaireItemType.display && !isItemControlInline(item);
     };
 
     const treePathToOrderArray = (treePath: string[]): string[] => {
@@ -87,7 +131,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
         return props.validationErrors.some((error) => error.linkId === linkId);
     };
 
-    const getRelevantIcon = (type: string) => {
+    const getRelevantIcon = (type?: string) => {
         switch (type) {
             case IQuestionnaireItemType.group:
                 return 'folder-icon';
@@ -100,9 +144,10 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
     const orderTreeData = mapToTreeData(props.qOrder, '');
     return (
-        <div className="questionnaire-overview">
-            {props.qOrder.length > 0 && (
+        <DndProvider backend={HTML5Backend}>
+            <div className="questionnaire-overview">
                 <SortableTree
+                    dndType={externalNodeType}
                     treeData={orderTreeData}
                     onChange={() => {
                         /* dummy */
@@ -110,17 +155,21 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                     getNodeKey={getNodeKey}
                     onMoveNode={({ treeData, nextParentNode, node, nextPath, prevPath }: NodeMoveEvent) => {
                         const newPath = treePathToOrderArray(nextPath);
-                        const oldPath = treePathToOrderArray(prevPath);
                         // find parent node:
                         const moveIndex = nextParentNode
                             ? nextParentNode.children.findIndex((x: Node) => x.title === node.title)
                             : treeData.findIndex((x: Node) => x.title === node.title);
 
-                        // reorder within same parent
-                        if (JSON.stringify(newPath) === JSON.stringify(oldPath)) {
-                            props.dispatch(reorderItemAction(node.title, newPath, moveIndex));
+                        if (node.title === 'NEW' && node.nodeType) {
+                            props.dispatch(newItemAction(node.nodeType, newPath, moveIndex));
                         } else {
-                            props.dispatch(moveItemAction(node.title, newPath, oldPath, moveIndex));
+                            const oldPath = treePathToOrderArray(prevPath);
+                            // reorder within same parent
+                            if (JSON.stringify(newPath) === JSON.stringify(oldPath)) {
+                                props.dispatch(reorderItemAction(node.title, newPath, moveIndex));
+                            } else {
+                                props.dispatch(moveItemAction(node.title, newPath, oldPath, moveIndex));
+                            }
                         }
                     }}
                     onVisibilityToggle={({ node, expanded }: NodeVisibilityToggleEvent) => {
@@ -149,11 +198,11 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                                     );
                                 }}
                             >
-                                <span className={getRelevantIcon(props.qItems[extendedNode.node.title].type)} />
+                                <span className={getRelevantIcon(props.qItems[extendedNode.node.title]?.type)} />
                                 <span className="anchor-menu__title">
                                     {extendedNode.node.hierarchy}
                                     {` `}
-                                    {props.qItems[extendedNode.node.title].text}
+                                    {props.qItems[extendedNode.node.title]?.text}
                                 </span>
                             </span>
                         ),
@@ -166,25 +215,36 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                         ),
                     })}
                 />
-            )}
 
-            {props.qOrder.length === 0 && (
-                <p className="center-text" style={{ padding: '0px 25px' }}>
-                    {t('Her vil du finne en oversikt over elementene i skjemaet')}
-                </p>
-            )}
-            <div className="floating-button">
-                <button
-                    className="new-item-button"
-                    onClick={() => {
-                        props.dispatch(newItemAction(IQuestionnaireItemType.group, []));
+                {props.qOrder.length === 0 && (
+                    <p className="center-text" style={{ padding: '0px 25px' }}>
+                        {t('Her vil du finne en oversikt over elementene i skjemaet')}
+                    </p>
+                )}
+                <div className="floating-button">
+                    <button
+                        className="new-item-button"
+                        onClick={() => {
+                            props.dispatch(newItemAction(IQuestionnaireItemType.group, []));
+                        }}
+                    >
+                        <i className="add-icon large" aria-label="add element" title={t('Opprett element')} />
+                        {t('Legg til element på toppnivå')}
+                    </button>
+                </div>
+                <div
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: '150px',
                     }}
                 >
-                    <i className="add-icon large" aria-label="add element" title={t('Opprett element')} />
-                    {t('Legg til element på toppnivå')}
-                </button>
+                    <YourExternalNodeComponent node={{ title: 'NEW', nodeType: IQuestionnaireItemType.group }} />
+                    <YourExternalNodeComponent node={{ title: 'NEW', nodeType: IQuestionnaireItemType.string }} />
+                    <YourExternalNodeComponent node={{ title: 'NEW', nodeType: IQuestionnaireItemType.text }} />
+                </div>
             </div>
-        </div>
+        </DndProvider>
     );
 };
 

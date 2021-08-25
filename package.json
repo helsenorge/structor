@@ -18,6 +18,7 @@
         "react": "^17.0.2",
         "react-beautiful-dnd": "^13.0.0",
         "react-datepicker": "^3.5.0",
+        "react-dnd-html5-backend": "^14.0.1",
         "react-dom": "^17.0.2",
         "react-i18next": "^11.7.0",
         "react-router-dom": "^5.2.0",
