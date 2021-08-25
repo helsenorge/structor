@@ -203,10 +203,10 @@ function extractTranslations(bundle: Bundle): Languages {
     if (!bundle.entry || bundle.entry.length < 2) {
         return {};
     }
-    const mainQuestionnaire = bundle.entry[0] as Questionnaire;
+    const mainQuestionnaire = bundle.entry[0].resource as Questionnaire;
     const languages: Languages = {};
     bundle.entry.forEach((bundleEntry, index) => {
-        const questionnaire = bundleEntry as Questionnaire;
+        const questionnaire = bundleEntry.resource as Questionnaire;
         if (
             index === 0 || // Skip first, as this is the main questionnaire
             !questionnaire.language ||
@@ -229,7 +229,7 @@ function mapToTreeState(resource: Bundle | Questionnaire): TreeState {
     let mainQuestionnaire: Questionnaire;
     let qAdditionalLanguages: Languages = {};
     if (resource.resourceType === 'Bundle' && resource.entry) {
-        mainQuestionnaire = resource.entry[0] as Questionnaire;
+        mainQuestionnaire = resource.entry[0].resource as Questionnaire;
         qAdditionalLanguages = extractTranslations(resource);
     } else {
         mainQuestionnaire = resource as Questionnaire;

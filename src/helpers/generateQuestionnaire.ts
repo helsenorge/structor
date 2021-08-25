@@ -264,7 +264,12 @@ export const generateQuestionnaire = (state: TreeState): string => {
             resourceType: 'Bundle',
             type: 'searchset',
             total: Object.keys(state.qAdditionalLanguages).length + 1,
-            entry: [generateMainQuestionnaire(state, usedValueSet), ...translateQuestionnaires()],
+            entry: [
+                { resource: generateMainQuestionnaire(state, usedValueSet) },
+                ...translateQuestionnaires().map((q) => {
+                    return { resource: q };
+                }),
+            ],
         };
 
         return JSON.stringify(bundle, emptyPropertyReplacer);
