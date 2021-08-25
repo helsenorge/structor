@@ -126,12 +126,6 @@ const Question = (props: QuestionProps): JSX.Element => {
 
         switch (param) {
             case IQuestionnaireItemType.string:
-                return (
-                    <div className="form-field">
-                        <label></label>
-                        <input disabled />
-                    </div>
-                );
             case IQuestionnaireItemType.text:
                 return (
                     <div className="form-field">
