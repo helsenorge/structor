@@ -152,6 +152,7 @@ export interface NewItemAction {
     type: typeof NEW_ITEM_ACTION;
     item: QuestionnaireItem;
     order: Array<string>;
+    index?: number;
 }
 
 export interface DeleteItemAction {
@@ -367,7 +368,7 @@ export const updateQuestionnaireMetadataAction = (
     };
 };
 
-export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>): NewItemAction => {
+export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>, index?: number): NewItemAction => {
     const newQuestionnaireItem = {
         linkId: CreateUUID(),
         type: type,
@@ -379,6 +380,7 @@ export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>
         type: NEW_ITEM_ACTION,
         item: newQuestionnaireItem,
         order,
+        index,
     };
 };
 
