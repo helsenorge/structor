@@ -203,12 +203,22 @@ const Navbar = ({
                         {i18n.language !== 'nb-NO' ? (
                             <Btn
                                 title={t('Change to norwegian')}
-                                onClick={() => callbackAndHide(() => i18n.changeLanguage('nb-NO'))}
+                                onClick={() =>
+                                    callbackAndHide(() => {
+                                        i18n.changeLanguage('nb-NO');
+                                        localStorage.setItem('editor_language', 'nb-NO');
+                                    })
+                                }
                             />
                         ) : (
                             <Btn
                                 title={t('Change to English')}
-                                onClick={() => callbackAndHide(() => i18n.changeLanguage('en-US'))}
+                                onClick={() =>
+                                    callbackAndHide(() => {
+                                        i18n.changeLanguage('en-US');
+                                        localStorage.setItem('editor_language', 'en-US');
+                                    })
+                                }
                             />
                         )}
                     </div>
