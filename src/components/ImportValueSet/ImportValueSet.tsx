@@ -35,14 +35,14 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
         });
 
         if (!response.ok || !response.json) {
-            const message = `${t('Det skjedde en feil med status:')} ${response.status}`;
+            const message = `${t('There was en error with status:')} ${response.status}`;
             return { error: message };
         }
 
         const bundle = await response.json();
 
         if (bundle.resourceType !== 'Bundle' || bundle.entry.length == 0) {
-            return { error: t('Ressursen støtter ikke FHIR protokollen.') };
+            return { error: t('This resource does not support the FHIR protocol') };
         }
 
         const valueSetFHIR = bundle.entry.map((x: BundleEntry) => x.resource) as ValueSet[];
@@ -82,13 +82,13 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                     return;
                 }
                 if (response.valueSet?.length === 0) {
-                    setError(t('Finner ingen Value Set på endepunktet.'));
+                    setError(t('Found no ValueSet at the endpoint'));
                     return;
                 }
                 setValueSets(response.valueSet);
             }, 1200);
         } catch {
-            setError(t('Ressursen støtter ikke FHIR protokollen.'));
+            setError(t('This resource does not support the FHIR protocol'));
             setLoading(false);
         }
     };
@@ -123,13 +123,13 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
     };
 
     return (
-        <Modal close={close} title={t('Importer Value Set')}>
+        <Modal close={close} title={t('Import ValueSet')}>
             <div>
-                <FormField label={t('Skriv inn en url som finner ressursen')}>
+                <FormField label={t('Enter a url which finds the resource')}>
                     <form className="input-btn" onSubmit={(e) => handleSubmit(e)}>
                         <input
                             placeholder="https://.."
-                            title={t('Kun url')}
+                            title={t('Only url')}
                             onChange={(e) => handleChangeUrl(e.target.value)}
                             pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
                             type="url"
@@ -137,7 +137,7 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                             required
                             autoFocus
                         />
-                        <Btn title={t('søk')} variant="primary" type="submit" />
+                        <Btn title={t('search')} variant="primary" type="submit" />
                     </form>
                 </FormField>
                 {loading && (
@@ -181,13 +181,13 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                     <div className="button-btn">
                         <div>
                             <p>
-                                {t('Legg til ({0} ValueSet) i predefinerte valg').replace(
+                                {t('Add ({0} ValueSet) in predefined valuesets').replace(
                                     '{0}',
                                     valueSetToAdd.length.toString(),
                                 )}
                             </p>
                             <Btn
-                                title={t('Importer')}
+                                title={t('Import')}
                                 variant="primary"
                                 type="button"
                                 size="small"

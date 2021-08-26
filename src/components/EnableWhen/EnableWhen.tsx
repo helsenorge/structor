@@ -63,7 +63,7 @@ const EnableWhen = ({
 
     return (
         <>
-            <p>{t('Sett betingelser for visning av elementet')}</p>
+            <p>{t('Set condition for display of element')}</p>
             {enableWhen.map((x, index) => {
                 const conditionItem = getItem(x.question);
                 const hasValidationError = itemValidationErrors.some(
@@ -77,9 +77,9 @@ const EnableWhen = ({
                     >
                         {!x.question || conditionCanBeEdited(x.question) ? (
                             <>
-                                <FormField label={t('Velg tidligere spørsmål:')}>
+                                <FormField label={t('Select earlier question:')}>
                                     <Select
-                                        placeholder={t('Velg spørsmål:')}
+                                        placeholder={t('Choose question:')}
                                         options={conditionalArray}
                                         value={x.question}
                                         onChange={(event) => {
@@ -97,7 +97,7 @@ const EnableWhen = ({
                                     />
                                 </FormField>
                                 {!!conditionItem && isSupportedType(conditionItem.type) && (
-                                    <FormField label={t('Vis hvis svaret:')}>
+                                    <FormField label={t('Show if answer is:')}>
                                         <div className="enablewhen-condition">
                                             <EnableWhenOperator
                                                 conditionItem={conditionItem}
@@ -123,14 +123,14 @@ const EnableWhen = ({
                                 )}
                                 {!!conditionItem && !isSupportedType(conditionItem.type) && (
                                     <p>
-                                        {`${t('Skjemabyggeren støtter ikke betinget visning av typen')} `}
+                                        {`${t('The form builder does not support enableWhen of type:')} `}
                                         <strong>{conditionItem.type}</strong>
                                     </p>
                                 )}
                             </>
                         ) : (
                             <>
-                                <div>{t('Denne betingelsen kan ikke editeres i skjemabyggeren:')}</div>
+                                <div>{t('This condition cannot be edited in the form builder:')}</div>
                                 <div>{JSON.stringify(x, undefined, 2)}</div>
                             </>
                         )}
@@ -143,7 +143,7 @@ const EnableWhen = ({
                             }}
                         >
                             <i className="trash-icon" aria-label="remove" />
-                            {` ${t('Fjern betingelse')}`}
+                            {` ${t('Remove condition')}`}
                         </button>
                     </div>
                 );
@@ -157,7 +157,7 @@ const EnableWhen = ({
                 }}
             >
                 <i className="add-icon" aria-label="icon" />
-                {` ${t('Legg til betingelse')}`}
+                {` ${t('Add a condition')}`}
             </button>
             {enableWhen.length > 1 && (
                 <EnableBehavior

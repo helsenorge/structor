@@ -99,7 +99,7 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
                 value={handleDisplaySelected()}
                 options={containedValueSets || []}
                 onChange={(event) => handleSelectedValueSet(event.target.value)}
-                placeholder={t('Velg et alternativ..')}
+                placeholder={t('Choose an option..')}
             />
         );
     };
@@ -109,7 +109,7 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
             <div className="horizontal">
                 <div className="form-field">
                     <SwitchBtn
-                        label={t('Flere valg mulig')}
+                        label={t('Allow selection of multiple values')}
                         onChange={() => dispatchExtentionUpdate(ItemControlType.checkbox)}
                         initial
                         value={isItemControlCheckbox(item)}
@@ -117,14 +117,14 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
                 </div>
                 <div className="form-field">
                     <SwitchBtn
-                        label={t('Nedtrekksmeny')}
+                        label={t('Dropdown')}
                         onChange={() => dispatchExtentionUpdate(ItemControlType.dropdown)}
                         initial
                         value={isItemControlDropDown(item)}
                     />
                 </div>
             </div>
-            <FormField label="Velg spørsmålsett">{handleSelect()}</FormField>
+            <FormField label={t('Select answer valueset')}>{handleSelect()}</FormField>
             <FormField>{renderPreDefinedValueSet()}</FormField>
         </div>
     );

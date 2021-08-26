@@ -19,7 +19,7 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
     const regexOptions = [
         {
-            display: t('Epost'),
+            display: t('Email'),
             code:
                 "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
         },
@@ -29,7 +29,7 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                 '^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?',
         },
         {
-            display: t('Fødselsnummer'),
+            display: t('National identity number'),
             code:
                 '^((((0[1-9]|[12]\\d|3[01])([04][13578]|[15][02]))|((0[1-9]|[12]\\d|30)([04][469]|[15]1))|((0[1-9]|[12]\\d)([04]2)))|((([0-7][1-9]|[12]\\d|3[01])(0[13578]|1[02]))|(([0-7][1-9]|[12]\\d|30)(0[469]|11))|(([0-7][1-9]|[12]\\d)(02))))\\d{7}$',
         },
@@ -38,18 +38,18 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
             code: '^((\\+|00)(\\d{1,3}))?\\d{5,12}$',
         },
         {
-            display: t('Kun norske bokstaver'),
+            display: t('Only norwegian characters'),
             code: '^[æøåÆØÅa-zA-Z ]*$',
         },
         {
-            display: t('Kun norske bokstaver + bindestrek og mellomrom (benyttes ved navn)'),
+            display: t('Only norwegian characters + hyphen and space (used for names)'),
             code: '^[æøåÆØÅa-zA-Z\\- ]*$',
         },
         {
-            display: t('Kun norske bokstaver med linjeskift'),
+            display: t('Only norwegian characters with line breaks'),
             code: '^(?:[æøåÆØÅa-zA-Z0-9,.!?@()+\\-\\/*]|[ \r\n\t])*$',
         },
-        { display: t('Postnummer'), code: '^(000[1-9]|0[1-9][0-9][0-9]|[1-9][0-9][0-9][0-8])$' },
+        { display: t('Zip code'), code: '^(000[1-9]|0[1-9][0-9][0-9]|[1-9][0-9][0-9][0-8])$' },
     ];
 
     const updateMaxLength = (number: number) => {
@@ -73,13 +73,13 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
 
     return (
         <>
-            <FormField label={t('Svaret skal være:')}>
+            <FormField label={t('Answer should be:')}>
                 <Select
                     value={isCustomRegex ? CUSTOM_REGEX_OPTION : selectedRegEx}
                     options={[
-                        { display: t('Uten tegn-validering'), code: '' },
+                        { display: t('No character validation'), code: '' },
                         ...regexOptions,
-                        { display: t('Egendefinert regulært uttrykk'), code: CUSTOM_REGEX_OPTION },
+                        { display: t('Custom regular expression'), code: CUSTOM_REGEX_OPTION },
                     ]}
                     onChange={(event) => {
                         if (!event.target.value) {
@@ -97,7 +97,7 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                 {isCustomRegex && (
                     <textarea
                         defaultValue={selectedRegEx}
-                        placeholder={t('Legg inn egendefinert regulært uttrykk')}
+                        placeholder={t('Enter custom regular expression')}
                         onBlur={(event) => {
                             if (!event.target.value) {
                                 removeItemExtension(item, IExtentionType.regEx, dispatch);
@@ -108,7 +108,7 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                     />
                 )}
             </FormField>
-            <FormField label={t('Legg til egendefinert feilmelding:')}>
+            <FormField label={t('Enter custom error message')}>
                 <input
                     defaultValue={validationText}
                     onChange={(event) => {
@@ -125,7 +125,7 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                 />
             </FormField>
             <div className="horizontal equal">
-                <FormField label={t('Minimum antall tegn')}>
+                <FormField label={t('Minimum characters')}>
                     <input
                         defaultValue={minLength}
                         type="number"

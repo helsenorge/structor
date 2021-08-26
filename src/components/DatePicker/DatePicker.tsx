@@ -26,19 +26,19 @@ const Picker = ({ type, disabled = true, withPortal, nowButton, callback, select
         <div className="datepicker">
             <DatePicker
                 disabled={disabled}
-                placeholderText={type === 'time' ? '00:00' : t('dd.mm.åååå')}
+                placeholderText={type === 'time' ? '00:00' : t('dd.mm.yyyy')}
                 selected={selected || startDate}
                 onChange={(date: Date) => {
                     setStartDate(date);
                     callback && callback(date);
                 }}
-                todayButton={nowButton ? t('I dag') : undefined}
+                todayButton={nowButton ? t('Today') : undefined}
                 withPortal={withPortal}
                 locale="nb"
                 showTimeSelect={type === 'time'}
                 showTimeSelectOnly={type === 'time'}
                 dateFormat={type === 'date' ? 'dd.MM.yyyy' : 'HH:mm'}
-                timeCaption={t('Klokkeslett')}
+                timeCaption={t('Time')}
             />
             <i className={type === 'time' ? 'time-icon' : 'calendar-icon'} aria-label="datepicker" />
         </div>

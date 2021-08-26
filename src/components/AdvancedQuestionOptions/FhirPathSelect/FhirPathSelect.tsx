@@ -87,13 +87,13 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
     const isCustom = isCustomFhirPath(fhirPath);
 
     return (
-        <FormField label={t('Beriking')}>
+        <FormField label={t('Enrichment')}>
             <GroupedSelect
                 value={getSelectValue()}
                 options={[
-                    { display: t('Ingen Beriking'), code: FhirPathOptionEnum.NONE },
+                    { display: t('No enrichment'), code: FhirPathOptionEnum.NONE },
                     ...EnrichmentSet.options,
-                    { display: t('Egendefinert'), code: FhirPathOptionEnum.CUSTOM },
+                    { display: t('Custom'), code: FhirPathOptionEnum.CUSTOM },
                 ]}
                 onChange={(event) => {
                     handleSelect(event.target.value);
@@ -103,7 +103,7 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
             {(isCustom || isBlankButCustom) && (
                 <textarea
                     defaultValue={fhirPath}
-                    placeholder={t('Legg inn egendefinert beriking')}
+                    placeholder={t('Enter custom enrichment')}
                     onBlur={(e) => {
                         if (e.target.value) {
                             setIsBlankButCustom(false);

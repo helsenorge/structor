@@ -58,10 +58,10 @@ export const generateItemButtons = (
                       className={getClassNames()}
                       onClick={dispatchAddChildItem}
                       aria-label="Add child element"
-                      title={t('Oppfølgingsspørsmål')}
+                      title={t('Follow-up question')}
                   >
                       <i className="add-icon" />
-                      {showLabel && <label>{t('Opprett oppfølgingsspørsmål')}</label>}
+                      {showLabel && <label>{t('Create follow-up question')}</label>}
                   </button>,
               ]
             : []),
@@ -70,20 +70,20 @@ export const generateItemButtons = (
             className={getClassNames()}
             onClick={dispatchDuplicateItem}
             aria-label="Duplicate element"
-            title={t('Dupliser')}
+            title={t('Duplicate')}
         >
             <i className="duplicate-icon" />
-            {showLabel && <label>{t('Dupliser')}</label>}
+            {showLabel && <label>{t('Duplicate')}</label>}
         </button>,
         <button
             key="delete-item-button"
             className={getClassNames()}
             onClick={dispatchDeleteItem}
             aria-label="Delete element"
-            title={t('Slett')}
+            title={t('Delete')}
         >
             <i className="trash-icon" />
-            {showLabel && <label>{t('Slett')}</label>}
+            {showLabel && <label>{t('Delete')}</label>}
         </button>,
     ];
 };

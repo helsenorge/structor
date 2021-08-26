@@ -68,7 +68,7 @@ const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
                     </div>
                     <div className="center-text">
                         <Btn
-                            title={`- ${t('Fjern Code')}`}
+                            title={`- ${t('Remove Code')}`}
                             type="button"
                             onClick={() => dispatch(deleteItemCodeAction(linkId, index))}
                             variant="secondary"
@@ -86,7 +86,7 @@ const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
             {codes && codes.map((code, index) => renderCode(code, index))}
             <div className="center-text">
                 <Btn
-                    title={`+ ${t('Legg til Code')}`}
+                    title={`+ ${t('Add Code')}`}
                     type="button"
                     onClick={() => {
                         dispatch(addItemCodeAction(linkId, createEmptyCode()));

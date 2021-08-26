@@ -71,33 +71,33 @@ export const translatableMetadata: MetadataProperty[] = [
         markdown: false,
         validate: (value: string, state?: TreeState, targetLanguage?: string): string => {
             if (!isValidId(value)) {
-                return 'Id må være fra 1-64 tegn og kan kun inneholde bokstaver fra a-z, tall, - og .';
+                return 'Id must be 1-64 characters and only letters a-z, numbers, - and .';
             }
             if (
                 state &&
                 targetLanguage &&
                 !isUniqueAcrossLanguages(TranslatableMetadataProperty.id, value, state, targetLanguage)
             ) {
-                return 'Id må være unik på tvers av språk';
+                return 'Id must be unique across languages';
             }
             return '';
         },
     },
     {
         propertyName: TranslatableMetadataProperty.description,
-        label: 'Beskrivelse',
+        label: 'Description',
         markdown: false,
         validate: undefined,
     },
     {
         propertyName: TranslatableMetadataProperty.publisher,
-        label: 'Utsteder',
+        label: 'Publisher',
         markdown: false,
         validate: undefined,
     },
     {
         propertyName: TranslatableMetadataProperty.purpose,
-        label: 'Formål',
+        label: 'Purpose',
         markdown: true,
         validate: undefined,
     },

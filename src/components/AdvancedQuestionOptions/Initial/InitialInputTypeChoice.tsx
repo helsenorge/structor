@@ -113,7 +113,7 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
             <div className="form-field">
                 <SwitchBtn
                     initial
-                    label={t('Initiell verdi')}
+                    label={t('Initial value')}
                     onChange={() => {
                         const newInitialValueEnabled = !initialValueEnabled;
                         setInitialValueEnabled(newInitialValueEnabled);

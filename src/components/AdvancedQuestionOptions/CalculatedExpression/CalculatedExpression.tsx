@@ -27,7 +27,7 @@ const CalculatedExpression = (props: CalculatedExpressionProps): JSX.Element => 
     const calculatedExpression =
         props.item.extension?.find((ext) => ext.url === IExtentionType.calculatedExpression)?.valueString || '';
     return (
-        <FormField label={t('Kalkuleringsformel')}>
+        <FormField label={t('Calculation formula')}>
             <textarea defaultValue={calculatedExpression} onBlur={handleBlur} />
         </FormField>
     );

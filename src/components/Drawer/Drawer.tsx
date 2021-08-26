@@ -26,7 +26,7 @@ const Drawer = (props: DrawerProps): JSX.Element => {
             {props.visible && <div className="overlay" />}
             <div className={classNames} ref={drawerRef}>
                 <div className="drawer-header">
-                    <IconBtn type="x" title={t('Lukk (Esc)')} onClick={props.hide} />
+                    <IconBtn type="x" title={t('Close (Esc)')} onClick={props.hide} />
                     {props.title && <h1>{props.title}</h1>}
                 </div>
                 {props.children}

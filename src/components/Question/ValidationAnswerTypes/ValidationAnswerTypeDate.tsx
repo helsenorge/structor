@@ -93,7 +93,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
 
     return (
         <>
-            <FormField label={t('Legg til egendefinert feilmelding:')}>
+            <FormField label={t('Enter custom error message')}>
                 <input
                     defaultValue={validationText}
                     onBlur={(event) => {
@@ -111,7 +111,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
             </FormField>
             <div className="form-field">
                 <FhirPathDateValidation
-                    descriptionText={t('Min dato')}
+                    descriptionText={t('Min date')}
                     numberValue={fhirPathMinDateNumber}
                     unitValue={fhirPathMinDateUnit}
                     operatorValue={fhirPathMinDateOperator}
@@ -133,7 +133,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                     }}
                 />
                 <FhirPathDateValidation
-                    descriptionText={t('Max dato')}
+                    descriptionText={t('Max date')}
                     numberValue={fhirPathMaxDateNumber}
                     unitValue={fhirPathMaxDateUnit}
                     operatorValue={fhirPathMaxDateOperator}

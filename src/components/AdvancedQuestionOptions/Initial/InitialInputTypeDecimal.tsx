@@ -24,7 +24,7 @@ const InitialInputTypeInteger = (props: InitialInputTypeIntegerProps): JSX.Eleme
 
     return (
         <div className="form-field">
-            <label>{t('Initiell verdi')}</label>
+            <label>{t('Initial value')}</label>
             <input
                 value={initialValue}
                 onChange={({ target: { value } }) => {

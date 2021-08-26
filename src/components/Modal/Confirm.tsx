@@ -22,8 +22,8 @@ const Confirm = ({ onConfirm, onDeny, children, id, title }: ConfirmProps): JSX.
                 <div className="content">{children}</div>
                 <div className="modal-btn-bottom">
                     <div className="center-text">
-                        <Btn title={t('Ja')} type="button" variant="primary" size="small" onClick={onConfirm} />{' '}
-                        <Btn title={t('Nei')} type="button" variant="secondary" size="small" onClick={onDeny} />
+                        <Btn title={t('Yes')} type="button" variant="primary" size="small" onClick={onConfirm} />{' '}
+                        <Btn title={t('No')} type="button" variant="secondary" size="small" onClick={onDeny} />
                     </div>
                 </div>
             </div>

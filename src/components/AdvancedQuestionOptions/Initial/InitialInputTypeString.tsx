@@ -20,7 +20,7 @@ const InitialInputTypeString = (props: InitialInputTypeStringProps): JSX.Element
 
     return (
         <div className="form-field">
-            <label>{t('Initiell verdi')}</label>
+            <label>{t('Initial value')}</label>
             <input
                 value={initialValue}
                 onChange={(event) => setInitialValue(event.target.value)}

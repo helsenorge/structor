@@ -31,19 +31,19 @@ const DateTimePicker = ({
         <div className="datepicker">
             <DatePicker
                 disabled={disabled}
-                placeholderText={t('dd.mm.åååå 00:00')}
+                placeholderText={t('dd.mm.yyyy 00:00')}
                 selected={selected || startDate}
                 onChange={(date: Date) => {
                     setStartDate(date);
                     callback && callback(date);
                 }}
-                todayButton={nowButton ? t('I dag') : undefined}
+                todayButton={nowButton ? t('Today') : undefined}
                 withPortal={withPortal}
                 timeIntervals={15}
                 locale="nb"
                 showTimeSelect
                 dateFormat="dd.MM.yyyy HH:mm"
-                timeCaption={t('Klokkeslett')}
+                timeCaption={t('Time')}
             />
             <i className="calendar-icon" aria-label="date and time picker" />
         </div>

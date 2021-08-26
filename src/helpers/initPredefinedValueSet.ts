@@ -19,11 +19,11 @@ export const initPredefinedValueSet = [
                     concept: [
                         {
                             code: '1',
-                            display: 'Ja',
+                            display: 'Yes',
                         },
                         {
                             code: '2',
-                            display: 'Nei',
+                            display: 'No',
                         },
                     ],
                 },
@@ -46,11 +46,11 @@ export const initPredefinedValueSet = [
                     concept: [
                         {
                             code: '1',
-                            display: 'Ja',
+                            display: 'Yes',
                         },
                         {
                             code: '2',
-                            display: 'Nei',
+                            display: 'No',
                         },
                         {
                             code: '3',

@@ -25,7 +25,7 @@ const EnableBehavior = ({ currentItem, dispatchUpdateItemEnableBehavior }: Props
                         );
                     }}
                 />
-                <span>{` ${t('Minst en betingelse må være oppfylt')}`}</span>
+                <span>{` ${t('At least one condition must be fulfilled')}`}</span>
             </label>
             <label>
                 <input
@@ -38,7 +38,7 @@ const EnableBehavior = ({ currentItem, dispatchUpdateItemEnableBehavior }: Props
                         );
                     }}
                 />
-                <span>{` ${t('Alle betingelser må være oppfylt')}`}</span>
+                <span>{` ${t('All conditions must be fulfilled')}`}</span>
             </label>
         </div>
     );

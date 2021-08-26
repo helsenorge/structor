@@ -100,7 +100,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
 
     return (
         <>
-            <FormField label={t('Velg enhet')}>
+            <FormField label={t('Select unit')}>
                 <Select options={quantityUnitTypes} onChange={updateQuantityUnitType} value={selectedUnitType} />
             </FormField>
             {isCustom && (

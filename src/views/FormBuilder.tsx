@@ -44,20 +44,20 @@ const FormBuilder = (): JSX.Element => {
     const getConfirmRestoreContent = (): JSX.Element => {
         return (
             <div>
-                <p>{t('Det ser ut til at du har jobbet med et skjema tidligere:')}</p>
+                <p>{t('It looks like you have previously worked with a questionnaire:')}</p>
                 <div className="key-value">
-                    <div>{t('Tittel')}</div>
+                    <div>{t('Title')}</div>
                     <div>{stateFromStorage?.qMetadata.title}</div>
                 </div>
                 <div className="key-value">
-                    <div>{t('Teknisk navn:')}</div>
+                    <div>{t('Technical name')}</div>
                     <div>{stateFromStorage?.qMetadata.name}</div>
                 </div>
                 <div className="key-value">
-                    <div>{t('Versjon:')}</div>
+                    <div>{t('Version')}</div>
                     <div>{stateFromStorage?.qMetadata.version}</div>
                 </div>
-                <p>{t('Ønsker du å fortsette med dette skjemaet?')}</p>
+                <p>{t('Do you wish to open this questionnaire?')}</p>
             </div>
         );
     };
@@ -119,7 +119,7 @@ const FormBuilder = (): JSX.Element => {
                         dispatch(resetQuestionnaireAction());
                         setStateFromStorage(undefined);
                     }}
-                    title={t('Gjenopprett skjema...')}
+                    title={t('Restore questionnaire...')}
                     id="confirm-use-stored-state"
                 >
                     {getConfirmRestoreContent()}
@@ -134,11 +134,11 @@ const FormBuilder = (): JSX.Element => {
                     onDeny={() => {
                         setDisplayVerifyReset(false);
                     }}
-                    title={t('Husk å lagre...')}
+                    title={t('Remember to save...')}
                     id="confirm-reset"
                 >
                     {t(
-                        'Du har gjort endringer som ikke er lagret. Ønsker du allikevel å begynne på et nytt skjema? (Endringene vil gå tapt)',
+                        'You have unsaved changes. Do you wish to start a new questionnaire? (Changes to existing questionnaire will be lost)',
                     )}
                 </Confirm>
             )}
@@ -147,7 +147,7 @@ const FormBuilder = (): JSX.Element => {
                     <div className="align-everything">
                         <SpinnerBox />
                     </div>
-                    <p className="center-text">{t('Leser inn skjema...')}</p>
+                    <p className="center-text">{t('Loading questionnaire...')}</p>
                 </Modal>
             )}
             <div className="editor">
@@ -178,7 +178,7 @@ const FormBuilder = (): JSX.Element => {
                 <div className="details-button">
                     <IconBtn
                         type="info"
-                        title={t('Skjemadetaljer')}
+                        title={t('Questionnaire details')}
                         color="black"
                         onClick={toggleFormDetails}
                         size="large"

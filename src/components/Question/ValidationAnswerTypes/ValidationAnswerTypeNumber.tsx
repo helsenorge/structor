@@ -41,17 +41,12 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
             <div className="horizontal equal">
                 {item?.type !== IQuestionnaireItemType.quantity && (
                     <div className="form-field">
-                        <SwitchBtn
-                            label={t('Tillat desimaltall')}
-                            initial
-                            value={isDecimal}
-                            onChange={changeItemType}
-                        />
+                        <SwitchBtn label={t('Allow decimals')} initial value={isDecimal} onChange={changeItemType} />
                     </div>
                 )}
                 {isDecimal && (
                     <div className="form-field">
-                        <label className="#">{t('Max antall desimaler')}</label>
+                        <label className="#">{t('Max number of decimals')}</label>
                         <input
                             type="number"
                             defaultValue={maxDecimalPlaces}
@@ -73,7 +68,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
 
             <div className="horizontal equal">
                 <div className="form-field" id="number">
-                    <label className="#">{t('Min verdi')}</label>
+                    <label className="#">{t('Min value')}</label>
                     <input
                         type="number"
                         defaultValue={minValue}
@@ -92,7 +87,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                 </div>
 
                 <div className="form-field" id="number">
-                    <label className="#">{t('Max verdi')}</label>
+                    <label className="#">{t('Max value')}</label>
                     <input
                         type="number"
                         defaultValue={maxValue}
@@ -112,11 +107,11 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
             </div>
 
             <div className="form-field custom-input-error-message">
-                <label className="#">{t('Legg til egendefinert feilmelding:')}</label>
+                <label className="#">{t('Enter custom error message')}</label>
                 <input
                     type="input"
                     defaultValue={validationText}
-                    placeholder={t('feilmelding')}
+                    placeholder={t('error message')}
                     onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
                         if (!event.target.value) {
                             removeItemExtension(item, IExtentionType.validationtext, dispatch);

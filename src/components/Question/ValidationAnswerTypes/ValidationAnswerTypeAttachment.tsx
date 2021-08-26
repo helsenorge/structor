@@ -22,7 +22,7 @@ const ValidationAnswerTypeAttachment = ({ item }: ValidationAnswerTypeAttachment
 
     return (
         <>
-            <FormField label={t('Maksimal filstørrelse i MB')}>
+            <FormField label={t('Max file size in MB')}>
                 <input
                     defaultValue={maxSize}
                     type="number"

@@ -16,11 +16,11 @@ const ConfirmFileUpload = ({ close, uploadRef }: ConfirmFileUploadProps): JSX.El
                 close();
             }}
             onDeny={close}
-            title={t('Husk å lagre...')}
+            title={t('Remember to save...')}
         >
             <p>
                 {t(
-                    'Du har gjort endringer som ikke er lagret. Ønsker du allikevel å laste opp et nytt skjema? (Endringene vil gå tapt)',
+                    'You have made changes which are not saved. Do you with to upload a new questionnaire? (Changes will be lost)',
                 )}
             </p>
         </Confirm>

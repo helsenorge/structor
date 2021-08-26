@@ -76,9 +76,9 @@ const Sidebar = (): JSX.Element => {
                 return (
                     <div key={index}>
                         <div className="horizontal equal">
-                            <FormField label={t('Gruppe kode')}>
+                            <FormField label={t('Group code')}>
                                 <input
-                                    placeholder={t('legg inn en kode (f.eks) SOT-2')}
+                                    placeholder={t('add a code (for example) SOT-2')}
                                     defaultValue={findCurrentCode(x.linkId)?.code}
                                     onBlur={(event) => handleChangeCode(event.target.value, x.linkId)}
                                 />
@@ -90,7 +90,7 @@ const Sidebar = (): JSX.Element => {
                                 />
                             </FormField>
                         </div>
-                        <FormField label={t('Innhold')}>
+                        <FormField label={t('Content')}>
                             <MarkdownEditor
                                 data={getMarkdown(x.linkId)}
                                 onBlur={(markdown) => handleMarkdown(x.linkId, markdown)}
@@ -98,7 +98,7 @@ const Sidebar = (): JSX.Element => {
                         </FormField>
                         <div className="center-text">
                             <Btn
-                                title={t('- Fjern element')}
+                                title={t('- Remove element')}
                                 type="button"
                                 size="small"
                                 variant="secondary"
@@ -111,7 +111,7 @@ const Sidebar = (): JSX.Element => {
             })}
             <div className="center-text">
                 <Btn
-                    title={t('+ Legg til element')}
+                    title={t('+ Add element')}
                     type="button"
                     size="small"
                     variant="primary"

@@ -1,11 +1,11 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import translationNB from '../locales/en-US/translation.json';
+import translationNB from '../locales/nb-NO/translation.json';
 
 // the translations
 const resources = {
-    'en-US': {
+    'nb-NO': {
         translation: translationNB,
     },
 };
@@ -13,7 +13,7 @@ const resources = {
 i18n.use(initReactI18next) // passes i18n down to react-i18next
     .init({
         resources,
-        lng: 'nb-NO',
+        lng: localStorage.getItem('editor_language') || 'en-US',
 
         keySeparator: false, // we do not use keys in form messages.welcome
 

@@ -14,7 +14,7 @@ const TranslateMetaData = ({ state, targetLanguage, dispatch }: TranslateMetaDat
     const { t } = useTranslation();
     return (
         <div className="translation-group">
-            <div className="translation-section-header">{t('Skjemadetaljer')}</div>
+            <div className="translation-section-header">{t('Questionnaire details')}</div>
             {translatableMetadata.map((prop) => (
                 <TranslateMetaDataRow
                     dispatch={dispatch}

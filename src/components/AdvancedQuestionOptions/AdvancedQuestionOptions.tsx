@@ -168,7 +168,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                             <SwitchBtn
                                 onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
                                 value={item.readOnly || false}
-                                label={t('Skrivebeskyttet')}
+                                label={t('Read-only')}
                                 initial
                             />
                         </div>
@@ -186,7 +186,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                     }
                                 }}
                                 value={isHiddenItem || false}
-                                label={t('Gjemt felt')}
+                                label={t('Hidden field')}
                                 initial
                             />
                         </div>
@@ -208,12 +208,12 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                 dispatchUpdateItem(IItemProperty.repeats, !item.repeats);
                             }}
                             value={item.repeats || false}
-                            label={t('Kan gjentas')}
+                            label={t('Repeatable')}
                             initial
                         />
                         {item.repeats && (
                             <>
-                                <FormField label={t('Kan gjentas knappetekst')}>
+                                <FormField label={t('Repeat button text')}>
                                     <input
                                         defaultValue={getRepeatsText}
                                         onBlur={(e) => {
@@ -230,7 +230,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                 </FormField>
                                 <div className="horizontal equal">
                                     <div className="form-field">
-                                        <label className="#">{t('Min antall svar')}</label>
+                                        <label className="#">{t('Min answers')}</label>
                                         <input
                                             type="number"
                                             defaultValue={minOccurs}
@@ -248,7 +248,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                         />
                                     </div>
                                     <div className="form-field">
-                                        <label className="#">{t('Max antall svar')}</label>
+                                        <label className="#">{t('Max answers')}</label>
                                         <input
                                             type="number"
                                             defaultValue={maxOccurs}
@@ -276,7 +276,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             )}
             {isBerikingSupported && <FhirPathSelect item={item} />}
             {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.text) && (
-                <FormField label={t('Skyggetekst')}>
+                <FormField label={t('Placeholder text')}>
                     <input
                         defaultValue={getPlaceholder}
                         onBlur={(e) => {
@@ -313,7 +313,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     />
                     {isDuplicateLinkId && (
                         <div className="msg-error" aria-live="polite">
-                            {`${t('LinkId er allerede i bruk')} `}
+                            {`${t('LinkId is already in use')} `}
                             <button onClick={resetLinkId}>
                                 <img src={UndoIcon} height={16} />
                                 {` ${t('Sett tilbake til opprinnelig verdi')}`}
@@ -328,12 +328,12 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         <SwitchBtn
                             onChange={() => dispatchHelpText()}
                             value={helpTextItem.exist}
-                            label={t('Skru på hjelpeikon')}
+                            label={t('Enable help button')}
                             initial
                         />
                     </FormField>
                     {helpTextItem.exist && (
-                        <FormField label={t('Skriv en hjelpende tekst')}>
+                        <FormField label={t('Enter a helping text')}>
                             <MarkdownEditor data={helpTextItem._text} onBlur={handleHelpText} />
                         </FormField>
                     )}
@@ -362,7 +362,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                             }
                         }}
                         value={hasSummaryExtension}
-                        label={t('Skru på oppsummering')}
+                        label={t('Enable summary')}
                         initial
                     />
                 </FormField>
