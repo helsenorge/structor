@@ -267,7 +267,12 @@ function createNewItem(draft: TreeState, action: NewItemAction): void {
     draft.qItems[itemToAdd.linkId] = itemToAdd;
     // find the correct place to add the new item
     const arrayToAddItemTo = findTreeArray(action.order, draft.qOrder);
-    arrayToAddItemTo.push({ linkId: itemToAdd.linkId, items: [] });
+    const newOrderNode = { linkId: itemToAdd.linkId, items: [] };
+    if (!action.index && action.index !== 0) {
+        arrayToAddItemTo.push(newOrderNode);
+    } else {
+        arrayToAddItemTo.splice(action.index, 0, newOrderNode);
+    }
 
     const parentItem = draft.qItems[action.order[action.order.length - 1]];
     if (!isIgnorableItem(itemToAdd, parentItem)) {

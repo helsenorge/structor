@@ -1,4 +1,5 @@
 import React, { useContext, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import './QuestionDrawer.css';
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const QuestionDrawer = ({ validationErrors }: Props): JSX.Element | null => {
+    const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const { previous, next, hasNext, hasPrevious } = useItemNavigation();
     const closeDrawer = () => {
@@ -59,17 +61,19 @@ const QuestionDrawer = ({ validationErrors }: Props): JSX.Element | null => {
             <div className="item-button-row">
                 <div className="item-button-wrapper">
                     {hasPrevious() && (
-                        <IconBtn type="back" title="Forrige (Pil venstre)" onClick={previous} color="black" />
+                        <IconBtn type="back" title={t('Previous (left arrow)')} onClick={previous} color="black" />
                     )}
                 </div>
                 <div className="item-button-wrapper">
-                    {hasNext() && <IconBtn type="forward" title="Neste (Pil høyre)" onClick={next} color="black" />}
+                    {hasNext() && (
+                        <IconBtn type="forward" title={t('Next (right arrow)')} onClick={next} color="black" />
+                    )}
                 </div>
-                {item && <div className="pull-right">{generateItemButtons(item, parentArray, true, dispatch)}</div>}
+                {item && <div className="pull-right">{generateItemButtons(t, item, parentArray, true, dispatch)}</div>}
             </div>
             {itemValidationErrors.length > 0 && (
                 <div className="item-validation-error-summary">
-                    <div>Valideringsfeil:</div>
+                    <div>{t('Validation errors:')}</div>
                     <ul>
                         {itemValidationErrors.map((error, index) => {
                             return <li key={index}>{error.errorReadableText}</li>;

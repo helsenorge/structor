@@ -9,6 +9,7 @@ import {
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import EnableBehavior from './EnableBehavior';
 import EnableWhenAnswerTypes from './EnableWhenAnswerTypes';
@@ -37,6 +38,7 @@ const EnableWhen = ({
     containedResources,
     itemValidationErrors,
 }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const dispatchUpdateItemEnableWhen = (value: QuestionnaireItemEnableWhen[] | undefined) => {
         dispatch(updateItemAction(linkId, IItemProperty.enableWhen, value));
@@ -61,7 +63,7 @@ const EnableWhen = ({
 
     return (
         <>
-            <p>Sett betingelser for visning av elementet.</p>
+            <p>{t('Set condition for display of element')}</p>
             {enableWhen.map((x, index) => {
                 const conditionItem = getItem(x.question);
                 const hasValidationError = itemValidationErrors.some(
@@ -75,9 +77,9 @@ const EnableWhen = ({
                     >
                         {!x.question || conditionCanBeEdited(x.question) ? (
                             <>
-                                <FormField label="Velg tidligere spørsmål:">
+                                <FormField label={t('Select earlier question:')}>
                                     <Select
-                                        placeholder="Velg spørsmål"
+                                        placeholder={t('Choose question:')}
                                         options={conditionalArray}
                                         value={x.question}
                                         onChange={(event) => {
@@ -95,7 +97,7 @@ const EnableWhen = ({
                                     />
                                 </FormField>
                                 {!!conditionItem && isSupportedType(conditionItem.type) && (
-                                    <FormField label="Vis hvis svaret:">
+                                    <FormField label={t('Show if answer is:')}>
                                         <div className="enablewhen-condition">
                                             <EnableWhenOperator
                                                 conditionItem={conditionItem}
@@ -121,14 +123,14 @@ const EnableWhen = ({
                                 )}
                                 {!!conditionItem && !isSupportedType(conditionItem.type) && (
                                     <p>
-                                        Skjemabyggeren støtter ikke betinget visning av typen:{' '}
+                                        {`${t('The form builder does not support enableWhen of type:')} `}
                                         <strong>{conditionItem.type}</strong>
                                     </p>
                                 )}
                             </>
                         ) : (
                             <>
-                                <div>Denne betingelsen kan ikke editeres i skjemabyggeren:</div>
+                                <div>{t('This condition cannot be edited in the form builder:')}</div>
                                 <div>{JSON.stringify(x, undefined, 2)}</div>
                             </>
                         )}
@@ -140,7 +142,8 @@ const EnableWhen = ({
                                 dispatchUpdateItemEnableWhen(copy);
                             }}
                         >
-                            <i className="trash-icon" aria-label="remove" /> Fjern betingelse
+                            <i className="trash-icon" aria-label="remove" />
+                            {` ${t('Remove condition')}`}
                         </button>
                     </div>
                 );
@@ -153,7 +156,8 @@ const EnableWhen = ({
                     dispatchUpdateItemEnableWhen(copy.concat({} as QuestionnaireItemEnableWhen));
                 }}
             >
-                <i className="add-icon" aria-label="icon" /> Legg til betingelse
+                <i className="add-icon" aria-label="icon" />
+                {` ${t('Add a condition')}`}
             </button>
             {enableWhen.length > 1 && (
                 <EnableBehavior

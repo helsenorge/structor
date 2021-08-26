@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import MetadataEditor from '../../Metadata/MetadataEditor';
 import Sidebar from '../../Sidebar/Sidebar';
@@ -15,6 +16,7 @@ type FormDetailsDrawerProps = {
 };
 
 const FormDetailsDrawer = ({ setTranslateLang, closeDrawer, isOpen = false }: FormDetailsDrawerProps): JSX.Element => {
+    const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
 
     useKeyPress('Escape', closeDrawer, !isOpen);
@@ -26,9 +28,9 @@ const FormDetailsDrawer = ({ setTranslateLang, closeDrawer, isOpen = false }: Fo
     return (
         <Drawer title="Skjemadetaljer" position="left" visible={isOpen} hide={closeDrawer}>
             <div className="form-intro-field">
-                <label htmlFor="questionnaire-title">Tittel:</label>
+                <label htmlFor="questionnaire-title">{t('Title')}:</label>
                 <input
-                    placeholder="Tittel"
+                    placeholder={t('Title')}
                     value={state.qMetadata.title}
                     id="questionnaire-title"
                     onChange={(event) => {

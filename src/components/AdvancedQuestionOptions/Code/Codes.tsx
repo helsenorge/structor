@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     addItemCodeAction,
     deleteItemCodeAction,
@@ -20,6 +21,7 @@ type CodeProps = {
 };
 
 const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
+    const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
 
     const codes = state.qItems[linkId].code?.map((code) => {
@@ -44,14 +46,14 @@ const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
                 <div key={`${code.id}`} className={`code-section ${hasValidationError ? 'validation-error' : ''}`}>
                     <div className="horizontal equal">
                         <div className="form-field">
-                            <label>Display</label>
+                            <label>{t('Display')}</label>
                             <input
                                 defaultValue={code.display}
                                 onBlur={(event) => updateCode(index, ICodingProperty.display, event.target.value)}
                             />
                         </div>
                         <div className="form-field">
-                            <label>Code</label>
+                            <label>{t('Code')}</label>
                             <input
                                 defaultValue={code.code}
                                 onBlur={(event) => updateCode(index, ICodingProperty.code, event.target.value)}
@@ -66,7 +68,7 @@ const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
                     </div>
                     <div className="center-text">
                         <Btn
-                            title="- Fjern Code"
+                            title={`- ${t('Remove Code')}`}
                             type="button"
                             onClick={() => dispatch(deleteItemCodeAction(linkId, index))}
                             variant="secondary"
@@ -84,7 +86,7 @@ const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
             {codes && codes.map((code, index) => renderCode(code, index))}
             <div className="center-text">
                 <Btn
-                    title="+ Legg til Code"
+                    title={`+ ${t('Add Code')}`}
                     type="button"
                     onClick={() => {
                         dispatch(addItemCodeAction(linkId, createEmptyCode()));

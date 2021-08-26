@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { QuestionnaireItemAnswerOption } from '../../types/fhir';
 import './AnswerOption.css';
@@ -22,6 +23,7 @@ const AnswerOption = ({
     showDelete,
     disabled,
 }: Props): JSX.Element => {
+    const { t } = useTranslation();
     return (
         <div className="answer-option-item align-everything">
             {!disabled && <span {...handleDrag} className="reorder-icon" aria-label="reorder element" />}
@@ -33,19 +35,19 @@ const AnswerOption = ({
                     onBlur={(event) => changeDisplay(event)}
                     defaultValue={answerOption?.valueCoding?.display}
                     disabled={disabled}
-                    placeholder="Legg inn en tittel.."
+                    placeholder={t('Legg inn en tittel..')}
                 />
                 <input
                     autoComplete="off"
                     type="text"
                     name="verdi"
                     defaultValue={answerOption?.valueCoding?.code}
-                    placeholder="Legg inn en verdi.."
+                    placeholder={t('Legg inn en verdi..')}
                     onBlur={(event) => changeCode(event)}
                 />
             </div>
             {showDelete && (
-                <button type="button" name="Fjern element" onClick={deleteItem} className="align-everything" />
+                <button type="button" name={t('Remove element')} onClick={deleteItem} className="align-everything" />
             )}
         </div>
     );

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import PlusIcon from '../../images/icons/add-circle-outline.svg';
 import './Languages.css';
@@ -8,6 +9,7 @@ type LanguagesProps = {
 };
 
 const Languages = (props: LanguagesProps): JSX.Element => {
+    const { t } = useTranslation();
     const { state } = useContext(TreeContext);
 
     const {
@@ -28,7 +30,7 @@ const Languages = (props: LanguagesProps): JSX.Element => {
 
     return (
         <div className="language-bar">
-            <div className="main-language">Hovedspråk: {language}</div>
+            <div className="main-language">{`${t('Hovedspråk')}: ${language}`}</div>
             {getTranslations()}
         </div>
     );

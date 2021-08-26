@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useHistory } from 'react-router-dom';
 import SpinnerBox from '../components/Spinner/SpinnerBox';
 
 const Code = (): JSX.Element => {
+    const { t } = useTranslation();
     const [error, setError] = useState('');
 
     const history = useHistory();
@@ -38,7 +40,7 @@ const Code = (): JSX.Element => {
 
     return (
         <div className="login">
-            <h1>Logger inn..</h1>
+            <h1>{t('Logging in..')}</h1>
             <div className="align-everything">
                 {!error && <SpinnerBox />} {error && <p className="error-text">{error}</p>}
             </div>

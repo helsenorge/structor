@@ -1,3 +1,5 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './Question.css';
 
 import {
@@ -14,7 +16,7 @@ import {
     IQuestionnaireItemType,
     IValueSetSystem,
 } from '../../types/IQuestionnareItemType';
-import React from 'react';
+
 import {
     deleteChildItemsAction,
     newItemAction,
@@ -59,6 +61,7 @@ interface QuestionProps {
 }
 
 const Question = (props: QuestionProps): JSX.Element => {
+    const { t } = useTranslation();
     const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(!!props.item._text);
     const codeElements = props.item.code ? `(${props.item.code.length})` : '';
 
@@ -123,17 +126,11 @@ const Question = (props: QuestionProps): JSX.Element => {
 
         switch (param) {
             case IQuestionnaireItemType.string:
-                return (
-                    <div className="form-field">
-                        <label></label>
-                        <input disabled value="Kortsvar" />
-                    </div>
-                );
             case IQuestionnaireItemType.text:
                 return (
                     <div className="form-field">
                         <label></label>
-                        <input disabled value="Langsvar" />
+                        <input disabled />
                     </div>
                 );
             case IQuestionnaireItemType.date:
@@ -279,7 +276,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         <div className="question" id={props.item.linkId}>
             <div className="question-form">
                 <div className="form-field">
-                    <label>Velg type</label>
+                    <label>{t('Select type')}</label>
                     <Select
                         value={handleDisplayQuestionType()}
                         options={itemType}
@@ -288,10 +285,11 @@ const Question = (props: QuestionProps): JSX.Element => {
                 </div>
                 <div className="horizontal">
                     {props.item.type !== IQuestionnaireItemType.group &&
-                        props.item.type !== IQuestionnaireItemType.display && (
+                        props.item.type !== IQuestionnaireItemType.display &&
+                        !isItemControlInline(props.item) && (
                             <div className="form-field ">
                                 <SwitchBtn
-                                    label="Obligatorisk"
+                                    label={t('Mandatory')}
                                     initial
                                     value={props.item.required || false}
                                     onChange={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
@@ -301,7 +299,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     {(props.item.type === IQuestionnaireItemType.display || !!getHighlightExtensionValue()) && (
                         <div className="form-field ">
                             <SwitchBtn
-                                label="Highlight"
+                                label={t('Highlight')}
                                 initial
                                 value={!!getHighlightExtensionValue() || false}
                                 onChange={() => {
@@ -327,7 +325,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     )}
                     <div className="form-field">
                         <SwitchBtn
-                            label="Tekstformatering"
+                            label={t('Text formatting')}
                             initial
                             value={isMarkdownActivated}
                             onChange={() => {
@@ -344,7 +342,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         />
                     </div>
                 </div>
-                <FormField label="Tekst">
+                <FormField label={t('Text')}>
                     {isMarkdownActivated ? (
                         <MarkdownEditor data={getLabelText()} onBlur={dispatchUpdateMarkdownLabel} />
                     ) : (
@@ -357,7 +355,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     )}
                 </FormField>
                 {isSublabelSupported() && (
-                    <FormField label="Instruks">
+                    <FormField label={t('Sublabel')}>
                         <MarkdownEditor
                             data={getSublabelText()}
                             onBlur={(newValue: string) => {
@@ -378,11 +376,11 @@ const Question = (props: QuestionProps): JSX.Element => {
             </div>
             <div className="question-addons">
                 {typeIsSupportingValidation(handleDisplayQuestionType() as IQuestionnaireItemType) && (
-                    <Accordion title="Legg til validering">
+                    <Accordion title={t('Add validation')}>
                         <ValidationAnswerTypes item={props.item} />
                     </Accordion>
                 )}
-                <Accordion title={`Betinget visning ${enableWhenCount}`}>
+                <Accordion title={`${t('Enable when')} ${enableWhenCount}`}>
                     <div>
                         <EnableWhen
                             getItem={props.getItem}
@@ -395,11 +393,11 @@ const Question = (props: QuestionProps): JSX.Element => {
                     </div>
                 </Accordion>
                 {props.item.type !== IQuestionnaireItemType.display && (
-                    <Accordion title={`Code ${codeElements}`}>
+                    <Accordion title={`${t('Code')} ${codeElements}`}>
                         <Codes linkId={props.item.linkId} itemValidationErrors={props.itemValidationErrors} />
                     </Accordion>
                 )}
-                <Accordion title="Avanserte innstillinger">
+                <Accordion title={t('Advanced settings')}>
                     <AdvancedQuestionOptions item={props.item} parentArray={props.parentArray} />
                 </Accordion>
             </div>

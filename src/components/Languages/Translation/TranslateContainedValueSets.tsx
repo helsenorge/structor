@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ValueSet } from '../../../types/fhir';
 import { ActionType, Languages } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
@@ -17,6 +18,7 @@ const TranslateContainedValueSets = ({
     translations,
     dispatch,
 }: TranslateContainedValueSetsProps): JSX.Element | null => {
+    const { t } = useTranslation();
     const containedTranslations = translations[targetLanguage].contained;
 
     const renderValueSetOptions = (valueSet: ValueSet): JSX.Element => {
@@ -66,7 +68,7 @@ const TranslateContainedValueSets = ({
     }
     return (
         <div>
-            <div className="translation-section-header">Predefinerte valg</div>
+            <div className="translation-section-header">{t('Predefined valuesets')}</div>
             {qContained.map((valueSet: ValueSet) => {
                 return (
                     <div key={`${targetLanguage}-${valueSet.id}`} className="translation-group">

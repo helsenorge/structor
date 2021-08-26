@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
@@ -23,6 +24,7 @@ type TranslationRowProps = {
 };
 
 const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowProps): JSX.Element => {
+    const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
 
     const qAdditionalLanguages = state.qAdditionalLanguages || {};
@@ -96,7 +98,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
             </div>
             {getSublabel(item) && (
                 <>
-                    <div className="translation-group-header">Instruks</div>
+                    <div className="translation-group-header">{t('Sublabel')}</div>
                     <div className="translation-row">
                         <FormField>
                             <MarkdownEditor data={getSublabel(item)} disabled={true} />
@@ -119,7 +121,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
             )}
             {getRepeatsText(item) && (
                 <>
-                    <div className="translation-group-header">Kan gjentas knappetekst</div>
+                    <div className="translation-group-header">{t('Repeat button text')}</div>
                     <div className="translation-row">
                         <FormField>
                             <textarea defaultValue={getRepeatsText(item)} disabled={true} />
@@ -145,7 +147,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
             )}
             {getValidationMessage(item) && (
                 <>
-                    <div className="translation-group-header">Feilmelding for valideringsfeil</div>
+                    <div className="translation-group-header">{t('Error message for validation error')}</div>
                     <div className="translation-row">
                         <FormField>
                             <textarea defaultValue={getValidationMessage(item)} disabled={true} />
@@ -171,7 +173,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
             )}
             {getPlaceHolderText(item) && (
                 <>
-                    <div className="translation-group-header">Skyggetekst</div>
+                    <div className="translation-group-header">{t('Placeholder text')}</div>
                     <div className="translation-row">
                         <FormField>
                             <textarea defaultValue={getPlaceHolderText(item)} disabled={true} />
@@ -198,7 +200,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
             {(item.type === IQuestionnaireItemType.text || item.type === IQuestionnaireItemType.string) &&
                 getInitialText(item) && (
                     <>
-                        <div className="translation-group-header">Initiell verdi</div>
+                        <div className="translation-group-header">{t('Initial value')}</div>
                         <div className="translation-row">
                             <FormField>
                                 <textarea defaultValue={getInitialText(item)} disabled={true} />

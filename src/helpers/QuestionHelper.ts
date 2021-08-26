@@ -6,68 +6,68 @@ import { ItemControlType } from './itemControl';
 
 const itemType = [
     {
-        display: 'Gruppe',
+        display: 'Group',
         code: IQuestionnaireItemType.group,
     },
     {
-        display: 'Beskjed',
+        display: 'Display',
         code: IQuestionnaireItemType.display,
     },
     {
-        display: 'Kortsvar',
+        display: 'Short answer',
         code: IQuestionnaireItemType.string,
     },
     {
-        display: 'Langsvar',
+        display: 'Multiline text answer',
         code: IQuestionnaireItemType.text,
     },
     {
-        display: 'Alternativer',
+        display: 'Choice',
         code: IQuestionnaireItemType.choice,
     },
     {
-        display: 'Alternativer med åpent svar',
+        display: 'Open choice',
         code: IQuestionnaireItemType.openChoice,
     },
     {
-        display: 'Forhåndsdefinerte alternativer',
+        display: 'Predefined choices',
         code: IQuestionnaireItemType.predefined,
     },
     {
-        display: 'Mottakerliste',
+        display: 'Recipient list',
         code: IQuestionnaireItemType.address,
     },
     {
-        display: 'Dato',
+        display: 'Date',
         code: IQuestionnaireItemType.date,
     },
     {
-        display: 'Klokkeslett',
+        display: 'Time',
         code: IQuestionnaireItemType.time,
     },
     {
-        display: 'Dato og klokkeslett',
+        display: 'Date and time',
         code: IQuestionnaireItemType.dateTime,
     },
     {
-        display: 'Bekreftelse',
+        display: 'Confirmation',
         code: IQuestionnaireItemType.boolean,
     },
     {
         // Used for itemTypes integer and decimal
-        display: 'Tall',
+        display: 'Number',
         code: IQuestionnaireItemType.number,
     },
     {
-        display: 'Antall med enhet',
+        display: 'Quantity',
         code: IQuestionnaireItemType.quantity,
     },
     {
-        display: 'Vedlegg',
+        display: 'Attachment',
         code: IQuestionnaireItemType.attachment,
     },
     {
-        display: 'Utvidbar info',
+        display: 'Expandable info',
         code: IQuestionnaireItemType.inline,
     },
 ];
@@ -80,7 +80,7 @@ export const quantityUnitTypes = [
     {
         system: '',
         code: QUANTITY_UNIT_TYPE_NOT_SELECTED,
-        display: 'Ingen enhet',
+        display: 'No unit',
     },
     {
         system: 'http://unitsofmeasure.org',
@@ -95,22 +95,22 @@ export const quantityUnitTypes = [
     {
         system: 'http://unitsofmeasure.org',
         code: 'a',
-        display: 'år',
+        display: 'year',
     },
     {
         system: 'http://unitsofmeasure.org',
         code: 'mo',
-        display: 'måned',
+        display: 'month',
     },
     {
         system: 'http://unitsofmeasure.org',
         code: 'd',
-        display: 'dag',
+        display: 'day',
     },
     {
         system: '',
         code: QUANTITY_UNIT_TYPE_CUSTOM,
-        display: 'Egendefinert',
+        display: 'Custom',
     },
 ];
 
@@ -141,108 +141,108 @@ export const dropdownExtension = {
 export const enableWhenOperatorBoolean: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
-        display: 'Er besvart',
+        display: 'is answered',
     },
     {
         code: IOperator.notExists,
-        display: 'Ikke er besvart',
+        display: 'is not answered',
     },
     {
         code: IOperator.equal,
-        display: 'Er lik',
+        display: 'is equal to',
     },
     {
         code: IOperator.notEqual,
-        display: 'Ikke er lik',
+        display: 'is not equal',
     },
 ];
 
 export const enableWhenOperatorChoice: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
-        display: 'Er besvart',
+        display: 'is answered',
     },
     {
         code: IOperator.notExists,
-        display: 'Ikke er besvart',
+        display: 'is not answered',
     },
     {
         code: IOperator.equal,
-        display: 'Er lik',
+        display: 'is equal to',
     },
     {
         code: IOperator.notEqual,
-        display: 'Ikke er lik',
+        display: 'is not equal',
     },
 ];
 
 export const enableWhenOperatorDate: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
-        display: 'Er besvart',
+        display: 'is answered',
     },
     {
         code: IOperator.notExists,
-        display: 'Ikke er besvart',
+        display: 'is not answered',
     },
     {
         code: IOperator.equal,
-        display: 'Er lik',
+        display: 'is equal to',
     },
     {
         code: IOperator.notEqual,
-        display: 'Ikke er lik',
+        display: 'is not equal',
     },
     {
         code: IOperator.greaterThan,
-        display: 'Er etter',
+        display: 'is later than',
     },
     {
         code: IOperator.lessThan,
-        display: 'Er før',
+        display: 'is earlier than',
     },
     {
         code: IOperator.greaterThanOrEqual,
-        display: 'Er etter eller lik',
+        display: 'is later than or equal',
     },
     {
         code: IOperator.lessThanOrEqual,
-        display: 'Er før eller lik',
+        display: 'is earlier than or equal',
     },
 ];
 
 export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
     {
         code: IOperator.exists,
-        display: 'Er besvart',
+        display: 'is answered',
     },
     {
         code: IOperator.notExists,
-        display: 'Ikke er besvart',
+        display: 'is not answered',
     },
     {
         code: IOperator.equal,
-        display: 'Er lik',
+        display: 'is equal to',
     },
     {
         code: IOperator.notEqual,
-        display: 'Ikke er lik',
+        display: 'is not equal',
     },
     {
         code: IOperator.greaterThan,
-        display: 'Er større enn',
+        display: 'is greater than',
     },
     {
         code: IOperator.lessThan,
-        display: 'Er mindre enn',
+        display: 'is less than',
     },
     {
         code: IOperator.greaterThanOrEqual,
-        display: 'Er større enn eller lik',
+        display: 'is greater than or equal',
     },
     {
         code: IOperator.lessThanOrEqual,
-        display: 'Er mindre enn eller lik',
+        display: 'is less than or equal',
     },
 ];
 
@@ -267,72 +267,69 @@ const makeOption = (display: string, code: string): Option => {
 export const EnrichmentSet: Options = {
     options: [
         {
-            display: 'Pasient',
+            display: 'Patient',
             options: [
                 makeOption(
-                    'Fødselsnummer',
+                    'National identity number',
                     "Patient.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
                 ),
-                makeOption('Fullt navn', "Patient.name.where(use = 'official').select(given.join(' ') & ' ' & family)"),
+                makeOption('Full name', "Patient.name.where(use = 'official').select(given.join(' ') & ' ' & family)"),
                 makeOption(
-                    'Fornavn',
+                    'First name',
                     "Patient.name.where(use = 'official').select(iif(given.count() > 1, given.take(count()-1), given).join(' '))",
                 ),
-                makeOption('Etternavn', "Patient.name.where(use = 'official').family"),
+                makeOption('Surname', "Patient.name.where(use = 'official').family"),
                 makeOption(
-                    'Alder',
+                    'Age',
                     "Patient.extension.where(url = 'http://helsenorge.no/fhir/StructureDefinition/sdf-age').value",
                 ),
-                makeOption('Mobiltelefonnummer', "Patient.telecom.where(use = 'mobile' and system = 'phone').value"),
-                makeOption('Epost', "Patient.telecom.where(use = 'home' and system = 'email').value"),
-                makeOption('Adresse', "Patient.address.where(use = 'home').line.first()"),
-                makeOption('Postnummer', "Patient.address.where(use = 'home').postalCode"),
-                makeOption('Poststed', "Patient.address.where(use = 'home').city"),
-                makeOption('Midlertidig c/o', "Patient.address.where(use = 'temp').line[0]"),
-                makeOption('Midlertidig adresse', "Patient.address.where(use = 'temp').line[1]"),
-                makeOption('Midlertidig postnummer', "Patient.address.where(use = 'temp').line[2]"),
-                makeOption('Midlertidig poststed', "Patient.address.where(use = 'temp').line[3]"),
+                makeOption('Mobile phone number', "Patient.telecom.where(use = 'mobile' and system = 'phone').value"),
+                makeOption('Email', "Patient.telecom.where(use = 'home' and system = 'email').value"),
+                makeOption('Adress', "Patient.address.where(use = 'home').line.first()"),
+                makeOption('Zip code', "Patient.address.where(use = 'home').postalCode"),
+                makeOption('Postal adress', "Patient.address.where(use = 'home').city"),
+                makeOption('Temporary c/o', "Patient.address.where(use = 'temp').line[0]"),
+                makeOption('Temporary adress', "Patient.address.where(use = 'temp').line[1]"),
+                makeOption('Temporary postal code', "Patient.address.where(use = 'temp').line[2]"),
+                makeOption('Temporary postal adress', "Patient.address.where(use = 'temp').line[3]"),
             ],
         },
         {
-            display: 'På vegne av innbygger',
+            display: 'On behalf of citizen',
             options: [
                 makeOption(
-                    'Fylles skjema ut på vegne av noen andre? (true/false)',
+                    'Is questionnaire answered on behalf of someone else (true/false)',
                     "iif(%representative.relationship.coding.where(system = 'http://hl7.org/fhir/v3/RoleCode' and (code = 'PRN' or code = 'GRANTEE')).count() > 0, true, false)",
                 ),
                 makeOption(
-                    'På vegne av innbygger (Fødselsnummer)',
+                    'On behalf of citizen (national identity number)',
                     "RelatedPerson.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
                 ),
                 makeOption(
-                    'På vegne av innbygger (Navn)',
+                    'On behalf of citizen (name)',
                     "RelatedPerson.name.where(use = 'official').select(given.join(' ') & ' ' & family)",
                 ),
                 makeOption(
-                    'På vegne av innbygger (Mobiltelefonnummer)',
+                    'On behalf of citizen (phone number)',
                     "RelatedPerson.telecom.where(use = 'mobile' and system = 'phone').value",
                 ),
-                makeOption('På vegne av innbygger (Adresse)', "RelatedPerson.address.where(use = 'home').line.first()"),
+                makeOption('On behalf of citizen (adress)', "RelatedPerson.address.where(use = 'home').line.first()"),
                 makeOption(
-                    'På vegne av innbygger (Postnummer)',
+                    'On behalf of citizen (postal code)',
                     "RelatedPerson.address.where(use = 'home').postalCode",
                 ),
-                makeOption('På vegne av innbygger (Poststed)', "RelatedPerson.address.where(use = 'home').city"),
+                makeOption('On behalf of citizen (postal adress)', "RelatedPerson.address.where(use = 'home').city"),
+                makeOption('On behalf of citizen (temporary c/o)', "RelatedPerson.address.where(use = 'temp').line[0]"),
                 makeOption(
-                    'På vegne av innbygger (Midlertidig c/o)',
-                    "RelatedPerson.address.where(use = 'temp').line[0]",
-                ),
-                makeOption(
-                    'På vegne av innbygger (Midlertidig adresse)',
+                    'On behalf of citizen (temporary adress)',
                     "RelatedPerson.address.where(use = 'temp').line[1]",
                 ),
                 makeOption(
-                    'På vegne av innbygger (Midlertidig postnummer)',
+                    'On behalf of citizen (temporary postal code)',
                     "RelatedPerson.address.where(use = 'temp').line[2]",
                 ),
                 makeOption(
-                    'På vegne av innbygger (Midlertidig poststed)',
+                    'On behalf of citizen (temporary postal adress)',
                     "RelatedPerson.address.where(use = 'temp').line[3]",
                 ),
             ],

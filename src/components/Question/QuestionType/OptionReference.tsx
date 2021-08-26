@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import './OptionReference.css';
 import { Extension, QuestionnaireItem } from '../../../types/fhir';
 import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
@@ -6,13 +7,21 @@ import Btn from '../../Btn/Btn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import createUUID from '../../../helpers/CreateUUID';
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import {
+    DragDropContext,
+    Draggable,
+    DraggingStyle,
+    Droppable,
+    DropResult,
+    NotDraggingStyle,
+} from 'react-beautiful-dnd';
 
 type Props = {
     item: QuestionnaireItem;
 };
 
 const OptionReference = ({ item }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 
     const dispatchNewItem = () => {
@@ -57,8 +66,10 @@ const OptionReference = ({ item }: Props): JSX.Element => {
         }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+    const getItemStyle = (
+        isDragging: boolean,
+        draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
+    ): React.CSSProperties => ({
         userSelect: 'none',
         background: isDragging ? 'lightgreen' : 'transparent',
         cursor: 'pointer',
@@ -102,7 +113,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                     type="button"
                     variant="secondary"
                     onClick={() => dispatchNewItem()}
-                    title="+ Legg til mottaker"
+                    title={t('+ Add recipient')}
                 />
             </div>
             <DragDropContext onDragEnd={handleReorder}>
@@ -136,7 +147,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                         autoComplete="off"
                                                         type="text"
                                                         name="beskrivelse"
-                                                        placeholder="Angi mottaker.."
+                                                        placeholder={t('Select recipient..')}
                                                         defaultValue={reference.valueReference?.display}
                                                         onBlur={(event) =>
                                                             updateReference(
@@ -150,7 +161,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                         autoComplete="off"
                                                         type="text"
                                                         name="verdi"
-                                                        placeholder="Angi endpoint.."
+                                                        placeholder={t('Select endpoint..')}
                                                         defaultValue={reference.valueReference?.reference}
                                                         onBlur={(event) =>
                                                             updateReference(

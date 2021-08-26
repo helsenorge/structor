@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
@@ -12,6 +13,7 @@ type InlineProps = {
 };
 
 const Inline = ({ linkId, parentArray }: InlineProps): JSX.Element => {
+    const { t } = useTranslation();
     const {
         state: { qItems, qOrder },
         dispatch,
@@ -37,7 +39,7 @@ const Inline = ({ linkId, parentArray }: InlineProps): JSX.Element => {
     const markdownText = currentItem._text?.extension ? currentItem._text.extension[0].valueMarkdown || '' : '';
 
     return (
-        <FormField label="Utvidet tekst">
+        <FormField label={t('Expanded text')}>
             <MarkdownEditor data={markdownText} onBlur={dispatchUpdateMarkdown} />
         </FormField>
     );

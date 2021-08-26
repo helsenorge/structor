@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { QuestionnaireItemInitial } from '../../../types/fhir';
 
 type InitialInputTypeIntegerProps = {
@@ -7,6 +8,7 @@ type InitialInputTypeIntegerProps = {
 };
 
 const InitialInputTypeInteger = (props: InitialInputTypeIntegerProps): JSX.Element => {
+    const { t } = useTranslation();
     const [initialValue, setInitialValue] = useState(getValue(props.initial));
 
     function getValue(initial: QuestionnaireItemInitial | undefined): string {
@@ -22,7 +24,7 @@ const InitialInputTypeInteger = (props: InitialInputTypeIntegerProps): JSX.Eleme
 
     return (
         <div className="form-field">
-            <label>Initiell verdi</label>
+            <label>{t('Initial value')}</label>
             <input
                 value={initialValue}
                 onChange={(event) => {

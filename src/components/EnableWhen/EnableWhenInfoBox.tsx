@@ -10,6 +10,7 @@ import {
 import { IOperator } from '../../types/IQuestionnareItemType';
 import Infobox from './Infobox';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import createUUID from '../../helpers/CreateUUID';
 import { format } from 'date-fns';
 
@@ -18,13 +19,13 @@ type OperatorMapType = {
 };
 
 const operatorMap: OperatorMapType = {
-    [IOperator.exists]: 'eksisterer',
-    [IOperator.equal]: 'er lik',
-    [IOperator.notEqual]: 'ikke er lik',
-    [IOperator.greaterThan]: 'er større enn',
-    [IOperator.lessThan]: 'er mindre enn',
-    [IOperator.greaterThanOrEqual]: 'er større enn eller lik',
-    [IOperator.lessThanOrEqual]: 'er mindre enn eller lik',
+    [IOperator.exists]: 'exists',
+    [IOperator.equal]: 'is equal to',
+    [IOperator.notEqual]: 'is not equal',
+    [IOperator.greaterThan]: 'is greater than',
+    [IOperator.lessThan]: 'is less than',
+    [IOperator.greaterThanOrEqual]: 'is greater than or equal',
+    [IOperator.lessThanOrEqual]: 'is less than or equal',
 };
 
 interface Props {
@@ -36,6 +37,7 @@ interface Props {
 }
 
 const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, enableBehavior }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const getCodingDisplay = (conditionLinkId: string, coding: Coding): string => {
         const item = getItem(conditionLinkId);
         let display: string | undefined;
@@ -58,7 +60,7 @@ const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, en
             }
         }
 
-        return display || '<ikke satt>';
+        return display || t('<not set>');
     };
 
     const getQuantityDisplay = (answerQuantity: Quantity): string => {
@@ -78,17 +80,19 @@ const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, en
         const conditionItem = getItem(enableWhen.question);
         if (!conditionItem) {
             // if this happens, this enableWhen refers to a question which does not exist
-            console.warn(`Feil i betinget visning: item med linkId ${enableWhen.question} finnes ikke.`);
+            console.warn(
+                t('Error in enableWhen: item with linkId {0} does not exist').replace('{0}', enableWhen.question),
+            );
             return (
-                <div
-                    key={`${linkId}-${enableWhen.question}-${enableWhen.operator}-notfound`}
-                >{`Feil i betinget visning: item med linkId ${enableWhen.question} finnes ikke.`}</div>
+                <div key={`${linkId}-${enableWhen.question}-${enableWhen.operator}-notfound`}>
+                    {t('Error in enableWhen: item with linkId {0} does not exist').replace('{0}', enableWhen.question)}
+                </div>
             );
         }
 
         let answerCondition: string;
         if (enableWhen.hasOwnProperty('answerBoolean')) {
-            answerCondition = enableWhen.answerBoolean === true ? 'Sant' : 'Usant';
+            answerCondition = enableWhen.answerBoolean === true ? t('True') : t('Not true');
         } else if (enableWhen.hasOwnProperty('answerDecimal')) {
             answerCondition = enableWhen.answerDecimal.toString();
         } else if (enableWhen.hasOwnProperty('answerInteger')) {
@@ -114,15 +118,15 @@ const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, en
         return (
             <div key={`${linkId}-${enableWhen.question}-${enableWhen.operator}-${answerCondition}`}>
                 {enableBehaviorText && <p>{enableBehaviorText}</p>}
-                <strong>{getItem(enableWhen.question).text}</strong> {operatorMap[enableWhen.operator] || '<operator>'}{' '}
-                <strong>{answerCondition}</strong>
+                <strong>{getItem(enableWhen.question).text}</strong>{' '}
+                {t(operatorMap[enableWhen.operator]) || t('<operator>')} <strong>{answerCondition}</strong>
             </div>
         );
     };
-    const enableBehaviorText = enableBehavior === QuestionnaireItemEnableBehaviorCodes.ALL ? 'og' : 'eller';
+    const enableBehaviorText = enableBehavior === QuestionnaireItemEnableBehaviorCodes.ALL ? t('and') : t('or');
 
     return (
-        <Infobox title="Elementet vil vises dersom:">
+        <Infobox title={t('Element will be shown if:')}>
             {enableWhen.map((condition, index) => {
                 return generateCondition(condition, index > 0 ? enableBehaviorText : '');
             })}

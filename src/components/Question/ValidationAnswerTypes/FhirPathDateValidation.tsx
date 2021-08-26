@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { format, parse } from 'date-fns';
 import Picker from '../../DatePicker/DatePicker';
 import Select from '../../Select/Select';
@@ -24,30 +25,31 @@ interface FhirPathDateValidationProps {
 }
 
 export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.Element => {
+    const { t } = useTranslation();
     return (
         <div className="horizontal">
-            <span>{`${props.descriptionText} er `}</span>
+            <span>{`${props.descriptionText} ${t('is')} `}</span>
             <Select
                 options={[
                     {
                         code: FhirPathDateOperator.NOVALIDATION,
-                        display: '<uten validering>',
+                        display: t('<no validation>'),
                     },
                     {
                         code: FhirPathDateOperator.ABSOLUTE,
-                        display: 'fast dato',
+                        display: t('a set date'),
                     },
                     {
                         code: FhirPathDateOperator.EXACT,
-                        display: 'dagens dato',
+                        display: t('today'),
                     },
                     {
                         code: FhirPathDateOperator.PLUSS,
-                        display: 'dagens dato pluss',
+                        display: t('today plus'),
                     },
                     {
                         code: FhirPathDateOperator.MINUS,
-                        display: 'dagens dato minus',
+                        display: t('today minus'),
                     },
                 ]}
                 value={props.operatorValue}
@@ -73,7 +75,7 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
                 <>
                     <input
                         type="number"
-                        placeholder="tall"
+                        placeholder={t('number')}
                         className="date-validation-input"
                         defaultValue={props.numberValue}
                         onChange={(event) => {
@@ -81,23 +83,23 @@ export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.
                         }}
                     />
                     <Select
-                        placeholder="Enhet"
+                        placeholder={t('Unit')}
                         options={[
                             {
                                 code: 'days',
-                                display: 'dager',
+                                display: t('days'),
                             },
                             {
                                 code: 'weeks',
-                                display: 'uker',
+                                display: t('weeks'),
                             },
                             {
                                 code: 'months',
-                                display: 'måneder',
+                                display: t('months'),
                             },
                             {
                                 code: 'years',
-                                display: 'år',
+                                display: t('year'),
                             },
                         ]}
                         value={props.unitValue}

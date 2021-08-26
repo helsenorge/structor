@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ItemControlType } from '../../helpers/itemControl';
 import { deleteItemAction, newItemSidebar, updateItemAction } from '../../store/treeStore/treeActions';
 import { TreeContext } from '../../store/treeStore/treeStore';
@@ -15,6 +16,7 @@ import FormField from '../FormField/FormField';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 
 const Sidebar = (): JSX.Element => {
+    const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
 
     const dispatchNewSidebar = () => {
@@ -69,26 +71,26 @@ const Sidebar = (): JSX.Element => {
     };
 
     return (
-        <Accordion title="Sidebar">
+        <Accordion title={t('Sidebar')}>
             {sidebarItems.map((x, index) => {
                 return (
                     <div key={index}>
                         <div className="horizontal equal">
-                            <FormField label="Gruppe kode">
+                            <FormField label={t('Group code')}>
                                 <input
-                                    placeholder="legg inn en kode (f.eks) SOT-2"
+                                    placeholder={t('add a code (for example) SOT-2')}
                                     defaultValue={findCurrentCode(x.linkId)?.code}
                                     onBlur={(event) => handleChangeCode(event.target.value, x.linkId)}
                                 />
                             </FormField>
-                            <FormField label="Teknisk navn">
+                            <FormField label={t('Teknisk navn')}>
                                 <input
                                     defaultValue={findCurrentCode(x.linkId)?.display}
                                     onBlur={(event) => handleChangeDisplay(event.target.value, x.linkId)}
                                 />
                             </FormField>
                         </div>
-                        <FormField label="Innhold">
+                        <FormField label={t('Content')}>
                             <MarkdownEditor
                                 data={getMarkdown(x.linkId)}
                                 onBlur={(markdown) => handleMarkdown(x.linkId, markdown)}
@@ -96,7 +98,7 @@ const Sidebar = (): JSX.Element => {
                         </FormField>
                         <div className="center-text">
                             <Btn
-                                title="- Fjern element"
+                                title={t('- Remove element')}
                                 type="button"
                                 size="small"
                                 variant="secondary"
@@ -109,7 +111,7 @@ const Sidebar = (): JSX.Element => {
             })}
             <div className="center-text">
                 <Btn
-                    title="+ Legg til element"
+                    title={t('+ Add element')}
                     type="button"
                     size="small"
                     variant="primary"

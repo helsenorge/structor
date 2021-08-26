@@ -1,3 +1,4 @@
+import { TFunction } from 'react-i18next';
 import { Items, OrderItem } from '../store/treeStore/treeStore';
 import { ValueSet } from '../types/fhir';
 import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
@@ -13,24 +14,35 @@ export interface ValidationErrors {
 }
 
 export const validateOrphanedElements = (
+    t: TFunction<'translation'>,
     qOrder: OrderItem[],
     qItems: Items,
     qContained: ValueSet[],
 ): ValidationErrors[] => {
     const errors: ValidationErrors[] = [];
 
-    qOrder.forEach((x) => validate(x, qItems, qContained, errors));
+    qOrder.forEach((x) => validate(t, x, qItems, qContained, errors));
     console.log(errors);
     return errors;
 };
 
-const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[], errors: ValidationErrors[]): void => {
+const validate = (
+    t: TFunction<'translation'>,
+    currentItem: OrderItem,
+    qItems: Items,
+    qContained: ValueSet[],
+    errors: ValidationErrors[],
+): void => {
     const qItem = qItems[currentItem.linkId];
 
     // validate that this item has a unique linkId:
     const hasLinkIdCollision = Object.keys(qItems).filter((x) => x === qItem.linkId).length > 1;
     if (hasLinkIdCollision) {
-        errors.push({ linkId: qItem.linkId, errorProperty: 'linkId', errorReadableText: 'LinkId er allerede i bruk' });
+        errors.push({
+            linkId: qItem.linkId,
+            errorProperty: 'linkId',
+            errorReadableText: t('LinkId is already in use'),
+        });
     }
 
     // validate required item which cannot have an answer
@@ -46,7 +58,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
         errors.push({
             linkId: qItem.linkId,
             errorProperty: 'required',
-            errorReadableText: 'Spørsmålet er satt som required, men kan ikke være required',
+            errorReadableText: t('Question is required, but cannot be required'),
         });
     }
 
@@ -64,7 +76,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                     linkId: qItem.linkId,
                     index: index,
                     errorProperty: 'extension',
-                    errorReadableText: 'Feil i datovalidering med FhirPath',
+                    errorReadableText: t('Error in FHIRpath date validation'),
                 });
             }
         });
@@ -77,7 +89,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                 linkId: qItem.linkId,
                 index: index,
                 errorProperty: 'code.code',
-                errorReadableText: 'Code har ikke "code" property',
+                errorReadableText: t('Code does not have "code" property'),
             });
         }
         if (!code.system) {
@@ -85,7 +97,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                 linkId: qItem.linkId,
                 index: index,
                 errorProperty: 'code.system',
-                errorReadableText: 'Code har ikke "system" property',
+                errorReadableText: 'Code does not have "system" property',
             });
         }
         if (code.system && !isSystemValid(code.system)) {
@@ -93,7 +105,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                 linkId: qItem.linkId,
                 index: index,
                 errorProperty: 'code',
-                errorReadableText: 'Code har ikke gyldig system',
+                errorReadableText: t('Code does not have a valid system'),
             });
         }
     });
@@ -105,7 +117,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                 linkId: qItem.linkId,
                 index: index,
                 errorProperty: 'code',
-                errorReadableText: 'answerOption har ikke gyldig system',
+                errorReadableText: t('answerOption does not have a valid system'),
             });
         }
     });
@@ -117,14 +129,14 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
             errors.push({
                 linkId: qItem.linkId,
                 errorProperty: 'code',
-                errorReadableText: 'quantity extension har ikke gyldig system',
+                errorReadableText: t('quantity extension does not have a valid system'),
             });
         }
         if (unitExtension && !unitExtension.valueCoding?.code) {
             errors.push({
                 linkId: qItem.linkId,
                 errorProperty: 'code',
-                errorReadableText: 'quantity extension har ikke code',
+                errorReadableText: t('quantity extension does not have code'),
             });
         }
     }
@@ -137,7 +149,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                 linkId: qItem.linkId,
                 index: index,
                 errorProperty: 'extension',
-                errorReadableText: 'Extension har ikke "url" property',
+                errorReadableText: t('Extension has no "url" property'),
             });
         }
         const valueProps = Object.keys(extension).filter((key) => key.substr(0, 5) === 'value');
@@ -147,7 +159,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                 linkId: qItem.linkId,
                 index: index,
                 errorProperty: 'extension',
-                errorReadableText: 'Extension mangler "value[x], eller har mer enn en value[x]',
+                errorReadableText: t('Extension does not have value[x], or has more than one value[x]'),
             });
         }
     });
@@ -166,7 +178,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                 errors.push({
                     linkId: qItem.linkId,
                     errorProperty: 'initial',
-                    errorReadableText: 'Initiell verdi er ikke en mulig verdi',
+                    errorReadableText: t('Initial value is not a possible value'),
                 });
             }
         } else if (qItem.answerValueSet) {
@@ -184,7 +196,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                     errors.push({
                         linkId: qItem.linkId,
                         errorProperty: 'initial',
-                        errorReadableText: 'Initiell verdi er ikke en mulig verdi',
+                        errorReadableText: t('Initial value is not a possible value'),
                     });
                 }
             } else {
@@ -192,7 +204,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                 errors.push({
                     linkId: qItem.linkId,
                     errorProperty: 'initial',
-                    errorReadableText: 'Verdisettet den initielle verdien kommer fra finnes ikke',
+                    errorReadableText: t('ValueSet of initial value does not exist'),
                 });
             }
         }
@@ -207,7 +219,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                 linkId: qItem.linkId,
                 index: index,
                 errorProperty: 'enableWhen.question',
-                errorReadableText: 'LinkId på spørsmålet denne enableWhen referer til eksisterer ikke',
+                errorReadableText: t('This enableWhen refers to a question with linkId which does not exist'),
             });
         }
 
@@ -217,7 +229,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                 linkId: qItem.linkId,
                 index: index,
                 errorProperty: 'enableWhen',
-                errorReadableText: 'enableWhen er ikke fyllt ut riktig. Det finnes for mange answer[x]-properties',
+                errorReadableText: t('enableWhen is not configured correctly. There are too many answer[x]-properties'),
             });
         }
 
@@ -237,7 +249,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                     linkId: qItem.linkId,
                     index: index,
                     errorProperty: 'enableWhen.answerQuantity',
-                    errorReadableText: 'Quantity samsvarer ikke med system og code',
+                    errorReadableText: t('Quantity does not match system and code'),
                 });
             }
         }
@@ -258,7 +270,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                         linkId: qItem.linkId,
                         index: index,
                         errorProperty: 'enableWhen.answerReference',
-                        errorReadableText: 'Mottakeren definert i denne enableWhen finnes ikke',
+                        errorReadableText: t('Recipient set in this enableWhen does not exist'),
                     });
                 }
             } else if (qItems[ew.question].answerOption) {
@@ -272,7 +284,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                         linkId: qItem.linkId,
                         index: index,
                         errorProperty: 'enableWhen.answerCoding',
-                        errorReadableText: 'Coding denne enableWhen forventer eksisterer ikke',
+                        errorReadableText: t('Coding expected in this enableWhen does not exist'),
                     });
                 }
             } else if (qItems[ew.question].answerValueSet) {
@@ -288,7 +300,7 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                             linkId: qItem.linkId,
                             index: index,
                             errorProperty: 'enableWhen.answerCoding',
-                            errorReadableText: 'Coding denne enableWhen forventer eksisterer ikke',
+                            errorReadableText: t('Coding expected in this enableWhen does not exist'),
                         });
                     }
                 } else {
@@ -297,12 +309,12 @@ const validate = (currentItem: OrderItem, qItems: Items, qContained: ValueSet[],
                         linkId: qItem.linkId,
                         index: index,
                         errorProperty: 'enableWhen.answerCoding',
-                        errorReadableText: 'Verdisettet denne enableWhen referere til finnes ikke',
+                        errorReadableText: t('The ValueSet referenced in this enableWhen does not exist'),
                     });
                 }
             }
         }
     });
 
-    currentItem.items.forEach((x) => validate(x, qItems, qContained, errors));
+    currentItem.items.forEach((x) => validate(t, x, qItems, qContained, errors));
 };

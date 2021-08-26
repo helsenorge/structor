@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import FormField from '../../FormField/FormField';
 import Select from '../../Select/Select';
 import {
@@ -18,6 +19,7 @@ type UnitTypeSelectorProps = {
 };
 
 const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
+    const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 
     const updateQuantityUnitType = (event: ChangeEvent<HTMLSelectElement>): void => {
@@ -98,19 +100,19 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
 
     return (
         <>
-            <FormField label="Velg enhet">
+            <FormField label={t('Select unit')}>
                 <Select options={quantityUnitTypes} onChange={updateQuantityUnitType} value={selectedUnitType} />
             </FormField>
             {isCustom && (
                 <>
                     <div className="horizontal equal">
-                        <FormField label="Display">
+                        <FormField label={t('Display')}>
                             <input
                                 defaultValue={display}
                                 onBlur={(event) => updateCustomQuantityUnitType('display', event)}
                             />
                         </FormField>
-                        <FormField label="Code">
+                        <FormField label={t('Code')}>
                             <input
                                 defaultValue={code}
                                 onBlur={(event) => updateCustomQuantityUnitType('code', event)}

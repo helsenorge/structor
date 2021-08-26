@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { TreeContext, TreeState } from '../store/treeStore/treeStore';
 import { getStateFromDb } from '../store/treeStore/indexedDbHelper';
@@ -20,6 +21,7 @@ import { ValidationErrors } from '../helpers/orphanValidation';
 import TranslationModal from '../components/Languages/Translation/TranslationModal';
 
 const FormBuilder = (): JSX.Element => {
+    const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const [showFormDetails, setShowFormDetails] = useState(false);
     const [stateFromStorage, setStateFromStorage] = useState<TreeState>();
@@ -42,20 +44,20 @@ const FormBuilder = (): JSX.Element => {
     const getConfirmRestoreContent = (): JSX.Element => {
         return (
             <div>
-                <p>Det ser ut til at du har jobbet med et skjema tidligere:</p>
+                <p>{t('It looks like you have previously worked with a questionnaire:')}</p>
                 <div className="key-value">
-                    <div>Tittel:</div>
+                    <div>{t('Title')}</div>
                     <div>{stateFromStorage?.qMetadata.title}</div>
                 </div>
                 <div className="key-value">
-                    <div>Teknisk navn:</div>
+                    <div>{t('Technical name')}</div>
                     <div>{stateFromStorage?.qMetadata.name}</div>
                 </div>
                 <div className="key-value">
-                    <div>Versjon:</div>
+                    <div>{t('Version')}</div>
                     <div>{stateFromStorage?.qMetadata.version}</div>
                 </div>
-                <p>Ønsker du å fortsette med dette skjemaet?</p>
+                <p>{t('Do you wish to open this questionnaire?')}</p>
             </div>
         );
     };
@@ -117,7 +119,7 @@ const FormBuilder = (): JSX.Element => {
                         dispatch(resetQuestionnaireAction());
                         setStateFromStorage(undefined);
                     }}
-                    title="Gjenopprett skjema..."
+                    title={t('Restore questionnaire...')}
                     id="confirm-use-stored-state"
                 >
                     {getConfirmRestoreContent()}
@@ -132,11 +134,12 @@ const FormBuilder = (): JSX.Element => {
                     onDeny={() => {
                         setDisplayVerifyReset(false);
                     }}
-                    title="Husk å lagre..."
+                    title={t('Remember to save...')}
                     id="confirm-reset"
                 >
-                    Du har gjort endringer som ikke er lagret. Ønsker du allikevel å begynne på et nytt skjema?
-                    (Endringene vil gå tapt)
+                    {t(
+                        'You have unsaved changes. Do you wish to start a new questionnaire? (Changes to existing questionnaire will be lost)',
+                    )}
                 </Confirm>
             )}
             {isLoading && (
@@ -144,7 +147,7 @@ const FormBuilder = (): JSX.Element => {
                     <div className="align-everything">
                         <SpinnerBox />
                     </div>
-                    <p className="center-text">Leser inn skjema...</p>
+                    <p className="center-text">{t('Loading questionnaire...')}</p>
                 </Modal>
             )}
             <div className="editor">
@@ -175,7 +178,7 @@ const FormBuilder = (): JSX.Element => {
                 <div className="details-button">
                     <IconBtn
                         type="info"
-                        title="Skjemadetaljer"
+                        title={t('Questionnaire details')}
                         color="black"
                         onClick={toggleFormDetails}
                         size="large"

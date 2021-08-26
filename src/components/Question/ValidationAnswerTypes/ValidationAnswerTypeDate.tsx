@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { QuestionnaireItem, Extension } from '../../../types/fhir';
 import FormField from '../../FormField/FormField';
 import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
@@ -18,6 +19,7 @@ type Props = {
 };
 
 const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
+    const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 
     const validationText = item?.extension?.find((x) => x.url === IExtentionType.validationtext)?.valueString || '';
@@ -91,7 +93,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
 
     return (
         <>
-            <FormField label="Legg til egendefinert feilmelding:">
+            <FormField label={t('Enter custom error message')}>
                 <input
                     defaultValue={validationText}
                     onBlur={(event) => {
@@ -109,7 +111,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
             </FormField>
             <div className="form-field">
                 <FhirPathDateValidation
-                    descriptionText="Min dato"
+                    descriptionText={t('Min date')}
                     numberValue={fhirPathMinDateNumber}
                     unitValue={fhirPathMinDateUnit}
                     operatorValue={fhirPathMinDateOperator}
@@ -131,7 +133,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                     }}
                 />
                 <FhirPathDateValidation
-                    descriptionText="Max dato"
+                    descriptionText={t('Max date')}
                     numberValue={fhirPathMaxDateNumber}
                     unitValue={fhirPathMaxDateUnit}
                     operatorValue={fhirPathMaxDateOperator}

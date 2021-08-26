@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { format, parse, formatISO, parseISO } from 'date-fns';
 import {
     QuestionnaireItem,
@@ -31,6 +32,7 @@ const EnableWhenAnswerTypes = ({
     dispatchUpdateItemEnableWhen,
 }: Props): JSX.Element => {
     const { state } = useContext(TreeContext);
+    const { t } = useTranslation();
     const { qContained } = state;
 
     const getChoices = (conditionItem: QuestionnaireItem): ValueSetComposeIncludeConcept[] => {
@@ -82,7 +84,7 @@ const EnableWhenAnswerTypes = ({
             {(conditionItem.type === IQuestionnaireItemType.choice ||
                 conditionItem.type === IQuestionnaireItemType.openChoice) && (
                 <Select
-                    placeholder="Velg et alternativ.."
+                    placeholder={t('Choose an option..')}
                     options={getChoices(conditionItem)}
                     value={getSelectedChoiceValue()}
                     onChange={(event) => {
@@ -112,10 +114,10 @@ const EnableWhenAnswerTypes = ({
             )}
             {conditionItem.type === IQuestionnaireItemType.boolean && (
                 <Select
-                    placeholder="Velg et alternativ.."
+                    placeholder={t('Choose an option..')}
                     options={[
-                        { display: 'Sant', code: 'true' },
-                        { display: 'Usant', code: 'false' },
+                        { display: t('True'), code: 'true' },
+                        { display: t('Not true'), code: 'false' },
                     ]}
                     value={(enableWhen.answerBoolean || '').toString()}
                     onChange={(event) => {

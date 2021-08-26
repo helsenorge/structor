@@ -1,4 +1,5 @@
 import React, { RefObject } from 'react';
+import { useTranslation } from 'react-i18next';
 import Confirm from '../Modal/Confirm';
 
 type ConfirmFileUploadProps = {
@@ -7,6 +8,7 @@ type ConfirmFileUploadProps = {
 };
 
 const ConfirmFileUpload = ({ close, uploadRef }: ConfirmFileUploadProps): JSX.Element => {
+    const { t } = useTranslation();
     return (
         <Confirm
             onConfirm={() => {
@@ -14,11 +16,12 @@ const ConfirmFileUpload = ({ close, uploadRef }: ConfirmFileUploadProps): JSX.El
                 close();
             }}
             onDeny={close}
-            title="Husk å lagre..."
+            title={t('Remember to save...')}
         >
             <p>
-                Du har gjort endringer som ikke er lagret. Ønsker du allikevel å laste opp et nytt skjema? (Endringene
-                vil gå tapt)
+                {t(
+                    'You have made changes which are not saved. Do you with to upload a new questionnaire? (Changes will be lost)',
+                )}
             </p>
         </Confirm>
     );

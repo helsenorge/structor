@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionType, Items, Languages } from '../../../store/treeStore/treeStore';
 import { isItemControlSidebar } from '../../../helpers/itemControl';
 import FormField from '../../FormField/FormField';
@@ -18,6 +19,7 @@ const TranslateSidebar = ({
     items,
     dispatch,
 }: TranslateSidebarProps): JSX.Element | null => {
+    const { t } = useTranslation();
     const sidebarItems = Object.values(items).filter((item) => isItemControlSidebar(item));
     if (!sidebarItems || sidebarItems.length < 1) {
         return null;
@@ -37,7 +39,7 @@ const TranslateSidebar = ({
 
     return (
         <div>
-            <div className="translation-section-header">Sidebar</div>
+            <div className="translation-section-header">{t('Sidebar')}</div>
             {sidebarItems.map((item) => {
                 if (!item.code || !item._text || !item._text.extension) {
                     return null;

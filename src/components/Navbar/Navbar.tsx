@@ -14,6 +14,7 @@ import { saveAction } from '../../store/treeStore/treeActions';
 import ConfirmFileUpload from '../FileUpload/ConfirmFileUpload';
 import { validateOrphanedElements, ValidationErrors } from '../../helpers/orphanValidation';
 import { ValidationErrorsModal } from '../ValidationErrorsModal/validationErrorsModal';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     newQuestionnaire: () => void;
@@ -40,6 +41,7 @@ const Navbar = ({
     uploadRef,
     validationErrors,
 }: Props): JSX.Element => {
+    const { i18n, t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const history = useHistory();
     const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
@@ -137,11 +139,11 @@ const Navbar = ({
         <>
             <header ref={navBarRef}>
                 <div>
-                    <Btn title="Skjema" onClick={() => handleMenuItemClick(MenuItem.file)} />
+                    <Btn title={t('Questionnaire')} onClick={() => handleMenuItemClick(MenuItem.file)} />
                     {selectedMenuItem === MenuItem.file && (
                         <div className="menu file">
-                            <Btn title="Nytt skjema" onClick={() => callbackAndHide(newQuestionnaire)} />
-                            <Btn title="Last opp skjema" onClick={() => callbackAndHide(triggerUpload)} />
+                            <Btn title={t('New questionnaire')} onClick={() => callbackAndHide(newQuestionnaire)} />
+                            <Btn title={t('Upload questionnaire')} onClick={() => callbackAndHide(triggerUpload)} />
                         </div>
                     )}
                 </div>
@@ -154,12 +156,15 @@ const Navbar = ({
 
                 <div className="pull-right">
                     {profile && profile.name && (
-                        <p className="truncate profile-name" title={`Du er logget inn som ${profile.name}`}>
+                        <p
+                            className="truncate profile-name"
+                            title={t('You are logged in as {0}').replace('{0}', profile.name)}
+                        >
                             {getProfileName()}
                         </p>
                     )}
-                    <Btn title="Forhåndsvisning" onClick={showFormFiller} />
-                    <Btn title="Lagre" onClick={() => exportToJsonAndDownload()} />
+                    <Btn title={t('Preview')} onClick={showFormFiller} />
+                    <Btn title={t('Save')} onClick={() => exportToJsonAndDownload()} />
                     <div
                         className="more-menu"
                         tabIndex={0}
@@ -175,23 +180,47 @@ const Navbar = ({
                 {selectedMenuItem === MenuItem.more && (
                     <div className="menu">
                         <Btn
-                            title="Valider"
+                            title={t('Validate')}
                             onClick={() => {
                                 setValidationErrors(
-                                    validateOrphanedElements(state.qOrder, state.qItems, state.qContained || []),
+                                    validateOrphanedElements(t, state.qOrder, state.qItems, state.qContained || []),
                                 );
                                 setShowValidationErrors(true);
                             }}
                         />
-                        <Btn title="JSON" onClick={() => callbackAndHide(() => setShowJSONView(!showJSONView))} />
-                        <Btn title="Publiser" onClick={() => callbackAndHide(() => setShowPublish(!showPublish))} />
+                        <Btn title={t('JSON')} onClick={() => callbackAndHide(() => setShowJSONView(!showJSONView))} />
+                        <Btn title={t('Publish')} onClick={() => callbackAndHide(() => setShowPublish(!showPublish))} />
                         <Btn
-                            title="Importer valg"
+                            title={t('Import choices')}
                             onClick={() => callbackAndHide(() => setShowImportValueSet(!showImportValueSet))}
                         />
-                        <Btn title="Valg" onClick={() => callbackAndHide(() => setShowContained(!showContained))} />
-                        {!profile && <Btn title="Logg inn" onClick={handleLogin} />}
-                        {profile && <Btn title="Logg ut" onClick={endSession} />}
+                        <Btn
+                            title={t('Choices')}
+                            onClick={() => callbackAndHide(() => setShowContained(!showContained))}
+                        />
+                        {!profile && <Btn title={t('Log in')} onClick={handleLogin} />}
+                        {profile && <Btn title={t('Log out')} onClick={endSession} />}
+                        {i18n.language !== 'nb-NO' ? (
+                            <Btn
+                                title={t('Change to norwegian')}
+                                onClick={() =>
+                                    callbackAndHide(() => {
+                                        i18n.changeLanguage('nb-NO');
+                                        localStorage.setItem('editor_language', 'nb-NO');
+                                    })
+                                }
+                            />
+                        ) : (
+                            <Btn
+                                title={t('Change to English')}
+                                onClick={() =>
+                                    callbackAndHide(() => {
+                                        i18n.changeLanguage('en-US');
+                                        localStorage.setItem('editor_language', 'en-US');
+                                    })
+                                }
+                            />
+                        )}
                     </div>
                 )}
             </header>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { isOptionGroup, Option, OptionGroup } from '../../types/OptionTypes';
 import './Select.css';
 
@@ -19,6 +20,7 @@ const GroupedSelect = ({
     compact,
     displaySelectedValue,
 }: GroupedSelectProps): JSX.Element => {
+    const { t } = useTranslation();
     return (
         <div className={`selector ${compact ? 'compact' : ''}`}>
             <select onChange={onChange} value={value || ''}>
@@ -31,10 +33,10 @@ const GroupedSelect = ({
                     if (isOptionGroup(optionElement)) {
                         const group = optionElement as OptionGroup;
                         return (
-                            <optgroup label={optionElement.display} key={groupIndex}>
+                            <optgroup label={t(optionElement.display)} key={groupIndex}>
                                 {group.options.map((opt, optionIndex) => (
                                     <option key={`${groupIndex}-${optionIndex}`} value={opt.code}>
-                                        {opt.display}
+                                        {t(opt.display)}
                                     </option>
                                 ))}
                             </optgroup>

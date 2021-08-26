@@ -3,6 +3,7 @@ import './DatePicker.css';
 
 import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { nb } from 'date-fns/locale';
 
@@ -24,25 +25,25 @@ const DateTimePicker = ({
     nowButton,
     selected,
 }: DateTimePickerProps): JSX.Element => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [startDate, setStartDate] = useState<any>();
+    const { t } = useTranslation();
+    const [startDate, setStartDate] = useState<Date>();
     return (
         <div className="datepicker">
             <DatePicker
                 disabled={disabled}
-                placeholderText="dd.mm.åå 00:00"
+                placeholderText={t('dd.mm.yyyy 00:00')}
                 selected={selected || startDate}
                 onChange={(date: Date) => {
                     setStartDate(date);
                     callback && callback(date);
                 }}
-                todayButton={nowButton ? 'I dag' : undefined}
+                todayButton={nowButton ? t('Today') : undefined}
                 withPortal={withPortal}
                 timeIntervals={15}
                 locale="nb"
                 showTimeSelect
                 dateFormat="dd.MM.yyyy HH:mm"
-                timeCaption="Klokkeslett"
+                timeCaption={t('Time')}
             />
             <i className="calendar-icon" aria-label="date and time picker" />
         </div>

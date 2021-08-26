@@ -1,4 +1,5 @@
 import React, { FocusEvent, useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { getGuidanceParameterName, isValidGuidanceParameterName } from '../../../helpers/QuestionHelper';
 import {
@@ -19,6 +20,7 @@ type GuidanceParamProps = {
 };
 
 const GuidanceParam = (props: GuidanceParamProps): JSX.Element => {
+    const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const hasGuidanceParam = hasExtension(props.item, IExtentionType.guidanceParam);
     const [parameterName, setParameterName] = useState(getGuidanceParameterName(props.item));
@@ -42,7 +44,9 @@ const GuidanceParam = (props: GuidanceParamProps): JSX.Element => {
     const validateParameterName = (value: string) => {
         if (!isValidGuidanceParameterName(value)) {
             setValidationMessage(
-                'Parameternavn må være fra 1-255 tegn og kan kun inneholde tall, _ og små eller store bokstaver fra a-z',
+                t(
+                    'Parameter name must be 1-255 characters and can only contain numbers, _ and normal and capital letters a-z',
+                ),
             );
         } else {
             setValidationMessage('');
@@ -56,15 +60,15 @@ const GuidanceParam = (props: GuidanceParamProps): JSX.Element => {
                 <SwitchBtn
                     onChange={toggleGuidanceParam}
                     value={hasGuidanceParam}
-                    label="Send som parameter etter fullført skjema"
+                    label={t('Send as parameter after questionnaire is completed')}
                     initial
                 />
             </FormField>
             {hasGuidanceParam && (
-                <FormField label="Parameternavn">
+                <FormField label={t('Parameter name')}>
                     <input
                         defaultValue={parameterName}
-                        placeholder="F.eks. hn_frontend_parameternavn"
+                        placeholder={t('For example hn_frontend_parametername')}
                         onBlur={updateParameterName}
                         onChange={(event) => validateParameterName(event.target.value)}
                     />
