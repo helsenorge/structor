@@ -73,62 +73,68 @@ const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, en
         return display;
     };
 
-    const generateCondition = (enableWhen: QuestionnaireItemEnableWhen, enableBehaviorText: string): JSX.Element => {
-        if (!enableWhen.question) {
+    const generateCondition = (
+        qItemEnableWhen: QuestionnaireItemEnableWhen,
+        enableBehaviorText: string,
+    ): JSX.Element => {
+        if (!qItemEnableWhen.question) {
             return <div key={`${linkId}-empty-${createUUID()}`}></div>;
         }
-        const conditionItem = getItem(enableWhen.question);
+        const conditionItem = getItem(qItemEnableWhen.question);
         if (!conditionItem) {
             // if this happens, this enableWhen refers to a question which does not exist
             console.warn(
-                t('Error in enableWhen: item with linkId {0} does not exist').replace('{0}', enableWhen.question),
+                t('Error in enableWhen: item with linkId {0} does not exist').replace('{0}', qItemEnableWhen.question),
             );
             return (
-                <div key={`${linkId}-${enableWhen.question}-${enableWhen.operator}-notfound`}>
-                    {t('Error in enableWhen: item with linkId {0} does not exist').replace('{0}', enableWhen.question)}
+                <div key={`${linkId}-${qItemEnableWhen.question}-${qItemEnableWhen.operator}-notfound`}>
+                    {t('Error in enableWhen: item with linkId {0} does not exist').replace(
+                        '{0}',
+                        qItemEnableWhen.question,
+                    )}
                 </div>
             );
         }
 
         let answerCondition: string;
-        if (enableWhen.hasOwnProperty('answerBoolean')) {
-            answerCondition = enableWhen.answerBoolean === true ? t('True') : t('Not true');
-        } else if (enableWhen.hasOwnProperty('answerDecimal')) {
-            answerCondition = enableWhen.answerDecimal.toString();
-        } else if (enableWhen.hasOwnProperty('answerInteger')) {
-            answerCondition = enableWhen.answerInteger.toString();
-        } else if (enableWhen.hasOwnProperty('answerDate')) {
-            answerCondition = format(new Date(enableWhen.answerDate), 'dd.MM.yyyy');
-        } else if (enableWhen.hasOwnProperty('answerDateTime')) {
-            answerCondition = format(new Date(enableWhen.answerDateTime), "dd.MM.yyyy' 'HH:mm");
-        } else if (enableWhen.hasOwnProperty('answerTime')) {
-            answerCondition = enableWhen.answerTime;
-        } else if (enableWhen.hasOwnProperty('answerString')) {
-            answerCondition = enableWhen.answerString;
-        } else if (enableWhen.hasOwnProperty('answerCoding')) {
-            answerCondition = getCodingDisplay(enableWhen.question, enableWhen.answerCoding);
-        } else if (enableWhen.hasOwnProperty('answerQuantity')) {
-            answerCondition = getQuantityDisplay(enableWhen.answerQuantity);
-        } else if (enableWhen.hasOwnProperty('answerReference')) {
-            answerCondition = enableWhen.answerReference.reference || ''; // TODO: show display of reference (read extension)
+        if (qItemEnableWhen.hasOwnProperty('answerBoolean')) {
+            answerCondition = qItemEnableWhen.answerBoolean === true ? t('True') : t('Not true');
+        } else if (qItemEnableWhen.hasOwnProperty('answerDecimal')) {
+            answerCondition = qItemEnableWhen.answerDecimal.toString();
+        } else if (qItemEnableWhen.hasOwnProperty('answerInteger')) {
+            answerCondition = qItemEnableWhen.answerInteger.toString();
+        } else if (qItemEnableWhen.hasOwnProperty('answerDate')) {
+            answerCondition = format(new Date(qItemEnableWhen.answerDate), 'dd.MM.yyyy');
+        } else if (qItemEnableWhen.hasOwnProperty('answerDateTime')) {
+            answerCondition = format(new Date(qItemEnableWhen.answerDateTime), "dd.MM.yyyy' 'HH:mm");
+        } else if (qItemEnableWhen.hasOwnProperty('answerTime')) {
+            answerCondition = qItemEnableWhen.answerTime;
+        } else if (qItemEnableWhen.hasOwnProperty('answerString')) {
+            answerCondition = qItemEnableWhen.answerString;
+        } else if (qItemEnableWhen.hasOwnProperty('answerCoding')) {
+            answerCondition = getCodingDisplay(qItemEnableWhen.question, qItemEnableWhen.answerCoding);
+        } else if (qItemEnableWhen.hasOwnProperty('answerQuantity')) {
+            answerCondition = getQuantityDisplay(qItemEnableWhen.answerQuantity);
+        } else if (qItemEnableWhen.hasOwnProperty('answerReference')) {
+            answerCondition = qItemEnableWhen.answerReference.reference || ''; // TODO: show display of reference (read extension)
         } else {
             answerCondition = '';
         }
 
         return (
-            <div key={`${linkId}-${enableWhen.question}-${enableWhen.operator}-${answerCondition}`}>
+            <div key={`${linkId}-${qItemEnableWhen.question}-${qItemEnableWhen.operator}-${answerCondition}`}>
                 {enableBehaviorText && <p>{enableBehaviorText}</p>}
-                <strong>{getItem(enableWhen.question).text}</strong>{' '}
-                {t(operatorMap[enableWhen.operator]) || t('<operator>')} <strong>{answerCondition}</strong>
+                <strong>{getItem(qItemEnableWhen.question).text}</strong>{' '}
+                {t(operatorMap[qItemEnableWhen.operator]) || t('<operator>')} <strong>{answerCondition}</strong>
             </div>
         );
     };
-    const enableBehaviorText = enableBehavior === QuestionnaireItemEnableBehaviorCodes.ALL ? t('and') : t('or');
+    const enableWhenBehaviorText = enableBehavior === QuestionnaireItemEnableBehaviorCodes.ALL ? t('and') : t('or');
 
     return (
         <Infobox title={t('Element will be shown if:')}>
             {enableWhen.map((condition, index) => {
-                return generateCondition(condition, index > 0 ? enableBehaviorText : '');
+                return generateCondition(condition, index > 0 ? enableWhenBehaviorText : '');
             })}
         </Infobox>
     );

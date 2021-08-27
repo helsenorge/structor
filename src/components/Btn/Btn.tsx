@@ -5,7 +5,7 @@ type BtnProps = {
     title: string;
     onClick?: () => void;
     id?: string;
-    type?: 'button' | 'submit' | 'reset' | undefined;
+    type?: 'button' | 'submit' | 'reset';
     icon?: 'ion-plus-round' | 'ion-ios-cloud-upload-outline';
     variant?: 'primary' | 'secondary';
     size?: 'small' | 'large';

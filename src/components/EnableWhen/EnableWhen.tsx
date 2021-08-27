@@ -83,14 +83,14 @@ const EnableWhen = ({
                                         options={conditionalArray}
                                         value={x.question}
                                         onChange={(event) => {
-                                            const copy = getItem(linkId).enableWhen?.map((x, ewIndex) => {
+                                            const copy = getItem(linkId).enableWhen?.map((ew, ewIndex) => {
                                                 // clear any answer[x] values when changing question condition
                                                 return index === ewIndex
                                                     ? ({
                                                           question: event.target.value,
                                                           operator: IOperator.equal,
                                                       } as QuestionnaireItemEnableWhen)
-                                                    : x;
+                                                    : ew;
                                             });
                                             dispatchUpdateItemEnableWhen(copy);
                                         }}
@@ -138,7 +138,7 @@ const EnableWhen = ({
                             className="question-button"
                             onClick={() => {
                                 const ews = getItem(linkId).enableWhen;
-                                const copy = ews?.filter((x, filterIndex) => filterIndex !== index);
+                                const copy = ews?.filter((_ew, filterIndex) => filterIndex !== index);
                                 dispatchUpdateItemEnableWhen(copy);
                             }}
                         >

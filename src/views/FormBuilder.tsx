@@ -5,7 +5,7 @@ import { TreeContext, TreeState } from '../store/treeStore/treeStore';
 import { getStateFromDb } from '../store/treeStore/indexedDbHelper';
 import { Questionnaire } from '../types/fhir';
 import { resetQuestionnaireAction } from '../store/treeStore/treeActions';
-import mapToTreeState from '../helpers/FhirToTreeStateMapper';
+import { mapToTreeState } from '../helpers/FhirToTreeStateMapper';
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import Confirm from '../components/Modal/Confirm';
 import FormDetailsDrawer from '../components/Drawer/FormDetailsDrawer/FormDetailsDrawer';
