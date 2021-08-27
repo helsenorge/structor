@@ -66,9 +66,9 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
     };
 
     const renderPreDefinedValueSet = () => {
-        const selectedValueSet = handleDisplaySelected();
-        if (selectedValueSet !== '') {
-            return getContainedValueSetValues(selectedValueSet).map((x, index) => {
+        const selectedPredefinedValueSet = handleDisplaySelected();
+        if (selectedPredefinedValueSet !== '') {
+            return getContainedValueSetValues(selectedPredefinedValueSet).map((x, index) => {
                 return <RadioBtn name={x.system} key={index} disabled showDelete={false} value={x.display} />;
             });
         }

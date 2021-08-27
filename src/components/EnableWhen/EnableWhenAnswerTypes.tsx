@@ -35,21 +35,21 @@ const EnableWhenAnswerTypes = ({
     const { t } = useTranslation();
     const { qContained } = state;
 
-    const getChoices = (conditionItem: QuestionnaireItem): ValueSetComposeIncludeConcept[] => {
-        if (conditionItem.answerOption) {
-            return conditionItem.answerOption.map((x) => {
+    const getChoices = (item: QuestionnaireItem): ValueSetComposeIncludeConcept[] => {
+        if (item.answerOption) {
+            return item.answerOption.map((x) => {
                 return { code: x.valueCoding?.code || '', display: x.valueCoding?.display };
             });
-        } else if (conditionItem.answerValueSet && containedResources) {
-            const valueSet = containedResources.find((x) => `#${x.id}` === conditionItem.answerValueSet);
+        } else if (item.answerValueSet && containedResources) {
+            const valueSet = containedResources.find((x) => `#${x.id}` === item.answerValueSet);
             if (valueSet && valueSet.compose && valueSet.compose.include && valueSet.compose.include[0].concept) {
                 return valueSet.compose.include[0].concept?.map((x) => {
                     return { code: x.code, display: x.display };
                 });
             }
-        } else if (isRecipientList(conditionItem)) {
+        } else if (isRecipientList(item)) {
             return (
-                conditionItem.extension
+                item.extension
                     ?.filter((ext) => ext.url === IExtentionType.optionReference)
                     .map((ext) => {
                         return { code: ext.valueReference?.reference || '', display: ext.valueReference?.display };

@@ -1,7 +1,7 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import './DatePicker.css';
 
-import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
+import ReactDatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -19,12 +19,12 @@ type PickerProps = {
 setDefaultLocale('nb');
 registerLocale('nb', nb);
 
-const Picker = ({ type, disabled = true, withPortal, nowButton, callback, selected }: PickerProps): JSX.Element => {
+const DatePicker = ({ type, disabled = true, withPortal, nowButton, callback, selected }: PickerProps): JSX.Element => {
     const { t } = useTranslation();
     const [startDate, setStartDate] = useState<Date>();
     return (
         <div className="datepicker">
-            <DatePicker
+            <ReactDatePicker
                 disabled={disabled}
                 placeholderText={type === 'time' ? '00:00' : t('dd.mm.yyyy')}
                 selected={selected || startDate}
@@ -45,4 +45,4 @@ const Picker = ({ type, disabled = true, withPortal, nowButton, callback, select
     );
 };
 
-export default Picker;
+export default DatePicker;

@@ -78,11 +78,11 @@ function extractMetadata(questionnaireObj: Questionnaire) {
 }
 
 function extractItemsAndOrder(item?: Array<QuestionnaireItem>): { qItems: Items; qOrder: Array<OrderItem> } {
-    function mapToOrderItem(qItem: QuestionnaireItem, qItems: Items): OrderItem {
+    function mapToOrderItem(qItem: QuestionnaireItem, questionnaireItems: Items): OrderItem {
         let children: Array<OrderItem>;
         if (qItem.item !== undefined && qItem.item.length > 0) {
             children = qItem.item?.map((childItem: QuestionnaireItem) => {
-                return mapToOrderItem(childItem, qItems);
+                return mapToOrderItem(childItem, questionnaireItems);
             });
         } else {
             children = [];
@@ -95,7 +95,7 @@ function extractItemsAndOrder(item?: Array<QuestionnaireItem>): { qItems: Items;
 
         // Order is handled by qOrder, removing child items
         delete qItem.item;
-        qItems[qItem.linkId] = qItem;
+        questionnaireItems[qItem.linkId] = qItem;
 
         return orderItem;
     }
@@ -225,7 +225,7 @@ function extractTranslations(bundle: Bundle): Languages {
     return languages;
 }
 
-function mapToTreeState(resource: Bundle | Questionnaire): TreeState {
+export function mapToTreeState(resource: Bundle | Questionnaire): TreeState {
     let mainQuestionnaire: Questionnaire;
     let qAdditionalLanguages: Languages = {};
     if (resource.resourceType === 'Bundle' && resource.entry) {
@@ -250,5 +250,3 @@ function mapToTreeState(resource: Bundle | Questionnaire): TreeState {
 
     return newState;
 }
-
-export default mapToTreeState;
