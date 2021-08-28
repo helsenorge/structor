@@ -5,6 +5,7 @@ import {
     Questionnaire,
     QuestionnaireItem,
     QuestionnaireItemAnswerOption,
+    QuestionnaireItemInitial,
     ValueSet,
 } from '../types/fhir';
 import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
@@ -278,14 +279,58 @@ export const generateQuestionnaire = (state: TreeState): string => {
     return JSON.stringify(generateMainQuestionnaire(state, usedValueSet), emptyPropertyReplacer);
 };
 
-export const generateQuestionnaireForPreview = (state: TreeState, language?: string): string => {
+const setEnrichmentValues = (
+    items: QuestionnaireItem[],
+    replacementValues: {
+        expression: string;
+        initialValue: QuestionnaireItemInitial;
+    }[],
+) => {
+    items.forEach((qItem) => {
+        (qItem.extension || []).forEach((extension) => {
+            replacementValues.forEach((replacementValue) => {
+                if (
+                    extension.url === 'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpath' &&
+                    extension.valueString === replacementValue.expression
+                ) {
+                    qItem.initial = [replacementValue.initialValue];
+                }
+            });
+        });
+        setEnrichmentValues(qItem.item || [], replacementValues);
+    });
+};
+
+export const generateQuestionnaireForPreview = (
+    state: TreeState,
+    language?: string,
+    selectedGender?: string,
+    selectedAge?: string,
+): Questionnaire => {
     const usedValueSet = getUsedValueSet(state);
     const { qAdditionalLanguages } = state;
-    if (language && qAdditionalLanguages && qAdditionalLanguages[language]) {
-        return JSON.stringify(
-            generateTranslatedQuestionnaire(state, language, qAdditionalLanguages, usedValueSet),
-            emptyPropertyReplacer,
-        );
+    const questionnaire =
+        language && qAdditionalLanguages && qAdditionalLanguages[language]
+            ? generateTranslatedQuestionnaire(state, language, qAdditionalLanguages, usedValueSet)
+            : generateMainQuestionnaire(state, usedValueSet);
+
+    // replace enrichment values with inital values set in preview:
+    const enrichmentValues = [];
+    if (selectedGender) {
+        enrichmentValues.push({
+            expression:
+                "iif(%patient.gender.empty() or %patient.gender = 'other' or %patient.gender = 'unknown', 'Ukjent', iif(%patient.gender = 'female', 'Kvinne', 'Mann'))",
+            initialValue: { valueString: selectedGender },
+        });
     }
-    return JSON.stringify(generateMainQuestionnaire(state, usedValueSet), emptyPropertyReplacer);
+    if (selectedAge) {
+        enrichmentValues.push({
+            expression: "Patient.extension.where(url = 'http://helsenorge.no/fhir/StructureDefinition/sdf-age').value",
+            initialValue: { valueInteger: parseInt(selectedAge) },
+        });
+    }
+
+    setEnrichmentValues(questionnaire.item || [], enrichmentValues);
+
+    return questionnaire;
 };

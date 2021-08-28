@@ -308,5 +308,8 @@
     "On behalf of citizen (temporary c/o)": "På vegne av innbygger (Midlertidig c/o)",
     "On behalf of citizen (temporary adress)": "På vegne av innbygger (Midlertidig adresse)",
     "On behalf of citizen (temporary postal code)": "På vegne av innbygger (Midlertidig postnummer)",
-    "On behalf of citizen (temporary postal adress)": "På vegne av innbygger (Midlertidig poststed)"
+    "On behalf of citizen (temporary postal adress)": "På vegne av innbygger (Midlertidig poststed)",
+    "Gender": "Kjønn",
+    "Male": "Mann",
+    "Female": "Kvinne"
 }

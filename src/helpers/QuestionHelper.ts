@@ -283,6 +283,10 @@ export const EnrichmentSet: Options = {
                     'Age',
                     "Patient.extension.where(url = 'http://helsenorge.no/fhir/StructureDefinition/sdf-age').value",
                 ),
+                makeOption(
+                    'Gender',
+                    "iif(%patient.gender.empty() or %patient.gender = 'other' or %patient.gender = 'unknown', 'Ukjent', iif(%patient.gender = 'female', 'Kvinne', 'Mann'))",
+                ),
                 makeOption('Mobile phone number', "Patient.telecom.where(use = 'mobile' and system = 'phone').value"),
                 makeOption('Email', "Patient.telecom.where(use = 'home' and system = 'email').value"),
                 makeOption('Adress', "Patient.address.where(use = 'home').line.first()"),
