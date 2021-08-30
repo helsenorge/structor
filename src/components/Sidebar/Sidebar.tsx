@@ -14,6 +14,7 @@ import Accordion from '../Accordion/Accordion';
 import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
+import Select from '../Select/Select';
 
 const Sidebar = (): JSX.Element => {
     const { t } = useTranslation();
@@ -41,13 +42,7 @@ const Sidebar = (): JSX.Element => {
 
     const handleChangeCode = (code: string, linkId: string) => {
         const currentCode = findCurrentCode(linkId);
-        const newCode = [{ ...currentCode, code }] as Coding[];
-        dispatch(updateItemAction(linkId, IItemProperty.code, newCode));
-    };
-
-    const handleChangeDisplay = (display: string, linkId: string) => {
-        const currentCode = findCurrentCode(linkId);
-        const newCode = [{ ...currentCode, display }] as Coding[];
+        const newCode = [{ ...currentCode, display: code, code }] as Coding[];
         dispatch(updateItemAction(linkId, IItemProperty.code, newCode));
     };
 
@@ -75,21 +70,27 @@ const Sidebar = (): JSX.Element => {
             {sidebarItems.map((x, index) => {
                 return (
                     <div key={index}>
-                        <div className="horizontal equal">
-                            <FormField label={t('Group code')}>
-                                <input
-                                    placeholder={t('add a code (for example) SOT-2')}
-                                    defaultValue={findCurrentCode(x.linkId)?.code}
-                                    onBlur={(event) => handleChangeCode(event.target.value, x.linkId)}
-                                />
-                            </FormField>
-                            <FormField label={t('Teknisk navn')}>
-                                <input
-                                    defaultValue={findCurrentCode(x.linkId)?.display}
-                                    onBlur={(event) => handleChangeDisplay(event.target.value, x.linkId)}
-                                />
-                            </FormField>
-                        </div>
+                        <FormField label={t('Sidebar heading')}>
+                            <Select
+                                placeholder={t('select sidebar heading:')}
+                                options={[
+                                    {
+                                        code: 'SOT-1',
+                                        display: t('Options regarding completion (SOT-1)'),
+                                    },
+                                    {
+                                        code: 'SOT-2',
+                                        display: t('Guidance and person responsible (SOT-2)'),
+                                    },
+                                    {
+                                        code: 'SOT-3',
+                                        display: t('Processing by the recipient (SOT-3)'),
+                                    },
+                                ]}
+                                value={findCurrentCode(x.linkId)?.code}
+                                onChange={(event) => handleChangeCode(event.target.value, x.linkId)}
+                            />
+                        </FormField>
                         <FormField label={t('Content')}>
                             <MarkdownEditor
                                 data={getMarkdown(x.linkId)}
