@@ -291,7 +291,7 @@ const setEnrichmentValues = (
         (qItem.extension || []).forEach((extension) => {
             replacementValues.forEach((replacementValue) => {
                 if (
-                    extension.url === 'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpath' &&
+                    extension.url === IExtentionType.fhirPath &&
                     extension.valueString?.replace(' ', '') === replacementValue.expression.replace(' ', '')
                 ) {
                     qItem.initial = [replacementValue.initialValue];
