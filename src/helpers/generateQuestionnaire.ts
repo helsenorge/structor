@@ -13,6 +13,7 @@ import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { getLanguageFromCode, translatableMetadata } from './LanguageHelper';
 import { isItemControlHighlight, isItemControlSidebar } from './itemControl';
 import { emptyPropertyReplacer } from './emptyPropertyReplacer';
+import { FhirpathAgeExpression, FhirpathGenderExpression } from './QuestionHelper';
 
 const getExtension = (extensions: Extension[] | undefined, extensionType: IExtentionType): Extension | undefined => {
     return extensions?.find((ext) => ext.url === extensionType);
@@ -291,7 +292,7 @@ const setEnrichmentValues = (
             replacementValues.forEach((replacementValue) => {
                 if (
                     extension.url === 'http://ehelse.no/fhir/StructureDefinition/sdf-fhirpath' &&
-                    extension.valueString === replacementValue.expression
+                    extension.valueString?.replace(' ', '') === replacementValue.expression.replace(' ', '')
                 ) {
                     qItem.initial = [replacementValue.initialValue];
                 }
@@ -318,14 +319,13 @@ export const generateQuestionnaireForPreview = (
     const enrichmentValues = [];
     if (selectedGender) {
         enrichmentValues.push({
-            expression:
-                "iif(%patient.gender.empty() or %patient.gender = 'other' or %patient.gender = 'unknown', 'Ukjent', iif(%patient.gender = 'female', 'Kvinne', 'Mann'))",
+            expression: FhirpathGenderExpression,
             initialValue: { valueString: selectedGender },
         });
     }
     if (selectedAge) {
         enrichmentValues.push({
-            expression: "Patient.extension.where(url = 'http://helsenorge.no/fhir/StructureDefinition/sdf-age').value",
+            expression: FhirpathAgeExpression,
             initialValue: { valueInteger: parseInt(selectedAge) },
         });
     }
