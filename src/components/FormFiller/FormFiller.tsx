@@ -6,6 +6,7 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionnaire';
 import Select from '../Select/Select';
 import { getLanguagesInUse, INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
+import { emptyPropertyReplacer } from '../../helpers/emptyPropertyReplacer';
 
 type Props = {
     showFormFiller: () => void;
@@ -15,13 +16,18 @@ type Props = {
 const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     const { t } = useTranslation();
     const { state } = useContext(TreeContext);
-    const [selectedLanguage, setSelectedLanguage] = useState(
+    const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(
         language || state.qMetadata.language || INITIAL_LANGUAGE.code,
     );
+    const [selectedGender, setSelectedGender] = useState<string>('');
+    const [selectedAge, setSelectedAge] = useState<string>('');
     const languages = getLanguagesInUse(state);
 
     function iFrameLoaded() {
-        const questionnaireString = generateQuestionnaireForPreview(state, selectedLanguage);
+        const questionnaireString = JSON.stringify(
+            generateQuestionnaireForPreview(state, selectedLanguage, selectedGender, selectedAge),
+            emptyPropertyReplacer,
+        );
         const schemeDisplayer = document.getElementById('schemeFrame');
         if (schemeDisplayer) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -50,6 +56,54 @@ const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                     <IconBtn type="x" title={t('Close')} onClick={showFormFiller} />
                     <h1>{t('Preview')}</h1>
                     <div className="pull-right">
+                        <Select
+                            value={selectedGender}
+                            placeholder={t('Gender')}
+                            options={[
+                                {
+                                    code: '',
+                                    display: t('<Not set>'),
+                                },
+                                {
+                                    code: 'Kvinne',
+                                    display: t('Female'),
+                                },
+                                {
+                                    code: 'Mann',
+                                    display: t('Male'),
+                                },
+                                {
+                                    code: 'Ukjent',
+                                    display: t('Unknown'),
+                                },
+                            ]}
+                            onChange={(e) => {
+                                setSelectedGender(e.target.value);
+                                reloadIframe();
+                            }}
+                            compact={true}
+                        />
+                        <Select
+                            value={selectedAge}
+                            placeholder={t('Age')}
+                            options={[
+                                {
+                                    code: '',
+                                    display: t('<Not set>'),
+                                },
+                                ...Array.from(Array(120), (_x, index) => {
+                                    return {
+                                        code: index.toString(),
+                                        display: index.toString(),
+                                    };
+                                }),
+                            ]}
+                            onChange={(e) => {
+                                setSelectedAge(e.target.value);
+                                reloadIframe();
+                            }}
+                            compact={true}
+                        />
                         <Select
                             value={selectedLanguage}
                             options={languages}

@@ -5,6 +5,7 @@ import {
     Questionnaire,
     QuestionnaireItem,
     QuestionnaireItemAnswerOption,
+    QuestionnaireItemInitial,
     ValueSet,
 } from '../types/fhir';
 import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
@@ -12,6 +13,7 @@ import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { getLanguageFromCode, translatableMetadata } from './LanguageHelper';
 import { isItemControlHighlight, isItemControlSidebar } from './itemControl';
 import { emptyPropertyReplacer } from './emptyPropertyReplacer';
+import { FhirpathAgeExpression, FhirpathGenderExpression } from './QuestionHelper';
 
 const getExtension = (extensions: Extension[] | undefined, extensionType: IExtentionType): Extension | undefined => {
     return extensions?.find((ext) => ext.url === extensionType);
@@ -278,14 +280,57 @@ export const generateQuestionnaire = (state: TreeState): string => {
     return JSON.stringify(generateMainQuestionnaire(state, usedValueSet), emptyPropertyReplacer);
 };
 
-export const generateQuestionnaireForPreview = (state: TreeState, language?: string): string => {
+const setEnrichmentValues = (
+    items: QuestionnaireItem[],
+    replacementValues: {
+        expression: string;
+        initialValue: QuestionnaireItemInitial;
+    }[],
+) => {
+    items.forEach((qItem) => {
+        (qItem.extension || []).forEach((extension) => {
+            replacementValues.forEach((replacementValue) => {
+                if (
+                    extension.url === IExtentionType.fhirPath &&
+                    extension.valueString?.replace(' ', '') === replacementValue.expression.replace(' ', '')
+                ) {
+                    qItem.initial = [replacementValue.initialValue];
+                }
+            });
+        });
+        setEnrichmentValues(qItem.item || [], replacementValues);
+    });
+};
+
+export const generateQuestionnaireForPreview = (
+    state: TreeState,
+    language?: string,
+    selectedGender?: string,
+    selectedAge?: string,
+): Questionnaire => {
     const usedValueSet = getUsedValueSet(state);
     const { qAdditionalLanguages } = state;
-    if (language && qAdditionalLanguages && qAdditionalLanguages[language]) {
-        return JSON.stringify(
-            generateTranslatedQuestionnaire(state, language, qAdditionalLanguages, usedValueSet),
-            emptyPropertyReplacer,
-        );
+    const questionnaire =
+        language && qAdditionalLanguages && qAdditionalLanguages[language]
+            ? generateTranslatedQuestionnaire(state, language, qAdditionalLanguages, usedValueSet)
+            : generateMainQuestionnaire(state, usedValueSet);
+
+    // replace enrichment values with inital values set in preview:
+    const enrichmentValues = [];
+    if (selectedGender) {
+        enrichmentValues.push({
+            expression: FhirpathGenderExpression,
+            initialValue: { valueString: selectedGender },
+        });
     }
-    return JSON.stringify(generateMainQuestionnaire(state, usedValueSet), emptyPropertyReplacer);
+    if (selectedAge) {
+        enrichmentValues.push({
+            expression: FhirpathAgeExpression,
+            initialValue: { valueInteger: parseInt(selectedAge) },
+        });
+    }
+
+    setEnrichmentValues(questionnaire.item || [], enrichmentValues);
+
+    return questionnaire;
 };

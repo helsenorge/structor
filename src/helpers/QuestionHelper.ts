@@ -264,6 +264,11 @@ const makeOption = (display: string, code: string): Option => {
     return { display, code };
 };
 
+export const FhirpathAgeExpression =
+    "Patient.extension.where(url = 'http://helsenorge.no/fhir/StructureDefinition/sdf-age').value";
+export const FhirpathGenderExpression =
+    "iif(%patient.gender.empty() or %patient.gender = 'other' or %patient.gender = 'unknown', 'Ukjent', iif(%patient.gender = 'female', 'Kvinne', 'Mann'))";
+
 export const EnrichmentSet: Options = {
     options: [
         {
@@ -279,10 +284,8 @@ export const EnrichmentSet: Options = {
                     "Patient.name.where(use = 'official').select(iif(given.count() > 1, given.take(count()-1), given).join(' '))",
                 ),
                 makeOption('Surname', "Patient.name.where(use = 'official').family"),
-                makeOption(
-                    'Age',
-                    "Patient.extension.where(url = 'http://helsenorge.no/fhir/StructureDefinition/sdf-age').value",
-                ),
+                makeOption('Age', FhirpathAgeExpression),
+                makeOption('Gender', FhirpathGenderExpression),
                 makeOption('Mobile phone number', "Patient.telecom.where(use = 'mobile' and system = 'phone').value"),
                 makeOption('Email', "Patient.telecom.where(use = 'home' and system = 'email').value"),
                 makeOption('Adress', "Patient.address.where(use = 'home').line.first()"),
