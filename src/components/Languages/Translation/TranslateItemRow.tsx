@@ -16,6 +16,7 @@ import {
 import { getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 import { IExtentionType, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import InputField from '../../InputField/inputField';
 
 type TranslationRowProps = {
     targetLanguage: string;
@@ -127,7 +128,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                             <textarea defaultValue={getRepeatsText(item)} disabled={true} />
                         </FormField>
                         <FormField>
-                            <input
+                            <InputField
                                 defaultValue={getItemPropertyTranslation(
                                     targetLanguage,
                                     qAdditionalLanguages,

@@ -21,16 +21,14 @@ const ValidationAnswerTypeAttachment = ({ item }: ValidationAnswerTypeAttachment
     }
 
     return (
-        <>
-            <FormField label={t('Max file size in MB')}>
-                <input
-                    defaultValue={maxSize}
-                    type="number"
-                    aria-label="maximum filesize"
-                    onBlur={(e) => updateMaxSize(parseFloat(e.target.value))}
-                ></input>
-            </FormField>
-        </>
+        <FormField label={t('Max file size in MB')}>
+            <input
+                defaultValue={maxSize}
+                type="number"
+                aria-label="maximum filesize"
+                onBlur={(e) => updateMaxSize(parseFloat(e.target.value))}
+            />
+        </FormField>
     );
 };
 

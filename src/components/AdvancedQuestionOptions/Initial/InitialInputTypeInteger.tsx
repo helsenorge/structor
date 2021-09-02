@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { QuestionnaireItemInitial } from '../../../types/fhir';
+import FormField from '../../FormField/FormField';
 
 type InitialInputTypeIntegerProps = {
     initial?: QuestionnaireItemInitial;
@@ -23,9 +24,9 @@ const InitialInputTypeInteger = (props: InitialInputTypeIntegerProps): JSX.Eleme
     }
 
     return (
-        <div className="form-field">
-            <label>{t('Initial value')}</label>
+        <FormField label={t('Initial value')}>
             <input
+                type="number"
                 value={initialValue}
                 onChange={(event) => {
                     if (isInteger(event.target.value) || event.target.value === '') {
@@ -39,7 +40,7 @@ const InitialInputTypeInteger = (props: InitialInputTypeIntegerProps): JSX.Eleme
                     props.dispatchAction(newInitial);
                 }}
             />
-        </div>
+        </FormField>
     );
 };
 

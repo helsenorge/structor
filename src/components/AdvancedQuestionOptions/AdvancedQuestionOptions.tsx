@@ -26,6 +26,7 @@ import GuidanceParam from './Guidance/GuidanceParam';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
 import CalculatedExpression from './CalculatedExpression/CalculatedExpression';
 import { removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
+import InputField from '../InputField/inputField';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -164,15 +165,15 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             {item.type !== IQuestionnaireItemType.display && (
                 <>
                     <div className="horizontal equal">
-                        <div className="form-field">
+                        <FormField>
                             <SwitchBtn
                                 onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
                                 value={item.readOnly || false}
                                 label={t('Read-only')}
                                 initial
                             />
-                        </div>
-                        <div className="form-field">
+                        </FormField>
+                        <FormField>
                             <SwitchBtn
                                 onChange={() => {
                                     if (isHiddenItem) {
@@ -189,9 +190,9 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                 label={t('Hidden field')}
                                 initial
                             />
-                        </div>
+                        </FormField>
                     </div>
-                    <div className="form-field">
+                    <FormField>
                         <SwitchBtn
                             onChange={(): void => {
                                 if (item.repeats) {
@@ -214,7 +215,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                         {item.repeats && (
                             <>
                                 <FormField label={t('Repeat button text')}>
-                                    <input
+                                    <InputField
                                         defaultValue={getRepeatsText}
                                         onBlur={(e) => {
                                             if (e.target.value) {
@@ -229,8 +230,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                     />
                                 </FormField>
                                 <div className="horizontal equal">
-                                    <div className="form-field">
-                                        <label className="#">{t('Min answers')}</label>
+                                    <FormField label={t('Min answers')}>
                                         <input
                                             type="number"
                                             defaultValue={minOccurs}
@@ -246,9 +246,8 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                                 }
                                             }}
                                         />
-                                    </div>
-                                    <div className="form-field">
-                                        <label className="#">{t('Max answers')}</label>
+                                    </FormField>
+                                    <FormField label={t('max answers')}>
                                         <input
                                             type="number"
                                             defaultValue={maxOccurs}
@@ -264,11 +263,11 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                                 }
                                             }}
                                         />
-                                    </div>
+                                    </FormField>
                                 </div>
                             </>
                         )}
-                    </div>
+                    </FormField>
                 </>
             )}
             {isCalculatedExpressionApplicable && (
@@ -277,7 +276,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             {isBerikingSupported && <FhirPathSelect item={item} />}
             {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.text) && (
                 <FormField label={t('Placeholder text')}>
-                    <input
+                    <InputField
                         defaultValue={getPlaceholder}
                         onBlur={(e) => {
                             if (e.target.value) {
@@ -300,7 +299,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             <div className="horizontal full">
                 <div className={`form-field ${isDuplicateLinkId ? 'field-error' : ''}`}>
                     <label>{t('LinkId')}</label>
-                    <input
+                    <InputField
                         value={linkId}
                         onChange={(event) => {
                             const {

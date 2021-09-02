@@ -14,6 +14,8 @@ import SystemField from '../../FormField/SystemField';
 import { createSystemUUID } from '../../../helpers/systemHelper';
 import './Codes.css';
 import { ValidationErrors } from '../../../helpers/orphanValidation';
+import FormField from '../../FormField/FormField';
+import InputField from '../../InputField/inputField';
 
 type CodeProps = {
     linkId: string;
@@ -45,20 +47,18 @@ const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
             <>
                 <div key={`${code.id}`} className={`code-section ${hasValidationError ? 'validation-error' : ''}`}>
                     <div className="horizontal equal">
-                        <div className="form-field">
-                            <label>{t('Display')}</label>
-                            <input
+                        <FormField label={t('Display')}>
+                            <InputField
                                 defaultValue={code.display}
                                 onBlur={(event) => updateCode(index, ICodingProperty.display, event.target.value)}
                             />
-                        </div>
-                        <div className="form-field">
-                            <label>{t('Code')}</label>
-                            <input
+                        </FormField>
+                        <FormField label={t('Code')}>
+                            <InputField
                                 defaultValue={code.code}
                                 onBlur={(event) => updateCode(index, ICodingProperty.code, event.target.value)}
                             />
-                        </div>
+                        </FormField>
                     </div>
                     <div className="horizontal full">
                         <SystemField

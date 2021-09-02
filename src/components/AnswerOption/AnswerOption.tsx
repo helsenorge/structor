@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { QuestionnaireItemAnswerOption } from '../../types/fhir';
 import './AnswerOption.css';
+import InputField from '../InputField/inputField';
 
 type Props = {
     answerOption?: QuestionnaireItemAnswerOption;
@@ -28,21 +29,17 @@ const AnswerOption = ({
         <div className="answer-option-item align-everything">
             {!disabled && <span {...handleDrag} className="reorder-icon" aria-label="reorder element" />}
             <div className="answer-option-content">
-                <input
-                    autoComplete="off"
-                    type="text"
+                <InputField
                     name="beskrivelse"
                     onBlur={(event) => changeDisplay(event)}
                     defaultValue={answerOption?.valueCoding?.display}
                     disabled={disabled}
-                    placeholder={t('Legg inn en tittel..')}
+                    placeholder={t('Enter a title..')}
                 />
-                <input
-                    autoComplete="off"
-                    type="text"
+                <InputField
                     name="verdi"
                     defaultValue={answerOption?.valueCoding?.code}
-                    placeholder={t('Legg inn en verdi..')}
+                    placeholder={t('Enter a value..')}
                     onBlur={(event) => changeCode(event)}
                 />
             </div>

@@ -15,6 +15,7 @@ import {
     DropResult,
     NotDraggingStyle,
 } from 'react-beautiful-dnd';
+import InputField from '../../InputField/inputField';
 
 type Props = {
     item: QuestionnaireItem;
@@ -143,9 +144,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                         className="reorder-icon"
                                                         aria-label="reorder element"
                                                     />
-                                                    <input
-                                                        autoComplete="off"
-                                                        type="text"
+                                                    <InputField
                                                         name="beskrivelse"
                                                         placeholder={t('Select recipient..')}
                                                         defaultValue={reference.valueReference?.display}
@@ -157,9 +156,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                             )
                                                         }
                                                     />
-                                                    <input
-                                                        autoComplete="off"
-                                                        type="text"
+                                                    <InputField
                                                         name="verdi"
                                                         placeholder={t('Select endpoint..')}
                                                         defaultValue={reference.valueReference?.reference}

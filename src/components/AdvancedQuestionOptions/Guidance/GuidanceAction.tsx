@@ -14,6 +14,7 @@ import { TreeContext } from '../../../store/treeStore/treeStore';
 
 import FormField from '../../FormField/FormField';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
+import InputField from '../../InputField/inputField';
 
 type GuidanceActionProps = {
     item: QuestionnaireItem;
@@ -49,7 +50,7 @@ const GuidanceAction = (props: GuidanceActionProps): JSX.Element => {
             </FormField>
             {hasGuidanceAction && (
                 <FormField label={t('Relative redirect url')}>
-                    <input
+                    <InputField
                         defaultValue={action}
                         placeholder={t('For example /infopage')}
                         onBlur={updateGuidanceAction}

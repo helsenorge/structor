@@ -13,6 +13,7 @@ import DateTimePicker from '../DatePicker/DateTimePicker';
 import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { isRecipientList } from '../../helpers/QuestionHelper';
+import InputField from '../InputField/inputField';
 
 interface Props {
     conditionItem: QuestionnaireItem;
@@ -229,7 +230,7 @@ const EnableWhenAnswerTypes = ({
             )}
             {(conditionItem.type === IQuestionnaireItemType.string ||
                 conditionItem.type === IQuestionnaireItemType.text) && (
-                <input
+                <InputField
                     defaultValue={enableWhen.answerString || ''}
                     onBlur={(event) => {
                         const copy = itemEnableWhen?.map((x, ewIndex) => {

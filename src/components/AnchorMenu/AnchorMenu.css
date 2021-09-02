@@ -7,6 +7,11 @@
     flex: 1;
 }
 
+/* override styling */
+.questionnaire-overview .rst__nodeContent {
+    right: 0;
+}
+
 .anchor-menu {
     background: white;
     color: black;
@@ -22,8 +27,16 @@
     overflow-y: auto;
 }
 
+.anchor-menu__item--selected {
+    box-shadow: 0 0 0 4px var(--primary-2);
+}
 .anchor-menu__item:hover .item-button {
     visibility: visible;
+}
+
+/* override styling */
+.anchor-menu__item .rst__rowLabel {
+    flex: 1;
 }
 
 .anchor-menu__inneritem {
@@ -34,6 +47,10 @@
 }
 .anchor-menu__inneritem:hover {
     background-color: #e4e4e4;
+}
+.anchor-menu__topitem .rst__rowContents {
+    /* override styling */
+    background-color: lightblue;
 }
 
 .anchor-menu__title {

@@ -29,6 +29,7 @@ import AnswerOption from '../../AnswerOption/AnswerOption';
 import SystemField from '../../FormField/SystemField';
 import { isItemControlCheckbox, isItemControlDropDown, ItemControlType } from '../../../helpers/itemControl';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
+import FormField from '../../FormField/FormField';
 
 type Props = {
     item: QuestionnaireItem;
@@ -173,26 +174,24 @@ const Choice = ({ item }: Props): JSX.Element => {
                 onBlur={(event) => handleChangeSystem(event.target.value)}
             />
             <div className="horizontal">
-                <div className="form-field">
+                <FormField>
                     <SwitchBtn
                         label={t('Allow selection of multiple values')}
                         onChange={() => dispatchExtentionUpdate(ItemControlType.checkbox)}
                         initial
                         value={isItemControlCheckbox(item)}
                     />
-                </div>
-                <div className="form-field">
+                </FormField>
+                <FormField>
                     <SwitchBtn
                         label={t('Dropdown')}
                         onChange={() => dispatchExtentionUpdate(ItemControlType.dropdown)}
                         initial
                         value={isItemControlDropDown(item)}
                     />
-                </div>
+                </FormField>
             </div>
-            <div className="form-field">
-                {item.answerOption && item.answerOption?.length > 0 && renderAnswerOption()}
-            </div>
+            <FormField>{item.answerOption && item.answerOption?.length > 0 && renderAnswerOption()}</FormField>
             {!item.answerValueSet && (
                 <div className="center-text">
                     <Btn

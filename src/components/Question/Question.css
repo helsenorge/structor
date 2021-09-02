@@ -48,7 +48,7 @@
 
 .form-field-label-wrapper,
 .form-field > label {
-    font-size: 16px;
+    font-weight: bold;
     text-align: left;
 }
 
@@ -147,4 +147,10 @@
     width: 70px;
     margin-left: 25px;
     padding-left: 10px;
+}
+
+.predefined-value {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 12px;
+    text-align: left;
 }

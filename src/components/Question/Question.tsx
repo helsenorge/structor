@@ -128,40 +128,36 @@ const Question = (props: QuestionProps): JSX.Element => {
             case IQuestionnaireItemType.string:
             case IQuestionnaireItemType.text:
                 return (
-                    <div className="form-field">
-                        <label></label>
+                    <FormField>
                         <input disabled />
-                    </div>
+                    </FormField>
                 );
             case IQuestionnaireItemType.date:
                 return (
-                    <div className="form-field">
-                        <label></label>
+                    <FormField>
                         <DateType item={props.item} dispatch={props.dispatch} />
-                    </div>
+                    </FormField>
                 );
             case IQuestionnaireItemType.time:
                 return (
-                    <div className="form-field">
-                        <label></label>
+                    <FormField>
                         <Picker type="time" />
-                    </div>
+                    </FormField>
                 );
             case IQuestionnaireItemType.dateTime:
                 return (
-                    <div className="form-field">
-                        <label></label>
+                    <FormField>
                         <div className="horizontal">
                             <Picker type="time" />
                             <Picker type="date" />
                         </div>
-                    </div>
+                    </FormField>
                 );
             case IQuestionnaireItemType.boolean:
                 return (
-                    <div className="form-field">
+                    <FormField>
                         <input type="checkbox" style={{ zoom: 1.5 }} disabled checked />
-                    </div>
+                    </FormField>
                 );
             case IQuestionnaireItemType.choice:
                 return <Choice item={props.item} />;
@@ -275,14 +271,13 @@ const Question = (props: QuestionProps): JSX.Element => {
     return (
         <div className="question" id={props.item.linkId}>
             <div className="question-form">
-                <div className="form-field">
-                    <label>{t('Select type')}</label>
+                <FormField label={t('Select type')}>
                     <Select
                         value={handleDisplayQuestionType()}
                         options={itemType}
                         onChange={handleQuestionareTypeChange}
                     />
-                </div>
+                </FormField>
                 <div className="horizontal">
                     {props.item.type !== IQuestionnaireItemType.group &&
                         props.item.type !== IQuestionnaireItemType.display &&
@@ -323,7 +318,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                             />
                         </div>
                     )}
-                    <div className="form-field">
+                    <FormField>
                         <SwitchBtn
                             label={t('Text formatting')}
                             initial
@@ -340,7 +335,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 }
                             }}
                         />
-                    </div>
+                    </FormField>
                 </div>
                 <FormField label={t('Text')}>
                     {isMarkdownActivated ? (

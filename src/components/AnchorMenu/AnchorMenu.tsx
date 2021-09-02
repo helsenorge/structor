@@ -2,7 +2,7 @@ import './AnchorMenu.css';
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Items, OrderItem } from '../../store/treeStore/treeStore';
+import { ActionType, Items, MarkedItem, OrderItem } from '../../store/treeStore/treeStore';
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import {
     moveItemAction,
@@ -19,6 +19,7 @@ import { generateItemButtons } from './ItemButtons/ItemButtons';
 interface AnchorMenuProps {
     qOrder: OrderItem[];
     qItems: Items;
+    qCurrentItem: MarkedItem | undefined;
     validationErrors: ValidationErrors[];
     dispatch: React.Dispatch<ActionType>;
 }
@@ -87,6 +88,10 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
         return props.validationErrors.some((error) => error.linkId === linkId);
     };
 
+    const isSelectedItem = (linkId: string): boolean => {
+        return props.qCurrentItem?.linkId === linkId;
+    };
+
     const getRelevantIcon = (type: string) => {
         switch (type) {
             case IQuestionnaireItemType.group:
@@ -134,9 +139,11 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                         return canCreateChild(node.title);
                     }}
                     generateNodeProps={(extendedNode: ExtendedNode) => ({
-                        className: `anchor-menu__item ${
-                            hasValidationError(extendedNode.node.title) ? 'validation-error' : ''
-                        }`,
+                        className: `anchor-menu__item 
+                            ${hasValidationError(extendedNode.node.title) ? 'validation-error' : ''} 
+                            ${extendedNode.path.length === 1 ? 'anchor-menu__topitem' : ''} 
+                            ${isSelectedItem(extendedNode.node.title) ? 'anchor-menu__item--selected' : ''}
+                        `,
                         title: (
                             <span
                                 className="anchor-menu__inneritem"

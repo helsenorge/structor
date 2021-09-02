@@ -20,6 +20,7 @@ import './PredefinedValueSetModal.css';
 import { removeSpace } from '../../helpers/formatHelper';
 import SystemField from '../FormField/SystemField';
 import { createSystemUUID } from '../../helpers/systemHelper';
+import InputField from '../InputField/inputField';
 
 type Props = {
     close: () => void;
@@ -152,19 +153,19 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
             <div className="predefined-container">
                 <div>
                     <FormField label={t('Title')}>
-                        <input
+                        <InputField
                             value={newValueSet.title}
                             onChange={(event) => setNewValueSet({ ...newValueSet, title: event.target.value })}
                         />
                     </FormField>
                     <FormField label={t('Teknisk-navn')}>
-                        <input
+                        <InputField
                             value={newValueSet.name}
                             onChange={(event) => setNewValueSet({ ...newValueSet, name: event.target.value })}
                         />
                     </FormField>
                     <FormField label={t('Publisher')}>
-                        <input
+                        <InputField
                             value={newValueSet.publisher}
                             onChange={(event) => setNewValueSet({ ...newValueSet, publisher: event.target.value })}
                         />
@@ -201,7 +202,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                                                                 {...providedDrag.dragHandleProps}
                                                             />
                                                             <div className="answer-option-content align-everything">
-                                                                <input
+                                                                <InputField
                                                                     value={item.display}
                                                                     placeholder={t('Enter a title..')}
                                                                     onChange={(event) =>
@@ -212,7 +213,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                                                                         )
                                                                     }
                                                                 />
-                                                                <input
+                                                                <InputField
                                                                     value={item.code}
                                                                     placeholder={t('Enter a value..')}
                                                                     onChange={(event) =>

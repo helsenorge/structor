@@ -8,6 +8,7 @@ import { IQuestionnaireMetadataType } from '../../../types/IQuestionnaireMetadat
 import { updateQuestionnaireMetadataAction } from '../../../store/treeStore/treeActions';
 import Drawer from '../Drawer';
 import { useKeyPress } from '../../../hooks/useKeyPress';
+import FormField from '../../FormField/FormField';
 
 type FormDetailsDrawerProps = {
     setTranslateLang: (language: string) => void;
@@ -28,17 +29,16 @@ const FormDetailsDrawer = ({ setTranslateLang, closeDrawer, isOpen = false }: Fo
     return (
         <Drawer title="Skjemadetaljer" position="left" visible={isOpen} hide={closeDrawer}>
             <div className="form-intro-field">
-                <label htmlFor="questionnaire-title">{t('Title')}:</label>
-                <input
-                    placeholder={t('Title')}
-                    value={state.qMetadata.title}
-                    id="questionnaire-title"
-                    onChange={(event) => {
-                        dispatchUpdateQuestionnaireMetadata(IQuestionnaireMetadataType.title, event.target.value);
-                    }}
-                />
+                <FormField label={`${t('Title')}:`}>
+                    <input
+                        placeholder={t('Title')}
+                        value={state.qMetadata.title}
+                        onChange={(event) => {
+                            dispatchUpdateQuestionnaireMetadata(IQuestionnaireMetadataType.title, event.target.value);
+                        }}
+                    />
+                </FormField>
             </div>
-
             <MetadataEditor />
             <Sidebar />
             <LanguageAccordion setTranslateLang={setTranslateLang} />

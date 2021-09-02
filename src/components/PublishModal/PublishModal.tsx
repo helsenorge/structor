@@ -6,6 +6,7 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
+import InputField from '../InputField/inputField';
 import Modal from '../Modal/Modal';
 import Spinner from '../Spinner/Spinner';
 import './PublishModal.css';
@@ -73,21 +74,18 @@ const PublishModal = ({ close }: Props): JSX.Element => {
                 }}
             >
                 <FormField label={t('Url to server')}>
-                    <input
+                    <InputField
                         value={state.qMetadata.url || ''}
                         placeholder={t('Enter a url..')}
-                        title={t('Only url')}
                         onChange={(e) => updateMeta(IQuestionnaireMetadataType.url, e.target.value || '')}
                         pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
-                        type="url"
                         required
                     />
                 </FormField>
 
                 <FormField label={t('Enter an id:')}>
-                    <input
+                    <InputField
                         pattern="[A-Z0-9_]{1,63}"
-                        title={t('Only capital letters and numbers')}
                         value={state.qMetadata.id || ''}
                         maxLength={64}
                         onChange={(e) => updateMeta(IQuestionnaireMetadataType.id, e.target.value || '')}

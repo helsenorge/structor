@@ -7,7 +7,6 @@ import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../../types
 import { checkboxExtension, dropdownExtension } from '../../../helpers/QuestionHelper';
 import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
-import RadioBtn from '../../RadioBtn/RadioBtn';
 import Select from '../../Select/Select';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import Typeahead from '../../Typeahead/Typeahead';
@@ -32,11 +31,13 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
         }
     };
 
-    const getContainedValueSetValues = (valueSetId: string): Array<{ system?: string; display?: string }> => {
+    const getContainedValueSetValues = (
+        valueSetId: string,
+    ): Array<{ code?: string; system?: string; display?: string }> => {
         const valueSet = qContained?.find((x) => x.id === valueSetId);
         if (valueSet && valueSet.compose && valueSet.compose.include && valueSet.compose.include[0].concept) {
             return valueSet.compose.include[0].concept.map((x) => {
-                return { system: valueSet.compose?.include[0].system, display: x.display };
+                return { code: x.code, system: valueSet.compose?.include[0].system, display: x.display };
             });
         }
         return [];
@@ -68,8 +69,12 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
     const renderPreDefinedValueSet = () => {
         const selectedPredefinedValueSet = handleDisplaySelected();
         if (selectedPredefinedValueSet !== '') {
-            return getContainedValueSetValues(selectedPredefinedValueSet).map((x, index) => {
-                return <RadioBtn name={x.system} key={index} disabled showDelete={false} value={x.display} />;
+            return getContainedValueSetValues(selectedPredefinedValueSet).map((x) => {
+                return (
+                    <div className="predefined-value" key={x.code}>
+                        {x.display}
+                    </div>
+                );
             });
         }
 
@@ -107,22 +112,22 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
     return (
         <div>
             <div className="horizontal">
-                <div className="form-field">
+                <FormField>
                     <SwitchBtn
                         label={t('Allow selection of multiple values')}
                         onChange={() => dispatchExtentionUpdate(ItemControlType.checkbox)}
                         initial
                         value={isItemControlCheckbox(item)}
                     />
-                </div>
-                <div className="form-field">
+                </FormField>
+                <FormField>
                     <SwitchBtn
                         label={t('Dropdown')}
                         onChange={() => dispatchExtentionUpdate(ItemControlType.dropdown)}
                         initial
                         value={isItemControlDropDown(item)}
                     />
-                </div>
+                </FormField>
             </div>
             <FormField label={t('Select answer valueset')}>{handleSelect()}</FormField>
             <FormField>{renderPreDefinedValueSet()}</FormField>

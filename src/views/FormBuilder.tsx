@@ -162,6 +162,7 @@ const FormBuilder = (): JSX.Element => {
                     dispatch={dispatch}
                     qOrder={state.qOrder}
                     qItems={state.qItems}
+                    qCurrentItem={state.qCurrentItem}
                     validationErrors={validationErrors}
                 />
                 {showPreview && (

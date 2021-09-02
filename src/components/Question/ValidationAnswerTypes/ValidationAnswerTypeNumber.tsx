@@ -6,6 +6,8 @@ import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../
 import { QuestionnaireItem } from '../../../types/fhir';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
+import FormField from '../../FormField/FormField';
+import InputField from '../../InputField/inputField';
 
 interface ValidationTypeProp {
     item: QuestionnaireItem;
@@ -40,12 +42,12 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
         <>
             <div className="horizontal equal">
                 {item?.type !== IQuestionnaireItemType.quantity && (
-                    <div className="form-field">
+                    <FormField>
                         <SwitchBtn label={t('Allow decimals')} initial value={isDecimal} onChange={changeItemType} />
-                    </div>
+                    </FormField>
                 )}
                 {isDecimal && (
-                    <div className="form-field">
+                    <FormField>
                         <label className="#">{t('Max number of decimals')}</label>
                         <input
                             type="number"
@@ -62,7 +64,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                                 }
                             }}
                         />
-                    </div>
+                    </FormField>
                 )}
             </div>
 
@@ -108,8 +110,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
 
             <div className="form-field custom-input-error-message">
                 <label className="#">{t('Enter custom error message')}</label>
-                <input
-                    type="input"
+                <InputField
                     defaultValue={validationText}
                     placeholder={t('error message')}
                     onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,7 +124,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                             setItemExtension(item, extension, dispatch);
                         }
                     }}
-                ></input>
+                />
             </div>
         </>
     );
