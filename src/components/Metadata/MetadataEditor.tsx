@@ -254,6 +254,14 @@ const MetadataEditor = (): JSX.Element => {
                         onBlur={(e) => updateMeta(IQuestionnaireMetadataType.contact, [{ name: e.target.value }])}
                     />
                 </FormField>
+                <FormField label={t('Url')}>
+                    <input
+                        defaultValue={state.qMetadata.url || ''}
+                        placeholder={t('Enter a url..')}
+                        onBlur={(e) => updateMeta(IQuestionnaireMetadataType.url, e.target.value || '')}
+                        pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
+                    />
+                </FormField>
                 <FormField label={t('Purpose')}>
                     <MarkdownEditor
                         data={qMetadata.purpose || ''}

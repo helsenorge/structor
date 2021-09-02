@@ -58,11 +58,10 @@ const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                     <div className="pull-right">
                         <Select
                             value={selectedGender}
-                            placeholder={t('Gender')}
                             options={[
                                 {
                                     code: '',
-                                    display: t('<Not set>'),
+                                    display: t('Gender'),
                                 },
                                 {
                                     code: 'Kvinne',
@@ -85,11 +84,10 @@ const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                         />
                         <Select
                             value={selectedAge}
-                            placeholder={t('Age')}
                             options={[
                                 {
                                     code: '',
-                                    display: t('<Not set>'),
+                                    display: t('Age'),
                                 },
                                 ...Array.from(Array(120), (_x, index) => {
                                     return {
