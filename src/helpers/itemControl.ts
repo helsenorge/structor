@@ -8,9 +8,11 @@ export enum ItemControlType {
     help = 'help',
     sidebar = 'sidebar',
     dropdown = 'drop-down',
+    autocomplete = 'autocomplete',
     highlight = 'highlight',
     summary = 'summary',
     checkbox = 'check-box',
+    radioButton = 'radio-button',
     yearMonth = 'yearMonth',
     year = 'year',
 }
@@ -40,6 +42,10 @@ export const isTqqcOptionReferenceItem = (item: QuestionnaireItem): boolean => {
 
 export const isItemControlDropDown = (item: QuestionnaireItem): boolean => {
     return getItemControlType(item) === ItemControlType.dropdown;
+};
+
+export const isItemControlAutocomplete = (item: QuestionnaireItem): boolean => {
+    return getItemControlType(item) === ItemControlType.autocomplete;
 };
 
 export const isItemControlCheckbox = (item: QuestionnaireItem): boolean => {

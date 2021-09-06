@@ -46,6 +46,10 @@
     padding-bottom: 12px;
 }
 
+.form-field__optional {
+    color: #aaa;
+}
+
 .form-field-label-wrapper,
 .form-field > label {
     font-weight: bold;
@@ -70,6 +74,7 @@
 }
 
 .form-field input,
+.form-field textarea,
 .form-field select {
     margin: 0;
     font-size: 16px;

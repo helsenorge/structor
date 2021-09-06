@@ -21,7 +21,6 @@ import {
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
 import Btn from '../../Btn/Btn';
 import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
-import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { checkboxExtension, dropdownExtension } from '../../../helpers/QuestionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
@@ -30,6 +29,7 @@ import SystemField from '../../FormField/SystemField';
 import { isItemControlCheckbox, isItemControlDropDown, ItemControlType } from '../../../helpers/itemControl';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import FormField from '../../FormField/FormField';
+import ChoiceTypeSelect from './ChoiceTypeSelect';
 
 type Props = {
     item: QuestionnaireItem;
@@ -39,7 +39,7 @@ const Choice = ({ item }: Props): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 
-    const dispatchExtentionUpdate = (type: ItemControlType.checkbox | ItemControlType.dropdown) => {
+    const dispatchExtentionUpdate = (type: ItemControlType) => {
         removeItemExtension(item, IExtentionType.itemControl, dispatch);
         if (type === ItemControlType.checkbox && !isItemControlCheckbox(item)) {
             setItemExtension(item, checkboxExtension, dispatch);
@@ -173,24 +173,7 @@ const Choice = ({ item }: Props): JSX.Element => {
                 }
                 onBlur={(event) => handleChangeSystem(event.target.value)}
             />
-            <div className="horizontal">
-                <FormField>
-                    <SwitchBtn
-                        label={t('Allow selection of multiple values')}
-                        onChange={() => dispatchExtentionUpdate(ItemControlType.checkbox)}
-                        initial
-                        value={isItemControlCheckbox(item)}
-                    />
-                </FormField>
-                <FormField>
-                    <SwitchBtn
-                        label={t('Dropdown')}
-                        onChange={() => dispatchExtentionUpdate(ItemControlType.dropdown)}
-                        initial
-                        value={isItemControlDropDown(item)}
-                    />
-                </FormField>
-            </div>
+            <ChoiceTypeSelect item={item} dispatchExtentionUpdate={dispatchExtentionUpdate} />
             <FormField>{item.answerOption && item.answerOption?.length > 0 && renderAnswerOption()}</FormField>
             {!item.answerValueSet && (
                 <div className="center-text">

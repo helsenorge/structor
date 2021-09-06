@@ -7,12 +7,7 @@ import { QuestionnaireItem } from '../../../types/fhir';
 import './ItemButtons.css';
 import { deleteItemAction, duplicateItemAction, newItemAction } from '../../../store/treeStore/treeActions';
 import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
-import {
-    isItemControlHelp,
-    isItemControlHighlight,
-    isItemControlInline,
-    isItemControlSidebar,
-} from '../../../helpers/itemControl';
+import { canCreateChild } from '../../../helpers/treeHelper';
 
 export const generateItemButtons = (
     t: TFunction<'translation'>,
@@ -40,15 +35,8 @@ export const generateItemButtons = (
         return `item-button ${showLabel ? 'item-button--visible' : ''}`;
     };
 
-    const canCreateChild =
-        item.type !== IQuestionnaireItemType.display &&
-        !isItemControlInline(item) &&
-        !isItemControlHighlight(item) &&
-        !isItemControlSidebar(item) &&
-        !isItemControlHelp(item);
-
     return [
-        ...(canCreateChild
+        ...(canCreateChild(item)
             ? [
                   <button
                       key="new-item-button"

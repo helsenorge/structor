@@ -25,6 +25,7 @@ textarea {
     font-size: inherit;
     font-family: inherit;
     line-height: inherit;
+    resize: vertical;
 }
 
 iframe {

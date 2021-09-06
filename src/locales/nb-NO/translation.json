@@ -147,8 +147,10 @@
     "Enter an id:": "Skriv inn id:",
     "Only capital letters and numbers": "Kun store bokstaver og tall",
     "Publish questionnaire": "Publiser skjema",
-    "Allow selection of multiple values": "Flere valg mulig",
+    "Checkbox (Allow selection of multiple values)": "Checkbox (Flere valg mulig)",
     "Dropdown": "Nedtrekksmeny",
+    "Radio buttons": "Radioknapper",
+    "Autocomplete": "Autokompletter",
     "+ Add option": "+ Legg til alternativ",
     "Date type": "Datotype",
     "Day, month and year": "Dag, måned og år",
@@ -314,5 +316,6 @@
     "On behalf of citizen (temporary postal adress)": "På vegne av innbygger (Midlertidig poststed)",
     "Gender": "Kjønn",
     "Male": "Mann",
-    "Female": "Kvinne"
+    "Female": "Kvinne",
+    "Display type": "Visningstype"
 }

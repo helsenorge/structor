@@ -1,5 +1,13 @@
 import { Items, OrderItem } from '../store/treeStore/treeStore';
-import { isIgnorableItem } from './itemControl';
+import { QuestionnaireItem } from '../types/fhir';
+import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import {
+    isIgnorableItem,
+    isItemControlHelp,
+    isItemControlHighlight,
+    isItemControlInline,
+    isItemControlSidebar,
+} from './itemControl';
 
 export const findElementInTreeArray = (searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> => {
     if (searchPath.length === 0) {
@@ -48,4 +56,14 @@ export const calculateItemNumber = (
     });
 
     return getItemIndexAsString(linkId, currentArray, qItems, parentNumber, parentLinkId);
+};
+
+export const canCreateChild = (item: QuestionnaireItem): boolean => {
+    return (
+        item.type !== IQuestionnaireItemType.display &&
+        !isItemControlInline(item) &&
+        !isItemControlHighlight(item) &&
+        !isItemControlSidebar(item) &&
+        !isItemControlHelp(item)
+    );
 };

@@ -45,7 +45,9 @@ header p {
 .menu > button {
     width: 100%;
 }
-
+.form-title {
+    width: 100%;
+}
 .form-title h1 {
     font-size: 24px;
 }

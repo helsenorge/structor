@@ -8,9 +8,9 @@ import { checkboxExtension, dropdownExtension } from '../../../helpers/QuestionH
 import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
 import Select from '../../Select/Select';
-import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import Typeahead from '../../Typeahead/Typeahead';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
+import ChoiceTypeSelect from './ChoiceTypeSelect';
 
 type Props = {
     item: QuestionnaireItem;
@@ -22,7 +22,7 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const { qContained } = state;
 
-    const dispatchExtentionUpdate = (type: ItemControlType.checkbox | ItemControlType.dropdown) => {
+    const dispatchExtentionUpdate = (type: ItemControlType) => {
         removeItemExtension(item, IExtentionType.itemControl, dispatch);
         if (type === ItemControlType.checkbox && !isItemControlCheckbox(item)) {
             setItemExtension(item, checkboxExtension, dispatch);
@@ -111,24 +111,7 @@ const PredefinedValueSet = ({ item, selectedValueSet }: Props): JSX.Element => {
 
     return (
         <div>
-            <div className="horizontal">
-                <FormField>
-                    <SwitchBtn
-                        label={t('Allow selection of multiple values')}
-                        onChange={() => dispatchExtentionUpdate(ItemControlType.checkbox)}
-                        initial
-                        value={isItemControlCheckbox(item)}
-                    />
-                </FormField>
-                <FormField>
-                    <SwitchBtn
-                        label={t('Dropdown')}
-                        onChange={() => dispatchExtentionUpdate(ItemControlType.dropdown)}
-                        initial
-                        value={isItemControlDropDown(item)}
-                    />
-                </FormField>
-            </div>
+            <ChoiceTypeSelect item={item} dispatchExtentionUpdate={dispatchExtentionUpdate} />
             <FormField label={t('Select answer valueset')}>{handleSelect()}</FormField>
             <FormField>{renderPreDefinedValueSet()}</FormField>
         </div>

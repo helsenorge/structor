@@ -79,17 +79,15 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                 </FormField>
                 {getUnusedLanguage.length > 0 && (
                     <div className="horizontal equal">
-                        <div style={{ marginBottom: 10, width: '100%' }}>
-                            <FormField label={t('Add support for additional language')}>
-                                <Select
-                                    placeholder={t('Select a language..')}
-                                    options={getUnusedLanguage}
-                                    value={selectedLang}
-                                    onChange={(event) => setSelectedLang(event.target.value)}
-                                />
-                            </FormField>
-                        </div>
-                        <div style={{ marginBottom: 10 }}>
+                        <FormField label={t('Add support for additional language')}>
+                            <Select
+                                placeholder={t('Select a language..')}
+                                options={getUnusedLanguage}
+                                value={selectedLang}
+                                onChange={(event) => setSelectedLang(event.target.value)}
+                            />
+                        </FormField>
+                        <div>
                             <Btn
                                 title={t('+ Add new language')}
                                 type="button"

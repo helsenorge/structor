@@ -150,7 +150,7 @@ const Navbar = ({
 
                 <div className="left"></div>
 
-                <div className="form-title" style={{ width: '100%' }}>
+                <div className="form-title">
                     <h1>{getFileName()}</h1>
                 </div>
 

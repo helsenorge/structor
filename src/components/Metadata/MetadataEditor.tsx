@@ -53,7 +53,7 @@ const MetadataEditor = (): JSX.Element => {
     return (
         <div id="metadata-editor">
             <Accordion title={t('Questionnaire details')}>
-                <FormField label={t('Description')}>
+                <FormField label={t('Description')} isOptional>
                     <textarea
                         placeholder={t('Description of questionnaire')}
                         defaultValue={qMetadata.description || ''}

@@ -13,8 +13,9 @@ import {
 import { ValidationErrors } from '../../helpers/orphanValidation';
 import SortableTree from '@nosferatu500/react-sortable-tree';
 import '@nosferatu500/react-sortable-tree/style.css';
-import { isIgnorableItem, isItemControlInline } from '../../helpers/itemControl';
+import { isIgnorableItem } from '../../helpers/itemControl';
 import { generateItemButtons } from './ItemButtons/ItemButtons';
+import { canCreateChild } from '../../helpers/treeHelper';
 
 interface AnchorMenuProps {
     qOrder: OrderItem[];
@@ -71,11 +72,6 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
     const getNodeKey = (extendedNode: ExtendedNode): string => {
         return extendedNode.node.title;
-    };
-
-    const canCreateChild = (linkId: string): boolean => {
-        const item = props.qItems[linkId];
-        return item.type !== IQuestionnaireItemType.display && !isItemControlInline(item);
     };
 
     const treePathToOrderArray = (treePath: string[]): string[] => {
@@ -136,7 +132,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                         setCollapsedNodes(filteredNodes);
                     }}
                     canNodeHaveChildren={(node: Node): boolean => {
-                        return canCreateChild(node.title);
+                        return canCreateChild(props.qItems[node.title]);
                     }}
                     generateNodeProps={(extendedNode: ExtendedNode) => ({
                         className: `anchor-menu__item 
@@ -176,9 +172,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
             )}
 
             {props.qOrder.length === 0 && (
-                <p className="center-text" style={{ padding: '0px 25px' }}>
-                    {t('Here you will find a summary of questionnaire elements')}
-                </p>
+                <p className="center-text">{t('Here you will find a summary of questionnaire elements')}</p>
             )}
             <div className="floating-button">
                 <button
