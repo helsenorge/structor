@@ -139,7 +139,6 @@ const EnableWhenAnswerTypes = ({
                         enableWhen.answerDate ? parse(enableWhen.answerDate, 'yyyy-MM-dd', new Date()) : undefined
                     }
                     disabled={false}
-                    withPortal
                     type="date"
                     callback={(date: Date) => {
                         const copy = itemEnableWhen?.map((x, ewIndex) => {
@@ -153,7 +152,6 @@ const EnableWhenAnswerTypes = ({
                 <DateTimePicker
                     selected={enableWhen.answerDateTime ? parseISO(enableWhen.answerDateTime) : undefined}
                     disabled={false}
-                    withPortal
                     callback={(date: Date) => {
                         const copy = itemEnableWhen?.map((x, ewIndex) => {
                             return index === ewIndex ? { ...x, answerDateTime: formatISO(date) } : x;
@@ -167,7 +165,6 @@ const EnableWhenAnswerTypes = ({
                     selected={enableWhen.answerTime ? parse(enableWhen.answerTime, 'HH:mm:ss', new Date()) : undefined}
                     type="time"
                     disabled={false}
-                    withPortal
                     callback={(date: Date) => {
                         const copy = itemEnableWhen?.map((x, ewIndex) => {
                             return index === ewIndex ? { ...x, answerTime: format(date, 'HH:mm:ss') } : x;

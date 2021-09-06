@@ -10,7 +10,6 @@ import { nb } from 'date-fns/locale';
 type PickerProps = {
     type?: 'date' | 'time';
     disabled?: boolean;
-    withPortal?: boolean;
     nowButton?: boolean;
     callback?: (date: Date) => void;
     selected?: Date;
@@ -19,7 +18,7 @@ type PickerProps = {
 setDefaultLocale('nb');
 registerLocale('nb', nb);
 
-const DatePicker = ({ type, disabled = true, withPortal, nowButton, callback, selected }: PickerProps): JSX.Element => {
+const DatePicker = ({ type, disabled = true, nowButton, callback, selected }: PickerProps): JSX.Element => {
     const { t } = useTranslation();
     const [startDate, setStartDate] = useState<Date>();
     return (
@@ -33,7 +32,6 @@ const DatePicker = ({ type, disabled = true, withPortal, nowButton, callback, se
                     callback && callback(date);
                 }}
                 todayButton={nowButton ? t('Today') : undefined}
-                withPortal={withPortal}
                 locale="nb"
                 showTimeSelect={type === 'time'}
                 showTimeSelectOnly={type === 'time'}

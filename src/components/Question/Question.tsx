@@ -38,7 +38,6 @@ import Choice from './QuestionType/Choice';
 import EnableWhen from '../EnableWhen/EnableWhen';
 import Inline from './QuestionType/Inline';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import Picker from '../DatePicker/DatePicker';
 import PredefinedValueSet from './QuestionType/PredefinedValueSet';
 import Select from '../Select/Select';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
@@ -125,42 +124,11 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
 
         switch (param) {
-            case IQuestionnaireItemType.string:
-            case IQuestionnaireItemType.text:
-                return (
-                    <div className="form-field">
-                        <label></label>
-                        <input disabled />
-                    </div>
-                );
             case IQuestionnaireItemType.date:
                 return (
                     <div className="form-field">
                         <label></label>
                         <DateType item={props.item} dispatch={props.dispatch} />
-                    </div>
-                );
-            case IQuestionnaireItemType.time:
-                return (
-                    <div className="form-field">
-                        <label></label>
-                        <Picker type="time" />
-                    </div>
-                );
-            case IQuestionnaireItemType.dateTime:
-                return (
-                    <div className="form-field">
-                        <label></label>
-                        <div className="horizontal">
-                            <Picker type="time" />
-                            <Picker type="date" />
-                        </div>
-                    </div>
-                );
-            case IQuestionnaireItemType.boolean:
-                return (
-                    <div className="form-field">
-                        <input type="checkbox" style={{ zoom: 1.5 }} disabled checked />
                     </div>
                 );
             case IQuestionnaireItemType.choice:
