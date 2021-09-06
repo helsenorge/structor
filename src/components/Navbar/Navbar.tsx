@@ -1,4 +1,4 @@
-import React, { RefObject, useContext, useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { TreeContext } from '../../store/treeStore/treeStore';
@@ -11,16 +11,13 @@ import JSONView from '../JSONView/JSONView';
 import PredefinedValueSetModal from '../PredefinedValueSetModal/PredefinedValueSetModal';
 import ImportValueSet from '../ImportValueSet/ImportValueSet';
 import { saveAction } from '../../store/treeStore/treeActions';
-import ConfirmFileUpload from '../FileUpload/ConfirmFileUpload';
 import { validateOrphanedElements, ValidationErrors } from '../../helpers/orphanValidation';
 import { ValidationErrorsModal } from '../ValidationErrorsModal/validationErrorsModal';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
-    newQuestionnaire: () => void;
     showFormFiller: () => void;
     setValidationErrors: (errors: ValidationErrors[]) => void;
-    uploadRef: RefObject<HTMLInputElement>;
     validationErrors: ValidationErrors[];
 };
 
@@ -34,13 +31,7 @@ type EndSessionPayload = {
     url: string;
 };
 
-const Navbar = ({
-    newQuestionnaire,
-    showFormFiller,
-    setValidationErrors,
-    uploadRef,
-    validationErrors,
-}: Props): JSX.Element => {
+const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props): JSX.Element => {
     const { i18n, t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const history = useHistory();
@@ -49,7 +40,6 @@ const Navbar = ({
     const [showImportValueSet, setShowImportValueSet] = useState(false);
     const [showJSONView, setShowJSONView] = useState(false);
     const [showPublish, setShowPublish] = useState(false);
-    const [confirmUpload, setConfirmUpload] = useState(false);
     const [showValidationErrors, setShowValidationErrors] = useState<boolean>(false);
     const navBarRef = useRef<HTMLDivElement>(null);
     const fileExtension = 'json';
@@ -105,14 +95,6 @@ const Navbar = ({
         }
     };
 
-    const triggerUpload = () => {
-        if (state.isDirty && state.qItems && Object.keys(state.qItems).length > 0) {
-            setConfirmUpload(true);
-        } else {
-            uploadRef.current?.click();
-        }
-    };
-
     function handleLogin() {
         history.push('/login');
     }
@@ -138,18 +120,6 @@ const Navbar = ({
     return (
         <>
             <header ref={navBarRef}>
-                <div>
-                    <Btn title={t('Questionnaire')} onClick={() => handleMenuItemClick(MenuItem.file)} />
-                    {selectedMenuItem === MenuItem.file && (
-                        <div className="menu file">
-                            <Btn title={t('New questionnaire')} onClick={() => callbackAndHide(newQuestionnaire)} />
-                            <Btn title={t('Upload questionnaire')} onClick={() => callbackAndHide(triggerUpload)} />
-                        </div>
-                    )}
-                </div>
-
-                <div className="left"></div>
-
                 <div className="form-title">
                     <h1>{getFileName()}</h1>
                 </div>
@@ -234,7 +204,6 @@ const Navbar = ({
             {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
             {showJSONView && <JSONView showJSONView={() => setShowJSONView(!showJSONView)} />}
             {showPublish && <PublishModal close={() => setShowPublish(!showPublish)} />}
-            {confirmUpload && <ConfirmFileUpload close={() => setConfirmUpload(false)} uploadRef={uploadRef} />}
         </>
     );
 };
