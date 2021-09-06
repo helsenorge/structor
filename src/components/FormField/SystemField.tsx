@@ -34,7 +34,7 @@ const SystemField = ({ value, onBlur }: Props): JSX.Element => {
             />
             {!hasValidSystem && (
                 <div className="msg-error" aria-live="polite">
-                    {t('System must start with http://, https:// or urn:')}
+                    {t('System must start with http://, https:// or urn:uuid:')}
                 </div>
             )}
         </FormField>

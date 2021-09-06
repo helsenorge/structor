@@ -73,7 +73,7 @@
     "You have made changes which are not saved. Do you with to upload a new questionnaire? (Changes will be lost)": "Du har gjort endringer som ikke er lagret. Ønsker du allikevel å laste opp et nytt skjema? (Endringene vil gå tapt)",
     "System": "System",
     "Enter system..": "Legg inn system..",
-    "System must start with http://, https:// or urn:": "System må begynne med http://, https:// eller urn:",
+    "System must start with http://, https:// or urn:uuid:": "System må begynne med http://, https:// eller urn:uuid:",
     "Close": "Lukk",
     "There was en error with status:": "Det skjedde en feil med status:",
     "This resource does not support the FHIR protocol": "Ressursen støtter ikke FHIR protokollen.",

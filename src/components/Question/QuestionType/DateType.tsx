@@ -5,7 +5,6 @@ import { ItemControlType } from '../../../helpers/itemControl';
 import { ActionType } from '../../../store/treeStore/treeStore';
 import { QuestionnaireItem } from '../../../types/fhir';
 import { IExtentionType, IValueSetSystem } from '../../../types/IQuestionnareItemType';
-import Picker from '../../DatePicker/DatePicker';
 import FormField from '../../FormField/FormField';
 import RadioBtn from '../../RadioBtn/RadioBtn';
 
@@ -37,26 +36,23 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
     };
 
     return (
-        <>
-            <FormField label={t('Date type')}>
-                <RadioBtn
-                    onChange={(newValue) => {
-                        if (newValue) {
-                            setItemControlExtension(newValue);
-                        } else {
-                            removeItemExtension(item, IExtentionType.itemControl, dispatch);
-                        }
-                    }}
-                    checked={getItemControlCode()}
-                    options={[
-                        { code: '', display: t('Day, month and year') },
-                        { code: ItemControlType.yearMonth, display: t('Month and year') },
-                        { code: ItemControlType.year, display: t('Year') },
-                    ]}
-                    name="date-type-radio"
-                />
-            </FormField>
-            <Picker />
-        </>
+        <FormField label={t('Date type')}>
+            <RadioBtn
+                onChange={(newValue) => {
+                    if (newValue) {
+                        setItemControlExtension(newValue);
+                    } else {
+                        removeItemExtension(item, IExtentionType.itemControl, dispatch);
+                    }
+                }}
+                checked={getItemControlCode()}
+                options={[
+                    { code: '', display: t('Day, month and year') },
+                    { code: ItemControlType.yearMonth, display: t('Month and year') },
+                    { code: ItemControlType.year, display: t('Year') },
+                ]}
+                name="date-type-radio"
+            />
+        </FormField>
     );
 };

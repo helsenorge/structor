@@ -38,7 +38,6 @@ import Choice from './QuestionType/Choice';
 import EnableWhen from '../EnableWhen/EnableWhen';
 import Inline from './QuestionType/Inline';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import Picker from '../DatePicker/DatePicker';
 import PredefinedValueSet from './QuestionType/PredefinedValueSet';
 import Select from '../Select/Select';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
@@ -125,38 +124,10 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
 
         switch (param) {
-            case IQuestionnaireItemType.string:
-            case IQuestionnaireItemType.text:
-                return (
-                    <FormField>
-                        <input disabled />
-                    </FormField>
-                );
             case IQuestionnaireItemType.date:
                 return (
                     <FormField>
                         <DateType item={props.item} dispatch={props.dispatch} />
-                    </FormField>
-                );
-            case IQuestionnaireItemType.time:
-                return (
-                    <FormField>
-                        <Picker type="time" />
-                    </FormField>
-                );
-            case IQuestionnaireItemType.dateTime:
-                return (
-                    <FormField>
-                        <div className="horizontal">
-                            <Picker type="time" />
-                            <Picker type="date" />
-                        </div>
-                    </FormField>
-                );
-            case IQuestionnaireItemType.boolean:
-                return (
-                    <FormField>
-                        <input type="checkbox" style={{ zoom: 1.5 }} disabled checked />
                     </FormField>
                 );
             case IQuestionnaireItemType.choice:
