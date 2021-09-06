@@ -11,7 +11,7 @@ import {
 import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { getLanguageFromCode, translatableMetadata } from './LanguageHelper';
-import { isItemControlHighlight, isItemControlSidebar } from './itemControl';
+import { isItemControlSidebar } from './itemControl';
 import { emptyPropertyReplacer } from './emptyPropertyReplacer';
 import { FhirpathAgeExpression, FhirpathGenderExpression } from './QuestionHelper';
 
@@ -186,7 +186,6 @@ const generateTree = (order: Array<OrderItem>, items: Items): Array<Questionnair
     return order.map((x) => {
         return {
             ...items[x.linkId],
-            type: isItemControlHighlight(items[x.linkId]) ? 'text' : items[x.linkId].type, // TODO: remove after highlight is moved to display
             item: generateTree(x.items, items),
         };
     });
@@ -202,7 +201,6 @@ const generateTreeWithTranslations = (
         return {
             ...items[x.linkId],
             ...getTranslatedItem(languageCode, x, items, languages),
-            type: isItemControlHighlight(items[x.linkId]) ? 'text' : items[x.linkId].type, // TODO: remove after highlight is moved to display
             item: generateTreeWithTranslations(x.items, items, languageCode, languages),
         };
     });
