@@ -11,11 +11,14 @@ import { canCreateChild } from '../../../helpers/treeHelper';
 
 export const generateItemButtons = (
     t: TFunction<'translation'>,
-    item: QuestionnaireItem,
+    item: QuestionnaireItem | undefined,
     parentArray: Array<string>,
     showLabel: boolean,
     dispatch: React.Dispatch<ActionType>,
 ): JSX.Element[] => {
+    if (!item) {
+        return [];
+    }
     const dispatchDeleteItem = (event: MouseEvent<HTMLButtonElement>): void => {
         event.stopPropagation();
         dispatch(deleteItemAction(item.linkId, parentArray));
