@@ -5,7 +5,6 @@ import { ItemControlType } from '../../../helpers/itemControl';
 import { ActionType } from '../../../store/treeStore/treeStore';
 import { QuestionnaireItem } from '../../../types/fhir';
 import { IExtentionType, IValueSetSystem } from '../../../types/IQuestionnareItemType';
-import Picker from '../../DatePicker/DatePicker';
 import FormField from '../../FormField/FormField';
 
 type Props = {
@@ -36,43 +35,40 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
     };
 
     return (
-        <>
-            <FormField label={t('Date type')}>
-                <label>
-                    <input
-                        type="radio"
-                        checked={!getItemControlCode()}
-                        name="date-type-radio"
-                        onChange={() => {
-                            removeItemExtension(item, IExtentionType.itemControl, dispatch);
-                        }}
-                    />
-                    <span>{` ${t('Day, month and year')}`}</span>
-                </label>
-                <label>
-                    <input
-                        type="radio"
-                        checked={getItemControlCode() === ItemControlType.yearMonth}
-                        name="date-type-radio"
-                        onChange={() => {
-                            setItemControlExtension(ItemControlType.yearMonth);
-                        }}
-                    />
-                    <span>{` ${t('Month and year')}`}</span>
-                </label>
-                <label>
-                    <input
-                        type="radio"
-                        checked={getItemControlCode() === ItemControlType.year}
-                        name="date-type-radio"
-                        onChange={() => {
-                            setItemControlExtension(ItemControlType.year);
-                        }}
-                    />
-                    <span>{` ${t('Year')}`}</span>
-                </label>
-            </FormField>
-            <Picker />
-        </>
+        <FormField label={t('Date type')}>
+            <label>
+                <input
+                    type="radio"
+                    checked={!getItemControlCode()}
+                    name="date-type-radio"
+                    onChange={() => {
+                        removeItemExtension(item, IExtentionType.itemControl, dispatch);
+                    }}
+                />
+                <span>{` ${t('Day, month and year')}`}</span>
+            </label>
+            <label>
+                <input
+                    type="radio"
+                    checked={getItemControlCode() === ItemControlType.yearMonth}
+                    name="date-type-radio"
+                    onChange={() => {
+                        setItemControlExtension(ItemControlType.yearMonth);
+                    }}
+                />
+                <span>{` ${t('Month and year')}`}</span>
+            </label>
+            <label>
+                <input
+                    type="radio"
+                    checked={getItemControlCode() === ItemControlType.year}
+                    name="date-type-radio"
+                    onChange={() => {
+                        setItemControlExtension(ItemControlType.year);
+                    }}
+                />
+                <span>{` ${t('Year')}`}</span>
+            </label>
+        </FormField>
     );
 };

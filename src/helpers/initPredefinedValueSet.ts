@@ -8,22 +8,22 @@ export const initPredefinedValueSet = [
         resourceType: 'ValueSet',
         id: '1101',
         version: '1.0',
-        name: 'structor-yes-no-1101',
-        title: 'Ja / Nei',
+        name: 'urn:oid:1101',
+        title: 'Ja / Nei (structor)',
         status: 'draft',
         publisher: 'NHN',
         compose: {
             include: [
                 {
-                    system: 'system-structor-1.0:1101',
+                    system: 'urn:oid:2.16.578.1.12.4.1.1101',
                     concept: [
                         {
                             code: '1',
-                            display: 'Yes',
+                            display: 'Ja',
                         },
                         {
                             code: '2',
-                            display: 'No',
+                            display: 'Nei',
                         },
                     ],
                 },
@@ -35,26 +35,26 @@ export const initPredefinedValueSet = [
         resourceType: 'ValueSet',
         id: '1102',
         version: '1.0',
-        name: 'structor-yes-no-maybe-1102',
-        title: 'Ja / Nei / Usikker',
+        name: 'urn:oid:1102',
+        title: 'Ja / Nei / Vet ikke (structor)',
         status: 'draft',
         publisher: 'Direktoratet for e-helse',
         compose: {
             include: [
                 {
-                    system: 'system-structor-1.0:1102',
+                    system: 'urn:oid:2.16.578.1.12.4.1.1102',
                     concept: [
                         {
                             code: '1',
-                            display: 'Yes',
+                            display: 'Ja',
                         },
                         {
                             code: '2',
-                            display: 'No',
+                            display: 'Nei',
                         },
                         {
                             code: '3',
-                            display: 'Usikker',
+                            display: 'Vet ikke',
                         },
                     ],
                 },
@@ -64,24 +64,28 @@ export const initPredefinedValueSet = [
     {
         url: predefinedValueSetUri,
         resourceType: 'ValueSet',
-        id: '1103',
+        id: '9523',
         version: '1.0',
-        name: 'structor-sex-1103',
-        title: 'Kjønn',
+        name: 'urn:oid:9523',
+        title: 'Ja / Nei / Usikker (structor)',
         status: 'draft',
         publisher: 'Direktoratet for e-helse',
         compose: {
             include: [
                 {
-                    system: 'system-structor-1.0:1103',
+                    system: 'urn:oid:2.16.578.1.12.4.1.9523',
                     concept: [
                         {
-                            code: 'LA2-8',
-                            display: 'Mann',
+                            code: '1',
+                            display: 'Ja',
                         },
                         {
-                            code: 'LA3-6',
-                            display: 'Kvinne',
+                            code: '2',
+                            display: 'Nei',
+                        },
+                        {
+                            code: '3',
+                            display: 'Usikker',
                         },
                     ],
                 },

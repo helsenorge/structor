@@ -33,6 +33,7 @@ import {
     getValidationMessage,
 } from './QuestionHelper';
 import { IExtentionType } from '../types/IQuestionnareItemType';
+import { initPredefinedValueSet } from './initPredefinedValueSet';
 
 function extractMetadata(questionnaireObj: Questionnaire) {
     const getMetadataParts = ({
@@ -236,8 +237,15 @@ export function mapToTreeState(resource: Bundle | Questionnaire): TreeState {
     }
 
     const qMetadata: IQuestionnaireMetadata = extractMetadata(mainQuestionnaire);
-    const qContained = mainQuestionnaire.contained as Array<ValueSet>; // we expect contained to only contain ValueSets
+    const qContained = (mainQuestionnaire.contained as Array<ValueSet>) || []; // we expect contained to only contain ValueSets
     const { qItems, qOrder } = extractItemsAndOrder(mainQuestionnaire.item);
+
+    // add missing initial value sets:
+    initPredefinedValueSet.forEach((x) => {
+        if (!qContained.find((contained) => contained.id === x.id)) {
+            qContained.push(x);
+        }
+    });
 
     const newState: TreeState = {
         isDirty: false,
