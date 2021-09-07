@@ -1,5 +1,5 @@
 import './AnchorMenu.css';
-import { DndProvider, DragSource } from 'react-dnd';
+import { DndProvider, DragSource, DragSourceConnector, ConnectDragSource } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import React from 'react';
@@ -29,7 +29,7 @@ interface AnchorMenuProps {
 
 interface Node {
     title: string;
-    hierarchy: string;
+    hierarchy?: string;
     nodeType?: IQuestionnaireItemType;
     children: Node[];
 }
@@ -57,9 +57,9 @@ const externalNodeSpec = {
     // This needs to return an object with a property `node` in it.
     // Object rest spread is recommended to avoid side effects of
     // referencing the same object in different trees.
-    beginDrag: (componentProps: any) => ({ node: { ...componentProps.node } }),
+    beginDrag: (componentProps: { node: Node }) => ({ node: { ...componentProps.node } }),
 };
-const externalNodeCollect = (connect: any) => ({
+const externalNodeCollect = (connect: DragSourceConnector) => ({
     connectDragSource: connect.dragSource(),
     // Add props via react-dnd APIs to enable more visual
     // customization of your component
@@ -67,7 +67,7 @@ const externalNodeCollect = (connect: any) => ({
     // didDrop: monitor.didDrop(),
 });
 
-class externalNodeBaseComponent extends React.Component<any> {
+class ExternalNodeBaseComponent extends React.Component<{ connectDragSource: ConnectDragSource; node: Node }> {
     render() {
         const { connectDragSource, node } = this.props;
 
@@ -91,7 +91,7 @@ const YourExternalNodeComponent = DragSource(
     externalNodeType,
     externalNodeSpec,
     externalNodeCollect,
-)(externalNodeBaseComponent);
+)(ExternalNodeBaseComponent);
 
 const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     const { t } = useTranslation();
@@ -244,10 +244,18 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                         top: 0,
                     }}
                 >
-                    <YourExternalNodeComponent node={{ title: 'NEW', nodeType: IQuestionnaireItemType.group }} />
-                    <YourExternalNodeComponent node={{ title: 'NEW', nodeType: IQuestionnaireItemType.string }} />
-                    <YourExternalNodeComponent node={{ title: 'NEW', nodeType: IQuestionnaireItemType.text }} />
-                    <YourExternalNodeComponent node={{ title: 'NEW', nodeType: IQuestionnaireItemType.display }} />
+                    <YourExternalNodeComponent
+                        node={{ title: 'NEW', nodeType: IQuestionnaireItemType.group, children: [] }}
+                    />
+                    <YourExternalNodeComponent
+                        node={{ title: 'NEW', nodeType: IQuestionnaireItemType.string, children: [] }}
+                    />
+                    <YourExternalNodeComponent
+                        node={{ title: 'NEW', nodeType: IQuestionnaireItemType.text, children: [] }}
+                    />
+                    <YourExternalNodeComponent
+                        node={{ title: 'NEW', nodeType: IQuestionnaireItemType.display, children: [] }}
+                    />
                 </div>
             </div>
         </DndProvider>
