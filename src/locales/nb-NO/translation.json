@@ -314,5 +314,9 @@
     "On behalf of citizen (temporary postal adress)": "På vegne av innbygger (Midlertidig poststed)",
     "Gender": "Kjønn",
     "Male": "Mann",
-    "Female": "Kvinne"
+    "Female": "Kvinne",
+    "Access control": "Tilgangsstyring",
+    "Helsetjeneste (Full) (standard setting)": "Helsetjeneste (Full) (standardinnstilling)",
+    "Journalinnsyn (Basis +)": "Journalinnsyn (Basis +)",
+    "Registerinnsyn (Basis)": "Registerinnsyn (Basis)"
 }

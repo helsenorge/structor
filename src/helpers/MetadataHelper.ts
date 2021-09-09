@@ -42,6 +42,12 @@ export const saveCapability = [
     { code: '3', display: 'No saving' },
 ];
 
+export const useContextSystem = [
+    { code: 'urn:oid:2.16.578.1.12.4.1.1.8655', display: 'Helsetjeneste (Full) (standard setting)' },
+    { code: 'urn:oid:2.16.578.1.12.4.1.1.7614', display: 'Journalinnsyn (Basis +)' },
+    { code: 'urn:oid:2.16.578.1.12.4.1.1.7615', display: 'Registerinnsyn (Basis)' },
+];
+
 export const isValidId = (value: string): boolean => {
     const regExp = /^[A-Za-z0-9-.]{1,64}$/;
     return regExp.test(value);

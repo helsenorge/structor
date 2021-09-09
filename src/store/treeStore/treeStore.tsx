@@ -191,16 +191,14 @@ export const initialState: TreeState = {
         useContext: [
             {
                 code: {
-                    system: 'uri', // TODO
+                    system: 'http://hl7.org/fhir/ValueSet/usage-context-type',
                     code: 'focus',
-                    display: 'Clinical focus',
+                    display: 'Clinical Focus',
                 },
                 valueCodeableConcept: {
                     coding: [
                         {
-                            system: 'uri', // TODO
-                            code: '29',
-                            display: '',
+                            system: 'urn:oid:2.16.578.1.12.4.1.1.8655',
                         },
                     ],
                 },

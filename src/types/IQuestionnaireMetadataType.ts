@@ -16,6 +16,7 @@ export enum IQuestionnaireMetadataType {
     meta = 'meta',
     extension = 'extension',
     version = 'version',
+    useContext = 'useContext',
 }
 
 export interface IQuestionnaireMetadata {
