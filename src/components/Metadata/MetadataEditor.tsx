@@ -11,13 +11,14 @@ import {
     metadataOperators,
     presentationButtons,
     saveCapability,
+    useContextSystem,
 } from '../../helpers/MetadataHelper';
 import Accordion from '../Accordion/Accordion';
 import DateTimePicker from '../DatePicker/DateTimePicker';
 import FormField from '../FormField/FormField';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import { ContactDetail, Extension, Meta } from '../../types/fhir';
+import { ContactDetail, Extension, Meta, UsageContext } from '../../types/fhir';
 import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
@@ -32,7 +33,10 @@ const MetadataEditor = (): JSX.Element => {
     const [displayIdValidationError, setDisplayIdValidationError] = useState(false);
     const [displayNameValidationError, setDisplayNameValidationError] = useState(false);
 
-    const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta | Extension[] | ContactDetail[]) => {
+    const updateMeta = (
+        propName: IQuestionnaireMetadataType,
+        value: string | Meta | Extension[] | ContactDetail[] | UsageContext[],
+    ) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
@@ -52,6 +56,17 @@ const MetadataEditor = (): JSX.Element => {
     const getSaveCapability = (): string => {
         const saveCapabilityValue = qMetadata?.extension?.find((x) => x.url === IExtentionType.saveCapability);
         return saveCapabilityValue?.valueCoding?.code || '';
+    };
+
+    const getUseContextSystem = (): string => {
+        const system =
+            qMetadata.useContext &&
+            qMetadata.useContext.length > 0 &&
+            qMetadata.useContext[0].valueCodeableConcept?.coding &&
+            qMetadata.useContext[0].valueCodeableConcept.coding.length > 0 &&
+            qMetadata.useContext[0].valueCodeableConcept.coding[0].system;
+
+        return system || '';
     };
 
     return (
@@ -216,6 +231,31 @@ const MetadataEditor = (): JSX.Element => {
                             }
                         }}
                         options={saveCapability}
+                    />
+                </FormField>
+                <FormField label={t('Access control')}>
+                    <Select
+                        value={getUseContextSystem()}
+                        onChange={(e) => {
+                            const updateValue = [
+                                {
+                                    code: {
+                                        system: 'http://hl7.org/fhir/ValueSet/usage-context-type',
+                                        code: 'focus',
+                                        display: 'Clinical Focus',
+                                    },
+                                    valueCodeableConcept: {
+                                        coding: [
+                                            {
+                                                system: e.target.value,
+                                            },
+                                        ],
+                                    },
+                                },
+                            ];
+                            updateMeta(IQuestionnaireMetadataType.useContext, updateValue);
+                        }}
+                        options={useContextSystem}
                     />
                 </FormField>
                 <FormField label={t('Date')}>
