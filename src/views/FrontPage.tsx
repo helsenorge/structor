@@ -8,6 +8,8 @@ import Modal from '../components/Modal/Modal';
 import SpinnerBox from '../components/Spinner/SpinnerBox';
 import { useTranslation } from 'react-i18next';
 import FormBuilder from './FormBuilder';
+import Btn from '../components/Btn/Btn';
+import './FrontPage.css';
 
 const FrontPage = (): JSX.Element => {
     const { t } = useTranslation();
@@ -93,29 +95,41 @@ const FrontPage = (): JSX.Element => {
                 <FormBuilder />
             ) : (
                 <>
-                    <div>What would you like to do?</div>
-                    <div>You can start a new questionnaire, or upload an existing one</div>
-                    <input
-                        type="file"
-                        ref={uploadRef}
-                        onChange={uploadQuestionnaire}
-                        accept="application/JSON"
-                        style={{ display: 'none' }}
-                    />
-                    <button
-                        onClick={() => {
-                            setIsFormBuilderShown(true);
-                        }}
-                    >
-                        {t('New questionnaire')}
-                    </button>
-                    <button
-                        onClick={() => {
-                            uploadRef.current?.click();
-                        }}
-                    >
-                        {t('Upload questionnaire')}
-                    </button>
+                    <header>
+                        <div className="form-title">
+                            <h1>{t('Form builder')}</h1>
+                        </div>
+                    </header>
+                    <div className="questionnaire-overview">
+                        <h2>{t('What would you like to do?')}</h2>
+                        <div className="frontpage__infotext">
+                            {t('You can start a new questionnaire, or upload an existing one.')}
+                        </div>
+                        <input
+                            type="file"
+                            ref={uploadRef}
+                            onChange={uploadQuestionnaire}
+                            accept="application/JSON"
+                            style={{ display: 'none' }}
+                        />
+                        <Btn
+                            onClick={() => {
+                                setIsFormBuilderShown(true);
+                            }}
+                            title={t('New questionnaire')}
+                            variant="primary"
+                            size="small"
+                        />
+                        {` `}
+                        <Btn
+                            onClick={() => {
+                                uploadRef.current?.click();
+                            }}
+                            title={t('Upload questionnaire')}
+                            variant="secondary"
+                            size="small"
+                        />
+                    </div>
                 </>
             )}
         </>
