@@ -274,6 +274,7 @@
     "Open choice": "Alternativer med åpent svar",
     "Predefined choices": "Forhåndsdefinerte alternativer",
     "Recipient list": "Mottakerliste",
+    "Recipient component": "Mottakerkomponent",
     "Date and time": "Dato og klokkeslett",
     "Confirmation": "Bekreftelse",
     "Number": "Tall",
@@ -317,5 +318,13 @@
     "Gender": "Kjønn",
     "Male": "Mann",
     "Female": "Kvinne",
-    "Display type": "Visningstype"
+    "Display type": "Visningstype",
+    "Access control": "Tilgangsstyring",
+    "Helsetjeneste (Full) (standard setting)": "Helsetjeneste (Full) (standardinnstilling)",
+    "Journalinnsyn (Basis +)": "Journalinnsyn (Basis +)",
+    "Registerinnsyn (Basis)": "Registerinnsyn (Basis)",
+    "Recipient component is configured in Helsenorge admin": "Mottakerkomponenten konfigureres i Helsenorge admin",
+    "Form builder": "Skjemabygger",
+    "What would you like to do?": "Hva vil du gjøre?",
+    "You can start a new questionnaire, or upload an existing one.": "Velg om du vil opprette et skjema fra bunnen av eller endre et skjema ved å laste opp en skjemafil."
 }

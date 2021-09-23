@@ -1,7 +1,6 @@
 import { QuestionnaireItem } from '../types/fhir';
 import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { getEnumKeyByString } from './enumHelper';
-import { CodingSystemType } from './systemHelper';
 
 export enum ItemControlType {
     inline = 'inline',
@@ -15,6 +14,7 @@ export enum ItemControlType {
     radioButton = 'radio-button',
     yearMonth = 'yearMonth',
     year = 'year',
+    receiverComponent = 'receiver-component',
 }
 
 const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefined => {
@@ -36,8 +36,8 @@ export const isIgnorableItem = (item: QuestionnaireItem, parentItem?: Questionna
     return isItemControlHelp(item) || isItemControlSidebar(item) || isItemControlInline(parentItem);
 };
 
-export const isTqqcOptionReferenceItem = (item: QuestionnaireItem): boolean => {
-    return item.code?.find((x) => x.system === CodingSystemType.valueSetTqqc) !== undefined;
+export const isItemControlReceiverComponent = (item: QuestionnaireItem): boolean => {
+    return getItemControlType(item) === ItemControlType.receiverComponent;
 };
 
 export const isItemControlDropDown = (item: QuestionnaireItem): boolean => {

@@ -6,6 +6,7 @@ import {
     isItemControlHelp,
     isItemControlHighlight,
     isItemControlInline,
+    isItemControlReceiverComponent,
     isItemControlSidebar,
 } from './itemControl';
 
@@ -58,12 +59,13 @@ export const calculateItemNumber = (
     return getItemIndexAsString(linkId, currentArray, qItems, parentNumber, parentLinkId);
 };
 
-export const canCreateChild = (item: QuestionnaireItem): boolean => {
+export const canNodeHaveChildren = (item: QuestionnaireItem): boolean => {
     return (
         item.type !== IQuestionnaireItemType.display &&
         !isItemControlInline(item) &&
         !isItemControlHighlight(item) &&
         !isItemControlSidebar(item) &&
-        !isItemControlHelp(item)
+        !isItemControlHelp(item) &&
+        !isItemControlReceiverComponent(item)
     );
 };

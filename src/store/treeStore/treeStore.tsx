@@ -59,11 +59,12 @@ import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { createNewAnswerOption } from '../../helpers/answerOptionHelper';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
-import { isIgnorableItem, isTqqcOptionReferenceItem } from '../../helpers/itemControl';
+import { isIgnorableItem } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { createSystemUUID } from '../../helpers/systemHelper';
 import { saveStateToDb } from './indexedDbHelper';
+import { isRecipientList } from '../../helpers/QuestionHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -366,7 +367,7 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
         [action.itemProperty]: action.itemValue,
     };
 
-    if (action.itemValue === 'choice' && isTqqcOptionReferenceItem(draft.qItems[action.linkId])) {
+    if (action.itemValue === 'choice' && isRecipientList(draft.qItems[action.linkId])) {
         //handle dropdown!
         draft.qItems[action.linkId].extension = [
             ...(draft.qItems[action.linkId].extension || []),

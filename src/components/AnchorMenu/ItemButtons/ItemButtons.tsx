@@ -7,7 +7,7 @@ import { QuestionnaireItem } from '../../../types/fhir';
 import './ItemButtons.css';
 import { deleteItemAction, duplicateItemAction, newItemAction } from '../../../store/treeStore/treeActions';
 import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
-import { canCreateChild } from '../../../helpers/treeHelper';
+import { canNodeHaveChildren } from '../../../helpers/treeHelper';
 
 export const generateItemButtons = (
     t: TFunction<'translation'>,
@@ -39,7 +39,7 @@ export const generateItemButtons = (
     };
 
     return [
-        ...(canCreateChild(item)
+        ...(canNodeHaveChildren(item)
             ? [
                   <button
                       key="new-item-button"

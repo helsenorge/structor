@@ -17,7 +17,7 @@ import { SortableTreeWithoutDndContext as SortableTree } from '@nosferatu500/rea
 import '@nosferatu500/react-sortable-tree/style.css';
 import { isIgnorableItem } from '../../helpers/itemControl';
 import { generateItemButtons } from './ItemButtons/ItemButtons';
-import { canCreateChild } from '../../helpers/treeHelper';
+import { canNodeHaveChildren } from '../../helpers/treeHelper';
 
 interface AnchorMenuProps {
     qOrder: OrderItem[];
@@ -182,7 +182,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                     }}
                     canNodeHaveChildren={(node: Node): boolean => {
                         const item = props.qItems[node.title];
-                        return item ? canCreateChild(item) : false;
+                        return item ? canNodeHaveChildren(item) : false;
                     }}
                     generateNodeProps={(extendedNode: ExtendedNode) => ({
                         className: `anchor-menu__item 

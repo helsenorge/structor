@@ -25,11 +25,12 @@ import {
 } from '../../store/treeStore/treeActions';
 import itemType, {
     ATTACHMENT_DEFAULT_MAX_SIZE,
+    isRecipientList,
     typeIsSupportingValidation,
     valueSetTqqcCoding,
 } from '../../helpers/QuestionHelper';
 import { createDropdown, removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
-import { isTqqcOptionReferenceItem, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
+import { isItemControlInline, ItemControlType, isItemControlReceiverComponent } from '../../helpers/itemControl';
 
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
@@ -119,8 +120,12 @@ const Question = (props: QuestionProps): JSX.Element => {
             return <Inline linkId={props.item.linkId} parentArray={props.parentArray} />;
         }
 
-        if (isTqqcOptionReferenceItem(props.item)) {
+        if (isRecipientList(props.item)) {
             return <OptionReference item={props.item} />;
+        }
+
+        if (isItemControlReceiverComponent(props.item)) {
+            return <></>;
         }
 
         switch (param) {
@@ -149,8 +154,11 @@ const Question = (props: QuestionProps): JSX.Element => {
             return IQuestionnaireItemType.number;
         }
 
-        if (isTqqcOptionReferenceItem(props.item)) {
-            return IQuestionnaireItemType.address;
+        if (isRecipientList(props.item)) {
+            return IQuestionnaireItemType.receiver;
+        }
+        if (isItemControlReceiverComponent(props.item)) {
+            return IQuestionnaireItemType.receiverComponent;
         }
         if (isItemControlInline(props.item)) {
             return IQuestionnaireItemType.inline;
@@ -173,10 +181,25 @@ const Question = (props: QuestionProps): JSX.Element => {
         } else if (newType === IQuestionnaireItemType.number) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
             dispatchRemoveAttribute(IItemProperty.answerValueSet);
-        } else if (newType === IQuestionnaireItemType.address) {
+        } else if (newType === IQuestionnaireItemType.receiver) {
             dispatchRemoveAttribute(IItemProperty.answerValueSet);
             dispatchRemoveAttribute(IItemProperty.answerOption);
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
+        } else if (newType === IQuestionnaireItemType.receiverComponent) {
+            const extension = {
+                url: IExtentionType.itemControl,
+                valueCodeableConcept: {
+                    coding: [{ system: IValueSetSystem.itemControlValueSet, code: ItemControlType.receiverComponent }],
+                },
+            };
+
+            setItemExtension(props.item, extension, props.dispatch);
+            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
+            dispatchUpdateItem(IItemProperty.text, t('<Recipient component>') || '');
+            dispatchUpdateItem(IItemProperty.answerValueSet, 'http://helsenorge.no/fhir/ValueSet/adresser');
+            dispatchUpdateItem(IItemProperty.required, true);
+            dispatchUpdateItem(IItemProperty.code, [valueSetTqqcCoding]);
+            dispatchRemoveAttribute(IItemProperty.answerOption);
         } else if (newType === IQuestionnaireItemType.inline) {
             dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.text);
             dispatchNewChildItem(IQuestionnaireItemType.display);
@@ -187,7 +210,10 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     function cleanupChildItems(previousType: string) {
-        if (previousType === IQuestionnaireItemType.address) {
+        if (
+            previousType === IQuestionnaireItemType.receiver ||
+            previousType === IQuestionnaireItemType.receiverComponent
+        ) {
             dispatchRemoveAttribute(IItemProperty.code);
         }
         if (previousType === IQuestionnaireItemType.inline) {
@@ -215,7 +241,7 @@ const Question = (props: QuestionProps): JSX.Element => {
             setItemExtension(props.item, extension, props.dispatch);
         }
 
-        if (type === IQuestionnaireItemType.address) {
+        if (type === IQuestionnaireItemType.receiver) {
             setItemExtension(props.item, createDropdown, props.dispatch);
             dispatchUpdateItem(IItemProperty.code, [valueSetTqqcCoding]);
         }
@@ -238,6 +264,25 @@ const Question = (props: QuestionProps): JSX.Element => {
 
     const enableWhenCount =
         props.item.enableWhen && props.item.enableWhen.length > 0 ? `(${props.item.enableWhen?.length})` : '';
+
+    // TODO: should it be possible to change linkId for recipient component?
+    if (isItemControlReceiverComponent(props.item)) {
+        return (
+            <div className="question" id={props.item.linkId}>
+                <div className="question-form">
+                    <div className="form-field">
+                        <label>{t('Select type')}</label>
+                        <Select
+                            value={handleDisplayQuestionType()}
+                            options={itemType}
+                            onChange={handleQuestionareTypeChange}
+                        />
+                        <div>{t('Recipient component is configured in Helsenorge admin')}</div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="question" id={props.item.linkId}>

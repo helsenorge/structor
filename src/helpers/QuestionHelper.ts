@@ -2,7 +2,7 @@ import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } f
 import { IExtentionType, IOperator, IQuestionnaireItemType, IValueSetSystem } from '../types/IQuestionnareItemType';
 import { CodingSystemType } from './systemHelper';
 import { Option, Options } from '../types/OptionTypes';
-import { ItemControlType } from './itemControl';
+import { isItemControlReceiverComponent, ItemControlType } from './itemControl';
 
 const itemType = [
     {
@@ -35,7 +35,11 @@ const itemType = [
     },
     {
         display: 'Recipient list',
-        code: IQuestionnaireItemType.address,
+        code: IQuestionnaireItemType.receiver,
+    },
+    {
+        display: 'Recipient component',
+        code: IQuestionnaireItemType.receiverComponent,
     },
     {
         display: 'Date',
@@ -390,8 +394,8 @@ export const valueSetTqqcCoding: Coding = {
     display: 'Technical endpoint for receiving QuestionnaireResponse',
 };
 
-export const isRecipientList = (item?: QuestionnaireItem): boolean => {
-    return (item?.code && item.code[0].system === CodingSystemType.valueSetTqqc) || false;
+export const isRecipientList = (item: QuestionnaireItem): boolean => {
+    const isReceiverComponent = isItemControlReceiverComponent(item);
+    return !isReceiverComponent && item.code?.find((x) => x.system === CodingSystemType.valueSetTqqc) !== undefined;
 };
-
 export default itemType;

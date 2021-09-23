@@ -1,7 +1,8 @@
 export enum IQuestionnaireItemType {
     attachment = 'attachment',
     // address is not a fhir-type, but used internally for types choice
-    address = 'address',
+    receiver = 'receiver',
+    receiverComponent = 'receiver-component',
     boolean = 'boolean',
     choice = 'choice',
     date = 'date',
