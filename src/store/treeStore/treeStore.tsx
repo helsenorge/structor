@@ -238,7 +238,7 @@ function removeLanguage(draft: TreeState, action: RemoveQuestionnaireLanguageAct
     delete draft.qAdditionalLanguages[action.languageCode];
 }
 
-function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
+export function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
     if (searchPath.length === 0) {
         return searchItems;
     }
@@ -266,9 +266,18 @@ function updateMarkedItemId(draft: TreeState, action: UpdateMarkedLinkId): void 
 function createNewItem(draft: TreeState, action: NewItemAction): void {
     const itemToAdd = action.item;
     draft.qItems[itemToAdd.linkId] = itemToAdd;
+    const itemChildren = [];
+    if (itemToAdd.item?.length === 1) {
+        // special handling since type 'inline' has a child when it is created
+        draft.qItems[itemToAdd.item[0].linkId] = itemToAdd.item[0];
+        itemChildren.push({ linkId: itemToAdd.item[0].linkId, items: [] });
+    }
     // find the correct place to add the new item
     const arrayToAddItemTo = findTreeArray(action.order, draft.qOrder);
-    const newOrderNode = { linkId: itemToAdd.linkId, items: [] };
+    const newOrderNode = {
+        linkId: itemToAdd.linkId,
+        items: itemChildren,
+    };
     if (!action.index && action.index !== 0) {
         arrayToAddItemTo.push(newOrderNode);
     } else {

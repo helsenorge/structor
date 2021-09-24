@@ -284,7 +284,6 @@ const MetadataEditor = (): JSX.Element => {
                         }
                         value={getGeneratePdfValue()}
                         label=""
-                        initial
                     />
                 </FormField>
                 <FormField label={t('Use navigator')}>
@@ -313,7 +312,6 @@ const MetadataEditor = (): JSX.Element => {
                         }}
                         value={!!qMetadata?.extension?.find((ex) => ex.url === IExtentionType.navigator) || false}
                         label=""
-                        initial
                     />
                 </FormField>
             </Accordion>

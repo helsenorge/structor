@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { createMarkdownExtension } from '../../helpers/extensionHelper';
 import { ItemControlType } from '../../helpers/itemControl';
 import { deleteItemAction, newItemSidebar, updateItemAction } from '../../store/treeStore/treeActions';
 import { TreeContext } from '../../store/treeStore/treeStore';
@@ -47,15 +48,7 @@ const Sidebar = (): JSX.Element => {
     };
 
     const handleMarkdown = (linkId: string, value: string) => {
-        const newValue = {
-            extension: [
-                {
-                    url: IExtentionType.markdown,
-                    valueMarkdown: value,
-                },
-            ],
-        };
-
+        const newValue = createMarkdownExtension(value);
         dispatch(updateItemAction(linkId, IItemProperty._text, newValue));
     };
 

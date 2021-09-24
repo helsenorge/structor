@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
-import { ItemControlType } from '../../../helpers/itemControl';
+import { createItemControlExtension, ItemControlType } from '../../../helpers/itemControl';
 import { ActionType } from '../../../store/treeStore/treeStore';
 import { QuestionnaireItem } from '../../../types/fhir';
-import { IExtentionType, IValueSetSystem } from '../../../types/IQuestionnareItemType';
+import { IExtentionType } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
 import RadioBtn from '../../RadioBtn/RadioBtn';
 
@@ -21,17 +21,7 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
     };
 
     const setItemControlExtension = (code: string) => {
-        const newExtension = {
-            url: IExtentionType.itemControl,
-            valueCodeableConcept: {
-                coding: [
-                    {
-                        system: IValueSetSystem.itemControlValueSet,
-                        code: code,
-                    },
-                ],
-            },
-        };
+        const newExtension = createItemControlExtension(code as ItemControlType);
         setItemExtension(item, newExtension, dispatch);
     };
 

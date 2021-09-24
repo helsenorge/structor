@@ -17,7 +17,7 @@ import { SortableTreeWithoutDndContext as SortableTree } from '@nosferatu500/rea
 import '@nosferatu500/react-sortable-tree/style.css';
 import { isIgnorableItem } from '../../helpers/itemControl';
 import { generateItemButtons } from './ItemButtons/ItemButtons';
-import { canNodeHaveChildren } from '../../helpers/treeHelper';
+import { canTypeHaveChildren, getInitialItemConfig } from '../../helpers/questionTypeFeatures';
 
 interface AnchorMenuProps {
     qOrder: OrderItem[];
@@ -31,6 +31,7 @@ interface Node {
     title: string;
     hierarchy?: string;
     nodeType?: IQuestionnaireItemType;
+    nodeReadableType?: string;
     children: Node[];
 }
 
@@ -52,7 +53,9 @@ interface NodeVisibilityToggleEvent {
     expanded: boolean;
 }
 
+const newNodeLinkId = 'NEW';
 const externalNodeType = 'yourNodeType';
+
 const externalNodeSpec = {
     // This needs to return an object with a property `node` in it.
     // Object rest spread is recommended to avoid side effects of
@@ -67,6 +70,12 @@ const externalNodeCollect = (connect: DragSourceConnector) => ({
     // didDrop: monitor.didDrop(),
 });
 
+const ExternalNodeBaseComponent = (props: { connectDragSource: ConnectDragSource; node: Node }): JSX.Element | null => {
+    return props.connectDragSource(<div className="anchor-menu__dragcomponent">{props.node.nodeReadableType}</div>, {
+        dropEffect: 'copy',
+    });
+};
+/*
 class ExternalNodeBaseComponent extends React.Component<{ connectDragSource: ConnectDragSource; node: Node }> {
     render() {
         const { connectDragSource, node } = this.props;
@@ -86,7 +95,7 @@ class ExternalNodeBaseComponent extends React.Component<{ connectDragSource: Con
         );
     }
 }
-
+*/
 const YourExternalNodeComponent = DragSource(
     externalNodeType,
     externalNodeSpec,
@@ -143,6 +152,19 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
         }
     };
 
+    const createTypeComponent = (type: IQuestionnaireItemType, text: string): JSX.Element => {
+        return (
+            <YourExternalNodeComponent
+                node={{
+                    title: newNodeLinkId,
+                    nodeType: type,
+                    nodeReadableType: text,
+                    children: [],
+                }}
+            />
+        );
+    };
+
     const orderTreeData = mapToTreeData(props.qOrder, '');
     return (
         <DndProvider backend={HTML5Backend}>
@@ -161,8 +183,14 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                             ? nextParentNode.children.findIndex((x: Node) => x.title === node.title)
                             : treeData.findIndex((x: Node) => x.title === node.title);
 
-                        if (node.title === 'NEW' && node.nodeType) {
-                            props.dispatch(newItemAction(node.nodeType, newPath, moveIndex));
+                        if (node.title === newNodeLinkId && node.nodeType) {
+                            props.dispatch(
+                                newItemAction(
+                                    getInitialItemConfig(node.nodeType, t('Recipient component')),
+                                    newPath,
+                                    moveIndex,
+                                ),
+                            );
                         } else {
                             const oldPath = treePathToOrderArray(prevPath);
                             // reorder within same parent
@@ -182,7 +210,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                     }}
                     canNodeHaveChildren={(node: Node): boolean => {
                         const item = props.qItems[node.title];
-                        return item ? canNodeHaveChildren(item) : false;
+                        return item ? canTypeHaveChildren(item) : false;
                     }}
                     generateNodeProps={(extendedNode: ExtendedNode) => ({
                         className: `anchor-menu__item 
@@ -226,17 +254,6 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                         )}
                     </p>
                 )}
-                <div className="floating-button">
-                    <button
-                        className="new-item-button"
-                        onClick={() => {
-                            props.dispatch(newItemAction(IQuestionnaireItemType.group, []));
-                        }}
-                    >
-                        <i className="add-icon large" aria-label="add element" title={t('Create element')} />
-                        {t('Add top-level element')}
-                    </button>
-                </div>
                 <div
                     style={{
                         position: 'absolute',
@@ -244,18 +261,22 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                         top: 0,
                     }}
                 >
-                    <YourExternalNodeComponent
-                        node={{ title: 'NEW', nodeType: IQuestionnaireItemType.group, children: [] }}
-                    />
-                    <YourExternalNodeComponent
-                        node={{ title: 'NEW', nodeType: IQuestionnaireItemType.string, children: [] }}
-                    />
-                    <YourExternalNodeComponent
-                        node={{ title: 'NEW', nodeType: IQuestionnaireItemType.text, children: [] }}
-                    />
-                    <YourExternalNodeComponent
-                        node={{ title: 'NEW', nodeType: IQuestionnaireItemType.display, children: [] }}
-                    />
+                    {createTypeComponent(IQuestionnaireItemType.group, t('Group'))}
+                    {createTypeComponent(IQuestionnaireItemType.string, t('Short answer'))}
+                    {createTypeComponent(IQuestionnaireItemType.text, t('Multiline text answer'))}
+                    {createTypeComponent(IQuestionnaireItemType.display, t('Display'))}
+                    {createTypeComponent(IQuestionnaireItemType.inline, t('Expandable info'))}
+                    {createTypeComponent(IQuestionnaireItemType.attachment, t('Attachment'))}
+                    {createTypeComponent(IQuestionnaireItemType.receiver, t('Recipient list'))}
+                    {createTypeComponent(IQuestionnaireItemType.receiverComponent, t('Recipient component'))}
+                    {createTypeComponent(IQuestionnaireItemType.boolean, t('Confirmation'))}
+                    {createTypeComponent(IQuestionnaireItemType.choice, t('Choice'))}
+                    {createTypeComponent(IQuestionnaireItemType.openChoice, t('Open choice'))}
+                    {createTypeComponent(IQuestionnaireItemType.date, t('Date'))}
+                    {createTypeComponent(IQuestionnaireItemType.dateTime, t('Date and time'))}
+                    {createTypeComponent(IQuestionnaireItemType.integer, t('Number'))}
+                    {createTypeComponent(IQuestionnaireItemType.predefined, t('Predefined choices'))}
+                    {createTypeComponent(IQuestionnaireItemType.quantity, t('Quantity'))}
                 </div>
             </div>
         </DndProvider>

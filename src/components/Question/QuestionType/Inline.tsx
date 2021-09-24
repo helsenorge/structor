@@ -4,8 +4,9 @@ import { TreeContext } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { findElementInTreeArray } from '../../../helpers/treeHelper';
-import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
+import { IItemProperty } from '../../../types/IQuestionnareItemType';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
+import { createMarkdownExtension } from '../../../helpers/extensionHelper';
 
 type InlineProps = {
     linkId: string;
@@ -20,14 +21,7 @@ const Inline = ({ linkId, parentArray }: InlineProps): JSX.Element => {
     } = useContext(TreeContext);
 
     const dispatchUpdateMarkdown = (markdown: string) => {
-        const markdownValue = {
-            extension: [
-                {
-                    url: IExtentionType.markdown,
-                    valueMarkdown: markdown,
-                },
-            ],
-        };
+        const markdownValue = createMarkdownExtension(markdown);
         dispatch(updateItemAction(currentItem.linkId, IItemProperty._text, markdownValue));
         dispatch(updateItemAction(currentItem.linkId, IItemProperty.text, markdown));
     };

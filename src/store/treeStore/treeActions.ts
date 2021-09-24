@@ -2,7 +2,6 @@ import CreateUUID from '../../helpers/CreateUUID';
 import {
     ICodingProperty,
     IEnableWhen,
-    IExtentionType,
     IItemProperty,
     IQuestionnaireItemType,
     IValueSetSystem,
@@ -21,7 +20,8 @@ import {
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TranslatableItemProperty } from '../../types/LanguageTypes';
 import { TreeState } from './treeStore';
-import { ItemControlType } from '../../helpers/itemControl';
+import { createItemControlExtension, ItemControlType } from '../../helpers/itemControl';
+import { createMarkdownExtension } from '../../helpers/extensionHelper';
 
 export const ADD_ITEM_CODE_ACTION = 'addItemCode';
 export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = 'addQuestionnaireLanguage';
@@ -368,14 +368,11 @@ export const updateQuestionnaireMetadataAction = (
     };
 };
 
-export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>, index?: number): NewItemAction => {
-    const newQuestionnaireItem = {
-        linkId: CreateUUID(),
-        type: type,
-        text: '',
-        extension: [],
-        required: false,
-    } as QuestionnaireItem;
+export const newItemAction = (
+    newQuestionnaireItem: QuestionnaireItem,
+    order: Array<string>,
+    index?: number,
+): NewItemAction => {
     return {
         type: NEW_ITEM_ACTION,
         item: newQuestionnaireItem,
@@ -386,19 +383,7 @@ export const newItemAction = (type: IQuestionnaireItemType, order: Array<string>
 
 export const newItemSidebar = (order: Array<string>): NewItemAction => {
     const sidebar = {
-        extension: [
-            {
-                url: IExtentionType.itemControl,
-                valueCodeableConcept: {
-                    coding: [
-                        {
-                            system: IValueSetSystem.itemControlValueSet,
-                            code: ItemControlType.sidebar,
-                        },
-                    ],
-                },
-            },
-        ],
+        extension: [createItemControlExtension(ItemControlType.sidebar)],
         linkId: CreateUUID(),
         code: [
             {
@@ -407,14 +392,7 @@ export const newItemSidebar = (order: Array<string>): NewItemAction => {
                 display: '',
             },
         ],
-        _text: {
-            extension: [
-                {
-                    url: IExtentionType.markdown,
-                    valueMarkdown: '',
-                },
-            ],
-        },
+        _text: createMarkdownExtension(''),
         type: IQuestionnaireItemType.text,
         required: false,
         repeats: false,
@@ -435,27 +413,8 @@ export const newItemHelpIconAction = (order: Array<string>): NewItemAction => {
         repeats: false,
         readOnly: true,
         maxLength: 250,
-        _text: {
-            extension: [
-                {
-                    url: IExtentionType.markdown,
-                    valueMarkdown: '',
-                },
-            ],
-        },
-        extension: [
-            {
-                url: IExtentionType.itemControl,
-                valueCodeableConcept: {
-                    coding: [
-                        {
-                            system: IValueSetSystem.itemControlValueSet,
-                            code: ItemControlType.help,
-                        },
-                    ],
-                },
-            },
-        ],
+        _text: createMarkdownExtension(''),
+        extension: [createItemControlExtension(ItemControlType.help)],
     } as QuestionnaireItem;
     return {
         type: NEW_ITEM_ACTION,

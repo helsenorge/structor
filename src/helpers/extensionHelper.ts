@@ -2,9 +2,8 @@ import { updateItemAction, updateQuestionnaireMetadataAction } from '../store/tr
 import { ActionType } from '../store/treeStore/treeStore';
 import { Element, Extension, QuestionnaireItem } from '../types/fhir';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import { IExtentionType, IItemProperty, IValueSetSystem } from '../types/IQuestionnareItemType';
+import { IExtentionType, IItemProperty } from '../types/IQuestionnareItemType';
 import createUUID from './CreateUUID';
-import { ItemControlType } from './itemControl';
 
 export const setItemExtension = (
     item: QuestionnaireItem,
@@ -65,16 +64,15 @@ export const createOptionReferenceExtensions = [
     },
 ];
 
-export const createDropdown = {
-    url: IExtentionType.itemControl,
-    valueCodeableConcept: {
-        coding: [
+export const createMarkdownExtension = (markdownValue: string): Element => {
+    return {
+        extension: [
             {
-                system: IValueSetSystem.itemControlValueSet,
-                code: ItemControlType.dropdown,
+                url: IExtentionType.markdown,
+                valueMarkdown: markdownValue,
             },
         ],
-    },
+    };
 };
 
 export const hasExtension = (extensionParent: Element | undefined, extensionType: IExtentionType): boolean => {

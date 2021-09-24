@@ -1,8 +1,8 @@
 import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
-import { IExtentionType, IOperator, IQuestionnaireItemType, IValueSetSystem } from '../types/IQuestionnareItemType';
+import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { CodingSystemType } from './systemHelper';
 import { Option, Options } from '../types/OptionTypes';
-import { isItemControlReceiverComponent, ItemControlType } from './itemControl';
+import { createItemControlExtension, isItemControlReceiverComponent, ItemControlType } from './itemControl';
 
 const itemType = [
     {
@@ -118,29 +118,8 @@ export const quantityUnitTypes = [
     },
 ];
 
-export const checkboxExtension = {
-    url: IExtentionType.itemControl,
-    valueCodeableConcept: {
-        coding: [
-            {
-                system: IValueSetSystem.itemControlValueSet,
-                code: ItemControlType.checkbox,
-            },
-        ],
-    },
-};
-
-export const dropdownExtension = {
-    url: IExtentionType.itemControl,
-    valueCodeableConcept: {
-        coding: [
-            {
-                system: IValueSetSystem.itemControlValueSet,
-                code: ItemControlType.dropdown,
-            },
-        ],
-    },
-};
+export const checkboxExtension = createItemControlExtension(ItemControlType.checkbox);
+export const dropdownExtension = createItemControlExtension(ItemControlType.dropdown);
 
 export const enableWhenOperatorBoolean: ValueSetComposeIncludeConcept[] = [
     {
@@ -249,20 +228,6 @@ export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
         display: 'is less than or equal',
     },
 ];
-
-export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolean => {
-    const validTypes = [
-        IQuestionnaireItemType.attachment,
-        IQuestionnaireItemType.number,
-        IQuestionnaireItemType.quantity,
-        IQuestionnaireItemType.text,
-        IQuestionnaireItemType.string,
-        IQuestionnaireItemType.date,
-        IQuestionnaireItemType.dateTime,
-    ];
-
-    return validTypes.includes(type);
-};
 
 const makeOption = (display: string, code: string): Option => {
     return { display, code };

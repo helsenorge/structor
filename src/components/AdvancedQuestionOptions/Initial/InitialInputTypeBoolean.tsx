@@ -33,7 +33,6 @@ const InitialInputTypeBoolean = (props: InitialInputTypeBooleanProps): JSX.Eleme
                 }}
                 value={initialValue}
                 label={t('Initial value')}
-                initial={true}
             />
         </FormField>
     );

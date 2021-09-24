@@ -71,6 +71,15 @@
     text-overflow: ellipsis;
 }
 
+.anchor-menu__dragcomponent {
+    width: 150px;
+    padding: 10px;
+    background: lightblue;
+    margin: 5px;
+    color: black;
+    cursor: grab;
+}
+
 .anchor-menu:hover {
     opacity: 1;
 }

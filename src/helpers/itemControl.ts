@@ -1,5 +1,5 @@
-import { QuestionnaireItem } from '../types/fhir';
-import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { Extension, QuestionnaireItem } from '../types/fhir';
+import { IExtentionType, IQuestionnaireItemType, IValueSetSystem } from '../types/IQuestionnareItemType';
 import { getEnumKeyByString } from './enumHelper';
 
 export enum ItemControlType {
@@ -16,6 +16,20 @@ export enum ItemControlType {
     year = 'year',
     receiverComponent = 'receiver-component',
 }
+
+export const createItemControlExtension = (itemControlType: ItemControlType): Extension => {
+    return {
+        url: IExtentionType.itemControl,
+        valueCodeableConcept: {
+            coding: [
+                {
+                    system: IValueSetSystem.itemControlValueSet,
+                    code: itemControlType,
+                },
+            ],
+        },
+    };
+};
 
 const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefined => {
     const itemControlExtension = item?.extension?.find((x) => x.url === IExtentionType.itemControl);

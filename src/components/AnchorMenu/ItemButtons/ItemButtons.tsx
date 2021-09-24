@@ -5,9 +5,7 @@ import { ActionType } from '../../../store/treeStore/treeStore';
 import { QuestionnaireItem } from '../../../types/fhir';
 
 import './ItemButtons.css';
-import { deleteItemAction, duplicateItemAction, newItemAction } from '../../../store/treeStore/treeActions';
-import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
-import { canNodeHaveChildren } from '../../../helpers/treeHelper';
+import { deleteItemAction, duplicateItemAction } from '../../../store/treeStore/treeActions';
 
 export const generateItemButtons = (
     t: TFunction<'translation'>,
@@ -24,11 +22,6 @@ export const generateItemButtons = (
         dispatch(deleteItemAction(item.linkId, parentArray));
     };
 
-    const dispatchAddChildItem = (event: MouseEvent<HTMLButtonElement>): void => {
-        event.stopPropagation();
-        dispatch(newItemAction(IQuestionnaireItemType.group, [...parentArray, item.linkId]));
-    };
-
     const dispatchDuplicateItem = (event: MouseEvent<HTMLButtonElement>): void => {
         event.stopPropagation();
         dispatch(duplicateItemAction(item.linkId, parentArray));
@@ -39,20 +32,6 @@ export const generateItemButtons = (
     };
 
     return [
-        ...(canNodeHaveChildren(item)
-            ? [
-                  <button
-                      key="new-item-button"
-                      className={getClassNames()}
-                      onClick={dispatchAddChildItem}
-                      aria-label="Add child element"
-                      title={t('Follow-up question')}
-                  >
-                      <i className="add-icon" />
-                      {showLabel && <label>{t('Create follow-up question')}</label>}
-                  </button>,
-              ]
-            : []),
         <button
             key="duplicate-item-button"
             className={getClassNames()}

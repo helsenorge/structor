@@ -43,7 +43,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
             <div className="horizontal equal">
                 {item?.type !== IQuestionnaireItemType.quantity && (
                     <FormField>
-                        <SwitchBtn label={t('Allow decimals')} initial value={isDecimal} onChange={changeItemType} />
+                        <SwitchBtn label={t('Allow decimals')} value={isDecimal} onChange={changeItemType} />
                     </FormField>
                 )}
                 {isDecimal && (
@@ -69,8 +69,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
             </div>
 
             <div className="horizontal equal">
-                <div className="form-field" id="number">
-                    <label className="#">{t('Min value')}</label>
+                <FormField label={t('Min value')}>
                     <input
                         type="number"
                         defaultValue={minValue}
@@ -86,10 +85,8 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                             }
                         }}
                     ></input>
-                </div>
-
-                <div className="form-field" id="number">
-                    <label className="#">{t('Max value')}</label>
+                </FormField>
+                <FormField label={t('Max value')}>
                     <input
                         type="number"
                         defaultValue={maxValue}
@@ -105,11 +102,10 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                             }
                         }}
                     ></input>
-                </div>
+                </FormField>
             </div>
 
-            <div className="form-field custom-input-error-message">
-                <label className="#">{t('Enter custom error message')}</label>
+            <FormField label={t('Enter custom error message')}>
                 <InputField
                     defaultValue={validationText}
                     placeholder={t('error message')}
@@ -125,7 +121,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                         }
                     }}
                 />
-            </div>
+            </FormField>
         </>
     );
 };

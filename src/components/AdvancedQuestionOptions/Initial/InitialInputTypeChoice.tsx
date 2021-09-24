@@ -112,7 +112,6 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
     return (
         <FormField>
             <SwitchBtn
-                initial
                 label={t('Initial value')}
                 onChange={() => {
                     const newInitialValueEnabled = !initialValueEnabled;
