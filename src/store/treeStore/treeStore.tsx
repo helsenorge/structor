@@ -57,12 +57,10 @@ import {
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
-import { createNewAnswerOption } from '../../helpers/answerOptionHelper';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { isIgnorableItem } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
-import { createSystemUUID } from '../../helpers/systemHelper';
 import { saveStateToDb } from './indexedDbHelper';
 import { isRecipientList } from '../../helpers/QuestionHelper';
 
@@ -382,24 +380,6 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
             ...(draft.qItems[action.linkId].extension || []),
             ...createOptionReferenceExtensions,
         ];
-    } else if (
-        // add two empty options for choice and open-choice
-        action.itemProperty === IItemProperty.type &&
-        (action.itemValue === 'choice' || action.itemValue === 'open-choice') &&
-        !draft.qItems[action.linkId].answerOption
-    ) {
-        const system = createSystemUUID();
-        draft.qItems[action.linkId] = {
-            ...draft.qItems[action.linkId],
-            answerOption: [createNewAnswerOption(system), createNewAnswerOption(system)],
-        };
-    } else if (
-        action.itemProperty === IItemProperty.type &&
-        action.itemValue !== 'choice' &&
-        action.itemValue !== 'open-choice' &&
-        draft.qItems[action.linkId].answerOption
-    ) {
-        draft.qItems[action.linkId].answerOption = undefined;
     }
 }
 

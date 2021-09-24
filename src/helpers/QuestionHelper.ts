@@ -30,10 +30,6 @@ const itemType = [
         code: IQuestionnaireItemType.openChoice,
     },
     {
-        display: 'Predefined choices',
-        code: IQuestionnaireItemType.predefined,
-    },
-    {
         display: 'Recipient list',
         code: IQuestionnaireItemType.receiver,
     },

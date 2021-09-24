@@ -30,7 +30,6 @@ import Choice from './QuestionType/Choice';
 import EnableWhen from '../EnableWhen/EnableWhen';
 import Inline from './QuestionType/Inline';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import PredefinedValueSet from './QuestionType/PredefinedValueSet';
 
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
@@ -90,7 +89,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         dispatchUpdateItem(IItemProperty.text, newLabel);
     };
 
-    const respondType = (param: string): JSX.Element => {
+    const respondType = (): JSX.Element => {
         if (isItemControlReceiverComponent(props.item)) {
             return <div>{t('Recipient component is configured in Helsenorge admin')}</div>;
         }
@@ -99,9 +98,6 @@ const Question = (props: QuestionProps): JSX.Element => {
         }
         if (isRecipientList(props.item)) {
             return <OptionReference item={props.item} />;
-        }
-        if (props.item.answerValueSet && param === IQuestionnaireItemType.choice) {
-            return <PredefinedValueSet item={props.item} selectedValueSet={props.item.answerValueSet} />;
         }
         if (props.item.type === IQuestionnaireItemType.date) {
             return <DateType item={props.item} dispatch={props.dispatch} />;
@@ -200,7 +196,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                         />
                     </FormField>
                 )}
-                {respondType(props.item.type)}
+                {respondType()}
             </div>
             <div className="question-addons">
                 {canTypeBeValidated(props.item) && (

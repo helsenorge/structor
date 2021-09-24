@@ -31,7 +31,7 @@
     "Enable help button": "Skru på hjelpeikon",
     "Enter a helping text": "Skriv en hjelpende tekst",
     "Enable summary": "Skru på oppsummering",
-    "Here you will find a summary of questionnaire elements": "Her vil du finne en oversikt over elementene i skjemaet",
+    "Here you will find a summary of questionnaire elements. Drag a component here to start building this Questionnaire": "Her vil du finne en oversikt over elementene i skjemaet. Dra komponenter hit for å bygge skjema",
     "Create element": "Opprett element",
     "Add top-level element": "Legg til element på toppnivå",
     "Enter a title..": "Legg inn tittel..",
@@ -272,7 +272,6 @@
     "Multiline text answer": "Langsvar",
     "Choice": "Alternativer",
     "Open choice": "Alternativer med åpent svar",
-    "Predefined choices": "Forhåndsdefinerte alternativer",
     "Recipient list": "Mottakerliste",
     "Recipient component": "Mottakerkomponent",
     "Date and time": "Dato og klokkeslett",
@@ -326,5 +325,7 @@
     "Recipient component is configured in Helsenorge admin": "Mottakerkomponenten konfigureres i Helsenorge admin",
     "Form builder": "Skjemabygger",
     "What would you like to do?": "Hva vil du gjøre?",
-    "You can start a new questionnaire, or upload an existing one.": "Velg om du vil opprette et skjema fra bunnen av eller endre et skjema ved å laste opp en skjemafil."
+    "You can start a new questionnaire, or upload an existing one.": "Velg om du vil opprette et skjema fra bunnen av eller endre et skjema ved å laste opp en skjemafil.",
+    "Allow free-text answer": "Legg til tekstfelt for åpent svar",
+    "Use predefined valueset": "Bruk predefinerte alternativer"
 }

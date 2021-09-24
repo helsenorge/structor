@@ -80,9 +80,6 @@ export const getInitialItemConfig = (
         newQuestionnaireItem.type = IQuestionnaireItemType.openChoice;
         const system = createSystemUUID();
         newQuestionnaireItem.answerOption = [createNewAnswerOption(system), createNewAnswerOption(system)];
-    } else if (questionType === IQuestionnaireItemType.predefined) {
-        newQuestionnaireItem.type = IQuestionnaireItemType.choice;
-        newQuestionnaireItem.answerValueSet = '#';
     } else if (questionType === IQuestionnaireItemType.quantity) {
         newQuestionnaireItem.type = IQuestionnaireItemType.quantity;
     } else if (questionType === IQuestionnaireItemType.string) {
@@ -138,6 +135,7 @@ export const canTypeBeHighlight = (item: QuestionnaireItem): boolean => {
 export const canTypeBeBeriket = (item: QuestionnaireItem): boolean => {
     return (
         item.type === IQuestionnaireItemType.string ||
+        item.type === IQuestionnaireItemType.text ||
         item.type === IQuestionnaireItemType.boolean ||
         item.type === IQuestionnaireItemType.quantity ||
         item.type === IQuestionnaireItemType.integer ||

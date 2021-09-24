@@ -37,6 +37,7 @@ const AnswerOption = ({
                     placeholder={t('Enter a title..')}
                 />
                 <InputField
+                    key={answerOption?.valueCoding?.code} // set key to update defaultValue when display field is blurred
                     name="verdi"
                     defaultValue={answerOption?.valueCoding?.code}
                     placeholder={t('Enter a value..')}
