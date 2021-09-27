@@ -108,15 +108,6 @@ const OptionReference = ({ item }: Props): JSX.Element => {
 
     return (
         <>
-            <div className="center-text new-option-reference">
-                <Btn
-                    size="small"
-                    type="button"
-                    variant="secondary"
-                    onClick={() => dispatchNewItem()}
-                    title={t('+ Add recipient')}
-                />
-            </div>
             <DragDropContext onDragEnd={handleReorder}>
                 <Droppable droppableId={`droppable-${item.linkId}-option-reference`}>
                     {(provided, snapshot) => (
@@ -187,6 +178,15 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                     )}
                 </Droppable>
             </DragDropContext>
+            <div className="center-text new-option-reference">
+                <Btn
+                    size="small"
+                    type="button"
+                    variant="secondary"
+                    onClick={() => dispatchNewItem()}
+                    title={t('+ Add recipient')}
+                />
+            </div>
         </>
     );
 };

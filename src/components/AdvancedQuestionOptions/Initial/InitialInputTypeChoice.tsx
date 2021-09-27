@@ -60,6 +60,7 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
                         props.dispatchAction(newInitial);
                     }}
                 />
+                {` `}
                 <label htmlFor={initialOption.code}>{initialOption.display}</label>
             </div>
         );

@@ -1,5 +1,3 @@
-import './MetadataEditor.css';
-
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatISO, parseISO } from 'date-fns';

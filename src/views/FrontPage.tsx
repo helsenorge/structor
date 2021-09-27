@@ -3,7 +3,6 @@ import { TreeContext, TreeState } from '../store/treeStore/treeStore';
 import { getStateFromDb } from '../store/treeStore/indexedDbHelper';
 import { resetQuestionnaireAction } from '../store/treeStore/treeActions';
 import { mapToTreeState } from '../helpers/FhirToTreeStateMapper';
-import Confirm from '../components/Modal/Confirm';
 import Modal from '../components/Modal/Modal';
 import SpinnerBox from '../components/Spinner/SpinnerBox';
 import { useTranslation } from 'react-i18next';
@@ -50,21 +49,21 @@ const FrontPage = (): JSX.Element => {
     };
     const suggestRestore: boolean = stateFromStorage?.qItems ? Object.keys(stateFromStorage.qItems).length > 0 : false;
 
+    const onDenyRestoreModal = (): void => {
+        dispatch(resetQuestionnaireAction());
+        setStateFromStorage(undefined);
+    };
+
+    const onConfirmRestoreModal = (): void => {
+        dispatch(resetQuestionnaireAction(stateFromStorage));
+        setStateFromStorage(undefined);
+        setIsFormBuilderShown(true);
+    };
+
     return (
         <>
             {suggestRestore && (
-                <Confirm
-                    onConfirm={() => {
-                        dispatch(resetQuestionnaireAction(stateFromStorage));
-                        setStateFromStorage(undefined);
-                        setIsFormBuilderShown(true);
-                    }}
-                    onDeny={() => {
-                        dispatch(resetQuestionnaireAction());
-                        setStateFromStorage(undefined);
-                    }}
-                    title={t('Restore questionnaire...')}
-                >
+                <Modal title={t('Restore questionnaire...')} close={onDenyRestoreModal}>
                     <div>
                         <p>{t('It looks like you have previously worked with a questionnaire:')}</p>
                         <div className="key-value">
@@ -80,8 +79,26 @@ const FrontPage = (): JSX.Element => {
                             <div>{stateFromStorage?.qMetadata.version}</div>
                         </div>
                         <p>{t('Do you wish to open this questionnaire?')}</p>
+                        <div className="modal-btn-bottom">
+                            <div className="center-text">
+                                <Btn
+                                    title={t('Yes')}
+                                    type="button"
+                                    variant="primary"
+                                    size="small"
+                                    onClick={onConfirmRestoreModal}
+                                />{' '}
+                                <Btn
+                                    title={t('No')}
+                                    type="button"
+                                    variant="secondary"
+                                    size="small"
+                                    onClick={onDenyRestoreModal}
+                                />
+                            </div>
+                        </div>
                     </div>
-                </Confirm>
+                </Modal>
             )}
             {isLoading && (
                 <Modal>

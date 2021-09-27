@@ -14,7 +14,7 @@ const SwitchBtn = ({ onChange, value, label, disabled }: SwitchBtnProps): JSX.El
             <label>{label}</label>
             <label className="switch">
                 <input type="checkbox" checked={value} onChange={onChange} disabled={disabled} />
-                <span className="slider round"></span>
+                <span className="slider"></span>
             </label>
         </div>
     );

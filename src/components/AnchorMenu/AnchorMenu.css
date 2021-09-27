@@ -25,21 +25,6 @@
     width: 100%;
 }
 
-.anchor-menu {
-    background: white;
-    color: black;
-    margin-top: 52px;
-    margin-left: 10px;
-    width: 400px;
-    min-height: calc(100vh - 52px);
-    max-height: calc(100vh - 52px);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    opacity: 0.6;
-    transition: opacity 0.3s ease-in-out;
-    position: fixed;
-    overflow-y: auto;
-}
-
 .anchor-menu__item--selected {
     box-shadow: 0 0 0 4px var(--primary-2);
 }
@@ -80,26 +65,6 @@
     cursor: grab;
 }
 
-.anchor-menu:hover {
-    opacity: 1;
-}
-
-.align-header {
-    text-align: center;
-    font-size: 24px;
-}
-
-.truncate {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: left;
-}
-
-.center-text {
-    text-align: center;
-}
-
 .folder-icon {
     height: 25px;
     min-width: 25px;
@@ -119,44 +84,4 @@
     min-width: 25px;
     margin-right: 0.5rem;
     background: url('../../images/icons/help-circle-outline.svg') no-repeat center;
-}
-
-.anchor-content {
-    padding: 16px;
-    display: flex;
-    align-items: center;
-}
-
-.add-icon.large {
-    height: 60px;
-    width: 60px;
-}
-
-.floating-button {
-    background-color: #fafafa;
-    bottom: 0;
-    left: 0;
-    opacity: 0.8;
-    position: fixed;
-    padding: 15px;
-}
-
-.new-item-button {
-    align-items: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    font: inherit;
-    font-size: 18px;
-    font-weight: 700;
-    margin: auto;
-    outline: inherit;
-    padding: 0;
-}
-
-.toggle {
-    display: flex;
-    justify-content: flex-end;
-    margin: 10px;
 }

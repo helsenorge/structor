@@ -50,6 +50,11 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+#root {
+    text-align: center;
+    height: 100%;
+}
+
 :root {
     --primary-1: #a61e7b;
     /* Buttons */
@@ -120,4 +125,15 @@ p {
 }
 .validation-error {
     box-shadow: 0 0 0 4px red;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+.center-text {
+    text-align: center;
 }

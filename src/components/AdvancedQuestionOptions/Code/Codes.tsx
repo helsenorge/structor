@@ -12,7 +12,6 @@ import { ICodingProperty } from '../../../types/IQuestionnareItemType';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import SystemField from '../../FormField/SystemField';
 import { createSystemUUID } from '../../../helpers/systemHelper';
-import './Codes.css';
 import { ValidationErrors } from '../../../helpers/orphanValidation';
 import FormField from '../../FormField/FormField';
 import InputField from '../../InputField/inputField';

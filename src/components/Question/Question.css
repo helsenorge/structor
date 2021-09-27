@@ -10,17 +10,10 @@
     margin-bottom: 2rem;
 }
 
-.question-header,
 .question-form,
 .accordion,
 .content {
     padding: 20px 70px;
-}
-
-.question-header {
-    display: flex;
-    border-bottom: 8px solid #ebf8ff;
-    margin-bottom: 26px;
 }
 
 .question-button {
@@ -88,6 +81,10 @@
     border-radius: 4px;
 }
 
+.form-field > div {
+    padding-bottom: 12px;
+}
+
 .form-field input:disabled {
     background: transparent;
     border: 0;
@@ -97,18 +94,6 @@
 .question-form {
     position: relative;
     padding-bottom: 25px;
-}
-
-.flex-align-start {
-    align-items: flex-start;
-}
-
-.flex-align-center {
-    align-items: center;
-}
-
-.flex-align-end {
-    align-items: flex-end;
 }
 
 .horizontal {

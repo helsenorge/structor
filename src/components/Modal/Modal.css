@@ -7,3 +7,11 @@
 .modal-btn-bottom button {
     background: white;
 }
+
+.modal.small {
+    height: unset;
+    left: 50%;
+    top: 200px;
+    transform: translateX(-50%);
+    width: 650px;
+}

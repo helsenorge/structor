@@ -8,7 +8,6 @@ import InitialInputTypeInteger from './InitialInputTypeInteger';
 import InitialInputTypeDecimal from './InitialInputTypeDecimal';
 import InitialInputTypeBoolean from './InitialInputTypeBoolean';
 import InitialInputTypeChoice from './InitialInputTypeChoice';
-import './Initial.css';
 
 type InitialProps = {
     item: QuestionnaireItem;
