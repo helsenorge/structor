@@ -271,7 +271,6 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                     {createTypeComponent(IQuestionnaireItemType.boolean, t('Confirmation'))}
                     {createTypeComponent(IQuestionnaireItemType.choice, t('Choice'))}
                     {createTypeComponent(IQuestionnaireItemType.date, t('Date'))}
-                    {createTypeComponent(IQuestionnaireItemType.dateTime, t('Date and time'))}
                     {createTypeComponent(IQuestionnaireItemType.time, t('Time'))}
                     {createTypeComponent(IQuestionnaireItemType.integer, t('Number'))}
                     {createTypeComponent(IQuestionnaireItemType.quantity, t('Quantity'))}

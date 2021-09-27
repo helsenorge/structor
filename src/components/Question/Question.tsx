@@ -100,7 +100,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         if (isRecipientList(props.item)) {
             return <OptionReference item={props.item} />;
         }
-        if (props.item.type === IQuestionnaireItemType.date) {
+        if (props.item.type === IQuestionnaireItemType.date || props.item.type === IQuestionnaireItemType.dateTime) {
             return <DateType item={props.item} dispatch={props.dispatch} />;
         }
         if (
