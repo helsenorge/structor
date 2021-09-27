@@ -4,74 +4,6 @@ import { CodingSystemType } from './systemHelper';
 import { Option, Options } from '../types/OptionTypes';
 import { createItemControlExtension, isItemControlReceiverComponent, ItemControlType } from './itemControl';
 
-const itemType = [
-    {
-        display: 'Group',
-        code: IQuestionnaireItemType.group,
-    },
-    {
-        display: 'Display',
-        code: IQuestionnaireItemType.display,
-    },
-    {
-        display: 'Short answer',
-        code: IQuestionnaireItemType.string,
-    },
-    {
-        display: 'Multiline text answer',
-        code: IQuestionnaireItemType.text,
-    },
-    {
-        display: 'Choice',
-        code: IQuestionnaireItemType.choice,
-    },
-    {
-        display: 'Open choice',
-        code: IQuestionnaireItemType.openChoice,
-    },
-    {
-        display: 'Recipient list',
-        code: IQuestionnaireItemType.receiver,
-    },
-    {
-        display: 'Recipient component',
-        code: IQuestionnaireItemType.receiverComponent,
-    },
-    {
-        display: 'Date',
-        code: IQuestionnaireItemType.date,
-    },
-    {
-        display: 'Time',
-        code: IQuestionnaireItemType.time,
-    },
-    {
-        display: 'Date and time',
-        code: IQuestionnaireItemType.dateTime,
-    },
-    {
-        display: 'Confirmation',
-        code: IQuestionnaireItemType.boolean,
-    },
-    {
-        // Used for itemTypes integer and decimal
-        display: 'Number',
-        code: IQuestionnaireItemType.number,
-    },
-    {
-        display: 'Quantity',
-        code: IQuestionnaireItemType.quantity,
-    },
-    {
-        display: 'Attachment',
-        code: IQuestionnaireItemType.attachment,
-    },
-    {
-        display: 'Expandable info',
-        code: IQuestionnaireItemType.inline,
-    },
-];
-
 export const ATTACHMENT_DEFAULT_MAX_SIZE = 5.0;
 
 export const QUANTITY_UNIT_TYPE_NOT_SELECTED = 'QUANTITY_UNIT_TYPE_NOT_SELECTED';
@@ -359,4 +291,3 @@ export const isRecipientList = (item: QuestionnaireItem): boolean => {
     const isReceiverComponent = isItemControlReceiverComponent(item);
     return !isReceiverComponent && item.code?.find((x) => x.system === CodingSystemType.valueSetTqqc) !== undefined;
 };
-export default itemType;

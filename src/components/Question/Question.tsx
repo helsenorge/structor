@@ -44,6 +44,7 @@ import {
     canTypeBeRequired,
     canTypeBeValidated,
     canTypeHaveSublabel,
+    getItemDisplayType,
 } from '../../helpers/questionTypeFeatures';
 
 interface QuestionProps {
@@ -120,7 +121,25 @@ const Question = (props: QuestionProps): JSX.Element => {
     return (
         <div className="question" id={props.item.linkId}>
             <div className="question-form">
+                <h2 className="question-type-header">{t(getItemDisplayType(props.item))}</h2>
                 <div className="horizontal">
+                    <FormField>
+                        <SwitchBtn
+                            label={t('Text formatting')}
+                            value={isMarkdownActivated}
+                            onChange={() => {
+                                const newIsMarkdownEnabled = !isMarkdownActivated;
+                                setIsMarkdownActivated(newIsMarkdownEnabled);
+                                if (!newIsMarkdownEnabled) {
+                                    // remove markdown extension
+                                    dispatchUpdateItem(IItemProperty._text, undefined);
+                                } else {
+                                    // set existing text as markdown value
+                                    dispatchUpdateMarkdownLabel(props.item.text || '');
+                                }
+                            }}
+                        />
+                    </FormField>
                     {canTypeBeRequired(props.item) && (
                         <FormField>
                             <SwitchBtn
@@ -148,23 +167,6 @@ const Question = (props: QuestionProps): JSX.Element => {
                             />
                         </FormField>
                     )}
-                    <FormField>
-                        <SwitchBtn
-                            label={t('Text formatting')}
-                            value={isMarkdownActivated}
-                            onChange={() => {
-                                const newIsMarkdownEnabled = !isMarkdownActivated;
-                                setIsMarkdownActivated(newIsMarkdownEnabled);
-                                if (!newIsMarkdownEnabled) {
-                                    // remove markdown extension
-                                    dispatchUpdateItem(IItemProperty._text, undefined);
-                                } else {
-                                    // set existing text as markdown value
-                                    dispatchUpdateMarkdownLabel(props.item.text || '');
-                                }
-                            }}
-                        />
-                    </FormField>
                 </div>
                 <FormField label={t('Text')}>
                     {isMarkdownActivated ? (

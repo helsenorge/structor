@@ -10,7 +10,7 @@ import {
     isItemControlReceiverComponent,
     ItemControlType,
 } from './itemControl';
-import { ATTACHMENT_DEFAULT_MAX_SIZE, dropdownExtension, valueSetTqqcCoding } from './QuestionHelper';
+import { ATTACHMENT_DEFAULT_MAX_SIZE, dropdownExtension, isRecipientList, valueSetTqqcCoding } from './QuestionHelper';
 import { createSystemUUID } from './systemHelper';
 
 export const getInitialItemConfig = (
@@ -208,4 +208,38 @@ export const canTypeHaveChildren = (item: QuestionnaireItem): boolean => {
         !isItemControlHighlight(item) &&
         !isItemControlReceiverComponent(item)
     );
+};
+
+export const getItemDisplayType = (item: QuestionnaireItem): string => {
+    if (isItemControlReceiverComponent(item)) {
+        return 'Recipient component';
+    } else if (isRecipientList(item)) {
+        return 'Recipient list';
+    } else if (isItemControlInline(item)) {
+        return 'Expandable info';
+    } else if (isItemControlHighlight(item) || item.type === IQuestionnaireItemType.display) {
+        return 'Display';
+    } else if (item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.text) {
+        return 'Text';
+    } else if (item.type === IQuestionnaireItemType.group) {
+        return 'Group';
+    } else if (item.type === IQuestionnaireItemType.date || item.type === IQuestionnaireItemType.dateTime) {
+        return 'Date';
+    } else if (item.type === IQuestionnaireItemType.time) {
+        return 'Time';
+    } else if (item.type === IQuestionnaireItemType.attachment) {
+        return 'Attachment';
+    } else if (item.type === IQuestionnaireItemType.boolean) {
+        return 'Confirmation';
+    } else if (item.type === IQuestionnaireItemType.choice || item.type === IQuestionnaireItemType.openChoice) {
+        return 'Choice';
+    } else if (
+        item.type === IQuestionnaireItemType.decimal ||
+        item.type === IQuestionnaireItemType.integer ||
+        item.type === IQuestionnaireItemType.quantity
+    ) {
+        return 'Number';
+    }
+
+    return '';
 };
