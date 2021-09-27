@@ -112,6 +112,23 @@ const Question = (props: QuestionProps): JSX.Element => {
         if (props.item.type === IQuestionnaireItemType.quantity) {
             return <UnitTypeSelector item={props.item} />;
         }
+        if (props.item.type === IQuestionnaireItemType.string || props.item.type === IQuestionnaireItemType.text) {
+            return (
+                <FormField>
+                    <SwitchBtn
+                        label={t('Multi-line textfield')}
+                        value={props.item.type === IQuestionnaireItemType.text}
+                        onChange={() => {
+                            if (props.item.type === IQuestionnaireItemType.text) {
+                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.string);
+                            } else {
+                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.text);
+                            }
+                        }}
+                    />
+                </FormField>
+            );
+        }
         return <></>;
     };
 

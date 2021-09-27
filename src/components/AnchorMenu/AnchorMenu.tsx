@@ -262,8 +262,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                     }}
                 >
                     {createTypeComponent(IQuestionnaireItemType.group, t('Group'))}
-                    {createTypeComponent(IQuestionnaireItemType.string, t('Short answer'))}
-                    {createTypeComponent(IQuestionnaireItemType.text, t('Multiline text answer'))}
+                    {createTypeComponent(IQuestionnaireItemType.string, t('Text answer'))}
                     {createTypeComponent(IQuestionnaireItemType.display, t('Display'))}
                     {createTypeComponent(IQuestionnaireItemType.inline, t('Expandable info'))}
                     {createTypeComponent(IQuestionnaireItemType.attachment, t('Attachment'))}
