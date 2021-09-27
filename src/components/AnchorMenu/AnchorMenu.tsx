@@ -169,7 +169,24 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="questionnaire-overview">
+                <div className="questionnaire-overview__toolbox">
+                    <strong>Komponenter</strong>
+                    {createTypeComponent(IQuestionnaireItemType.group, t('Group'))}
+                    {createTypeComponent(IQuestionnaireItemType.string, t('Text answer'))}
+                    {createTypeComponent(IQuestionnaireItemType.display, t('Display'))}
+                    {createTypeComponent(IQuestionnaireItemType.inline, t('Expandable info'))}
+                    {createTypeComponent(IQuestionnaireItemType.attachment, t('Attachment'))}
+                    {createTypeComponent(IQuestionnaireItemType.receiver, t('Recipient list'))}
+                    {createTypeComponent(IQuestionnaireItemType.receiverComponent, t('Recipient component'))}
+                    {createTypeComponent(IQuestionnaireItemType.boolean, t('Confirmation'))}
+                    {createTypeComponent(IQuestionnaireItemType.choice, t('Choice'))}
+                    {createTypeComponent(IQuestionnaireItemType.date, t('Date'))}
+                    {createTypeComponent(IQuestionnaireItemType.time, t('Time'))}
+                    {createTypeComponent(IQuestionnaireItemType.integer, t('Number'))}
+                    {createTypeComponent(IQuestionnaireItemType.quantity, t('Quantity'))}
+                </div>
                 <SortableTree
+                    className="questionnaire-overview__treeview"
                     dndType={externalNodeType}
                     treeData={orderTreeData}
                     onChange={() => {
@@ -254,27 +271,6 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                         )}
                     </p>
                 )}
-                <div
-                    style={{
-                        position: 'absolute',
-                        right: '100%',
-                        top: 0,
-                    }}
-                >
-                    {createTypeComponent(IQuestionnaireItemType.group, t('Group'))}
-                    {createTypeComponent(IQuestionnaireItemType.string, t('Text answer'))}
-                    {createTypeComponent(IQuestionnaireItemType.display, t('Display'))}
-                    {createTypeComponent(IQuestionnaireItemType.inline, t('Expandable info'))}
-                    {createTypeComponent(IQuestionnaireItemType.attachment, t('Attachment'))}
-                    {createTypeComponent(IQuestionnaireItemType.receiver, t('Recipient list'))}
-                    {createTypeComponent(IQuestionnaireItemType.receiverComponent, t('Recipient component'))}
-                    {createTypeComponent(IQuestionnaireItemType.boolean, t('Confirmation'))}
-                    {createTypeComponent(IQuestionnaireItemType.choice, t('Choice'))}
-                    {createTypeComponent(IQuestionnaireItemType.date, t('Date'))}
-                    {createTypeComponent(IQuestionnaireItemType.time, t('Time'))}
-                    {createTypeComponent(IQuestionnaireItemType.integer, t('Number'))}
-                    {createTypeComponent(IQuestionnaireItemType.quantity, t('Quantity'))}
-                </div>
             </div>
         </DndProvider>
     );

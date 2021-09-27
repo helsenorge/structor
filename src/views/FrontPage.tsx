@@ -117,7 +117,7 @@ const FrontPage = (): JSX.Element => {
                             <h1>{t('Form builder')}</h1>
                         </div>
                     </header>
-                    <div className="questionnaire-overview">
+                    <div className="frontpage">
                         <h2>{t('What would you like to do?')}</h2>
                         <div className="frontpage__infotext">
                             {t('You can start a new questionnaire, or upload an existing one.')}
