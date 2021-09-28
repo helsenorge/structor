@@ -15,20 +15,14 @@ import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../typ
 import { updateItemAction } from '../../store/treeStore/treeActions';
 import { isRecipientList } from '../../helpers/QuestionHelper';
 import { createMarkdownExtension, removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
-import {
-    isItemControlInline,
-    ItemControlType,
-    isItemControlReceiverComponent,
-    createItemControlExtension,
-    isItemControlHighlight,
-} from '../../helpers/itemControl';
+import { isItemControlInline, isItemControlReceiverComponent, isItemControlHighlight } from '../../helpers/itemControl';
 
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
 import AdvancedQuestionOptions from '../AdvancedQuestionOptions/AdvancedQuestionOptions';
 import Choice from './QuestionType/Choice';
 import EnableWhen from '../EnableWhen/EnableWhen';
-import Inline from './QuestionType/Inline';
+import Infotext from './QuestionType/Infotext';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
@@ -40,7 +34,6 @@ import UnitTypeSelector from './UnitType/UnitTypeSelector';
 import { DateType } from './QuestionType/DateType';
 import { ValidationErrors } from '../../helpers/orphanValidation';
 import {
-    canTypeBeHighlight,
     canTypeBeRequired,
     canTypeBeValidated,
     canTypeHaveSublabel,
@@ -94,8 +87,12 @@ const Question = (props: QuestionProps): JSX.Element => {
         if (isItemControlReceiverComponent(props.item)) {
             return <div>{t('Recipient component is configured in Helsenorge admin')}</div>;
         }
-        if (isItemControlInline(props.item)) {
-            return <Inline linkId={props.item.linkId} parentArray={props.parentArray} />;
+        if (
+            isItemControlInline(props.item) ||
+            isItemControlHighlight(props.item) ||
+            props.item.type === IQuestionnaireItemType.display
+        ) {
+            return <Infotext item={props.item} parentArray={props.parentArray} />;
         }
         if (isRecipientList(props.item)) {
             return <OptionReference item={props.item} />;
@@ -163,24 +160,6 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 label={t('Mandatory')}
                                 value={props.item.required || false}
                                 onChange={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
-                            />
-                        </FormField>
-                    )}
-                    {canTypeBeHighlight(props.item) && (
-                        <FormField>
-                            <SwitchBtn
-                                label={t('Highlight')}
-                                value={isItemControlHighlight(props.item) || false}
-                                onChange={() => {
-                                    if (isItemControlHighlight(props.item)) {
-                                        // change type to display, in case it was text
-                                        dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.display);
-                                        removeItemExtension(props.item, IExtentionType.itemControl, props.dispatch);
-                                    } else {
-                                        const extension = createItemControlExtension(ItemControlType.highlight);
-                                        setItemExtension(props.item, extension, props.dispatch);
-                                    }
-                                }}
                             />
                         </FormField>
                     )}

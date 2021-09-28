@@ -280,7 +280,7 @@
     "Number": "Tall",
     "Quantity": "Antall med enhet",
     "Attachment": "Vedlegg",
-    "Expandable info": "Utvidbar info",
+    "Information text": "Informasjonstekst",
     "No unit": "Ingen enhet",
     "centimeter": "centimeter",
     "kilo": "kilo",
@@ -328,5 +328,6 @@
     "What would you like to do?": "Hva vil du gjøre?",
     "You can start a new questionnaire, or upload an existing one.": "Velg om du vil opprette et skjema fra bunnen av eller endre et skjema ved å laste opp en skjemafil.",
     "Allow free-text answer": "Legg til tekstfelt for åpent svar",
-    "Use predefined valueset": "Bruk predefinerte alternativer"
+    "Use predefined valueset": "Bruk predefinerte alternativer",
+    "Components": "Komponenter"
 }

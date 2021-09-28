@@ -13,6 +13,18 @@ import {
 import { ATTACHMENT_DEFAULT_MAX_SIZE, dropdownExtension, isRecipientList, valueSetTqqcCoding } from './QuestionHelper';
 import { createSystemUUID } from './systemHelper';
 
+export const createInlineItem = (): QuestionnaireItem => {
+    return {
+        linkId: CreateUUID(),
+        type: IQuestionnaireItemType.display,
+        text: '',
+        extension: [],
+        code: [],
+        item: [],
+        required: false,
+    };
+};
+
 export const getInitialItemConfig = (
     questionType: IQuestionnaireItemType,
     recipientComponentText: string,
@@ -65,15 +77,7 @@ export const getInitialItemConfig = (
         newQuestionnaireItem.type = IQuestionnaireItemType.text;
         const inlineExtension = createItemControlExtension(ItemControlType.inline);
         newQuestionnaireItem.extension?.push(inlineExtension);
-        newQuestionnaireItem.item?.push({
-            linkId: CreateUUID(),
-            type: IQuestionnaireItemType.display,
-            text: '',
-            extension: [],
-            code: [],
-            item: [],
-            required: false,
-        });
+        newQuestionnaireItem.item?.push(createInlineItem());
     } else if (questionType === IQuestionnaireItemType.integer) {
         newQuestionnaireItem.type = IQuestionnaireItemType.integer;
     } else if (questionType === IQuestionnaireItemType.openChoice) {
@@ -215,10 +219,12 @@ export const getItemDisplayType = (item: QuestionnaireItem): string => {
         return 'Recipient component';
     } else if (isRecipientList(item)) {
         return 'Recipient list';
-    } else if (isItemControlInline(item)) {
-        return 'Expandable info';
-    } else if (isItemControlHighlight(item) || item.type === IQuestionnaireItemType.display) {
-        return 'Display';
+    } else if (
+        isItemControlInline(item) ||
+        isItemControlHighlight(item) ||
+        item.type === IQuestionnaireItemType.display
+    ) {
+        return 'Information text';
     } else if (item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.text) {
         return 'Text';
     } else if (item.type === IQuestionnaireItemType.group) {

@@ -75,27 +75,7 @@ const ExternalNodeBaseComponent = (props: { connectDragSource: ConnectDragSource
         dropEffect: 'copy',
     });
 };
-/*
-class ExternalNodeBaseComponent extends React.Component<{ connectDragSource: ConnectDragSource; node: Node }> {
-    render() {
-        const { connectDragSource, node } = this.props;
 
-        return connectDragSource(
-            <div
-                style={{
-                    padding: '10px',
-                    background: 'lightblue',
-                    margin: '10px',
-                    color: 'black',
-                }}
-            >
-                {node.nodeType}
-            </div>,
-            { dropEffect: 'copy' },
-        );
-    }
-}
-*/
 const YourExternalNodeComponent = DragSource(
     externalNodeType,
     externalNodeSpec,
@@ -170,11 +150,10 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
         <DndProvider backend={HTML5Backend}>
             <div className="questionnaire-overview">
                 <div className="questionnaire-overview__toolbox">
-                    <strong>Komponenter</strong>
+                    <strong>{t('Components')}</strong>
                     {createTypeComponent(IQuestionnaireItemType.group, t('Group'))}
                     {createTypeComponent(IQuestionnaireItemType.string, t('Text answer'))}
-                    {createTypeComponent(IQuestionnaireItemType.display, t('Display'))}
-                    {createTypeComponent(IQuestionnaireItemType.inline, t('Expandable info'))}
+                    {createTypeComponent(IQuestionnaireItemType.display, t('Information text'))}
                     {createTypeComponent(IQuestionnaireItemType.attachment, t('Attachment'))}
                     {createTypeComponent(IQuestionnaireItemType.receiver, t('Recipient list'))}
                     {createTypeComponent(IQuestionnaireItemType.receiverComponent, t('Recipient component'))}
