@@ -9,16 +9,17 @@ import {
     questionnaireStatusOptions,
     presentationButtons,
     saveCapability,
+    useContextSystem,
 } from '../../helpers/MetadataHelper';
 import Accordion from '../Accordion/Accordion';
 import DateTimePicker from '../DatePicker/DateTimePicker';
 import FormField from '../FormField/FormField';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import { ContactDetail, Extension, Meta } from '../../types/fhir';
+import { ContactDetail, Extension, Meta, UsageContext } from '../../types/fhir';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
-import { IExtentionType, IValueSetSystem } from '../../types/IQuestionnareItemType';
+import { IExtentionType, IValueSetSystem, UseContextSystem } from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import { removeQuestionnaireExtension, setQuestionnaireExtension } from '../../helpers/extensionHelper';
 import RadioBtn from '../RadioBtn/RadioBtn';
@@ -31,7 +32,10 @@ const MetadataEditor = (): JSX.Element => {
     const [displayIdValidationError, setDisplayIdValidationError] = useState(false);
     const [displayNameValidationError, setDisplayNameValidationError] = useState(false);
 
-    const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta | Extension[] | ContactDetail[]) => {
+    const updateMeta = (
+        propName: IQuestionnaireMetadataType,
+        value: string | Meta | Extension[] | ContactDetail[] | UsageContext[],
+    ) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
@@ -46,6 +50,17 @@ const MetadataEditor = (): JSX.Element => {
     const getGeneratePdfValue = (): boolean => {
         const extension = qMetadata?.extension?.find((ex) => ex.url === IExtentionType.generatePDF);
         return extension ? extension.valueBoolean || false : true;
+    };
+
+    const getUseContextSystem = (): string => {
+        const system =
+            qMetadata.useContext &&
+            qMetadata.useContext.length > 0 &&
+            qMetadata.useContext[0].valueCodeableConcept?.coding &&
+            qMetadata.useContext[0].valueCodeableConcept.coding.length > 0 &&
+            qMetadata.useContext[0].valueCodeableConcept.coding[0].system;
+
+        return system || UseContextSystem.helsetjeneste_full;
     };
 
     return (
@@ -217,6 +232,32 @@ const MetadataEditor = (): JSX.Element => {
                         }
                         options={saveCapability}
                         name={'saveCapability-radio'}
+                    />
+                </FormField>
+                <FormField label={t('Access control')}>
+                    <RadioBtn
+                        checked={getUseContextSystem()}
+                        onChange={(newValue: string) => {
+                            const updateValue = [
+                                {
+                                    code: {
+                                        system: 'http://hl7.org/fhir/ValueSet/usage-context-type',
+                                        code: 'focus',
+                                        display: 'Clinical Focus',
+                                    },
+                                    valueCodeableConcept: {
+                                        coding: [
+                                            {
+                                                system: newValue,
+                                            },
+                                        ],
+                                    },
+                                },
+                            ];
+                            updateMeta(IQuestionnaireMetadataType.useContext, updateValue);
+                        }}
+                        options={useContextSystem}
+                        name={'useContext-radio'}
                     />
                 </FormField>
                 <FormField label={t('Date')}>

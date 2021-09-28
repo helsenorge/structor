@@ -111,3 +111,9 @@ export enum IExtentionType {
     sublabel = 'http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel',
     saveCapability = 'http://helsenorge.no/fhir/StructureDefinition/sdf-save-capabilities',
 }
+
+export enum UseContextSystem {
+    helsetjeneste_full = 'urn:oid:2.16.578.1.12.4.1.1.8655',
+    journalinnsyn_basispluss = 'urn:oid:2.16.578.1.12.4.1.1.7614',
+    registerinnsyn_basis = 'urn:oid:2.16.578.1.12.4.1.1.7615',
+}

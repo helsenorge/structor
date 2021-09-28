@@ -1,4 +1,5 @@
 import { IQuestionnaireStatus } from '../types/IQuestionnaireMetadataType';
+import { UseContextSystem } from '../types/IQuestionnareItemType';
 
 export const questionnaireStatusOptions = [
     {
@@ -40,6 +41,12 @@ export const saveCapability = [
     { code: '1', display: 'Save submitted questionnaire and intermediate save (standard setting)' },
     { code: '2', display: 'Only submitted questionnaire is saved' },
     { code: '3', display: 'No saving' },
+];
+
+export const useContextSystem = [
+    { code: UseContextSystem.helsetjeneste_full, display: 'Helsetjeneste (Full) (standard setting)' },
+    { code: UseContextSystem.journalinnsyn_basispluss, display: 'Journalinnsyn (Basis +)' },
+    { code: UseContextSystem.registerinnsyn_basis, display: 'Registerinnsyn (Basis)' },
 ];
 
 export const isValidId = (value: string): boolean => {

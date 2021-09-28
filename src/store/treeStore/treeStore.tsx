@@ -56,7 +56,7 @@ import {
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
-import { IItemProperty } from '../../types/IQuestionnareItemType';
+import { IItemProperty, UseContextSystem } from '../../types/IQuestionnareItemType';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { isIgnorableItem } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
@@ -190,16 +190,14 @@ export const initialState: TreeState = {
         useContext: [
             {
                 code: {
-                    system: 'uri', // TODO
+                    system: 'http://hl7.org/fhir/ValueSet/usage-context-type',
                     code: 'focus',
-                    display: 'Clinical focus',
+                    display: 'Clinical Focus',
                 },
                 valueCodeableConcept: {
                     coding: [
                         {
-                            system: 'uri', // TODO
-                            code: '29',
-                            display: '',
+                            system: UseContextSystem.helsetjeneste_full,
                         },
                     ],
                 },
