@@ -55,9 +55,9 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     };
 
     const dispatchHelpText = () => {
-        const helpTextItem = getHelpTextItem();
-        if (helpTextItem) {
-            dispatch(deleteItemAction(helpTextItem.linkId, [...parentArray, item.linkId]));
+        const helpItem = getHelpTextItem();
+        if (helpItem) {
+            dispatch(deleteItemAction(helpItem.linkId, [...parentArray, item.linkId]));
         } else {
             dispatch(newItemHelpIconAction([...parentArray, item.linkId]));
         }

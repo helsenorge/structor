@@ -58,7 +58,7 @@ export const getInitialItemConfig = (
         newQuestionnaireItem.extension?.push(receiverComponentExtension);
         newQuestionnaireItem.text = recipientComponentText;
         newQuestionnaireItem.answerValueSet = 'http://helsenorge.no/fhir/ValueSet/adresser';
-        newQuestionnaireItem.required, true;
+        newQuestionnaireItem.required = true;
     } else if (questionType === IQuestionnaireItemType.boolean) {
         newQuestionnaireItem.type = IQuestionnaireItemType.boolean;
     } else if (questionType === IQuestionnaireItemType.choice) {

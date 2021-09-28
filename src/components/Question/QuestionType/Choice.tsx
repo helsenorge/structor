@@ -58,6 +58,13 @@ const Choice = ({ item }: Props): JSX.Element => {
         dispatchUpdateItem(IItemProperty.answerOption, alteredAnswerOption);
     };
 
+    const getSystem = (): string => {
+        if (item.answerOption && item.answerOption.length > 0) {
+            return item.answerOption[0]?.valueCoding?.system || '';
+        }
+        return '';
+    };
+
     return (
         <>
             <ChoiceTypeSelect item={item} dispatchExtentionUpdate={dispatchExtentionUpdate} />
@@ -97,14 +104,7 @@ const Choice = ({ item }: Props): JSX.Element => {
                 <PredefinedValueSets item={item} qContained={qContained} dispatchUpdateItem={dispatchUpdateItem} />
             ) : (
                 <>
-                    <SystemField
-                        value={
-                            item.answerOption && item.answerOption.length > 0
-                                ? item.answerOption[0]?.valueCoding?.system
-                                : ''
-                        }
-                        onBlur={(event) => handleChangeSystem(event.target.value)}
-                    />
+                    <SystemField value={getSystem()} onBlur={(event) => handleChangeSystem(event.target.value)} />
                     <FormField>
                         {item.answerOption && item.answerOption?.length > 0 && (
                             <DraggableAnswerOptions item={item} dispatchUpdateItem={dispatchUpdateItem} />
