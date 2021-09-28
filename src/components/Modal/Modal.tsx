@@ -26,13 +26,7 @@ const Modal = ({ close, children, title, size = 'small', id, bottomCloseText }: 
                 {bottomCloseText && (
                     <div className="modal-btn-bottom">
                         <div className="center-text">
-                            <Btn
-                                title={bottomCloseText}
-                                size="small"
-                                type="button"
-                                variant="secondary"
-                                onClick={close}
-                            />
+                            <Btn title={bottomCloseText} type="button" variant="secondary" onClick={close} />
                         </div>
                     </div>
                 )}

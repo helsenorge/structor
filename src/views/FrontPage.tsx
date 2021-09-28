@@ -81,20 +81,8 @@ const FrontPage = (): JSX.Element => {
                         <p>{t('Do you wish to open this questionnaire?')}</p>
                         <div className="modal-btn-bottom">
                             <div className="center-text">
-                                <Btn
-                                    title={t('Yes')}
-                                    type="button"
-                                    variant="primary"
-                                    size="small"
-                                    onClick={onConfirmRestoreModal}
-                                />{' '}
-                                <Btn
-                                    title={t('No')}
-                                    type="button"
-                                    variant="secondary"
-                                    size="small"
-                                    onClick={onDenyRestoreModal}
-                                />
+                                <Btn title={t('Yes')} type="button" variant="primary" onClick={onConfirmRestoreModal} />{' '}
+                                <Btn title={t('No')} type="button" variant="secondary" onClick={onDenyRestoreModal} />
                             </div>
                         </div>
                     </div>
@@ -135,7 +123,6 @@ const FrontPage = (): JSX.Element => {
                             }}
                             title={t('New questionnaire')}
                             variant="primary"
-                            size="small"
                         />
                         {` `}
                         <Btn
@@ -144,7 +131,6 @@ const FrontPage = (): JSX.Element => {
                             }}
                             title={t('Upload questionnaire')}
                             variant="secondary"
-                            size="small"
                         />
                     </div>
                 </>

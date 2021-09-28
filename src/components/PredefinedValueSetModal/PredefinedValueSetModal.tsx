@@ -175,8 +175,8 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                         onBlur={(event) => handleSystem(event.target.value)}
                     />
                     <div className="btn-group center-text">
-                        <Btn onClick={addNewElement} title={t('+ New option')} variant="secondary" size="small" />
-                        <Btn onClick={dispatchValueSet} title={t('Save >')} variant="primary" size="small" />
+                        <Btn onClick={addNewElement} title={t('+ New option')} variant="secondary" />
+                        <Btn onClick={dispatchValueSet} title={t('Save >')} variant="primary" />
                     </div>
                     <div className="value-set">
                         <DragDropContext onDragEnd={handleOrder}>
@@ -255,7 +255,6 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                                     <Btn
                                         title="Endre"
                                         type="button"
-                                        size="small"
                                         variant="secondary"
                                         onClick={() => handleEdit(x)}
                                     />

@@ -119,7 +119,6 @@ const Choice = ({ item }: Props): JSX.Element => {
                                 dispatchUpdateItem(IItemProperty.answerOption, newArray);
                             }}
                             variant="secondary"
-                            size="small"
                         />
                     </div>
                 </>

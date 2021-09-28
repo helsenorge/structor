@@ -94,7 +94,6 @@ const Sidebar = (): JSX.Element => {
                             <Btn
                                 title={t('- Remove element')}
                                 type="button"
-                                size="small"
                                 variant="secondary"
                                 onClick={() => removeSidebar(x.linkId)}
                             />
@@ -104,13 +103,7 @@ const Sidebar = (): JSX.Element => {
                 );
             })}
             <div className="center-text">
-                <Btn
-                    title={t('+ Add element')}
-                    type="button"
-                    size="small"
-                    variant="primary"
-                    onClick={dispatchNewSidebar}
-                />
+                <Btn title={t('+ Add element')} type="button" variant="primary" onClick={dispatchNewSidebar} />
             </div>
         </Accordion>
     );

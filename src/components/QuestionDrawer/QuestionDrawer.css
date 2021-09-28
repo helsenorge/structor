@@ -24,12 +24,6 @@
     border-left: 4px solid #b62e1c;
 }
 
-.drawer-header {
-    background-color: var(--primary-2);
-    display: flex;
-    padding: 10px 0;
-}
-
 .item-button-row {
     display: flex;
     line-height: 55px;

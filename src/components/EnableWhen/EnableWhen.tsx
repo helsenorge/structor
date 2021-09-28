@@ -20,6 +20,7 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateItemAction } from '../../store/treeStore/treeActions';
 import EnableWhenOperator from './EnableWhenOperator';
 import { ValidationErrors } from '../../helpers/orphanValidation';
+import Btn from '../Btn/Btn';
 
 type Props = {
     getItem: (linkId: string) => QuestionnaireItem;
@@ -62,7 +63,7 @@ const EnableWhen = ({
     };
 
     return (
-        <>
+        <div>
             <p>{t('Set condition for display of element')}</p>
             {enableWhen.map((x, index) => {
                 const conditionItem = getItem(x.question);
@@ -134,31 +135,29 @@ const EnableWhen = ({
                                 <div>{JSON.stringify(x, undefined, 2)}</div>
                             </>
                         )}
-                        <button
-                            className="question-button"
+                        <Btn
                             onClick={() => {
                                 const ews = getItem(linkId).enableWhen;
                                 const copy = ews?.filter((_ew, filterIndex) => filterIndex !== index);
                                 dispatchUpdateItemEnableWhen(copy);
                             }}
-                        >
-                            <i className="trash-icon" aria-label="remove" />
-                            {` ${t('Remove condition')}`}
-                        </button>
+                            variant="secondary"
+                            icon="ion-ios-trash"
+                            title={t('Remove condition')}
+                        />
                     </div>
                 );
             })}
-            <button
-                className="question-button"
+            <Btn
                 onClick={() => {
                     const ews = getItem(linkId).enableWhen;
                     const copy: QuestionnaireItemEnableWhen[] = ews ? ews : [];
                     dispatchUpdateItemEnableWhen(copy.concat({} as QuestionnaireItemEnableWhen));
                 }}
-            >
-                <i className="add-icon" aria-label="icon" />
-                {` ${t('Add a condition')}`}
-            </button>
+                variant="primary"
+                icon="ion-plus-round"
+                title={t('Add a condition')}
+            />
             {enableWhen.length > 1 && (
                 <EnableBehavior
                     currentItem={getItem(linkId)}
@@ -174,7 +173,7 @@ const EnableWhen = ({
                     enableBehavior={getItem(linkId).enableBehavior as QuestionnaireItemEnableBehaviorCodes}
                 />
             )}
-        </>
+        </div>
     );
 };
 

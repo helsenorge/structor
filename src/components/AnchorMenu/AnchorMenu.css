@@ -74,6 +74,9 @@
     color: black;
     cursor: grab;
 }
+.anchor-menu__dragcomponent:active {
+    cursor: grabbing;
+}
 
 .folder-icon {
     height: 25px;

@@ -177,7 +177,7 @@ const Question = (props: QuestionProps): JSX.Element => {
                     )}
                 </FormField>
                 {canTypeHaveSublabel(props.item) && (
-                    <FormField label={t('Sublabel')}>
+                    <FormField label={t('Sublabel')} isOptional>
                         <MarkdownEditor
                             data={getSublabelText()}
                             onBlur={(newValue: string) => {
@@ -203,16 +203,14 @@ const Question = (props: QuestionProps): JSX.Element => {
                     </Accordion>
                 )}
                 <Accordion title={`${t('Enable when')} ${enableWhenCount}`}>
-                    <div>
-                        <EnableWhen
-                            getItem={props.getItem}
-                            conditionalArray={props.conditionalArray}
-                            linkId={props.item.linkId}
-                            enableWhen={props.item.enableWhen || []}
-                            containedResources={props.containedResources}
-                            itemValidationErrors={props.itemValidationErrors}
-                        />
-                    </div>
+                    <EnableWhen
+                        getItem={props.getItem}
+                        conditionalArray={props.conditionalArray}
+                        linkId={props.item.linkId}
+                        enableWhen={props.item.enableWhen || []}
+                        containedResources={props.containedResources}
+                        itemValidationErrors={props.itemValidationErrors}
+                    />
                 </Accordion>
                 <Accordion title={`${t('Code')} ${codeElements}`}>
                     <Codes linkId={props.item.linkId} itemValidationErrors={props.itemValidationErrors} />

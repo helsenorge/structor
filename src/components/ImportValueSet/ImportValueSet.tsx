@@ -186,13 +186,7 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                                     valueSetToAdd.length.toString(),
                                 )}
                             </p>
-                            <Btn
-                                title={t('Import')}
-                                variant="primary"
-                                type="button"
-                                size="small"
-                                onClick={handleAddNewValueSet}
-                            />
+                            <Btn title={t('Import')} variant="primary" type="button" onClick={handleAddNewValueSet} />
                         </div>
                     </div>
                 )}

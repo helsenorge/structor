@@ -91,7 +91,6 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                             <Btn
                                 title={t('+ Add new language')}
                                 type="button"
-                                size="small"
                                 variant="primary"
                                 onClick={() => {
                                     dispatchAddLanguage(selectedLang);
@@ -111,14 +110,12 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                                     <Btn
                                         title={t('Delete')}
                                         type="button"
-                                        size="small"
                                         variant="secondary"
                                         onClick={() => removeAdditionalLanguage(language)}
                                     />
                                     <Btn
                                         title={t('Translate')}
                                         type="button"
-                                        size="small"
                                         variant="primary"
                                         onClick={() => {
                                             props.setTranslateLang(language);

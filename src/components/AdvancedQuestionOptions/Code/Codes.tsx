@@ -43,40 +43,37 @@ const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
             (x) => x.errorProperty.substr(0, 4) === 'code' && index === x.index,
         );
         return (
-            <>
-                <div key={`${code.id}`} className={`code-section ${hasValidationError ? 'validation-error' : ''}`}>
-                    <div className="horizontal equal">
-                        <FormField label={t('Display')}>
-                            <InputField
-                                defaultValue={code.display}
-                                onBlur={(event) => updateCode(index, ICodingProperty.display, event.target.value)}
-                            />
-                        </FormField>
-                        <FormField label={t('Code')}>
-                            <InputField
-                                defaultValue={code.code}
-                                onBlur={(event) => updateCode(index, ICodingProperty.code, event.target.value)}
-                            />
-                        </FormField>
-                    </div>
-                    <div className="horizontal full">
-                        <SystemField
-                            value={code.system}
-                            onBlur={(event) => updateCode(index, ICodingProperty.system, event.target.value)}
+            <div key={`${code.id}`} className={`code-section ${hasValidationError ? 'validation-error' : ''}`}>
+                <div className="horizontal equal">
+                    <FormField label={t('Display')}>
+                        <InputField
+                            defaultValue={code.display}
+                            onBlur={(event) => updateCode(index, ICodingProperty.display, event.target.value)}
                         />
-                    </div>
-                    <div className="center-text">
-                        <Btn
-                            title={`- ${t('Remove Code')}`}
-                            type="button"
-                            onClick={() => dispatch(deleteItemCodeAction(linkId, index))}
-                            variant="secondary"
-                            size="small"
+                    </FormField>
+                    <FormField label={t('Code')}>
+                        <InputField
+                            defaultValue={code.code}
+                            onBlur={(event) => updateCode(index, ICodingProperty.code, event.target.value)}
                         />
-                    </div>
+                    </FormField>
+                </div>
+                <div className="horizontal full">
+                    <SystemField
+                        value={code.system}
+                        onBlur={(event) => updateCode(index, ICodingProperty.system, event.target.value)}
+                    />
+                </div>
+                <div className="center-text">
+                    <Btn
+                        title={`- ${t('Remove Code')}`}
+                        type="button"
+                        onClick={() => dispatch(deleteItemCodeAction(linkId, index))}
+                        variant="secondary"
+                    />
                 </div>
                 <hr style={{ margin: '24px 0px' }} />
-            </>
+            </div>
         );
     };
 
@@ -91,7 +88,6 @@ const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
                         dispatch(addItemCodeAction(linkId, createEmptyCode()));
                     }}
                     variant="primary"
-                    size="small"
                 />
             </div>
         </div>

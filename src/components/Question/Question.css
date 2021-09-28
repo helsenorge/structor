@@ -16,27 +16,6 @@
     padding: 20px 70px;
 }
 
-.question-button {
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-    font-size: 18px;
-    min-width: 32px;
-    color: #4299e1;
-    display: flex;
-    align-items: center;
-    padding-right: 15px;
-    font-weight: 700;
-}
-
-.question-button > i {
-    font-size: 28px;
-    color: black;
-}
-
 .form-field {
     display: flex;
     flex-direction: column;
@@ -93,7 +72,6 @@
 
 .question-form {
     position: relative;
-    padding-bottom: 25px;
 }
 
 .horizontal {
