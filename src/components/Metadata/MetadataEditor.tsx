@@ -272,7 +272,7 @@ const MetadataEditor = (): JSX.Element => {
                         onBlur={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
                     />
                 </FormField>
-                <FormField label={t('Generate PDF on submit')}>
+                <FormField>
                     <SwitchBtn
                         onChange={() =>
                             updateMetaExtension({
@@ -281,10 +281,10 @@ const MetadataEditor = (): JSX.Element => {
                             })
                         }
                         value={getGeneratePdfValue()}
-                        label=""
+                        label={t('Generate PDF on submit')}
                     />
                 </FormField>
-                <FormField label={t('Use navigator')}>
+                <FormField>
                     <SwitchBtn
                         onChange={() => {
                             const hasNavigatorExtension = !!qMetadata?.extension?.find(
@@ -309,7 +309,7 @@ const MetadataEditor = (): JSX.Element => {
                             }
                         }}
                         value={!!qMetadata?.extension?.find((ex) => ex.url === IExtentionType.navigator) || false}
-                        label=""
+                        label={t('Use navigator')}
                     />
                 </FormField>
             </Accordion>

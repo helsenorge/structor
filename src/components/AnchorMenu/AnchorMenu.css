@@ -59,7 +59,7 @@
 }
 .anchor-menu__topitem .rst__rowContents {
     /* override styling */
-    background-color: lightblue;
+    background-color: #e4f7f9;
 }
 
 .anchor-menu__title {
@@ -68,10 +68,12 @@
 }
 
 .anchor-menu__dragcomponent {
-    padding: 8px;
-    background: lightblue;
+    padding: 8px 16px;
+    background: #e4f7f9;
     margin: 5px;
+    text-align: left;
     color: black;
+    border: 1px solid #cae7ed;
     cursor: grab;
 }
 .anchor-menu__dragcomponent:active {
