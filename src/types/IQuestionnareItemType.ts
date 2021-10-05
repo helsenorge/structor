@@ -70,7 +70,7 @@ export type IEnableWhen = {
 };
 
 export enum IValueSetSystem {
-    saveCapabilityValueSet = 'http://helsenorge.no/fhir/ValueSet/sdf-savecapabilites',
+    saveCapabilityValueSet = 'http://helsenorge.no/fhir/ValueSet/sdf-save-capabilities',
     authenticationRequirementValueSet = 'http://ehelse.no/fhir/ValueSet/AuthenticationRequirement',
     canBePerformedByValueSet = 'http://ehelse.no/fhir/ValueSet/CanBePerformedBy',
     itemControlValueSet = 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
