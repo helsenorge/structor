@@ -99,16 +99,18 @@ export const getInitialItemConfig = (
 
 export const canTypeBeValidated = (item: QuestionnaireItem): boolean => {
     const itemType = item.type as IQuestionnaireItemType;
-    return [
-        IQuestionnaireItemType.attachment,
-        IQuestionnaireItemType.integer,
-        IQuestionnaireItemType.decimal,
-        IQuestionnaireItemType.quantity,
-        IQuestionnaireItemType.text,
-        IQuestionnaireItemType.string,
-        IQuestionnaireItemType.date,
-        IQuestionnaireItemType.dateTime,
-    ].includes(itemType);
+    return (
+        [
+            IQuestionnaireItemType.attachment,
+            IQuestionnaireItemType.integer,
+            IQuestionnaireItemType.decimal,
+            IQuestionnaireItemType.quantity,
+            IQuestionnaireItemType.text,
+            IQuestionnaireItemType.string,
+            IQuestionnaireItemType.date,
+            IQuestionnaireItemType.dateTime,
+        ].includes(itemType) && !isItemControlInline(item)
+    );
 };
 
 export const canTypeHaveSublabel = (item: QuestionnaireItem): boolean => {
@@ -138,12 +140,13 @@ export const canTypeBeHighlight = (item: QuestionnaireItem): boolean => {
 
 export const canTypeBeBeriket = (item: QuestionnaireItem): boolean => {
     return (
-        item.type === IQuestionnaireItemType.string ||
-        item.type === IQuestionnaireItemType.text ||
-        item.type === IQuestionnaireItemType.boolean ||
-        item.type === IQuestionnaireItemType.quantity ||
-        item.type === IQuestionnaireItemType.integer ||
-        item.type === IQuestionnaireItemType.decimal
+        (item.type === IQuestionnaireItemType.string ||
+            item.type === IQuestionnaireItemType.text ||
+            item.type === IQuestionnaireItemType.boolean ||
+            item.type === IQuestionnaireItemType.quantity ||
+            item.type === IQuestionnaireItemType.integer ||
+            item.type === IQuestionnaireItemType.decimal) &&
+        !isItemControlInline(item)
     );
 };
 
