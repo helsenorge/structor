@@ -334,5 +334,5 @@
     "Technical name of uploaded questionnaire is not equal to questionnaire technical name": "Teknisk navn på opplastet skjema er ikke lik teknisk navn på skjema",
     "Questionnaire with the same language as uploaded questionnaire already exists": "Skjema med samme språk som opplastet skjema finnes allerede",
     "Could not read uploaded file": "Kunne ikke lese opplasted fil",
-    "Upload questionnaire in additional language": "Last opp skjema i tillegsspråk"
+    "Upload questionnaire in additional language": "Last opp skjema med tilleggsspråk"
 }

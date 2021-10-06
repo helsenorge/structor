@@ -9,7 +9,7 @@ import {
     updateQuestionnaireMetadataAction,
 } from '../../store/treeStore/treeActions';
 import { Translation, TreeContext } from '../../store/treeStore/treeStore';
-import { Meta } from '../../types/fhir';
+import { Meta, Questionnaire } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import Accordion from '../Accordion/Accordion';
 import Btn from '../Btn/Btn';
@@ -27,7 +27,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     const uploadRef = React.useRef<HTMLInputElement>(null);
 
     const [selectedLang, setSelectedLang] = useState('');
-    const [fileUploadErrors, setFileUploadErrors] = useState<string[]>([]);
+    const [fileUploadError, setFileUploadError] = useState<string>('');
 
     const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
@@ -51,6 +51,32 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
         }
     };
 
+    const validateUploadedLanguageFile = (
+        translatedQuestionnaire: Questionnaire,
+        mainQuestionnaire: Questionnaire,
+    ): string => {
+        const isoLanguage = translatedQuestionnaire.language
+            ? languageToIsoString(translatedQuestionnaire.language)
+            : '';
+
+        // validate that this file is a questionnaire:
+        if (translatedQuestionnaire.resourceType !== 'Questionnaire') {
+            return 'Uploaded file is not a questionnaire';
+        }
+        // validate that name is the same as the main questionnaire:
+        else if (translatedQuestionnaire.name && mainQuestionnaire.name !== translatedQuestionnaire.name) {
+            return 'Technical name of uploaded questionnaire is not equal to questionnaire technical name';
+        }
+        // validate that a questionnaire with this language does not already exist
+        else if (
+            (qAdditionalLanguages && qAdditionalLanguages[isoLanguage]) ||
+            mainQuestionnaire.language === isoLanguage
+        ) {
+            return 'Questionnaire with the same language as uploaded questionnaire already exists';
+        }
+        return '';
+    };
+
     const onLoadUploadedFile = (event: ProgressEvent<FileReader>) => {
         if (event.target?.result) {
             try {
@@ -60,33 +86,15 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                     ? languageToIsoString(translatedQuestionnaire.language)
                     : '';
 
-                const errors: string[] = [];
-                // validate that this file is a questionnaire:
-                if (translatedQuestionnaire.resourceType !== 'Questionnaire') {
-                    errors.push('Uploaded file is not a questionnaire');
-                }
-                // validate that name is the same as the main questionnaire:
-                else if (translatedQuestionnaire.name && mainQuestionnaire.name !== translatedQuestionnaire.name) {
-                    errors.push(
-                        'Technical name of uploaded questionnaire is not equal to questionnaire technical name',
-                    );
-                }
-                // validate that a questionnaire with this language does not already exist
-                else if (
-                    (qAdditionalLanguages && qAdditionalLanguages[isoLanguage]) ||
-                    mainQuestionnaire.language === isoLanguage
-                ) {
-                    errors.push('Questionnaire with the same language as uploaded questionnaire already exists');
-                }
-
-                if (errors.length > 0) {
-                    setFileUploadErrors(errors);
+                const error = validateUploadedLanguageFile(translatedQuestionnaire, mainQuestionnaire);
+                if (error) {
+                    setFileUploadError(error);
                 } else {
                     const translation = translateQuestionnaire(mainQuestionnaire, translatedQuestionnaire);
                     dispatchAddLanguage(isoLanguage || '', translation);
                 }
             } catch {
-                setFileUploadErrors(['Could not read uploaded file']);
+                setFileUploadError('Could not read uploaded file');
             }
 
             // Reset file input
@@ -100,11 +108,11 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
         const reader = new FileReader();
         reader.onload = onLoadUploadedFile;
         reader.onerror = () => {
-            setFileUploadErrors(['Could not read uploaded file']);
+            setFileUploadError('Could not read uploaded file');
         };
         if (event.target.files && event.target.files[0]) {
             reader.readAsText(event.target.files[0]);
-            setFileUploadErrors([]);
+            setFileUploadError('');
         }
     };
 
@@ -184,11 +192,9 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                         }}
                     />
                 </div>
-                {fileUploadErrors.length > 0 && (
+                {fileUploadError && (
                     <ul className="item-validation-error-summary">
-                        {fileUploadErrors.map((x: string) => {
-                            return <li key={x}>{t(x)}</li>;
-                        })}
+                        <li>{t(fileUploadError)}</li>
                     </ul>
                 )}
                 {additionalLanguagesInUse.length > 0 && (
