@@ -216,15 +216,11 @@ export const initialState: TreeState = {
     qAdditionalLanguages: {},
 };
 
-function buildTranslationBase(): Translation {
-    return { items: {}, sidebarItems: {}, metaData: {}, contained: {} };
-}
-
 function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
     if (!draft.qAdditionalLanguages) {
         draft.qAdditionalLanguages = {};
     }
-    draft.qAdditionalLanguages[action.additionalLanguageCode] = buildTranslationBase();
+    draft.qAdditionalLanguages[action.additionalLanguageCode] = action.translation;
 }
 
 function removeLanguage(draft: TreeState, action: RemoveQuestionnaireLanguageAction) {

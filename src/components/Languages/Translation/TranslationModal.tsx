@@ -21,6 +21,7 @@ import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 import { IExtentionType } from '../../../types/IQuestionnareItemType';
+import { getUsedValueSet } from '../../../helpers/generateQuestionnaire';
 
 type TranslationModalProps = {
     close: () => void;
@@ -49,6 +50,9 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     const translatableItems = Object.values(qItems).filter((question) => {
         return isTranslatableItem(question);
     });
+
+    const usedValueSet = getUsedValueSet(state);
+    const valueSetsToTranslate = state.qContained?.filter((x) => x.id && usedValueSet?.includes(x.id) && x);
 
     const getHeader = (): JSX.Element => (
         <div className="sticky-header">
@@ -243,7 +247,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                                 />
                                 {!!qContained && qContained?.length > 0 && (
                                     <TranslateContainedValueSets
-                                        qContained={qContained}
+                                        qContained={valueSetsToTranslate}
                                         targetLanguage={props.targetLanguage}
                                         translations={qAdditionalLanguages}
                                         dispatch={dispatch}

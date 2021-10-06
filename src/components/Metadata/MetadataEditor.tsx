@@ -92,7 +92,7 @@ const MetadataEditor = (): JSX.Element => {
                         </div>
                     )}
                 </FormField>
-                <FormField label={t('Teknisk navn')}>
+                <FormField label={t('Technical name')}>
                     <InputField
                         defaultValue={qMetadata.name}
                         onChange={(e) => {
@@ -112,7 +112,7 @@ const MetadataEditor = (): JSX.Element => {
                         </div>
                     )}
                 </FormField>
-                <FormField label={t('Versjon')}>
+                <FormField label={t('Version')}>
                     <InputField
                         placeholder={t('Version number')}
                         defaultValue={qMetadata.version}

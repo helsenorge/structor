@@ -19,7 +19,7 @@ import {
 } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TranslatableItemProperty } from '../../types/LanguageTypes';
-import { TreeState } from './treeStore';
+import { Translation, TreeState } from './treeStore';
 import { createItemControlExtension, ItemControlType } from '../../helpers/itemControl';
 import { createMarkdownExtension } from '../../helpers/extensionHelper';
 
@@ -90,6 +90,7 @@ export interface UpdateMarkedLinkId {
 export interface AddQuestionnaireLanguageAction {
     type: typeof ADD_QUESTIONNAIRE_LANGUAGE_ACTION;
     additionalLanguageCode: string;
+    translation: Translation;
 }
 
 export interface RemoveQuestionnaireLanguageAction {
@@ -259,10 +260,14 @@ export const updateItemCodePropertyAction = (
     };
 };
 
-export const addQuestionnaireLanguageAction = (additionalLanguageCode: string): AddQuestionnaireLanguageAction => {
+export const addQuestionnaireLanguageAction = (
+    additionalLanguageCode: string,
+    translation: Translation,
+): AddQuestionnaireLanguageAction => {
     return {
         type: ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
         additionalLanguageCode,
+        translation,
     };
 };
 
