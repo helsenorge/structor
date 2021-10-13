@@ -198,10 +198,6 @@ export const EnrichmentSet: Options = {
             display: 'On behalf of citizen',
             options: [
                 makeOption(
-                    'Is questionnaire answered on behalf of someone else (true/false)',
-                    "iif(%representative.relationship.coding.where(system = 'http://hl7.org/fhir/v3/RoleCode' and (code = 'PRN' or code = 'GRANTEE')).count() > 0, true, false)",
-                ),
-                makeOption(
                     'On behalf of citizen (national identity number)',
                     "RelatedPerson.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
                 ),
@@ -231,6 +227,31 @@ export const EnrichmentSet: Options = {
                 makeOption(
                     'On behalf of citizen (temporary postal adress)',
                     "RelatedPerson.address.where(use = 'temp').line[3]",
+                ),
+            ],
+        },
+        {
+            display: 'Representative relation',
+            options: [
+                makeOption(
+                    'Is questionnaire answered on behalf of someone else? (true/false)',
+                    "iif(%representative.relationship.coding.where((system = 'http://hl7.org/fhir/v3/RoleCode' or system = 'urn:oid:2.16.578.1.12.4.1.1.7611') and (code = 'PRN' or code = 'GRANTEE' or code = 'FU' or code = 'TD' or code = 'FO' or code = 'VE')).count() > 0, true, false)",
+                ),
+                makeOption(
+                    'Represented by power of attorney? (true/false)',
+                    "iif(%representative.relationship.coding.where(system = 'urn:oid:2.16.578.1.12.4.1.1.7611' and code = 'FU').count() > 0, true, false)",
+                ),
+                makeOption(
+                    'Represented by power of attorney for non-consent competent? (true/false)',
+                    "iif(%representative.relationship.coding.where(system = 'urn:oid:2.16.578.1.12.4.1.1.7611' and code = 'TD').count() > 0, true, false)",
+                ),
+                makeOption(
+                    'Represented by parent? (true/false)',
+                    "iif(%representative.relationship.coding.where(system = 'urn:oid:2.16.578.1.12.4.1.1.7611' and code = 'FO').count() > 0, true, false)",
+                ),
+                makeOption(
+                    'Represented by guardianship? (true/false)',
+                    "iif(%representative.relationship.coding.where(system = 'urn:oid:2.16.578.1.12.4.1.1.7611' and code = 'VE').count() > 0, true, false)",
                 ),
             ],
         },
