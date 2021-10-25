@@ -6,6 +6,8 @@ import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../
 import { QuestionnaireItem } from '../../../types/fhir';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
+import FormField from '../../FormField/FormField';
+import InputField from '../../InputField/inputField';
 
 interface ValidationTypeProp {
     item: QuestionnaireItem;
@@ -40,12 +42,12 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
         <>
             <div className="horizontal equal">
                 {item?.type !== IQuestionnaireItemType.quantity && (
-                    <div className="form-field">
-                        <SwitchBtn label={t('Allow decimals')} initial value={isDecimal} onChange={changeItemType} />
-                    </div>
+                    <FormField>
+                        <SwitchBtn label={t('Allow decimals')} value={isDecimal} onChange={changeItemType} />
+                    </FormField>
                 )}
                 {isDecimal && (
-                    <div className="form-field">
+                    <FormField>
                         <label className="#">{t('Max number of decimals')}</label>
                         <input
                             type="number"
@@ -62,13 +64,12 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                                 }
                             }}
                         />
-                    </div>
+                    </FormField>
                 )}
             </div>
 
             <div className="horizontal equal">
-                <div className="form-field" id="number">
-                    <label className="#">{t('Min value')}</label>
+                <FormField label={t('Min value')}>
                     <input
                         type="number"
                         defaultValue={minValue}
@@ -84,10 +85,8 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                             }
                         }}
                     ></input>
-                </div>
-
-                <div className="form-field" id="number">
-                    <label className="#">{t('Max value')}</label>
+                </FormField>
+                <FormField label={t('Max value')}>
                     <input
                         type="number"
                         defaultValue={maxValue}
@@ -103,13 +102,11 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                             }
                         }}
                     ></input>
-                </div>
+                </FormField>
             </div>
 
-            <div className="form-field custom-input-error-message">
-                <label className="#">{t('Enter custom error message')}</label>
-                <input
-                    type="input"
+            <FormField label={t('Enter custom error message')}>
+                <InputField
                     defaultValue={validationText}
                     placeholder={t('error message')}
                     onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,8 +120,8 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                             setItemExtension(item, extension, dispatch);
                         }
                     }}
-                ></input>
-            </div>
+                />
+            </FormField>
         </>
     );
 };

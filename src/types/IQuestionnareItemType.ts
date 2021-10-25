@@ -1,7 +1,8 @@
 export enum IQuestionnaireItemType {
     attachment = 'attachment',
     // address is not a fhir-type, but used internally for types choice
-    address = 'address',
+    receiver = 'receiver',
+    receiverComponent = 'receiver-component',
     boolean = 'boolean',
     choice = 'choice',
     date = 'date',
@@ -69,7 +70,7 @@ export type IEnableWhen = {
 };
 
 export enum IValueSetSystem {
-    saveCapabilityValueSet = 'http://helsenorge.no/fhir/ValueSet/sdf-savecapabilites',
+    saveCapabilityValueSet = 'http://helsenorge.no/fhir/ValueSet/sdf-save-capabilities',
     authenticationRequirementValueSet = 'http://ehelse.no/fhir/ValueSet/AuthenticationRequirement',
     canBePerformedByValueSet = 'http://ehelse.no/fhir/ValueSet/CanBePerformedBy',
     itemControlValueSet = 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
@@ -109,4 +110,10 @@ export enum IExtentionType {
     fhirPathMinValue = 'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue',
     sublabel = 'http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel',
     saveCapability = 'http://helsenorge.no/fhir/StructureDefinition/sdf-save-capabilities',
+}
+
+export enum UseContextSystem {
+    helsetjeneste_full = 'urn:oid:2.16.578.1.12.4.1.1.8655',
+    journalinnsyn_basispluss = 'urn:oid:2.16.578.1.12.4.1.1.7614',
+    registerinnsyn_basis = 'urn:oid:2.16.578.1.12.4.1.1.7615',
 }

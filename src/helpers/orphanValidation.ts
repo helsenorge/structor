@@ -1,7 +1,7 @@
 import { TFunction } from 'react-i18next';
 import { Items, OrderItem } from '../store/treeStore/treeStore';
 import { QuestionnaireItem, ValueSet } from '../types/fhir';
-import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { isItemControlHelp, isItemControlHighlight, isItemControlInline, isItemControlSidebar } from './itemControl';
 import { isRecipientList } from './QuestionHelper';
 import { isSystemValid } from './systemHelper';
@@ -13,6 +13,17 @@ export interface ValidationErrors {
     errorReadableText: string;
 }
 
+const validEnableWhenChoiceOperators = [IOperator.equal, IOperator.notEqual];
+
+const createError = (linkId: string, errorProperty: string, errorText: string, index?: number): ValidationErrors => {
+    return {
+        linkId: linkId,
+        index: index,
+        errorProperty: errorProperty,
+        errorReadableText: errorText,
+    };
+};
+
 const validateUniqueLinkId = (
     t: TFunction<'translation'>,
     qItems: Items,
@@ -21,11 +32,7 @@ const validateUniqueLinkId = (
     const returnErrors: ValidationErrors[] = [];
     const hasLinkIdCollision = Object.keys(qItems).filter((x) => x === qItem.linkId).length > 1;
     if (hasLinkIdCollision) {
-        returnErrors.push({
-            linkId: qItem.linkId,
-            errorProperty: 'linkId',
-            errorReadableText: t('LinkId is already in use'),
-        });
+        returnErrors.push(createError(qItem.linkId, 'linkId', t('LinkId is already in use')));
     }
     return returnErrors;
 };
@@ -41,11 +48,7 @@ const validateRequiredItem = (t: TFunction<'translation'>, qItem: QuestionnaireI
             isItemControlSidebar(qItem)) &&
         qItem.required
     ) {
-        returnErrors.push({
-            linkId: qItem.linkId,
-            errorProperty: 'required',
-            errorReadableText: t('Question is required, but cannot be required'),
-        });
+        returnErrors.push(createError(qItem.linkId, 'required', t('Question is required, but cannot be required')));
     }
     return returnErrors;
 };
@@ -61,12 +64,9 @@ const validateFhirpathDateValidation = (t: TFunction<'translation'>, qItem: Ques
                 extension.valueString?.split(' ').filter(Boolean).length !== 1 &&
                 extension.valueString?.split(' ').filter(Boolean).length !== 4
             ) {
-                returnErrors.push({
-                    linkId: qItem.linkId,
-                    index: index,
-                    errorProperty: 'extension',
-                    errorReadableText: t('Error in FHIRpath date validation'),
-                });
+                returnErrors.push(
+                    createError(qItem.linkId, 'extension', t('Error in FHIRpath date validation'), index),
+                );
             }
         });
     }
@@ -77,28 +77,13 @@ const validateItemCode = (t: TFunction<'translation'>, qItem: QuestionnaireItem)
     const returnErrors: ValidationErrors[] = [];
     (qItem.code || []).forEach((code, index) => {
         if (!code.code) {
-            returnErrors.push({
-                linkId: qItem.linkId,
-                index: index,
-                errorProperty: 'code.code',
-                errorReadableText: t('Code does not have "code" property'),
-            });
+            returnErrors.push(createError(qItem.linkId, 'code.code', t('Code does not have "code" property'), index));
         }
         if (!code.system) {
-            returnErrors.push({
-                linkId: qItem.linkId,
-                index: index,
-                errorProperty: 'code.system',
-                errorReadableText: 'Code does not have "system" property',
-            });
+            returnErrors.push(createError(qItem.linkId, 'code.system', 'Code does not have "system" property', index));
         }
         if (code.system && !isSystemValid(code.system)) {
-            returnErrors.push({
-                linkId: qItem.linkId,
-                index: index,
-                errorProperty: 'code',
-                errorReadableText: t('Code does not have a valid system'),
-            });
+            returnErrors.push(createError(qItem.linkId, 'code', t('Code does not have a valid system'), index));
         }
     });
     return returnErrors;
@@ -108,12 +93,7 @@ const validateAnswerOptionSystem = (t: TFunction<'translation'>, qItem: Question
     const returnErrors: ValidationErrors[] = [];
     (qItem.answerOption || []).forEach((answerOption, index) => {
         if (answerOption.valueCoding?.system && !isSystemValid(answerOption.valueCoding?.system)) {
-            returnErrors.push({
-                linkId: qItem.linkId,
-                index: index,
-                errorProperty: 'code',
-                errorReadableText: t('answerOption does not have a valid system'),
-            });
+            returnErrors.push(createError(qItem.linkId, 'code', t('answerOption does not have a valid system'), index));
         }
     });
     return returnErrors;
@@ -124,18 +104,10 @@ const validateQuantitySystemAndCode = (t: TFunction<'translation'>, qItem: Quest
     if (qItem.type === IQuestionnaireItemType.quantity) {
         const unitExtension = (qItem.extension || []).find((x) => x.url === IExtentionType.questionnaireUnit);
         if (unitExtension && unitExtension.valueCoding?.system && !isSystemValid(unitExtension.valueCoding?.system)) {
-            returnErrors.push({
-                linkId: qItem.linkId,
-                errorProperty: 'code',
-                errorReadableText: t('quantity extension does not have a valid system'),
-            });
+            returnErrors.push(createError(qItem.linkId, 'code', t('quantity extension does not have a valid system')));
         }
         if (unitExtension && !unitExtension.valueCoding?.code) {
-            returnErrors.push({
-                linkId: qItem.linkId,
-                errorProperty: 'code',
-                errorReadableText: t('quantity extension does not have code'),
-            });
+            returnErrors.push(createError(qItem.linkId, 'code', t('quantity extension does not have code')));
         }
     }
     return returnErrors;
@@ -146,22 +118,19 @@ const validateExtensions = (t: TFunction<'translation'>, qItem: QuestionnaireIte
     (qItem.extension || []).forEach((extension, index) => {
         if (Object.keys(extension).indexOf('url') === -1) {
             // extension without url
-            returnErrors.push({
-                linkId: qItem.linkId,
-                index: index,
-                errorProperty: 'extension',
-                errorReadableText: t('Extension has no "url" property'),
-            });
+            returnErrors.push(createError(qItem.linkId, 'extension', t('Extension has no "url" property'), index));
         }
         const valueProps = Object.keys(extension).filter((key) => key.substr(0, 5) === 'value');
         if (valueProps.length !== 1) {
             // extension with wrong number of value[x]
-            returnErrors.push({
-                linkId: qItem.linkId,
-                index: index,
-                errorProperty: 'extension',
-                errorReadableText: t('Extension does not have value[x], or has more than one value[x]'),
-            });
+            returnErrors.push(
+                createError(
+                    qItem.linkId,
+                    'extension',
+                    t('Extension does not have value[x], or has more than one value[x]'),
+                    index,
+                ),
+            );
         }
     });
     return returnErrors;
@@ -183,11 +152,7 @@ const validateInitial = (
                     qItem.initial[0].valueCoding?.system === x.valueCoding?.system,
             );
             if (!isMatch) {
-                returnErrors.push({
-                    linkId: qItem.linkId,
-                    errorProperty: 'initial',
-                    errorReadableText: t('Initial value is not a possible value'),
-                });
+                returnErrors.push(createError(qItem.linkId, 'initial', t('Initial value is not a possible value')));
             }
         } else if (qItem.answerValueSet) {
             const valueSetToCheck = qContained.find((x) => `#${x.id}` === qItem.answerValueSet);
@@ -201,19 +166,11 @@ const validateInitial = (
                         qItem.initial[0].valueCoding?.system === system,
                 );
                 if (!isMatch) {
-                    returnErrors.push({
-                        linkId: qItem.linkId,
-                        errorProperty: 'initial',
-                        errorReadableText: t('Initial value is not a possible value'),
-                    });
+                    returnErrors.push(createError(qItem.linkId, 'initial', t('Initial value is not a possible value')));
                 }
             } else {
                 // valueSet does not exist
-                returnErrors.push({
-                    linkId: qItem.linkId,
-                    errorProperty: 'initial',
-                    errorReadableText: t('ValueSet of initial value does not exist'),
-                });
+                returnErrors.push(createError(qItem.linkId, 'initial', t('ValueSet of initial value does not exist')));
             }
         }
     }
@@ -231,22 +188,26 @@ const validateEnableWhen = (
         // does the question exist?
         const itemExists = !!qItems[ew.question];
         if (!itemExists) {
-            returnErrors.push({
-                linkId: qItem.linkId,
-                index: index,
-                errorProperty: 'enableWhen.question',
-                errorReadableText: t('This enableWhen refers to a question with linkId which does not exist'),
-            });
+            returnErrors.push(
+                createError(
+                    qItem.linkId,
+                    'enableWhen.question',
+                    t('This enableWhen refers to a question with linkId which does not exist'),
+                    index,
+                ),
+            );
         }
 
         // does enableWhen object have the correct keys?
         if (Object.keys(ew).length !== 3) {
-            returnErrors.push({
-                linkId: qItem.linkId,
-                index: index,
-                errorProperty: 'enableWhen',
-                errorReadableText: t('enableWhen is not configured correctly. There are too many answer[x]-properties'),
-            });
+            returnErrors.push(
+                createError(
+                    qItem.linkId,
+                    'enableWhen',
+                    t('enableWhen is not configured correctly. There are too many answer[x]-properties'),
+                    index,
+                ),
+            );
         }
 
         // does the quantity system and code match?
@@ -261,12 +222,14 @@ const validateEnableWhen = (
                 ew.answerQuantity.code === quantityExtension.valueCoding?.code;
 
             if (!isMatch) {
-                returnErrors.push({
-                    linkId: qItem.linkId,
-                    index: index,
-                    errorProperty: 'enableWhen.answerQuantity',
-                    errorReadableText: t('Quantity does not match system and code'),
-                });
+                returnErrors.push(
+                    createError(
+                        qItem.linkId,
+                        'enableWhen.answerQuantity',
+                        t('Quantity does not match system and code'),
+                        index,
+                    ),
+                );
             }
         }
 
@@ -282,51 +245,82 @@ const validateEnableWhen = (
                     (x) => x.valueReference?.reference === ew.answerReference.reference,
                 );
                 if (!isMatch) {
-                    returnErrors.push({
-                        linkId: qItem.linkId,
-                        index: index,
-                        errorProperty: 'enableWhen.answerReference',
-                        errorReadableText: t('Recipient set in this enableWhen does not exist'),
-                    });
+                    returnErrors.push(
+                        createError(
+                            qItem.linkId,
+                            'enableWhen.answerReference',
+                            t('Recipient set in this enableWhen does not exist'),
+                            index,
+                        ),
+                    );
                 }
-            } else if (qItems[ew.question].answerOption) {
-                const isMatch = qItems[ew.question].answerOption?.find(
-                    (x) =>
-                        x.valueCoding?.system === ew.answerCoding.system &&
-                        x.valueCoding?.code === ew.answerCoding.code,
-                );
-                if (!isMatch) {
-                    returnErrors.push({
-                        linkId: qItem.linkId,
-                        index: index,
-                        errorProperty: 'enableWhen.answerCoding',
-                        errorReadableText: t('Coding expected in this enableWhen does not exist'),
-                    });
-                }
-            } else if (qItems[ew.question].answerValueSet) {
-                // check contained valueSets
-                const valueSetToCheck = qContained.find((x) => `#${x.id}` === qItems[ew.question].answerValueSet);
-                if (valueSetToCheck) {
-                    const system = valueSetToCheck.compose?.include[0].system;
-                    const isMatch = valueSetToCheck.compose?.include[0].concept?.find(
-                        (x) => ew.answerCoding && x.code === ew.answerCoding.code && system === ew.answerCoding.system,
+            } else if (qItems[ew.question].answerOption && ew.operator !== IOperator.exists) {
+                if (validEnableWhenChoiceOperators.indexOf(ew.operator as IOperator) === -1) {
+                    returnErrors.push(
+                        createError(
+                            qItem.linkId,
+                            'enableWhen.operator',
+                            t('Operator used in this enableWhen is not supported'),
+                            index,
+                        ),
+                    );
+                } else {
+                    const isMatch = qItems[ew.question].answerOption?.find(
+                        (x) =>
+                            x.valueCoding?.system === ew.answerCoding.system &&
+                            x.valueCoding?.code === ew.answerCoding.code,
                     );
                     if (!isMatch) {
-                        returnErrors.push({
-                            linkId: qItem.linkId,
-                            index: index,
-                            errorProperty: 'enableWhen.answerCoding',
-                            errorReadableText: t('Coding expected in this enableWhen does not exist'),
-                        });
+                        returnErrors.push(
+                            createError(
+                                qItem.linkId,
+                                'enableWhen.answerCoding',
+                                t('Coding expected in this enableWhen does not exist'),
+                                index,
+                            ),
+                        );
                     }
+                }
+            } else if (qItems[ew.question].answerValueSet && ew.operator !== IOperator.exists) {
+                if (validEnableWhenChoiceOperators.indexOf(ew.operator as IOperator) === -1) {
+                    returnErrors.push(
+                        createError(
+                            qItem.linkId,
+                            'enableWhen.operator',
+                            t('Operator used in this enableWhen is not supported'),
+                            index,
+                        ),
+                    );
                 } else {
-                    // valueSet does not exist
-                    returnErrors.push({
-                        linkId: qItem.linkId,
-                        index: index,
-                        errorProperty: 'enableWhen.answerCoding',
-                        errorReadableText: t('The ValueSet referenced in this enableWhen does not exist'),
-                    });
+                    // check contained valueSets
+                    const valueSetToCheck = qContained.find((x) => `#${x.id}` === qItems[ew.question].answerValueSet);
+                    if (valueSetToCheck) {
+                        const system = valueSetToCheck.compose?.include[0].system;
+                        const isMatch = valueSetToCheck.compose?.include[0].concept?.find(
+                            (x) =>
+                                ew.answerCoding && x.code === ew.answerCoding.code && system === ew.answerCoding.system,
+                        );
+                        if (!isMatch) {
+                            returnErrors.push(
+                                createError(
+                                    qItem.linkId,
+                                    'enableWhen.answerCoding',
+                                    t('Coding expected in this enableWhen does not exist'),
+                                    index,
+                                ),
+                            );
+                        }
+                    } else {
+                        // valueSet does not exist
+                        returnErrors.push(
+                            createError(
+                                qItem.linkId,
+                                'enableWhen.answerCoding',
+                                t('The ValueSet referenced in this enableWhen does not exist'),
+                                index,
+                            ),
+                        );
+                    }
                 }
             }
         }

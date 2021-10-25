@@ -1,11 +1,11 @@
 .regular-btn {
+    box-sizing: border-box;
     line-height: 20px;
     position: relative;
     display: inline-block;
-    font-weight: 400;
+    font-weight: 600;
     white-space: nowrap;
     text-align: center;
-    background-image: none;
     -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
     cursor: pointer;
@@ -17,10 +17,8 @@
     user-select: none;
     -ms-touch-action: manipulation;
     touch-action: manipulation;
-    height: 32px;
-    padding: 4px 15px;
-    font-size: 16px;
-    border-radius: 2px;
+    padding: 8px 12px;
+    border-radius: 24px;
     color: white;
     background: none;
     border: 1px solid transparent;
@@ -41,13 +39,8 @@
 }
 
 .regular-btn.primary {
-    background: #2A69AC;
-    border-radius: 24px;
+    background: #2a69ac;
     color: white;
-    font-size: 20px;
-    font-weight: 600;
-    padding: 16px;
-    height: auto;
 }
 
 .regular-btn.primary i {
@@ -55,30 +48,14 @@
 }
 
 .regular-btn.secondary {
-    border: 3px solid #2A69AC;
-    box-sizing: border-box;
-    border-radius: 24px;
-    color: #2A69AC;
-    font-size: 20px;
-    font-weight: 600;
-    padding: 16px;
-    height: auto;
+    border: 3px solid #2a69ac;
+    color: #2a69ac;
 }
 
-.regular-btn.small{
-    font-size: initial;
-    padding: 8px 12px;
-}
-
-.regular-btn.large{
-    font-size: 24px;
-    padding: 16px;
-}
-
-.btn-group button{
+.btn-group button {
     margin-right: 10px;
 }
 
-.btn-group button:last-of-type{
+.btn-group button:last-of-type {
     margin-right: 0px;
 }

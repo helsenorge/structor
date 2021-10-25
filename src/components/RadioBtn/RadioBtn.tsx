@@ -1,33 +1,38 @@
 import React from 'react';
-import CloseIcon from '../../images/icons/close-outline.svg';
+import { useTranslation } from 'react-i18next';
+import { ValueSetComposeIncludeConcept } from '../../types/fhir';
 import './RadioBtn.css';
 
 type Props = {
-    value?: string;
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    deleteItem?: () => void;
-    showDelete?: boolean;
-    disabled?: boolean;
-    name?: string;
+    onChange: (value: string) => void;
+    checked?: string;
+    options: ValueSetComposeIncludeConcept[];
+    name: string;
 };
 
-const RadioBtn = ({ value, onChange, deleteItem, showDelete, disabled, name }: Props): JSX.Element => {
+const RadioBtn = ({ checked, onChange, options, name }: Props): JSX.Element => {
+    const { t } = useTranslation();
+
     return (
-        <div className="horizontal radioBtn">
-            <input disabled={disabled} name={name} type="radio" />{' '}
-            <input
-                autoComplete="off"
-                disabled={disabled}
-                type="text"
-                name="beskrivelse"
-                onChange={onChange}
-                value={value}
-            />
-            {showDelete && (
-                <button type="button" name="Fjern" onClick={deleteItem}>
-                    <img src={CloseIcon} height="25" width="25"></img>
-                </button>
-            )}
+        <div className="radioBtn">
+            {options.map((x) => {
+                return (
+                    <div key={x.code}>
+                        <label>
+                            <input
+                                type="radio"
+                                checked={x.code === checked}
+                                value={x.code}
+                                name={name}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    onChange(e.target.value);
+                                }}
+                            />
+                            <span>{` ${t(x.display || '')}`}</span>
+                        </label>
+                    </div>
+                );
+            })}
         </div>
     );
 };

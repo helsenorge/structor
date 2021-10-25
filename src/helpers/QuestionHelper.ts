@@ -1,76 +1,8 @@
 import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
-import { IExtentionType, IOperator, IQuestionnaireItemType, IValueSetSystem } from '../types/IQuestionnareItemType';
+import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { CodingSystemType } from './systemHelper';
 import { Option, Options } from '../types/OptionTypes';
-import { ItemControlType } from './itemControl';
-
-const itemType = [
-    {
-        display: 'Group',
-        code: IQuestionnaireItemType.group,
-    },
-    {
-        display: 'Display',
-        code: IQuestionnaireItemType.display,
-    },
-    {
-        display: 'Short answer',
-        code: IQuestionnaireItemType.string,
-    },
-    {
-        display: 'Multiline text answer',
-        code: IQuestionnaireItemType.text,
-    },
-    {
-        display: 'Choice',
-        code: IQuestionnaireItemType.choice,
-    },
-    {
-        display: 'Open choice',
-        code: IQuestionnaireItemType.openChoice,
-    },
-    {
-        display: 'Predefined choices',
-        code: IQuestionnaireItemType.predefined,
-    },
-    {
-        display: 'Recipient list',
-        code: IQuestionnaireItemType.address,
-    },
-    {
-        display: 'Date',
-        code: IQuestionnaireItemType.date,
-    },
-    {
-        display: 'Time',
-        code: IQuestionnaireItemType.time,
-    },
-    {
-        display: 'Date and time',
-        code: IQuestionnaireItemType.dateTime,
-    },
-    {
-        display: 'Confirmation',
-        code: IQuestionnaireItemType.boolean,
-    },
-    {
-        // Used for itemTypes integer and decimal
-        display: 'Number',
-        code: IQuestionnaireItemType.number,
-    },
-    {
-        display: 'Quantity',
-        code: IQuestionnaireItemType.quantity,
-    },
-    {
-        display: 'Attachment',
-        code: IQuestionnaireItemType.attachment,
-    },
-    {
-        display: 'Expandable info',
-        code: IQuestionnaireItemType.inline,
-    },
-];
+import { createItemControlExtension, isItemControlReceiverComponent, ItemControlType } from './itemControl';
 
 export const ATTACHMENT_DEFAULT_MAX_SIZE = 5.0;
 
@@ -114,29 +46,8 @@ export const quantityUnitTypes = [
     },
 ];
 
-export const checkboxExtension = {
-    url: IExtentionType.itemControl,
-    valueCodeableConcept: {
-        coding: [
-            {
-                system: IValueSetSystem.itemControlValueSet,
-                code: ItemControlType.checkbox,
-            },
-        ],
-    },
-};
-
-export const dropdownExtension = {
-    url: IExtentionType.itemControl,
-    valueCodeableConcept: {
-        coding: [
-            {
-                system: IValueSetSystem.itemControlValueSet,
-                code: ItemControlType.dropdown,
-            },
-        ],
-    },
-};
+export const checkboxExtension = createItemControlExtension(ItemControlType.checkbox);
+export const dropdownExtension = createItemControlExtension(ItemControlType.dropdown);
 
 export const enableWhenOperatorBoolean: ValueSetComposeIncludeConcept[] = [
     {
@@ -246,20 +157,6 @@ export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
     },
 ];
 
-export const typeIsSupportingValidation = (type: IQuestionnaireItemType): boolean => {
-    const validTypes = [
-        IQuestionnaireItemType.attachment,
-        IQuestionnaireItemType.number,
-        IQuestionnaireItemType.quantity,
-        IQuestionnaireItemType.text,
-        IQuestionnaireItemType.string,
-        IQuestionnaireItemType.date,
-        IQuestionnaireItemType.dateTime,
-    ];
-
-    return validTypes.includes(type);
-};
-
 const makeOption = (display: string, code: string): Option => {
     return { display, code };
 };
@@ -301,10 +198,6 @@ export const EnrichmentSet: Options = {
             display: 'On behalf of citizen',
             options: [
                 makeOption(
-                    'Is questionnaire answered on behalf of someone else (true/false)',
-                    "iif(%representative.relationship.coding.where(system = 'http://hl7.org/fhir/v3/RoleCode' and (code = 'PRN' or code = 'GRANTEE')).count() > 0, true, false)",
-                ),
-                makeOption(
                     'On behalf of citizen (national identity number)',
                     "RelatedPerson.identifier.where(use = 'official' and (system = 'urn:oid:2.16.578.1.12.4.1.4.1' or system = 'urn:oid:2.16.578.1.12.4.1.4.2')).value",
                 ),
@@ -334,6 +227,31 @@ export const EnrichmentSet: Options = {
                 makeOption(
                     'On behalf of citizen (temporary postal adress)',
                     "RelatedPerson.address.where(use = 'temp').line[3]",
+                ),
+            ],
+        },
+        {
+            display: 'Representative relation',
+            options: [
+                makeOption(
+                    'Is questionnaire answered on behalf of someone else? (true/false)',
+                    "iif(%representative.relationship.coding.where((system = 'http://hl7.org/fhir/v3/RoleCode' or system = 'urn:oid:2.16.578.1.12.4.1.1.7611') and (code = 'PRN' or code = 'GRANTEE' or code = 'FU' or code = 'TD' or code = 'FO' or code = 'VE')).count() > 0, true, false)",
+                ),
+                makeOption(
+                    'Represented by power of attorney? (true/false)',
+                    "iif(%representative.relationship.coding.where(system = 'urn:oid:2.16.578.1.12.4.1.1.7611' and code = 'FU').count() > 0, true, false)",
+                ),
+                makeOption(
+                    'Represented by power of attorney for non-consent competent? (true/false)',
+                    "iif(%representative.relationship.coding.where(system = 'urn:oid:2.16.578.1.12.4.1.1.7611' and code = 'TD').count() > 0, true, false)",
+                ),
+                makeOption(
+                    'Represented by parent? (true/false)',
+                    "iif(%representative.relationship.coding.where(system = 'urn:oid:2.16.578.1.12.4.1.1.7611' and code = 'FO').count() > 0, true, false)",
+                ),
+                makeOption(
+                    'Represented by guardianship? (true/false)',
+                    "iif(%representative.relationship.coding.where(system = 'urn:oid:2.16.578.1.12.4.1.1.7611' and code = 'VE').count() > 0, true, false)",
                 ),
             ],
         },
@@ -390,8 +308,7 @@ export const valueSetTqqcCoding: Coding = {
     display: 'Technical endpoint for receiving QuestionnaireResponse',
 };
 
-export const isRecipientList = (item?: QuestionnaireItem): boolean => {
-    return (item?.code && item.code[0].system === CodingSystemType.valueSetTqqc) || false;
+export const isRecipientList = (item: QuestionnaireItem): boolean => {
+    const isReceiverComponent = isItemControlReceiverComponent(item);
+    return !isReceiverComponent && item.code?.find((x) => x.system === CodingSystemType.valueSetTqqc) !== undefined;
 };
-
-export default itemType;

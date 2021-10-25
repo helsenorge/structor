@@ -56,14 +56,13 @@ import {
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
-import { IItemProperty } from '../../types/IQuestionnareItemType';
-import { createNewAnswerOption } from '../../helpers/answerOptionHelper';
+import { IItemProperty, UseContextSystem } from '../../types/IQuestionnareItemType';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
-import { isIgnorableItem, isTqqcOptionReferenceItem } from '../../helpers/itemControl';
+import { isIgnorableItem } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
-import { createSystemUUID } from '../../helpers/systemHelper';
 import { saveStateToDb } from './indexedDbHelper';
+import { isRecipientList } from '../../helpers/QuestionHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -198,7 +197,7 @@ export const initialState: TreeState = {
                 valueCodeableConcept: {
                     coding: [
                         {
-                            system: 'urn:oid:2.16.578.1.12.4.1.1.8655',
+                            system: UseContextSystem.helsetjeneste_full,
                         },
                     ],
                 },
@@ -217,15 +216,11 @@ export const initialState: TreeState = {
     qAdditionalLanguages: {},
 };
 
-function buildTranslationBase(): Translation {
-    return { items: {}, sidebarItems: {}, metaData: {}, contained: {} };
-}
-
 function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
     if (!draft.qAdditionalLanguages) {
         draft.qAdditionalLanguages = {};
     }
-    draft.qAdditionalLanguages[action.additionalLanguageCode] = buildTranslationBase();
+    draft.qAdditionalLanguages[action.additionalLanguageCode] = action.translation;
 }
 
 function removeLanguage(draft: TreeState, action: RemoveQuestionnaireLanguageAction) {
@@ -235,7 +230,7 @@ function removeLanguage(draft: TreeState, action: RemoveQuestionnaireLanguageAct
     delete draft.qAdditionalLanguages[action.languageCode];
 }
 
-function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
+export function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
     if (searchPath.length === 0) {
         return searchItems;
     }
@@ -263,9 +258,18 @@ function updateMarkedItemId(draft: TreeState, action: UpdateMarkedLinkId): void 
 function createNewItem(draft: TreeState, action: NewItemAction): void {
     const itemToAdd = action.item;
     draft.qItems[itemToAdd.linkId] = itemToAdd;
+    const itemChildren = [];
+    if (itemToAdd.item?.length === 1) {
+        // special handling since type 'inline' has a child when it is created
+        draft.qItems[itemToAdd.item[0].linkId] = itemToAdd.item[0];
+        itemChildren.push({ linkId: itemToAdd.item[0].linkId, items: [] });
+    }
     // find the correct place to add the new item
     const arrayToAddItemTo = findTreeArray(action.order, draft.qOrder);
-    const newOrderNode = { linkId: itemToAdd.linkId, items: [] };
+    const newOrderNode = {
+        linkId: itemToAdd.linkId,
+        items: itemChildren,
+    };
     if (!action.index && action.index !== 0) {
         arrayToAddItemTo.push(newOrderNode);
     } else {
@@ -364,30 +368,12 @@ function updateItem(draft: TreeState, action: UpdateItemAction): void {
         [action.itemProperty]: action.itemValue,
     };
 
-    if (action.itemValue === 'choice' && isTqqcOptionReferenceItem(draft.qItems[action.linkId])) {
+    if (action.itemValue === 'choice' && isRecipientList(draft.qItems[action.linkId])) {
         //handle dropdown!
         draft.qItems[action.linkId].extension = [
             ...(draft.qItems[action.linkId].extension || []),
             ...createOptionReferenceExtensions,
         ];
-    } else if (
-        // add two empty options for choice and open-choice
-        action.itemProperty === IItemProperty.type &&
-        (action.itemValue === 'choice' || action.itemValue === 'open-choice') &&
-        !draft.qItems[action.linkId].answerOption
-    ) {
-        const system = createSystemUUID();
-        draft.qItems[action.linkId] = {
-            ...draft.qItems[action.linkId],
-            answerOption: [createNewAnswerOption(system), createNewAnswerOption(system)],
-        };
-    } else if (
-        action.itemProperty === IItemProperty.type &&
-        action.itemValue !== 'choice' &&
-        action.itemValue !== 'open-choice' &&
-        draft.qItems[action.linkId].answerOption
-    ) {
-        draft.qItems[action.linkId].answerOption = undefined;
     }
 }
 

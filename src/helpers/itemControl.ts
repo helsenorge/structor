@@ -1,19 +1,35 @@
-import { QuestionnaireItem } from '../types/fhir';
-import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { Extension, QuestionnaireItem } from '../types/fhir';
+import { IExtentionType, IQuestionnaireItemType, IValueSetSystem } from '../types/IQuestionnareItemType';
 import { getEnumKeyByString } from './enumHelper';
-import { CodingSystemType } from './systemHelper';
 
 export enum ItemControlType {
     inline = 'inline',
     help = 'help',
     sidebar = 'sidebar',
     dropdown = 'drop-down',
+    autocomplete = 'autocomplete',
     highlight = 'highlight',
     summary = 'summary',
     checkbox = 'check-box',
+    radioButton = 'radio-button',
     yearMonth = 'yearMonth',
     year = 'year',
+    receiverComponent = 'receiver-component',
 }
+
+export const createItemControlExtension = (itemControlType: ItemControlType): Extension => {
+    return {
+        url: IExtentionType.itemControl,
+        valueCodeableConcept: {
+            coding: [
+                {
+                    system: IValueSetSystem.itemControlValueSet,
+                    code: itemControlType,
+                },
+            ],
+        },
+    };
+};
 
 const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefined => {
     const itemControlExtension = item?.extension?.find((x) => x.url === IExtentionType.itemControl);
@@ -34,12 +50,16 @@ export const isIgnorableItem = (item: QuestionnaireItem, parentItem?: Questionna
     return isItemControlHelp(item) || isItemControlSidebar(item) || isItemControlInline(parentItem);
 };
 
-export const isTqqcOptionReferenceItem = (item: QuestionnaireItem): boolean => {
-    return item.code?.find((x) => x.system === CodingSystemType.valueSetTqqc) !== undefined;
+export const isItemControlReceiverComponent = (item: QuestionnaireItem): boolean => {
+    return getItemControlType(item) === ItemControlType.receiverComponent;
 };
 
 export const isItemControlDropDown = (item: QuestionnaireItem): boolean => {
     return getItemControlType(item) === ItemControlType.dropdown;
+};
+
+export const isItemControlAutocomplete = (item: QuestionnaireItem): boolean => {
+    return getItemControlType(item) === ItemControlType.autocomplete;
 };
 
 export const isItemControlCheckbox = (item: QuestionnaireItem): boolean => {

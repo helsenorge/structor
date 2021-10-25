@@ -25,6 +25,7 @@ textarea {
     font-size: inherit;
     font-family: inherit;
     line-height: inherit;
+    resize: vertical;
 }
 
 iframe {
@@ -47,6 +48,11 @@ body {
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+#root {
+    text-align: center;
+    height: 100%;
 }
 
 :root {
@@ -119,4 +125,15 @@ p {
 }
 .validation-error {
     box-shadow: 0 0 0 4px red;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+.center-text {
+    text-align: center;
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { QuestionnaireItemInitial } from '../../../types/fhir';
+import FormField from '../../FormField/FormField';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 
 type InitialInputTypeBooleanProps = {
@@ -20,7 +21,7 @@ const InitialInputTypeBoolean = (props: InitialInputTypeBooleanProps): JSX.Eleme
     }
 
     return (
-        <div className="form-field">
+        <FormField>
             <SwitchBtn
                 onChange={() => {
                     const newInitialValue = !initialValue;
@@ -32,9 +33,8 @@ const InitialInputTypeBoolean = (props: InitialInputTypeBooleanProps): JSX.Eleme
                 }}
                 value={initialValue}
                 label={t('Initial value')}
-                initial={true}
             />
-        </div>
+        </FormField>
     );
 };
 

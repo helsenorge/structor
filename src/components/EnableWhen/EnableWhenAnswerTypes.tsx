@@ -13,6 +13,8 @@ import DateTimePicker from '../DatePicker/DateTimePicker';
 import Select from '../Select/Select';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { isRecipientList } from '../../helpers/QuestionHelper';
+import InputField from '../InputField/inputField';
+import { isItemControlReceiverComponent } from '../../helpers/itemControl';
 
 interface Props {
     conditionItem: QuestionnaireItem;
@@ -35,6 +37,16 @@ const EnableWhenAnswerTypes = ({
     const { t } = useTranslation();
     const { qContained } = state;
 
+    const getRecipients = (item: QuestionnaireItem): ValueSetComposeIncludeConcept[] => {
+        return (
+            item.extension
+                ?.filter((ext) => ext.url === IExtentionType.optionReference)
+                .map((ext) => {
+                    return { code: ext.valueReference?.reference || '', display: ext.valueReference?.display };
+                }) || []
+        );
+    };
+
     const getChoices = (item: QuestionnaireItem): ValueSetComposeIncludeConcept[] => {
         if (item.answerOption) {
             return item.answerOption.map((x) => {
@@ -47,14 +59,6 @@ const EnableWhenAnswerTypes = ({
                     return { code: x.code, display: x.display };
                 });
             }
-        } else if (isRecipientList(item)) {
-            return (
-                item.extension
-                    ?.filter((ext) => ext.url === IExtentionType.optionReference)
-                    .map((ext) => {
-                        return { code: ext.valueReference?.reference || '', display: ext.valueReference?.display };
-                    }) || []
-            );
         }
         return [];
     };
@@ -69,40 +73,50 @@ const EnableWhenAnswerTypes = ({
     };
 
     const getSelectedChoiceValue = (): string | undefined => {
-        const selectedValue = enableWhen.answerCoding?.code || enableWhen.answerReference?.reference;
-        let systemMatch = true;
-        if (!isRecipientList(conditionItem)) {
-            const system = getSystem(selectedValue || '');
-            systemMatch = !!system && system === enableWhen.answerCoding?.system;
-        }
-
+        const selectedValue = enableWhen.answerCoding?.code;
+        const system = getSystem(selectedValue || '');
+        const systemMatch = !!system && system === enableWhen.answerCoding?.system;
         return systemMatch ? getChoices(conditionItem).find((x) => x.code === selectedValue)?.code : undefined;
+    };
+
+    const getSelectedRecipient = (): string | undefined => {
+        const selectedValue = enableWhen.answerReference?.reference;
+        return getRecipients(conditionItem).find((x) => x.code === selectedValue)?.code;
     };
 
     return (
         <>
-            {(conditionItem.type === IQuestionnaireItemType.choice ||
-                conditionItem.type === IQuestionnaireItemType.openChoice) && (
-                <Select
-                    placeholder={t('Choose an option..')}
-                    options={getChoices(conditionItem)}
-                    value={getSelectedChoiceValue()}
-                    onChange={(event) => {
-                        const getUpdatedEnableWhen = (ew: QuestionnaireItemEnableWhen, value: string) => {
-                            return isRecipientList(conditionItem)
+            {isItemControlReceiverComponent(conditionItem) && (
+                <InputField
+                    defaultValue={enableWhen.answerReference?.reference || ''}
+                    onBlur={(event) => {
+                        const copy = itemEnableWhen?.map((x, ewIndex) => {
+                            return index === ewIndex
                                 ? {
-                                      ...ew,
+                                      ...x,
                                       answerReference: {
-                                          reference: value,
+                                          reference: event.target.value,
                                       },
                                   }
-                                : {
-                                      ...ew,
-                                      answerCoding: {
-                                          system: getSystem(event.target.value),
-                                          code: value,
-                                      },
-                                  };
+                                : x;
+                        });
+                        dispatchUpdateItemEnableWhen(copy);
+                    }}
+                />
+            )}
+            {isRecipientList(conditionItem) && (
+                <Select
+                    placeholder={t('Choose an option..')}
+                    options={getRecipients(conditionItem)}
+                    value={getSelectedRecipient()}
+                    onChange={(event) => {
+                        const getUpdatedEnableWhen = (ew: QuestionnaireItemEnableWhen, value: string) => {
+                            return {
+                                ...ew,
+                                answerReference: {
+                                    reference: value,
+                                },
+                            };
                         };
 
                         const copy = itemEnableWhen?.map((x, ewIndex) => {
@@ -112,6 +126,32 @@ const EnableWhenAnswerTypes = ({
                     }}
                 />
             )}
+            {!isRecipientList(conditionItem) &&
+                !isItemControlReceiverComponent(conditionItem) &&
+                (conditionItem.type === IQuestionnaireItemType.choice ||
+                    conditionItem.type === IQuestionnaireItemType.openChoice) && (
+                    <Select
+                        placeholder={t('Choose an option..')}
+                        options={getChoices(conditionItem)}
+                        value={getSelectedChoiceValue()}
+                        onChange={(event) => {
+                            const getUpdatedEnableWhen = (ew: QuestionnaireItemEnableWhen, value: string) => {
+                                return {
+                                    ...ew,
+                                    answerCoding: {
+                                        system: getSystem(event.target.value),
+                                        code: value,
+                                    },
+                                };
+                            };
+
+                            const copy = itemEnableWhen?.map((x, ewIndex) => {
+                                return index === ewIndex ? getUpdatedEnableWhen(x, event.target.value) : x;
+                            });
+                            dispatchUpdateItemEnableWhen(copy);
+                        }}
+                    />
+                )}
             {conditionItem.type === IQuestionnaireItemType.boolean && (
                 <Select
                     placeholder={t('Choose an option..')}
@@ -226,7 +266,7 @@ const EnableWhenAnswerTypes = ({
             )}
             {(conditionItem.type === IQuestionnaireItemType.string ||
                 conditionItem.type === IQuestionnaireItemType.text) && (
-                <input
+                <InputField
                     defaultValue={enableWhen.answerString || ''}
                     onBlur={(event) => {
                         const copy = itemEnableWhen?.map((x, ewIndex) => {

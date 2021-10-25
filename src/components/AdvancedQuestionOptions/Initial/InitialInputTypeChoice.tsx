@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { QuestionnaireItem, QuestionnaireItemInitial } from '../../../types/fhir';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
+import FormField from '../../FormField/FormField';
 
 type InitialInputTypeChoiceProps = {
     item: QuestionnaireItem;
@@ -59,6 +60,7 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
                         props.dispatchAction(newInitial);
                     }}
                 />
+                {` `}
                 <label htmlFor={initialOption.code}>{initialOption.display}</label>
             </div>
         );
@@ -109,24 +111,21 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
     };
 
     return (
-        <>
-            <div className="form-field">
-                <SwitchBtn
-                    initial
-                    label={t('Initial value')}
-                    onChange={() => {
-                        const newInitialValueEnabled = !initialValueEnabled;
-                        setInitialValueEnabled(newInitialValueEnabled);
-                        if (!newInitialValueEnabled) {
-                            setInitialValue('');
-                            props.dispatchAction(undefined);
-                        }
-                    }}
-                    value={initialValueEnabled}
-                />
-                {initialValueEnabled && renderAnswerOptions()}
-            </div>
-        </>
+        <FormField>
+            <SwitchBtn
+                label={t('Initial value')}
+                onChange={() => {
+                    const newInitialValueEnabled = !initialValueEnabled;
+                    setInitialValueEnabled(newInitialValueEnabled);
+                    if (!newInitialValueEnabled) {
+                        setInitialValue('');
+                        props.dispatchAction(undefined);
+                    }
+                }}
+                value={initialValueEnabled}
+            />
+            {initialValueEnabled && renderAnswerOptions()}
+        </FormField>
     );
 };
 

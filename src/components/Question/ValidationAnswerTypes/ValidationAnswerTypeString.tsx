@@ -6,6 +6,7 @@ import { TreeContext } from '../../../store/treeStore/treeStore';
 import { Extension, QuestionnaireItem } from '../../../types/fhir';
 import { IItemProperty, IExtentionType } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
+import InputField from '../../InputField/inputField';
 import Select from '../../Select/Select';
 
 const CUSTOM_REGEX_OPTION = 'CUSTOM';
@@ -109,7 +110,7 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                 )}
             </FormField>
             <FormField label={t('Enter custom error message')}>
-                <input
+                <InputField
                     defaultValue={validationText}
                     onChange={(event) => {
                         if (!event.target.value) {

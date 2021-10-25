@@ -1,14 +1,25 @@
 import React, { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     label?: string;
+    sublabel?: string;
+    isOptional?: boolean;
     children?: ReactNode;
 };
 
-const FormField = ({ label, children }: Props): JSX.Element => {
+const FormField = ({ label, sublabel, isOptional, children }: Props): JSX.Element => {
+    const { t } = useTranslation();
+
     return (
         <div className="form-field">
-            <label>{label}</label>
+            {label && (
+                <label>
+                    <span>{label}</span>
+                    {isOptional && <span className="form-field__optional">{` (${t('Optional')})`}</span>}
+                </label>
+            )}
+            {sublabel && <div>{sublabel}</div>}
             {children}
         </div>
     );

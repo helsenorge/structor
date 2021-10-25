@@ -10,36 +10,21 @@ import {
     ValueSet,
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
-import {
-    IExtentionType,
-    IItemProperty,
-    IQuestionnaireItemType,
-    IValueSetSystem,
-} from '../../types/IQuestionnareItemType';
+import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 
-import {
-    deleteChildItemsAction,
-    newItemAction,
-    removeItemAttributeAction,
-    updateItemAction,
-} from '../../store/treeStore/treeActions';
-import itemType, {
-    ATTACHMENT_DEFAULT_MAX_SIZE,
-    typeIsSupportingValidation,
-    valueSetTqqcCoding,
-} from '../../helpers/QuestionHelper';
-import { createDropdown, removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
-import { isTqqcOptionReferenceItem, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
+import { updateItemAction } from '../../store/treeStore/treeActions';
+import { isRecipientList } from '../../helpers/QuestionHelper';
+import { createMarkdownExtension, removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
+import { isItemControlInline, isItemControlReceiverComponent, isItemControlHighlight } from '../../helpers/itemControl';
 
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
 import AdvancedQuestionOptions from '../AdvancedQuestionOptions/AdvancedQuestionOptions';
 import Choice from './QuestionType/Choice';
 import EnableWhen from '../EnableWhen/EnableWhen';
-import Inline from './QuestionType/Inline';
+import Infotext from './QuestionType/Infotext';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import PredefinedValueSet from './QuestionType/PredefinedValueSet';
-import Select from '../Select/Select';
+
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
 import Codes from '../AdvancedQuestionOptions/Code/Codes';
@@ -48,6 +33,12 @@ import FormField from '../FormField/FormField';
 import UnitTypeSelector from './UnitType/UnitTypeSelector';
 import { DateType } from './QuestionType/DateType';
 import { ValidationErrors } from '../../helpers/orphanValidation';
+import {
+    canTypeBeRequired,
+    canTypeBeValidated,
+    canTypeHaveSublabel,
+    getItemDisplayType,
+} from '../../helpers/questionTypeFeatures';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -64,23 +55,11 @@ const Question = (props: QuestionProps): JSX.Element => {
     const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(!!props.item._text);
     const codeElements = props.item.code ? `(${props.item.code.length})` : '';
 
-    const dispatchNewChildItem = (type?: IQuestionnaireItemType): void => {
-        props.dispatch(newItemAction(type || IQuestionnaireItemType.group, [...props.parentArray, props.item.linkId]));
-    };
-
     const dispatchUpdateItem = (
         name: IItemProperty,
         value: string | boolean | QuestionnaireItemAnswerOption[] | Element | Extension[] | undefined,
     ): void => {
         props.dispatch(updateItemAction(props.item.linkId, name, value));
-    };
-
-    const dispatchRemoveAttribute = (name: IItemProperty): void => {
-        props.dispatch(removeItemAttributeAction(props.item.linkId, name));
-    };
-
-    const dispatchClearExtensions = (): void => {
-        props.dispatch(updateItemAction(props.item.linkId, IItemProperty.extension, []));
     };
 
     const getLabelText = (): string => {
@@ -97,144 +76,57 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     const dispatchUpdateMarkdownLabel = (newLabel: string): void => {
-        const markdownValue = {
-            extension: [
-                {
-                    url: IExtentionType.markdown,
-                    valueMarkdown: newLabel,
-                },
-            ],
-        };
+        const markdownValue = createMarkdownExtension(newLabel);
 
         dispatchUpdateItem(IItemProperty._text, markdownValue);
         // update text with same value. Text is used in condition in enableWhen
         dispatchUpdateItem(IItemProperty.text, newLabel);
     };
 
-    const respondType = (param: string) => {
-        if (props.item.answerValueSet && param === IQuestionnaireItemType.choice) {
-            return <PredefinedValueSet item={props.item} selectedValueSet={props.item.answerValueSet} />;
+    const respondType = (): JSX.Element => {
+        if (isItemControlReceiverComponent(props.item)) {
+            return <div>{t('Recipient component is configured in Helsenorge admin')}</div>;
         }
-        if (isItemControlInline(props.item)) {
-            return <Inline linkId={props.item.linkId} parentArray={props.parentArray} />;
+        if (
+            isItemControlInline(props.item) ||
+            isItemControlHighlight(props.item) ||
+            props.item.type === IQuestionnaireItemType.display
+        ) {
+            return <Infotext item={props.item} parentArray={props.parentArray} />;
         }
-
-        if (isTqqcOptionReferenceItem(props.item)) {
+        if (isRecipientList(props.item)) {
             return <OptionReference item={props.item} />;
         }
-
-        switch (param) {
-            case IQuestionnaireItemType.date:
-                return (
-                    <div className="form-field">
-                        <label></label>
-                        <DateType item={props.item} dispatch={props.dispatch} />
-                    </div>
-                );
-            case IQuestionnaireItemType.choice:
-                return <Choice item={props.item} />;
-            case IQuestionnaireItemType.openChoice:
-                return <Choice item={props.item} />;
-            case IQuestionnaireItemType.quantity:
-                return <UnitTypeSelector item={props.item} />;
-            default:
-                return '';
+        if (props.item.type === IQuestionnaireItemType.date || props.item.type === IQuestionnaireItemType.dateTime) {
+            return <DateType item={props.item} dispatch={props.dispatch} />;
         }
-    };
-
-    const handleDisplayQuestionType = () => {
-        if (props.item.answerValueSet && props.item.type === IQuestionnaireItemType.choice) {
-            return IQuestionnaireItemType.predefined;
+        if (
+            props.item.type === IQuestionnaireItemType.choice ||
+            props.item.type === IQuestionnaireItemType.openChoice
+        ) {
+            return <Choice item={props.item} />;
         }
-        if (props.item.type === IQuestionnaireItemType.integer || props.item.type === IQuestionnaireItemType.decimal) {
-            return IQuestionnaireItemType.number;
+        if (props.item.type === IQuestionnaireItemType.quantity) {
+            return <UnitTypeSelector item={props.item} />;
         }
-
-        if (isTqqcOptionReferenceItem(props.item)) {
-            return IQuestionnaireItemType.address;
+        if (props.item.type === IQuestionnaireItemType.string || props.item.type === IQuestionnaireItemType.text) {
+            return (
+                <FormField>
+                    <SwitchBtn
+                        label={t('Multi-line textfield')}
+                        value={props.item.type === IQuestionnaireItemType.text}
+                        onChange={() => {
+                            if (props.item.type === IQuestionnaireItemType.text) {
+                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.string);
+                            } else {
+                                dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.text);
+                            }
+                        }}
+                    />
+                </FormField>
+            );
         }
-        if (isItemControlInline(props.item)) {
-            return IQuestionnaireItemType.inline;
-        }
-        return props.item.type;
-    };
-
-    const handleQuestionareTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const previousType = handleDisplayQuestionType();
-        const newType = event.target.value;
-
-        dispatchClearExtensions();
-        addDefaultExtensionsAndAttributesForItemType(newType);
-        cleanupChildItems(previousType);
-
-        if (newType === IQuestionnaireItemType.predefined) {
-            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
-            dispatchUpdateItem(IItemProperty.answerValueSet, '#');
-            dispatchRemoveAttribute(IItemProperty.answerOption);
-        } else if (newType === IQuestionnaireItemType.number) {
-            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.integer);
-            dispatchRemoveAttribute(IItemProperty.answerValueSet);
-        } else if (newType === IQuestionnaireItemType.address) {
-            dispatchRemoveAttribute(IItemProperty.answerValueSet);
-            dispatchRemoveAttribute(IItemProperty.answerOption);
-            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.choice);
-        } else if (newType === IQuestionnaireItemType.inline) {
-            dispatchUpdateItem(IItemProperty.type, IQuestionnaireItemType.text);
-            dispatchNewChildItem(IQuestionnaireItemType.display);
-        } else {
-            dispatchUpdateItem(IItemProperty.type, newType);
-            dispatchRemoveAttribute(IItemProperty.answerValueSet);
-        }
-    };
-
-    function cleanupChildItems(previousType: string) {
-        if (previousType === IQuestionnaireItemType.address) {
-            dispatchRemoveAttribute(IItemProperty.code);
-        }
-        if (previousType === IQuestionnaireItemType.inline) {
-            props.dispatch(deleteChildItemsAction(props.item.linkId, props.parentArray));
-        }
-    }
-
-    const addDefaultExtensionsAndAttributesForItemType = (type: string) => {
-        if (type === IQuestionnaireItemType.attachment) {
-            const extension = {
-                url: IExtentionType.maxSize,
-                valueDecimal: ATTACHMENT_DEFAULT_MAX_SIZE,
-            };
-            setItemExtension(props.item, extension, props.dispatch);
-        }
-
-        if (type === IQuestionnaireItemType.inline) {
-            const extension = {
-                url: IExtentionType.itemControl,
-                valueCodeableConcept: {
-                    coding: [{ system: IValueSetSystem.itemControlValueSet, code: ItemControlType.inline }],
-                },
-            };
-
-            setItemExtension(props.item, extension, props.dispatch);
-        }
-
-        if (type === IQuestionnaireItemType.address) {
-            setItemExtension(props.item, createDropdown, props.dispatch);
-            dispatchUpdateItem(IItemProperty.code, [valueSetTqqcCoding]);
-        }
-    };
-
-    const isSublabelSupported = (): boolean => {
-        const isInlineItem = isItemControlInline(props.item);
-        return (
-            !isInlineItem &&
-            props.item.type !== IQuestionnaireItemType.group &&
-            props.item.type !== IQuestionnaireItemType.display &&
-            props.item.type !== IQuestionnaireItemType.boolean
-        );
-    };
-
-    const getHighlightExtensionValue = () => {
-        const hasItemControl = props.item.extension?.find((x) => x.url === IExtentionType.itemControl);
-        return hasItemControl?.valueCodeableConcept?.coding?.find((x) => x.code === ItemControlType.highlight);
+        return <></>;
     };
 
     const enableWhenCount =
@@ -243,58 +135,11 @@ const Question = (props: QuestionProps): JSX.Element => {
     return (
         <div className="question" id={props.item.linkId}>
             <div className="question-form">
-                <div className="form-field">
-                    <label>{t('Select type')}</label>
-                    <Select
-                        value={handleDisplayQuestionType()}
-                        options={itemType}
-                        onChange={handleQuestionareTypeChange}
-                    />
-                </div>
+                <h2 className="question-type-header">{t(getItemDisplayType(props.item))}</h2>
                 <div className="horizontal">
-                    {props.item.type !== IQuestionnaireItemType.group &&
-                        props.item.type !== IQuestionnaireItemType.display &&
-                        !isItemControlInline(props.item) && (
-                            <div className="form-field ">
-                                <SwitchBtn
-                                    label={t('Mandatory')}
-                                    initial
-                                    value={props.item.required || false}
-                                    onChange={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
-                                />
-                            </div>
-                        )}
-                    {(props.item.type === IQuestionnaireItemType.display || !!getHighlightExtensionValue()) && (
-                        <div className="form-field ">
-                            <SwitchBtn
-                                label={t('Highlight')}
-                                initial
-                                value={!!getHighlightExtensionValue() || false}
-                                onChange={() => {
-                                    if (getHighlightExtensionValue()) {
-                                        removeItemExtension(props.item, IExtentionType.itemControl, props.dispatch);
-                                    } else {
-                                        const extension = {
-                                            url: IExtentionType.itemControl,
-                                            valueCodeableConcept: {
-                                                coding: [
-                                                    {
-                                                        system: IValueSetSystem.itemControlValueSet,
-                                                        code: ItemControlType.highlight,
-                                                    },
-                                                ],
-                                            },
-                                        };
-                                        setItemExtension(props.item, extension, props.dispatch);
-                                    }
-                                }}
-                            />
-                        </div>
-                    )}
-                    <div className="form-field">
+                    <FormField>
                         <SwitchBtn
                             label={t('Text formatting')}
-                            initial
                             value={isMarkdownActivated}
                             onChange={() => {
                                 const newIsMarkdownEnabled = !isMarkdownActivated;
@@ -308,7 +153,16 @@ const Question = (props: QuestionProps): JSX.Element => {
                                 }
                             }}
                         />
-                    </div>
+                    </FormField>
+                    {canTypeBeRequired(props.item) && (
+                        <FormField>
+                            <SwitchBtn
+                                label={t('Mandatory')}
+                                value={props.item.required || false}
+                                onChange={() => dispatchUpdateItem(IItemProperty.required, !props.item.required)}
+                            />
+                        </FormField>
+                    )}
                 </div>
                 <FormField label={t('Text')}>
                     {isMarkdownActivated ? (
@@ -322,8 +176,8 @@ const Question = (props: QuestionProps): JSX.Element => {
                         />
                     )}
                 </FormField>
-                {isSublabelSupported() && (
-                    <FormField label={t('Sublabel')}>
+                {canTypeHaveSublabel(props.item) && (
+                    <FormField label={t('Sublabel')} isOptional>
                         <MarkdownEditor
                             data={getSublabelText()}
                             onBlur={(newValue: string) => {
@@ -340,31 +194,27 @@ const Question = (props: QuestionProps): JSX.Element => {
                         />
                     </FormField>
                 )}
-                {respondType(props.item.type)}
+                {respondType()}
             </div>
             <div className="question-addons">
-                {typeIsSupportingValidation(handleDisplayQuestionType() as IQuestionnaireItemType) && (
+                {canTypeBeValidated(props.item) && (
                     <Accordion title={t('Add validation')}>
                         <ValidationAnswerTypes item={props.item} />
                     </Accordion>
                 )}
                 <Accordion title={`${t('Enable when')} ${enableWhenCount}`}>
-                    <div>
-                        <EnableWhen
-                            getItem={props.getItem}
-                            conditionalArray={props.conditionalArray}
-                            linkId={props.item.linkId}
-                            enableWhen={props.item.enableWhen || []}
-                            containedResources={props.containedResources}
-                            itemValidationErrors={props.itemValidationErrors}
-                        />
-                    </div>
+                    <EnableWhen
+                        getItem={props.getItem}
+                        conditionalArray={props.conditionalArray}
+                        linkId={props.item.linkId}
+                        enableWhen={props.item.enableWhen || []}
+                        containedResources={props.containedResources}
+                        itemValidationErrors={props.itemValidationErrors}
+                    />
                 </Accordion>
-                {props.item.type !== IQuestionnaireItemType.display && (
-                    <Accordion title={`${t('Code')} ${codeElements}`}>
-                        <Codes linkId={props.item.linkId} itemValidationErrors={props.itemValidationErrors} />
-                    </Accordion>
-                )}
+                <Accordion title={`${t('Code')} ${codeElements}`}>
+                    <Codes linkId={props.item.linkId} itemValidationErrors={props.itemValidationErrors} />
+                </Accordion>
                 <Accordion title={t('Advanced settings')}>
                     <AdvancedQuestionOptions item={props.item} parentArray={props.parentArray} />
                 </Accordion>

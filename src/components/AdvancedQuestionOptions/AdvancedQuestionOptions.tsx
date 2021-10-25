@@ -1,6 +1,6 @@
 import React, { FocusEvent, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TreeContext } from '../../store/treeStore/treeStore';
+import { findTreeArray, TreeContext } from '../../store/treeStore/treeStore';
 import { Extension, QuestionnaireItem } from '../../types/fhir';
 import {
     deleteItemAction,
@@ -10,22 +10,28 @@ import {
 } from '../../store/treeStore/treeActions';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
-import {
-    IExtentionType,
-    IItemProperty,
-    IQuestionnaireItemType,
-    IValueSetSystem,
-} from '../../types/IQuestionnareItemType';
+import { IExtentionType, IItemProperty } from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import { isItemControlHelp, isItemControlInline, ItemControlType } from '../../helpers/itemControl';
+import { createItemControlExtension, isItemControlHelp, ItemControlType } from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
 import CalculatedExpression from './CalculatedExpression/CalculatedExpression';
-import { removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
+import { createMarkdownExtension, removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
+import InputField from '../InputField/inputField';
+import {
+    canTypeBeBeriket,
+    canTypeBeReadonly,
+    canTypeBeRepeatable,
+    canTypeHaveCalculatedExpressionExtension,
+    canTypeHaveHelp,
+    canTypeHaveInitialValue,
+    canTypeHavePlaceholderText,
+    canTypeHaveSummary,
+} from '../../helpers/questionTypeFeatures';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -39,41 +45,25 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     const [linkId, setLinkId] = useState(item.linkId);
     const { qItems, qOrder } = state;
 
-    const isInitialApplicable =
-        item.type !== IQuestionnaireItemType.display && item.type !== IQuestionnaireItemType.group;
-
-    const isCalculatedExpressionApplicable =
-        item.type === IQuestionnaireItemType.integer ||
-        item.type === IQuestionnaireItemType.decimal ||
-        item.type === IQuestionnaireItemType.quantity;
-
     const dispatchUpdateItem = (name: IItemProperty, value: boolean) => {
         dispatch(updateItemAction(item.linkId, name, value));
     };
 
     const dispatchUpdateItemHelpText = (id: string, value: string) => {
-        const newValue = {
-            extension: [
-                {
-                    url: IExtentionType.markdown,
-                    valueMarkdown: value,
-                },
-            ],
-        };
-
+        const newValue = createMarkdownExtension(value);
         dispatch(updateItemAction(id, IItemProperty._text, newValue));
     };
 
     const dispatchHelpText = () => {
-        const textItem = getHelpTextItem();
-        if (textItem.exist && textItem.linkId) {
-            dispatch(deleteItemAction(textItem.linkId, [...parentArray, item.linkId]));
+        const helpItem = getHelpTextItem();
+        if (helpItem) {
+            dispatch(deleteItemAction(helpItem.linkId, [...parentArray, item.linkId]));
         } else {
             dispatch(newItemHelpIconAction([...parentArray, item.linkId]));
         }
     };
 
-    function dispatchUpdateLinkId(event: FocusEvent<HTMLInputElement>) {
+    function dispatchUpdateLinkId(event: FocusEvent<HTMLInputElement>): void {
         // Verify no duplicates
         if (isDuplicateLinkId || event.target.value === item.linkId) {
             return;
@@ -81,56 +71,36 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         dispatch(updateLinkIdAction(item.linkId, event.target.value, parentArray));
     }
 
-    function validateLinkId(linkIdToValidate: string) {
-        if (qItems[linkIdToValidate] === undefined || linkIdToValidate === item.linkId) {
-            setDuplicateLinkId(false);
-        } else {
-            setDuplicateLinkId(true);
-        }
+    function validateLinkId(linkIdToValidate: string): void {
+        const hasLinkIdConflict = !(qItems[linkIdToValidate] === undefined || linkIdToValidate === item.linkId);
+        setDuplicateLinkId(hasLinkIdConflict);
     }
 
-    function resetLinkId() {
+    function resetLinkId(): void {
         setLinkId(item.linkId);
         validateLinkId(item.linkId);
     }
 
-    function search(value: string, reverse = false) {
-        const parrentLinkID = parentArray.length > 0 ? parentArray[0] : item.linkId;
-        const hierarchyToSearch = qOrder.findIndex((x) => x.linkId === parrentLinkID);
-        const stack = [qOrder[hierarchyToSearch]];
-        while (stack.length) {
-            const node = stack[reverse ? 'pop' : 'shift']();
-            if (node && node['linkId'] === value) return node;
-            node && node.items && stack.push(...node.items);
+    const handleHelpText = (markdown: string): void => {
+        const helpItem = getHelpTextItem();
+        if (helpItem) {
+            dispatchUpdateItemHelpText(helpItem.linkId, markdown);
         }
-        return null;
-    }
-
-    const handleHelpText = (markdown: string) => {
-        const children = search(item.linkId)?.items;
-        children?.forEach((x) => {
-            if (isItemControlHelp(qItems[x.linkId])) {
-                dispatchUpdateItemHelpText(qItems[x.linkId].linkId, markdown);
-            }
-        });
     };
 
-    const getHelpTextItem = () => {
-        const children = search(item.linkId)?.items;
-        let _text = '';
-        let exist = false;
-        let helpTextLinkId = '';
-        children?.forEach((x) => {
-            if (isItemControlHelp(qItems[x.linkId])) {
-                _text =
-                    qItems[x.linkId]._text?.extension?.find((ex) => ex.url === IExtentionType.markdown)
-                        ?.valueMarkdown ?? '';
-                exist = true;
-                helpTextLinkId = x.linkId;
-            }
-        });
+    const getHelpText = (): string => {
+        const helpItem = getHelpTextItem();
+        if (helpItem) {
+            return helpItem._text?.extension?.find((ex) => ex.url === IExtentionType.markdown)?.valueMarkdown ?? '';
+        }
+        return '';
+    };
 
-        return { exist, linkId: helpTextLinkId, _text };
+    const getHelpTextItem = (): QuestionnaireItem | undefined => {
+        const selfArray = findTreeArray(parentArray, qOrder);
+        const selfOrder = selfArray.find((node) => node.linkId === item.linkId)?.items || [];
+        const helpItem = selfOrder.find((child) => isItemControlHelp(qItems[child.linkId]));
+        return helpItem ? qItems[helpItem.linkId] : undefined;
     };
 
     const handleExtension = (extension: Extension) => {
@@ -149,135 +119,119 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         x.valueCodeableConcept?.coding?.filter((y) => y.code === ItemControlType.summary),
     );
 
-    const isInlineItem = isItemControlInline(item);
     const helpTextItem = getHelpTextItem();
     const isHiddenItem = item.extension?.some((ext) => ext.url === IExtentionType.hidden && ext.valueBoolean);
-    const isBerikingSupported =
-        item.type === IQuestionnaireItemType.string ||
-        item.type === IQuestionnaireItemType.boolean ||
-        item.type === IQuestionnaireItemType.quantity ||
-        item.type === IQuestionnaireItemType.integer ||
-        item.type === IQuestionnaireItemType.decimal;
 
     return (
         <>
-            {item.type !== IQuestionnaireItemType.display && (
-                <>
-                    <div className="horizontal equal">
-                        <div className="form-field">
-                            <SwitchBtn
-                                onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
-                                value={item.readOnly || false}
-                                label={t('Read-only')}
-                                initial
-                            />
-                        </div>
-                        <div className="form-field">
-                            <SwitchBtn
-                                onChange={() => {
-                                    if (isHiddenItem) {
-                                        removeItemExtension(item, IExtentionType.hidden, dispatch);
-                                    } else {
-                                        const extension = {
-                                            url: IExtentionType.hidden,
-                                            valueBoolean: true,
-                                        };
-                                        setItemExtension(item, extension, dispatch);
-                                    }
-                                }}
-                                value={isHiddenItem || false}
-                                label={t('Hidden field')}
-                                initial
-                            />
-                        </div>
-                    </div>
-                    <div className="form-field">
+            {canTypeBeReadonly(item) && (
+                <div className="horizontal equal">
+                    <FormField>
                         <SwitchBtn
-                            onChange={(): void => {
-                                if (item.repeats) {
-                                    removeItemExtension(
-                                        item,
-                                        [
-                                            IExtentionType.repeatstext,
-                                            IExtentionType.minOccurs,
-                                            IExtentionType.maxOccurs,
-                                        ],
-                                        dispatch,
-                                    );
-                                }
-                                dispatchUpdateItem(IItemProperty.repeats, !item.repeats);
-                            }}
-                            value={item.repeats || false}
-                            label={t('Repeatable')}
-                            initial
+                            onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
+                            value={item.readOnly || false}
+                            label={t('Read-only')}
                         />
-                        {item.repeats && (
-                            <>
-                                <FormField label={t('Repeat button text')}>
+                    </FormField>
+                    <FormField>
+                        <SwitchBtn
+                            onChange={() => {
+                                if (isHiddenItem) {
+                                    removeItemExtension(item, IExtentionType.hidden, dispatch);
+                                } else {
+                                    const extension = {
+                                        url: IExtentionType.hidden,
+                                        valueBoolean: true,
+                                    };
+                                    setItemExtension(item, extension, dispatch);
+                                }
+                            }}
+                            value={isHiddenItem || false}
+                            label={t('Hidden field')}
+                        />
+                    </FormField>
+                </div>
+            )}
+            {canTypeBeRepeatable(item) && (
+                <FormField>
+                    <SwitchBtn
+                        onChange={(): void => {
+                            if (item.repeats) {
+                                removeItemExtension(
+                                    item,
+                                    [IExtentionType.repeatstext, IExtentionType.minOccurs, IExtentionType.maxOccurs],
+                                    dispatch,
+                                );
+                            }
+                            dispatchUpdateItem(IItemProperty.repeats, !item.repeats);
+                        }}
+                        value={item.repeats || false}
+                        label={t('Repeatable')}
+                    />
+                    {item.repeats && (
+                        <>
+                            <FormField label={t('Repeat button text')}>
+                                <InputField
+                                    defaultValue={getRepeatsText}
+                                    onBlur={(e) => {
+                                        if (e.target.value) {
+                                            handleExtension({
+                                                url: IExtentionType.repeatstext,
+                                                valueString: e.target.value,
+                                            });
+                                        } else {
+                                            removeExtension(IExtentionType.repeatstext);
+                                        }
+                                    }}
+                                />
+                            </FormField>
+                            <div className="horizontal equal">
+                                <FormField label={t('Min answers')}>
                                     <input
-                                        defaultValue={getRepeatsText}
-                                        onBlur={(e) => {
-                                            if (e.target.value) {
-                                                handleExtension({
-                                                    url: IExtentionType.repeatstext,
-                                                    valueString: e.target.value,
-                                                });
+                                        type="number"
+                                        defaultValue={minOccurs}
+                                        onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                            if (!event.target.value) {
+                                                removeExtension(IExtentionType.minOccurs);
                                             } else {
-                                                removeExtension(IExtentionType.repeatstext);
+                                                const extension = {
+                                                    url: IExtentionType.minOccurs,
+                                                    valueInteger: parseInt(event.target.value),
+                                                };
+                                                handleExtension(extension);
                                             }
                                         }}
                                     />
                                 </FormField>
-                                <div className="horizontal equal">
-                                    <div className="form-field">
-                                        <label className="#">{t('Min answers')}</label>
-                                        <input
-                                            type="number"
-                                            defaultValue={minOccurs}
-                                            onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                                if (!event.target.value) {
-                                                    removeExtension(IExtentionType.minOccurs);
-                                                } else {
-                                                    const extension = {
-                                                        url: IExtentionType.minOccurs,
-                                                        valueInteger: parseInt(event.target.value),
-                                                    };
-                                                    handleExtension(extension);
-                                                }
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="form-field">
-                                        <label className="#">{t('Max answers')}</label>
-                                        <input
-                                            type="number"
-                                            defaultValue={maxOccurs}
-                                            onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                                if (!event.target.value) {
-                                                    removeExtension(IExtentionType.maxOccurs);
-                                                } else {
-                                                    const extension = {
-                                                        url: IExtentionType.maxOccurs,
-                                                        valueInteger: parseInt(event.target.value),
-                                                    };
-                                                    handleExtension(extension);
-                                                }
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </>
+                                <FormField label={t('max answers')}>
+                                    <input
+                                        type="number"
+                                        defaultValue={maxOccurs}
+                                        onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                            if (!event.target.value) {
+                                                removeExtension(IExtentionType.maxOccurs);
+                                            } else {
+                                                const extension = {
+                                                    url: IExtentionType.maxOccurs,
+                                                    valueInteger: parseInt(event.target.value),
+                                                };
+                                                handleExtension(extension);
+                                            }
+                                        }}
+                                    />
+                                </FormField>
+                            </div>
+                        </>
+                    )}
+                </FormField>
             )}
-            {isCalculatedExpressionApplicable && (
+            {canTypeHaveCalculatedExpressionExtension(item) && (
                 <CalculatedExpression item={item} updateExtension={handleExtension} removeExtension={removeExtension} />
             )}
-            {isBerikingSupported && <FhirPathSelect item={item} />}
-            {(item.type === IQuestionnaireItemType.string || item.type === IQuestionnaireItemType.text) && (
+            {canTypeBeBeriket(item) && <FhirPathSelect item={item} />}
+            {canTypeHavePlaceholderText(item) && (
                 <FormField label={t('Placeholder text')}>
-                    <input
+                    <InputField
                         defaultValue={getPlaceholder}
                         onBlur={(e) => {
                             if (e.target.value) {
@@ -292,7 +246,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     />
                 </FormField>
             )}
-            {isInitialApplicable && (
+            {canTypeHaveInitialValue(item) && (
                 <div className="horizontal full">
                     <Initial item={item} />
                 </div>
@@ -300,7 +254,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             <div className="horizontal full">
                 <div className={`form-field ${isDuplicateLinkId ? 'field-error' : ''}`}>
                     <label>{t('LinkId')}</label>
-                    <input
+                    <InputField
                         value={linkId}
                         onChange={(event) => {
                             const {
@@ -322,48 +276,37 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     )}
                 </div>
             </div>
-            {!isInlineItem && (
+            {canTypeHaveHelp(item) && (
                 <div>
                     <FormField>
                         <SwitchBtn
                             onChange={() => dispatchHelpText()}
-                            value={helpTextItem.exist}
+                            value={!!helpTextItem}
                             label={t('Enable help button')}
-                            initial
                         />
                     </FormField>
-                    {helpTextItem.exist && (
+                    {!!helpTextItem && (
                         <FormField label={t('Enter a helping text')}>
-                            <MarkdownEditor data={helpTextItem._text} onBlur={handleHelpText} />
+                            <MarkdownEditor data={getHelpText()} onBlur={handleHelpText} />
                         </FormField>
                     )}
                 </div>
             )}
             <GuidanceAction item={item} />
             <GuidanceParam item={item} />
-            {item.type === IQuestionnaireItemType.group && (
+            {canTypeHaveSummary(item) && (
                 <FormField>
                     <SwitchBtn
                         onChange={() => {
                             if (hasSummaryExtension) {
                                 removeExtension(IExtentionType.itemControl);
                             } else {
-                                handleExtension({
-                                    url: IExtentionType.itemControl,
-                                    valueCodeableConcept: {
-                                        coding: [
-                                            {
-                                                system: IValueSetSystem.itemControlValueSet,
-                                                code: ItemControlType.summary,
-                                            },
-                                        ],
-                                    },
-                                });
+                                const newExtension = createItemControlExtension(ItemControlType.summary);
+                                handleExtension(newExtension);
                             }
                         }}
                         value={hasSummaryExtension}
                         label={t('Enable summary')}
-                        initial
                     />
                 </FormField>
             )}

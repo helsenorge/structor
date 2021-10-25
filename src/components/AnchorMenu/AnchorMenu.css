@@ -1,29 +1,51 @@
 .questionnaire-overview {
     text-align: center;
-    margin-top: 80px;
+    margin-top: 70px;
     margin-left: auto;
     margin-right: auto;
-    max-width: 70%;
+    position: relative;
+    max-width: 80%;
+    flex: 1;
+    display: flex;
+}
+
+/* override styling */
+.questionnaire-overview .rst__nodeContent {
+    right: 0;
+}
+
+.questionnaire-overview .rst__placeholder {
+    max-width: 100%;
+    height: 150px;
+}
+
+.questionnaire-overview__toolbox {
+    width: 200px;
+}
+
+.questionnaire-overview__treeview {
     flex: 1;
 }
 
-.anchor-menu {
-    background: white;
-    color: black;
-    margin-top: 52px;
-    margin-left: 10px;
-    width: 400px;
-    min-height: calc(100vh - 52px);
-    max-height: calc(100vh - 52px);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    opacity: 0.6;
-    transition: opacity 0.3s ease-in-out;
-    position: fixed;
-    overflow-y: auto;
+.anchor-menu__placeholder {
+    position: absolute;
+    top: 45px;
+    text-align: center;
+    left: 200px;
+    right: 0;
+    pointer-events: none;
 }
 
+.anchor-menu__item--selected {
+    box-shadow: 0 0 0 4px var(--primary-2);
+}
 .anchor-menu__item:hover .item-button {
     visibility: visible;
+}
+
+/* override styling */
+.anchor-menu__item .rst__rowLabel {
+    flex: 1;
 }
 
 .anchor-menu__inneritem {
@@ -35,30 +57,27 @@
 .anchor-menu__inneritem:hover {
     background-color: #e4e4e4;
 }
+.anchor-menu__topitem .rst__rowContents {
+    /* override styling */
+    background-color: #e4f7f9;
+}
 
 .anchor-menu__title {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.anchor-menu:hover {
-    opacity: 1;
-}
-
-.align-header {
-    text-align: center;
-    font-size: 24px;
-}
-
-.truncate {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.anchor-menu__dragcomponent {
+    padding: 8px 16px;
+    background: #e4f7f9;
+    margin: 5px;
     text-align: left;
+    color: black;
+    border: 1px solid #cae7ed;
+    cursor: grab;
 }
-
-.center-text {
-    text-align: center;
+.anchor-menu__dragcomponent:active {
+    cursor: grabbing;
 }
 
 .folder-icon {
@@ -80,44 +99,4 @@
     min-width: 25px;
     margin-right: 0.5rem;
     background: url('../../images/icons/help-circle-outline.svg') no-repeat center;
-}
-
-.anchor-content {
-    padding: 16px;
-    display: flex;
-    align-items: center;
-}
-
-.add-icon.large {
-    height: 60px;
-    width: 60px;
-}
-
-.floating-button {
-    background-color: #fafafa;
-    bottom: 0;
-    left: 0;
-    opacity: 0.8;
-    position: fixed;
-    padding: 15px;
-}
-
-.new-item-button {
-    align-items: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    font: inherit;
-    font-size: 18px;
-    font-weight: 700;
-    margin: auto;
-    outline: inherit;
-    padding: 0;
-}
-
-.toggle {
-    display: flex;
-    justify-content: flex-end;
-    margin: 10px;
 }

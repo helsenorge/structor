@@ -5,30 +5,21 @@ import { ActionType } from '../../../store/treeStore/treeStore';
 import { QuestionnaireItem } from '../../../types/fhir';
 
 import './ItemButtons.css';
-import { deleteItemAction, duplicateItemAction, newItemAction } from '../../../store/treeStore/treeActions';
-import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
-import {
-    isItemControlHelp,
-    isItemControlHighlight,
-    isItemControlInline,
-    isItemControlSidebar,
-} from '../../../helpers/itemControl';
+import { deleteItemAction, duplicateItemAction } from '../../../store/treeStore/treeActions';
 
 export const generateItemButtons = (
     t: TFunction<'translation'>,
-    item: QuestionnaireItem,
+    item: QuestionnaireItem | undefined,
     parentArray: Array<string>,
     showLabel: boolean,
     dispatch: React.Dispatch<ActionType>,
 ): JSX.Element[] => {
+    if (!item) {
+        return [];
+    }
     const dispatchDeleteItem = (event: MouseEvent<HTMLButtonElement>): void => {
         event.stopPropagation();
         dispatch(deleteItemAction(item.linkId, parentArray));
-    };
-
-    const dispatchAddChildItem = (event: MouseEvent<HTMLButtonElement>): void => {
-        event.stopPropagation();
-        dispatch(newItemAction(IQuestionnaireItemType.group, [...parentArray, item.linkId]));
     };
 
     const dispatchDuplicateItem = (event: MouseEvent<HTMLButtonElement>): void => {
@@ -40,28 +31,7 @@ export const generateItemButtons = (
         return `item-button ${showLabel ? 'item-button--visible' : ''}`;
     };
 
-    const canCreateChild =
-        item.type !== IQuestionnaireItemType.display &&
-        !isItemControlInline(item) &&
-        !isItemControlHighlight(item) &&
-        !isItemControlSidebar(item) &&
-        !isItemControlHelp(item);
-
     return [
-        ...(canCreateChild
-            ? [
-                  <button
-                      key="new-item-button"
-                      className={getClassNames()}
-                      onClick={dispatchAddChildItem}
-                      aria-label="Add child element"
-                      title={t('Follow-up question')}
-                  >
-                      <i className="add-icon" />
-                      {showLabel && <label>{t('Create follow-up question')}</label>}
-                  </button>,
-              ]
-            : []),
         <button
             key="duplicate-item-button"
             className={getClassNames()}

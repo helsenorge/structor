@@ -1,0 +1,17 @@
+.frontpage {
+    padding-top: 80px;
+}
+
+.frontpage__infotext {
+    max-width: 400px;
+    margin: 2rem auto;
+}
+
+.key-value {
+    display: flex;
+}
+
+.key-value div:first-of-type {
+    font-weight: 600;
+    width: 120px;
+}

@@ -17,7 +17,6 @@
 
 .accordion:after {
     content: '+'; /* Unicode character for "plus" sign (+) */
-    font-size: 13px;
     float: right;
     margin-left: 5px;
     font-size: 24px;

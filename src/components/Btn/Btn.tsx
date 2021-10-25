@@ -6,14 +6,13 @@ type BtnProps = {
     onClick?: () => void;
     id?: string;
     type?: 'button' | 'submit' | 'reset';
-    icon?: 'ion-plus-round' | 'ion-ios-cloud-upload-outline';
+    icon?: 'ion-plus-round' | 'ion-ios-trash';
     variant?: 'primary' | 'secondary';
-    size?: 'small' | 'large';
 };
 
-const Btn = ({ title, onClick, id, type = 'button', icon, variant, size }: BtnProps): JSX.Element => {
+const Btn = ({ title, onClick, id, type = 'button', icon, variant }: BtnProps): JSX.Element => {
     return (
-        <button type={type} className={`regular-btn ${variant} ${size}`} id={id} onClick={onClick}>
+        <button type={type} className={`regular-btn ${variant}`} id={id} onClick={onClick}>
             {icon && <i className={icon} />} {title}
         </button>
     );

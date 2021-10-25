@@ -1,13 +1,15 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { languageToIsoString, translateQuestionnaire } from '../../helpers/FhirToTreeStateMapper';
+import { generateMainQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { supportedLanguages, getLanguageFromCode, getLanguagesInUse } from '../../helpers/LanguageHelper';
 import {
     addQuestionnaireLanguageAction,
     removeQuestionnaireLanguageAction,
     updateQuestionnaireMetadataAction,
 } from '../../store/treeStore/treeActions';
-import { TreeContext } from '../../store/treeStore/treeStore';
-import { Meta } from '../../types/fhir';
+import { Translation, TreeContext } from '../../store/treeStore/treeStore';
+import { Meta, Questionnaire } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import Accordion from '../Accordion/Accordion';
 import Btn from '../Btn/Btn';
@@ -22,22 +24,95 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const { qMetadata, qAdditionalLanguages } = state;
+    const uploadRef = React.useRef<HTMLInputElement>(null);
 
     const [selectedLang, setSelectedLang] = useState('');
+    const [fileUploadError, setFileUploadError] = useState<string>('');
 
     const updateMeta = (propName: IQuestionnaireMetadataType, value: string | Meta) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
-    const dispatchAddLanguage = (selectedLanguage: string) => {
-        if (selectedLanguage && qAdditionalLanguages !== undefined && !qAdditionalLanguages[selectedLanguage]) {
-            dispatch(addQuestionnaireLanguageAction(selectedLanguage));
+    function buildTranslationBase(): Translation {
+        return { items: {}, sidebarItems: {}, metaData: {}, contained: {} };
+    }
+
+    const dispatchAddLanguage = (selectedLanguage: string, translation: Translation) => {
+        const isoLanguage = languageToIsoString(selectedLanguage);
+        if (isoLanguage && qAdditionalLanguages !== undefined && !qAdditionalLanguages[isoLanguage]) {
+            dispatch(addQuestionnaireLanguageAction(isoLanguage, translation));
         }
     };
 
     const removeAdditionalLanguage = (language: string) => {
-        if (qAdditionalLanguages !== undefined && qAdditionalLanguages[language]) {
-            dispatch(removeQuestionnaireLanguageAction(language));
+        const isoLanguage = languageToIsoString(language);
+        if (qAdditionalLanguages !== undefined && qAdditionalLanguages[isoLanguage]) {
+            dispatch(removeQuestionnaireLanguageAction(isoLanguage));
+        }
+    };
+
+    const validateUploadedLanguageFile = (
+        translatedQuestionnaire: Questionnaire,
+        mainQuestionnaire: Questionnaire,
+    ): string => {
+        const isoLanguage = translatedQuestionnaire.language
+            ? languageToIsoString(translatedQuestionnaire.language)
+            : '';
+
+        // validate that this file is a questionnaire:
+        if (translatedQuestionnaire.resourceType !== 'Questionnaire') {
+            return 'Uploaded file is not a questionnaire';
+        }
+        // validate that name is the same as the main questionnaire:
+        else if (translatedQuestionnaire.name && mainQuestionnaire.name !== translatedQuestionnaire.name) {
+            return 'Technical name of uploaded questionnaire is not equal to questionnaire technical name';
+        }
+        // validate that a questionnaire with this language does not already exist
+        else if (
+            (qAdditionalLanguages && qAdditionalLanguages[isoLanguage]) ||
+            mainQuestionnaire.language === isoLanguage
+        ) {
+            return 'Questionnaire with the same language as uploaded questionnaire already exists';
+        }
+        return '';
+    };
+
+    const onLoadUploadedFile = (event: ProgressEvent<FileReader>) => {
+        if (event.target?.result) {
+            try {
+                const translatedQuestionnaire = JSON.parse(event.target.result as string);
+                const mainQuestionnaire = generateMainQuestionnaire(state);
+                const isoLanguage = translatedQuestionnaire.language
+                    ? languageToIsoString(translatedQuestionnaire.language)
+                    : '';
+
+                const error = validateUploadedLanguageFile(translatedQuestionnaire, mainQuestionnaire);
+                if (error) {
+                    setFileUploadError(error);
+                } else {
+                    const translation = translateQuestionnaire(mainQuestionnaire, translatedQuestionnaire);
+                    dispatchAddLanguage(isoLanguage || '', translation);
+                }
+            } catch {
+                setFileUploadError('Could not read uploaded file');
+            }
+
+            // Reset file input
+            if (uploadRef.current) {
+                uploadRef.current.value = '';
+            }
+        }
+    };
+
+    const uploadLangaugeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const reader = new FileReader();
+        reader.onload = onLoadUploadedFile;
+        reader.onerror = () => {
+            setFileUploadError('Could not read uploaded file');
+        };
+        if (event.target.files && event.target.files[0]) {
+            reader.readAsText(event.target.files[0]);
+            setFileUploadError('');
         }
     };
 
@@ -79,29 +154,48 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                 </FormField>
                 {getUnusedLanguage.length > 0 && (
                     <div className="horizontal equal">
-                        <div style={{ marginBottom: 10, width: '100%' }}>
-                            <FormField label={t('Add support for additional language')}>
-                                <Select
-                                    placeholder={t('Select a language..')}
-                                    options={getUnusedLanguage}
-                                    value={selectedLang}
-                                    onChange={(event) => setSelectedLang(event.target.value)}
-                                />
-                            </FormField>
-                        </div>
-                        <div style={{ marginBottom: 10 }}>
+                        <FormField label={t('Add support for additional language')}>
+                            <Select
+                                placeholder={t('Select a language..')}
+                                options={getUnusedLanguage}
+                                value={selectedLang}
+                                onChange={(event) => setSelectedLang(event.target.value)}
+                            />
+                        </FormField>
+                        <div>
                             <Btn
                                 title={t('+ Add new language')}
                                 type="button"
-                                size="small"
                                 variant="primary"
                                 onClick={() => {
-                                    dispatchAddLanguage(selectedLang);
+                                    dispatchAddLanguage(selectedLang, buildTranslationBase());
                                     setSelectedLang('');
                                 }}
                             />
                         </div>
                     </div>
+                )}
+                <input
+                    type="file"
+                    ref={uploadRef}
+                    onChange={uploadLangaugeFile}
+                    accept="application/JSON"
+                    style={{ display: 'none' }}
+                />
+                <div>
+                    <Btn
+                        title={t('Upload questionnaire in additional language')}
+                        type="button"
+                        variant="secondary"
+                        onClick={() => {
+                            uploadRef.current?.click();
+                        }}
+                    />
+                </div>
+                {fileUploadError && (
+                    <ul className="item-validation-error-summary">
+                        <li>{t(fileUploadError)}</li>
+                    </ul>
                 )}
                 {additionalLanguagesInUse.length > 0 && (
                     <div>
@@ -113,14 +207,12 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                                     <Btn
                                         title={t('Delete')}
                                         type="button"
-                                        size="small"
                                         variant="secondary"
                                         onClick={() => removeAdditionalLanguage(language)}
                                     />
                                     <Btn
                                         title={t('Translate')}
                                         type="button"
-                                        size="small"
                                         variant="primary"
                                         onClick={() => {
                                             props.setTranslateLang(language);

@@ -19,15 +19,9 @@
 
 .item-validation-error-summary {
     text-align: left;
-    padding: 1rem;
+    padding: 1rem 2rem;
     background-color: #f7e1d2;
     border-left: 4px solid #b62e1c;
-}
-
-.drawer-header {
-    background-color: var(--primary-2);
-    display: flex;
-    padding: 10px 0;
 }
 
 .item-button-row {

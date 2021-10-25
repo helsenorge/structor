@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { QuestionnaireItemAnswerOption } from '../../../types/fhir';
 import FormField from '../../FormField/FormField';
+import InputField from '../../InputField/inputField';
 
 type TranslateOptionRowProps = {
     option: QuestionnaireItemAnswerOption;
@@ -14,10 +15,10 @@ const TranslateOptionRow = ({ option, translation, onBlur }: TranslateOptionRowP
     return (
         <div className="translation-row">
             <FormField>
-                <input value={option.valueCoding?.display} disabled={true} />
+                <InputField value={option.valueCoding?.display} disabled={true} />
             </FormField>
             <FormField>
-                <input
+                <InputField
                     value={translatedText}
                     onChange={(event) => {
                         setTranslatedText(event.target.value);

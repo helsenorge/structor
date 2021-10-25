@@ -206,31 +206,36 @@ const generateTreeWithTranslations = (
     });
 };
 
-const generateMainQuestionnaire = (state: TreeState, usedValueSet: string[]): Questionnaire => ({
-    ...state.qMetadata,
-    contained: state.qContained?.filter((x) => x.id && usedValueSet?.includes(x.id) && x) as ValueSet[],
-    resourceType: 'Questionnaire',
-    status: state.qMetadata.status || 'draft',
-    item: generateTree(state.qOrder, state.qItems),
-});
+export const generateMainQuestionnaire = (state: TreeState): Questionnaire => {
+    const usedValueSet = getUsedValueSet(state);
+    return {
+        ...state.qMetadata,
+        contained: state.qContained?.filter((x) => x.id && usedValueSet?.includes(x.id) && x) as ValueSet[],
+        resourceType: 'Questionnaire',
+        status: state.qMetadata.status || 'draft',
+        item: generateTree(state.qOrder, state.qItems),
+    };
+};
 
 const generateTranslatedQuestionnaire = (
     state: TreeState,
     languageCode: string,
     languages: Languages,
-    usedValueSet: string[],
-): Questionnaire => ({
-    ...getTranslatedMetadata(state.qMetadata, languages[languageCode]),
-    ...getLanguageData(state.qMetadata, languageCode),
-    contained: getTranslatedContained(state.qContained, languages[languageCode]).filter(
-        (x) => x.id && usedValueSet?.includes(x.id),
-    ),
-    resourceType: 'Questionnaire',
-    status: state.qMetadata.status || 'draft',
-    item: generateTreeWithTranslations(state.qOrder, state.qItems, languageCode, languages),
-});
+): Questionnaire => {
+    const usedValueSet = getUsedValueSet(state);
+    return {
+        ...getTranslatedMetadata(state.qMetadata, languages[languageCode]),
+        ...getLanguageData(state.qMetadata, languageCode),
+        contained: getTranslatedContained(state.qContained, languages[languageCode]).filter(
+            (x) => x.id && usedValueSet?.includes(x.id),
+        ),
+        resourceType: 'Questionnaire',
+        status: state.qMetadata.status || 'draft',
+        item: generateTreeWithTranslations(state.qOrder, state.qItems, languageCode, languages),
+    };
+};
 
-function getUsedValueSet(state: TreeState) {
+export function getUsedValueSet(state: TreeState): string[] {
     const allValueSets = [] as string[];
     Object.keys(state.qItems).forEach(function (linkId) {
         const item = state.qItems[linkId];
@@ -243,16 +248,13 @@ function getUsedValueSet(state: TreeState) {
 }
 
 export const generateQuestionnaire = (state: TreeState): string => {
-    const usedValueSet = getUsedValueSet(state);
     function translateQuestionnaires(): Questionnaire[] {
         const questionnaires: Questionnaire[] = [];
 
         const { qAdditionalLanguages } = state;
         if (qAdditionalLanguages) {
             Object.keys(qAdditionalLanguages).forEach((languageCode) =>
-                questionnaires.push(
-                    generateTranslatedQuestionnaire(state, languageCode, qAdditionalLanguages, usedValueSet),
-                ),
+                questionnaires.push(generateTranslatedQuestionnaire(state, languageCode, qAdditionalLanguages)),
             );
         }
         return questionnaires;
@@ -265,7 +267,7 @@ export const generateQuestionnaire = (state: TreeState): string => {
             type: 'searchset',
             total: Object.keys(state.qAdditionalLanguages).length + 1,
             entry: [
-                { resource: generateMainQuestionnaire(state, usedValueSet) },
+                { resource: generateMainQuestionnaire(state) },
                 ...translateQuestionnaires().map((q) => {
                     return { resource: q };
                 }),
@@ -275,7 +277,7 @@ export const generateQuestionnaire = (state: TreeState): string => {
         return JSON.stringify(bundle, emptyPropertyReplacer);
     }
 
-    return JSON.stringify(generateMainQuestionnaire(state, usedValueSet), emptyPropertyReplacer);
+    return JSON.stringify(generateMainQuestionnaire(state), emptyPropertyReplacer);
 };
 
 const setEnrichmentValues = (
@@ -306,12 +308,11 @@ export const generateQuestionnaireForPreview = (
     selectedGender?: string,
     selectedAge?: string,
 ): Questionnaire => {
-    const usedValueSet = getUsedValueSet(state);
     const { qAdditionalLanguages } = state;
     const questionnaire =
         language && qAdditionalLanguages && qAdditionalLanguages[language]
-            ? generateTranslatedQuestionnaire(state, language, qAdditionalLanguages, usedValueSet)
-            : generateMainQuestionnaire(state, usedValueSet);
+            ? generateTranslatedQuestionnaire(state, language, qAdditionalLanguages)
+            : generateMainQuestionnaire(state);
 
     // replace enrichment values with inital values set in preview:
     const enrichmentValues = [];

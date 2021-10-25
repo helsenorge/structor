@@ -186,11 +186,11 @@ function translateMetadata(to: Questionnaire): MetadataTranslations {
 }
 
 function translateSidebarItem(translationItem: QuestionnaireItem | undefined): SidebarItemTranslation {
-    const markdown = getMarkdownText(translationItem?.extension);
+    const markdown = getMarkdownText(translationItem?._text?.extension);
     return { markdown };
 }
 
-function translateQuestionnaire(mainQuestionnaire: Questionnaire, questionnaire: Questionnaire): Translation {
+export function translateQuestionnaire(mainQuestionnaire: Questionnaire, questionnaire: Questionnaire): Translation {
     const contained = translateContained(
         mainQuestionnaire.contained as Array<ValueSet>,
         questionnaire.contained as Array<ValueSet>,
@@ -198,6 +198,11 @@ function translateQuestionnaire(mainQuestionnaire: Questionnaire, questionnaire:
     const { items, sidebarItems } = translateItems(mainQuestionnaire.item, questionnaire.item);
     const metaData = translateMetadata(questionnaire);
     return { contained, items, metaData, sidebarItems };
+}
+
+export function languageToIsoString(language: string): string {
+    const parts = language.split('-');
+    return `${parts[0]}-${parts[1].toUpperCase()}`;
 }
 
 function extractTranslations(bundle: Bundle): Languages {
@@ -221,7 +226,10 @@ function extractTranslations(bundle: Bundle): Languages {
             }
             return;
         }
-        languages[questionnaire.language] = translateQuestionnaire(mainQuestionnaire, questionnaire);
+        languages[languageToIsoString(questionnaire.language)] = translateQuestionnaire(
+            mainQuestionnaire,
+            questionnaire,
+        );
     });
     return languages;
 }

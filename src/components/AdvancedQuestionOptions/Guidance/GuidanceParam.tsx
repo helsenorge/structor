@@ -14,6 +14,7 @@ import { TreeContext } from '../../../store/treeStore/treeStore';
 
 import FormField from '../../FormField/FormField';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
+import InputField from '../../InputField/inputField';
 
 type GuidanceParamProps = {
     item: QuestionnaireItem;
@@ -61,12 +62,11 @@ const GuidanceParam = (props: GuidanceParamProps): JSX.Element => {
                     onChange={toggleGuidanceParam}
                     value={hasGuidanceParam}
                     label={t('Send as parameter after questionnaire is completed')}
-                    initial
                 />
             </FormField>
             {hasGuidanceParam && (
                 <FormField label={t('Parameter name')}>
-                    <input
+                    <InputField
                         defaultValue={parameterName}
                         placeholder={t('For example hn_frontend_parametername')}
                         onBlur={updateParameterName}

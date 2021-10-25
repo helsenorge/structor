@@ -15,6 +15,7 @@ import {
     DropResult,
     NotDraggingStyle,
 } from 'react-beautiful-dnd';
+import InputField from '../../InputField/inputField';
 
 type Props = {
     item: QuestionnaireItem;
@@ -107,15 +108,6 @@ const OptionReference = ({ item }: Props): JSX.Element => {
 
     return (
         <>
-            <div className="center-text new-option-reference">
-                <Btn
-                    size="small"
-                    type="button"
-                    variant="secondary"
-                    onClick={() => dispatchNewItem()}
-                    title={t('+ Add recipient')}
-                />
-            </div>
             <DragDropContext onDragEnd={handleReorder}>
                 <Droppable droppableId={`droppable-${item.linkId}-option-reference`}>
                     {(provided, snapshot) => (
@@ -143,9 +135,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                         className="reorder-icon"
                                                         aria-label="reorder element"
                                                     />
-                                                    <input
-                                                        autoComplete="off"
-                                                        type="text"
+                                                    <InputField
                                                         name="beskrivelse"
                                                         placeholder={t('Select recipient..')}
                                                         defaultValue={reference.valueReference?.display}
@@ -157,9 +147,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                                                             )
                                                         }
                                                     />
-                                                    <input
-                                                        autoComplete="off"
-                                                        type="text"
+                                                    <InputField
                                                         name="verdi"
                                                         placeholder={t('Select endpoint..')}
                                                         defaultValue={reference.valueReference?.reference}
@@ -190,6 +178,9 @@ const OptionReference = ({ item }: Props): JSX.Element => {
                     )}
                 </Droppable>
             </DragDropContext>
+            <div className="center-text new-option-reference">
+                <Btn type="button" variant="secondary" onClick={() => dispatchNewItem()} title={t('+ Add recipient')} />
+            </div>
         </>
     );
 };

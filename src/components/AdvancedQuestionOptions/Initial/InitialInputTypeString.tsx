@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { QuestionnaireItemInitial } from '../../../types/fhir';
+import FormField from '../../FormField/FormField';
+import InputField from '../../InputField/inputField';
 
 type InitialInputTypeStringProps = {
     initial?: QuestionnaireItemInitial;
@@ -19,9 +21,8 @@ const InitialInputTypeString = (props: InitialInputTypeStringProps): JSX.Element
     }
 
     return (
-        <div className="form-field">
-            <label>{t('Initial value')}</label>
-            <input
+        <FormField label={t('Initial value')}>
+            <InputField
                 value={initialValue}
                 onChange={(event) => setInitialValue(event.target.value)}
                 onBlur={() => {
@@ -31,7 +32,7 @@ const InitialInputTypeString = (props: InitialInputTypeStringProps): JSX.Element
                     props.dispatchAction(newInitial);
                 }}
             />
-        </div>
+        </FormField>
     );
 };
 

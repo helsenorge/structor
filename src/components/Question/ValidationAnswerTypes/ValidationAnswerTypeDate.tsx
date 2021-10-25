@@ -13,6 +13,7 @@ import {
     getDateOperator,
     getDateUnit,
 } from '../../../helpers/fhirPathDateValidation';
+import InputField from '../../InputField/inputField';
 
 type Props = {
     item: QuestionnaireItem;
@@ -94,7 +95,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
     return (
         <>
             <FormField label={t('Enter custom error message')}>
-                <input
+                <InputField
                     defaultValue={validationText}
                     onBlur={(event) => {
                         if (event.target.value) {
@@ -109,7 +110,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                     }}
                 />
             </FormField>
-            <div className="form-field">
+            <FormField>
                 <FhirPathDateValidation
                     descriptionText={t('Min date')}
                     numberValue={fhirPathMinDateNumber}
@@ -154,7 +155,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
                         setMaxDateExpression(newValue, fhirPathMaxDateNumber, fhirPathMaxDateUnit);
                     }}
                 />
-            </div>
+            </FormField>
         </>
     );
 };

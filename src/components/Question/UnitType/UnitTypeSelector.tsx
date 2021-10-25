@@ -13,6 +13,7 @@ import { Coding, Extension, QuestionnaireItem } from '../../../types/fhir';
 import SystemField from '../../FormField/SystemField';
 import { createSystemUUID } from '../../../helpers/systemHelper';
 import { TreeContext } from '../../../store/treeStore/treeStore';
+import InputField from '../../InputField/inputField';
 
 type UnitTypeSelectorProps = {
     item: QuestionnaireItem;
@@ -107,13 +108,13 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
                 <>
                     <div className="horizontal equal">
                         <FormField label={t('Display')}>
-                            <input
+                            <InputField
                                 defaultValue={display}
                                 onBlur={(event) => updateCustomQuantityUnitType('display', event)}
                             />
                         </FormField>
                         <FormField label={t('Code')}>
-                            <input
+                            <InputField
                                 defaultValue={code}
                                 onBlur={(event) => updateCustomQuantityUnitType('code', event)}
                             />
