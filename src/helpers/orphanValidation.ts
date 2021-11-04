@@ -239,7 +239,7 @@ const validateEnableWhen = (
             (qItems[ew.question].type === IQuestionnaireItemType.choice ||
                 qItems[ew.question].type === IQuestionnaireItemType.openChoice)
         ) {
-            if (isRecipientList(qItems[ew.question])) {
+            if (isRecipientList(qItems[ew.question]) && ew.operator !== IOperator.exists) {
                 // does the reference exist?
                 const isMatch = qItems[ew.question].extension?.find(
                     (x) => x.valueReference?.reference === ew.answerReference.reference,
