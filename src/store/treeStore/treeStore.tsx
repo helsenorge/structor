@@ -273,7 +273,10 @@ function createNewItem(draft: TreeState, action: NewItemAction): void {
     if (!action.index && action.index !== 0) {
         arrayToAddItemTo.push(newOrderNode);
     } else {
-        arrayToAddItemTo.splice(action.index, 0, newOrderNode);
+        const ignorableItemsBeforeIndex = arrayToAddItemTo.filter(
+            (x, index) => isIgnorableItem(draft.qItems[x.linkId]) && index <= (action.index || 0),
+        );
+        arrayToAddItemTo.splice(action.index + ignorableItemsBeforeIndex.length, 0, newOrderNode);
     }
 
     const parentItem = draft.qItems[action.order[action.order.length - 1]];
@@ -292,7 +295,13 @@ function moveItem(draft: TreeState, action: MoveItemAction): void {
     if (!action.index && action.index !== 0) {
         arrayToAddItemTo.push({ linkId: action.linkId, items: subTree });
     } else {
-        arrayToAddItemTo.splice(action.index, 0, { linkId: action.linkId, items: subTree });
+        const ignorableItemsBeforeIndex = arrayToAddItemTo.filter(
+            (x, index) => isIgnorableItem(draft.qItems[x.linkId]) && index <= (action.index || 0),
+        );
+        arrayToAddItemTo.splice(action.index + ignorableItemsBeforeIndex.length, 0, {
+            linkId: action.linkId,
+            items: subTree,
+        });
     }
 
     // delete node from qOrder
@@ -541,8 +550,11 @@ function reorderItem(draft: TreeState, action: ReorderItemAction): void {
     if (indexToMove === -1) {
         throw new Error('Could not find item to move');
     }
+    const ignorableItemsBeforeIndex = arrayToReorderFrom.filter(
+        (x, index) => isIgnorableItem(draft.qItems[x.linkId]) && index <= action.newIndex,
+    );
     const movedOrderItem = arrayToReorderFrom.splice(indexToMove, 1);
-    arrayToReorderFrom.splice(action.newIndex, 0, movedOrderItem[0]);
+    arrayToReorderFrom.splice(action.newIndex + ignorableItemsBeforeIndex.length, 0, movedOrderItem[0]);
 }
 
 function updateValueSet(draft: TreeState, action: UpdateValueSetAction): void {
