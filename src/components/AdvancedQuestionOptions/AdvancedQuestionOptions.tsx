@@ -30,6 +30,7 @@ import {
     canTypeHaveHelp,
     canTypeHaveInitialValue,
     canTypeHavePlaceholderText,
+    canTypeHavePrefix,
     canTypeHaveSummary,
 } from '../../helpers/questionTypeFeatures';
 
@@ -276,6 +277,18 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     )}
                 </div>
             </div>
+            {canTypeHavePrefix(item) && (
+                <div className="horizontal full">
+                    <FormField label={t('Prefix')} isOptional>
+                        <InputField
+                            defaultValue={item.prefix}
+                            onBlur={(e) => {
+                                dispatch(updateItemAction(item.linkId, IItemProperty.prefix, e.target.value));
+                            }}
+                        />
+                    </FormField>
+                </div>
+            )}
             {canTypeHaveHelp(item) && (
                 <div>
                     <FormField>
