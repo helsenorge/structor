@@ -53,7 +53,7 @@ interface QuestionProps {
 const Question = (props: QuestionProps): JSX.Element => {
     const { t } = useTranslation();
     const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(!!props.item._text);
-    const codeElements = props.item.code ? `(${props.item.code.length})` : '0';
+    const codeElements = props.item.code ? `(${props.item.code.length})` : '(0)';
 
     const dispatchUpdateItem = (
         name: IItemProperty,
