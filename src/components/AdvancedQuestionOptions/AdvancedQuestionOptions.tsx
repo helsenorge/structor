@@ -125,8 +125,8 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     return (
         <>
-            {canTypeBeReadonly(item) && (
-                <div className="horizontal equal">
+            <div className="horizontal equal">
+                {canTypeBeReadonly(item) && (
                     <FormField>
                         <SwitchBtn
                             onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
@@ -134,25 +134,25 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                             label={t('Read-only')}
                         />
                     </FormField>
-                    <FormField>
-                        <SwitchBtn
-                            onChange={() => {
-                                if (isHiddenItem) {
-                                    removeItemExtension(item, IExtentionType.hidden, dispatch);
-                                } else {
-                                    const extension = {
-                                        url: IExtentionType.hidden,
-                                        valueBoolean: true,
-                                    };
-                                    setItemExtension(item, extension, dispatch);
-                                }
-                            }}
-                            value={isHiddenItem || false}
-                            label={t('Hidden field')}
-                        />
-                    </FormField>
-                </div>
-            )}
+                )}
+                <FormField>
+                    <SwitchBtn
+                        onChange={() => {
+                            if (isHiddenItem) {
+                                removeItemExtension(item, IExtentionType.hidden, dispatch);
+                            } else {
+                                const extension = {
+                                    url: IExtentionType.hidden,
+                                    valueBoolean: true,
+                                };
+                                setItemExtension(item, extension, dispatch);
+                            }
+                        }}
+                        value={isHiddenItem || false}
+                        label={t('Hidden field')}
+                    />
+                </FormField>
+            </div>
             {canTypeBeRepeatable(item) && (
                 <FormField>
                     <SwitchBtn
