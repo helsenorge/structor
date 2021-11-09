@@ -27,7 +27,7 @@ const FormDetailsDrawer = ({ setTranslateLang, closeDrawer, isOpen = false }: Fo
     };
 
     return (
-        <Drawer title="Skjemadetaljer" position="left" visible={isOpen} hide={closeDrawer}>
+        <Drawer title={t('Questionnaire details')} position="left" visible={isOpen} hide={closeDrawer}>
             <div className="form-intro-field">
                 <FormField label={`${t('Title')}:`}>
                     <input

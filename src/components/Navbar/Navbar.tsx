@@ -1,12 +1,10 @@
 import React, { useContext, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import Btn from '../Btn/Btn';
 import MoreIcon from '../../images/icons/ellipsis-horizontal-outline.svg';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import './Navbar.css';
-import PublishModal from '../PublishModal/PublishModal';
 import JSONView from '../JSONView/JSONView';
 import PredefinedValueSetModal from '../PredefinedValueSetModal/PredefinedValueSetModal';
 import ImportValueSet from '../ImportValueSet/ImportValueSet';
@@ -27,19 +25,13 @@ enum MenuItem {
     more = 'more',
 }
 
-type EndSessionPayload = {
-    url: string;
-};
-
 const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props): JSX.Element => {
     const { i18n, t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
-    const history = useHistory();
     const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
     const [showContained, setShowContained] = useState(false);
     const [showImportValueSet, setShowImportValueSet] = useState(false);
     const [showJSONView, setShowJSONView] = useState(false);
-    const [showPublish, setShowPublish] = useState(false);
     const [showValidationErrors, setShowValidationErrors] = useState<boolean>(false);
     const navBarRef = useRef<HTMLDivElement>(null);
     const fileExtension = 'json';
@@ -95,21 +87,6 @@ const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props
         }
     };
 
-    function handleLogin() {
-        history.push('/login');
-    }
-
-    async function endSession() {
-        try {
-            const response = await fetch('.netlify/functions/end-session');
-            const payload = (await response.json()) as EndSessionPayload;
-            sessionStorage.clear();
-            location.href = payload.url;
-        } catch (err) {
-            console.error('Error!', err);
-        }
-    }
-
     const cachedProfile = sessionStorage.getItem('profile');
     const profile = cachedProfile ? JSON.parse(cachedProfile) : null;
 
@@ -159,7 +136,6 @@ const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props
                             }}
                         />
                         <Btn title={t('JSON')} onClick={() => callbackAndHide(() => setShowJSONView(!showJSONView))} />
-                        <Btn title={t('Publish')} onClick={() => callbackAndHide(() => setShowPublish(!showPublish))} />
                         <Btn
                             title={t('Import choices')}
                             onClick={() => callbackAndHide(() => setShowImportValueSet(!showImportValueSet))}
@@ -168,8 +144,6 @@ const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props
                             title={t('Choices')}
                             onClick={() => callbackAndHide(() => setShowContained(!showContained))}
                         />
-                        {!profile && <Btn title={t('Log in')} onClick={handleLogin} />}
-                        {profile && <Btn title={t('Log out')} onClick={endSession} />}
                         {i18n.language !== 'nb-NO' ? (
                             <Btn
                                 title={t('Change to norwegian')}
@@ -203,7 +177,6 @@ const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props
             {showContained && <PredefinedValueSetModal close={() => setShowContained(!showContained)} />}
             {showImportValueSet && <ImportValueSet close={() => setShowImportValueSet(!showImportValueSet)} />}
             {showJSONView && <JSONView showJSONView={() => setShowJSONView(!showJSONView)} />}
-            {showPublish && <PublishModal close={() => setShowPublish(!showPublish)} />}
         </>
     );
 };
