@@ -2,28 +2,22 @@ import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatISO, parseISO } from 'date-fns';
 import {
-    authenticationRequirement,
-    canBePerformedBy,
     isValidId,
     isValidTechnicalName,
     questionnaireStatusOptions,
-    presentationButtons,
-    saveCapability,
     useContextSystem,
 } from '../../helpers/MetadataHelper';
 import Accordion from '../Accordion/Accordion';
-import DateTimePicker from '../DatePicker/DateTimePicker';
+import DatePicker from '../DatePicker/DatePicker';
 import FormField from '../FormField/FormField';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import { ContactDetail, Extension, Meta, UsageContext } from '../../types/fhir';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
-import { IExtentionType, IValueSetSystem, UseContextSystem } from '../../types/IQuestionnareItemType';
-import SwitchBtn from '../SwitchBtn/SwitchBtn';
-import { removeQuestionnaireExtension, setQuestionnaireExtension } from '../../helpers/extensionHelper';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import InputField from '../InputField/inputField';
+import { UseContextSystem } from '../../types/IQuestionnareItemType';
 
 const MetadataEditor = (): JSX.Element => {
     const { t } = useTranslation();
@@ -37,19 +31,6 @@ const MetadataEditor = (): JSX.Element => {
         value: string | Meta | Extension[] | ContactDetail[] | UsageContext[],
     ) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
-    };
-
-    const updateMetaExtension = (extension: Extension) => {
-        setQuestionnaireExtension(qMetadata, extension, dispatch);
-    };
-
-    const removeMetaExtension = (extensionUrl: string) => {
-        removeQuestionnaireExtension(qMetadata, extensionUrl, dispatch);
-    };
-
-    const getGeneratePdfValue = (): boolean => {
-        const extension = qMetadata?.extension?.find((ex) => ex.url === IExtentionType.generatePDF);
-        return extension ? extension.valueBoolean || false : true;
     };
 
     const getUseContextSystem = (): string => {
@@ -66,6 +47,15 @@ const MetadataEditor = (): JSX.Element => {
     return (
         <div id="metadata-editor">
             <Accordion title={t('Questionnaire details')}>
+                <FormField label={`${t('Title')}:`}>
+                    <input
+                        placeholder={t('Title')}
+                        value={state.qMetadata.title}
+                        onChange={(event) => {
+                            updateMeta(IQuestionnaireMetadataType.title, event.target.value);
+                        }}
+                    />
+                </FormField>
                 <FormField label={t('Description')} isOptional>
                     <textarea
                         placeholder={t('Description of questionnaire')}
@@ -121,147 +111,10 @@ const MetadataEditor = (): JSX.Element => {
                         }}
                     />
                 </FormField>
-                <FormField label={t('Helsenorge endpoint')}>
-                    <InputField
-                        placeholder={t('For example Endpoint/35')}
-                        defaultValue={
-                            qMetadata?.extension?.find((ex) => ex.url === IExtentionType.endpoint)?.valueReference
-                                ?.reference ?? ''
-                        }
-                        onBlur={(e) => {
-                            if (!e.target.value) {
-                                removeMetaExtension(IExtentionType.endpoint);
-                            } else {
-                                updateMetaExtension({
-                                    url: IExtentionType.endpoint,
-                                    valueReference: {
-                                        reference: e.target.value,
-                                    },
-                                });
-                            }
-                        }}
-                    />
-                </FormField>
-                <FormField label={t('Button bar display')}>
-                    <RadioBtn
-                        onChange={(newValue: string) => {
-                            if (newValue) {
-                                updateMetaExtension({
-                                    url: IExtentionType.presentationbuttons,
-                                    valueCoding: {
-                                        system: IValueSetSystem.presentationbuttonsValueSet,
-                                        code: newValue,
-                                    },
-                                });
-                            } else {
-                                removeMetaExtension(IExtentionType.presentationbuttons);
-                            }
-                        }}
-                        checked={
-                            qMetadata?.extension?.find((ex) => ex.url === IExtentionType.presentationbuttons)
-                                ?.valueCoding?.code ?? 'sticky'
-                        }
-                        options={presentationButtons}
-                        name={'presentationbuttons-radio'}
-                    />
-                </FormField>
-                <FormField label={t('Describes if user must be logged in to answer questionnaire')}>
-                    <RadioBtn
-                        onChange={(newValue: string) => {
-                            if (newValue) {
-                                updateMetaExtension({
-                                    url: IExtentionType.authenticationRequirement,
-                                    valueCoding: {
-                                        system: IValueSetSystem.authenticationRequirementValueSet,
-                                        code: newValue,
-                                    },
-                                });
-                            } else {
-                                removeMetaExtension(IExtentionType.authenticationRequirement);
-                            }
-                        }}
-                        checked={
-                            qMetadata?.extension?.find((ex) => ex.url === IExtentionType.authenticationRequirement)
-                                ?.valueCoding?.code ?? '3'
-                        }
-                        options={authenticationRequirement}
-                        name={'authenticationRequirement-radio'}
-                    />
-                </FormField>
-                <FormField label={t('Describes if representative can answer questionnaire')}>
-                    <RadioBtn
-                        onChange={(newValue: string) => {
-                            if (newValue) {
-                                updateMetaExtension({
-                                    url: IExtentionType.canBePerformedBy,
-                                    valueCoding: {
-                                        system: IValueSetSystem.canBePerformedByValueSet,
-                                        code: newValue,
-                                    },
-                                });
-                            } else {
-                                removeMetaExtension(IExtentionType.canBePerformedBy);
-                            }
-                        }}
-                        checked={
-                            qMetadata?.extension?.find((ex) => ex.url === IExtentionType.canBePerformedBy)?.valueCoding
-                                ?.code ?? '1'
-                        }
-                        options={canBePerformedBy}
-                        name={'canBePerformedBy-radio'}
-                    />
-                </FormField>
-                <FormField label={t('Save capabilities')}>
-                    <RadioBtn
-                        onChange={(newValue: string) => {
-                            if (newValue) {
-                                updateMetaExtension({
-                                    url: IExtentionType.saveCapability,
-                                    valueCoding: {
-                                        system: IValueSetSystem.saveCapabilityValueSet,
-                                        code: newValue,
-                                    },
-                                });
-                            } else {
-                                removeMetaExtension(IExtentionType.saveCapability);
-                            }
-                        }}
-                        checked={
-                            qMetadata?.extension?.find((ex) => ex.url === IExtentionType.saveCapability)?.valueCoding
-                                ?.code ?? '1'
-                        }
-                        options={saveCapability}
-                        name={'saveCapability-radio'}
-                    />
-                </FormField>
-                <FormField label={t('Access control')}>
-                    <RadioBtn
-                        checked={getUseContextSystem()}
-                        onChange={(newValue: string) => {
-                            const updateValue = [
-                                {
-                                    code: {
-                                        system: 'http://hl7.org/fhir/ValueSet/usage-context-type',
-                                        code: 'focus',
-                                        display: 'Clinical Focus',
-                                    },
-                                    valueCodeableConcept: {
-                                        coding: [
-                                            {
-                                                system: newValue,
-                                            },
-                                        ],
-                                    },
-                                },
-                            ];
-                            updateMeta(IQuestionnaireMetadataType.useContext, updateValue);
-                        }}
-                        options={useContextSystem}
-                        name={'useContext-radio'}
-                    />
-                </FormField>
+
                 <FormField label={t('Date')}>
-                    <DateTimePicker
+                    <DatePicker
+                        type="date"
                         selected={qMetadata.date ? parseISO(qMetadata.date) : undefined}
                         disabled={false}
                         nowButton={true}
@@ -285,7 +138,7 @@ const MetadataEditor = (): JSX.Element => {
                         onBlur={(e) => updateMeta(IQuestionnaireMetadataType.publisher, e.target.value)}
                     />
                 </FormField>
-                <FormField label={t('Contact (URL to contact adress)')}>
+                <FormField label={t('Contact (URL to contact address)')}>
                     <InputField
                         defaultValue={
                             qMetadata.contact && qMetadata.contact.length > 0 ? qMetadata.contact[0].name : ''
@@ -313,44 +166,30 @@ const MetadataEditor = (): JSX.Element => {
                         onBlur={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
                     />
                 </FormField>
-                <FormField>
-                    <SwitchBtn
-                        onChange={() =>
-                            updateMetaExtension({
-                                url: IExtentionType.generatePDF,
-                                valueBoolean: !getGeneratePdfValue(),
-                            })
-                        }
-                        value={getGeneratePdfValue()}
-                        label={t('Generate PDF on submit')}
-                    />
-                </FormField>
-                <FormField>
-                    <SwitchBtn
-                        onChange={() => {
-                            const hasNavigatorExtension = !!qMetadata?.extension?.find(
-                                (ex) => ex.url === IExtentionType.navigator,
-                            );
-                            if (hasNavigatorExtension) {
-                                // remove extension
-                                removeMetaExtension(IExtentionType.navigator);
-                            } else {
-                                // set extension
-                                updateMetaExtension({
-                                    url: IExtentionType.navigator,
+                <FormField label={t('Access control')}>
+                    <RadioBtn
+                        checked={getUseContextSystem()}
+                        onChange={(newValue: string) => {
+                            const updateValue = [
+                                {
+                                    code: {
+                                        system: 'http://hl7.org/fhir/ValueSet/usage-context-type',
+                                        code: 'focus',
+                                        display: 'Clinical Focus',
+                                    },
                                     valueCodeableConcept: {
                                         coding: [
                                             {
-                                                system: IExtentionType.navigatorCodeSystem,
-                                                code: 'navigator',
+                                                system: newValue,
                                             },
                                         ],
                                     },
-                                });
-                            }
+                                },
+                            ];
+                            updateMeta(IQuestionnaireMetadataType.useContext, updateValue);
                         }}
-                        value={!!qMetadata?.extension?.find((ex) => ex.url === IExtentionType.navigator) || false}
-                        label={t('Use navigator')}
+                        options={useContextSystem}
+                        name={'useContext-radio'}
                     />
                 </FormField>
             </Accordion>
