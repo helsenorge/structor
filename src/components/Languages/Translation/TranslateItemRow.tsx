@@ -93,7 +93,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
         header: string,
         textValue: string,
         propertyName: TranslatableItemProperty,
-        isMarkdown: boolean,
+        isMarkdownField: boolean,
     ): JSX.Element {
         const itemPropertyTranslation = getItemPropertyTranslation(
             targetLanguage,
@@ -106,14 +106,14 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                 <div className="translation-group-header">{header}</div>
                 <div className="translation-row">
                     <FormField>
-                        {isMarkdown ? (
+                        {isMarkdownField ? (
                             <MarkdownEditor data={textValue} disabled={true} />
                         ) : (
                             <textarea defaultValue={textValue} disabled={true} />
                         )}
                     </FormField>
                     <FormField>
-                        {isMarkdown ? (
+                        {isMarkdownField ? (
                             <MarkdownEditor
                                 data={itemPropertyTranslation}
                                 onBlur={(newValue: string) => dispatchUpdateItemTranslation(newValue, propertyName)}

@@ -15,32 +15,30 @@ import { ValueSet } from '../types/fhir';
 export const exportTranslations = (
     qMetadata: IQuestionnaireMetadata,
     qItems: Items,
-    qContained: ValueSet[] | undefined,
+    valueSetsToTranslate: ValueSet[],
     additionalLanguagesInUse: string[],
-    usedValueSet: string[],
     qAdditionalLanguages: Languages | undefined,
 ): void => {
     let returnString = `key,${[qMetadata.language, ...additionalLanguagesInUse]}\n`;
+    const additionalLanguages = qAdditionalLanguages || {};
     // add metadata translations: all fields from translatableMetadata.
     translatableMetadata.forEach((prop) => {
         const translatedValues = additionalLanguagesInUse.map((lang) => {
-            return (qAdditionalLanguages || {})[lang].metaData[prop.propertyName];
+            return additionalLanguages[lang].metaData[prop.propertyName];
         });
         const stringValues = escapeValues([qMetadata[prop.propertyName], ...translatedValues]);
         returnString = returnString + `metadata.${prop.propertyName},${stringValues}\n`;
     });
 
     // add predefined valueset translations
-    const valueSetsToTranslate = qContained?.filter((x) => x.id && usedValueSet?.includes(x.id) && x);
     if (valueSetsToTranslate && valueSetsToTranslate.length > 0) {
         // for each valueset, for each row, add one translation row
         valueSetsToTranslate.forEach((valueSet) => {
             valueSet.compose?.include[0].concept?.forEach((coding) => {
                 const translatedValues = additionalLanguagesInUse.map((lang) => {
-                    return (qAdditionalLanguages || {})[lang].contained[valueSet.id || ''].concepts[coding.code || ''];
+                    return additionalLanguages[lang].contained[valueSet.id || ''].concepts[coding.code || ''];
                 });
                 const stringValues = escapeValues([coding.display, ...translatedValues]);
-                //state.qAdditionalLanguages[lang].contained[valueSet.id].concepts[coding.code]
 
                 returnString = returnString + `valueSet[${valueSet.id}][${coding.code}].display,${stringValues}\n`;
             });
@@ -56,13 +54,13 @@ export const exportTranslations = (
             if (isItemControlSidebar(item)) {
                 translatedValues.push(
                     ...additionalLanguagesInUse.map((lang) => {
-                        return (qAdditionalLanguages || {})[lang].sidebarItems[linkId].markdown;
+                        return additionalLanguages[lang].sidebarItems[linkId].markdown;
                     }),
                 );
             } else {
                 translatedValues.push(
                     ...additionalLanguagesInUse.map((lang) => {
-                        return (qAdditionalLanguages || {})[lang].items[linkId].text;
+                        return additionalLanguages[lang].items[linkId].text;
                     }),
                 );
             }
@@ -75,7 +73,7 @@ export const exportTranslations = (
                 `item[${linkId}]._text.extension[${IExtentionType.markdown}].valueMarkdown,${stringValues}\n`;
         } else {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
-                return (qAdditionalLanguages || {})[lang].items[linkId].text;
+                return additionalLanguages[lang].items[linkId].text;
             });
             const stringValues = escapeValues([item.text, ...translatedValues]);
             returnString = returnString + `item[${linkId}].text,${stringValues}\n`;
@@ -83,7 +81,7 @@ export const exportTranslations = (
 
         if (getSublabel(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
-                return (qAdditionalLanguages || {})[lang].items[linkId].sublabel;
+                return additionalLanguages[lang].items[linkId].sublabel;
             });
             const stringValues = escapeValues([getSublabel(item), ...translatedValues]);
             returnString =
@@ -92,7 +90,7 @@ export const exportTranslations = (
 
         if (getRepeatsText(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
-                return (qAdditionalLanguages || {})[lang].items[linkId].repeatsText;
+                return additionalLanguages[lang].items[linkId].repeatsText;
             });
             const stringValues = escapeValues([getRepeatsText(item), ...translatedValues]);
             returnString =
@@ -101,7 +99,7 @@ export const exportTranslations = (
 
         if (getValidationMessage(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
-                return (qAdditionalLanguages || {})[lang].items[linkId].validationText;
+                return additionalLanguages[lang].items[linkId].validationText;
             });
             const stringValues = escapeValues([getValidationMessage(item), ...translatedValues]);
             returnString =
@@ -111,7 +109,7 @@ export const exportTranslations = (
 
         if (getPlaceHolderText(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
-                return (qAdditionalLanguages || {})[lang].items[linkId].entryFormatText;
+                return additionalLanguages[lang].items[linkId].entryFormatText;
             });
             const stringValues = escapeValues([getPlaceHolderText(item), ...translatedValues]);
             returnString =
@@ -120,7 +118,7 @@ export const exportTranslations = (
 
         if (getInitialText(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
-                return (qAdditionalLanguages || {})[lang].items[linkId].initial;
+                return additionalLanguages[lang].items[linkId].initial;
             });
             const stringValues = escapeValues([getInitialText(item), ...translatedValues]);
             returnString = returnString + `item[${linkId}].initial[0].valueString,${stringValues}\n`;
@@ -128,7 +126,7 @@ export const exportTranslations = (
 
         if (item.answerOption) {
             const translatedOptions = additionalLanguagesInUse.map((lang) => {
-                return (qAdditionalLanguages || {})[lang].items[linkId].answerOptions;
+                return additionalLanguages[lang].items[linkId].answerOptions;
             });
             item.answerOption.forEach((x) => {
                 const stringValues = escapeValues([

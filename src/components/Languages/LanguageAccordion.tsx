@@ -201,12 +201,14 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                             variant="secondary"
                             onClick={() => {
                                 const usedValueSet = getUsedValueSet(state);
+                                const valueSetsToTranslate = qContained?.filter(
+                                    (x) => x.id && usedValueSet?.includes(x.id) && x,
+                                );
                                 exportTranslations(
                                     qMetadata,
                                     qItems,
-                                    qContained,
+                                    valueSetsToTranslate || [],
                                     additionalLanguagesInUse,
-                                    usedValueSet,
                                     qAdditionalLanguages,
                                 );
                             }}
