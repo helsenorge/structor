@@ -21,7 +21,32 @@ export const exportTranslations = (
 ): void => {
     let returnString = `key,${[qMetadata.language, ...additionalLanguagesInUse]}\n`;
     const additionalLanguages = qAdditionalLanguages || {};
+
     // add metadata translations: all fields from translatableMetadata.
+    returnString = returnString + exportMetadataTranslations(qMetadata, additionalLanguagesInUse, additionalLanguages);
+
+    // add predefined valueset translations
+    returnString =
+        returnString + exportPredefinedValueSets(valueSetsToTranslate, additionalLanguagesInUse, additionalLanguages);
+
+    // add item translations: text/_text, sublabel, repeatsText, validationMessage, placeholderText, initial, answerOption.display
+    returnString = returnString + exportItemTranslations(qItems, additionalLanguagesInUse, additionalLanguages);
+
+    const a = document.createElement('a');
+    a.download = 'test.csv';
+    a.href = 'data:' + 'text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(returnString);
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+};
+
+const exportMetadataTranslations = (
+    qMetadata: IQuestionnaireMetadata,
+    additionalLanguagesInUse: string[],
+    additionalLanguages: Languages,
+): string => {
+    let returnString = '';
     translatableMetadata.forEach((prop) => {
         const translatedValues = additionalLanguagesInUse.map((lang) => {
             return additionalLanguages[lang].metaData[prop.propertyName];
@@ -29,9 +54,16 @@ export const exportTranslations = (
         const stringValues = escapeValues([qMetadata[prop.propertyName], ...translatedValues]);
         returnString = returnString + `metadata.${prop.propertyName},${stringValues}\n`;
     });
+    return returnString;
+};
 
-    // add predefined valueset translations
-    if (valueSetsToTranslate && valueSetsToTranslate.length > 0) {
+const exportPredefinedValueSets = (
+    valueSetsToTranslate: ValueSet[],
+    additionalLanguagesInUse: string[],
+    additionalLanguages: Languages,
+): string => {
+    let returnString = '';
+    if (valueSetsToTranslate.length > 0) {
         // for each valueset, for each row, add one translation row
         valueSetsToTranslate.forEach((valueSet) => {
             valueSet.compose?.include[0].concept?.forEach((coding) => {
@@ -44,8 +76,15 @@ export const exportTranslations = (
             });
         });
     }
+    return returnString;
+};
 
-    // add item translations: text/_text, sublabel, repeatsText, validationMessage, placeholderText, initial, answerOption.display
+const exportItemTranslations = (
+    qItems: Items,
+    additionalLanguagesInUse: string[],
+    additionalLanguages: Languages,
+): string => {
+    let returnString = '';
     Object.keys(qItems).forEach((linkId) => {
         const item = qItems[linkId];
 
@@ -138,14 +177,7 @@ export const exportTranslations = (
             });
         }
     });
-
-    const a = document.createElement('a');
-    a.download = 'test.csv';
-    a.href = 'data:' + 'text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(returnString);
-    a.target = '_blank';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    return returnString;
 };
 
 const escapeValues = (values: Array<string | undefined>): string => {
