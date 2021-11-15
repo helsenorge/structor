@@ -330,6 +330,7 @@
     "Questionnaire with the same language as uploaded questionnaire already exists": "Skjema med samme språk som opplastet skjema finnes allerede",
     "Could not read uploaded file": "Kunne ikke lese opplasted fil",
     "Upload questionnaire in additional language": "Last opp skjema med tilleggsspråk",
+    "Export translations": "Eksporter oversettelser",
     "Representative relation": "Representert relasjon",
     "Represented by power of attorney? (true/false)": "Representert ved tildelt ordinær fullmakt? (true/false)",
     "Represented by power of attorney for non-consent competent? (true/false)": "Representert ved fullmakt for ikke samtykkekompetente? (true/false)",
