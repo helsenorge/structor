@@ -86,9 +86,5 @@ export const getHelpText = (item: QuestionnaireItem): string => {
     if (!isItemControlHelp(item)) {
         return '';
     }
-    if (!item._text || !item._text.extension) {
-        return '';
-    }
-
-    return item._text.extension[0].valueMarkdown || '';
+    return item._text?.extension?.find((ex) => ex.url === IExtentionType.markdown)?.valueMarkdown || item.text || '';
 };

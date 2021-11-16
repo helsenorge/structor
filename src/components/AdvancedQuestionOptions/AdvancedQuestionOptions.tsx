@@ -15,7 +15,7 @@ import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import { createItemControlExtension, isItemControlHelp, ItemControlType } from '../../helpers/itemControl';
+import { createItemControlExtension, getHelpText, isItemControlHelp, ItemControlType } from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
@@ -89,12 +89,9 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         }
     };
 
-    const getHelpText = (): string => {
+    const getHelpTextForItem = (): string => {
         const helpItem = getHelpTextItem();
-        if (helpItem) {
-            return helpItem._text?.extension?.find((ex) => ex.url === IExtentionType.markdown)?.valueMarkdown ?? '';
-        }
-        return '';
+        return helpItem ? getHelpText(helpItem) : '';
     };
 
     const getHelpTextItem = (): QuestionnaireItem | undefined => {
@@ -300,7 +297,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     </FormField>
                     {!!helpTextItem && (
                         <FormField label={t('Enter a helping text')}>
-                            <MarkdownEditor data={getHelpText()} onBlur={handleHelpText} />
+                            <MarkdownEditor data={getHelpTextForItem()} onBlur={handleHelpText} />
                         </FormField>
                     )}
                 </div>
