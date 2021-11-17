@@ -163,6 +163,10 @@ export const canTypeHaveSummary = (item: QuestionnaireItem): boolean => {
     return item.type === IQuestionnaireItemType.group;
 };
 
+export const canTypeHavePrefix = (item: QuestionnaireItem): boolean => {
+    return item.type !== IQuestionnaireItemType.display && !isItemControlInline(item) && !isItemControlHighlight(item);
+};
+
 export const canTypeHaveInitialValue = (item: QuestionnaireItem): boolean => {
     return (
         item.type !== IQuestionnaireItemType.display &&

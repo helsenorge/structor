@@ -15,7 +15,7 @@ import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import { createItemControlExtension, isItemControlHelp, ItemControlType } from '../../helpers/itemControl';
+import { createItemControlExtension, getHelpText, isItemControlHelp, ItemControlType } from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
@@ -30,6 +30,7 @@ import {
     canTypeHaveHelp,
     canTypeHaveInitialValue,
     canTypeHavePlaceholderText,
+    canTypeHavePrefix,
     canTypeHaveSummary,
 } from '../../helpers/questionTypeFeatures';
 
@@ -88,12 +89,9 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
         }
     };
 
-    const getHelpText = (): string => {
+    const getHelpTextForItem = (): string => {
         const helpItem = getHelpTextItem();
-        if (helpItem) {
-            return helpItem._text?.extension?.find((ex) => ex.url === IExtentionType.markdown)?.valueMarkdown ?? '';
-        }
-        return '';
+        return helpItem ? getHelpText(helpItem) : '';
     };
 
     const getHelpTextItem = (): QuestionnaireItem | undefined => {
@@ -124,8 +122,8 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
 
     return (
         <>
-            {canTypeBeReadonly(item) && (
-                <div className="horizontal equal">
+            <div className="horizontal equal">
+                {canTypeBeReadonly(item) && (
                     <FormField>
                         <SwitchBtn
                             onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
@@ -133,25 +131,25 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                             label={t('Read-only')}
                         />
                     </FormField>
-                    <FormField>
-                        <SwitchBtn
-                            onChange={() => {
-                                if (isHiddenItem) {
-                                    removeItemExtension(item, IExtentionType.hidden, dispatch);
-                                } else {
-                                    const extension = {
-                                        url: IExtentionType.hidden,
-                                        valueBoolean: true,
-                                    };
-                                    setItemExtension(item, extension, dispatch);
-                                }
-                            }}
-                            value={isHiddenItem || false}
-                            label={t('Hidden field')}
-                        />
-                    </FormField>
-                </div>
-            )}
+                )}
+                <FormField>
+                    <SwitchBtn
+                        onChange={() => {
+                            if (isHiddenItem) {
+                                removeItemExtension(item, IExtentionType.hidden, dispatch);
+                            } else {
+                                const extension = {
+                                    url: IExtentionType.hidden,
+                                    valueBoolean: true,
+                                };
+                                setItemExtension(item, extension, dispatch);
+                            }
+                        }}
+                        value={isHiddenItem || false}
+                        label={t('Hidden field')}
+                    />
+                </FormField>
+            </div>
             {canTypeBeRepeatable(item) && (
                 <FormField>
                     <SwitchBtn
@@ -276,6 +274,18 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     )}
                 </div>
             </div>
+            {canTypeHavePrefix(item) && (
+                <div className="horizontal full">
+                    <FormField label={t('Prefix')} isOptional>
+                        <InputField
+                            defaultValue={item.prefix}
+                            onBlur={(e) => {
+                                dispatch(updateItemAction(item.linkId, IItemProperty.prefix, e.target.value));
+                            }}
+                        />
+                    </FormField>
+                </div>
+            )}
             {canTypeHaveHelp(item) && (
                 <div>
                     <FormField>
@@ -287,7 +297,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     </FormField>
                     {!!helpTextItem && (
                         <FormField label={t('Enter a helping text')}>
-                            <MarkdownEditor data={getHelpText()} onBlur={handleHelpText} />
+                            <MarkdownEditor data={getHelpTextForItem()} onBlur={handleHelpText} />
                         </FormField>
                     )}
                 </div>

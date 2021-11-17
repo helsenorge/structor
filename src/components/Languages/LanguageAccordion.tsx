@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { languageToIsoString, translateQuestionnaire } from '../../helpers/FhirToTreeStateMapper';
-import { generateMainQuestionnaire } from '../../helpers/generateQuestionnaire';
+import { generateMainQuestionnaire, getUsedValueSet } from '../../helpers/generateQuestionnaire';
 import { supportedLanguages, getLanguageFromCode, getLanguagesInUse } from '../../helpers/LanguageHelper';
 import {
     addQuestionnaireLanguageAction,
@@ -15,6 +15,7 @@ import Accordion from '../Accordion/Accordion';
 import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
 import Select from '../Select/Select';
+import { exportTranslations } from '../../helpers/exportTranslations';
 
 interface LanguageAccordionProps {
     setTranslateLang: (language: string) => void;
@@ -23,7 +24,7 @@ interface LanguageAccordionProps {
 const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
-    const { qMetadata, qAdditionalLanguages } = state;
+    const { qItems, qMetadata, qContained, qAdditionalLanguages } = state;
     const uploadRef = React.useRef<HTMLInputElement>(null);
 
     const [selectedLang, setSelectedLang] = useState('');
@@ -182,15 +183,37 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                     accept="application/JSON"
                     style={{ display: 'none' }}
                 />
-                <div>
-                    <Btn
-                        title={t('Upload questionnaire in additional language')}
-                        type="button"
-                        variant="secondary"
-                        onClick={() => {
-                            uploadRef.current?.click();
-                        }}
-                    />
+                <div className="horizontal equal">
+                    <div>
+                        <Btn
+                            title={t('Upload questionnaire in additional language')}
+                            type="button"
+                            variant="secondary"
+                            onClick={() => {
+                                uploadRef.current?.click();
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <Btn
+                            title={t('Export translations')}
+                            type="button"
+                            variant="secondary"
+                            onClick={() => {
+                                const usedValueSet = getUsedValueSet(state);
+                                const valueSetsToTranslate = qContained?.filter(
+                                    (x) => x.id && usedValueSet?.includes(x.id) && x,
+                                );
+                                exportTranslations(
+                                    qMetadata,
+                                    qItems,
+                                    valueSetsToTranslate || [],
+                                    additionalLanguagesInUse,
+                                    qAdditionalLanguages,
+                                );
+                            }}
+                        />
+                    </div>
                 </div>
                 {fileUploadError && (
                     <ul className="item-validation-error-summary">

@@ -6,6 +6,9 @@ const useOutsideClick = (
     disabled?: boolean,
 ): void => {
     const handleClick = (e: MouseEvent) => {
+        if ((e.target as HTMLElement).closest('.ck-body-wrapper')) {
+            return;
+        }
         if (ref.current && !ref.current.contains(e.target as Node)) {
             onClickOutside();
         }

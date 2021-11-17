@@ -16,7 +16,6 @@ import {
 import { getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 import { IExtentionType, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
-import InputField from '../../InputField/inputField';
 
 type TranslationRowProps = {
     targetLanguage: string;
@@ -90,6 +89,47 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
         return null;
     }
 
+    function getTranslatableField(
+        header: string,
+        textValue: string,
+        propertyName: TranslatableItemProperty,
+        isMarkdownField: boolean,
+    ): JSX.Element {
+        const itemPropertyTranslation = getItemPropertyTranslation(
+            targetLanguage,
+            qAdditionalLanguages,
+            item.linkId,
+            propertyName,
+        );
+        return (
+            <>
+                <div className="translation-group-header">{header}</div>
+                <div className="translation-row">
+                    <FormField>
+                        {isMarkdownField ? (
+                            <MarkdownEditor data={textValue} disabled={true} />
+                        ) : (
+                            <textarea defaultValue={textValue} disabled={true} />
+                        )}
+                    </FormField>
+                    <FormField>
+                        {isMarkdownField ? (
+                            <MarkdownEditor
+                                data={itemPropertyTranslation}
+                                onBlur={(newValue: string) => dispatchUpdateItemTranslation(newValue, propertyName)}
+                            />
+                        ) : (
+                            <textarea
+                                defaultValue={itemPropertyTranslation}
+                                onBlur={(event) => dispatchUpdateItemTranslation(event.target.value, propertyName)}
+                            />
+                        )}
+                    </FormField>
+                </div>
+            </>
+        );
+    }
+
     return (
         <>
             <div className="translation-group-header">{itemHeading}</div>
@@ -97,134 +137,33 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                 <FormField>{getReadOnlyInputField()}</FormField>
                 <FormField>{getInputField()}</FormField>
             </div>
-            {getSublabel(item) && (
-                <>
-                    <div className="translation-group-header">{t('Sublabel')}</div>
-                    <div className="translation-row">
-                        <FormField>
-                            <MarkdownEditor data={getSublabel(item)} disabled={true} />
-                        </FormField>
-                        <FormField>
-                            <MarkdownEditor
-                                data={getItemPropertyTranslation(
-                                    targetLanguage,
-                                    qAdditionalLanguages,
-                                    item.linkId,
-                                    TranslatableItemProperty.sublabel,
-                                )}
-                                onBlur={(newValue: string) =>
-                                    dispatchUpdateItemTranslation(newValue, TranslatableItemProperty.sublabel)
-                                }
-                            />
-                        </FormField>
-                    </div>
-                </>
-            )}
-            {getRepeatsText(item) && (
-                <>
-                    <div className="translation-group-header">{t('Repeat button text')}</div>
-                    <div className="translation-row">
-                        <FormField>
-                            <textarea defaultValue={getRepeatsText(item)} disabled={true} />
-                        </FormField>
-                        <FormField>
-                            <InputField
-                                defaultValue={getItemPropertyTranslation(
-                                    targetLanguage,
-                                    qAdditionalLanguages,
-                                    item.linkId,
-                                    TranslatableItemProperty.repeatsText,
-                                )}
-                                onBlur={(event) =>
-                                    dispatchUpdateItemTranslation(
-                                        event.target.value,
-                                        TranslatableItemProperty.repeatsText,
-                                    )
-                                }
-                            />
-                        </FormField>
-                    </div>
-                </>
-            )}
-            {getValidationMessage(item) && (
-                <>
-                    <div className="translation-group-header">{t('Error message for validation error')}</div>
-                    <div className="translation-row">
-                        <FormField>
-                            <textarea defaultValue={getValidationMessage(item)} disabled={true} />
-                        </FormField>
-                        <FormField>
-                            <textarea
-                                defaultValue={getItemPropertyTranslation(
-                                    targetLanguage,
-                                    qAdditionalLanguages,
-                                    item.linkId,
-                                    TranslatableItemProperty.validationText,
-                                )}
-                                onBlur={(event) =>
-                                    dispatchUpdateItemTranslation(
-                                        event.target.value,
-                                        TranslatableItemProperty.validationText,
-                                    )
-                                }
-                            />
-                        </FormField>
-                    </div>
-                </>
-            )}
-            {getPlaceHolderText(item) && (
-                <>
-                    <div className="translation-group-header">{t('Placeholder text')}</div>
-                    <div className="translation-row">
-                        <FormField>
-                            <textarea defaultValue={getPlaceHolderText(item)} disabled={true} />
-                        </FormField>
-                        <FormField>
-                            <textarea
-                                defaultValue={getItemPropertyTranslation(
-                                    targetLanguage,
-                                    qAdditionalLanguages,
-                                    item.linkId,
-                                    TranslatableItemProperty.entryFormatText,
-                                )}
-                                onBlur={(event) =>
-                                    dispatchUpdateItemTranslation(
-                                        event.target.value,
-                                        TranslatableItemProperty.entryFormatText,
-                                    )
-                                }
-                            />
-                        </FormField>
-                    </div>
-                </>
-            )}
-            {(item.type === IQuestionnaireItemType.text || item.type === IQuestionnaireItemType.string) &&
-                getInitialText(item) && (
-                    <>
-                        <div className="translation-group-header">{t('Initial value')}</div>
-                        <div className="translation-row">
-                            <FormField>
-                                <textarea defaultValue={getInitialText(item)} disabled={true} />
-                            </FormField>
-                            <FormField>
-                                <textarea
-                                    defaultValue={getItemPropertyTranslation(
-                                        targetLanguage,
-                                        qAdditionalLanguages,
-                                        item.linkId,
-                                        TranslatableItemProperty.initial,
-                                    )}
-                                    onBlur={(event) =>
-                                        dispatchUpdateItemTranslation(
-                                            event.target.value,
-                                            TranslatableItemProperty.initial,
-                                        )
-                                    }
-                                />
-                            </FormField>
-                        </div>
-                    </>
+            {getSublabel(item) &&
+                getTranslatableField(t('Sublabel'), getSublabel(item), TranslatableItemProperty.sublabel, true)}
+            {getRepeatsText(item) &&
+                getTranslatableField(
+                    t('Repeat button text'),
+                    getRepeatsText(item),
+                    TranslatableItemProperty.repeatsText,
+                    false,
                 )}
+            {getValidationMessage(item) &&
+                getTranslatableField(
+                    t('Error message for validation error'),
+                    getValidationMessage(item),
+                    TranslatableItemProperty.validationText,
+                    false,
+                )}
+            {getPlaceHolderText(item) &&
+                getTranslatableField(
+                    t('Placeholder text'),
+                    getPlaceHolderText(item),
+                    TranslatableItemProperty.entryFormatText,
+                    false,
+                )}
+            {(item.type === IQuestionnaireItemType.text || item.type === IQuestionnaireItemType.string) &&
+                getInitialText(item) &&
+                getTranslatableField(t('Initial value'), getInitialText(item), TranslatableItemProperty.initial, false)}
+
             {item.answerOption && (
                 <>
                     {item.answerOption.map((option) => {
