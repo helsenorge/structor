@@ -9,6 +9,7 @@ import TranslateOptionRow from './TranslateOptionRow';
 import {
     getInitialText,
     getPlaceHolderText,
+    getPrefix,
     getRepeatsText,
     getSublabel,
     getValidationMessage,
@@ -160,6 +161,8 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                     TranslatableItemProperty.entryFormatText,
                     false,
                 )}
+            {getPrefix(item) &&
+                getTranslatableField(t('Prefix'), getPrefix(item), TranslatableItemProperty.prefix, false)}
             {(item.type === IQuestionnaireItemType.text || item.type === IQuestionnaireItemType.string) &&
                 getInitialText(item) &&
                 getTranslatableField(t('Initial value'), getInitialText(item), TranslatableItemProperty.initial, false)}

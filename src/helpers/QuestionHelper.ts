@@ -269,6 +269,10 @@ export const getInitialText = (item?: QuestionnaireItem): string => {
     return '';
 };
 
+export const getPrefix = (item?: QuestionnaireItem): string => {
+    return item?.prefix || '';
+};
+
 export const getSublabel = (item?: QuestionnaireItem): string => {
     return item?.extension?.find((extension) => extension.url === IExtentionType.sublabel)?.valueMarkdown || '';
 };

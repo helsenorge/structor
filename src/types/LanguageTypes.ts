@@ -29,4 +29,5 @@ export enum TranslatableItemProperty {
     entryFormatText = 'entryFormatText',
     sublabel = 'sublabel',
     repeatsText = 'repeatsText',
+    prefix = 'prefix',
 }
