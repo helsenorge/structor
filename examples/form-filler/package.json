@@ -25,9 +25,14 @@
         "file-loader": "^3.0.1"
     },
     "dependencies": {
-        "@helsenorge/skjemautfyller": "7.9.0",
-        "@helsenorge/toolkit": "20.4.0",
-        "@helsenorge/core-utils": "20.3.0",
+        "@helsenorge/skjemautfyller": "7.11.0-prerelease2",
+        "@helsenorge/toolkit": "^21.3.0-prerelease",
+        "@helsenorge/core-utils": "^21.3.0-prerelease",
+        "@helsenorge/designsystem-react": ">=1.0.0-beta70",
+        "dompurify": "^2.0.8",
+        "fhirpath": "2.7.3",
+        "marked": "^0.7.0",
+        "tabbable": "^3.1.1",
         "react-redux": "7.1.0",
         "redux-thunk": "2.3.0",
         "react": "16.8.4",
