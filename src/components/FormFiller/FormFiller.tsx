@@ -7,6 +7,7 @@ import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionn
 import Select from '../Select/Select';
 import { getLanguagesInUse, INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { emptyPropertyReplacer } from '../../helpers/emptyPropertyReplacer';
+import { isItemControlReceiverComponent } from '../../helpers/itemControl';
 
 type Props = {
     showFormFiller: () => void;
@@ -21,6 +22,7 @@ const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     );
     const [selectedGender, setSelectedGender] = useState<string>('');
     const [selectedAge, setSelectedAge] = useState<string>('');
+    const [selectedReceiverEndpoint, setSelectedReceiverEndpoint] = useState<string>('');
     const languages = getLanguagesInUse(state);
 
     function iFrameLoaded() {
@@ -35,7 +37,8 @@ const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
             schemeDisplayer.contentWindow.postMessage(
                 {
                     questionnaireString: questionnaireString,
-                    showFooter: false,
+                    language: selectedLanguage,
+                    selectedReceiverEndpoint: selectedReceiverEndpoint,
                 },
                 '*',
             );
@@ -49,6 +52,13 @@ const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
         }
     }
 
+    function hasReceiverComponent(): boolean {
+        return (
+            Object.keys(state.qItems).filter((linkId) => isItemControlReceiverComponent(state.qItems[linkId])).length >
+            0
+        );
+    }
+
     return (
         <div className="overlay">
             <div className="iframe-div">
@@ -56,6 +66,18 @@ const FormFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                     <IconBtn type="x" title={t('Close')} onClick={showFormFiller} />
                     <h1>{t('Preview')}</h1>
                     <div className="pull-right">
+                        {hasReceiverComponent() && (
+                            <input
+                                style={{ padding: '0 10px', border: 0, width: 250 }}
+                                placeholder={t('Recipient component EndpointId')}
+                                onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                    setSelectedReceiverEndpoint(event.target.value);
+                                    if (selectedReceiverEndpoint !== event.target.value) {
+                                        reloadIframe();
+                                    }
+                                }}
+                            />
+                        )}
                         <Select
                             value={selectedGender}
                             options={[

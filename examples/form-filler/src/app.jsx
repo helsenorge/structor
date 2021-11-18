@@ -19,7 +19,8 @@ export default class App extends React.Component {
 
         this.state = {
             questionnaireString: '',
-            showFooter: true,
+            language: '',
+            selectedReceiverEndpoint: '',
         };
     }
 
@@ -30,7 +31,8 @@ export default class App extends React.Component {
                 if (event.data.questionnaireString) {
                     this.setState({
                         questionnaireString: event.data.questionnaireString,
-                        showFooter: event.data.showFooter,
+                        language: event.data.language,
+                        selectedReceiverEndpoint: event.data.selectedReceiverEndpoint,
                     });
                 }
             },
@@ -45,7 +47,8 @@ export default class App extends React.Component {
                     {this.state.questionnaireString && (
                         <Container
                             questionnaireString={this.state.questionnaireString}
-                            showFooter={this.state.showFooter}
+                            language={this.state.language}
+                            selectedReceiverEndpoint={this.state.selectedReceiverEndpoint}
                         />
                     )}
                 </>
