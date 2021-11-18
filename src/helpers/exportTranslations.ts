@@ -6,6 +6,7 @@ import { IExtentionType } from '../types/IQuestionnareItemType';
 import {
     getInitialText,
     getPlaceHolderText,
+    getPrefix,
     getRepeatsText,
     getSublabel,
     getValidationMessage,
@@ -161,6 +162,14 @@ const exportItemTranslations = (
             });
             const stringValues = escapeValues([getInitialText(item), ...translatedValues]);
             returnString = returnString + `item[${linkId}].initial[0].valueString,${stringValues}\n`;
+        }
+
+        if (getPrefix(item)) {
+            const translatedValues = additionalLanguagesInUse.map((lang) => {
+                return additionalLanguages[lang].items[linkId].prefix;
+            });
+            const stringValues = escapeValues([getPrefix(item), ...translatedValues]);
+            returnString = returnString + `item[${linkId}].prefix,${stringValues}\n`;
         }
 
         if (item.answerOption) {
