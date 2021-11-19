@@ -4,47 +4,149 @@ import classNames from 'classnames';
 import { SkjemautfyllerContainer } from '@helsenorge/skjemautfyller/components';
 import { getSidebarSections } from '@helsenorge/skjemautfyller/util/extension';
 
-const resources = {
-    deleteButtonText: 'Slett',
-    validationSummaryHeader: 'Sjekk at følgende er riktig utfylt:',
-    validationFileMax: 'Filstørrelsen må være mindre enn 25MB',
-    validationFileType: 'Filtypen må være jpeg, png, eller pdf',
-    supportedFileFormats: 'Gyldige filformater er jpeg, png og pdf',
-    selectDefaultPlaceholder: 'Velg...',
-    resetTime: 'Nullstill tidspunkt',
-    errorAfterMaxDate: 'Dato kan ikke være etter maksimum dato',
-    errorBeforeMinDate: 'Dato kan ikke være før minimums dato',
-    dateRequired: 'Oppgi en dato',
-    oppgiTid: ' Oppgi tid',
-    ugyldigTid: 'Ugyldig tid',
-    oppgiDatoTid: 'oppgi dato og tid',
-    ugyldigDatoTid: 'Ugyldig dato og tid',
-    oppgiVerdi: 'Oppgi en verdi',
-    oppgiGyldigVerdi: 'Oppgi en gyldig verdi',
-    formCancel: 'Avbryt',
-    formSend: 'Fullfør',
-    formSave: 'Vis QuestionnaireResponse',
-    formError: 'Sjekk at alt er riktig utfylt.',
-    formOptional: '(valgfritt)',
-    formRequired: '(må fylles ut)',
-    repeatButtonText: 'Legg til',
-    avsluttSkjema: 'Avslutt skjema',
-    fortsett: 'Fortsett',
-    confirmDeleteButtonText: 'Forkast endringer',
-    confirmDeleteCancelButtonText: 'Avbryt',
-    confirmDeleteHeading: 'Det finnes endringer',
-    confirmDeleteDescription: 'Hvis du sletter, vil du miste endringene.',
-    minutePlaceholder: 'mm',
-    hourPlaceholder: 'tt',
-    ikkeBesvart: 'Ikke besvart',
-    uploadButtonText: 'Last opp fil',
-    filterDateCalendarButton: 'Velg dato',
-    filterDateNavigateBackward: 'Tilbake',
-    filterDateNavigateForward: 'Fram',
-    filterDateErrorDateFormat: 'Datoen er oppgitt på feil format',
-    filterDateErrorBeforeMinDate: 'Fra-dato kan ikke være senere enn til-dato',
-    filterDateErrorAfterMaxDate: 'Fra-dato kan ikke være senere enn til-dato',
-    validationNotAllowed: 'er ikke tillatt',
+const getResources = (language) => {
+    return {
+        deleteButtonText: 'Slett',
+        validationSummaryHeader: 'Sjekk at følgende er riktig utfylt:',
+        validationFileMax: 'Filstørrelsen må være mindre enn 25MB',
+        validationFileType: 'Filtypen må være jpeg, png, eller pdf',
+        supportedFileFormats: 'Gyldige filformater er jpeg, png og pdf',
+        selectDefaultPlaceholder: 'Velg...',
+        resetTime: 'Nullstill tidspunkt',
+        errorAfterMaxDate: 'Dato kan ikke være etter maksimum dato',
+        errorBeforeMinDate: 'Dato kan ikke være før minimums dato',
+        dateRequired: 'Oppgi en dato',
+        oppgiTid: ' Oppgi tid',
+        ugyldigTid: 'Ugyldig tid',
+        oppgiDatoTid: 'oppgi dato og tid',
+        ugyldigDatoTid: 'Ugyldig dato og tid',
+        oppgiVerdi: 'Oppgi en verdi',
+        oppgiGyldigVerdi: 'Oppgi en gyldig verdi',
+        formCancel: 'Avbryt',
+        formSend: 'Fullfør',
+        formSave: 'Vis QuestionnaireResponse',
+        formError: 'Sjekk at alt er riktig utfylt.',
+        formOptional: '(valgfritt)',
+        formRequired: '(må fylles ut)',
+        repeatButtonText: 'Legg til',
+        avsluttSkjema: 'Avslutt skjema',
+        fortsett: 'Fortsett',
+        confirmDeleteButtonText: 'Forkast endringer',
+        confirmDeleteCancelButtonText: 'Avbryt',
+        confirmDeleteHeading: 'Det finnes endringer',
+        confirmDeleteDescription: 'Hvis du sletter, vil du miste endringene.',
+        minutePlaceholder: 'mm',
+        hourPlaceholder: 'tt',
+        ikkeBesvart: 'Ikke besvart',
+        uploadButtonText: 'Last opp fil',
+        filterDateCalendarButton: 'Velg dato',
+        filterDateNavigateBackward: 'Tilbake',
+        filterDateNavigateForward: 'Fram',
+        filterDateErrorDateFormat: 'Datoen er oppgitt på feil format',
+        filterDateErrorBeforeMinDate: 'Fra-dato kan ikke være senere enn til-dato',
+        filterDateErrorAfterMaxDate: 'Fra-dato kan ikke være senere enn til-dato',
+        validationNotAllowed: 'er ikke tillatt',
+        formRequiredErrorMessage: 'Du må fylle ut dette feltet',
+        deleteAttachmentText: 'Slett',
+        autoSuggestLoadError: 'Teknisk feil',
+        autosuggestNoSuggestions: 'Ingen treff på "{0}". Prøv med et annet ord eller sjekk for skrivefeil.',
+        stringOverMaxLengthError: 'Du har skrevet for mange tegn. Gjør teksten kortere.',
+        maxLengthText: 'Maksimum {0} tegn',
+        chooseFilesText: 'Velg filer',
+        skipLinkText: 'Hopp til navigator',
+        clearDate: 'Fjern dato',
+        calendarLabel: 'Kalender',
+        closeDatePicker: 'Lukk',
+        focusStartDate: 'Bruk kalenderen og velg dato.',
+        jumpToPrevMonth: 'Gå bakover til forrige måned',
+        jumpToNextMonth: 'Gå fremover til neste måned',
+        keyboardShortcuts: 'Tastatursnarveier',
+        showKeyboardShortcutsPanel: 'Åpne panelet med tastatursnarveier',
+        hideKeyboardShortcutsPanel: 'Lukk panelet med tastatursnarveier',
+        enterKey: 'Enter tast',
+        leftArrowRightArrow: 'Høyre og venstre piltast',
+        upArrowDownArrow: 'Opp og ned piltast',
+        pageUpPageDown: 'Side opp og Side ned tast',
+        homeEnd: 'Hjem og Slutt tast',
+        escape: 'Escape tast',
+        questionMark: 'Spørsmålstegn',
+        openThisPanel: 'Åpne dette panelet',
+        selectFocusedDate: 'Velg datoen som har fokus',
+        moveFocusByOneDay: 'Flytt en dag bakover (venstre) og fremover (høyre)',
+        moveFocusByOneWeek: 'Flytt en uke bakover (opp) og fremover (ned)',
+        moveFocusByOneMonth: 'Skifte måned',
+        moveFocustoStartAndEndOfWeek: 'Gå til første eller siste dag av uken',
+        returnFocusToInput: 'Gå tilbake til datoen i inputfeltet',
+        year_field_invalid: 'Du må skrive inn et gyldig årstall',
+        year_field_maxdate: 'Årstall er etter det eldste tillatte år',
+        year_field_mindate: 'Årstall er før det minste tillatte år',
+        year_field_required: 'Årstall er påkrevd',
+        yearmonth_field_invalid: 'Ugyldig verdi',
+        yearmonth_field_invalid_year: 'Du må skrive inn et gyldig årstall',
+        yearmonth_field_maxdate: 'Tidspunkt er etter eldste tillatte tidspunkt',
+        yearmonth_field_mindate: 'Tidspunkt er før minste tillatte tidspunkt',
+        yearmonth_field_month_placeholder: 'Velg måned',
+        yearmonth_field_required: 'Årstall og måned er påkrevd',
+        yearmonth_field_year_placeholder: 'Velg år',
+        adresseKomponent_header: 'Hvem er mottaker av skjemaet?',
+        adresseKomponent_skjemaSendesTil: 'Skjemaet sendes til:',
+        adresseKomponent_sublabel: 'Du må velge mottaker før du sender skjemaet.',
+        adresseKomponent_velgAvdeling: 'Velg avdeling',
+        adresseKomponent_velgHelseforetak: 'Velg helseforetak',
+        adresseKomponent_velgHelseregion: 'Velg helseregion',
+        adresseKomponent_velgSykehus: 'Velg sykehus',
+        adresseKomponent_velgKlinikk: 'Velg klinikk',
+        adresseKomponent_velgSeksjon: 'Velg seksjon',
+        adresseKomponent_velgSengepost: 'Velg sengepost',
+        adresseKomponent_velgPoliklinikk: 'Velg poliklinikk',
+        adresseKomponent_velgTjeneste: 'Velg behandlingssted',
+        adresseKomponent_feilmelding: 'Du må velge en mottaker',
+        adresseKomponent_loadError: 'Teknisk feil: kunne ikke laste liste over mottakere',
+    };
+};
+
+const getReceiverComponentTestData = (selectedReceiverEndpoint) => {
+    return [
+        {
+            OrgenhetId: 1,
+            Navn: 'Helse Sør-Øst',
+            EnhetType: 1,
+            EndepunktId: null,
+            UnderOrgenheter: [
+                {
+                    OrgenhetId: 11,
+                    Navn: 'Ahus',
+                    EnhetType: 2,
+                    EndepunktId: 'TEST-AHUS',
+                    UnderOrgenheter: null,
+                },
+            ],
+        },
+        {
+            OrgenhetId: 2,
+            Navn: 'Helse vest',
+            EnhetType: 1,
+            EndepunktId: null,
+            UnderOrgenheter: [
+                {
+                    OrgenhetId: 22,
+                    Navn: 'Haukeland sykehus',
+                    EnhetType: 2,
+                    EndepunktId: 'TEST-HAUKELAND',
+                    UnderOrgenheter: null,
+                },
+            ],
+        },
+        ...(selectedReceiverEndpoint && [
+            {
+                OrgenhetId: 999,
+                Navn: `Test receiver with endpoint = Endpoint/${selectedReceiverEndpoint}`,
+                EnhetType: 5,
+                EndepunktId: selectedReceiverEndpoint,
+                UnderOrgenheter: null,
+            },
+        ]),
+    ];
 };
 
 const generateSectionContent = (header, content) => {
@@ -91,6 +193,8 @@ const Container = (props) => {
 
     const questionnaire = JSON.parse(props.questionnaireString);
     const sidebarData = getSidebarElements(questionnaire);
+
+    const resources = getResources(props.language);
 
     return (
         <div className="page_skjemautfyller">
@@ -201,6 +305,9 @@ const Container = (props) => {
                     );
                 }}
                 questionnaire={questionnaire}
+                fetchReceivers={(successCallback) => {
+                    successCallback(getReceiverComponentTestData(props.selectedReceiverEndpoint));
+                }}
             />
         </div>
     );

@@ -25,15 +25,16 @@
         "file-loader": "^3.0.1"
     },
     "dependencies": {
-        "@helsenorge/skjemautfyller": "7.9.0",
-        "@helsenorge/toolkit": "20.4.0",
-        "@helsenorge/core-utils": "20.3.0",
+        "@helsenorge/skjemautfyller": "7.10.4",
+        "@helsenorge/toolkit": "21.3.0",
+        "@helsenorge/core-utils": "21.3.0",
         "react-redux": "7.1.0",
         "redux-thunk": "2.3.0",
         "react": "16.8.4",
         "react-dom": "16.8.4",
         "redux": "^4.0.4",
-        "antlr4": "4.8.0"
+        "antlr4": "4.8.0",
+        "tabbable": "^3.1.1"
     },
     "browserslist": [
         "> 0.2% in NO",
