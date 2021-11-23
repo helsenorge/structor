@@ -151,13 +151,14 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
     }
 
     const answerOption = getTranslatedAnswerOptions(currentItem.answerOption, itemTranslation?.answerOptions);
+    const prefix = itemTranslation.prefix;
     const initial =
         (currentItem.type === IQuestionnaireItemType.text || currentItem.type === IQuestionnaireItemType.string) &&
         itemTranslation?.initial
             ? [{ valueString: itemTranslation?.initial }]
             : currentItem.initial;
 
-    return { ...currentItem, text: translatedText, _text, extension, answerOption, initial };
+    return { ...currentItem, text: translatedText, _text, extension, answerOption, prefix, initial };
 };
 
 const getTranslatedMetadata = (qMetadata: IQuestionnaireMetadata, translation: Translation): IQuestionnaireMetadata => {

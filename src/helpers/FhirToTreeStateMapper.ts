@@ -31,6 +31,7 @@ import {
     getSublabel,
     getRepeatsText,
     getValidationMessage,
+    getPrefix,
 } from './QuestionHelper';
 import { IExtentionType } from '../types/IQuestionnareItemType';
 import { initPredefinedValueSet } from './initPredefinedValueSet';
@@ -154,8 +155,9 @@ function translateItem(translationItem: QuestionnaireItem | undefined): ItemTran
     const validationText = getValidationMessage(translationItem);
     const initial = getInitialText(translationItem);
     const sublabel = getSublabel(translationItem);
+    const prefix = getPrefix(translationItem);
     const repeatsText = getRepeatsText(translationItem);
-    return { answerOptions, entryFormatText, text, validationText, initial, sublabel, repeatsText };
+    return { answerOptions, entryFormatText, text, validationText, initial, sublabel, prefix, repeatsText };
 }
 
 function translateItems(
