@@ -286,6 +286,16 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     </FormField>
                 </div>
             )}
+            <div className="horizontal full">
+                <FormField label={t('Definition')} isOptional>
+                    <InputField
+                        defaultValue={item.definition}
+                        onBlur={(e) => {
+                            dispatch(updateItemAction(item.linkId, IItemProperty.definition, e.target.value));
+                        }}
+                    />
+                </FormField>
+            </div>
             {canTypeHaveHelp(item) && (
                 <div>
                     <FormField>
