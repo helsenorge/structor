@@ -1,44 +1,43 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { isSystemValid } from '../../helpers/systemHelper';
-import FormField from './FormField';
+import { isUriValid } from '../../helpers/uriHelper';
 
 type Props = {
     value: string | undefined;
     onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
 };
 
-const SystemField = ({ value, onBlur }: Props): JSX.Element => {
+const UriField = ({ value, onBlur }: Props): JSX.Element => {
     const { t } = useTranslation();
     const ref = React.useRef<HTMLInputElement>(null);
-    const [hasValidSystem, setHasValidSystem] = React.useState<boolean>(isSystemValid(value || ''));
+    const [hasValidUri, setHasValidUri] = React.useState<boolean>(isUriValid(value || ''));
 
     React.useEffect(() => {
         // if new value is sent as prop, set this as the current value
         if (ref.current) {
             ref.current.value = value || '';
         }
-        setHasValidSystem(isSystemValid(value || ''));
+        setHasValidUri(!value || isUriValid(value || ''));
     }, [value]);
 
     return (
-        <FormField label={t('System')}>
+        <>
             <input
                 ref={ref}
-                placeholder={t('Enter system..')}
+                placeholder={t('Enter uri..')}
                 defaultValue={value || ''}
                 onBlur={onBlur}
                 onChange={(event) => {
-                    setHasValidSystem(isSystemValid(event.target.value));
+                    setHasValidUri(!event.target.value || isUriValid(event.target.value));
                 }}
             />
-            {!hasValidSystem && (
+            {!hasValidUri && (
                 <div className="msg-error" aria-live="polite">
-                    {t('System must start with http://, https:// or urn:uuid:')}
+                    {t('Uri must start with http://, https:// or urn:uuid:')}
                 </div>
             )}
-        </FormField>
+        </>
     );
 };
 
-export default SystemField;
+export default UriField;

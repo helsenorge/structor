@@ -11,7 +11,7 @@ import {
     ItemControlType,
 } from './itemControl';
 import { ATTACHMENT_DEFAULT_MAX_SIZE, dropdownExtension, isRecipientList, valueSetTqqcCoding } from './QuestionHelper';
-import { createSystemUUID } from './systemHelper';
+import { createUriUUID } from './uriHelper';
 
 export const createInlineItem = (): QuestionnaireItem => {
     return {
@@ -63,7 +63,7 @@ export const getInitialItemConfig = (
         newQuestionnaireItem.type = IQuestionnaireItemType.boolean;
     } else if (questionType === IQuestionnaireItemType.choice) {
         newQuestionnaireItem.type = IQuestionnaireItemType.choice;
-        const system = createSystemUUID();
+        const system = createUriUUID();
         newQuestionnaireItem.answerOption = [createNewAnswerOption(system), createNewAnswerOption(system)];
     } else if (questionType === IQuestionnaireItemType.date) {
         newQuestionnaireItem.type = IQuestionnaireItemType.date;
@@ -82,7 +82,7 @@ export const getInitialItemConfig = (
         newQuestionnaireItem.type = IQuestionnaireItemType.integer;
     } else if (questionType === IQuestionnaireItemType.openChoice) {
         newQuestionnaireItem.type = IQuestionnaireItemType.openChoice;
-        const system = createSystemUUID();
+        const system = createUriUUID();
         newQuestionnaireItem.answerOption = [createNewAnswerOption(system), createNewAnswerOption(system)];
     } else if (questionType === IQuestionnaireItemType.quantity) {
         newQuestionnaireItem.type = IQuestionnaireItemType.quantity;

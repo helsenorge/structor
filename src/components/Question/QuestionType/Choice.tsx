@@ -14,13 +14,13 @@ import { TreeContext } from '../../../store/treeStore/treeStore';
 import { checkboxExtension, dropdownExtension } from '../../../helpers/QuestionHelper';
 import { removeItemAttributeAction, updateItemAction } from '../../../store/treeStore/treeActions';
 
-import SystemField from '../../FormField/SystemField';
+import UriField from '../../FormField/UriField';
 import { isItemControlCheckbox, isItemControlDropDown, ItemControlType } from '../../../helpers/itemControl';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import FormField from '../../FormField/FormField';
 import ChoiceTypeSelect from './ChoiceTypeSelect';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
-import { createSystemUUID } from '../../../helpers/systemHelper';
+import { createUriUUID } from '../../../helpers/uriHelper';
 import DraggableAnswerOptions from '../../AnswerOption/DraggableAnswerOptions';
 import PredefinedValueSets from './PredefinedValueSets';
 
@@ -85,7 +85,7 @@ const Choice = ({ item }: Props): JSX.Element => {
                 <SwitchBtn
                     onChange={() => {
                         if (!!item.answerValueSet) {
-                            const system = createSystemUUID();
+                            const system = createUriUUID();
                             dispatchRemoveAttribute(IItemProperty.answerValueSet);
                             dispatchUpdateItem(IItemProperty.answerOption, [
                                 createNewAnswerOption(system),
@@ -104,7 +104,9 @@ const Choice = ({ item }: Props): JSX.Element => {
                 <PredefinedValueSets item={item} qContained={qContained} dispatchUpdateItem={dispatchUpdateItem} />
             ) : (
                 <>
-                    <SystemField value={getSystem()} onBlur={(event) => handleChangeSystem(event.target.value)} />
+                    <FormField label={t('System')}>
+                        <UriField value={getSystem()} onBlur={(event) => handleChangeSystem(event.target.value)} />
+                    </FormField>
                     <FormField>
                         {item.answerOption && item.answerOption?.length > 0 && (
                             <DraggableAnswerOptions item={item} dispatchUpdateItem={dispatchUpdateItem} />

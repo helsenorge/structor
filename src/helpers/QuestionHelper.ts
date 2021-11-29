@@ -1,6 +1,6 @@
 import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
-import { CodingSystemType } from './systemHelper';
+import { CodingSystemType } from './uriHelper';
 import { Option, Options } from '../types/OptionTypes';
 import { createItemControlExtension, isItemControlReceiverComponent, ItemControlType } from './itemControl';
 

@@ -4,7 +4,7 @@ import { QuestionnaireItem, ValueSet } from '../types/fhir';
 import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { isItemControlHelp, isItemControlHighlight, isItemControlInline, isItemControlSidebar } from './itemControl';
 import { isRecipientList } from './QuestionHelper';
-import { isSystemValid } from './systemHelper';
+import { isUriValid } from './uriHelper';
 
 export interface ValidationErrors {
     linkId: string;
@@ -84,7 +84,7 @@ const validateItemCode = (t: TFunction<'translation'>, qItem: QuestionnaireItem)
                 createError(qItem.linkId, 'code.system', t('Code does not have "system" property'), index),
             );
         }
-        if (code.system && !isSystemValid(code.system)) {
+        if (code.system && !isUriValid(code.system)) {
             returnErrors.push(createError(qItem.linkId, 'code', t('Code does not have a valid system'), index));
         }
     });
@@ -94,7 +94,7 @@ const validateItemCode = (t: TFunction<'translation'>, qItem: QuestionnaireItem)
 const validateAnswerOptionSystem = (t: TFunction<'translation'>, qItem: QuestionnaireItem): ValidationErrors[] => {
     const returnErrors: ValidationErrors[] = [];
     (qItem.answerOption || []).forEach((answerOption, index) => {
-        if (answerOption.valueCoding?.system && !isSystemValid(answerOption.valueCoding?.system)) {
+        if (answerOption.valueCoding?.system && !isUriValid(answerOption.valueCoding?.system)) {
             returnErrors.push(createError(qItem.linkId, 'code', t('answerOption does not have a valid system'), index));
         }
     });
@@ -105,7 +105,7 @@ const validateQuantitySystemAndCode = (t: TFunction<'translation'>, qItem: Quest
     const returnErrors: ValidationErrors[] = [];
     if (qItem.type === IQuestionnaireItemType.quantity) {
         const unitExtension = (qItem.extension || []).find((x) => x.url === IExtentionType.questionnaireUnit);
-        if (unitExtension && unitExtension.valueCoding?.system && !isSystemValid(unitExtension.valueCoding?.system)) {
+        if (unitExtension && unitExtension.valueCoding?.system && !isUriValid(unitExtension.valueCoding?.system)) {
             returnErrors.push(createError(qItem.linkId, 'code', t('quantity extension does not have a valid system')));
         }
         if (unitExtension && !unitExtension.valueCoding?.code) {

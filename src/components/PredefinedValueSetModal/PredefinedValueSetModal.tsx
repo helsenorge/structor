@@ -18,8 +18,8 @@ import FormField from '../FormField/FormField';
 import Modal from '../Modal/Modal';
 import './PredefinedValueSetModal.css';
 import { removeSpace } from '../../helpers/formatHelper';
-import SystemField from '../FormField/SystemField';
-import { createSystemUUID } from '../../helpers/systemHelper';
+import UriField from '../FormField/UriField';
+import { createUriUUID } from '../../helpers/uriHelper';
 import InputField from '../InputField/inputField';
 
 type Props = {
@@ -39,7 +39,7 @@ const initValueSet = () =>
         compose: {
             include: [
                 {
-                    system: createSystemUUID(),
+                    system: createUriUUID(),
                     concept: [
                         {
                             id: createUUID(),
@@ -170,10 +170,12 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                             onChange={(event) => setNewValueSet({ ...newValueSet, publisher: event.target.value })}
                         />
                     </FormField>
-                    <SystemField
-                        value={newValueSet.compose?.include[0].system}
-                        onBlur={(event) => handleSystem(event.target.value)}
-                    />
+                    <FormField label={t('System')}>
+                        <UriField
+                            value={newValueSet.compose?.include[0].system}
+                            onBlur={(event) => handleSystem(event.target.value)}
+                        />
+                    </FormField>
                     <div className="btn-group center-text">
                         <Btn onClick={addNewElement} title={t('+ New option')} variant="secondary" />
                         <Btn onClick={dispatchValueSet} title={t('Save >')} variant="primary" />

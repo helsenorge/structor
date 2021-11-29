@@ -10,8 +10,8 @@ import {
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import { IExtentionType } from '../../../types/IQuestionnareItemType';
 import { Coding, Extension, QuestionnaireItem } from '../../../types/fhir';
-import SystemField from '../../FormField/SystemField';
-import { createSystemUUID } from '../../../helpers/systemHelper';
+import UriField from '../../FormField/UriField';
+import { createUriUUID } from '../../../helpers/uriHelper';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import InputField from '../../InputField/inputField';
 
@@ -32,7 +32,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
         } else {
             const coding =
                 quantityUnitTypeCode === QUANTITY_UNIT_TYPE_CUSTOM
-                    ? { code: '', display: '', system: createSystemUUID() }
+                    ? { code: '', display: '', system: createUriUUID() }
                     : quantityUnitTypes.find(({ code: predefinedCode }) => predefinedCode === quantityUnitTypeCode);
             const unitExtension: Extension = {
                 url: IExtentionType.questionnaireUnit,
@@ -121,7 +121,12 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
                         </FormField>
                     </div>
                     <div className="horizontal full">
-                        <SystemField value={system} onBlur={(event) => updateCustomQuantityUnitType('system', event)} />
+                        <FormField label={t('System')}>
+                            <UriField
+                                value={system}
+                                onBlur={(event) => updateCustomQuantityUnitType('system', event)}
+                            />
+                        </FormField>
                     </div>
                 </>
             )}
