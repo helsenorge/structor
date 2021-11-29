@@ -80,7 +80,9 @@ const validateItemCode = (t: TFunction<'translation'>, qItem: QuestionnaireItem)
             returnErrors.push(createError(qItem.linkId, 'code.code', t('Code does not have "code" property'), index));
         }
         if (!code.system) {
-            returnErrors.push(createError(qItem.linkId, 'code.system', 'Code does not have "system" property', index));
+            returnErrors.push(
+                createError(qItem.linkId, 'code.system', t('Code does not have "system" property'), index),
+            );
         }
         if (code.system && !isSystemValid(code.system)) {
             returnErrors.push(createError(qItem.linkId, 'code', t('Code does not have a valid system'), index));

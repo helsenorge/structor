@@ -92,7 +92,7 @@ export type ActionType =
     | UpdateMarkedLinkId;
 
 export interface Items {
-    [key: string]: QuestionnaireItem;
+    [linkId: string]: QuestionnaireItem;
 }
 
 export interface CodeStringValue {
@@ -119,7 +119,7 @@ export interface ContainedTranslations {
 }
 
 export interface ItemTranslations {
-    [key: string]: ItemTranslation;
+    [linkId: string]: ItemTranslation;
 }
 
 export interface MetadataTranslations {
