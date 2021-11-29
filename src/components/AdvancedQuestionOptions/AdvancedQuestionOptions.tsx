@@ -8,6 +8,7 @@ import {
     updateItemAction,
     updateLinkIdAction,
 } from '../../store/treeStore/treeActions';
+import SystemField from '../FormField/SystemField';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
 import { IExtentionType, IItemProperty } from '../../types/IQuestionnareItemType';
@@ -286,6 +287,16 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     </FormField>
                 </div>
             )}
+            <div className="horizontal full">
+                <FormField label={t('Definition')} isOptional>
+                    <SystemField
+                        value={item.definition}
+                        onBlur={(e) => {
+                            dispatch(updateItemAction(item.linkId, IItemProperty.definition, e.target.value));
+                        }}
+                    />
+                </FormField>
+            </div>
             {canTypeHaveHelp(item) && (
                 <div>
                     <FormField>
