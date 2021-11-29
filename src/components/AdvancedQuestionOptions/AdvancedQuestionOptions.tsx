@@ -8,7 +8,7 @@ import {
     updateItemAction,
     updateLinkIdAction,
 } from '../../store/treeStore/treeActions';
-import SystemField from '../FormField/SystemField';
+import UriField from '../FormField/UriField';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
 import { IExtentionType, IItemProperty } from '../../types/IQuestionnareItemType';
@@ -289,7 +289,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             )}
             <div className="horizontal full">
                 <FormField label={t('Definition')} isOptional>
-                    <SystemField
+                    <UriField
                         value={item.definition}
                         onBlur={(e) => {
                             dispatch(updateItemAction(item.linkId, IItemProperty.definition, e.target.value));

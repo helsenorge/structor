@@ -10,8 +10,8 @@ import { Coding } from '../../../types/fhir';
 import createUUID from '../../../helpers/CreateUUID';
 import { ICodingProperty } from '../../../types/IQuestionnareItemType';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import SystemField from '../../FormField/SystemField';
-import { createSystemUUID } from '../../../helpers/systemHelper';
+import UriField from '../../FormField/UriField';
+import { createUriUUID } from '../../../helpers/uriHelper';
 import { ValidationErrors } from '../../../helpers/orphanValidation';
 import FormField from '../../FormField/FormField';
 import InputField from '../../InputField/inputField';
@@ -31,7 +31,7 @@ const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
     });
 
     const createEmptyCode = (): Coding => {
-        return { code: '', display: '', system: createSystemUUID(), id: createUUID() };
+        return { code: '', display: '', system: createUriUUID(), id: createUUID() };
     };
 
     const updateCode = (index: number, prop: ICodingProperty, value: string) => {
@@ -59,10 +59,12 @@ const Codes = ({ linkId, itemValidationErrors }: CodeProps): JSX.Element => {
                     </FormField>
                 </div>
                 <div className="horizontal full">
-                    <SystemField
-                        value={code.system}
-                        onBlur={(event) => updateCode(index, ICodingProperty.system, event.target.value)}
-                    />
+                    <FormField label={t('System')}>
+                        <UriField
+                            value={code.system}
+                            onBlur={(event) => updateCode(index, ICodingProperty.system, event.target.value)}
+                        />
+                    </FormField>
                 </div>
                 <div className="center-text">
                     <Btn
