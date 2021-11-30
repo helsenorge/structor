@@ -171,82 +171,104 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                             onChange={(event) => setNewValueSet({ ...newValueSet, publisher: event.target.value })}
                         />
                     </FormField>
-                    <FormField label={t('System')}>
-                        <UriField
-                            value={newValueSet.compose?.include[0].system}
-                            onBlur={(event) => handleSystem(event.target.value)}
-                        />
-                    </FormField>
                     <div className="btn-group center-text">
                         <Btn onClick={addNewElement} title={t('+ New option')} variant="secondary" />
                         <Btn onClick={dispatchValueSet} title={t('Save >')} variant="primary" />
                     </div>
                     <div className="value-set">
-                        <DragDropContext onDragEnd={handleOrder}>
-                            <Droppable droppableId={`droppable-new-value-set`} type="value-set">
-                                {(provided, snapshot) => (
-                                    <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
-                                        {newValueSet.compose?.include[0].concept?.map((item, index) => {
-                                            return (
-                                                <Draggable key={item.id} draggableId={item.id || '1'} index={index}>
-                                                    {(providedDrag, snapshotDrag) => (
-                                                        <div
-                                                            ref={providedDrag.innerRef}
-                                                            {...providedDrag.draggableProps}
-                                                            style={getItemStyle(
-                                                                snapshotDrag.isDragging,
-                                                                providedDrag.draggableProps.style,
-                                                            )}
-                                                            className="answer-option-item align-everything"
-                                                        >
-                                                            <span
-                                                                className="reorder-icon"
-                                                                aria-label="reorder element"
-                                                                {...providedDrag.dragHandleProps}
-                                                            />
-                                                            <div className="answer-option-content align-everything">
-                                                                <InputField
-                                                                    value={item.display}
-                                                                    placeholder={t('Enter a title..')}
-                                                                    onChange={(event) =>
-                                                                        handleConceptItem(
-                                                                            event.target.value,
-                                                                            'display',
-                                                                            item.id,
-                                                                        )
-                                                                    }
-                                                                />
-                                                                <InputField
-                                                                    value={item.code}
-                                                                    placeholder={t('Enter a value..')}
-                                                                    onChange={(event) =>
-                                                                        handleConceptItem(
-                                                                            event.target.value,
-                                                                            'code',
-                                                                            item.id,
-                                                                        )
-                                                                    }
-                                                                />
-                                                            </div>
-                                                            {newValueSet.compose?.include[0].concept?.length &&
-                                                                newValueSet.compose?.include[0].concept?.length > 2 && (
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => removeElement(item.id)}
-                                                                        name={t('Remove element')}
-                                                                        className="align-everything"
-                                                                    />
+                        {newValueSet.compose?.include.map((include, includeIndex) => {
+                            return (
+                                <div key={include.system}>
+                                    <FormField label={t('System')}>
+                                        <UriField
+                                            disabled={includeIndex > 0}
+                                            value={include.system}
+                                            onBlur={(event) => handleSystem(event.target.value)}
+                                        />
+                                    </FormField>
+                                    <DragDropContext onDragEnd={handleOrder}>
+                                        <Droppable
+                                            droppableId={`droppable-new-value-set-${include.system}`}
+                                            type="value-set"
+                                        >
+                                            {(provided, snapshot) => (
+                                                <div
+                                                    ref={provided.innerRef}
+                                                    style={getListStyle(snapshot.isDraggingOver)}
+                                                >
+                                                    {include.concept?.map((item, index) => {
+                                                        return (
+                                                            <Draggable
+                                                                key={item.id}
+                                                                draggableId={item.id || '1'}
+                                                                index={index}
+                                                            >
+                                                                {(providedDrag, snapshotDrag) => (
+                                                                    <div
+                                                                        ref={providedDrag.innerRef}
+                                                                        {...providedDrag.draggableProps}
+                                                                        style={getItemStyle(
+                                                                            snapshotDrag.isDragging,
+                                                                            providedDrag.draggableProps.style,
+                                                                        )}
+                                                                        className="answer-option-item align-everything"
+                                                                    >
+                                                                        <span
+                                                                            className="reorder-icon"
+                                                                            aria-label="reorder element"
+                                                                            {...providedDrag.dragHandleProps}
+                                                                        />
+                                                                        <div className="answer-option-content align-everything">
+                                                                            <InputField
+                                                                                disabled={includeIndex > 0}
+                                                                                value={item.display}
+                                                                                placeholder={t('Enter a title..')}
+                                                                                onChange={(event) =>
+                                                                                    handleConceptItem(
+                                                                                        event.target.value,
+                                                                                        'display',
+                                                                                        item.id,
+                                                                                    )
+                                                                                }
+                                                                            />
+                                                                            <InputField
+                                                                                disabled={includeIndex > 0}
+                                                                                value={item.code}
+                                                                                placeholder={t('Enter a value..')}
+                                                                                onChange={(event) =>
+                                                                                    handleConceptItem(
+                                                                                        event.target.value,
+                                                                                        'code',
+                                                                                        item.id,
+                                                                                    )
+                                                                                }
+                                                                            />
+                                                                        </div>
+                                                                        {includeIndex === 0 &&
+                                                                            include.concept?.length &&
+                                                                            include.concept?.length > 2 && (
+                                                                                <button
+                                                                                    type="button"
+                                                                                    onClick={() =>
+                                                                                        removeElement(item.id)
+                                                                                    }
+                                                                                    name={t('Remove element')}
+                                                                                    className="align-everything"
+                                                                                />
+                                                                            )}
+                                                                    </div>
                                                                 )}
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            );
-                                        })}
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </Droppable>
-                        </DragDropContext>
+                                                            </Draggable>
+                                                        );
+                                                    })}
+                                                    {provided.placeholder}
+                                                </div>
+                                            )}
+                                        </Droppable>
+                                    </DragDropContext>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
                 <div>
@@ -265,7 +287,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                             </p>
                             <ul>
                                 {getValueSetValues(x).map((y) => (
-                                    <li key={y.id}>
+                                    <li key={y.code}>
                                         {y.display} ({y.code})
                                     </li>
                                 ))}
