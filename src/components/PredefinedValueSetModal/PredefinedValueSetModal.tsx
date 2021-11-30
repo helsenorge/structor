@@ -21,6 +21,7 @@ import { removeSpace } from '../../helpers/formatHelper';
 import UriField from '../FormField/UriField';
 import { createUriUUID } from '../../helpers/uriHelper';
 import InputField from '../InputField/inputField';
+import { getValueSetValues } from '../../helpers/valueSetHelper';
 
 type Props = {
     close: () => void;
@@ -263,7 +264,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                                 )}
                             </p>
                             <ul>
-                                {x?.compose?.include[0]?.concept?.map((y) => (
+                                {getValueSetValues(x).map((y) => (
                                     <li key={y.id}>
                                         {y.display} ({y.code})
                                     </li>

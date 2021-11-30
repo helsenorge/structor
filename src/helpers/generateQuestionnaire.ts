@@ -14,6 +14,7 @@ import { getLanguageFromCode, translatableMetadata } from './LanguageHelper';
 import { isItemControlSidebar } from './itemControl';
 import { emptyPropertyReplacer } from './emptyPropertyReplacer';
 import { FhirpathAgeExpression, FhirpathGenderExpression } from './QuestionHelper';
+import { getValueSetValues } from './valueSetHelper';
 
 const getExtension = (extensions: Extension[] | undefined, extensionType: IExtentionType): Extension | undefined => {
     return extensions?.find((ext) => ext.url === extensionType);
@@ -57,21 +58,26 @@ const getTranslatedContained = (qContained: Array<ValueSet> | undefined, transla
     }
 
     return qContained.map((valueSet) => {
-        if (!valueSet.compose?.include || !valueSet.compose.include[0].concept) {
+        if (getValueSetValues(valueSet).length === 0) {
             return valueSet;
         }
 
-        const concept = valueSet.compose.include[0].concept.map((c) => {
-            const translatedValue =
-                valueSet.id && translation.contained[valueSet.id]
-                    ? translation.contained[valueSet.id].concepts[c.code]
-                    : '';
-            return { ...c, display: translatedValue };
+        const includes = valueSet.compose?.include.map((include) => {
+            return {
+                ...include,
+                concept: include.concept?.map((c) => {
+                    const translatedValue =
+                        valueSet.id && translation.contained[valueSet.id]
+                            ? translation.contained[valueSet.id].concepts[c.code]
+                            : '';
+                    return { ...c, display: translatedValue };
+                }),
+            };
         });
 
         return {
             ...valueSet,
-            compose: { ...valueSet.compose, include: [{ ...valueSet.compose.include[0], concept }] },
+            compose: { ...valueSet.compose, include: includes },
         };
     });
 };
@@ -151,7 +157,7 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
     }
 
     const answerOption = getTranslatedAnswerOptions(currentItem.answerOption, itemTranslation?.answerOptions);
-    const prefix = itemTranslation.prefix;
+    const prefix = itemTranslation?.prefix || '';
     const initial =
         (currentItem.type === IQuestionnaireItemType.text || currentItem.type === IQuestionnaireItemType.string) &&
         itemTranslation?.initial

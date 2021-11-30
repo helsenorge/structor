@@ -10,7 +10,7 @@ import AlertIcon from '../../images/icons/alert-circle-outline.svg';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { importValueSetAction } from '../../store/treeStore/treeActions';
 import createUUID from '../../helpers/CreateUUID';
-import { addIDToValueSet } from '../../helpers/valueSetHelper';
+import { addIDToValueSet, getValueSetValues } from '../../helpers/valueSetHelper';
 
 type Props = {
     close: () => void;
@@ -47,20 +47,18 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
 
         const valueSetFHIR = bundle.entry.map((x: BundleEntry) => x.resource) as ValueSet[];
 
-        const valueSet = valueSetFHIR
-            .map((x) => {
-                return {
-                    resourceType: x.resourceType,
-                    id: x.id ? `pre-${x.id}` : `pre-${createUUID()}`,
-                    version: x.version || '1.0',
-                    name: x.name,
-                    title: x.title || x.name,
-                    status: x.status,
-                    publisher: x.publisher,
-                    compose: x.compose ? addIDToValueSet(x.compose) : x.compose,
-                };
-            })
-            .filter((x) => x.compose?.include[0].concept && x.compose?.include[0].concept?.length > 0);
+        const valueSet = valueSetFHIR.map((x) => {
+            return {
+                resourceType: x.resourceType,
+                id: x.id ? `pre-${x.id}` : `pre-${createUUID()}`,
+                version: x.version || '1.0',
+                name: x.name,
+                title: x.title || x.name,
+                status: x.status,
+                publisher: x.publisher,
+                compose: x.compose ? addIDToValueSet(x.compose) : x.compose,
+            };
+        });
 
         setValueSetToAdd(valueSet.map((x) => x.id));
 
@@ -165,12 +163,11 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                                         <strong>{x.title}</strong>
                                     </p>
                                     <ul>
-                                        {x.compose?.include[0].concept &&
-                                            x.compose?.include[0]?.concept.map((p) => (
-                                                <li key={p.code}>
-                                                    {p.display} ({p.code})
-                                                </li>
-                                            ))}
+                                        {getValueSetValues(x).map((p) => (
+                                            <li key={p.code}>
+                                                {p.display} ({p.code})
+                                            </li>
+                                        ))}
                                     </ul>
                                 </div>
                             );

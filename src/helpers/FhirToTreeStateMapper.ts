@@ -12,14 +12,7 @@ import {
     Translation,
     TreeState,
 } from '../store/treeStore/treeStore';
-import {
-    Bundle,
-    Questionnaire,
-    QuestionnaireItem,
-    QuestionnaireItemAnswerOption,
-    ValueSet,
-    ValueSetComposeIncludeConcept,
-} from '../types/fhir';
+import { Bundle, Questionnaire, QuestionnaireItem, QuestionnaireItemAnswerOption, ValueSet } from '../types/fhir';
 
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { isSupportedLanguage, translatableMetadata } from './LanguageHelper';
@@ -35,6 +28,7 @@ import {
 } from './QuestionHelper';
 import { IExtentionType } from '../types/IQuestionnareItemType';
 import { initPredefinedValueSet } from './initPredefinedValueSet';
+import { getValueSetValues } from './valueSetHelper';
 
 function extractMetadata(questionnaireObj: Questionnaire) {
     const getMetadataParts = ({
@@ -121,9 +115,6 @@ function translateAnswerOptions(answerOptions?: QuestionnaireItemAnswerOption[])
 }
 
 function translateContained(base: Array<ValueSet>, translation: Array<ValueSet>): ContainedTranslations {
-    function getConcepts(valueSet: ValueSet): ValueSetComposeIncludeConcept[] | undefined {
-        return valueSet.compose?.include[0].concept;
-    }
     if (!base || !translation) {
         return {};
     }
@@ -131,13 +122,15 @@ function translateContained(base: Array<ValueSet>, translation: Array<ValueSet>)
     base.forEach((baseValueSet) => {
         const translatedValueSet = translation.find((x) => x.id === baseValueSet.id);
         if (baseValueSet.id && translatedValueSet) {
-            const baseConcepts = getConcepts(baseValueSet);
-            const translationConcepts = getConcepts(translatedValueSet);
+            const baseCodings = getValueSetValues(baseValueSet);
+            const translationCodings = getValueSetValues(translatedValueSet);
             const concepts: CodeStringValue = {};
-            baseConcepts?.forEach((bConcept) => {
-                const tConcept = translationConcepts?.find((t) => t.code === bConcept.code);
+            baseCodings?.forEach((bConcept) => {
+                const tConcept = translationCodings?.find(
+                    (t) => t.code === bConcept.code && t.system === bConcept.system,
+                );
                 if (tConcept) {
-                    concepts[tConcept.code] = tConcept.display || '';
+                    concepts[tConcept.code || ''] = tConcept.display || '';
                 }
             });
             contained[baseValueSet.id] = { concepts };

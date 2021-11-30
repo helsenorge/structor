@@ -5,6 +5,7 @@ import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQue
 import { isItemControlHelp, isItemControlHighlight, isItemControlInline, isItemControlSidebar } from './itemControl';
 import { isRecipientList } from './QuestionHelper';
 import { isUriValid } from './uriHelper';
+import { getValueSetValues } from './valueSetHelper';
 
 export interface ValidationErrors {
     linkId: string;
@@ -159,13 +160,12 @@ const validateInitial = (
         } else if (qItem.answerValueSet) {
             const valueSetToCheck = qContained.find((x) => `#${x.id}` === qItem.answerValueSet);
             if (valueSetToCheck) {
-                const system = valueSetToCheck.compose?.include[0].system;
-                const isMatch = valueSetToCheck.compose?.include[0].concept?.find(
+                const isMatch = getValueSetValues(valueSetToCheck).find(
                     (x) =>
                         qItem.initial &&
                         qItem.initial[0] &&
                         qItem.initial[0].valueCoding?.code === x.code &&
-                        qItem.initial[0].valueCoding?.system === system,
+                        qItem.initial[0].valueCoding?.system === x.system,
                 );
                 if (!isMatch) {
                     returnErrors.push(createError(qItem.linkId, 'initial', t('Initial value is not a possible value')));
@@ -297,10 +297,11 @@ const validateEnableWhen = (
                     // check contained valueSets
                     const valueSetToCheck = qContained.find((x) => `#${x.id}` === qItems[ew.question].answerValueSet);
                     if (valueSetToCheck) {
-                        const system = valueSetToCheck.compose?.include[0].system;
-                        const isMatch = valueSetToCheck.compose?.include[0].concept?.find(
+                        const isMatch = getValueSetValues(valueSetToCheck).find(
                             (x) =>
-                                ew.answerCoding && x.code === ew.answerCoding.code && system === ew.answerCoding.system,
+                                ew.answerCoding &&
+                                x.code === ew.answerCoding.code &&
+                                x.system === ew.answerCoding.system,
                         );
                         if (!isMatch) {
                             returnErrors.push(

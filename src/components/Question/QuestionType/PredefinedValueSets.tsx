@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { getValueSetValues } from '../../../helpers/valueSetHelper';
 import {
     QuestionnaireItem,
     QuestionnaireItemAnswerOption,
@@ -72,12 +73,7 @@ const PredefinedValueSets = ({ item, qContained, dispatchUpdateItem }: Predefine
         valueSetId: string,
     ): Array<{ code?: string; system?: string; display?: string }> => {
         const valueSet = qContained?.find((x) => x.id === valueSetId);
-        if (valueSet && valueSet.compose && valueSet.compose.include && valueSet.compose.include[0].concept) {
-            return valueSet.compose.include[0].concept.map((x) => {
-                return { code: x.code, system: valueSet.compose?.include[0].system, display: x.display };
-            });
-        }
-        return [];
+        return getValueSetValues(valueSet);
     };
 
     return (
