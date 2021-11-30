@@ -10,21 +10,23 @@ import AlertIcon from '../../images/icons/alert-circle-outline.svg';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { importValueSetAction } from '../../store/treeStore/treeActions';
 import createUUID from '../../helpers/CreateUUID';
-import { addIDToValueSet, getValueSetValues } from '../../helpers/valueSetHelper';
+import { getValueSetValues } from '../../helpers/valueSetHelper';
 
 type Props = {
     close: () => void;
 };
 
 const ImportValueSet = ({ close }: Props): JSX.Element => {
+    const uploadRef = React.useRef<HTMLInputElement>(null);
     const { t } = useTranslation();
-    const { dispatch } = useContext(TreeContext);
+    const { dispatch, state } = useContext(TreeContext);
 
     const [url, setUrl] = useState('');
     const [error, setError] = useState<string | null>();
     const [loading, setLoading] = useState(false);
     const [valueSets, setValueSets] = useState<ValueSet[] | null>();
     const [valueSetToAdd, setValueSetToAdd] = useState<string[]>([]);
+    const [fileUploadError, setFileUploadError] = useState<string>('');
 
     async function fetchValueSets() {
         const response = await fetch(url, {
@@ -50,13 +52,13 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
         const valueSet = valueSetFHIR.map((x) => {
             return {
                 resourceType: x.resourceType,
-                id: x.id ? `pre-${x.id}` : `pre-${createUUID()}`,
+                id: !x.id ? `pre-${createUUID()}` : x.id,
                 version: x.version || '1.0',
                 name: x.name,
                 title: x.title || x.name,
                 status: x.status,
                 publisher: x.publisher,
-                compose: x.compose ? addIDToValueSet(x.compose) : x.compose,
+                compose: x.compose,
             };
         });
 
@@ -120,8 +122,53 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
         }
     };
 
+    const uploadValueSets = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            const files = Array.from(event.target.files).map((file) => {
+                const reader = new FileReader();
+                return new Promise((resolve) => {
+                    // Resolve the promise after reading file
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = () => {
+                        setFileUploadError('Could not read uploaded file');
+                    };
+
+                    // Read the file as a text
+                    reader.readAsText(file);
+                });
+            });
+            const allFiles = await Promise.all(files);
+            const toAdd: ValueSet[] = [];
+
+            allFiles.forEach((fileObj) => {
+                const resource = JSON.parse(fileObj as string);
+                if (resource.resourceType === 'Bundle' && resource.entry) {
+                    resource.entry.forEach((entry: BundleEntry) => {
+                        const entryResource = entry.resource as ValueSet;
+                        if (entryResource.resourceType === 'ValueSet') {
+                            toAdd.push(entryResource);
+                        }
+                    });
+                } else if (resource.resourceType === 'ValueSet') {
+                    toAdd.push(resource);
+                }
+            });
+
+            // do not add existing valueSets again
+            const filteredToAdd = toAdd.filter((x) => state.qContained?.findIndex((y) => y.id === x.id) === -1);
+            setValueSets([...(valueSets || []), ...filteredToAdd]);
+            setValueSetToAdd([...valueSetToAdd, ...filteredToAdd.map((x) => x.id || '')]);
+
+            // Reset file input
+            if (uploadRef.current) {
+                uploadRef.current.value = '';
+            }
+            setFileUploadError('');
+        }
+    };
+
     return (
-        <Modal close={close} title={t('Import ValueSet')}>
+        <Modal close={close} title={t('Import ValueSet')} size="large">
             <div>
                 <FormField label={t('Enter a url which finds the resource')}>
                     <form className="input-btn" onSubmit={(e) => handleSubmit(e)}>
@@ -138,6 +185,32 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
                         <Btn title={t('search')} variant="primary" type="submit" />
                     </form>
                 </FormField>
+                <input
+                    type="file"
+                    ref={uploadRef}
+                    onChange={uploadValueSets}
+                    accept="application/JSON"
+                    style={{ display: 'none' }}
+                    multiple
+                />
+                <div>
+                    <div>
+                        {t(
+                            'Upload ValueSets as json files. Accepts a Bundle or ValueSet in a single file. It is possible to upload several files at once',
+                        )}
+                    </div>
+                    <div>
+                        <Btn
+                            title={t('Upload ValueSet(s)')}
+                            type="button"
+                            variant="secondary"
+                            onClick={() => {
+                                uploadRef.current?.click();
+                            }}
+                        />
+                    </div>
+                    {fileUploadError && <div>{t(fileUploadError)}</div>}
+                </div>
                 {loading && (
                     <div className="spinning">
                         <i className="ion-load-c" />
