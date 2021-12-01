@@ -12,6 +12,7 @@ import {
     getValidationMessage,
 } from './QuestionHelper';
 import { ValueSet } from '../types/fhir';
+import { getValueSetValues } from './valueSetHelper';
 
 export const exportTranslations = (
     qMetadata: IQuestionnaireMetadata,
@@ -67,13 +68,15 @@ const exportPredefinedValueSets = (
     if (valueSetsToTranslate.length > 0) {
         // for each valueset, for each row, add one translation row
         valueSetsToTranslate.forEach((valueSet) => {
-            valueSet.compose?.include[0].concept?.forEach((coding) => {
+            getValueSetValues(valueSet).forEach((coding) => {
                 const translatedValues = additionalLanguagesInUse.map((lang) => {
                     return additionalLanguages[lang].contained[valueSet.id || ''].concepts[coding.code || ''];
                 });
                 const stringValues = escapeValues([coding.display, ...translatedValues]);
 
-                returnString = returnString + `valueSet[${valueSet.id}][${coding.code}].display,${stringValues}\n`;
+                returnString =
+                    returnString +
+                    `valueSet[${valueSet.id}][${coding.system}][${coding.code}].display,${stringValues}\n`;
             });
         });
     }

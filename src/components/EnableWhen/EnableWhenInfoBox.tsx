@@ -13,6 +13,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import createUUID from '../../helpers/CreateUUID';
 import { format } from 'date-fns';
+import { getValueSetValues } from '../../helpers/valueSetHelper';
 
 type OperatorMapType = {
     [key: string]: string;
@@ -48,16 +49,10 @@ const EnableWhenInfoBox = ({ getItem, linkId, enableWhen, containedResources, en
             display = codingItem?.valueCoding?.display;
         } else if (item.answerValueSet && containedResources) {
             const valueSet = containedResources.find((x) => `#${x.id}` === item.answerValueSet);
-            if (
-                valueSet &&
-                valueSet.compose &&
-                valueSet.compose.include &&
-                valueSet.compose.include[0].concept &&
-                valueSet.compose.include[0].system === coding.system
-            ) {
-                const codingItem = valueSet.compose.include[0].concept.find((x) => x.code === coding.code);
-                display = codingItem?.display;
-            }
+            const codingItem = getValueSetValues(valueSet).find(
+                (x) => x.code === coding.code && x.system === coding.system,
+            );
+            display = codingItem?.display;
         }
 
         return display || t('<not set>');

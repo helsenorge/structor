@@ -4,6 +4,7 @@ import { ValueSet } from '../../../types/fhir';
 import { ActionType, Languages } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
 import { updateContainedValueSetTranslationAction } from '../../../store/treeStore/treeActions';
+import { getValueSetValues } from '../../../helpers/valueSetHelper';
 
 type TranslateContainedValueSetsProps = {
     qContained?: ValueSet[];
@@ -22,16 +23,16 @@ const TranslateContainedValueSets = ({
     const containedTranslations = translations[targetLanguage].contained;
 
     const renderValueSetOptions = (valueSet: ValueSet): JSX.Element => {
-        const concepts = valueSet.compose?.include[0].concept;
+        const codings = getValueSetValues(valueSet);
         const { id } = valueSet;
-        if (!concepts || !id) {
+        if (!codings || !id) {
             console.error(`ValueSet ${valueSet.title} doesn't contain concepts`);
             return <></>;
         }
         return (
             <div>
-                {concepts.map((concept) => {
-                    const { code, display } = concept;
+                {codings.map((coding) => {
+                    const { code, display } = coding;
                     if (!code) {
                         return <></>;
                     }

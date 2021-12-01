@@ -15,6 +15,7 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { isRecipientList } from '../../helpers/QuestionHelper';
 import InputField from '../InputField/inputField';
 import { isItemControlReceiverComponent } from '../../helpers/itemControl';
+import { getValueSetValues } from '../../helpers/valueSetHelper';
 
 interface Props {
     conditionItem: QuestionnaireItem;
@@ -54,19 +55,17 @@ const EnableWhenAnswerTypes = ({
             });
         } else if (item.answerValueSet && containedResources) {
             const valueSet = containedResources.find((x) => `#${x.id}` === item.answerValueSet);
-            if (valueSet && valueSet.compose && valueSet.compose.include && valueSet.compose.include[0].concept) {
-                return valueSet.compose.include[0].concept?.map((x) => {
-                    return { code: x.code, display: x.display };
-                });
-            }
+            return getValueSetValues(valueSet).map((coding) => {
+                return { code: coding.code || '', display: coding.display };
+            });
         }
         return [];
     };
 
     const getSystem = (codeValue: string): string | undefined => {
         if (conditionItem.answerValueSet) {
-            return qContained?.find((x) => x.id === conditionItem.answerValueSet?.replace('#', ''))?.compose?.include[0]
-                .system;
+            const valueSet = qContained?.find((x) => x.id === conditionItem.answerValueSet?.replace('#', ''));
+            return getValueSetValues(valueSet).find((x) => x.code === codeValue)?.system;
         } else {
             return conditionItem.answerOption?.find((x) => x.valueCoding?.code === codeValue)?.valueCoding?.system;
         }

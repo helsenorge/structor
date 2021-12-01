@@ -1,20 +1,15 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { QuestionnaireItem, QuestionnaireItemInitial } from '../../../types/fhir';
+import { Coding, QuestionnaireItem, QuestionnaireItemInitial } from '../../../types/fhir';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
+import { getValueSetValues } from '../../../helpers/valueSetHelper';
 
 type InitialInputTypeChoiceProps = {
     item: QuestionnaireItem;
     dispatchAction: (value: QuestionnaireItemInitial | undefined) => void;
 };
-
-interface IInitialOption {
-    system: string;
-    code: string;
-    display: string;
-}
 
 const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element => {
     const { t } = useTranslation();
@@ -44,7 +39,7 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
 
     // TODO Support multiple initial values (for checkboxes)?
 
-    const renderAnswerOption = (initialOption: IInitialOption): JSX.Element => {
+    const renderAnswerOption = (initialOption: Coding): JSX.Element => {
         return (
             <div className="answerOption">
                 <input
@@ -66,28 +61,14 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
         );
     };
 
-    const getContainedValueSetValues = (): IInitialOption[] => {
+    const getContainedValueSetValues = (): Coding[] => {
         const valueSetId = props.item.answerValueSet;
         const containedValueSet = qContained?.find((valueSet) => `#${valueSet.id}` === valueSetId);
-        if (
-            containedValueSet &&
-            containedValueSet.compose &&
-            containedValueSet.compose.include &&
-            containedValueSet.compose.include[0].concept
-        ) {
-            return containedValueSet.compose.include[0].concept.map((concept) => {
-                return {
-                    system: containedValueSet.compose?.include[0].system || '',
-                    code: concept.code,
-                    display: concept.display || '',
-                };
-            });
-        }
-        return [];
+        return getValueSetValues(containedValueSet);
     };
 
     const renderAnswerOptions = (): JSX.Element => {
-        let initialOptions: IInitialOption[];
+        let initialOptions: Coding[];
         if (props.item.answerValueSet) {
             initialOptions = getContainedValueSetValues();
         } else {

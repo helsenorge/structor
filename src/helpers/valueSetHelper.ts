@@ -1,4 +1,4 @@
-import { ValueSet, ValueSetCompose } from '../types/fhir';
+import { Coding, ValueSet, ValueSetCompose } from '../types/fhir';
 import createUUID from './CreateUUID';
 import { initPredefinedValueSet } from './initPredefinedValueSet';
 
@@ -27,4 +27,19 @@ export const addPredefinedValueSet = (valueSets?: ValueSet[]): ValueSet[] => {
     });
 
     return [...predefinedValueSetsToAdd, ...importedValueSets];
+};
+
+export const getValueSetValues = (valueSet: ValueSet | undefined): Coding[] => {
+    const codings: Coding[] = [];
+    valueSet?.compose?.include.forEach((include) => {
+        include?.concept?.forEach((concept) => {
+            codings.push({
+                code: concept.code,
+                system: include.system,
+                display: concept.display,
+            });
+        });
+    });
+
+    return codings;
 };
