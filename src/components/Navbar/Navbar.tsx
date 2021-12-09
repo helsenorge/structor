@@ -155,6 +155,9 @@ const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props
                                 }
                             />
                         ) : (
+                            <div></div>
+                        )}
+                        {i18n.language !== 'en-US' ? (
                             <Btn
                                 title={t('Change to English')}
                                 onClick={() =>
@@ -164,6 +167,21 @@ const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props
                                     })
                                 }
                             />
+                        ) : (
+                            <div></div>
+                        )}
+                        {i18n.language !== 'fr-FR' ? (
+                            <Btn
+                                title={t('Change to French')}
+                                onClick={() =>
+                                    callbackAndHide(() => {
+                                        i18n.changeLanguage('fr-FR');
+                                        localStorage.setItem('editor_language', 'fr-FR');
+                                    })
+                                }
+                            />
+                        ) : (
+                            <div></div>
                         )}
                     </div>
                 )}
