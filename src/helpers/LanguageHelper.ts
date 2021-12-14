@@ -18,6 +18,7 @@ export const supportedLanguages: Language[] = [
     { code: 'ro-RO', display: 'Rumensk', localDisplay: 'Română' },
     { code: 'lt-LT', display: 'Litauisk', localDisplay: 'Lietuvis' },
     { code: 'ru-RU', display: 'Russisk', localDisplay: 'русский' },
+    { code: 'fr-FR', display: 'Fransk', localDisplay: 'Français' },
 ];
 
 export const getLanguageFromCode = (languageCode: string): Language | undefined => {
