@@ -144,7 +144,7 @@ const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props
                             title={t('Choices')}
                             onClick={() => callbackAndHide(() => setShowContained(!showContained))}
                         />
-                        {i18n.language !== 'nb-NO' ? (
+                        {i18n.language !== 'nb-NO' && (
                             <Btn
                                 title={t('Change to norwegian')}
                                 onClick={() =>
@@ -154,10 +154,8 @@ const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props
                                     })
                                 }
                             />
-                        ) : (
-                            <div></div>
                         )}
-                        {i18n.language !== 'en-US' ? (
+                        {i18n.language !== 'en-US' && (
                             <Btn
                                 title={t('Change to English')}
                                 onClick={() =>
@@ -167,10 +165,8 @@ const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props
                                     })
                                 }
                             />
-                        ) : (
-                            <div></div>
                         )}
-                        {i18n.language !== 'fr-FR' ? (
+                        {i18n.language !== 'fr-FR' && (
                             <Btn
                                 title={t('Change to French')}
                                 onClick={() =>
@@ -180,8 +176,6 @@ const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props
                                     })
                                 }
                             />
-                        ) : (
-                            <div></div>
                         )}
                     </div>
                 )}
