@@ -170,11 +170,11 @@ const ImportValueSet = ({ close }: Props): JSX.Element => {
     return (
         <Modal close={close} title={t('Import ValueSet')} size="large">
             <div>
-                <FormField label={t('Enter a url which finds the resource')}>
+                <FormField label={t('Enter a location to import the ValueSets from')}>
                     <form className="input-btn" onSubmit={(e) => handleSubmit(e)}>
                         <input
-                            placeholder="https://.."
-                            title={t('Only url')}
+                            placeholder="https:// .. /ValueSet or https:// .. /ValueSet/[id]"
+                            title={t('Make sure the URL ends with /ValueSet or /Valueset/[id]')}
                             onChange={(e) => handleChangeUrl(e.target.value)}
                             pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
                             type="url"
