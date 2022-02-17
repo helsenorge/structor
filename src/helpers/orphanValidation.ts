@@ -1,7 +1,8 @@
 import { TFunction } from 'react-i18next';
-import { Items, OrderItem } from '../store/treeStore/treeStore';
+import { Items, OrderItem, Languages } from '../store/treeStore/treeStore';
 import { QuestionnaireItem, ValueSet } from '../types/fhir';
 import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { ItemControlType } from './itemControl';
 import { isItemControlHelp, isItemControlHighlight, isItemControlInline, isItemControlSidebar } from './itemControl';
 import { isRecipientList } from './QuestionHelper';
 import { isUriValid } from './uriHelper';
@@ -340,7 +341,7 @@ export const validateOrphanedElements = (
     const errors: ValidationErrors[] = [];
 
     qOrder.forEach((x) => validate(t, x, qItems, qContained, errors));
-    console.log(errors);
+
     return errors;
 };
 
@@ -381,4 +382,69 @@ const validate = (
     errors.push(...validateEnableWhen(t, qItems, qItem, qContained));
 
     currentItem.items.forEach((x) => validate(t, x, qItems, qContained, errors));
+};
+
+const validateSidebarTranslations = (
+    t: TFunction<'translation'>,
+    currentItem: OrderItem,
+    qAdditionalLanguages: Languages,
+    errors: ValidationErrors[],
+) => {
+    const languageCodes = Object.keys(qAdditionalLanguages);
+    languageCodes.forEach((languageCode, index) => {
+        if (
+            !qAdditionalLanguages[languageCode].sidebarItems[currentItem.linkId] ||
+            !qAdditionalLanguages[languageCode].sidebarItems[currentItem.linkId].markdown
+        ) {
+            errors.push(
+                createError(currentItem.linkId, 'sidebar.markdown', t('Translation not found for sidebar item'), index),
+            );
+        }
+    });
+};
+
+const validateElementTranslations = (
+    t: TFunction<'translation'>,
+    currentItem: OrderItem,
+    qAdditionalLanguages: Languages,
+    errors: ValidationErrors[],
+) => {
+    const languageCodes = Object.keys(qAdditionalLanguages);
+    languageCodes.forEach((languageCode, index) => {
+        if (
+            !qAdditionalLanguages[languageCode].items[currentItem.linkId] ||
+            !qAdditionalLanguages[languageCode].items[currentItem.linkId].text
+        ) {
+            // console.log(`Translation not found for language: ${languageCode}, item: ${currentItem.linkId}`);
+            errors.push(createError(currentItem.linkId, 'items.text', t('Translation not found for form item'), index));
+        }
+    });
+};
+
+export const validateTranslations = (
+    t: TFunction<'translation'>,
+    qOrder: OrderItem[],
+    qItems: Items,
+    qAdditionalLanguages: Languages | undefined,
+): ValidationErrors[] => {
+    const translationErrors: ValidationErrors[] = [];
+
+    if (qAdditionalLanguages) {
+        const sidebarItems = qOrder.filter(
+            (qOrderItem) =>
+                qItems[qOrderItem.linkId].type === IQuestionnaireItemType.text &&
+                qItems[qOrderItem.linkId].extension
+                    ?.find((ex) => ex.url === IExtentionType.itemControl)
+                    ?.valueCodeableConcept?.coding?.find((y) => y.code === ItemControlType.sidebar),
+        );
+        sidebarItems.forEach((item) => validateSidebarTranslations(t, item, qAdditionalLanguages, translationErrors));
+
+        const elementItems = qOrder.filter(
+            (qOrderItem) => qItems[qOrderItem.linkId].type !== IQuestionnaireItemType.text,
+        );
+
+        elementItems.forEach((item) => validateElementTranslations(t, item, qAdditionalLanguages, translationErrors));
+    }
+
+    return translationErrors;
 };

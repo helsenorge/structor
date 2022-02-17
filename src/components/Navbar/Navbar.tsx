@@ -9,7 +9,7 @@ import JSONView from '../JSONView/JSONView';
 import PredefinedValueSetModal from '../PredefinedValueSetModal/PredefinedValueSetModal';
 import ImportValueSet from '../ImportValueSet/ImportValueSet';
 import { saveAction } from '../../store/treeStore/treeActions';
-import { validateOrphanedElements, ValidationErrors } from '../../helpers/orphanValidation';
+import { validateOrphanedElements, validateTranslations, ValidationErrors } from '../../helpers/orphanValidation';
 import { ValidationErrorsModal } from '../ValidationErrorsModal/validationErrorsModal';
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +17,8 @@ type Props = {
     showFormFiller: () => void;
     setValidationErrors: (errors: ValidationErrors[]) => void;
     validationErrors: ValidationErrors[];
+    translationErrors: ValidationErrors[];
+    setTranslationErrors: (errors: ValidationErrors[]) => void;
 };
 
 enum MenuItem {
@@ -25,7 +27,13 @@ enum MenuItem {
     more = 'more',
 }
 
-const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props): JSX.Element => {
+const Navbar = ({
+    showFormFiller,
+    setValidationErrors,
+    validationErrors,
+    translationErrors,
+    setTranslationErrors,
+}: Props): JSX.Element => {
     const { i18n, t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
@@ -132,6 +140,9 @@ const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props
                                 setValidationErrors(
                                     validateOrphanedElements(t, state.qOrder, state.qItems, state.qContained || []),
                                 );
+                                setTranslationErrors(
+                                    validateTranslations(t, state.qOrder, state.qItems, state.qAdditionalLanguages),
+                                );
                                 setShowValidationErrors(true);
                             }}
                         />
@@ -183,6 +194,7 @@ const Navbar = ({ showFormFiller, setValidationErrors, validationErrors }: Props
             {showValidationErrors && (
                 <ValidationErrorsModal
                     validationErrors={validationErrors}
+                    translationErrors={translationErrors}
                     onClose={() => setShowValidationErrors(false)}
                 />
             )}

@@ -216,6 +216,8 @@
     "+ Add element": "+ Legg til element",
     "Found {0} errors. Questions with errors are marked with a red border.": "Fant {0} feil. Spørsmål med feil er markert med rød ramme.",
     "Found no validation errors!": "Fant ingen valideringsfeil!",
+    "Found {0} missing translations.": "Fant {0} manglende oversettelser.",
+    "Found no translations errors!": "Fant ingen manglende oversettelser!",
     "It looks like you have previously worked with a questionnaire:": "Det ser ut til at du har jobbet med et skjema tidligere:",
     "Do you wish to open this questionnaire?": "Ønsker du å fortsette med dette skjemaet?",
     "Restore questionnaire...": "Gjenopprett skjema...",
