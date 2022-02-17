@@ -85,7 +85,10 @@ const getTranslatedContained = (qContained: Array<ValueSet> | undefined, transla
 const getTranslatedSidebarItem = (translation: Translation, currentItem: QuestionnaireItem) => {
     const sidebarItemTranslation = translation?.sidebarItems[currentItem.linkId];
     let _text = undefined;
-    const translatedText = sidebarItemTranslation.markdown;
+
+    // Set text to an emty sting if translation is not set
+    const translatedText =
+        sidebarItemTranslation && sidebarItemTranslation.markdown ? sidebarItemTranslation.markdown : '';
     const markdownExtension = getExtension(currentItem._text?.extension, IExtentionType.markdown);
     if (markdownExtension) {
         const translatedMarkdownExtension = { ...markdownExtension, valueMarkdown: translatedText };

@@ -20,6 +20,7 @@ const FormBuilder = (): JSX.Element => {
 
     const [showPreview, setShowPreview] = useState(false);
     const [validationErrors, setValidationErrors] = useState<Array<ValidationErrors>>([]);
+    const [translationErrors, setTranslationErrors] = useState<Array<ValidationErrors>>([]);
     const [translateLang, setTranslateLang] = useState('');
 
     const toggleFormDetails = useCallback(() => {
@@ -32,6 +33,8 @@ const FormBuilder = (): JSX.Element => {
                 showFormFiller={() => setShowPreview(!showPreview)}
                 validationErrors={validationErrors}
                 setValidationErrors={setValidationErrors}
+                translationErrors={translationErrors}
+                setTranslationErrors={setTranslationErrors}
             />
 
             <div className="editor">
