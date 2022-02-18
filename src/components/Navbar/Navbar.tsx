@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
-import { TreeContext } from '../../store/treeStore/treeStore';
+import { Languages, TreeContext } from '../../store/treeStore/treeStore';
 import Btn from '../Btn/Btn';
 import MoreIcon from '../../images/icons/ellipsis-horizontal-outline.svg';
 import useOutsideClick from '../../hooks/useOutsideClick';
@@ -102,6 +102,10 @@ const Navbar = ({
         return `${profile.given_name} ${profile.family_name}`;
     }
 
+    const hasTranslations = (languages: Languages | undefined): boolean => {
+        return !!languages && Object.keys(languages).length > 0;
+    };
+
     return (
         <>
             <header ref={navBarRef}>
@@ -195,6 +199,7 @@ const Navbar = ({
                 <ValidationErrorsModal
                     validationErrors={validationErrors}
                     translationErrors={translationErrors}
+                    hasTranslations={hasTranslations(state.qAdditionalLanguages)}
                     onClose={() => setShowValidationErrors(false)}
                 />
             )}
