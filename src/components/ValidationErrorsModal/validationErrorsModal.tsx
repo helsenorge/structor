@@ -6,6 +6,7 @@ import Modal from '../Modal/Modal';
 interface ValidationErrorsModalProps {
     validationErrors: ValidationErrors[];
     translationErrors: ValidationErrors[];
+    hasTranslations: boolean;
     onClose: () => void;
 }
 
@@ -28,7 +29,11 @@ export const ValidationErrorsModal = (props: ValidationErrorsModalProps): JSX.El
                     {t('Found {0} missing translations.').replace('{0}', props.translationErrors.length.toString())}
                 </div>
             ) : (
-                <div style={{ paddingTop: '10px' }}>{t('Found no translations errors!')}</div>
+                <>
+                    {props.hasTranslations && (
+                        <div style={{ paddingTop: '10px' }}>{t('Found no translations errors!')}</div>
+                    )}
+                </>
             )}
         </Modal>
     );

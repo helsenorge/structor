@@ -415,7 +415,6 @@ const validateElementTranslations = (
             !qAdditionalLanguages[languageCode].items[currentItem.linkId] ||
             !qAdditionalLanguages[languageCode].items[currentItem.linkId].text
         ) {
-            // console.log(`Translation not found for language: ${languageCode}, item: ${currentItem.linkId}`);
             errors.push(createError(currentItem.linkId, 'items.text', t('Translation not found for form item'), index));
         }
     });
