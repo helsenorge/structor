@@ -439,7 +439,10 @@ export const validateTranslations = (
         sidebarItems.forEach((item) => validateSidebarTranslations(t, item, qAdditionalLanguages, translationErrors));
 
         const elementItems = qOrder.filter(
-            (qOrderItem) => qItems[qOrderItem.linkId].type !== IQuestionnaireItemType.text,
+            (qOrderItem) =>
+                !qItems[qOrderItem.linkId].extension
+                    ?.find((ex) => ex.url === IExtentionType.itemControl)
+                    ?.valueCodeableConcept?.coding?.find((y) => y.code === ItemControlType.sidebar),
         );
 
         elementItems.forEach((item) => validateElementTranslations(t, item, qAdditionalLanguages, translationErrors));
