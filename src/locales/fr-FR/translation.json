@@ -216,6 +216,8 @@
     "+ Add element": "+ Ajouter élément",
     "Found {0} errors. Questions with errors are marked with a red border.": "Trouvé {0} erreurs. Les questions en erreur sont encadrées de rouge.",
     "Found no validation errors!": "Aucune erreur de validation trouvée!",
+    "Found {0} missing translations.": "Trouvé {0} traductions manquantes",
+    "Found no translations errors!": "Aucune erreur de traduction trouvée!",
     "It looks like you have previously worked with a questionnaire:": "Il semble que vous avez déja travaillé sur un questionnaire:",
     "Do you wish to open this questionnaire?": "Voulez vous ouvrir ce questionnaire?",
     "Restore questionnaire...": "Récupérer questionnaire...",
