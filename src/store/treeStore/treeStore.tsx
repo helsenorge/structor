@@ -209,7 +209,16 @@ export const initialState: TreeState = {
             },
         ],
         subjectType: ['Patient'],
-        extension: [],
+        extension: [
+            {
+                url: 'http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar',
+                valueCoding: { system: 'http://helsenorge.no/fhir/ValueSet/sdf-sidebar', code: '1' },
+            },
+            {
+                url: 'http://helsenorge.no/fhir/StructureDefinition/sdf-information-message',
+                valueCoding: { system: 'http://helsenorge.no/fhir/ValueSet/sdf-information-message', code: '1' },
+            },
+        ],
     },
     qContained: initPredefinedValueSet,
     qCurrentItem: undefined,
