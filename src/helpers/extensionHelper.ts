@@ -2,7 +2,7 @@ import { updateItemAction, updateQuestionnaireMetadataAction } from '../store/tr
 import { ActionType } from '../store/treeStore/treeStore';
 import { Element, Extension, QuestionnaireItem } from '../types/fhir';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import { IExtentionType, IItemProperty } from '../types/IQuestionnareItemType';
+import { IExtentionType, IValueSetSystem, IItemProperty } from '../types/IQuestionnareItemType';
 import createUUID from './CreateUUID';
 
 export const setItemExtension = (
@@ -90,4 +90,9 @@ export const createGuidanceActionExtension = (valueString = ''): Extension => ({
 export const createGuidanceParameterExtension = (valueString = ''): Extension => ({
     url: IExtentionType.guidanceParam,
     valueString,
+});
+
+export const createHyperlinkTargetExtension = (codeValue = 2): Extension => ({
+    url: IExtentionType.hyperlinkTarget,
+    valueCoding: { system: IValueSetSystem.hyperlinkTargetValueset, code: `${codeValue}` },
 });

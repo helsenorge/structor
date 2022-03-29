@@ -24,6 +24,7 @@ import Choice from './QuestionType/Choice';
 import EnableWhen from '../EnableWhen/EnableWhen';
 import Infotext from './QuestionType/Infotext';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
+import HyperlinkTargetElementToggle from './HyperlinkTargetElementToggle/HyperlinkTargetElementToggle';
 
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import ValidationAnswerTypes from './ValidationAnswerTypes/ValidationAnswerTypes';
@@ -42,6 +43,7 @@ import {
 
 interface QuestionProps {
     item: QuestionnaireItem;
+    formExtensions: Array<Extension> | undefined;
     parentArray: Array<string>;
     containedResources?: Array<ValueSet>;
     conditionalArray: ValueSetComposeIncludeConcept[];
@@ -195,6 +197,11 @@ const Question = (props: QuestionProps): JSX.Element => {
                     </FormField>
                 )}
                 {respondType()}
+                <HyperlinkTargetElementToggle
+                    item={props.item}
+                    formExtensions={props.formExtensions}
+                    dispatch={props.dispatch}
+                />
             </div>
             <div className="question-addons">
                 {canTypeBeValidated(props.item) && (

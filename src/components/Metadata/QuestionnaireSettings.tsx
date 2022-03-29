@@ -17,11 +17,15 @@ import { removeQuestionnaireExtension, setQuestionnaireExtension } from '../../h
 import RadioBtn from '../RadioBtn/RadioBtn';
 import InputField from '../InputField/inputField';
 import { translatableSettings } from '../../helpers/LanguageHelper';
+import { createHyperlinkTargetExtension } from '../../helpers/extensionHelper';
 
 const QuestionnaireSettings = (): JSX.Element => {
     const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const { qMetadata } = state;
+    const [isHyperlinkSameWindowGlobalActivated, setHyperlinkSameWindowGlobalActivated] = React.useState<boolean>(
+        !!qMetadata.extension?.find((item) => item.url === IExtentionType.hyperlinkTarget),
+    );
 
     const updateMetaExtension = (extension: Extension) => {
         setQuestionnaireExtension(qMetadata, extension, dispatch);
@@ -34,6 +38,15 @@ const QuestionnaireSettings = (): JSX.Element => {
     const getGeneratePdfValue = (): boolean => {
         const extension = qMetadata?.extension?.find((ex) => ex.url === IExtentionType.generatePDF);
         return extension ? extension.valueBoolean || false : true;
+    };
+
+    const toggleHyperlinkTargetGlobal = (): void => {
+        setHyperlinkSameWindowGlobalActivated(!isHyperlinkSameWindowGlobalActivated);
+        if (isHyperlinkSameWindowGlobalActivated) {
+            removeMetaExtension(IExtentionType.hyperlinkTarget);
+        } else {
+            updateMetaExtension(createHyperlinkTargetExtension());
+        }
     };
 
     return (
@@ -208,6 +221,15 @@ const QuestionnaireSettings = (): JSX.Element => {
                     }}
                     value={!!qMetadata?.extension?.find((ex) => ex.url === IExtentionType.navigator) || false}
                     label={t('Use navigator')}
+                />
+            </FormField>
+            <FormField>
+                <SwitchBtn
+                    label={t('Open all links in same tab')}
+                    value={isHyperlinkSameWindowGlobalActivated}
+                    onChange={() => {
+                        toggleHyperlinkTargetGlobal();
+                    }}
                 />
             </FormField>
         </Accordion>
