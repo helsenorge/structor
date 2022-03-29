@@ -346,5 +346,7 @@
     "Connect to print version (binary)": "Connectez-vous à la version imprimable (binaire)",
     "For example Binary/35": "ex: Binary/35",
     "Print version": "Version imprimée",
-    "Dynamic": "Dynamique"
+    "Dynamic": "Dynamique",
+    "Open item links in same tab": "Ouvrir les liens des éléments dans le même onglet",
+    "Open all links in same tab": "Ouvrir tous les liens dans le même onglet"
 }

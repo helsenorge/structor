@@ -85,6 +85,7 @@ const QuestionDrawer = ({ validationErrors }: Props): JSX.Element | null => {
                 <Question
                     key={`${item.linkId}`}
                     item={item}
+                    formExtensions={state.qMetadata.extension}
                     parentArray={parentArray}
                     conditionalArray={getConditional(parentArray, item.linkId)}
                     getItem={getQItem}

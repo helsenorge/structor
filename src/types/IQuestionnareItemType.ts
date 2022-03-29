@@ -76,6 +76,7 @@ export enum IValueSetSystem {
     itemControlValueSet = 'http://hl7.org/fhir/ValueSet/questionnaire-item-control',
     presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
     sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
+    hyperlinkTargetValueset = 'http://helsenorge.no/fhir/ValueSet/sdf-hyperlink-target',
 }
 
 export enum IExtentionType {
@@ -111,6 +112,7 @@ export enum IExtentionType {
     sublabel = 'http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel',
     saveCapability = 'http://helsenorge.no/fhir/StructureDefinition/sdf-save-capabilities',
     printVersion = 'http://helsenorge.no/fhir/StructureDefinition/sdf-questionnaire-print-version',
+    hyperlinkTarget = 'http://helsenorge.no/fhir/StructureDefinition/sdf-hyperlink-target',
 }
 
 export enum UseContextSystem {

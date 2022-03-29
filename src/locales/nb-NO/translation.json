@@ -346,5 +346,7 @@
     "Connect to print version (binary)": "Koble til PDF-skjema (binary)",
     "For example Binary/35": "F.eks Binary/35",
     "Print version": "Utskriftsversjon",
-    "Dynamic": "Dynamisk"
+    "Dynamic": "Dynamisk",
+    "Open item links in same tab": "Åpne lenker i samme vindu",
+    "Open all links in same tab": "Åpne alle lenker i samme vindu"
 }
