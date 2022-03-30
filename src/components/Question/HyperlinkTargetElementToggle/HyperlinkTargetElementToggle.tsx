@@ -29,7 +29,7 @@ const HyperlinkTargetElementToggle = ({ item, formExtensions, dispatch }: Props)
     const [formHyperlinkValue, setFormHyperlinkValue] = useState<HyperlinkTarget | undefined>(undefined);
 
     const getHyperlinkTargetvalue = (extensions: Extension[]): HyperlinkTarget | undefined => {
-        const hyperlinkExtension = extensions?.find((item) => item.url === IExtentionType.hyperlinkTarget);
+        const hyperlinkExtension = extensions?.find((extension) => extension.url === IExtentionType.hyperlinkTarget);
         if (hyperlinkExtension) {
             const value = hyperlinkExtension.valueCoding?.code;
             if (value) return ~~value;
