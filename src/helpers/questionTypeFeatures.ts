@@ -145,7 +145,10 @@ export const canTypeBeBeriket = (item: QuestionnaireItem): boolean => {
             item.type === IQuestionnaireItemType.boolean ||
             item.type === IQuestionnaireItemType.quantity ||
             item.type === IQuestionnaireItemType.integer ||
-            item.type === IQuestionnaireItemType.decimal) &&
+            item.type === IQuestionnaireItemType.decimal ||
+            item.type === IQuestionnaireItemType.date ||
+            item.type === IQuestionnaireItemType.dateTime ||
+            item.type === IQuestionnaireItemType.time) &&
         !isItemControlInline(item)
     );
 };
