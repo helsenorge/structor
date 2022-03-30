@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import GroupedSelect from '../../Select/GroupedSelect';
-import { EnrichmentSet } from '../../../helpers/QuestionHelper';
+import { CreateOptionSetForType } from '../../../helpers/EnrichmentSet';
 import FormField from '../../FormField/FormField';
 import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
@@ -26,14 +26,14 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
     const [predefinedOptionIds, setPredifinedOptionIds] = useState<Array<string>>([]);
 
     useEffect(() => {
-        const flattened = EnrichmentSet.options.flatMap((element) => {
+        const flattened = CreateOptionSetForType(props.item.type).options.flatMap((element) => {
             if (isOptionGroup(element)) {
                 return (element as OptionGroup).options.map((childElement) => childElement.code);
             }
             return (element as Option).code;
         });
         setPredifinedOptionIds(flattened);
-    }, []);
+    }, [props.item.type]);
 
     const dispatchUpdateItem = (name: IItemProperty, value: boolean) => {
         dispatch(updateItemAction(props.item.linkId, name, value));
@@ -92,7 +92,7 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
                 value={getSelectValue()}
                 options={[
                     { display: t('No enrichment'), code: FhirPathOptionEnum.NONE },
-                    ...EnrichmentSet.options,
+                    ...CreateOptionSetForType(props.item.type).options,
                     { display: t('Custom'), code: FhirPathOptionEnum.CUSTOM },
                 ]}
                 onChange={(event) => {

@@ -13,7 +13,7 @@ import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { getLanguageFromCode, translatableMetadata } from './LanguageHelper';
 import { isItemControlSidebar } from './itemControl';
 import { emptyPropertyReplacer } from './emptyPropertyReplacer';
-import { FhirpathAgeExpression, FhirpathGenderExpression } from './QuestionHelper';
+import { FhirpathAgeExpression, FhirpathGenderExpression } from './EnrichmentSet';
 import { getValueSetValues } from './valueSetHelper';
 
 const getExtension = (extensions: Extension[] | undefined, extensionType: IExtentionType): Extension | undefined => {
