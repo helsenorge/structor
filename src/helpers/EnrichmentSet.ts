@@ -32,10 +32,10 @@ export const CreateOptionSetForType = (questionnaireType: string): Options => {
             break;
         case IQuestionnaireItemType.string:
         case IQuestionnaireItemType.text:
-            filter = (it: EnrichmentExpessionMetadata) => true;
+            filter = () => true;
             break;
         default:
-            filter = (it: EnrichmentExpessionMetadata) => false;
+            filter = () => false;
             break;
     }
 
