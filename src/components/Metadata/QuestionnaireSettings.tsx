@@ -13,11 +13,14 @@ import { Extension } from '../../types/fhir';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { IExtentionType, IValueSetSystem } from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
-import { removeQuestionnaireExtension, setQuestionnaireExtension } from '../../helpers/extensionHelper';
+import {
+    removeQuestionnaireExtension,
+    setQuestionnaireExtension,
+    createHyperlinkTargetExtension,
+} from '../../helpers/extensionHelper';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import InputField from '../InputField/inputField';
 import { translatableSettings } from '../../helpers/LanguageHelper';
-import { createHyperlinkTargetExtension } from '../../helpers/extensionHelper';
 
 const QuestionnaireSettings = (): JSX.Element => {
     const { t } = useTranslation();
