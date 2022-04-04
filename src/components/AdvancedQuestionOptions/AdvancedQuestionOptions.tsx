@@ -8,6 +8,7 @@ import {
     updateItemAction,
     updateLinkIdAction,
 } from '../../store/treeStore/treeActions';
+import HyperlinkTargetElementToggle from './HyperlinkTargetElementToggle';
 import UriField from '../FormField/UriField';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
@@ -224,6 +225,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     )}
                 </FormField>
             )}
+            <HyperlinkTargetElementToggle item={item} />
             {canTypeHaveCalculatedExpressionExtension(item) && (
                 <CalculatedExpression item={item} updateExtension={handleExtension} removeExtension={removeExtension} />
             )}

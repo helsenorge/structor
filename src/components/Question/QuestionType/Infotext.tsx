@@ -6,7 +6,13 @@ import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { findElementInTreeArray } from '../../../helpers/treeHelper';
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { deleteItemAction, newItemAction, updateItemAction } from '../../../store/treeStore/treeActions';
-import { createMarkdownExtension, removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
+import {
+    createMarkdownExtension,
+    removeItemExtension,
+    setItemExtension,
+    getHyperlinkTargetvalue,
+    createHyperlinkTargetExtension,
+} from '../../../helpers/extensionHelper';
 import RadioBtn from '../../RadioBtn/RadioBtn';
 import { Extension, QuestionnaireItem } from '../../../types/fhir';
 import {
@@ -79,9 +85,18 @@ const Infotext = ({ item, parentArray }: InfotextProps): JSX.Element => {
                     onChange={(newValue: string) => {
                         if (newValue === INLINE_OPTION) {
                             const newExtension = createItemControlExtension(ItemControlType.inline);
+                            const newInlineItem = createInlineItem();
                             setItemExtension(item, newExtension, dispatch);
                             dispatch(updateItemAction(item.linkId, IItemProperty.type, IQuestionnaireItemType.text));
-                            dispatch(newItemAction(createInlineItem(), [...parentArray, item.linkId], 0));
+                            dispatch(newItemAction(newInlineItem, [...parentArray, item.linkId], 0));
+
+                            if (item.extension && getHyperlinkTargetvalue(item.extension)) {
+                                setItemExtension(
+                                    newInlineItem,
+                                    createHyperlinkTargetExtension(getHyperlinkTargetvalue(item.extension)),
+                                    dispatch,
+                                );
+                            }
                         } else if (newValue === HIGHLIGHT_OPTION) {
                             const newExtension = createItemControlExtension(ItemControlType.highlight);
                             changeItemToTypeDisplay(newExtension);
