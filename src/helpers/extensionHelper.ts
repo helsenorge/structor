@@ -1,6 +1,7 @@
 import { updateItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import { ActionType } from '../store/treeStore/treeStore';
 import { Element, Extension, QuestionnaireItem } from '../types/fhir';
+import { HyperlinkTarget } from '../types/hyperlinkTargetType';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import { IExtentionType, IValueSetSystem, IItemProperty } from '../types/IQuestionnareItemType';
 import createUUID from './CreateUUID';
@@ -96,3 +97,12 @@ export const createHyperlinkTargetExtension = (codeValue = 2): Extension => ({
     url: IExtentionType.hyperlinkTarget,
     valueCoding: { system: IValueSetSystem.hyperlinkTargetValueset, code: `${codeValue}` },
 });
+
+export const getHyperlinkTargetvalue = (extensions: Extension[]): HyperlinkTarget | undefined => {
+    const hyperlinkExtension = extensions?.find((extension) => extension.url === IExtentionType.hyperlinkTarget);
+    if (hyperlinkExtension) {
+        const value = hyperlinkExtension.valueCoding?.code;
+        if (value) return ~~value;
+    }
+    return undefined;
+};
