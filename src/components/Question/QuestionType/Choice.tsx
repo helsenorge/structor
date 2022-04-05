@@ -11,11 +11,16 @@ import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types
 import Btn from '../../Btn/Btn';
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { checkboxExtension, dropdownExtension } from '../../../helpers/QuestionHelper';
+import { checkboxExtension, dropdownExtension, radiobuttonExtension } from '../../../helpers/QuestionHelper';
 import { removeItemAttributeAction, updateItemAction } from '../../../store/treeStore/treeActions';
 
 import UriField from '../../FormField/UriField';
-import { isItemControlCheckbox, isItemControlDropDown, ItemControlType } from '../../../helpers/itemControl';
+import {
+    isItemControlCheckbox,
+    isItemControlDropDown,
+    isItemControlRadioButton,
+    ItemControlType,
+} from '../../../helpers/itemControl';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import FormField from '../../FormField/FormField';
 import ChoiceTypeSelect from './ChoiceTypeSelect';
@@ -39,6 +44,8 @@ const Choice = ({ item }: Props): JSX.Element => {
             setItemExtension(item, checkboxExtension, dispatch);
         } else if (type === ItemControlType.dropdown && !isItemControlDropDown(item)) {
             setItemExtension(item, dropdownExtension, dispatch);
+        } else if (type === ItemControlType.radioButton && !isItemControlRadioButton(item)) {
+            setItemExtension(item, radiobuttonExtension, dispatch);
         }
     };
 

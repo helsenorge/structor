@@ -47,6 +47,7 @@ export const quantityUnitTypes = [
 
 export const checkboxExtension = createItemControlExtension(ItemControlType.checkbox);
 export const dropdownExtension = createItemControlExtension(ItemControlType.dropdown);
+export const radiobuttonExtension = createItemControlExtension(ItemControlType.radioButton);
 
 export const enableWhenOperatorBoolean: ValueSetComposeIncludeConcept[] = [
     {
