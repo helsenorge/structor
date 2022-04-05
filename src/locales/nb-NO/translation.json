@@ -342,5 +342,8 @@
     "Represented by parent? (true/false)": "Representert ved forelder? (true/false)",
     "Represented by guardianship? (true/false)": "Representert ved vergemålsvedtak? (true/false)",
     "Upload ValueSets as json files. Accepts a Bundle or ValueSet in a single file. It is possible to upload several files at once": "Last opp verdisett som json-filer. Håndterer Bundle eller verdisett i en egen fil. Det er mulig å laste opp flere filer samtidig.",
-    "Upload ValueSet(s)": "Last opp verdisett"
+    "Upload ValueSet(s)": "Last opp verdisett",
+    "Connect to print version (binary)": "Koble til PDF-skjema (binary)",
+    "For example Binary/35": "F.eks Binary/35",
+    "Print version": "Utskriftsversjon"
 }

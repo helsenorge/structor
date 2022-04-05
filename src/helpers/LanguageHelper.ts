@@ -1,11 +1,14 @@
 import {
     Language,
     MetadataProperty,
+    SettingsProperty,
     TranslatableItemProperty,
     TranslatableMetadataProperty,
 } from '../types/LanguageTypes';
 import { Languages, TreeState } from '../store/treeStore/treeStore';
 import { isValidId } from './MetadataHelper';
+import { IExtentionType } from '../types/IQuestionnareItemType';
+import { Extension } from '../types/fhir';
 
 export const INITIAL_LANGUAGE: Language = { code: 'nb-NO', display: 'Norsk Bokmål', localDisplay: 'Norsk bokmål' };
 
@@ -109,6 +112,24 @@ export const translatableMetadata: MetadataProperty[] = [
         validate: undefined,
     },
 ];
+
+export const translatableSettings: { [key in IExtentionType]?: SettingsProperty } = {
+    [IExtentionType.printVersion.toString()]: {
+        extension: IExtentionType.printVersion,
+        label: 'Print version',
+        generate: (value: string): Extension => {
+            return {
+                url: IExtentionType.printVersion,
+                valueReference: {
+                    reference: value,
+                },
+            };
+        },
+        getValue: (e: Extension): string | undefined => {
+            return e?.valueReference?.reference;
+        },
+    },
+};
 
 export const getItemPropertyTranslation = (
     languageCode: string,

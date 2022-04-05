@@ -22,6 +22,7 @@ import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 import { IExtentionType } from '../../../types/IQuestionnareItemType';
 import { getUsedValueSet } from '../../../helpers/generateQuestionnaire';
+import TranslateSettings from './TranslateSettings';
 
 type TranslationModalProps = {
     close: () => void;
@@ -237,6 +238,12 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                                 <TranslateMetaData
                                     state={state}
                                     targetLanguage={props.targetLanguage}
+                                    dispatch={dispatch}
+                                />
+                                <TranslateSettings
+                                    targetLanguage={props.targetLanguage}
+                                    translations={qAdditionalLanguages}
+                                    extensions={qMetadata.extension}
                                     dispatch={dispatch}
                                 />
                                 <TranslateSidebar

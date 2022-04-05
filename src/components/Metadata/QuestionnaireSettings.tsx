@@ -16,6 +16,7 @@ import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import { removeQuestionnaireExtension, setQuestionnaireExtension } from '../../helpers/extensionHelper';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import InputField from '../InputField/inputField';
+import { translatableSettings } from '../../helpers/LanguageHelper';
 
 const QuestionnaireSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -54,6 +55,25 @@ const QuestionnaireSettings = (): JSX.Element => {
                                     reference: e.target.value,
                                 },
                             });
+                        }
+                    }}
+                />
+            </FormField>
+            <FormField label={t('Connect to print version (binary)')}>
+                <InputField
+                    placeholder={t('For example Binary/35')}
+                    defaultValue={
+                        qMetadata?.extension?.find((ex) => ex.url === IExtentionType.printVersion)?.valueReference
+                            ?.reference ?? ''
+                    }
+                    onBlur={(e) => {
+                        if (!e.target.value) {
+                            removeMetaExtension(IExtentionType.printVersion);
+                        } else {
+                            const extensionSettings = translatableSettings[IExtentionType.printVersion];
+                            if (extensionSettings) {
+                                updateMetaExtension(extensionSettings.generate(e.target.value));
+                            }
                         }
                     }}
                 />

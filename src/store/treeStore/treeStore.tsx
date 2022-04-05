@@ -53,6 +53,8 @@ import {
     UpdateQuestionnaireMetadataAction,
     UpdateSidebarTranslationAction,
     UpdateValueSetAction,
+    UPDATE_SETTING_TRANSLATION_ACTION,
+    UpdateSettingTranslationAction,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -85,6 +87,7 @@ export type ActionType =
     | UpdateContainedValueSetTranslationAction
     | UpdateLinkIdAction
     | UpdateMetadataTranslationAction
+    | UpdateSettingTranslationAction
     | UpdateSidebarTranslationAction
     | UpdateValueSetAction
     | RemoveItemAttributeAction
@@ -134,11 +137,16 @@ export interface SidebarItemTranslations {
     [linkId: string]: SidebarItemTranslation;
 }
 
+export interface SettingTranslations {
+    [key: string]: Extension;
+}
+
 export interface Translation {
     items: ItemTranslations;
     sidebarItems: SidebarItemTranslations;
     metaData: MetadataTranslations;
     contained: ContainedTranslations;
+    settings: SettingTranslations;
 }
 
 export interface Languages {
@@ -456,6 +464,18 @@ function updateMetadataTranslation(draft: TreeState, action: UpdateMetadataTrans
     }
 }
 
+function updateSettingTranslationAction(draft: TreeState, action: UpdateSettingTranslationAction) {
+    if (draft.qAdditionalLanguages) {
+        const settings = draft.qAdditionalLanguages[action.languageCode].settings;
+
+        if (action.translatedValue) {
+            settings[action.extension] = action.translatedValue;
+        } else {
+            delete settings[action.extension];
+        }
+    }
+}
+
 function updateContainedValueSetTranslation(draft: TreeState, action: UpdateContainedValueSetTranslationAction) {
     if (draft.qAdditionalLanguages) {
         const contained = draft.qAdditionalLanguages[action.languageCode].contained;
@@ -689,6 +709,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case UPDATE_METADATA_TRANSLATION_ACTION:
             updateMetadataTranslation(draft, action);
+            break;
+        case UPDATE_SETTING_TRANSLATION_ACTION:
+            updateSettingTranslationAction(draft, action);
             break;
         case UPDATE_SIDEBAR_TRANSLATION_ACTION:
             updateSidebarTranslation(draft, action);

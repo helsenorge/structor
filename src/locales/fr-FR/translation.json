@@ -342,5 +342,8 @@
     "Represented by parent? (true/false)": "Parent de la personne représentée ? (vrai/faux)",
     "Represented by guardianship? (true/false)": "Tuteur de la personne représentée ? (vrai/faux)",
     "Upload ValueSets as json files. Accepts a Bundle or ValueSet in a single file. It is possible to upload several files at once": "Téléchargez les valeurs sous forme de fichiers json. Gère le Bundle ou un ensemble de valeurs dans un fichier séparé. Il est possible de télécharger plusieurs fichiers en même temps.",
-    "Upload ValueSet(s)": "Télécharger des valeurs"
+    "Upload ValueSet(s)": "Télécharger des valeurs",
+    "Connect to print version (binary)": "Connectez-vous à la version imprimable (binaire)",
+    "For example Binary/35": "ex: Binary/35",
+    "Print version": "Version imprimée"
 }
