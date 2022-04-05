@@ -15,6 +15,7 @@ export enum ItemControlType {
     yearMonth = 'yearMonth',
     year = 'year',
     receiverComponent = 'receiver-component',
+    dynamic = 'dynamic',
 }
 
 export const createItemControlExtension = (itemControlType: ItemControlType): Extension => {
@@ -56,6 +57,10 @@ export const isItemControlReceiverComponent = (item: QuestionnaireItem): boolean
 
 export const isItemControlDropDown = (item: QuestionnaireItem): boolean => {
     return getItemControlType(item) === ItemControlType.dropdown;
+};
+
+export const isItemControlRadioButton = (item: QuestionnaireItem): boolean => {
+    return getItemControlType(item) === ItemControlType.radioButton;
 };
 
 export const isItemControlAutocomplete = (item: QuestionnaireItem): boolean => {
