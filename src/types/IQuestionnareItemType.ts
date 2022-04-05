@@ -110,6 +110,7 @@ export enum IExtentionType {
     fhirPathMinValue = 'http://ehelse.no/fhir/StructureDefinition/sdf-minvalue',
     sublabel = 'http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel',
     saveCapability = 'http://helsenorge.no/fhir/StructureDefinition/sdf-save-capabilities',
+    printVersion = 'http://helsenorge.no/fhir/StructureDefinition/sdf-questionnaire-print-version',
 }
 
 export enum UseContextSystem {

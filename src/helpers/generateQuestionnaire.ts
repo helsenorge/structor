@@ -10,7 +10,7 @@ import {
 } from '../types/fhir';
 import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
-import { getLanguageFromCode, translatableMetadata } from './LanguageHelper';
+import { getLanguageFromCode, translatableMetadata, translatableSettings } from './LanguageHelper';
 import { isItemControlSidebar } from './itemControl';
 import { emptyPropertyReplacer } from './emptyPropertyReplacer';
 import { FhirpathAgeExpression, FhirpathGenderExpression } from './EnrichmentSet';
@@ -175,7 +175,29 @@ const getTranslatedMetadata = (qMetadata: IQuestionnaireMetadata, translation: T
     translatableMetadata.forEach((metadataProperty) => {
         translatedMetadata[metadataProperty.propertyName] = translation.metaData[metadataProperty.propertyName];
     });
-    return { ...qMetadata, ...translatedMetadata };
+    return {
+        ...qMetadata,
+        ...translatedMetadata,
+        extension: getTranslatedExtensions(qMetadata, translation),
+    };
+};
+
+const getTranslatedExtensions = (qMetadata: IQuestionnaireMetadata, translation: Translation): Array<Extension> => {
+    const translatedSettings = translation.settings;
+    const extensions = [];
+    for (const e of qMetadata.extension || []) {
+        const translatable = translatableSettings[e.url as IExtentionType];
+        if (translatable) continue;
+
+        extensions.push(e);
+    }
+
+    // look for translated extensions that might not have an equal in the original
+    for (const extensionUrl in translatedSettings) {
+        extensions.push(translatedSettings[extensionUrl]);
+    }
+
+    return extensions;
 };
 
 function getLanguageData(qMetadata: IQuestionnaireMetadata, languageCode: string) {

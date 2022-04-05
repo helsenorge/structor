@@ -2,6 +2,7 @@ import CreateUUID from '../../helpers/CreateUUID';
 import {
     ICodingProperty,
     IEnableWhen,
+    IExtentionType,
     IItemProperty,
     IQuestionnaireItemType,
     IValueSetSystem,
@@ -31,6 +32,7 @@ export const REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION = 'removeQuestionnaireLanguage
 export const UPDATE_ITEM_TRANSLATION_ACTION = 'updateItemTranslation';
 export const UPDATE_ITEM_OPTION_TRANSLATION_ACTION = 'updateItemOptionTranslation';
 export const UPDATE_METADATA_TRANSLATION_ACTION = 'updateMetadataTranslation';
+export const UPDATE_SETTING_TRANSLATION_ACTION = 'updateSettingTranslation';
 export const UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION = 'updateContainedValueSetTranslation';
 export const UPDATE_SIDEBAR_TRANSLATION_ACTION = 'updateSidebarTranslation';
 export const UPDATE_QUESTIONNAIRE_METADATA_ACTION = 'updateQuestionnaireMetadata';
@@ -119,6 +121,13 @@ export interface UpdateMetadataTranslationAction {
     languageCode: string;
     propertyName: string;
     translation: string;
+}
+
+export interface UpdateSettingTranslationAction {
+    type: typeof UPDATE_SETTING_TRANSLATION_ACTION;
+    languageCode: string;
+    extension: IExtentionType;
+    translatedValue: Extension | null;
 }
 
 export interface UpdateContainedValueSetTranslationAction {
@@ -318,6 +327,19 @@ export const updateMetadataTranslationAction = (
         languageCode,
         propertyName,
         translation,
+    };
+};
+
+export const updateSettingTranslationAction = (
+    languageCode: string,
+    extension: IExtentionType,
+    translatedValue: Extension | null,
+): UpdateSettingTranslationAction => {
+    return {
+        type: UPDATE_SETTING_TRANSLATION_ACTION,
+        languageCode,
+        extension,
+        translatedValue,
     };
 };
 

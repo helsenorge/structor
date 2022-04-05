@@ -7,6 +7,7 @@ import {
     Languages,
     MetadataTranslations,
     OrderItem,
+    SettingTranslations,
     SidebarItemTranslation,
     SidebarItemTranslations,
     Translation,
@@ -15,7 +16,7 @@ import {
 import { Bundle, Questionnaire, QuestionnaireItem, QuestionnaireItemAnswerOption, ValueSet } from '../types/fhir';
 
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
-import { isSupportedLanguage, translatableMetadata } from './LanguageHelper';
+import { isSupportedLanguage, translatableMetadata, translatableSettings } from './LanguageHelper';
 import { isItemControlSidebar } from './itemControl';
 import {
     getInitialText,
@@ -185,6 +186,19 @@ function translateSidebarItem(translationItem: QuestionnaireItem | undefined): S
     return { markdown };
 }
 
+function translateSettings(q: Questionnaire): SettingTranslations {
+    const translations: SettingTranslations = {};
+    Object.values(translatableSettings).forEach((ext) => {
+        if (!ext) return;
+
+        const extension = q.extension?.find((it) => it.url === ext.extension);
+        if (extension) {
+            translations[ext.extension] = extension;
+        }
+    });
+    return translations;
+}
+
 export function translateQuestionnaire(mainQuestionnaire: Questionnaire, questionnaire: Questionnaire): Translation {
     const contained = translateContained(
         mainQuestionnaire.contained as Array<ValueSet>,
@@ -192,7 +206,9 @@ export function translateQuestionnaire(mainQuestionnaire: Questionnaire, questio
     );
     const { items, sidebarItems } = translateItems(mainQuestionnaire.item, questionnaire.item);
     const metaData = translateMetadata(questionnaire);
-    return { contained, items, metaData, sidebarItems };
+    const settings = translateSettings(questionnaire);
+
+    return { contained, items, metaData, sidebarItems, settings };
 }
 
 export function languageToIsoString(language: string): string {

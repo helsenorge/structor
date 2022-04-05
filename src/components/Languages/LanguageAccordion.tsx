@@ -35,7 +35,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     };
 
     function buildTranslationBase(): Translation {
-        return { items: {}, sidebarItems: {}, metaData: {}, contained: {} };
+        return { items: {}, sidebarItems: {}, metaData: {}, contained: {}, settings: {} };
     }
 
     const dispatchAddLanguage = (selectedLanguage: string, translation: Translation) => {
