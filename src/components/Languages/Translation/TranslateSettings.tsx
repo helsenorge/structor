@@ -51,7 +51,7 @@ const TranslateSettings = ({
 
                 return (
                     <div key={`${targetLanguage}-${extensionToTranslate}`} className="translation-group">
-                        <div className="translation-group-header">t({extensionToTranslate.label})</div>
+                        <div className="translation-group-header">{t(extensionToTranslate.label)}</div>
                         <div className="translation-row">
                             <FormField>
                                 <textarea defaultValue={baseValue} disabled={true} />
