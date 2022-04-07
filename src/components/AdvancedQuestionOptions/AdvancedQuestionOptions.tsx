@@ -12,7 +12,7 @@ import HyperlinkTargetElementToggle from './HyperlinkTargetElementToggle';
 import UriField from '../FormField/UriField';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
-import { IExtentionType, IItemProperty } from '../../types/IQuestionnareItemType';
+import { IExtentionType, IItemProperty, IValueSetSystem } from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
@@ -35,6 +35,8 @@ import {
     canTypeHavePrefix,
     canTypeHaveSummary,
 } from '../../helpers/questionTypeFeatures';
+import RadioBtn from '../RadioBtn/RadioBtn';
+import { elementSaveCapability } from '../../helpers/QuestionHelper';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -333,6 +335,32 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     />
                 </FormField>
             )}
+            <FormField label={t('Save capabilities')}>
+                <RadioBtn
+                    onChange={(newValue: string) => {
+                        if (newValue === '0') {
+                            removeExtension(IExtentionType.saveCapability);
+                        } else {
+                            setItemExtension(
+                                item,
+                                {
+                                    url: IExtentionType.saveCapability,
+                                    valueCoding: {
+                                        system: IValueSetSystem.saveCapabilityValueSet,
+                                        code: newValue,
+                                    },
+                                },
+                                dispatch,
+                            );
+                        }
+                    }}
+                    checked={
+                        item.extension?.find((ex) => ex.url === IExtentionType.saveCapability)?.valueCoding?.code ?? '0'
+                    }
+                    options={elementSaveCapability}
+                    name={'elementSaveCapability-radio'}
+                />
+            </FormField>
         </>
     );
 };
