@@ -157,6 +157,13 @@ export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
     },
 ];
 
+export const elementSaveCapability = [
+    { code: '0', display: 'Not set' },
+    { code: '1', display: 'Save submitted questionnaire and intermediate save (standard setting)' },
+    { code: '2', display: 'Only submitted questionnaire is saved' },
+    { code: '3', display: 'No saving' },
+];
+
 export const getInitialText = (item?: QuestionnaireItem): string => {
     if (
         (item?.type === IQuestionnaireItemType.text || item?.type === IQuestionnaireItemType.string) &&
