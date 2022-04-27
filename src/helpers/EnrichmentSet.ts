@@ -264,18 +264,6 @@ const EnrichmentSet: Array<EnrichmentExpessionMetadata> = [
         type: 'string',
     },
     {
-        name: 'General Practitioner (phone number)',
-        expression: "Practitioner.telecom.where(use = 'work' and system = 'phone').value",
-        group: 'General Practitioner',
-        type: 'string',
-    },
-    {
-        name: 'General Practitioner (email)',
-        expression: "Practitioner.telecom.where(use = 'work' and system = 'email').value",
-        group: 'General Practitioner',
-        type: 'string',
-    },
-    {
         name: 'General Practitioner (business name)',
         expression: 'Practitioner.contained.first().name',
         group: 'General Practitioner',
@@ -284,12 +272,6 @@ const EnrichmentSet: Array<EnrichmentExpessionMetadata> = [
     {
         name: 'General Practitioner (business phone number)',
         expression: "Practitioner.contained.first().telecom.where(use = 'work' and system = 'phone').value",
-        group: 'General Practitioner',
-        type: 'string',
-    },
-    {
-        name: 'General Practitioner (business email)',
-        expression: "Practitioner.telecom.where(use = 'work' and system = 'email').value",
         group: 'General Practitioner',
         type: 'string',
     },
