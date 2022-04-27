@@ -192,7 +192,7 @@ const EnrichmentSet: Array<EnrichmentExpessionMetadata> = [
     {
         name: 'On behalf of citizen (gender)',
         expression:
-            "iif(%RelatedPerson.gender.empty() or %RelatedPerson.gender = 'other' or %RelatedPerson.gender = 'unknown', 'Ukjent', iif(%RelatedPerson.gender = 'female', 'Kvinne', 'Mann'))",
+            "iif(RelatedPerson.gender.empty() or RelatedPerson.gender = 'other' or RelatedPerson.gender = 'unknown', 'Ukjent', iif(RelatedPerson.gender = 'female', 'Kvinne', 'Mann'))",
         group: 'On behalf of citizen',
         type: 'string',
     },
@@ -276,19 +276,19 @@ const EnrichmentSet: Array<EnrichmentExpessionMetadata> = [
         type: 'string',
     },
     {
-        name: 'General Practitioner (bussiness name)',
+        name: 'General Practitioner (business name)',
         expression: 'Practitioner.contained.first().name',
         group: 'General Practitioner',
         type: 'string',
     },
     {
-        name: 'General Practitioner (bussiness phone number)',
+        name: 'General Practitioner (business phone number)',
         expression: "Practitioner.contained.first().telecom.where(use = 'work' and system = 'phone').value",
         group: 'General Practitioner',
         type: 'string',
     },
     {
-        name: 'General Practitioner (bussiness email)',
+        name: 'General Practitioner (business email)',
         expression: "Practitioner.telecom.where(use = 'work' and system = 'email').value",
         group: 'General Practitioner',
         type: 'string',
@@ -312,7 +312,7 @@ const EnrichmentSet: Array<EnrichmentExpessionMetadata> = [
         type: 'string',
     },
     {
-        name: 'General Practitioner (zip code)',
+        name: 'General Practitioner (postal code)',
         expression: "Practitioner.contained.first().address.where(use = 'work').postalCode",
         group: 'General Practitioner',
         type: 'string',
