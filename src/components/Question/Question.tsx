@@ -81,6 +81,7 @@ const Question = (props: QuestionProps): JSX.Element => {
     const convertToPlaintext = (stringToBeConverted: string) => {
         let plainText = removeMd(stringToBeConverted);
         plainText = plainText.replaceAll('\\*', '*');
+        plainText = plainText.replaceAll('\\', '');
         plainText = plainText.replaceAll(/([ \n])+/g, ' ');
         return plainText;
     };
