@@ -55,6 +55,8 @@ const Question = (props: QuestionProps): JSX.Element => {
     const { t } = useTranslation();
     const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(!!props.item._text);
     const codeElements = props.item.code ? `(${props.item.code.length})` : '(0)';
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const removeMd = require('remove-markdown');
 
     const dispatchUpdateItem = (
         name: IItemProperty,
@@ -76,12 +78,19 @@ const Question = (props: QuestionProps): JSX.Element => {
         return props.item.extension?.find((x) => x.url === IExtentionType.sublabel)?.valueMarkdown || '';
     };
 
+    const convertToPlaintext = (stringToBeConverted: string) => {
+        let plainText = removeMd(stringToBeConverted);
+        plainText = plainText.replaceAll('\\*', '*');
+        plainText = plainText.replaceAll(/([ \n])+/g, ' ');
+        return plainText;
+    };
+
     const dispatchUpdateMarkdownLabel = (newLabel: string): void => {
         const markdownValue = createMarkdownExtension(newLabel);
 
         dispatchUpdateItem(IItemProperty._text, markdownValue);
         // update text with same value. Text is used in condition in enableWhen
-        dispatchUpdateItem(IItemProperty.text, newLabel);
+        dispatchUpdateItem(IItemProperty.text, convertToPlaintext(newLabel));
     };
 
     const respondType = (): JSX.Element => {
