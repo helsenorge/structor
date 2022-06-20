@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../store/treeStore/treeStore';
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import FormDetailsDrawer from '../components/Drawer/FormDetailsDrawer/FormDetailsDrawer';
-import FormFiller from '../components/FormFiller/FormFiller';
 import IconBtn from '../components/IconBtn/IconBtn';
 import Navbar from '../components/Navbar/Navbar';
 import QuestionDrawer from '../components/QuestionDrawer/QuestionDrawer';
@@ -12,6 +11,7 @@ import QuestionDrawer from '../components/QuestionDrawer/QuestionDrawer';
 import './FormBuilder.css';
 import { ValidationErrors } from '../helpers/orphanValidation';
 import TranslationModal from '../components/Languages/Translation/TranslationModal';
+import ReferoFiller from '../components/FormFiller/ReferoFiller';
 
 const FormBuilder = (): JSX.Element => {
     const { t } = useTranslation();
@@ -46,7 +46,7 @@ const FormBuilder = (): JSX.Element => {
                     validationErrors={validationErrors}
                 />
                 {showPreview && (
-                    <FormFiller
+                    <ReferoFiller
                         showFormFiller={() => setShowPreview(!showPreview)}
                         language={state.qMetadata.language}
                     />
