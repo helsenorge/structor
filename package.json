@@ -4,7 +4,13 @@
     "private": true,
     "dependencies": {
         "@ckeditor/ckeditor5-react": "^3.0.0",
+        "@helsenorge/autosuggest": "^24.5.0",
         "@helsenorge/ckeditor5-build-markdown": "^24.0.0",
+        "@helsenorge/core-utils": "^24.5.0",
+        "@helsenorge/date-time": "^24.5.0",
+        "@helsenorge/designsystem-react": "1.0.0-beta139",
+        "@helsenorge/file-upload": "^24.5.0",
+        "@helsenorge/form": "^24.5.0",
         "@helsenorge/refero": "^10.0.0",
         "@nosferatu500/react-sortable-tree": "^3.0.3",
         "axios": "^0.21.1",
@@ -25,12 +31,7 @@
         "react-router-dom": "^5.2.0",
         "react-scripts": "^4.0.3",
         "remove-markdown": "^0.5.0",
-        "@helsenorge/core-utils": "^24.5.0",
-        "@helsenorge/file-upload": "^24.5.0",
-        "@helsenorge/form": "^24.5.0",
-        "@helsenorge/date-time": "^24.5.0",
-        "@helsenorge/autosuggest": "^24.5.0",
-        "@helsenorge/designsystem-react": "1.0.0-beta139"
+        "sass": "^1.53.0"
     },
     "scripts": {
         "start": "react-scripts start",
