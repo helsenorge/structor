@@ -16,6 +16,7 @@ type Props = {
     language?: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
 
 const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
@@ -32,6 +33,7 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     return (
         <Provider store={store}>
             <ReferoContainer
+                store={store}
                 questionnaire={generateQuestionnaireForPreview(state, selectedLanguage, selectedGender, selectedAge)}
                 onCancel={showFormFiller}
                 onSave={console.log('save')}
