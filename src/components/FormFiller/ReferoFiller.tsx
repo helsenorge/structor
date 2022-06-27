@@ -6,11 +6,17 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionnaire';
 import { getLanguagesInUse, INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { ReferoContainer } from '@helsenorge/refero/components';
+import { Store, createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import rootReducer from '@helsenorge/refero/reducers';
 
 type Props = {
     showFormFiller: () => void;
     language?: string;
 };
+
+const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
 
 const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     const { t } = useTranslation();
@@ -24,14 +30,16 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     const languages = getLanguagesInUse(state);
 
     return (
-        <ReferoContainer
-            questionnaire={generateQuestionnaireForPreview(state, selectedLanguage, selectedGender, selectedAge)}
-            onCancel={showFormFiller}
-            onSave={console.log('save')}
-            onSubmit={console.log('submit')}
-            loginButton={<button>{'hei'}</button>}
-            authorized={false}
-        />
+        <Provider store={store}>
+            <ReferoContainer
+                questionnaire={generateQuestionnaireForPreview(state, selectedLanguage, selectedGender, selectedAge)}
+                onCancel={showFormFiller}
+                onSave={console.log('save')}
+                onSubmit={console.log('submit')}
+                loginButton={<button>{'hei'}</button>}
+                authorized={false}
+            />
+        </Provider>
     );
 };
 
