@@ -14,6 +14,8 @@ import IconBtn from '../IconBtn/IconBtn';
 import Select from '../Select/Select';
 import { isItemControlReceiverComponent } from '../../helpers/itemControl';
 
+import translationResource from '../../locales/nb-NO/translation.json';
+
 type Props = {
     showFormFiller: () => void;
     language?: string;
@@ -111,20 +113,22 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                             />
                         </div>
                     </div>
-                    <ReferoContainer
-                        store={store}
-                        questionnaire={generateQuestionnaireForPreview(
-                            state,
-                            selectedLanguage,
-                            selectedGender,
-                            selectedAge,
-                        )}
-                        onCancel={showFormFiller}
-                        onSave={console.log('save')}
-                        onSubmit={console.log('submit')}
-                        loginButton={<button>{'hei'}</button>}
-                        authorized={false}
-                    />
+                    <div>
+                        <ReferoContainer
+                            store={store}
+                            questionnaire={generateQuestionnaireForPreview(
+                                state,
+                                selectedLanguage,
+                                selectedGender,
+                                selectedAge,
+                            )}
+                            onCancel={showFormFiller}
+                            onSave={console.log('save')}
+                            onSubmit={console.log('submit')}
+                            authorized={false}
+                            resources={translationResource}
+                        />
+                    </div>
                 </div>
             </div>
         </Provider>
