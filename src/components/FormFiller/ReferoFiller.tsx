@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -15,6 +15,7 @@ import Select from '../Select/Select';
 import { isItemControlReceiverComponent } from '../../helpers/itemControl';
 
 import translationResource from '../../locales/nb-NO/translation.json';
+import { Questionnaire } from '../../types/fhir';
 
 type Props = {
     showFormFiller: () => void;
@@ -32,8 +33,14 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     );
     const [selectedGender, setSelectedGender] = useState<string>('');
     const [selectedAge, setSelectedAge] = useState<string>('');
-    const [selectedReceiverEndpoint, setSelectedReceiverEndpoint] = useState<string>('');
     const languages = getLanguagesInUse(state);
+    const [questionnaireForPreview, setQuestionnaireForPreview] = useState<Questionnaire>();
+
+    useEffect(() => {
+        setQuestionnaireForPreview(
+            generateQuestionnaireForPreview(state, selectedLanguage, selectedGender, selectedAge),
+        );
+    }, [state, selectedLanguage, selectedGender, selectedAge]);
 
     function hasReceiverComponent(): boolean {
         return (
@@ -54,9 +61,6 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                                 <input
                                     style={{ padding: '0 10px', border: 0, width: 250 }}
                                     placeholder={t('Recipient component EndpointId')}
-                                    onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                        setSelectedReceiverEndpoint(event.target.value);
-                                    }}
                                 />
                             )}
                             <Select
@@ -113,20 +117,18 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                             />
                         </div>
                     </div>
-                    <div>
+                    <div style={{ padding: '20px' }} className="test">
                         <ReferoContainer
                             store={store}
-                            questionnaire={generateQuestionnaireForPreview(
-                                state,
-                                selectedLanguage,
-                                selectedGender,
-                                selectedAge,
-                            )}
+                            questionnaire={questionnaireForPreview}
                             onCancel={showFormFiller}
                             onSave={console.log('save')}
                             onSubmit={console.log('submit')}
                             authorized={false}
                             resources={translationResource}
+                            loginButton={<button>Hei</button>}
+                            validateScriptInjection
+                            sticky
                         />
                     </div>
                 </div>
