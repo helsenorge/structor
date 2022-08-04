@@ -10,6 +10,7 @@ import './helpers/i18n';
 //import { debugContextDevtool } from 'react-context-devtool';
 
 const container = document.getElementById('root');
+container?.classList.add('root');
 
 ReactDOM.render(
     <React.StrictMode>
