@@ -14,7 +14,7 @@ import IconBtn from '../IconBtn/IconBtn';
 import Select from '../Select/Select';
 import { isItemControlReceiverComponent } from '../../helpers/itemControl';
 
-import translationResource from '../../locales/nb-NO/translation.json';
+import { referoTranslation } from '../../locales/nb-NO/referoTranslation';
 import { Questionnaire } from '../../types/fhir';
 
 type Props = {
@@ -125,7 +125,7 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                             onSave={console.log('save')}
                             onSubmit={console.log('submit')}
                             authorized={false}
-                            resources={translationResource}
+                            resources={referoTranslation}
                             loginButton={<button>Hei</button>}
                             validateScriptInjection
                             sticky
