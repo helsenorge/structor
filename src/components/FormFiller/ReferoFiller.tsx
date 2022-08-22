@@ -10,6 +10,7 @@ import { Store, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import rootReducer from '@helsenorge/refero/reducers';
+import Button from '@helsenorge/designsystem-react/components/Button';
 import IconBtn from '../IconBtn/IconBtn';
 import Select from '../Select/Select';
 import { isItemControlReceiverComponent } from '../../helpers/itemControl';
@@ -126,7 +127,7 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                             onSubmit={console.log('submit')}
                             authorized={false}
                             resources={referoTranslation}
-                            loginButton={<button>Hei</button>}
+                            loginButton={<Button>{referoTranslation.skjemaLoginButton}</Button>}
                             validateScriptInjection
                             sticky
                         />
