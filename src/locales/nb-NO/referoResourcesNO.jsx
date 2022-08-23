@@ -1,4 +1,4 @@
-export const referoTranslation = {
+export const referoResourcesNO = {
     varselmeny_Skjemaoppgave_Paaminnelse_Emne: 'Du har et skjema der fristen snart går ut.',
     varselmeny_Skjemaoppgave_Paaminnelse_Tekst: 'Frist for utfylling',
     minutePlaceholder: 'mm',
