@@ -13,9 +13,8 @@ import rootReducer from '@helsenorge/refero/reducers';
 import Button from '@helsenorge/designsystem-react/components/Button';
 import IconBtn from '../IconBtn/IconBtn';
 import Select from '../Select/Select';
-import { isItemControlReceiverComponent } from '../../helpers/itemControl';
 
-import { referoTranslation } from '../../locales/nb-NO/referoTranslation';
+import { referoResourcesNO } from '../../locales/nb-NO/referoResourcesNO';
 import { Questionnaire } from '../../types/fhir';
 
 type Props = {
@@ -35,12 +34,27 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     const [selectedGender, setSelectedGender] = useState<string>('');
     const [selectedAge, setSelectedAge] = useState<string>('');
     const languages = getLanguagesInUse(state);
+    const [referoResources, setReferoResources] = useState({});
     const [questionnaireForPreview, setQuestionnaireForPreview] = useState<Questionnaire>();
+
+    const updateReferoResources = () => {
+        let resources = {};
+        switch (selectedLanguage) {
+            case 'nb-NO':
+                resources = referoResourcesNO;
+                break;
+            default:
+                resources = referoResourcesNO;
+                break;
+        }
+        setReferoResources(resources);
+    };
 
     useEffect(() => {
         setQuestionnaireForPreview(
             generateQuestionnaireForPreview(state, selectedLanguage, selectedGender, selectedAge),
         );
+        updateReferoResources();
     }, [state, selectedLanguage, selectedGender, selectedAge]);
 
     return (
@@ -113,11 +127,11 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                             onSave={console.log('Savebutton clicked')}
                             onSubmit={console.log('Submitbutton clicked')}
                             authorized={true}
-                            resources={referoTranslation}
+                            resources={referoResources}
                             validateScriptInjection
                             sticky={true}
                             saveButtonDisabled={false}
-                            loginButton={<Button>{referoTranslation.skjemaLoginButton}</Button>}
+                            loginButton={<Button>Login</Button>}
                         />
                     </div>
                 </div>
