@@ -50,12 +50,6 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.refero-div {
-    max-height: calc(100vh - 10rem);
-    overflow: scroll;
-    text-align: initial;
-}
-
 .root {
     text-align: center;
     height: 100%;
@@ -96,7 +90,7 @@ p {
     display: inline-block;
 }
 
-.iframe-div {
+.refero-window {
     font-family: Source Sans Pro, Arial, Verdana, sans-serif;
     background-color: #f5f3f3;
     position: fixed;
@@ -106,13 +100,19 @@ p {
     width: 90%;
 }
 
-.iframe-div h2 {
+.refero-window h2 {
     color: black;
     margin-top: 70px;
     text-align: left;
     font-size: 42px;
     padding-left: 20px;
     font-weight: 700;
+}
+
+.referoContainer-div {
+    max-height: calc(100vh - 10rem);
+    overflow: scroll;
+    text-align: initial;
 }
 
 .index-buttons {

@@ -60,7 +60,7 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     return (
         <Provider store={store}>
             <div className="overlay">
-                <div className="iframe-div">
+                <div className="refero-window">
                     <div className="title align-everything">
                         <IconBtn type="x" title={t('Close')} onClick={showFormFiller} />
                         <h1>{t('Preview')}</h1>
@@ -119,7 +119,7 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                             />
                         </div>
                     </div>
-                    <div style={{ padding: '20px' }} className="refero-div">
+                    <div style={{ padding: '20px' }} className="referoContainer-div">
                         <ReferoContainer
                             store={store}
                             questionnaire={questionnaireForPreview}
