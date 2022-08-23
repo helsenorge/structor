@@ -43,13 +43,6 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
         );
     }, [state, selectedLanguage, selectedGender, selectedAge]);
 
-    function hasReceiverComponent(): boolean {
-        return (
-            Object.keys(state.qItems).filter((linkId) => isItemControlReceiverComponent(state.qItems[linkId])).length >
-            0
-        );
-    }
-
     return (
         <Provider store={store}>
             <div className="overlay">
@@ -58,12 +51,6 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                         <IconBtn type="x" title={t('Close')} onClick={showFormFiller} />
                         <h1>{t('Preview')}</h1>
                         <div className="pull-right">
-                            {hasReceiverComponent() && (
-                                <input
-                                    style={{ padding: '0 10px', border: 0, width: 250 }}
-                                    placeholder={t('Recipient component EndpointId')}
-                                />
-                            )}
                             <Select
                                 value={selectedGender}
                                 options={[
@@ -118,18 +105,19 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                             />
                         </div>
                     </div>
-                    <div style={{ padding: '20px' }} className="test">
+                    <div style={{ padding: '20px' }} className="refero-div">
                         <ReferoContainer
                             store={store}
                             questionnaire={questionnaireForPreview}
                             onCancel={showFormFiller}
-                            onSave={console.log('save')}
-                            onSubmit={console.log('submit')}
-                            authorized={false}
+                            onSave={console.log('Savebutton clicked')}
+                            onSubmit={console.log('Submitbutton clicked')}
+                            authorized={true}
                             resources={referoTranslation}
-                            loginButton={<Button>{referoTranslation.skjemaLoginButton}</Button>}
                             validateScriptInjection
-                            sticky
+                            sticky={true}
+                            saveButtonDisabled={false}
+                            loginButton={<Button>{referoTranslation.skjemaLoginButton}</Button>}
                         />
                     </div>
                 </div>
