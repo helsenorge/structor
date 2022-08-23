@@ -25,7 +25,7 @@ type Props = {
 // eslint-disable-next-line @typescript-eslint/ban-types
 const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
 
-const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
+const ReferoPreview = ({ showFormFiller, language }: Props): JSX.Element => {
     const { t } = useTranslation();
     const { state } = useContext(TreeContext);
     const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(
@@ -119,7 +119,7 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
                             />
                         </div>
                     </div>
-                    <div style={{ padding: '20px' }} className="referoContainer-div">
+                    <div className="referoContainer-div">
                         <ReferoContainer
                             store={store}
                             questionnaire={questionnaireForPreview}
@@ -140,4 +140,4 @@ const ReferoFiller = ({ showFormFiller, language }: Props): JSX.Element => {
     );
 };
 
-export default ReferoFiller;
+export default ReferoPreview;
