@@ -11,8 +11,8 @@ import QuestionDrawer from '../components/QuestionDrawer/QuestionDrawer';
 import './FormBuilder.css';
 import { ValidationErrors } from '../helpers/orphanValidation';
 import TranslationModal from '../components/Languages/Translation/TranslationModal';
-import ReferoFiller from '../components/FormFiller/ReferoFiller';
-import FormFiller from '../components/FormFiller/FormFiller';
+import ReferoFiller from '../components/Refero/ReferoPreview';
+import FormFiller from '../components/Refero/FormFiller';
 
 const FormBuilder = (): JSX.Element => {
     const { t } = useTranslation();

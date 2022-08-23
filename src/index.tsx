@@ -1,5 +1,5 @@
 import './index.css';
-import './skjemautfyller.css';
+import './components/Refero/refero.css';
 
 import * as serviceWorker from './serviceWorker';
 
