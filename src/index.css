@@ -110,6 +110,7 @@ p {
 }
 
 .referoContainer-div {
+    padding: 20px;
     max-height: calc(100vh - 10rem);
     overflow: scroll;
     text-align: initial;
