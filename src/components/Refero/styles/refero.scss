@@ -1,0 +1,372 @@
+@import '~@helsenorge/toolkit/utils/_variables.scss';
+@import '~@helsenorge/designsystem-react/scss/_spacers.scss';
+@import '~@helsenorge/designsystem-react/scss/_breakpoints.scss';
+@import './sidebar';
+@import './fieldset';
+@import './helpbutton.scss';
+@import './navigator.scss';
+@import './referoPreview.css';
+
+.page_refero__fixed-scroll-offset {
+    scroll-padding-bottom: 70px;
+}
+
+.page_refero {
+    // Tilbakestill padding
+    label,
+    legend,
+    .nested-fieldset .atom_fieldset > legend {
+        padding-top: 0;
+    }
+
+    legend > span:first-of-type {
+        font-weight: 600;
+    }
+
+    p {
+        padding: 0;
+    }
+    form.mol_form {
+        margin-top: 1rem;
+    }
+    br + br {
+        display: none;
+    }
+
+    div > label:first-child {
+        display: inline-block;
+        padding: 0.625rem 0 0.625rem 0;
+    }
+
+    .page_refero__component_choice_autosuggest {
+        .page_refero__no-suggestions {
+            font-size: 1rem;
+            max-width: 22rem;
+            line-height: 1.25rem;
+        }
+
+        .atom_spinner {
+            position: absolute;
+        }
+
+        .page_refero__autosuggest div[role='combobox'] {
+            max-width: 36rem;
+        }
+    }
+
+    .page_refero__component_readonlytext {
+        white-space: pre-line;
+    }
+
+    .page_refero__heading {
+        display: inline-block;
+    }
+
+    // Tilbakestill margin
+    .mol_validation {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .nested-fieldset {
+        margin-top: 1rem;
+
+        &:empty {
+            margin-top: 0;
+        }
+    }
+
+    section section + .page_refero__component,
+    section section + section {
+        margin-top: 2rem;
+    }
+
+    //EDGE fix
+    @supports (-ms-ime-align: auto) {
+        section section + section:last-of-type {
+            padding-bottom: 6rem;
+        }
+    }
+
+    .page_refero__component:last-of-type {
+        margin-bottom: 0;
+    }
+    .page_refero__component:last-of-type + section {
+        margin-top: 1.5rem;
+    }
+
+    .page_refero__markdown p {
+        padding: 0.5rem 0;
+    }
+
+    // Heading spacing
+    .page_refero__content h2 {
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    &.page_refero__markdown h2 {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    &.page_refero h3,
+    &.page_refero h4 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+    &.page_refero__markdown h3,
+    &.page_refero__markdown h4 {
+        margin-top: 0.8rem;
+    }
+
+    &.page_refero section + section > h4,
+    &.page_refero .page_refero__repeatbutton + section > h4,
+    &.page_refero .page_refero__component + section > h4 {
+        margin-top: 2.5rem;
+    }
+
+    // Disse kan dukke opp under label eller legend, derfor må de være mindre
+    .nested-fieldset h3,
+    .nested-fieldset h4 {
+        font-size: 1.125rem;
+    }
+
+    .page_refero__repeatbutton {
+        margin: 1rem 1rem 1rem 0;
+    }
+
+    .page_refero__deletebutton-wrapper + .page_refero__repeatbutton-wrapper {
+        margin-top: 2rem;
+    }
+
+    .page_refero__deletebutton--margin-top {
+        margin-top: 1rem;
+        margin-right: 1rem;
+    }
+
+    .page_refero__formtitlewrapper {
+        margin: 3rem 0 2rem;
+        padding-right: 3rem;
+
+        .atom_helptrigger-button {
+            left: 0.5rem !important;
+        }
+    }
+
+    h1.page_refero__formtitle {
+        display: inline;
+    }
+
+    &__sublabel p {
+        margin: 0;
+    }
+
+    &__component {
+        padding: 1rem;
+        background-color: $color-base-6-2;
+        border: 1px solid $color-base-5-5;
+        margin-bottom: 1rem;
+
+        @media (min-width: map-get($grid-breakpoints, md)) {
+            padding: 1.75rem 2rem;
+        }
+        .page_refero__component {
+            background: 0;
+            border: 0;
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+    }
+
+    .char-counter {
+        background: 0;
+        margin-right: 0.5rem;
+    }
+
+    .char-counter,
+    .atom_textarea {
+        max-width: 38rem;
+    }
+
+    &__hidden_buttons &__saveblock {
+        display: none;
+    }
+
+    .mol_validation-summary {
+        margin-bottom: 2rem;
+        margin-top: 2rem;
+    }
+
+    .mol_validation__formerrortext {
+        display: none;
+    }
+
+    .nested-fieldset .mol_validation {
+        &:before {
+            left: -2rem;
+            width: 2rem;
+        }
+
+        &:after {
+            left: -2rem;
+        }
+    }
+
+    &__spinnerspacing {
+        height: 12rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        @media (min-width: map-get($grid-breakpoints, sm)) {
+            height: 20rem;
+        }
+    }
+
+    .page_refero__component_quantity .page_refero__quantity {
+        display: inline-block;
+    }
+
+    &__unit {
+        margin-left: 1rem;
+        vertical-align: bottom;
+    }
+
+    .page_refero__buttonwrapper {
+        margin-top: 1rem;
+
+        & .atom_displaybutton {
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    .page_refero__buttonspacer {
+        margin-right: 24px;
+    }
+
+    .page_refero__buttonspacer--left {
+        margin-left: 1.5rem;
+    }
+
+    // Hide labels for first item in grid-cell (item and group)
+    .page_refero__grid--cell > div:first-child > div:first-child label,
+    .page_refero__grid--cell > section:first-child > .page_refero__heading {
+        display: none;
+    }
+
+    // Remove padding for grid-cell components
+    .page_refero__grid--cell > .page_refero__component:first-child {
+        padding: 0;
+    }
+
+    .page_refero__component_highlight {
+        background-color: #efe4fd;
+        padding: 1.75rem 2rem;
+    }
+}
+
+.extra_savebutton_wrapper {
+    position: relative;
+
+    @media (min-width: map-get($grid-breakpoints, sm)) {
+        display: none;
+    }
+
+    .extra_savebutton {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        &:not([disabled]) {
+            background-color: #f5f3f3;
+        }
+
+        > svg {
+            margin: 0 -1rem 0 0.5rem;
+            min-width: 2rem;
+            max-width: 2rem;
+        }
+    }
+}
+
+.page_refero__stickybar + .extra_savebutton_wrapper {
+    position: sticky;
+    bottom: 0.5rem;
+    z-index: 2;
+}
+
+.page_refero__saveblock .atom_displaybutton:only-child {
+    width: auto;
+    padding: 0 2rem;
+}
+
+.extra_savebutton_wrapper,
+.page_refero__saveblock {
+    .atom_displaybutton {
+        padding: 0;
+        width: 33%;
+        margin: 0;
+
+        @media (min-width: map-get($grid-breakpoints, sm)) {
+            padding: 0 2rem;
+            margin-right: 1rem;
+            width: auto;
+        }
+    }
+
+    .page_refero__pausebutton {
+        display: none;
+
+        @media (min-width: map-get($grid-breakpoints, sm)) {
+            display: inline-block;
+        }
+    }
+}
+
+.page_refero__stickybar .page_refero__saveblock {
+    @media (min-width: map-get($grid-breakpoints, sm)) {
+        position: sticky;
+        bottom: 0;
+        background-color: #fff;
+        padding: 0.5rem 1rem;
+        z-index: 2;
+        box-shadow: 0px -1px 5px 0px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.page_refero__languge-selector {
+    margin-top: 1.5rem;
+    padding-bottom: 0;
+}
+
+.page_refero__topmessage .atom_helptrigger-container {
+    display: inline-block;
+    width: 35px;
+
+    .org_helptrigger {
+        top: -10px;
+        left: -8px;
+    }
+    .atom_helptrigger-button {
+        transform: scale(0.5);
+    }
+}
+
+.page_refero .page_refero__receivercomponent {
+    h2 {
+        margin: 0;
+    }
+
+    .page_refero__sublabel {
+        margin-bottom: 2rem;
+    }
+}
+
+.page_refero__receiverselect .atom_select {
+    margin-bottom: 2rem;
+    max-width: 30rem;
+    width: 100%;
+}
