@@ -1,0 +1,66 @@
+.page_refero__component legend {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.666666;
+  padding: 0.5rem 0;
+
+  em {
+    font-weight: 500;
+    color: $color-base-3-5;
+  }
+}
+
+.page_refero__component > fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-width: inherit;
+
+  legend,
+  .nested-fieldset {
+    @extend legend;
+  }
+}
+
+//nested
+.page_refero__component {
+  .nested-fieldset {
+    padding-left: 2.5rem;
+    position: relative;
+    overflow: inherit;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0.5rem;
+      bottom: 0;
+      border-left: 4px solid $color-base-4-5;
+    }
+
+    // Dersom fieldset ikke har legend, la streken gå høyere opp.
+    label:first-of-type {
+      position: relative;
+    }
+
+    label:first-of-type:before {
+      content: '';
+      position: absolute;
+      top: 0.5rem;
+      left: -2rem;
+      height: 1.5rem;
+      border-left: 4px solid $color-base-4-5;
+    }
+
+    //ikke mer padding på nøsting > 2
+    fieldset,
+    .nested-fieldset {
+      padding-left: 0;
+
+      &:before {
+        content: none;
+      }
+    }
+  }
+}
