@@ -119,20 +119,22 @@ const ReferoPreview = ({ showFormFiller, language }: Props): JSX.Element => {
                             />
                         </div>
                     </div>
-                    <div className="referoContainer-div">
-                        <ReferoContainer
-                            store={store}
-                            questionnaire={questionnaireForPreview}
-                            onCancel={showFormFiller}
-                            onSave={console.log('Savebutton clicked')}
-                            onSubmit={console.log('Submitbutton clicked')}
-                            authorized={true}
-                            resources={referoResources}
-                            validateScriptInjection
-                            sticky={true}
-                            saveButtonDisabled={false}
-                            loginButton={<Button>Login</Button>}
-                        />
+                    <div className="page_refero">
+                        <div className="referoContainer-div">
+                            <ReferoContainer
+                                store={store}
+                                questionnaire={questionnaireForPreview}
+                                onCancel={showFormFiller}
+                                onSave={console.log('Savebutton clicked')}
+                                onSubmit={console.log('Submitbutton clicked')}
+                                authorized={true}
+                                resources={referoResources}
+                                validateScriptInjection
+                                sticky={true}
+                                saveButtonDisabled={false}
+                                loginButton={<Button>Login</Button>}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

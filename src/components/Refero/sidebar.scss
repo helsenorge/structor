@@ -1,0 +1,433 @@
+@import '~@helsenorge/designsystem-react/scss/_spacers.scss';
+@import '~@helsenorge/designsystem-react/scss/_breakpoints.scss';
+@import '~@helsenorge/toolkit/utils/_variables.scss';
+
+$helpdrawer-font: 'Georgia, Source Sans Pro, _sans-serif';
+
+.skjemasidebar {
+  z-index: 1100001;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  transform: translateX(100%);
+  left: auto;
+  bottom: 0;
+  background: #6a2abf;
+  padding-left: 0.5rem;
+  transition: transform 0.5s ease;
+
+  &.open {
+    transform: translateX(0);
+    .skjemasidebar__contents {
+      animation: none;
+    }
+
+    .skjemasidebar__controlbutton {
+      &:hover,
+      &:focus {
+        svg:nth-child(2) {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+}
+
+.skjemasidebar__control {
+  display: block;
+  padding: 0;
+  position: absolute;
+  top: 50vh;
+  left: -2.8rem;
+
+  &::before,
+  &::after {
+    content: ' ';
+    position: absolute;
+    height: 100rem;
+    width: 1rem;
+    border-left: 1px solid $color-base-0;
+    bottom: 0;
+    right: -3.8rem;
+  }
+
+  &::before {
+    box-shadow: rgba(0, 0, 0, 0.25) -1px -3px 8px 0px;
+  }
+
+  &::after {
+    top: 1.55rem;
+    box-shadow: rgba(0, 0, 0, 0.25) -1px 3px 8px 0px;
+  }
+}
+
+.skjemasidebar__controlbutton {
+  position: absolute;
+  left: 1.875rem;
+  top: -1.55rem;
+  height: 3.1rem;
+  width: 2.4rem;
+  cursor: pointer;
+  display: block;
+  padding: 0;
+  background: #6a2abf;
+  border: 1px;
+  border-style: solid;
+  border-color: $color-base-0;
+  border-radius: 1rem 0 0 1rem;
+  box-shadow: rgba(0, 0, 0, 0.05) -1px 0 0 1px, rgba(0, 0, 0, 0.05) -2px 1px 0 2px, rgba(0, 0, 0, 0.05) -3px -1px 0 2px,
+    rgba(0, 0, 0, 0.05) -3px -2px 0 3px, rgba(0, 0, 0, 0.05) -3px 2px 0 3px;
+
+  &:before {
+    position: absolute;
+    content: '';
+    top: 0;
+    right: 0;
+    left: -0.625rem;
+    bottom: 0;
+  }
+
+  .svgicon {
+    display: none;
+  }
+
+  &:hover,
+  &:focus {
+    box-shadow: -4px -4px 0 4px #9153e2, -4px 4px 0 4px #9153e2;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.skjemasidebar__contents {
+  animation: hide-contents 0.4s;
+  animation-fill-mode: forwards;
+  display: block;
+  background: $color-base-0;
+  height: 100%;
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0.5rem;
+  right: 0;
+}
+
+.skjemasidebar__drawerheader {
+  display: flex;
+  vertical-align: middle;
+  justify-content: space-between;
+  background: #6a2abf;
+
+  .skjemasidebar__title-wrap {
+    display: flex;
+    align-items: center;
+  }
+
+  .skjemasidebar__title-wrap:focus {
+    outline: none;
+  }
+
+  .skjemasidebar__title-wrap > svg {
+    display: inline-flex;
+    margin: 0 0.75rem;
+    vertical-align: middle;
+  }
+
+  .skjemasidebar__title {
+    display: inline-flex;
+    position: relative;
+    padding: 0.5rem 0;
+    margin: 0;
+    font-family: $helpdrawer-font;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: $color-base-0;
+    vertical-align: middle;
+  }
+
+  .atom_functionbutton.atom_functionbutton--close {
+    display: block;
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+
+    svg {
+      color: $color-base-0;
+      border-color: transparent;
+    }
+
+    &:hover,
+    &:focus {
+      svg {
+        border-color: $color-base-0;
+      }
+    }
+  }
+}
+
+.skjemasidebar__draweraccordion {
+  padding: 0.5rem;
+}
+
+.skjemasidebar__draweraccordionstepheader {
+  display: block;
+  position: relative;
+
+  h2 {
+    display: inline-flex;
+    margin: 0;
+    padding: 0.5rem 1.5rem 0.5rem 1rem;
+    font-family: $helpdrawer-font;
+    font-weight: 500;
+    font-size: 1.375rem;
+    line-height: 2.5rem;
+    color: $color-help-inverse;
+  }
+}
+
+.skjemasidebar__draweraccordionsteptitle {
+  display: flex;
+  padding: 0 2.5rem 0 0.5rem;
+  text-align: left;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid $color-base-4-1;
+  min-height: 3rem;
+  background-color: transparent;
+  cursor: pointer;
+
+  .svgicon {
+    display: inline-flex;
+    border-radius: 1.5rem;
+    padding: 0.25rem;
+    margin: 1rem 0.5rem 0.7rem 0.5rem;
+    vertical-align: middle;
+    pointer-events: none;
+  }
+
+  &:hover,
+  &:focus {
+    svg {
+      box-shadow: $outline-box-shadow-thin;
+    }
+  }
+
+  &:focus {
+    background-color: $focus-background-color;
+    outline: none;
+  }
+}
+
+.skjemasidebar__draweraccordiondeletestep {
+  position: absolute;
+  cursor: pointer;
+  top: -0.275rem;
+  right: 0.4rem;
+}
+
+.skjemasidebar__draweraccordionstepcontents {
+  display: block;
+  padding: 0.6rem 0.5rem 0.6rem 2rem;
+  font-family: $helpdrawer-font;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.4rem;
+
+  p {
+    font-family: $helpdrawer-font;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.75rem;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    white-space: pre-line;
+  }
+
+  a {
+    font-size: 1.125rem;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: $helpdrawer-font;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.333333;
+    margin-bottom: 0.55rem;
+    margin-top: 2.2rem;
+    color: $color-base-7;
+  }
+
+  h4,
+  h5 {
+    font-size: 1.125rem;
+  }
+
+  ul {
+    padding-left: 1rem;
+  }
+
+  ul li {
+    font-family: $helpdrawer-font;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 1.4;
+    color: $color-base-7;
+    list-style: disc;
+    list-style-position: outside;
+    padding-left: 0.4rem;
+    text-indent: 0;
+  }
+
+  dl {
+    margin: 1rem 0;
+    border-top: 1px solid $color-base-4-5;
+    border-bottom: 1px solid $color-base-4-5;
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+
+    dt {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      font-variant: small-caps;
+      text-transform: lowercase;
+    }
+
+    dd {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+/* for fixed sections (no expand/collapse) .steptitle is placed directly on h2 instead of button */
+h2.skjemasidebar__draweraccordionsteptitle {
+  background: none;
+  &:hover {
+    box-shadow: none;
+    cursor: inherit;
+  }
+  padding: 0.5rem 2rem;
+}
+
+.skjemasidebar__draweraccordion .step {
+  padding: 0;
+  margin: 0;
+
+  .hlpctr-container {
+    overflow: hidden;
+    transition: height 0.5s ease;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+@media (min-width: map-get($grid-breakpoints, sm)) {
+  .skjemasidebar {
+    width: 27.5rem;
+    left: auto;
+  }
+
+  .skjemasidebar__drawerheader .skjemasidebar__title {
+    font-size: 1.5rem;
+  }
+
+  .skjemasidebar__draweraccordion {
+    padding: 0.5rem;
+
+    .step {
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  .skjemasidebar__draweraccordionstepheader {
+    display: block;
+    position: relative;
+  }
+
+  .skjemasidebar__draweraccordionsteptitle {
+    min-height: 3rem;
+  }
+
+  h2.skjemasidebar__draweraccordionsteptitle {
+    padding: 0.5rem 2.5rem 0.5rem 0.5rem;
+  }
+
+  .skjemasidebar__draweraccordionstepcontents {
+    padding: 1.6rem 0.5rem 0.6rem 4rem;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+
+    ul li {
+      line-height: 1.5rem;
+      padding-left: 0.6rem;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+@media (min-width: map-get($grid-breakpoints, md)) {
+  .skjemasidebar__control {
+    top: 9rem;
+
+    &::before {
+      bottom: 0;
+    }
+
+    &::after {
+      top: 6rem;
+    }
+  }
+
+  .skjemasidebar__controlbutton {
+    left: 0;
+    top: 0;
+    height: 6rem;
+    width: 2.8rem;
+    border: 1px;
+    border-style: solid;
+    border-color: $color-base-0;
+    border-right: none;
+    border-radius: 1rem 0 0 1rem;
+
+    .svgicon {
+      display: inline-block;
+      margin-top: 0.25rem;
+      pointer-events: none;
+      &:first-child {
+        width: 2rem;
+        height: 2rem;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &:hover,
+    &:focus {
+      outline: none;
+      box-shadow: -4px -4px 0 4px #9153e2, -4px 4px 0 4px #9153e2;
+    }
+  }
+}
+
+@keyframes hide-contents {
+  100% {
+    visibility: hidden;
+  }
+}
+
+@media print {
+  .skjemasidebar {
+    display: none;
+  }
+}

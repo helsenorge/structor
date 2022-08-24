@@ -1,5 +1,5 @@
 import './index.css';
-import './components/Refero/refero.css';
+import './components/Refero/refero.scss';
 
 import * as serviceWorker from './serviceWorker';
 

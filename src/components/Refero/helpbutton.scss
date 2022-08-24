@@ -1,0 +1,57 @@
+$featureColor1: #5b22a6;
+
+.page_refero__helpComponent {
+  background-color: #efe4fd;
+  padding: 25px;
+  margin-bottom: 20px;
+  visibility: hidden;
+
+  &--open {
+    visibility: visible;
+  }
+}
+
+.page_refero__helpButton {
+  margin-left: 1rem;
+
+  .atom_inline-functionbutton {
+    position: relative;
+    border: 0;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 400;
+    height: 34px;
+    width: 34px;
+    border-radius: 50%;
+    background-color: #bf98f3;
+    vertical-align: middle;
+    padding: 0;
+
+    &[aria-expanded='true'] {
+      background-color: $featureColor1;
+    }
+  }
+
+  .atom_inline-functionbutton:before {
+    content: '?';
+    display: block;
+    line-height: 1.5rem;
+    background-color: $featureColor1;
+    color: white;
+    border-radius: 50%;
+    font-family: Arial;
+    font-size: 18px;
+    margin: 15%;
+    width: 70%;
+    height: 70%;
+  }
+
+  .atom_inline-functionbutton:hover,
+  .atom_inline-functionbutton:focus {
+    box-shadow: 0 0 0 4px #adadad;
+  }
+
+  .atom_inline-functionbutton:focus {
+    outline: none;
+  }
+}
