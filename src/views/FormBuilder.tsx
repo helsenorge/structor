@@ -11,7 +11,7 @@ import QuestionDrawer from '../components/QuestionDrawer/QuestionDrawer';
 import './FormBuilder.css';
 import { ValidationErrors } from '../helpers/orphanValidation';
 import TranslationModal from '../components/Languages/Translation/TranslationModal';
-import ReferoFiller from '../components/Refero/ReferoPreview';
+import ReferoPreview from '../components/Refero/ReferoPreview';
 import FormFiller from '../components/Refero/FormFiller';
 
 const FormBuilder = (): JSX.Element => {
@@ -47,7 +47,7 @@ const FormBuilder = (): JSX.Element => {
                     validationErrors={validationErrors}
                 />
                 {showPreview && (
-                    <ReferoFiller
+                    <ReferoPreview
                         showFormFiller={() => setShowPreview(!showPreview)}
                         language={state.qMetadata.language}
                     />

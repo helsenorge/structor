@@ -13,8 +13,9 @@ import rootReducer from '@helsenorge/refero/reducers';
 import Button from '@helsenorge/designsystem-react/components/Button';
 import IconBtn from '../IconBtn/IconBtn';
 import Select from '../Select/Select';
+import { QuestionnaireResponse } from '@helsenorge/refero/types/fhir';
 
-import { referoResourcesNO } from '../../locales/nb-NO/referoResourcesNO';
+import { getResources } from '../../locales/referoResources';
 import { Questionnaire } from '../../types/fhir';
 
 type Props = {
@@ -36,25 +37,14 @@ const ReferoPreview = ({ showFormFiller, language }: Props): JSX.Element => {
     const languages = getLanguagesInUse(state);
     const [referoResources, setReferoResources] = useState({});
     const [questionnaireForPreview, setQuestionnaireForPreview] = useState<Questionnaire>();
-
-    const updateReferoResources = () => {
-        let resources = {};
-        switch (selectedLanguage) {
-            case 'nb-NO':
-                resources = referoResourcesNO;
-                break;
-            default:
-                resources = referoResourcesNO;
-                break;
-        }
-        setReferoResources(resources);
-    };
+    const [showResponse, setShowResponse] = useState<boolean>(false);
+    const [referoKey, setReferoKey] = useState('123');
+    const [responseJson, setResponseJson] = useState<QuestionnaireResponse>();
 
     useEffect(() => {
         setQuestionnaireForPreview(
             generateQuestionnaireForPreview(state, selectedLanguage, selectedGender, selectedAge),
         );
-        updateReferoResources();
     }, [state, selectedLanguage, selectedGender, selectedAge]);
 
     return (
@@ -117,24 +107,41 @@ const ReferoPreview = ({ showFormFiller, language }: Props): JSX.Element => {
                                 }}
                                 compact={true}
                             />
+                            <button
+                                className="changePreviewButton"
+                                onClick={() => setReferoKey(Math.random().toString())}
+                            >
+                                Apply
+                            </button>
                         </div>
                     </div>
-                    <div className="page_refero">
-                        <div className="referoContainer-div">
-                            <ReferoContainer
-                                store={store}
-                                questionnaire={questionnaireForPreview}
-                                onCancel={showFormFiller}
-                                onSave={console.log('Savebutton clicked')}
-                                onSubmit={console.log('Submitbutton clicked')}
-                                authorized={true}
-                                resources={referoResources}
-                                validateScriptInjection
-                                sticky={true}
-                                saveButtonDisabled={false}
-                                loginButton={<Button>Login</Button>}
-                            />
-                        </div>
+                    <div className="referoContainer-div">
+                        {!showResponse ? (
+                            <div className="page_refero">
+                                <ReferoContainer
+                                    key={referoKey}
+                                    store={store}
+                                    questionnaire={questionnaireForPreview}
+                                    onCancel={() => setShowResponse(true)}
+                                    onSave={(questionnaireResponse: QuestionnaireResponse) => {
+                                        setResponseJson(questionnaireResponse);
+                                        setShowResponse(true);
+                                    }}
+                                    onSubmit={console.log('Submitbutton clicked')}
+                                    authorized={true}
+                                    resources={getResources(language)}
+                                    validateScriptInjection
+                                    sticky={true}
+                                    saveButtonDisabled={false}
+                                    loginButton={<Button>Login</Button>}
+                                />
+                            </div>
+                        ) : (
+                            <div>
+                                <p>{JSON.stringify(responseJson)}</p>
+                                <Button onClick={() => setShowResponse(false)}>Tilbake til skjemautfyller</Button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
