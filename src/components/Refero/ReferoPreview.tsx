@@ -17,6 +17,7 @@ import { QuestionnaireResponse } from '@helsenorge/refero/types/fhir';
 
 import { getResources } from '../../locales/referoResources';
 import { Questionnaire } from '../../types/fhir';
+import ReferoSidebar from './ReferoSidebar';
 
 type Props = {
     showFormFiller: () => void;
@@ -35,7 +36,6 @@ const ReferoPreview = ({ showFormFiller, language }: Props): JSX.Element => {
     const [selectedGender, setSelectedGender] = useState<string>('');
     const [selectedAge, setSelectedAge] = useState<string>('');
     const languages = getLanguagesInUse(state);
-    const [referoResources, setReferoResources] = useState({});
     const [questionnaireForPreview, setQuestionnaireForPreview] = useState<Questionnaire>();
     const [showResponse, setShowResponse] = useState<boolean>(false);
     const [referoKey, setReferoKey] = useState('123');
@@ -115,6 +115,11 @@ const ReferoPreview = ({ showFormFiller, language }: Props): JSX.Element => {
                             </button>
                         </div>
                     </div>
+
+                    <ReferoSidebar
+                        questionnaire={questionnaireForPreview ? questionnaireForPreview : ''}
+                    ></ReferoSidebar>
+
                     <div className="referoContainer-div">
                         {!showResponse ? (
                             <div className="page_refero">
