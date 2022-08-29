@@ -116,9 +116,7 @@ const ReferoPreview = ({ showFormFiller, language }: Props): JSX.Element => {
                         </div>
                     </div>
 
-                    <ReferoSidebar
-                        questionnaire={questionnaireForPreview ? questionnaireForPreview : ''}
-                    ></ReferoSidebar>
+                    <ReferoSidebar questionnaire={questionnaireForPreview ? questionnaireForPreview : ''} />
 
                     <div className="referoContainer-div">
                         {!showResponse ? (

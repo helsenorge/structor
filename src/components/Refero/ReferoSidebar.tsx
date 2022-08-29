@@ -15,7 +15,7 @@ const ReferoSidebar = ({ questionnaire }: Props) => {
         <div
             style={{
                 position: 'fixed',
-                top: 0,
+                top: '70px',
                 bottom: 0,
                 right: 0,
                 padding: 8,
