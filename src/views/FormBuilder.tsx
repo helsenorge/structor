@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { TreeContext } from '../store/treeStore/treeStore';
@@ -23,10 +23,15 @@ const FormBuilder = (): JSX.Element => {
     const [validationErrors, setValidationErrors] = useState<Array<ValidationErrors>>([]);
     const [translationErrors, setTranslationErrors] = useState<Array<ValidationErrors>>([]);
     const [translateLang, setTranslateLang] = useState('');
+    const [referoKey, setReferoKey] = useState('123');
 
     const toggleFormDetails = useCallback(() => {
         setShowFormDetails(!showFormDetails);
     }, [showFormDetails]);
+
+    useEffect(() => {
+        setReferoKey(Math.random().toString());
+    }, [showPreview]);
 
     return (
         <>
@@ -48,8 +53,11 @@ const FormBuilder = (): JSX.Element => {
                 />
                 {showPreview && (
                     <ReferoPreview
+                        key={referoKey}
                         showFormFiller={() => setShowPreview(!showPreview)}
                         language={state.qMetadata.language}
+                        state={state}
+                        changeReferoKey={() => setReferoKey(Math.random().toString())}
                     />
                 )}
                 {translateLang && (

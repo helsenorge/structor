@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { TreeContext } from '../../store/treeStore/treeStore';
+import { TreeContext, TreeState } from '../../store/treeStore/treeStore';
 import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionnaire';
 import { getLanguagesInUse, INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { ReferoContainer } from '@helsenorge/refero/components';
@@ -22,30 +22,29 @@ import ReferoSidebar from './ReferoSidebar';
 type Props = {
     showFormFiller: () => void;
     language?: string;
+    state: TreeState;
+    changeReferoKey: () => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
 
-const ReferoPreview = ({ showFormFiller, language }: Props): JSX.Element => {
+const ReferoPreview = ({ showFormFiller, language, state, changeReferoKey }: Props): JSX.Element => {
     const { t } = useTranslation();
-    const { state } = useContext(TreeContext);
     const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(
         language || state.qMetadata.language || INITIAL_LANGUAGE.code,
     );
     const [selectedGender, setSelectedGender] = useState<string>('');
     const [selectedAge, setSelectedAge] = useState<string>('');
     const languages = getLanguagesInUse(state);
-    const [questionnaireForPreview, setQuestionnaireForPreview] = useState<Questionnaire>();
+    const questionnaireForPreview = generateQuestionnaireForPreview(
+        state,
+        selectedLanguage,
+        selectedGender,
+        selectedAge,
+    );
     const [showResponse, setShowResponse] = useState<boolean>(false);
-    const [referoKey, setReferoKey] = useState('123');
     const [responseJson, setResponseJson] = useState<QuestionnaireResponse>();
-
-    useEffect(() => {
-        setQuestionnaireForPreview(
-            generateQuestionnaireForPreview(state, selectedLanguage, selectedGender, selectedAge),
-        );
-    }, [state, selectedLanguage, selectedGender, selectedAge]);
 
     return (
         <Provider store={store}>
@@ -107,10 +106,7 @@ const ReferoPreview = ({ showFormFiller, language }: Props): JSX.Element => {
                                 }}
                                 compact={true}
                             />
-                            <button
-                                className="changePreviewButton"
-                                onClick={() => setReferoKey(Math.random().toString())}
-                            >
+                            <button className="changePreviewButton" onClick={changeReferoKey}>
                                 Apply
                             </button>
                         </div>
@@ -122,7 +118,6 @@ const ReferoPreview = ({ showFormFiller, language }: Props): JSX.Element => {
                         {!showResponse ? (
                             <div className="page_refero">
                                 <ReferoContainer
-                                    key={referoKey}
                                     store={store}
                                     questionnaire={questionnaireForPreview}
                                     onCancel={() => setShowResponse(true)}
