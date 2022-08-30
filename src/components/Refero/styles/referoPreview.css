@@ -1,3 +1,5 @@
+@import './referoSidebar.css';
+
 .refero-window {
     font-family: Source Sans Pro, Arial, Verdana, sans-serif;
     background-color: #f5f3f3;
@@ -27,11 +29,26 @@
 
 .changePreviewButton {
     margin-left: 10px;
-    padding: 0px 20px 0px 20px;
-    background-color: white;
-    border-color: grey;
-    border-style: solid;
-    border-radius: 25px;
-    border-width: 1px;
+    padding: 0px 10px 0px 10px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    outline-color: white;
+    outline-style: solid;
+    outline-width: 2px;
     font-size: 14px;
+}
+.changePreviewButton:hover {
+    background-color: #4caf50;
+}
+
+.changePreviewButton-content {
+    padding: 0px;
+    display: inline-flex;
+    overflow: hidden;
+}
+
+.changePreviewButton-icon {
+    position: relative;
+    top: 7px;
 }
