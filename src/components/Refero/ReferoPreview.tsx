@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Provider } from 'react-redux';
+import { Store, createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
-import { TreeState } from '../../store/treeStore/treeStore';
 import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionnaire';
 import { getLanguagesInUse, INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
-import { ReferoContainer } from '@helsenorge/refero/components';
-import { Store, createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
+import { getResources, getButtonText } from '../../locales/referoResources';
 import rootReducer from '@helsenorge/refero/reducers';
+import { TreeState } from '../../store/treeStore/treeStore';
+
+import { ReferoContainer } from '@helsenorge/refero/components';
+import ReferoSidebar from './ReferoSidebar';
 import Button from '@helsenorge/designsystem-react/components/Button';
 import IconBtn from '../IconBtn/IconBtn';
+import Icon from '@helsenorge/designsystem-react/components/Icons';
+import CheckFill from '@helsenorge/designsystem-react/components/Icons/CheckFill';
 import Select from '../Select/Select';
-import { QuestionnaireResponse } from '@helsenorge/refero/types/fhir';
 
-import { getResources } from '../../locales/referoResources';
-import ReferoSidebar from './ReferoSidebar';
+import { QuestionnaireResponse } from '@helsenorge/refero/types/fhir';
 
 type Props = {
     showFormFiller: () => void;
@@ -29,20 +32,20 @@ const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
 
 const ReferoPreview = ({ showFormFiller, language, state, changeReferoKey }: Props): JSX.Element => {
     const { t } = useTranslation();
+    const languages = getLanguagesInUse(state);
     const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(
         language || state.qMetadata.language || INITIAL_LANGUAGE.code,
     );
     const [selectedGender, setSelectedGender] = useState<string>('');
     const [selectedAge, setSelectedAge] = useState<string>('');
-    const languages = getLanguagesInUse(state);
     const questionnaireForPreview = generateQuestionnaireForPreview(
         state,
         selectedLanguage,
         selectedGender,
         selectedAge,
     );
+    const [questionnaireResponse, setQuestionnaireResponse] = useState<QuestionnaireResponse>();
     const [showResponse, setShowResponse] = useState<boolean>(false);
-    const [responseJson, setResponseJson] = useState<QuestionnaireResponse>();
 
     return (
         <Provider store={store}>
@@ -105,7 +108,12 @@ const ReferoPreview = ({ showFormFiller, language, state, changeReferoKey }: Pro
                                 compact={true}
                             />
                             <button className="changePreviewButton" onClick={changeReferoKey}>
-                                Apply
+                                <div className="changePreviewButton-content">
+                                    {getButtonText(language)}
+                                    <div className="changePreviewButton-icon">
+                                        <Icon svgIcon={CheckFill} size={24} color="white"></Icon>
+                                    </div>
+                                </div>
                             </button>
                         </div>
                     </div>
@@ -118,9 +126,9 @@ const ReferoPreview = ({ showFormFiller, language, state, changeReferoKey }: Pro
                                 <ReferoContainer
                                     store={store}
                                     questionnaire={questionnaireForPreview}
-                                    onCancel={() => setShowResponse(true)}
+                                    onCancel={showFormFiller}
                                     onSave={(questionnaireResponse: QuestionnaireResponse) => {
-                                        setResponseJson(questionnaireResponse);
+                                        setQuestionnaireResponse(questionnaireResponse);
                                         setShowResponse(true);
                                     }}
                                     onSubmit={console.log('Submitbutton clicked')}
@@ -134,7 +142,7 @@ const ReferoPreview = ({ showFormFiller, language, state, changeReferoKey }: Pro
                             </div>
                         ) : (
                             <div>
-                                <p>{JSON.stringify(responseJson)}</p>
+                                <p>{JSON.stringify(questionnaireResponse)}</p>
                                 <Button onClick={() => setShowResponse(false)}>Tilbake til skjemautfyller</Button>
                             </div>
                         )}

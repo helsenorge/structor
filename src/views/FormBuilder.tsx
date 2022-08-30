@@ -2,22 +2,22 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { TreeContext } from '../store/treeStore/treeStore';
+import { ValidationErrors } from '../helpers/orphanValidation';
+
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import FormDetailsDrawer from '../components/Drawer/FormDetailsDrawer/FormDetailsDrawer';
 import IconBtn from '../components/IconBtn/IconBtn';
 import Navbar from '../components/Navbar/Navbar';
 import QuestionDrawer from '../components/QuestionDrawer/QuestionDrawer';
+import ReferoPreview from '../components/Refero/ReferoPreview';
+import TranslationModal from '../components/Languages/Translation/TranslationModal';
 
 import './FormBuilder.css';
-import { ValidationErrors } from '../helpers/orphanValidation';
-import TranslationModal from '../components/Languages/Translation/TranslationModal';
-import ReferoPreview from '../components/Refero/ReferoPreview';
 
 const FormBuilder = (): JSX.Element => {
-    const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
+    const { t } = useTranslation();
     const [showFormDetails, setShowFormDetails] = useState(false);
-
     const [showPreview, setShowPreview] = useState(false);
     const [validationErrors, setValidationErrors] = useState<Array<ValidationErrors>>([]);
     const [translationErrors, setTranslationErrors] = useState<Array<ValidationErrors>>([]);

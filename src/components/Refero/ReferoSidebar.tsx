@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { getSidebarElements, generateSectionContent } from '../../locales/referoSidebar';
+import { getSidebarElements, generateSectionContent } from '../../locales/referoSidebarResources';
 import { Questionnaire } from '../../types/fhir';
 
 type Props = {
@@ -27,29 +26,11 @@ const ReferoSidebar = ({ questionnaire }: Props) => {
                 transform: isSidebarViewEnabled ? 'translateX(0)' : 'translateX(100%)',
             }}
         >
-            <button
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: '-38px',
-                    padding: '0 9px',
-                    fontSize: '32px',
-                    backgroundColor: '#fff',
-                    border: '2px #AAA solid',
-                    borderRightWidth: 0,
-                    cursor: 'pointer',
-                }}
-                onClick={() => setIsSidebarViewEnabled(!isSidebarViewEnabled)}
-            >
+            <button className="referoSidebar-button" onClick={() => setIsSidebarViewEnabled(!isSidebarViewEnabled)}>
                 ?
             </button>
             {isSidebarViewEnabled && (
-                <div
-                    style={{
-                        overflow: 'auto',
-                        height: '100%',
-                    }}
-                >
+                <div className="referoSidebar-content">
                     {generateSectionContent('Alternativer for utfylling', sidebarData['SOT-1'])}
                     {generateSectionContent('Veiledning og ansvarlig', sidebarData['SOT-2'])}
                     {generateSectionContent('Behandling hos mottaker', sidebarData['SOT-3'])}
