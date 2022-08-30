@@ -12,7 +12,6 @@ import './FormBuilder.css';
 import { ValidationErrors } from '../helpers/orphanValidation';
 import TranslationModal from '../components/Languages/Translation/TranslationModal';
 import ReferoPreview from '../components/Refero/ReferoPreview';
-import FormFiller from '../components/Refero/FormFiller';
 
 const FormBuilder = (): JSX.Element => {
     const { t } = useTranslation();

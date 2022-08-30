@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
-import { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { TreeContext, TreeState } from '../../store/treeStore/treeStore';
+import { TreeState } from '../../store/treeStore/treeStore';
 import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionnaire';
 import { getLanguagesInUse, INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { ReferoContainer } from '@helsenorge/refero/components';
@@ -16,7 +15,6 @@ import Select from '../Select/Select';
 import { QuestionnaireResponse } from '@helsenorge/refero/types/fhir';
 
 import { getResources } from '../../locales/referoResources';
-import { Questionnaire } from '../../types/fhir';
 import ReferoSidebar from './ReferoSidebar';
 
 type Props = {
