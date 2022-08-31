@@ -6,7 +6,7 @@ type Props = {
     questionnaire: Questionnaire;
 };
 
-const ReferoSidebar = ({ questionnaire }: Props): JSX.Element => {
+const FormFillerSidebar = ({ questionnaire }: Props): JSX.Element => {
     const [isSidebarViewEnabled, setIsSidebarViewEnabled] = React.useState(false);
     const sidebarData = getSidebarElements(questionnaire);
 
@@ -26,11 +26,11 @@ const ReferoSidebar = ({ questionnaire }: Props): JSX.Element => {
                 transform: isSidebarViewEnabled ? 'translateX(0)' : 'translateX(100%)',
             }}
         >
-            <button className="referoSidebar-button" onClick={() => setIsSidebarViewEnabled(!isSidebarViewEnabled)}>
+            <button className="formFillerSidebar-button" onClick={() => setIsSidebarViewEnabled(!isSidebarViewEnabled)}>
                 ?
             </button>
             {isSidebarViewEnabled && (
-                <div className="referoSidebar-content">
+                <div className="formFillerSidebar-content">
                     {generateSectionContent('Alternativer for utfylling', sidebarData['SOT-1'])}
                     {generateSectionContent('Veiledning og ansvarlig', sidebarData['SOT-2'])}
                     {generateSectionContent('Behandling hos mottaker', sidebarData['SOT-3'])}
@@ -40,4 +40,4 @@ const ReferoSidebar = ({ questionnaire }: Props): JSX.Element => {
     );
 };
 
-export default ReferoSidebar;
+export default FormFillerSidebar;

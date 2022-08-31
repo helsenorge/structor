@@ -9,7 +9,7 @@ import FormDetailsDrawer from '../components/Drawer/FormDetailsDrawer/FormDetail
 import IconBtn from '../components/IconBtn/IconBtn';
 import Navbar from '../components/Navbar/Navbar';
 import QuestionDrawer from '../components/QuestionDrawer/QuestionDrawer';
-import ReferoPreview from '../components/Refero/ReferoPreview';
+import FormFillerPreview from '../components/Refero/FormFillerPreview';
 import TranslationModal from '../components/Languages/Translation/TranslationModal';
 
 import './FormBuilder.css';
@@ -51,7 +51,7 @@ const FormBuilder = (): JSX.Element => {
                     validationErrors={validationErrors}
                 />
                 {showPreview && (
-                    <ReferoPreview
+                    <FormFillerPreview
                         key={referoKey}
                         showFormFiller={() => setShowPreview(!showPreview)}
                         language={state.qMetadata.language}

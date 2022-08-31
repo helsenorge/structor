@@ -1,6 +1,6 @@
-@import './referoSidebar.css';
+@import './formFillerSidebar.css';
 
-.refero-window {
+.preview-window {
     font-family: Source Sans Pro, Arial, Verdana, sans-serif;
     background-color: #f5f3f3;
     position: fixed;
@@ -11,7 +11,7 @@
     overflow: hidden;
 }
 
-.refero-window h2 {
+.preview-window h2 {
     color: black;
     margin-top: 70px;
     text-align: left;
