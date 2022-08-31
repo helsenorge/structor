@@ -1,12 +1,12 @@
 import React from 'react';
 import { getSidebarSections } from '@helsenorge/refero/util/extension';
 
-export const generateSectionContent = (header, content) => {
+export const generateSectionContent = (header: string, content: any): JSX.Element | null => {
     return content.length > 0 ? (
         <>
             <h2>{header}</h2>
             <div>
-                {content.map((x, index) => (
+                {content.map((x: any, index: any) => (
                     <p
                         key={index}
                         dangerouslySetInnerHTML={{
@@ -19,10 +19,10 @@ export const generateSectionContent = (header, content) => {
     ) : null;
 };
 
-export const getSidebarElements = (questionnaire) => {
+export const getSidebarElements = (questionnaire: any): any => {
     const sidebarData = getSidebarSections(questionnaire);
 
-    const seksjonerFraSkjema = {
+    const seksjonerFraSkjema: any = {
         'SOT-1': [],
         'SOT-2': [],
         'SOT-3': [],

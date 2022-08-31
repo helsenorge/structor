@@ -1,4 +1,4 @@
-export const getResources = (language) => {
+export const getResources = (language: string): Object => {
     if (language === 'en-GB') {
         return {
             deleteButtonText: 'Delete',
@@ -297,7 +297,7 @@ export const getResources = (language) => {
     };
 };
 
-export const getButtonText = (language) => {
+export const getButtonText = (language: string): string => {
     if (language === 'en-GB') {
         return 'Apply';
     }

@@ -3,12 +3,12 @@ import { getSidebarElements, generateSectionContent } from '../../locales/refero
 import { Questionnaire } from '../../types/fhir';
 
 type Props = {
-    questionnaire: Questionnaire | string;
+    questionnaire: Questionnaire;
 };
 
-const ReferoSidebar = ({ questionnaire }: Props) => {
+const ReferoSidebar = ({ questionnaire }: Props): JSX.Element => {
     const [isSidebarViewEnabled, setIsSidebarViewEnabled] = React.useState(false);
-    const sidebarData = getSidebarElements(questionnaire ? questionnaire : '');
+    const sidebarData = getSidebarElements(questionnaire);
 
     return (
         <div
