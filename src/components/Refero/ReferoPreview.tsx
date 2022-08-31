@@ -109,7 +109,7 @@ const ReferoPreview = ({ showFormFiller, language, state, changeReferoKey }: Pro
                             />
                             <button className="changePreviewButton" onClick={changeReferoKey}>
                                 <div className="changePreviewButton-content">
-                                    {getButtonText(language)}
+                                    {getButtonText(language || '')}
                                     <div className="changePreviewButton-icon">
                                         <Icon svgIcon={CheckFill} size={24} color="white"></Icon>
                                     </div>
@@ -118,7 +118,7 @@ const ReferoPreview = ({ showFormFiller, language, state, changeReferoKey }: Pro
                         </div>
                     </div>
 
-                    <ReferoSidebar questionnaire={questionnaireForPreview ? questionnaireForPreview : ''} />
+                    <ReferoSidebar questionnaire={questionnaireForPreview} />
 
                     <div className="referoContainer-div">
                         {!showResponse ? (
@@ -133,7 +133,7 @@ const ReferoPreview = ({ showFormFiller, language, state, changeReferoKey }: Pro
                                     }}
                                     onSubmit={console.log('Submitbutton clicked')}
                                     authorized={true}
-                                    resources={getResources(language)}
+                                    resources={getResources(language || '')}
                                     validateScriptInjection
                                     sticky={true}
                                     saveButtonDisabled={false}
