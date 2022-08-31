@@ -1,4 +1,4 @@
-.referoSidebar-button {
+.formFillerSidebar-button {
     position: absolute;
     top: 0;
     left: -38px;
@@ -10,7 +10,7 @@
     cursor: pointer;
 }
 
-.referoSidebar-content {
+.formFillerSidebar-content {
     overflow: auto;
     height: 100%;
 }

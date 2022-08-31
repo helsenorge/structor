@@ -11,7 +11,7 @@ import rootReducer from '@helsenorge/refero/reducers';
 import { TreeState } from '../../store/treeStore/treeStore';
 
 import { ReferoContainer } from '@helsenorge/refero/components';
-import ReferoSidebar from './ReferoSidebar';
+import FormFillerSidebar from './FormFillerSidebar';
 import Button from '@helsenorge/designsystem-react/components/Button';
 import IconBtn from '../IconBtn/IconBtn';
 import Icon from '@helsenorge/designsystem-react/components/Icons';
@@ -30,7 +30,7 @@ type Props = {
 // eslint-disable-next-line @typescript-eslint/ban-types
 const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
 
-const ReferoPreview = ({ showFormFiller, language, state, changeReferoKey }: Props): JSX.Element => {
+const FormFillerPreview = ({ showFormFiller, language, state, changeReferoKey }: Props): JSX.Element => {
     const { t } = useTranslation();
     const languages = getLanguagesInUse(state);
     const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(
@@ -50,7 +50,7 @@ const ReferoPreview = ({ showFormFiller, language, state, changeReferoKey }: Pro
     return (
         <Provider store={store}>
             <div className="overlay">
-                <div className="refero-window">
+                <div className="preview-window">
                     <div className="title align-everything">
                         <IconBtn type="x" title={t('Close')} onClick={showFormFiller} />
                         <h1>{t('Preview')}</h1>
@@ -118,7 +118,7 @@ const ReferoPreview = ({ showFormFiller, language, state, changeReferoKey }: Pro
                         </div>
                     </div>
 
-                    <ReferoSidebar questionnaire={questionnaireForPreview} />
+                    <FormFillerSidebar questionnaire={questionnaireForPreview} />
 
                     <div className="referoContainer-div">
                         {!showResponse ? (
@@ -153,4 +153,4 @@ const ReferoPreview = ({ showFormFiller, language, state, changeReferoKey }: Pro
     );
 };
 
-export default ReferoPreview;
+export default FormFillerPreview;
