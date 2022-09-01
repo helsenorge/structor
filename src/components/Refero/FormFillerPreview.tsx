@@ -27,8 +27,7 @@ type Props = {
     changeReferoKey: () => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
+const store: Store = createStore(rootReducer, applyMiddleware(thunk));
 
 const FormFillerPreview = ({ showFormFiller, language, state, changeReferoKey }: Props): JSX.Element => {
     const { t } = useTranslation();
