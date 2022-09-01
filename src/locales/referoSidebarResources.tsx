@@ -1,12 +1,14 @@
 import React from 'react';
 import { getSidebarSections } from '@helsenorge/refero/util/extension';
+import { Questionnaire } from '../types/fhir';
+import { Questionnaire as QuestionnaireRefero } from '@helsenorge/refero/types/fhir';
 
-export const generateSectionContent = (header: string, content: any): JSX.Element | null => {
+export const generateSectionContent = (header: string, content: string[]): JSX.Element | null => {
     return content.length > 0 ? (
         <>
             <h2>{header}</h2>
             <div>
-                {content.map((x: any, index: any) => (
+                {content.map((x, index) => (
                     <p
                         key={index}
                         dangerouslySetInnerHTML={{
@@ -19,10 +21,10 @@ export const generateSectionContent = (header: string, content: any): JSX.Elemen
     ) : null;
 };
 
-export const getSidebarElements = (questionnaire: any): any => {
-    const sidebarData = getSidebarSections(questionnaire);
+export const getSidebarElements = (questionnaire: Questionnaire): { [id: string]: string[] } => {
+    const sidebarData = getSidebarSections((questionnaire as unknown) as QuestionnaireRefero);
 
-    const seksjonerFraSkjema: any = {
+    const seksjonerFraSkjema: { [id: string]: string[] } = {
         'SOT-1': [],
         'SOT-2': [],
         'SOT-3': [],
