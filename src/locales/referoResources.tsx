@@ -1,4 +1,4 @@
-export const getResources = (language: string): any => {
+export const getResources = (language: string): { [id: string]: string } => {
     if (language === 'en-GB') {
         return {
             deleteButtonText: 'Delete',
