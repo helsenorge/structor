@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 
 import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionnaire';
 import { getLanguagesInUse, INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
-import { getResources, getButtonText } from '../../locales/referoResources';
+import { getResources } from '../../locales/referoResources';
 import rootReducer from '@helsenorge/refero/reducers';
 import { TreeState } from '../../store/treeStore/treeStore';
 
@@ -108,7 +108,7 @@ const FormFillerPreview = ({ showFormFiller, language, state, changeReferoKey }:
                             />
                             <button className="changePreviewButton" onClick={changeReferoKey}>
                                 <div className="changePreviewButton-content">
-                                    {getButtonText(language || '')}
+                                    {t('Update')}
                                     <div className="changePreviewButton-icon">
                                         <Icon svgIcon={CheckFill} size={24} color="white"></Icon>
                                     </div>
