@@ -296,13 +296,3 @@ export const getResources = (language: string): { [id: string]: string } => {
         adresseKomponent_loadError: 'Teknisk feil: kunne ikke laste liste over mottakere',
     };
 };
-
-export const getButtonText = (language: string): string => {
-    if (language === 'en-GB') {
-        return 'Apply';
-    }
-    if (language === 'fr-FR') {
-        return 'Appliquer';
-    }
-    return 'Oppdater';
-};
