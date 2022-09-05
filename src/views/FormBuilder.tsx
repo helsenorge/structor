@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { TreeContext } from '../store/treeStore/treeStore';
@@ -9,7 +9,6 @@ import FormDetailsDrawer from '../components/Drawer/FormDetailsDrawer/FormDetail
 import IconBtn from '../components/IconBtn/IconBtn';
 import Navbar from '../components/Navbar/Navbar';
 import QuestionDrawer from '../components/QuestionDrawer/QuestionDrawer';
-import FormFillerPreview from '../components/Refero/FormFillerPreview';
 import TranslationModal from '../components/Languages/Translation/TranslationModal';
 
 import './FormBuilder.css';
@@ -23,7 +22,7 @@ const FormBuilder = (): JSX.Element => {
     const [validationErrors, setValidationErrors] = useState<Array<ValidationErrors>>([]);
     const [translationErrors, setTranslationErrors] = useState<Array<ValidationErrors>>([]);
     const [translateLang, setTranslateLang] = useState('');
-    const [referoKey, setReferoKey] = useState('123');
+    // const [referoKey, setReferoKey] = useState('123');
 
     const toggleFormDetails = useCallback(() => {
         setShowFormDetails(!showFormDetails);
