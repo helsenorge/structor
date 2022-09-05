@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { Store, createStore, applyMiddleware } from 'redux';
@@ -24,12 +24,10 @@ type Props = {
     showFormFiller: () => void;
     language?: string;
     state: TreeState;
-    changeReferoKey: () => void;
 };
 
-const store: Store = createStore(rootReducer, applyMiddleware(thunk));
-
-const FormFillerPreview = ({ showFormFiller, language, state, changeReferoKey }: Props): JSX.Element => {
+const FormFillerPreview = ({ showFormFiller, language, state }: Props): JSX.Element => {
+    const store: Store = createStore(rootReducer, applyMiddleware(thunk));
     const { t } = useTranslation();
     const languages = getLanguagesInUse(state);
     const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(
@@ -45,6 +43,11 @@ const FormFillerPreview = ({ showFormFiller, language, state, changeReferoKey }:
     );
     const [questionnaireResponse, setQuestionnaireResponse] = useState<QuestionnaireResponse>();
     const [showResponse, setShowResponse] = useState<boolean>(false);
+    const [referoKey, setReferoKey] = useState<string>('123');
+
+    useEffect(() => {
+        setReferoKey(Math.random().toString());
+    }, [selectedLanguage, selectedGender, selectedAge]);
 
     return (
         <Provider store={store}>
@@ -106,14 +109,6 @@ const FormFillerPreview = ({ showFormFiller, language, state, changeReferoKey }:
                                 }}
                                 compact={true}
                             />
-                            <button className="changePreviewButton" onClick={changeReferoKey}>
-                                <div className="changePreviewButton-content">
-                                    {t('Update')}
-                                    <div className="changePreviewButton-icon">
-                                        <Icon svgIcon={CheckFill} size={24} color="white"></Icon>
-                                    </div>
-                                </div>
-                            </button>
                         </div>
                     </div>
 
@@ -123,6 +118,7 @@ const FormFillerPreview = ({ showFormFiller, language, state, changeReferoKey }:
                         {!showResponse ? (
                             <div className="page_refero">
                                 <ReferoContainer
+                                    key={referoKey}
                                     store={store}
                                     questionnaire={questionnaireForPreview}
                                     onCancel={showFormFiller}
@@ -133,10 +129,10 @@ const FormFillerPreview = ({ showFormFiller, language, state, changeReferoKey }:
                                     onSubmit={console.log('Submitbutton clicked')}
                                     authorized={true}
                                     resources={getResources(language || '')}
-                                    validateScriptInjection
                                     sticky={true}
                                     saveButtonDisabled={false}
                                     loginButton={<Button>Login</Button>}
+                                    syncQuestionnaireResponse
                                 />
                             </div>
                         ) : (

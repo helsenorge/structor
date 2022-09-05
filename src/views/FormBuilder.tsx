@@ -10,9 +10,9 @@ import IconBtn from '../components/IconBtn/IconBtn';
 import Navbar from '../components/Navbar/Navbar';
 import QuestionDrawer from '../components/QuestionDrawer/QuestionDrawer';
 import TranslationModal from '../components/Languages/Translation/TranslationModal';
+import FormFillerPreview from '../components/Refero/FormFillerPreview';
 
 import './FormBuilder.css';
-import FormFiller from '../components/Refero/FormFiller';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -22,6 +22,7 @@ const FormBuilder = (): JSX.Element => {
     const [validationErrors, setValidationErrors] = useState<Array<ValidationErrors>>([]);
     const [translationErrors, setTranslationErrors] = useState<Array<ValidationErrors>>([]);
     const [translateLang, setTranslateLang] = useState('');
+    const [referoKey, setReferoKey] = useState('123');
 
     const toggleFormDetails = useCallback(() => {
         setShowFormDetails(!showFormDetails);
@@ -46,9 +47,11 @@ const FormBuilder = (): JSX.Element => {
                     validationErrors={validationErrors}
                 />
                 {showPreview && (
-                    <FormFiller
+                    <FormFillerPreview
+                        key={referoKey}
                         showFormFiller={() => setShowPreview(!showPreview)}
                         language={state.qMetadata.language}
+                        state={state}
                     />
                 )}
                 {translateLang && (
