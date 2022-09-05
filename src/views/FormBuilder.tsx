@@ -22,15 +22,10 @@ const FormBuilder = (): JSX.Element => {
     const [validationErrors, setValidationErrors] = useState<Array<ValidationErrors>>([]);
     const [translationErrors, setTranslationErrors] = useState<Array<ValidationErrors>>([]);
     const [translateLang, setTranslateLang] = useState('');
-    // const [referoKey, setReferoKey] = useState('123');
 
     const toggleFormDetails = useCallback(() => {
         setShowFormDetails(!showFormDetails);
     }, [showFormDetails]);
-
-    // useEffect(() => {
-    //     setReferoKey(Math.random().toString());
-    // }, [showPreview]);
 
     return (
         <>
@@ -55,13 +50,6 @@ const FormBuilder = (): JSX.Element => {
                         showFormFiller={() => setShowPreview(!showPreview)}
                         language={state.qMetadata.language}
                     />
-                    // <FormFillerPreview
-                    //     key={referoKey}
-                    //     showFormFiller={() => setShowPreview(!showPreview)}
-                    //     language={state.qMetadata.language}
-                    //     state={state}
-                    //     changeReferoKey={() => setReferoKey(Math.random().toString())}
-                    // />
                 )}
                 {translateLang && (
                     <TranslationModal close={() => setTranslateLang('')} targetLanguage={translateLang} />
