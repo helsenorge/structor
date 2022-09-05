@@ -13,6 +13,7 @@ import FormFillerPreview from '../components/Refero/FormFillerPreview';
 import TranslationModal from '../components/Languages/Translation/TranslationModal';
 
 import './FormBuilder.css';
+import FormFiller from '../components/Refero/FormFiller';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -28,9 +29,9 @@ const FormBuilder = (): JSX.Element => {
         setShowFormDetails(!showFormDetails);
     }, [showFormDetails]);
 
-    useEffect(() => {
-        setReferoKey(Math.random().toString());
-    }, [showPreview]);
+    // useEffect(() => {
+    //     setReferoKey(Math.random().toString());
+    // }, [showPreview]);
 
     return (
         <>
@@ -51,13 +52,17 @@ const FormBuilder = (): JSX.Element => {
                     validationErrors={validationErrors}
                 />
                 {showPreview && (
-                    <FormFillerPreview
-                        key={referoKey}
+                    <FormFiller
                         showFormFiller={() => setShowPreview(!showPreview)}
                         language={state.qMetadata.language}
-                        state={state}
-                        changeReferoKey={() => setReferoKey(Math.random().toString())}
                     />
+                    // <FormFillerPreview
+                    //     key={referoKey}
+                    //     showFormFiller={() => setShowPreview(!showPreview)}
+                    //     language={state.qMetadata.language}
+                    //     state={state}
+                    //     changeReferoKey={() => setReferoKey(Math.random().toString())}
+                    // />
                 )}
                 {translateLang && (
                     <TranslationModal close={() => setTranslateLang('')} targetLanguage={translateLang} />
