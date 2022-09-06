@@ -20,6 +20,7 @@ const RadioBtn = ({ checked, onChange, options, name }: Props): JSX.Element => {
                     <div key={x.code}>
                         <label>
                             <input
+                                className="radioBtn-input"
                                 type="radio"
                                 checked={x.code === checked}
                                 value={x.code}

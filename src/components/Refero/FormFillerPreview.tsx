@@ -14,8 +14,6 @@ import { ReferoContainer } from '@helsenorge/refero/components';
 import FormFillerSidebar from './FormFillerSidebar';
 import Button from '@helsenorge/designsystem-react/components/Button';
 import IconBtn from '../IconBtn/IconBtn';
-import Icon from '@helsenorge/designsystem-react/components/Icons';
-import CheckFill from '@helsenorge/designsystem-react/components/Icons/CheckFill';
 import Select from '../Select/Select';
 
 import { QuestionnaireResponse } from '@helsenorge/refero/types/fhir';

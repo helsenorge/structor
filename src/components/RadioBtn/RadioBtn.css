@@ -1,3 +1,14 @@
 .radioBtn {
     text-align: left;
 }
+
+.radioBtn-input {
+    border: initial !important;
+    clip: initial !important;
+    height: initial !important;
+    margin: initial !important;
+    overflow: initial !important;
+    padding: initial !important;
+    position: initial !important;
+    width: initial !important;
+}
