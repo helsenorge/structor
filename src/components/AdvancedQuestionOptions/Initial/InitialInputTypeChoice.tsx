@@ -42,22 +42,26 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
     const renderAnswerOption = (initialOption: Coding): JSX.Element => {
         return (
             <div className="answerOption">
-                <input
-                    className="radioBtn-input"
-                    type="radio"
-                    name={initialOption.system}
-                    id={initialOption.code}
-                    checked={initialOption.code === initialValue}
-                    onChange={(event) => {
-                        if (event.target.checked) {
-                            setInitialValue(initialOption.code || '');
-                        }
-                        const newInitial = { valueCoding: { system: initialOption.system, code: initialOption.code } };
-                        props.dispatchAction(newInitial);
-                    }}
-                />
-                {` `}
-                <label htmlFor={initialOption.code}>{initialOption.display}</label>
+                <div className="radioBtn-div">
+                    <input
+                        className="radioBtn-input"
+                        type="radio"
+                        name={initialOption.system}
+                        id={initialOption.code}
+                        checked={initialOption.code === initialValue}
+                        onChange={(event) => {
+                            if (event.target.checked) {
+                                setInitialValue(initialOption.code || '');
+                            }
+                            const newInitial = {
+                                valueCoding: { system: initialOption.system, code: initialOption.code },
+                            };
+                            props.dispatchAction(newInitial);
+                        }}
+                    />
+                    {` `}
+                    <label htmlFor={initialOption.code}>{initialOption.display}</label>
+                </div>
             </div>
         );
     };

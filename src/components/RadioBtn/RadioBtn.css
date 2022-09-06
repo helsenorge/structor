@@ -2,6 +2,11 @@
     text-align: left;
 }
 
+.radioBtn-div {
+    display: flex;
+    gap: 5px;
+}
+
 .radioBtn-input {
     border: initial !important;
     clip: initial !important;
