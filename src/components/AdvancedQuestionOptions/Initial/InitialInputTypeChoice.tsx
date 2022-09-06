@@ -43,6 +43,7 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
         return (
             <div className="answerOption">
                 <input
+                    className="radioBtn-input"
                     type="radio"
                     name={initialOption.system}
                     id={initialOption.code}
