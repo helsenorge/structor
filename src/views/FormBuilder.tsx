@@ -22,7 +22,6 @@ const FormBuilder = (): JSX.Element => {
     const [validationErrors, setValidationErrors] = useState<Array<ValidationErrors>>([]);
     const [translationErrors, setTranslationErrors] = useState<Array<ValidationErrors>>([]);
     const [translateLang, setTranslateLang] = useState('');
-    const [referoKey, setReferoKey] = useState('123');
 
     const toggleFormDetails = useCallback(() => {
         setShowFormDetails(!showFormDetails);
@@ -48,7 +47,6 @@ const FormBuilder = (): JSX.Element => {
                 />
                 {showPreview && (
                     <FormFillerPreview
-                        key={referoKey}
                         showFormFiller={() => setShowPreview(!showPreview)}
                         language={state.qMetadata.language}
                         state={state}
