@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { Store, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
+import { emptyPropertyReplacer } from '../../helpers/emptyPropertyReplacer';
 import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionnaire';
 import { getLanguagesInUse, INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { getResources } from '../../locales/referoResources';
@@ -33,11 +34,11 @@ const FormFillerPreview = ({ showFormFiller, language, state }: Props): JSX.Elem
     );
     const [selectedGender, setSelectedGender] = useState<string>('');
     const [selectedAge, setSelectedAge] = useState<string>('');
-    const questionnaireForPreview = generateQuestionnaireForPreview(
-        state,
-        selectedLanguage,
-        selectedGender,
-        selectedAge,
+    const questionnaireForPreview = JSON.parse(
+        JSON.stringify(
+            generateQuestionnaireForPreview(state, selectedLanguage, selectedGender, selectedAge),
+            emptyPropertyReplacer,
+        ),
     );
     const [questionnaireResponse, setQuestionnaireResponse] = useState<QuestionnaireResponse>();
     const [showResponse, setShowResponse] = useState<boolean>(false);
@@ -131,6 +132,7 @@ const FormFillerPreview = ({ showFormFiller, language, state }: Props): JSX.Elem
                                     saveButtonDisabled={false}
                                     loginButton={<Button>Login</Button>}
                                     syncQuestionnaireResponse
+                                    validateScriptInjection
                                 />
                             </div>
                         ) : (
