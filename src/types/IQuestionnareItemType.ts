@@ -79,6 +79,10 @@ export enum IValueSetSystem {
     hyperlinkTargetValueset = 'http://helsenorge.no/fhir/ValueSet/sdf-hyperlink-target',
 }
 
+export enum ICodeSystem {
+    renderOptionsCodeSystem = 'http://helsenorge.no/fhir/CodeSystem/RenderOptions',
+}
+
 export enum IExtentionType {
     authenticationRequirement = 'http://ehelse.no/fhir/StructureDefinition/sdf-authenticationrequirement',
     calculatedExpression = 'http://ehelse.no/fhir/StructureDefinition/sdf-calculatedExpression',
