@@ -20,7 +20,7 @@ export const renderingOptions = [
     { code: RenderingOptionsEnum.Hidden, display: 'Hide in form and PDF' },
 ];
 
-export const erRenderingOption = (code: Coding) => {
+export const erRenderingOption = (code: Coding): boolean => {
     return code.system === ICodeSystem.renderOptionsCodeSystem;
 };
 

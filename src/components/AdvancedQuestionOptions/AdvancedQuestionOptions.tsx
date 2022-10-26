@@ -342,7 +342,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             )}
             <FormField label={t('View')}>
                 <RadioBtn
-                    onChange={(newValue: string) => onChangeView(newValue)}
+                    onChange={onChangeView}
                     checked={checkedView()}
                     options={renderingOptions}
                     name={'elementView-radio'}
