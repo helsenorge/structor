@@ -123,13 +123,13 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     );
 
     const helpTextItem = getHelpTextItem();
-    const checkedDisplay = () => {
+    const checkedView = () => {
         return item.extension?.find((ex) => ex.url === IExtentionType.hidden)?.valueBoolean
             ? RenderingOptionsEnum.Hidden
             : item.code?.find((codee) => codee.system === ICodeSystem.renderOptionsCodeSystem)?.code ??
                   RenderingOptionsEnum.None;
     };
-    const onChangeDisplay = (newValue: string) => {
+    const onChangeView = (newValue: string) => {
         removeItemExtension(item, IExtentionType.hidden, dispatch);
         removeItemCode(item, ICodeSystem.renderOptionsCodeSystem, dispatch);
         switch (newValue) {
@@ -340,12 +340,12 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     />
                 </FormField>
             )}
-            <FormField label={t('Display')}>
+            <FormField label={t('View')}>
                 <RadioBtn
-                    onChange={(newValue: string) => onChangeDisplay(newValue)}
-                    checked={checkedDisplay()}
+                    onChange={(newValue: string) => onChangeView(newValue)}
+                    checked={checkedView()}
                     options={renderingOptions}
-                    name={'elementDisplay-radio'}
+                    name={'elementView-radio'}
                 />
             </FormField>
             <FormField label={t('Save capabilities')}>

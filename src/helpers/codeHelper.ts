@@ -17,7 +17,7 @@ export const renderingOptions = [
     { code: RenderingOptionsEnum.Default, display: 'Display in form and PDF', codeDisplay: 'Default' },
     { code: RenderingOptionsEnum.KunPdf, display: 'Display only in PDF', codeDisplay: 'KunPdf' },
     { code: RenderingOptionsEnum.KunSkjemautfyller, display: 'Display only in form', codeDisplay: 'KunSkjemautfyller' },
-    { code: RenderingOptionsEnum.Hidden, display: 'Hidde in form and PDF' },
+    { code: RenderingOptionsEnum.Hidden, display: 'Hide in form and PDF' },
 ];
 
 export const erRenderingOption = (code: Coding) => {
