@@ -12,7 +12,7 @@ import HyperlinkTargetElementToggle from './HyperlinkTargetElementToggle';
 import UriField from '../FormField/UriField';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
-import { IExtentionType, IItemProperty, IValueSetSystem } from '../../types/IQuestionnareItemType';
+import { ICodeSystem, IExtentionType, IItemProperty, IValueSetSystem } from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
@@ -37,6 +37,7 @@ import {
 } from '../../helpers/questionTypeFeatures';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import { elementSaveCapability } from '../../helpers/QuestionHelper';
+import { renderingOptions, removeItemCode, addItemCode, RenderingOptionsEnum } from '../../helpers/codeHelper';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -122,12 +123,33 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     );
 
     const helpTextItem = getHelpTextItem();
-    const isHiddenItem = item.extension?.some((ext) => ext.url === IExtentionType.hidden && ext.valueBoolean);
+    const checkedDisplay = () => {
+        return item.extension?.find((ex) => ex.url === IExtentionType.hidden)?.valueBoolean
+            ? RenderingOptionsEnum.Hidden
+            : item.code?.find((codee) => codee.system === ICodeSystem.renderOptionsCodeSystem)?.code ??
+                  RenderingOptionsEnum.None;
+    };
+    const onChangeDisplay = (newValue: string) => {
+        removeItemExtension(item, IExtentionType.hidden, dispatch);
+        removeItemCode(item, ICodeSystem.renderOptionsCodeSystem, dispatch);
+        switch (newValue) {
+            case RenderingOptionsEnum.Hidden:
+                const extension = {
+                    url: IExtentionType.hidden,
+                    valueBoolean: true,
+                };
+                setItemExtension(item, extension, dispatch);
+                break;
+            default:
+                addItemCode(item, newValue, dispatch);
+                break;
+        }
+    };
 
     return (
         <>
-            <div className="horizontal equal">
-                {canTypeBeReadonly(item) && (
+            {canTypeBeReadonly(item) && (
+                <div className="horizontal equal">
                     <FormField>
                         <SwitchBtn
                             onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !item.readOnly)}
@@ -135,25 +157,8 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                             label={t('Read-only')}
                         />
                     </FormField>
-                )}
-                <FormField>
-                    <SwitchBtn
-                        onChange={() => {
-                            if (isHiddenItem) {
-                                removeItemExtension(item, IExtentionType.hidden, dispatch);
-                            } else {
-                                const extension = {
-                                    url: IExtentionType.hidden,
-                                    valueBoolean: true,
-                                };
-                                setItemExtension(item, extension, dispatch);
-                            }
-                        }}
-                        value={isHiddenItem || false}
-                        label={t('Hidden field')}
-                    />
-                </FormField>
-            </div>
+                </div>
+            )}
             {canTypeBeRepeatable(item) && (
                 <FormField>
                     <SwitchBtn
@@ -335,6 +340,14 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     />
                 </FormField>
             )}
+            <FormField label={t('Display')}>
+                <RadioBtn
+                    onChange={(newValue: string) => onChangeDisplay(newValue)}
+                    checked={checkedDisplay()}
+                    options={renderingOptions}
+                    name={'elementDisplay-radio'}
+                />
+            </FormField>
             <FormField label={t('Save capabilities')}>
                 <RadioBtn
                     onChange={(newValue: string) => {
