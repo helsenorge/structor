@@ -368,5 +368,10 @@
     "Dynamic": "Dynamique",
     "Open item links in same tab": "Ouvrir les liens des éléments dans le même onglet",
     "Open all links in same tab": "Ouvrir tous les liens dans le même onglet",
-    "Update": "Mettre à jour"
+    "Update": "Mettre à jour",
+    "View": "Affichage",
+    "Display in form and PDF": "Affichage sous forme et PDF",
+    "Display only in PDF": "Afficher uniquement en PDF",
+    "Display only in form": "Afficher uniquement dans le formulaire",
+    "Hide in form and PDF": "Masquer dans le formulaire et le PDF"
 }

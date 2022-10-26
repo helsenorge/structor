@@ -368,5 +368,10 @@
     "Dynamic": "Dynamisk",
     "Open item links in same tab": "Åpne lenker i samme vindu",
     "Open all links in same tab": "Åpne alle lenker i samme vindu",
-    "Update": "Oppdater"
+    "Update": "Oppdater",
+    "View": "Visning",
+    "Display in form and PDF": "Vises i skjemautfyller og PDF",
+    "Display only in PDF": "Vises kun i PDF",
+    "Display only in form": "Vises kun i skjemautfyller",
+    "Hide in form and PDF": "Skjules i skjemautfyller og PDF"
 }
