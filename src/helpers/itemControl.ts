@@ -1,6 +1,8 @@
 import { Extension, QuestionnaireItem } from '../types/fhir';
-import { IExtentionType, IQuestionnaireItemType, IValueSetSystem } from '../types/IQuestionnareItemType';
+import { IExtentionType, IQuestionnaireItemType, IValueSetSystem, IItemProperty } from '../types/IQuestionnareItemType';
 import { getEnumKeyByString } from './enumHelper';
+import { ActionType } from '../store/treeStore/treeStore';
+import { updateItemAction } from '../store/treeStore/treeActions';
 
 export enum ItemControlType {
     inline = 'inline',
@@ -10,6 +12,7 @@ export enum ItemControlType {
     autocomplete = 'autocomplete',
     highlight = 'highlight',
     summary = 'summary',
+    summaryContainer = 'summary-container',
     checkbox = 'check-box',
     radioButton = 'radio-button',
     yearMonth = 'yearMonth',
@@ -45,6 +48,14 @@ const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefin
         }
     }
     return undefined;
+};
+
+const getItemControlIndex = (item: QuestionnaireItem, code: string): number => {
+    const itemControlExtension = item.extension?.filter((x: Extension) => x.url === IExtentionType.itemControl);
+    if (itemControlExtension) {
+        return itemControlExtension.findIndex((x: Extension) => x.valueCodeableConcept?.coding?.[0].code === code);
+    }
+    return -1;
 };
 
 export const isIgnorableItem = (item: QuestionnaireItem, parentItem?: QuestionnaireItem): boolean => {
@@ -87,9 +98,33 @@ export const isItemControlInline = (item?: QuestionnaireItem): boolean => {
     return item?.type === IQuestionnaireItemType.text && getItemControlType(item) === ItemControlType.inline;
 };
 
+export const isItemControlSummary = (item: QuestionnaireItem): boolean => {
+    return getItemControlIndex(item, ItemControlType.summary) > -1;
+};
+
+export const isItemControlSummaryContainer = (item: QuestionnaireItem): boolean => {
+    return getItemControlIndex(item, ItemControlType.summaryContainer) > -1;
+};
+
 export const getHelpText = (item: QuestionnaireItem): string => {
     if (!isItemControlHelp(item)) {
         return '';
     }
     return item._text?.extension?.find((ex) => ex.url === IExtentionType.markdown)?.valueMarkdown || item.text || '';
+};
+
+export const setItemControlExtension = (
+    item: QuestionnaireItem,
+    code: ItemControlType,
+    dispatch: (value: ActionType) => void,
+): void => {
+    const extensionsToSet = (item.extension || []).filter(
+        (x: Extension) => x.url !== IExtentionType.itemControl || x.valueCodeableConcept?.coding?.[0].code !== code,
+    );
+    if (getItemControlIndex(item, code) === -1) {
+        const newExtension = createItemControlExtension(code);
+        extensionsToSet.push(newExtension);
+    }
+
+    dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensionsToSet));
 };
