@@ -17,7 +17,14 @@ import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import { createItemControlExtension, getHelpText, isItemControlHelp, ItemControlType } from '../../helpers/itemControl';
+import {
+    getHelpText,
+    isItemControlHelp,
+    isItemControlSummary,
+    isItemControlSummaryContainer,
+    ItemControlType,
+    setItemControlExtension,
+} from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
@@ -118,9 +125,8 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
     const getRepeatsText = item?.extension?.find((x) => x.url === IExtentionType.repeatstext)?.valueString ?? '';
     const minOccurs = item?.extension?.find((x) => x.url === IExtentionType.minOccurs)?.valueInteger;
     const maxOccurs = item?.extension?.find((x) => x.url === IExtentionType.maxOccurs)?.valueInteger;
-    const hasSummaryExtension = !!item?.extension?.find((x) =>
-        x.valueCodeableConcept?.coding?.filter((y) => y.code === ItemControlType.summary),
-    );
+    const hasSummaryExtension = isItemControlSummary(item);
+    const hasSummaryContainerExtension = isItemControlSummaryContainer(item);
 
     const helpTextItem = getHelpTextItem();
     const checkedView = () => {
@@ -325,20 +331,26 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
             <GuidanceAction item={item} />
             <GuidanceParam item={item} />
             {canTypeHaveSummary(item) && (
-                <FormField>
-                    <SwitchBtn
-                        onChange={() => {
-                            if (hasSummaryExtension) {
-                                removeExtension(IExtentionType.itemControl);
-                            } else {
-                                const newExtension = createItemControlExtension(ItemControlType.summary);
-                                handleExtension(newExtension);
-                            }
-                        }}
-                        value={hasSummaryExtension}
-                        label={t('Enable summary')}
-                    />
-                </FormField>
+                <div>
+                    <FormField>
+                        <SwitchBtn
+                            onChange={() => {
+                                setItemControlExtension(item, ItemControlType.summary, dispatch);
+                            }}
+                            value={hasSummaryExtension}
+                            label={t('Put in PDF first')}
+                        />
+                    </FormField>
+                    <FormField>
+                        <SwitchBtn
+                            onChange={() => {
+                                setItemControlExtension(item, ItemControlType.summaryContainer, dispatch);
+                            }}
+                            value={hasSummaryContainerExtension}
+                            label={t('Enable summary')}
+                        />
+                    </FormField>
+                </div>
             )}
             <FormField label={t('View')}>
                 <RadioBtn
