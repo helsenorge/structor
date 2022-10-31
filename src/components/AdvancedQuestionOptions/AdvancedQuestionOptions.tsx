@@ -342,7 +342,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                 setItemControlExtension(item, ItemControlType.summaryContainer, dispatch);
                             }}
                             value={hasSummaryContainerExtension}
-                            label={t('Enable summary')}
+                            label={t('Enable summary group')}
                         />
                     </FormField>
                 </div>
