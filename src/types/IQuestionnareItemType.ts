@@ -81,6 +81,7 @@ export enum IValueSetSystem {
 
 export enum ICodeSystem {
     renderOptionsCodeSystem = 'http://helsenorge.no/fhir/CodeSystem/RenderOptions',
+    attachmentRenderOptions = 'http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions',
 }
 
 export enum IExtentionType {
@@ -117,6 +118,7 @@ export enum IExtentionType {
     saveCapability = 'http://helsenorge.no/fhir/StructureDefinition/sdf-save-capabilities',
     printVersion = 'http://helsenorge.no/fhir/StructureDefinition/sdf-questionnaire-print-version',
     hyperlinkTarget = 'http://helsenorge.no/fhir/StructureDefinition/sdf-hyperlink-target',
+    globalVisibility = 'http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility',
 }
 
 export enum UseContextSystem {

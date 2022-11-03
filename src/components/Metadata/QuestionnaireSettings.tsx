@@ -14,6 +14,13 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { IExtentionType, IValueSetSystem } from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import { removeQuestionnaireExtension, setQuestionnaireExtension } from '../../helpers/extensionHelper';
+import {
+    isVisibilityHideSidebar,
+    isVisibilityHideHelp,
+    isVisibilityHideSublabel,
+    setItemControlExtension,
+    VisibilityType,
+} from '../../helpers/globalVisibilityHelper';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import InputField from '../InputField/inputField';
 import { translatableSettings } from '../../helpers/LanguageHelper';
@@ -170,7 +177,7 @@ const QuestionnaireSettings = (): JSX.Element => {
                     name={'saveCapability-radio'}
                 />
             </FormField>
-            <FormField>
+            <FormField label={t('PDF')}>
                 <SwitchBtn
                     onChange={() =>
                         updateMetaExtension({
@@ -180,6 +187,21 @@ const QuestionnaireSettings = (): JSX.Element => {
                     }
                     value={getGeneratePdfValue()}
                     label={t('Generate PDF on submit')}
+                />
+                <SwitchBtn
+                    onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideHelp, dispatch)}
+                    value={isVisibilityHideHelp(qMetadata)}
+                    label={t('Hide help texts in PDF')}
+                />
+                <SwitchBtn
+                    onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSidebar, dispatch)}
+                    value={isVisibilityHideSidebar(qMetadata)}
+                    label={t('Hide sidebar texts in PDF')}
+                />
+                <SwitchBtn
+                    onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSublabel, dispatch)}
+                    value={isVisibilityHideSublabel(qMetadata)}
+                    label={t('Hide sublabels in PDF')}
                 />
             </FormField>
             <FormField>
