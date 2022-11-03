@@ -27,19 +27,21 @@ const createItemControlExtensionWithTypes = (types: string[]): Extension => {
         extension.valueCodeableConcept.coding.push({
             system: ICodeSystem.attachmentRenderOptions,
             code: type,
+            display: globalVisibility.find((c) => c.code === type)?.display,
         });
     });
     return extension;
 };
 
-export const createItemControlExtension = (itemControlType: VisibilityType): Extension => {
+export const createItemControlExtension = (type: VisibilityType): Extension => {
     return {
         url: IExtentionType.globalVisibility,
         valueCodeableConcept: {
             coding: [
                 {
                     system: ICodeSystem.attachmentRenderOptions,
-                    code: itemControlType,
+                    code: type,
+                    display: globalVisibility.find((c) => c.code === type)?.display,
                 },
             ],
         },
