@@ -16,19 +16,15 @@ export enum VisibilityType {
     hideSublabel = 'hide-sublabel',
 }
 
-const createItemControlExtensionWithTypes = (types: string[]): Extension => {
+const createItemControlExtensionWithTypes = (types: VisibilityType[]): Extension => {
     const initCodingArray: Coding[] = [];
     const extension = {
         url: IExtentionType.globalVisibility,
         valueCodeableConcept: { coding: initCodingArray },
     };
 
-    types.forEach((type: string) => {
-        extension.valueCodeableConcept.coding.push({
-            system: ICodeSystem.attachmentRenderOptions,
-            code: type,
-            display: globalVisibility.find((c) => c.code === type)?.display,
-        });
+    types.forEach((type: VisibilityType) => {
+        extension.valueCodeableConcept.coding.push(createAttachmentRenderCoding(type));
     });
     return extension;
 };
@@ -41,7 +37,7 @@ export const createItemControlExtension = (type: VisibilityType): Extension => {
                 {
                     system: ICodeSystem.attachmentRenderOptions,
                     code: type,
-                    display: globalVisibility.find((c) => c.code === type)?.display,
+                    display: getVisibilityCodeDisplay(type),
                 },
             ],
         },
@@ -69,7 +65,7 @@ const handleTypeInItemControlExtension = (item: IQuestionnaireMetadata, code: Vi
     const coding = item.extension
         ?.find((f: Extension) => f.url === IExtentionType.globalVisibility)
         ?.valueCodeableConcept?.coding?.filter((f: Coding) => f.code !== code)
-        ?.map((c: Coding) => c.code) as string[];
+        ?.map((c: Coding) => c.code) as VisibilityType[];
 
     if (!existItemControlWithCode(item, code)) {
         coding.push(code);
@@ -101,4 +97,16 @@ export const setItemControlExtension = (
         extensionsToSet.push(extension);
     }
     dispatch(updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.extension, extensionsToSet));
+};
+
+export const getVisibilityCodeDisplay = (code: VisibilityType): string | undefined => {
+    return globalVisibility.find((c) => c.code === code)?.display;
+};
+
+export const createAttachmentRenderCoding = (code: VisibilityType): Coding => {
+    return {
+        system: ICodeSystem.attachmentRenderOptions,
+        code: code,
+        display: getVisibilityCodeDisplay(code),
+    };
 };
