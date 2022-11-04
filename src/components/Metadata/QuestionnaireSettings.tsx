@@ -13,6 +13,7 @@ import { Extension } from '../../types/fhir';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { IExtentionType, IValueSetSystem } from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
+import CheckboxBtn from '../CheckboxBtn/CheckboxBtn';
 import { removeQuestionnaireExtension, setQuestionnaireExtension } from '../../helpers/extensionHelper';
 import {
     isVisibilityHideSidebar,
@@ -193,17 +194,17 @@ const QuestionnaireSettings = (): JSX.Element => {
                     value={getGeneratePdfValue()}
                     label={t('Generate PDF on submit')}
                 />
-                <SwitchBtn
+                <CheckboxBtn
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideHelp, dispatch)}
                     value={isVisibilityHideHelp(qMetadata)}
                     label={t('Hide help texts in PDF')}
                 />
-                <SwitchBtn
+                <CheckboxBtn
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSidebar, dispatch)}
                     value={isVisibilityHideSidebar(qMetadata)}
                     label={t('Hide sidebar texts in PDF')}
                 />
-                <SwitchBtn
+                <CheckboxBtn
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSublabel, dispatch)}
                     value={isVisibilityHideSublabel(qMetadata)}
                     label={t('Hide sublabels in PDF')}
