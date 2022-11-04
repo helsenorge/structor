@@ -32,6 +32,12 @@
     text-align: left;
 }
 
+.form-field__sublabel {
+    text-align: left;
+    color: #a0aec0;
+    font-style: italic;
+}
+
 .form-field-label-wrapper {
     display: flex;
     justify-content: space-between;
