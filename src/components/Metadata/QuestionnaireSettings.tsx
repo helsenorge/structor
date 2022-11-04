@@ -200,14 +200,14 @@ const QuestionnaireSettings = (): JSX.Element => {
                     label={t('Hide help texts in PDF')}
                 />
                 <CheckboxBtn
-                    onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSidebar, dispatch)}
-                    value={isVisibilityHideSidebar(qMetadata)}
-                    label={t('Hide sidebar texts in PDF')}
-                />
-                <CheckboxBtn
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSublabel, dispatch)}
                     value={isVisibilityHideSublabel(qMetadata)}
                     label={t('Hide sublabels in PDF')}
+                />
+                <CheckboxBtn
+                    onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSidebar, dispatch)}
+                    value={isVisibilityHideSidebar(qMetadata)}
+                    label={t('Hide sidebar texts in PDF')}
                 />
             </FormField>
             <FormField label={t('Navigation')} sublabel={t('Choose whether to use the navigator')}>

@@ -65,6 +65,8 @@ import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { saveStateToDb } from './indexedDbHelper';
 import { isRecipientList } from '../../helpers/QuestionHelper';
+import { IExtentionType } from '../../types/IQuestionnareItemType';
+import { createAttachmentRenderCoding, VisibilityType } from '../../helpers/globalVisibilityHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -225,6 +227,15 @@ export const initialState: TreeState = {
             {
                 url: 'http://helsenorge.no/fhir/StructureDefinition/sdf-information-message',
                 valueCoding: { system: 'http://helsenorge.no/fhir/ValueSet/sdf-information-message', code: '1' },
+            },
+            {
+                url: IExtentionType.globalVisibility,
+                valueCodeableConcept: {
+                    coding: [
+                        createAttachmentRenderCoding(VisibilityType.hideHelp),
+                        createAttachmentRenderCoding(VisibilityType.hideSublabel),
+                    ],
+                },
             },
         ],
     },
