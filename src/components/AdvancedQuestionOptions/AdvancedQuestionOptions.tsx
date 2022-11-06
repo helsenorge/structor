@@ -165,6 +165,87 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     </FormField>
                 </div>
             )}
+            {canTypeHaveCalculatedExpressionExtension(item) && (
+                <CalculatedExpression item={item} updateExtension={handleExtension} removeExtension={removeExtension} />
+            )}
+            {canTypeBeBeriket(item) && <FhirPathSelect item={item} />}
+            {canTypeHavePlaceholderText(item) && (
+                <FormField label={t('Placeholder text')}>
+                    <InputField
+                        defaultValue={getPlaceholder}
+                        onBlur={(e) => {
+                            if (e.target.value) {
+                                handleExtension({
+                                    url: IExtentionType.entryFormat,
+                                    valueString: e.target.value,
+                                });
+                            } else {
+                                removeExtension(IExtentionType.entryFormat);
+                            }
+                        }}
+                    />
+                </FormField>
+            )}
+            {canTypeHaveInitialValue(item) && (
+                <div className="horizontal full">
+                    <Initial item={item} />
+                </div>
+            )}
+            <div className="horizontal full">
+                <label className="sectionTitle">{t('Links')}</label>
+            </div>
+            <HyperlinkTargetElementToggle item={item} />
+            <div className="horizontal full">
+                <div className={`form-field ${isDuplicateLinkId ? 'field-error' : ''}`}>
+                    <label>{t('LinkId')}</label>
+                    <InputField
+                        value={linkId}
+                        onChange={(event) => {
+                            const {
+                                target: { value: newLinkId },
+                            } = event;
+                            validateLinkId(newLinkId);
+                            setLinkId(event.target.value);
+                        }}
+                        onBlur={dispatchUpdateLinkId}
+                    />
+                    {isDuplicateLinkId && (
+                        <div className="msg-error" aria-live="polite">
+                            {`${t('LinkId is already in use')} `}
+                            <button onClick={resetLinkId}>
+                                <img src={UndoIcon} height={16} />
+                                {` ${t('Sett tilbake til opprinnelig verdi')}`}
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+            {canTypeHavePrefix(item) && (
+                <div className="horizontal full">
+                    <FormField label={t('Prefix')} isOptional>
+                        <InputField
+                            defaultValue={item.prefix}
+                            onBlur={(e) => {
+                                dispatch(updateItemAction(item.linkId, IItemProperty.prefix, e.target.value));
+                            }}
+                        />
+                    </FormField>
+                </div>
+            )}
+            <div className="horizontal full">
+                <FormField label={t('Definition')} isOptional>
+                    <UriField
+                        value={item.definition}
+                        onBlur={(e) => {
+                            dispatch(updateItemAction(item.linkId, IItemProperty.definition, e.target.value));
+                        }}
+                    />
+                </FormField>
+            </div>
+
+            <div className="horizontal full">
+                <label className="sectionTitle">{t('Repetition')}</label>
+            </div>
             {canTypeBeRepeatable(item) && (
                 <FormField>
                     <SwitchBtn
@@ -238,96 +319,9 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     )}
                 </FormField>
             )}
-            <HyperlinkTargetElementToggle item={item} />
-            {canTypeHaveCalculatedExpressionExtension(item) && (
-                <CalculatedExpression item={item} updateExtension={handleExtension} removeExtension={removeExtension} />
-            )}
-            {canTypeBeBeriket(item) && <FhirPathSelect item={item} />}
-            {canTypeHavePlaceholderText(item) && (
-                <FormField label={t('Placeholder text')}>
-                    <InputField
-                        defaultValue={getPlaceholder}
-                        onBlur={(e) => {
-                            if (e.target.value) {
-                                handleExtension({
-                                    url: IExtentionType.entryFormat,
-                                    valueString: e.target.value,
-                                });
-                            } else {
-                                removeExtension(IExtentionType.entryFormat);
-                            }
-                        }}
-                    />
-                </FormField>
-            )}
-            {canTypeHaveInitialValue(item) && (
-                <div className="horizontal full">
-                    <Initial item={item} />
-                </div>
-            )}
             <div className="horizontal full">
-                <div className={`form-field ${isDuplicateLinkId ? 'field-error' : ''}`}>
-                    <label>{t('LinkId')}</label>
-                    <InputField
-                        value={linkId}
-                        onChange={(event) => {
-                            const {
-                                target: { value: newLinkId },
-                            } = event;
-                            validateLinkId(newLinkId);
-                            setLinkId(event.target.value);
-                        }}
-                        onBlur={dispatchUpdateLinkId}
-                    />
-                    {isDuplicateLinkId && (
-                        <div className="msg-error" aria-live="polite">
-                            {`${t('LinkId is already in use')} `}
-                            <button onClick={resetLinkId}>
-                                <img src={UndoIcon} height={16} />
-                                {` ${t('Sett tilbake til opprinnelig verdi')}`}
-                            </button>
-                        </div>
-                    )}
-                </div>
+                <label className="sectionTitle">{t('After completing the form')}</label>
             </div>
-            {canTypeHavePrefix(item) && (
-                <div className="horizontal full">
-                    <FormField label={t('Prefix')} isOptional>
-                        <InputField
-                            defaultValue={item.prefix}
-                            onBlur={(e) => {
-                                dispatch(updateItemAction(item.linkId, IItemProperty.prefix, e.target.value));
-                            }}
-                        />
-                    </FormField>
-                </div>
-            )}
-            <div className="horizontal full">
-                <FormField label={t('Definition')} isOptional>
-                    <UriField
-                        value={item.definition}
-                        onBlur={(e) => {
-                            dispatch(updateItemAction(item.linkId, IItemProperty.definition, e.target.value));
-                        }}
-                    />
-                </FormField>
-            </div>
-            {canTypeHaveHelp(item) && (
-                <div>
-                    <FormField>
-                        <SwitchBtn
-                            onChange={() => dispatchHelpText()}
-                            value={!!helpTextItem}
-                            label={t('Enable help button')}
-                        />
-                    </FormField>
-                    {!!helpTextItem && (
-                        <FormField label={t('Enter a helping text')}>
-                            <MarkdownEditor data={getHelpTextForItem()} onBlur={handleHelpText} />
-                        </FormField>
-                    )}
-                </div>
-            )}
             <GuidanceAction item={item} />
             <GuidanceParam item={item} />
             {canTypeHaveSummary(item) && (
@@ -350,6 +344,21 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                             label={t('Mark group in PDF')}
                         />
                     </FormField>
+                </div>
+            )}
+            <div className="horizontal full">
+                <label className="sectionTitle">{t('Help')}</label>
+            </div>
+            {canTypeHaveHelp(item) && (
+                <div>
+                    <FormField>
+                        <SwitchBtn onChange={() => dispatchHelpText()} value={!!helpTextItem} label={t('Help icon')} />
+                    </FormField>
+                    {!!helpTextItem && (
+                        <FormField label={t('Enter a helping text')}>
+                            <MarkdownEditor data={getHelpTextForItem()} onBlur={handleHelpText} />
+                        </FormField>
+                    )}
                 </div>
             )}
             <FormField label={t('View')}>

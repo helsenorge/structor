@@ -64,6 +64,7 @@
     border: 1px solid #a0aec0;
     box-sizing: border-box;
     border-radius: 4px;
+    margin-bottom: 12px;
 }
 
 .form-field > div {
@@ -115,6 +116,11 @@
 
 .horizontal.full > div {
     width: 100%;
+}
+
+.sectionTitle {
+    font-weight: bold;
+    padding-bottom: 12px;
 }
 
 .form-field .date-validation-input {
