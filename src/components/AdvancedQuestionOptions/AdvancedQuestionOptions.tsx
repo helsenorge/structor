@@ -192,7 +192,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                 </div>
             )}
             <div className="horizontal full">
-                <label className="sectionTitle">{t('Links')}</label>
+                <FormField label={t('Links')}></FormField>
             </div>
             <HyperlinkTargetElementToggle item={item} />
             <div className="horizontal full">
@@ -242,9 +242,8 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     />
                 </FormField>
             </div>
-
             <div className="horizontal full">
-                <label className="sectionTitle">{t('Repetition')}</label>
+                <FormField label={t('Repetition')}></FormField>
             </div>
             {canTypeBeRepeatable(item) && (
                 <FormField>
@@ -320,7 +319,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                 </FormField>
             )}
             <div className="horizontal full">
-                <label className="sectionTitle">{t('After completing the form')}</label>
+                <FormField
+                    label={t('After completing the form')}
+                    sublabel={t('Choose what should happen after the user has completed the form')}
+                ></FormField>
             </div>
             <GuidanceAction item={item} />
             <GuidanceParam item={item} />
@@ -347,11 +349,11 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                 </div>
             )}
             <div className="horizontal full">
-                <label className="sectionTitle">{t('Help')}</label>
+                <FormField label={t('Help')}></FormField>
             </div>
             {canTypeHaveHelp(item) && (
                 <div>
-                    <FormField>
+                    <FormField sublabel={t('Select whether you want to give the user a help text')}>
                         <SwitchBtn onChange={() => dispatchHelpText()} value={!!helpTextItem} label={t('Help icon')} />
                     </FormField>
                     {!!helpTextItem && (
