@@ -82,7 +82,7 @@ const HyperlinkTargetElementToggle = ({ item }: Props): JSX.Element => {
     };
 
     return (
-        <FormField sublabel={t('Choose whether the links in the components should be opened in an external window')}>
+        <FormField>
             <SwitchBtn
                 label={t('Open item links in same tab')}
                 value={openSameWindow}
