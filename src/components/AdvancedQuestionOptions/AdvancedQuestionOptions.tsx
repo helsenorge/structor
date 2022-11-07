@@ -192,7 +192,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                 </div>
             )}
             <div className="horizontal full">
-                <FormField label={t('Links')}></FormField>
+                <FormField
+                    label={t('Links')}
+                    sublabel={t('Choose whether the links in the components should be opened in an external window')}
+                ></FormField>
             </div>
             <HyperlinkTargetElementToggle item={item} />
             <div className="horizontal full">
@@ -243,7 +246,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                 </FormField>
             </div>
             <div className="horizontal full">
-                <FormField label={t('Repetition')}></FormField>
+                <FormField
+                    label={t('Repetition')}
+                    sublabel={t('Choose whether the question group can be repeated')}
+                ></FormField>
             </div>
             {canTypeBeRepeatable(item) && (
                 <FormField>
@@ -263,7 +269,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     />
                     {item.repeats && (
                         <>
-                            <FormField label={t('Repeat button text')}>
+                            <FormField label={t('Repeat button text')} sublabel={t("Default is set to 'Add'")}>
                                 <InputField
                                     defaultValue={getRepeatsText}
                                     onBlur={(e) => {
@@ -279,7 +285,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                 />
                             </FormField>
                             <div className="horizontal equal">
-                                <FormField label={t('Min answers')}>
+                                <FormField
+                                    label={t('Min answers')}
+                                    sublabel={t('Enter the minimum number of times the question group can be repeated')}
+                                >
                                     <input
                                         type="number"
                                         defaultValue={minOccurs}
@@ -296,7 +305,10 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                         }}
                                     />
                                 </FormField>
-                                <FormField label={t('max answers')}>
+                                <FormField
+                                    label={t('max answers')}
+                                    sublabel={t('Enter the maximum number of times the question group can be repeated')}
+                                >
                                     <input
                                         type="number"
                                         defaultValue={maxOccurs}
@@ -349,11 +361,14 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                 </div>
             )}
             <div className="horizontal full">
-                <FormField label={t('Help')}></FormField>
+                <FormField
+                    label={t('Help')}
+                    sublabel={t('Select whether you want to give the user a help text')}
+                ></FormField>
             </div>
             {canTypeHaveHelp(item) && (
                 <div>
-                    <FormField sublabel={t('Select whether you want to give the user a help text')}>
+                    <FormField>
                         <SwitchBtn onChange={() => dispatchHelpText()} value={!!helpTextItem} label={t('Help icon')} />
                     </FormField>
                     {!!helpTextItem && (
@@ -363,7 +378,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     )}
                 </div>
             )}
-            <FormField label={t('View')}>
+            <FormField label={t('View')} sublabel={t('Choose if/where the component should be displayed')}>
                 <RadioBtn
                     onChange={onChangeView}
                     checked={checkedView()}
