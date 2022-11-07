@@ -269,7 +269,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     />
                     {item.repeats && (
                         <>
-                            <FormField label={t('Repeat button text')} sublabel={t("Default is set to 'Add'")}>
+                            <FormField label={t('Repeat button text')} sublabel={t('Default is set to "Add"')}>
                                 <InputField
                                     defaultValue={getRepeatsText}
                                     onBlur={(e) => {
