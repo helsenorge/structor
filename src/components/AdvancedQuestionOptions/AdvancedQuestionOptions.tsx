@@ -245,90 +245,100 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     />
                 </FormField>
             </div>
-            <div className="horizontal full">
-                <FormField
-                    label={t('Repetition')}
-                    sublabel={t('Choose whether the question group can be repeated')}
-                ></FormField>
-            </div>
             {canTypeBeRepeatable(item) && (
-                <FormField>
-                    <SwitchBtn
-                        onChange={(): void => {
-                            if (item.repeats) {
-                                removeItemExtension(
-                                    item,
-                                    [IExtentionType.repeatstext, IExtentionType.minOccurs, IExtentionType.maxOccurs],
-                                    dispatch,
-                                );
-                            }
-                            dispatchUpdateItem(IItemProperty.repeats, !item.repeats);
-                        }}
-                        value={item.repeats || false}
-                        label={t('Repeatable')}
-                    />
-                    {item.repeats && (
-                        <>
-                            <FormField label={t('Repeat button text')} sublabel={t('Default is set to "Add"')}>
-                                <InputField
-                                    defaultValue={getRepeatsText}
-                                    onBlur={(e) => {
-                                        if (e.target.value) {
-                                            handleExtension({
-                                                url: IExtentionType.repeatstext,
-                                                valueString: e.target.value,
-                                            });
-                                        } else {
-                                            removeExtension(IExtentionType.repeatstext);
-                                        }
-                                    }}
-                                />
-                            </FormField>
-                            <div className="horizontal equal">
-                                <FormField
-                                    label={t('Min answers')}
-                                    sublabel={t('Enter the minimum number of times the question group can be repeated')}
-                                >
-                                    <input
-                                        type="number"
-                                        defaultValue={minOccurs}
-                                        onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                            if (!event.target.value) {
-                                                removeExtension(IExtentionType.minOccurs);
+                <>
+                    <div className="horizontal full">
+                        <FormField
+                            label={t('Repetition')}
+                            sublabel={t('Choose whether the question group can be repeated')}
+                        ></FormField>
+                    </div>
+                    <FormField>
+                        <SwitchBtn
+                            onChange={(): void => {
+                                if (item.repeats) {
+                                    removeItemExtension(
+                                        item,
+                                        [
+                                            IExtentionType.repeatstext,
+                                            IExtentionType.minOccurs,
+                                            IExtentionType.maxOccurs,
+                                        ],
+                                        dispatch,
+                                    );
+                                }
+                                dispatchUpdateItem(IItemProperty.repeats, !item.repeats);
+                            }}
+                            value={item.repeats || false}
+                            label={t('Repeatable')}
+                        />
+                        {item.repeats && (
+                            <>
+                                <FormField label={t('Repeat button text')} sublabel={t('Default is set to "Add"')}>
+                                    <InputField
+                                        defaultValue={getRepeatsText}
+                                        onBlur={(e) => {
+                                            if (e.target.value) {
+                                                handleExtension({
+                                                    url: IExtentionType.repeatstext,
+                                                    valueString: e.target.value,
+                                                });
                                             } else {
-                                                const extension = {
-                                                    url: IExtentionType.minOccurs,
-                                                    valueInteger: parseInt(event.target.value),
-                                                };
-                                                handleExtension(extension);
+                                                removeExtension(IExtentionType.repeatstext);
                                             }
                                         }}
                                     />
                                 </FormField>
-                                <FormField
-                                    label={t('Max answers')}
-                                    sublabel={t('Enter the maximum number of times the question group can be repeated')}
-                                >
-                                    <input
-                                        type="number"
-                                        defaultValue={maxOccurs}
-                                        onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                            if (!event.target.value) {
-                                                removeExtension(IExtentionType.maxOccurs);
-                                            } else {
-                                                const extension = {
-                                                    url: IExtentionType.maxOccurs,
-                                                    valueInteger: parseInt(event.target.value),
-                                                };
-                                                handleExtension(extension);
-                                            }
-                                        }}
-                                    />
-                                </FormField>
-                            </div>
-                        </>
-                    )}
-                </FormField>
+                                <div className="horizontal equal">
+                                    <FormField
+                                        label={t('Min answers')}
+                                        sublabel={t(
+                                            'Enter the minimum number of times the question group can be repeated',
+                                        )}
+                                    >
+                                        <input
+                                            type="number"
+                                            defaultValue={minOccurs}
+                                            onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                                if (!event.target.value) {
+                                                    removeExtension(IExtentionType.minOccurs);
+                                                } else {
+                                                    const extension = {
+                                                        url: IExtentionType.minOccurs,
+                                                        valueInteger: parseInt(event.target.value),
+                                                    };
+                                                    handleExtension(extension);
+                                                }
+                                            }}
+                                        />
+                                    </FormField>
+                                    <FormField
+                                        label={t('Max answers')}
+                                        sublabel={t(
+                                            'Enter the maximum number of times the question group can be repeated',
+                                        )}
+                                    >
+                                        <input
+                                            type="number"
+                                            defaultValue={maxOccurs}
+                                            onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                                if (!event.target.value) {
+                                                    removeExtension(IExtentionType.maxOccurs);
+                                                } else {
+                                                    const extension = {
+                                                        url: IExtentionType.maxOccurs,
+                                                        valueInteger: parseInt(event.target.value),
+                                                    };
+                                                    handleExtension(extension);
+                                                }
+                                            }}
+                                        />
+                                    </FormField>
+                                </div>
+                            </>
+                        )}
+                    </FormField>
+                </>
             )}
             <div className="horizontal full">
                 <FormField
@@ -360,14 +370,14 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                     </FormField>
                 </div>
             )}
-            <div className="horizontal full">
-                <FormField
-                    label={t('Help')}
-                    sublabel={t('Select whether you want to give the user a help text')}
-                ></FormField>
-            </div>
             {canTypeHaveHelp(item) && (
-                <div>
+                <>
+                    <div className="horizontal full">
+                        <FormField
+                            label={t('Help')}
+                            sublabel={t('Select whether you want to give the user a help text')}
+                        ></FormField>
+                    </div>
                     <FormField>
                         <SwitchBtn onChange={() => dispatchHelpText()} value={!!helpTextItem} label={t('Help icon')} />
                     </FormField>
@@ -376,7 +386,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                             <MarkdownEditor data={getHelpTextForItem()} onBlur={handleHelpText} />
                         </FormField>
                     )}
-                </div>
+                </>
             )}
             <FormField label={t('View')} sublabel={t('Choose if/where the component should be displayed')}>
                 <RadioBtn
