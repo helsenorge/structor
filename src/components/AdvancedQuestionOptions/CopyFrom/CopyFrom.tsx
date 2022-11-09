@@ -6,8 +6,8 @@ import FormField from '../../FormField/FormField';
 import Select from '../../Select/Select';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { ItemControlType, setItemControlExtension, isItemControlDataReciever } from '../../../helpers/itemControl';
-import { IItemProperty, IExtentionType } from '../../../types/IQuestionnareItemType';
-import { setItemExtension, getExtensionStringValue } from '../../../helpers/extensionHelper';
+import { IItemProperty, IExtentionType, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { setItemExtension, removeItemExtension, getExtensionStringValue } from '../../../helpers/extensionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 
 type CopyFromProps = {
@@ -16,38 +16,62 @@ type CopyFromProps = {
     getItem: (linkId: string) => QuestionnaireItem;
 };
 
+const getLinkIdFromValueString = (item: QuestionnaireItem): string => {
+    const extensionValueString = getExtensionStringValue(item, IExtentionType.kopieringExpression) ?? '';
+    const startIndex = extensionValueString.indexOf("'") + 1;
+    const endIndex = extensionValueString.indexOf("')");
+    return extensionValueString.substring(startIndex, endIndex);
+};
+
 const CopyFrom = (props: CopyFromProps): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
-    const hasDataReciverExtension = isItemControlDataReciever(props.item);
+    const [hasDataReciverExtension, setDataRecieverExtension] = React.useState(isItemControlDataReciever(props.item));
+    const selectedValue = props.conditionalArray.find((f) => f.code === getLinkIdFromValueString(props.item));
     const questionsOptions = props.conditionalArray.filter((f) => props.getItem(f.code).type === props.item.type);
 
-    const getLinkIdFromValueString = (): string => {
-        const extensionValueString = getExtensionStringValue(props.item, IExtentionType.kopieringExpression) ?? '';
-        const startIndex = extensionValueString.indexOf("'") + 1;
-        const endIndex = extensionValueString.indexOf("')");
-        return extensionValueString.substring(startIndex, endIndex);
-    };
-
-    const onChangeBtn = (): void => {
+    const onChangeSwitchBtn = (): void => {
         setItemControlExtension(props.item, ItemControlType.dataReciever, dispatch);
         dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, !props.item.readOnly));
+        setDataRecieverExtension(!hasDataReciverExtension);
+
+        if (hasDataReciverExtension) {
+            removeItemExtension(props.item, IExtentionType.kopieringExpression, dispatch);
+        }
+    };
+
+    const getCorrectValueString = (code: string): string => {
+        switch (props.item.type) {
+            case IQuestionnaireItemType.integer:
+                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueInteger`;
+            case IQuestionnaireItemType.quantity:
+                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.value`;
+            case IQuestionnaireItemType.decimal:
+                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueDecimal`;
+            case IQuestionnaireItemType.date:
+                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueDateTime`;
+            case IQuestionnaireItemType.time:
+                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueTime`;
+            case IQuestionnaireItemType.text:
+                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueString`;
+            default:
+                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueCoding.system`;
+        }
     };
 
     const onChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const extension: Extension = {
             url: IExtentionType.kopieringExpression,
-            valueString: `QuestionnaireResponse.descendants().where(linkId='${event.target.value}').answer.value.valueString`,
+            valueString: getCorrectValueString(event.target.value),
         };
         setItemExtension(props.item, extension, dispatch);
     };
-    const selectedValue = props.conditionalArray.find((f) => f.code === getLinkIdFromValueString());
 
     return (
         <div className="horizontal equal">
             <FormField>
                 <SwitchBtn
-                    onChange={onChangeBtn}
+                    onChange={onChangeSwitchBtn}
                     value={hasDataReciverExtension}
                     label={t('Retrieve input data from field')}
                 />
