@@ -40,7 +40,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
         }
     };
 
-    const getCorrectValueString = (code: string): string => {
+    const getCorrectValue = (code: string): string => {
         switch (props.item.type) {
             case IQuestionnaireItemType.integer:
                 return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueInteger`;
@@ -62,7 +62,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     const onChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const extension: Extension = {
             url: IExtentionType.kopieringExpression,
-            valueString: getCorrectValueString(event.target.value),
+            valueString: getCorrectValue(event.target.value),
         };
         setItemExtension(props.item, extension, dispatch);
     };
