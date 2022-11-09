@@ -306,7 +306,7 @@ const AdvancedQuestionOptions = ({ item, parentArray }: AdvancedQuestionOptionsP
                                     />
                                 </FormField>
                                 <FormField
-                                    label={t('max answers')}
+                                    label={t('Max answers')}
                                     sublabel={t('Enter the maximum number of times the question group can be repeated')}
                                 >
                                     <input

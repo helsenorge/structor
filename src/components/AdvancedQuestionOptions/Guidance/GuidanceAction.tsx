@@ -41,11 +41,7 @@ const GuidanceAction = (props: GuidanceActionProps): JSX.Element => {
     return (
         <div>
             <FormField>
-                <SwitchBtn
-                    onChange={toggleGuidanceAction}
-                    value={hasGuidanceAction}
-                    label={t('Redirect user after questionnaire is completed')}
-                />
+                <SwitchBtn onChange={toggleGuidanceAction} value={hasGuidanceAction} label={t('Redirect user')} />
             </FormField>
             {hasGuidanceAction && (
                 <FormField label={t('Relative redirect url')}>
