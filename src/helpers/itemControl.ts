@@ -19,6 +19,7 @@ export enum ItemControlType {
     year = 'year',
     receiverComponent = 'receiver-component',
     dynamic = 'dynamic',
+    dataReciever = 'data-reciever',
 }
 
 export const createItemControlExtension = (itemControlType: ItemControlType): Extension => {
@@ -142,6 +143,10 @@ export const isItemControlSummary = (item: QuestionnaireItem): boolean => {
 
 export const isItemControlSummaryContainer = (item: QuestionnaireItem): boolean => {
     return existItemControlWithCode(item, ItemControlType.summaryContainer);
+};
+
+export const isItemControlDataReciever = (item: QuestionnaireItem): boolean => {
+    return existItemControlWithCode(item, ItemControlType.dataReciever);
 };
 
 export const getHelpText = (item: QuestionnaireItem): string => {

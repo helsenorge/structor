@@ -83,6 +83,10 @@ export const hasExtension = (extensionParent: Element | undefined, extensionType
     return false;
 };
 
+export const getExtensionStringValue = (item: QuestionnaireItem, extensionType: IExtentionType): string | undefined => {
+    return item.extension?.find((f: Extension) => f.url === extensionType)?.valueString;
+};
+
 export const createGuidanceActionExtension = (valueString = ''): Extension => ({
     url: IExtentionType.guidanceAction,
     valueString,

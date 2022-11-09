@@ -108,7 +108,7 @@
 }
 
 .horizontal.equal {
-    min-height: 81px;
+    min-height: 50px;
 }
 
 .horizontal.equal > div {
