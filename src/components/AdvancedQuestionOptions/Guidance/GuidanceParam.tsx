@@ -58,11 +58,7 @@ const GuidanceParam = (props: GuidanceParamProps): JSX.Element => {
     return (
         <div>
             <FormField>
-                <SwitchBtn
-                    onChange={toggleGuidanceParam}
-                    value={hasGuidanceParam}
-                    label={t('Send as parameter after questionnaire is completed')}
-                />
+                <SwitchBtn onChange={toggleGuidanceParam} value={hasGuidanceParam} label={t('Send as parameter')} />
             </FormField>
             {hasGuidanceParam && (
                 <FormField label={t('Parameter name')}>
