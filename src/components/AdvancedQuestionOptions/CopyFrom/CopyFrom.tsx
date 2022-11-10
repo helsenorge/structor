@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept, Extension } from '../../../types/fhir';
@@ -31,14 +31,17 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     const selectedValue = props.conditionalArray.find((f) => f.code === getLinkIdFromValueString(props.item));
     const questionsOptions = props.conditionalArray.filter((f) => props.getItem(f.code).type === props.item.type);
 
-    const onChangeSwitchBtn = (): void => {
-        setItemControlExtension(props.item, ItemControlType.dataReciever, dispatch);
-        if (props.isDataReciever) {
+    useEffect(() => {
+        if (!props.isDataReciever) {
             removeItemExtension(props.item, IExtentionType.kopieringExpression, dispatch);
             dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, false));
         } else {
             dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, true));
         }
+    }, [props.isDataReciever]);
+
+    const onChangeSwitchBtn = async (): Promise<void> => {
+        setItemControlExtension(props.item, ItemControlType.dataReciever, dispatch);
         props.dataRecieverStateChanger(!props.isDataReciever);
     };
 
