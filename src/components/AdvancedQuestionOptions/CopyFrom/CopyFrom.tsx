@@ -5,7 +5,7 @@ import { QuestionnaireItem, ValueSetComposeIncludeConcept, Extension } from '../
 import FormField from '../../FormField/FormField';
 import Select from '../../Select/Select';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
-import { ItemControlType, setItemControlExtension, isItemControlDataReciever } from '../../../helpers/itemControl';
+import { ItemControlType, setItemControlExtension } from '../../../helpers/itemControl';
 import { IItemProperty, IExtentionType, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { setItemExtension, removeItemExtension, getExtensionStringValue } from '../../../helpers/extensionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
@@ -13,6 +13,8 @@ import { updateItemAction } from '../../../store/treeStore/treeActions';
 type CopyFromProps = {
     item: QuestionnaireItem;
     conditionalArray: ValueSetComposeIncludeConcept[];
+    isDataReciever: boolean;
+    dataRecieverStateChanger: React.Dispatch<React.SetStateAction<boolean>>;
     getItem: (linkId: string) => QuestionnaireItem;
 };
 
@@ -26,18 +28,18 @@ const getLinkIdFromValueString = (item: QuestionnaireItem): string => {
 const CopyFrom = (props: CopyFromProps): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
-    const [hasDataReciverExtension, setDataRecieverExtension] = React.useState(isItemControlDataReciever(props.item));
     const selectedValue = props.conditionalArray.find((f) => f.code === getLinkIdFromValueString(props.item));
     const questionsOptions = props.conditionalArray.filter((f) => props.getItem(f.code).type === props.item.type);
 
     const onChangeSwitchBtn = (): void => {
         setItemControlExtension(props.item, ItemControlType.dataReciever, dispatch);
-        dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, !props.item.readOnly));
-        setDataRecieverExtension(!hasDataReciverExtension);
-
-        if (hasDataReciverExtension) {
+        if (props.isDataReciever) {
             removeItemExtension(props.item, IExtentionType.kopieringExpression, dispatch);
+            dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, false));
+        } else {
+            dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, true));
         }
+        props.dataRecieverStateChanger(!props.isDataReciever);
     };
 
     const getCorrectValue = (code: string): string => {
@@ -72,7 +74,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
             <FormField>
                 <SwitchBtn
                     onChange={onChangeSwitchBtn}
-                    value={hasDataReciverExtension}
+                    value={props.isDataReciever}
                     label={t('Retrieve input data from field')}
                 />
             </FormField>

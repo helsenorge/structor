@@ -24,6 +24,7 @@ import {
     isItemControlSummaryContainer,
     ItemControlType,
     setItemControlExtension,
+    isItemControlDataReciever,
 } from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
@@ -60,6 +61,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
     const [isDuplicateLinkId, setDuplicateLinkId] = useState(false);
     const [linkId, setLinkId] = useState(props.item.linkId);
     const { qItems, qOrder } = state;
+    const [isDataReciever, setDataRecieverState] = useState(isItemControlDataReciever(props.item));
 
     const dispatchUpdateItem = (name: IItemProperty, value: boolean) => {
         dispatch(updateItemAction(props.item.linkId, name, value));
@@ -164,14 +166,22 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                             onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !props.item.readOnly)}
                             value={props.item.readOnly || false}
                             label={t('Read-only')}
+                            disabled={isDataReciever}
                         />
                     </FormField>
                 </div>
             )}
-            <CopyFrom item={props.item} conditionalArray={props.conditionalArray} getItem={props.getItem} />
+            <CopyFrom
+                item={props.item}
+                conditionalArray={props.conditionalArray}
+                isDataReciever={isDataReciever}
+                dataRecieverStateChanger={setDataRecieverState}
+                getItem={props.getItem}
+            />
             {canTypeHaveCalculatedExpressionExtension(props.item) && (
                 <CalculatedExpression
                     item={props.item}
+                    disabled={isDataReciever}
                     updateExtension={handleExtension}
                     removeExtension={removeExtension}
                 />
