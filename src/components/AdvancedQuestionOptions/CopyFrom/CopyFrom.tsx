@@ -13,8 +13,9 @@ import { updateItemAction } from '../../../store/treeStore/treeActions';
 type CopyFromProps = {
     item: QuestionnaireItem;
     conditionalArray: ValueSetComposeIncludeConcept[];
-    isDataReciever: boolean;
-    dataRecieverStateChanger: React.Dispatch<React.SetStateAction<boolean>>;
+    isDataReceiver: boolean;
+    canTypeBeReadonly: boolean;
+    dataReceiverStateChanger: React.Dispatch<React.SetStateAction<boolean>>;
     getItem: (linkId: string) => QuestionnaireItem;
 };
 
@@ -31,18 +32,22 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     const selectedValue = props.conditionalArray.find((f) => f.code === getLinkIdFromValueString(props.item));
     const questionsOptions = props.conditionalArray.filter((f) => props.getItem(f.code).type === props.item.type);
 
-    useEffect(() => {
-        if (!props.isDataReciever) {
-            removeItemExtension(props.item, IExtentionType.kopieringExpression, dispatch);
-            dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, false));
-        } else {
-            dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, true));
+    const updateReadonlyItem = (value: boolean) => {
+        if (props.canTypeBeReadonly) {
+            dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, value));
         }
-    }, [props.isDataReciever]);
+    };
+
+    useEffect(() => {
+        if (!props.isDataReceiver) {
+            removeItemExtension(props.item, IExtentionType.kopieringExpression, dispatch);
+        }
+        updateReadonlyItem(props.isDataReceiver);
+    }, [props.isDataReceiver]);
 
     const onChangeSwitchBtn = async (): Promise<void> => {
-        setItemControlExtension(props.item, ItemControlType.dataReciever, dispatch);
-        props.dataRecieverStateChanger(!props.isDataReciever);
+        setItemControlExtension(props.item, ItemControlType.dataReceiver, dispatch);
+        props.dataReceiverStateChanger(!props.isDataReceiver);
     };
 
     const getCorrectValue = (code: string): string => {
@@ -77,7 +82,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
             <FormField>
                 <SwitchBtn
                     onChange={onChangeSwitchBtn}
-                    value={props.isDataReciever}
+                    value={props.isDataReceiver}
                     label={t('Retrieve input data from field')}
                 />
             </FormField>

@@ -24,7 +24,7 @@ import {
     isItemControlSummaryContainer,
     ItemControlType,
     setItemControlExtension,
-    isItemControlDataReciever,
+    isItemControlDataReceiver,
 } from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
@@ -61,7 +61,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
     const [isDuplicateLinkId, setDuplicateLinkId] = useState(false);
     const [linkId, setLinkId] = useState(props.item.linkId);
     const { qItems, qOrder } = state;
-    const [isDataReciever, setDataRecieverState] = useState(isItemControlDataReciever(props.item));
+    const [isDataReceiver, setDataReceiverState] = useState(isItemControlDataReceiver(props.item));
 
     const dispatchUpdateItem = (name: IItemProperty, value: boolean) => {
         dispatch(updateItemAction(props.item.linkId, name, value));
@@ -166,7 +166,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                             onChange={() => dispatchUpdateItem(IItemProperty.readOnly, !props.item.readOnly)}
                             value={props.item.readOnly || false}
                             label={t('Read-only')}
-                            disabled={isDataReciever}
+                            disabled={isDataReceiver}
                         />
                     </FormField>
                 </div>
@@ -174,14 +174,15 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
             <CopyFrom
                 item={props.item}
                 conditionalArray={props.conditionalArray}
-                isDataReciever={isDataReciever}
-                dataRecieverStateChanger={setDataRecieverState}
+                isDataReceiver={isDataReceiver}
+                canTypeBeReadonly={canTypeBeReadonly(props.item)}
+                dataReceiverStateChanger={setDataReceiverState}
                 getItem={props.getItem}
             />
             {canTypeHaveCalculatedExpressionExtension(props.item) && (
                 <CalculatedExpression
                     item={props.item}
-                    disabled={isDataReciever}
+                    disabled={isDataReceiver}
                     updateExtension={handleExtension}
                     removeExtension={removeExtension}
                 />

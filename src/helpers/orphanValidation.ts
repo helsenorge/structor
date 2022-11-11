@@ -8,7 +8,7 @@ import {
     isItemControlHighlight,
     isItemControlInline,
     isItemControlSidebar,
-    isItemControlDataReciever,
+    isItemControlDataReceiver,
 } from './itemControl';
 import { hasExtension } from './extensionHelper';
 import { isRecipientList } from './QuestionHelper';
@@ -339,12 +339,12 @@ const validateEnableWhen = (
     return returnErrors;
 };
 
-const validateDataRecienver = (t: TFunction<'translation'>, qItem: QuestionnaireItem): ValidationErrors[] => {
+const validateDataReceiver = (t: TFunction<'translation'>, qItem: QuestionnaireItem): ValidationErrors[] => {
     const returnErrors: ValidationErrors[] = [];
-    if (isItemControlDataReciever(qItem)) {
+    if (isItemControlDataReceiver(qItem)) {
         if (!hasExtension(qItem, IExtentionType.kopieringExpression)) {
             returnErrors.push(
-                createError(qItem.linkId, 'data-reciever', t('data reciever does not have an earlier question')),
+                createError(qItem.linkId, 'data-receiver', t('data receiver does not have an earlier question')),
             );
         }
     }
@@ -400,8 +400,8 @@ const validate = (
     // validate enableWhen
     errors.push(...validateEnableWhen(t, qItems, qItem, qContained));
 
-    // validate data-reciever
-    errors.push(...validateDataRecienver(t, qItem));
+    // validate data-receiver
+    errors.push(...validateDataReceiver(t, qItem));
     currentItem.items.forEach((x) => validate(t, x, qItems, qContained, errors));
 };
 
