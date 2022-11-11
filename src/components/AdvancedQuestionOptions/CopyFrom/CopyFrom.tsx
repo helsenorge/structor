@@ -62,6 +62,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
                 return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueDateTime`;
             case IQuestionnaireItemType.time:
                 return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueTime`;
+            case IQuestionnaireItemType.string: 
             case IQuestionnaireItemType.text:
                 return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueString`;
             default:
