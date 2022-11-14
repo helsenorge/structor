@@ -112,7 +112,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
                 <Select
                     placeholder={t('Choose question:')}
                     options={questionsOptions}
-                    value={selectedValue?.display}
+                    value={selectedValue?.code}
                     onChange={(event) => onChangeSelect(event)}
                 />
             </FormField>
