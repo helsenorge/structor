@@ -1,12 +1,17 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { QuestionnaireItem, ValueSetComposeIncludeConcept, Extension } from '../../../types/fhir';
+import {
+    QuestionnaireItem,
+    ValueSetComposeIncludeConcept,
+    Extension,
+    QuestionnaireItemEnableWhen,
+} from '../../../types/fhir';
 import FormField from '../../FormField/FormField';
 import Select from '../../Select/Select';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { ItemControlType, setItemControlExtension } from '../../../helpers/itemControl';
-import { IItemProperty, IExtentionType, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { IItemProperty, IExtentionType, IQuestionnaireItemType, IOperator } from '../../../types/IQuestionnareItemType';
 import { setItemExtension, removeItemExtension, getExtensionStringValue } from '../../../helpers/extensionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 
@@ -29,7 +34,8 @@ const getLinkIdFromValueString = (item: QuestionnaireItem): string => {
 const CopyFrom = (props: CopyFromProps): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
-    const selectedValue = props.conditionalArray.find((f) => f.code === getLinkIdFromValueString(props.item));
+    const getSelectedValue = () => props.conditionalArray.find((f) => f.code === getLinkIdFromValueString(props.item));
+    const [selectedValue, setSelectedvalue] = useState(getSelectedValue());
     const questionsOptions = props.conditionalArray.filter((f) => props.getItem(f.code).type === props.item.type);
 
     const updateReadonlyItem = (value: boolean) => {
@@ -41,9 +47,23 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     useEffect(() => {
         if (!props.isDataReceiver) {
             removeItemExtension(props.item, IExtentionType.kopieringExpression, dispatch);
+            setSelectedvalue(undefined);
         }
         updateReadonlyItem(props.isDataReceiver);
     }, [props.isDataReceiver]);
+
+    useEffect(() => {
+        const enableWhen = selectedValue
+            ? [
+                  {
+                      answerBoolean: true,
+                      question: selectedValue?.code,
+                      operator: IOperator.exists,
+                  } as QuestionnaireItemEnableWhen,
+              ]
+            : [];
+        dispatch(updateItemAction(props.item.linkId, IItemProperty.enableWhen, enableWhen));
+    }, [selectedValue]);
 
     const onChangeSwitchBtn = async (): Promise<void> => {
         setItemControlExtension(props.item, ItemControlType.dataReceiver, dispatch);
@@ -62,7 +82,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
                 return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueDateTime`;
             case IQuestionnaireItemType.time:
                 return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueTime`;
-            case IQuestionnaireItemType.string: 
+            case IQuestionnaireItemType.string:
             case IQuestionnaireItemType.text:
                 return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueString`;
             default:
@@ -76,6 +96,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
             valueString: getCorrectValue(event.target.value),
         };
         setItemExtension(props.item, extension, dispatch);
+        setSelectedvalue(props.conditionalArray.find((f) => f.code === event.target.value));
     };
 
     return (
