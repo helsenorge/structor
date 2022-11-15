@@ -108,14 +108,16 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
                     label={t('Retrieve input data from field')}
                 />
             </FormField>
-            <FormField label={t('Select earlier question:')}>
-                <Select
-                    placeholder={t('Choose question:')}
-                    options={questionsOptions}
-                    value={selectedValue?.code}
-                    onChange={(event) => onChangeSelect(event)}
-                />
-            </FormField>
+            {props.isDataReceiver && (
+                <FormField label={t('Select earlier question:')}>
+                    <Select
+                        placeholder={t('Choose question:')}
+                        options={questionsOptions}
+                        value={selectedValue?.code}
+                        onChange={(event) => onChangeSelect(event)}
+                    />
+                </FormField>
+            )}
         </div>
     );
 };
