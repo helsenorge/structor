@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import {
@@ -35,7 +35,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const getSelectedValue = () => props.conditionalArray.find((f) => f.code === getLinkIdFromValueString(props.item));
-    const [selectedValue, setSelectedvalue] = useState(getSelectedValue());
+    const [selectedValue, setSelectedvalue] = React.useState(getSelectedValue());
     const questionsOptions = props.conditionalArray.filter((f) => props.getItem(f.code).type === props.item.type);
 
     const updateReadonlyItem = (value: boolean) => {
@@ -44,7 +44,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
         }
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (!props.isDataReceiver) {
             removeItemExtension(props.item, IExtentionType.kopieringExpression, dispatch);
             setSelectedvalue(undefined);
@@ -52,7 +52,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
         updateReadonlyItem(props.isDataReceiver);
     }, [props.isDataReceiver]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         const enableWhen = selectedValue
             ? [
                   {
