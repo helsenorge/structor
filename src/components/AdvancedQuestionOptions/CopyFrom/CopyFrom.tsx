@@ -11,7 +11,7 @@ import FormField from '../../FormField/FormField';
 import Select from '../../Select/Select';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { ItemControlType, setItemControlExtension } from '../../../helpers/itemControl';
-import { IItemProperty, IExtentionType, IQuestionnaireItemType, IOperator } from '../../../types/IQuestionnareItemType';
+import { IItemProperty, IExtentionType, IOperator } from '../../../types/IQuestionnareItemType';
 import { setItemExtension, removeItemExtension, getExtensionStringValue } from '../../../helpers/extensionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 
@@ -70,30 +70,10 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
         props.dataReceiverStateChanger(!props.isDataReceiver);
     };
 
-    const getCorrectValue = (code: string): string => {
-        switch (props.item.type) {
-            case IQuestionnaireItemType.integer:
-                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueInteger`;
-            case IQuestionnaireItemType.quantity:
-                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.value`;
-            case IQuestionnaireItemType.decimal:
-                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueDecimal`;
-            case IQuestionnaireItemType.date:
-                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueDateTime`;
-            case IQuestionnaireItemType.time:
-                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueTime`;
-            case IQuestionnaireItemType.string:
-            case IQuestionnaireItemType.text:
-                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueString`;
-            default:
-                return `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value.valueCoding.system`;
-        }
-    };
-
     const onChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const extension: Extension = {
             url: IExtentionType.kopieringExpression,
-            valueString: getCorrectValue(event.target.value),
+            valueString: `QuestionnaireResponse.descendants().where(linkId='${event.target.value}').answer.value`,
         };
         setItemExtension(props.item, extension, dispatch);
         setSelectedvalue(props.conditionalArray.find((f) => f.code === event.target.value));
