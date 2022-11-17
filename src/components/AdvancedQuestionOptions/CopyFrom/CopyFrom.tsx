@@ -44,16 +44,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
             dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, value));
         }
     };
-
-    useEffect(() => {
-        if (!props.isDataReceiver) {
-            removeCopyExpression();
-            setSelectedvalue(undefined);
-        }
-        updateReadonlyItem(props.isDataReceiver);
-    }, [props.isDataReceiver]);
-
-    useEffect(() => {
+    const updateEnableWhen = () => {
         const enableWhen = selectedValue
             ? [
                   {
@@ -64,6 +55,20 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
               ]
             : [];
         dispatch(updateItemAction(props.item.linkId, IItemProperty.enableWhen, enableWhen));
+    };
+
+    useEffect(() => {
+        if (!props.isDataReceiver) {
+            removeCopyExpression();
+            setSelectedvalue(undefined);
+        }
+        updateReadonlyItem(props.isDataReceiver);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.isDataReceiver]);
+
+    useEffect(() => {
+        updateEnableWhen();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedValue]);
 
     const onChangeSwitchBtn = async (): Promise<void> => {
