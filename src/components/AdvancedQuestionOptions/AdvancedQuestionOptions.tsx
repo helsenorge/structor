@@ -264,7 +264,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     />
                 </FormField>
             </div>
-            {canTypeBeRepeatable(item) && (
+            {canTypeBeRepeatable(props.item) && (
                 <>
                     <div className="horizontal full">
                         <FormField
@@ -275,9 +275,9 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     <FormField>
                         <SwitchBtn
                             onChange={(): void => {
-                                if (item.repeats) {
+                                if (props.item.repeats) {
                                     removeItemExtension(
-                                        item,
+                                        props.item,
                                         [
                                             IExtentionType.repeatstext,
                                             IExtentionType.minOccurs,
@@ -286,12 +286,12 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                                         dispatch,
                                     );
                                 }
-                                dispatchUpdateItem(IItemProperty.repeats, !item.repeats);
+                                dispatchUpdateItem(IItemProperty.repeats, !props.item.repeats);
                             }}
-                            value={item.repeats || false}
+                            value={props.item.repeats || false}
                             label={t('Repeatable')}
                         />
-                        {item.repeats && (
+                        {props.item.repeats && (
                             <>
                                 <FormField label={t('Repeat button text')} sublabel={t('Default is set to "Add"')}>
                                     <InputField
@@ -389,7 +389,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     </FormField>
                 </div>
             )}
-            {canTypeHaveHelp(item) && (
+            {canTypeHaveHelp(props.item) && (
                 <>
                     <div className="horizontal full">
                         <FormField
