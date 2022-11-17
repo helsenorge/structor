@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import {
@@ -25,7 +25,7 @@ type CopyFromProps = {
 };
 
 const getLinkIdFromValueString = (item: QuestionnaireItem): string => {
-    const extensionValueString = getExtensionStringValue(item, IExtentionType.kopieringExpression) ?? '';
+    const extensionValueString = getExtensionStringValue(item, IExtentionType.CopyExpression) ?? '';
     const startIndex = extensionValueString.indexOf("'") + 1;
     const endIndex = extensionValueString.indexOf("')");
     return extensionValueString.substring(startIndex, endIndex);
@@ -35,24 +35,25 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const getSelectedValue = () => props.conditionalArray.find((f) => f.code === getLinkIdFromValueString(props.item));
-    const [selectedValue, setSelectedvalue] = React.useState(getSelectedValue());
+    const [selectedValue, setSelectedvalue] = useState(getSelectedValue());
     const questionsOptions = props.conditionalArray.filter((f) => props.getItem(f.code).type === props.item.type);
 
+    const removeCopyExpression = () => removeItemExtension(props.item, IExtentionType.CopyExpression, dispatch);
     const updateReadonlyItem = (value: boolean) => {
         if (props.canTypeBeReadonly) {
             dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, value));
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!props.isDataReceiver) {
-            removeItemExtension(props.item, IExtentionType.kopieringExpression, dispatch);
+            removeCopyExpression();
             setSelectedvalue(undefined);
         }
         updateReadonlyItem(props.isDataReceiver);
     }, [props.isDataReceiver]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const enableWhen = selectedValue
             ? [
                   {
@@ -72,7 +73,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
 
     const onChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const extension: Extension = {
-            url: IExtentionType.kopieringExpression,
+            url: IExtentionType.CopyExpression,
             valueString: `QuestionnaireResponse.descendants().where(linkId='${event.target.value}').answer.value`,
         };
         setItemExtension(props.item, extension, dispatch);
