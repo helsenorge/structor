@@ -342,7 +342,7 @@ const validateEnableWhen = (
 const validateDataReceiver = (t: TFunction<'translation'>, qItem: QuestionnaireItem): ValidationErrors[] => {
     const returnErrors: ValidationErrors[] = [];
     if (isItemControlDataReceiver(qItem)) {
-        if (!hasExtension(qItem, IExtentionType.CopyExpression)) {
+        if (!hasExtension(qItem, IExtentionType.copyExpression)) {
             returnErrors.push(
                 createError(qItem.linkId, 'data-receiver', t('data receiver does not have an earlier question')),
             );

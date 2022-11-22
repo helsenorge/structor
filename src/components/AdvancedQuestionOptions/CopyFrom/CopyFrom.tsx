@@ -25,7 +25,7 @@ type CopyFromProps = {
 };
 
 const getLinkIdFromValueString = (item: QuestionnaireItem): string => {
-    const extensionValueString = getExtensionStringValue(item, IExtentionType.CopyExpression) ?? '';
+    const extensionValueString = getExtensionStringValue(item, IExtentionType.copyExpression) ?? '';
     const startIndex = extensionValueString.indexOf("'") + 1;
     const endIndex = extensionValueString.indexOf("')");
     return extensionValueString.substring(startIndex, endIndex);
@@ -38,7 +38,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     const [selectedValue, setSelectedvalue] = useState(getSelectedValue());
     const questionsOptions = props.conditionalArray.filter((f) => props.getItem(f.code).type === props.item.type);
 
-    const removeCopyExpression = () => removeItemExtension(props.item, IExtentionType.CopyExpression, dispatch);
+    const removeCopyExpression = () => removeItemExtension(props.item, IExtentionType.copyExpression, dispatch);
     const updateReadonlyItem = (value: boolean) => {
         if (props.canTypeBeReadonly) {
             dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, value));
@@ -78,7 +78,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
 
     const onChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const extension: Extension = {
-            url: IExtentionType.CopyExpression,
+            url: IExtentionType.copyExpression,
             valueString: `QuestionnaireResponse.descendants().where(linkId='${event.target.value}').answer.value`,
         };
         setItemExtension(props.item, extension, dispatch);
