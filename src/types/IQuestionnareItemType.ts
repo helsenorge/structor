@@ -119,6 +119,7 @@ export enum IExtentionType {
     printVersion = 'http://helsenorge.no/fhir/StructureDefinition/sdf-questionnaire-print-version',
     hyperlinkTarget = 'http://helsenorge.no/fhir/StructureDefinition/sdf-hyperlink-target',
     globalVisibility = 'http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility',
+    copyExpression = 'http://hl7.org/fhir/StructureDefinition/cqf-expression',
 }
 
 export enum UseContextSystem {

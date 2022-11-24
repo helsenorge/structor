@@ -6,6 +6,7 @@ import FormField from '../../FormField/FormField';
 
 type CalculatedExpressionProps = {
     item: QuestionnaireItem;
+    disabled?: boolean;
     updateExtension: (extension: Extension) => void;
     removeExtension: (extensionType: IExtentionType) => void;
 };
@@ -28,7 +29,7 @@ const CalculatedExpression = (props: CalculatedExpressionProps): JSX.Element => 
         props.item.extension?.find((ext) => ext.url === IExtentionType.calculatedExpression)?.valueString || '';
     return (
         <FormField label={t('Calculation formula')}>
-            <textarea defaultValue={calculatedExpression} onBlur={handleBlur} />
+            <textarea defaultValue={calculatedExpression} onBlur={handleBlur} disabled={props.disabled} />
         </FormField>
     );
 };
