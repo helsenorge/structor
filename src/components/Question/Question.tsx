@@ -230,7 +230,12 @@ const Question = (props: QuestionProps): JSX.Element => {
                     <Codes linkId={props.item.linkId} itemValidationErrors={props.itemValidationErrors} />
                 </Accordion>
                 <Accordion title={t('Advanced settings')}>
-                    <AdvancedQuestionOptions item={props.item} parentArray={props.parentArray} />
+                    <AdvancedQuestionOptions
+                        item={props.item}
+                        parentArray={props.parentArray}
+                        conditionalArray={props.conditionalArray}
+                        getItem={props.getItem}
+                    />
                 </Accordion>
             </div>
         </div>

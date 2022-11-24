@@ -2,8 +2,15 @@ import { TFunction } from 'react-i18next';
 import { Items, OrderItem, Languages } from '../store/treeStore/treeStore';
 import { QuestionnaireItem, ValueSet } from '../types/fhir';
 import { IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
-import { ItemControlType } from './itemControl';
-import { isItemControlHelp, isItemControlHighlight, isItemControlInline, isItemControlSidebar } from './itemControl';
+import {
+    ItemControlType,
+    isItemControlHelp,
+    isItemControlHighlight,
+    isItemControlInline,
+    isItemControlSidebar,
+    isItemControlDataReceiver,
+} from './itemControl';
+import { hasExtension } from './extensionHelper';
 import { isRecipientList } from './QuestionHelper';
 import { isUriValid } from './uriHelper';
 import { getValueSetValues } from './valueSetHelper';
@@ -332,6 +339,18 @@ const validateEnableWhen = (
     return returnErrors;
 };
 
+const validateDataReceiver = (t: TFunction<'translation'>, qItem: QuestionnaireItem): ValidationErrors[] => {
+    const returnErrors: ValidationErrors[] = [];
+    if (isItemControlDataReceiver(qItem)) {
+        if (!hasExtension(qItem, IExtentionType.copyExpression)) {
+            returnErrors.push(
+                createError(qItem.linkId, 'data-receiver', t('data receiver does not have an earlier question')),
+            );
+        }
+    }
+    return returnErrors;
+};
+
 export const validateOrphanedElements = (
     t: TFunction<'translation'>,
     qOrder: OrderItem[],
@@ -380,6 +399,9 @@ const validate = (
 
     // validate enableWhen
     errors.push(...validateEnableWhen(t, qItems, qItem, qContained));
+
+    // validate data-receiver
+    errors.push(...validateDataReceiver(t, qItem));
 
     currentItem.items.forEach((x) => validate(t, x, qItems, qContained, errors));
 };
