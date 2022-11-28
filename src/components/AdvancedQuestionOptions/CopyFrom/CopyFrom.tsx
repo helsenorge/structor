@@ -44,7 +44,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
             dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, value));
         }
     };
-    const updateEnableWhen = () => {
+    const updateEnableWhen = (selectedValue: ValueSetComposeIncludeConcept | undefined) => {
         const enableWhen = selectedValue
             ? [
                   {
@@ -66,11 +66,6 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.isDataReceiver]);
 
-    useEffect(() => {
-        updateEnableWhen();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedValue]);
-
     const onChangeSwitchBtn = async (): Promise<void> => {
         setItemControlExtension(props.item, ItemControlType.dataReceiver, dispatch);
         props.dataReceiverStateChanger(!props.isDataReceiver);
@@ -81,8 +76,10 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
             url: IExtentionType.copyExpression,
             valueString: `QuestionnaireResponse.descendants().where(linkId='${event.target.value}').answer.value`,
         };
+        const selectedCondition = props.conditionalArray.find((f) => f.code === event.target.value);
         setItemExtension(props.item, extension, dispatch);
-        setSelectedvalue(props.conditionalArray.find((f) => f.code === event.target.value));
+        updateEnableWhen(selectedCondition);
+        setSelectedvalue(selectedCondition);
     };
 
     return (
