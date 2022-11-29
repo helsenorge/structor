@@ -75,9 +75,9 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
 
     const removeElement = (id?: string) => {
         const compose = { ...newValueSet.compose };
-        const conceptToDelete = compose.include[0].concept?.findIndex((x) => x && x.id === id);
+        const conceptToDelete = compose.include && compose.include[0].concept?.findIndex((x) => x && x.id === id);
         if (conceptToDelete || conceptToDelete === 0) {
-            compose.include[0].concept?.splice(conceptToDelete, 1);
+            compose.include && compose.include[0].concept?.splice(conceptToDelete, 1);
         }
 
         setNewValueSet({ ...newValueSet });
@@ -85,7 +85,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
 
     const handleConceptItem = (value: string, updateField: 'code' | 'display', id?: string) => {
         const compose = { ...newValueSet.compose };
-        const item = compose.include[0]?.concept?.find((x) => x && x.id === id);
+        const item = compose.include && compose.include[0]?.concept?.find((x) => x && x.id === id);
 
         if (item) {
             item[updateField] = value;
@@ -126,17 +126,17 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
         const toIndex = result.destination.index;
 
         const compose = { ...newValueSet.compose };
-        const itemToMove = compose.include[0].concept?.splice(fromIndex, 1);
+        const itemToMove = compose.include && compose.include[0].concept?.splice(fromIndex, 1);
 
         if (fromIndex !== toIndex && itemToMove) {
-            compose.include[0].concept?.splice(toIndex, 0, itemToMove[0]);
+            compose.include && compose.include[0].concept?.splice(toIndex, 0, itemToMove[0]);
             setNewValueSet({ ...newValueSet });
         }
     };
 
     const handleSystem = (value: string) => {
         const compose = { ...newValueSet.compose };
-        compose.include[0].system = value;
+        compose.include && (compose.include[0].system = value);
         setNewValueSet({ ...newValueSet });
     };
 
