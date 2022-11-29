@@ -70,7 +70,7 @@ const Navbar = ({
         const filename = `${getFileName()}.${fileExtension}`;
         const contentType = 'application/json;charset=utf-8;';
 
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        if (window.navigator) {
             const blob = new Blob([decodeURIComponent(encodeURI(questionnaire))], {
                 type: contentType,
             });

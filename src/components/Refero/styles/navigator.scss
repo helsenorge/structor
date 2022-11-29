@@ -1,4 +1,3 @@
-@import '~bootstrap/scss/mixins/_screen-reader.scss';
 @import '@helsenorge/designsystem-react/scss/_spacers.scss';
 @import '@helsenorge/designsystem-react/scss/_breakpoints.scss';
 
@@ -63,9 +62,4 @@
 
 .page_refero__navigator-scroll-offset {
     scroll-padding-top: 62px; // navigator er 62px høy på desktop
-}
-
-.mol_form--content > section[id] > .page_refero__skiplink {
-    @include sr-only();
-    @include sr-only-focusable();
 }
