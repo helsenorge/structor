@@ -61,8 +61,9 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
         if (!props.isDataReceiver) {
             removeCopyExpression();
             setSelectedvalue(undefined);
+        } else {
+            updateReadonlyItem(props.isDataReceiver);
         }
-        updateReadonlyItem(props.isDataReceiver);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.isDataReceiver]);
 
