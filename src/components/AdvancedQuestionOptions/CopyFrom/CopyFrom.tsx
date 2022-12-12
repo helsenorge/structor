@@ -39,15 +39,11 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
 
     const filterWithRepeats = (value: ValueSetComposeIncludeConcept) => {
         const item = props.getItem(value.code);
-        return item.type === props.item.type && item.repeats;
+        return item.type === props.item.type && item.repeats === props.item.repeats;
     };
 
     const questionsOptions = () => {
-        if (props.item.repeats) {
-            return props.conditionalArray.filter((f) => filterWithRepeats(f));
-        } else {
-            return props.conditionalArray.filter((f) => props.getItem(f.code).type === props.item.type);
-        }
+        return props.conditionalArray.filter((f) => filterWithRepeats(f));
     };
 
     const removeCopyExpression = () => removeItemExtension(props.item, IExtentionType.copyExpression, dispatch);
