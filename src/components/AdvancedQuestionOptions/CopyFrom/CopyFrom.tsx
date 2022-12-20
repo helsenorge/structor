@@ -35,7 +35,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const getSelectedValue = () => props.conditionalArray.find((f) => f.code === getLinkIdFromValueString(props.item));
-    const [selectedValue, setSelectedvalue] = useState(getSelectedValue()?.code ?? '');
+    const [selectedValue, setSelectedvalue] = useState(getSelectedValue()?.code ?? undefined);
     const questionsOptions = props.conditionalArray.filter((f) => props.getItem(f.code).type === props.item.type);
 
     const updateReadonlyItem = (value: boolean) => {
@@ -44,31 +44,32 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
         }
     };
 
-    const updateEnableWhen = (selectedValue: string) => {
-        const enableWhen =
-            selectedValue !== ''
-                ? [
-                      {
-                          answerBoolean: true,
-                          question: selectedValue,
-                          operator: IOperator.exists,
-                      } as QuestionnaireItemEnableWhen,
-                  ]
-                : [];
+    const updateEnableWhen = (selectedValue: string | undefined) => {
+        const enableWhen = selectedValue
+            ? [
+                  {
+                      answerBoolean: true,
+                      question: selectedValue,
+                      operator: IOperator.exists,
+                  } as QuestionnaireItemEnableWhen,
+              ]
+            : [];
         dispatch(updateItemAction(props.item.linkId, IItemProperty.enableWhen, enableWhen));
     };
 
-    const setCalculationExpression = (code: string) => {
-        const calculatedExpression =
-            getExtensionStringValue(props.getItem(code), IExtentionType.calculatedExpression) ?? '';
-        if (calculatedExpression) {
-            const ceExtension: Extension = {
-                url: IExtentionType.calculatedExpression,
-                valueString: calculatedExpression,
-            };
-            setItemExtension(props.item, ceExtension, dispatch);
-        } else {
-            removeItemExtension(props.item, IExtentionType.calculatedExpression, dispatch);
+    const setCalculationExpression = (code: string | undefined) => {
+        if (code) {
+            const calculatedExpression =
+                getExtensionStringValue(props.getItem(code), IExtentionType.calculatedExpression) ?? '';
+            if (calculatedExpression) {
+                const ceExtension: Extension = {
+                    url: IExtentionType.calculatedExpression,
+                    valueString: calculatedExpression,
+                };
+                setItemExtension(props.item, ceExtension, dispatch);
+            } else {
+                removeItemExtension(props.item, IExtentionType.calculatedExpression, dispatch);
+            }
         }
     };
 
@@ -83,7 +84,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     useEffect(() => {
         if (!props.isDataReceiver) {
             removeItemExtension(props.item, IExtentionType.copyExpression, dispatch);
-            setSelectedvalue('');
+            setSelectedvalue(undefined);
         } else {
             updateReadonlyItem(props.isDataReceiver);
         }
