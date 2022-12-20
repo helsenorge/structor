@@ -110,3 +110,8 @@ export const getHyperlinkTargetvalue = (extensions: Extension[]): HyperlinkTarge
     }
     return undefined;
 };
+
+export const getQuantityUnit = (extensions: Extension[]): string | undefined => {
+    const unit = extensions.filter((f: Extension) => f.url === IExtentionType.questionnaireUnit);
+    return unit[0].valueCoding?.code;
+};
