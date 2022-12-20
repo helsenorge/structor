@@ -93,6 +93,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     useEffect(() => {
         setCalculationExpression(selectedValue);
         updateEnableWhen(selectedValue);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedValue]);
 
     const onChangeSwitchBtn = async (): Promise<void> => {
