@@ -11,7 +11,7 @@ import FormField from '../../FormField/FormField';
 import Select from '../../Select/Select';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { ItemControlType, setItemControlExtension } from '../../../helpers/itemControl';
-import { IItemProperty, IExtentionType, IOperator } from '../../../types/IQuestionnareItemType';
+import { IItemProperty, IExtentionType, IOperator, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { setItemExtension, removeItemExtension, getExtensionStringValue } from '../../../helpers/extensionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 
@@ -36,7 +36,15 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     const { dispatch } = useContext(TreeContext);
     const getSelectedValue = () => props.conditionalArray.find((f) => f.code === getLinkIdFromValueString(props.item));
     const [selectedValue, setSelectedvalue] = useState(getSelectedValue()?.code ?? undefined);
-    const questionsOptions = props.conditionalArray.filter((f) => props.getItem(f.code).type === props.item.type);
+
+    const filterWithRepeats = (value: ValueSetComposeIncludeConcept) => {
+        const item = props.getItem(value.code);
+        return item.type === props.item.type && item.repeats === props.item.repeats;
+    };
+
+    const questionsOptions = () => {
+        return props.conditionalArray.filter((f) => filterWithRepeats(f));
+    };
 
     const updateReadonlyItem = (value: boolean) => {
         if (props.canTypeBeReadonly) {
@@ -45,16 +53,19 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     };
 
     const updateEnableWhen = (selectedValue: string | undefined) => {
-        const enableWhen = selectedValue
-            ? [
-                  {
-                      answerBoolean: true,
-                      question: selectedValue,
-                      operator: IOperator.exists,
-                  } as QuestionnaireItemEnableWhen,
-              ]
-            : [];
-        dispatch(updateItemAction(props.item.linkId, IItemProperty.enableWhen, enableWhen));
+        if (selectedValue) {
+            const initEnableWhen: QuestionnaireItemEnableWhen[] = [];
+            const operator = props.item.type === IQuestionnaireItemType.boolean ? '=' : IOperator.exists;
+            const enableWhen =
+                props.item.enableWhen?.filter((ew: QuestionnaireItemEnableWhen) => ew.operator !== operator) ||
+                initEnableWhen;
+            enableWhen.push({
+                answerBoolean: true,
+                question: selectedValue,
+                operator: props.item.type === IQuestionnaireItemType.boolean ? '=' : IOperator.exists,
+            } as QuestionnaireItemEnableWhen);
+            dispatch(updateItemAction(props.item.linkId, IItemProperty.enableWhen, enableWhen));
+        }
     };
 
     const setCalculationExpression = (code: string | undefined) => {
@@ -121,7 +132,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
                 <FormField label={t('Select earlier question:')}>
                     <Select
                         placeholder={t('Choose question:')}
-                        options={questionsOptions}
+                        options={questionsOptions()}
                         value={selectedValue}
                         onChange={(event) => onChangeSelect(event)}
                     />
