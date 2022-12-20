@@ -35,52 +35,75 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const getSelectedValue = () => props.conditionalArray.find((f) => f.code === getLinkIdFromValueString(props.item));
-    const [selectedValue, setSelectedvalue] = useState(getSelectedValue());
+    const [selectedValue, setSelectedvalue] = useState(getSelectedValue()?.code ?? '');
     const questionsOptions = props.conditionalArray.filter((f) => props.getItem(f.code).type === props.item.type);
 
-    const removeCopyExpression = () => removeItemExtension(props.item, IExtentionType.copyExpression, dispatch);
     const updateReadonlyItem = (value: boolean) => {
         if (props.canTypeBeReadonly) {
             dispatch(updateItemAction(props.item.linkId, IItemProperty.readOnly, value));
         }
     };
-    const updateEnableWhen = (selectedValue: ValueSetComposeIncludeConcept | undefined) => {
-        const enableWhen = selectedValue
-            ? [
-                  {
-                      answerBoolean: true,
-                      question: selectedValue?.code,
-                      operator: IOperator.exists,
-                  } as QuestionnaireItemEnableWhen,
-              ]
-            : [];
+
+    const updateEnableWhen = (selectedValue: string) => {
+        const enableWhen =
+            selectedValue !== ''
+                ? [
+                      {
+                          answerBoolean: true,
+                          question: selectedValue,
+                          operator: IOperator.exists,
+                      } as QuestionnaireItemEnableWhen,
+                  ]
+                : [];
         dispatch(updateItemAction(props.item.linkId, IItemProperty.enableWhen, enableWhen));
+    };
+
+    const setCalculationExpression = (code: string) => {
+        const calculatedExpression =
+            getExtensionStringValue(props.getItem(code), IExtentionType.calculatedExpression) ?? '';
+        if (calculatedExpression) {
+            const ceExtension: Extension = {
+                url: IExtentionType.calculatedExpression,
+                valueString: calculatedExpression,
+            };
+            setItemExtension(props.item, ceExtension, dispatch);
+        } else {
+            removeItemExtension(props.item, IExtentionType.calculatedExpression, dispatch);
+        }
+    };
+
+    const setDataReceiverExtenssion = (code: string) => {
+        const extension: Extension = {
+            url: IExtentionType.copyExpression,
+            valueString: `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value`,
+        };
+        setItemExtension(props.item, extension, dispatch);
     };
 
     useEffect(() => {
         if (!props.isDataReceiver) {
-            removeCopyExpression();
-            setSelectedvalue(undefined);
+            removeItemExtension(props.item, IExtentionType.copyExpression, dispatch);
+            setSelectedvalue('');
         } else {
             updateReadonlyItem(props.isDataReceiver);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.isDataReceiver]);
 
+    useEffect(() => {
+        setCalculationExpression(selectedValue);
+        updateEnableWhen(selectedValue);
+    }, [selectedValue]);
+
     const onChangeSwitchBtn = async (): Promise<void> => {
         setItemControlExtension(props.item, ItemControlType.dataReceiver, dispatch);
         props.dataReceiverStateChanger(!props.isDataReceiver);
     };
 
-    const onChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-        const extension: Extension = {
-            url: IExtentionType.copyExpression,
-            valueString: `QuestionnaireResponse.descendants().where(linkId='${event.target.value}').answer.value`,
-        };
-        const selectedCondition = props.conditionalArray.find((f) => f.code === event.target.value);
-        setItemExtension(props.item, extension, dispatch);
-        updateEnableWhen(selectedCondition);
-        setSelectedvalue(selectedCondition);
+    const onChangeSelect = async (event: React.ChangeEvent<HTMLSelectElement>): Promise<void> => {
+        const code = event.target.value;
+        setSelectedvalue(code);
+        setDataReceiverExtenssion(code);
     };
 
     return (
@@ -97,7 +120,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
                     <Select
                         placeholder={t('Choose question:')}
                         options={questionsOptions}
-                        value={selectedValue?.code}
+                        value={selectedValue}
                         onChange={(event) => onChangeSelect(event)}
                     />
                 </FormField>
