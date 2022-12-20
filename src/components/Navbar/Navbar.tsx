@@ -70,11 +70,13 @@ const Navbar = ({
         const filename = `${getFileName()}.${fileExtension}`;
         const contentType = 'application/json;charset=utf-8;';
 
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        /*eslint-disable */
+        if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
             const blob = new Blob([decodeURIComponent(encodeURI(questionnaire))], {
                 type: contentType,
             });
-            navigator.msSaveOrOpenBlob(blob, filename);
+            (navigator as any).msSaveOrOpenBlob(blob, filename);
+            /*eslint-enable */
         } else {
             const a = document.createElement('a');
             a.download = filename;
