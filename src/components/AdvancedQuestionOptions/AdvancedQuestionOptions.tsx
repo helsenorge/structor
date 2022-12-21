@@ -43,6 +43,7 @@ import {
     canTypeHavePlaceholderText,
     canTypeHavePrefix,
     canTypeHaveSummary,
+    canTypeCopyData,
 } from '../../helpers/questionTypeFeatures';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import { elementSaveCapability } from '../../helpers/QuestionHelper';
@@ -171,14 +172,16 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     </FormField>
                 </div>
             )}
-            <CopyFrom
-                item={props.item}
-                conditionalArray={props.conditionalArray}
-                isDataReceiver={isDataReceiver}
-                canTypeBeReadonly={canTypeBeReadonly(props.item)}
-                dataReceiverStateChanger={setDataReceiverState}
-                getItem={props.getItem}
-            />
+            {canTypeCopyData(props.item) && (
+                <CopyFrom
+                    item={props.item}
+                    conditionalArray={props.conditionalArray}
+                    isDataReceiver={isDataReceiver}
+                    canTypeBeReadonly={canTypeBeReadonly(props.item)}
+                    dataReceiverStateChanger={setDataReceiverState}
+                    getItem={props.getItem}
+                />
+            )}
             {canTypeHaveCalculatedExpressionExtension(props.item) && (
                 <CalculatedExpression
                     item={props.item}
