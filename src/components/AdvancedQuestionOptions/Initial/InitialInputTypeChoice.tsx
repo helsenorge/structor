@@ -41,7 +41,7 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
 
     const renderAnswerOption = (initialOption: Coding): JSX.Element => {
         return (
-            <div className="answerOption">
+            <div key={initialOption.code} className="answerOption">
                 <div className="radioBtn-div">
                     <input
                         className="radioBtn-input"
@@ -54,7 +54,11 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
                                 setInitialValue(initialOption.code || '');
                             }
                             const newInitial = {
-                                valueCoding: { system: initialOption.system, code: initialOption.code },
+                                valueCoding: {
+                                    system: initialOption.system,
+                                    code: initialOption.code,
+                                    display: initialOption.display,
+                                },
                             };
                             props.dispatchAction(newInitial);
                         }}
