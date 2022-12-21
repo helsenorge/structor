@@ -73,7 +73,7 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
             enableWhen.push({
                 answerBoolean: true,
                 question: selectedValue,
-                operator: props.item.type === IQuestionnaireItemType.boolean ? '=' : IOperator.exists,
+                operator: operator,
             } as QuestionnaireItemEnableWhen);
             dispatch(updateItemAction(props.item.linkId, IItemProperty.enableWhen, enableWhen));
         }

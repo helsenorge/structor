@@ -224,6 +224,16 @@ export const canTypeHaveChildren = (item: QuestionnaireItem): boolean => {
     );
 };
 
+export const canTypeCopyData = (item: QuestionnaireItem): boolean => {
+    return (
+        item.type !== IQuestionnaireItemType.display &&
+        item.type !== IQuestionnaireItemType.group &&
+        item.type !== IQuestionnaireItemType.attachment &&
+        !isItemControlReceiverComponent(item) &&
+        !isRecipientList(item)
+    );
+};
+
 export const getItemDisplayType = (item: QuestionnaireItem): string => {
     if (isItemControlReceiverComponent(item)) {
         return 'Recipient component';
