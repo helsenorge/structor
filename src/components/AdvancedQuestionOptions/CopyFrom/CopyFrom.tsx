@@ -12,7 +12,12 @@ import Select from '../../Select/Select';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { ItemControlType, setItemControlExtension } from '../../../helpers/itemControl';
 import { IItemProperty, IExtentionType, IOperator, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
-import { setItemExtension, removeItemExtension, getExtensionStringValue } from '../../../helpers/extensionHelper';
+import {
+    setItemExtension,
+    removeItemExtension,
+    getExtensionStringValue,
+    getQuantityUnit,
+} from '../../../helpers/extensionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 
 type CopyFromProps = {
@@ -39,7 +44,13 @@ const CopyFrom = (props: CopyFromProps): JSX.Element => {
 
     const filterWithRepeats = (value: ValueSetComposeIncludeConcept) => {
         const item = props.getItem(value.code);
-        return item.type === props.item.type && item.repeats === props.item.repeats;
+        const hasTypeAndRepeats = item.type === props.item.type && item.repeats === props.item.repeats;
+        if (props.item.type === IQuestionnaireItemType.quantity) {
+            if (item.extension && props.item.extension) {
+                return hasTypeAndRepeats && getQuantityUnit(item.extension) === getQuantityUnit(props.item.extension);
+            }
+        }
+        return hasTypeAndRepeats;
     };
 
     const questionsOptions = () => {
