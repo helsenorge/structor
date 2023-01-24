@@ -368,6 +368,31 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     </FormField>
                 </>
             )}
+            {props.item.type === IQuestionnaireItemType.group && (
+                <>
+                    <div className="horizontal full">
+                        <FormField
+                            label={t('Step-view')}
+                            sublabel={t('Select whether the group should be a step in step-view')}
+                        ></FormField>
+                    </div>
+                    <FormField>
+                        <SwitchBtn
+                            onChange={() => {
+                                setItemControlExtension(props.item, ItemControlType.step, dispatch);
+                            }}
+                            value={
+                                props.item.extension?.find((ex) =>
+                                    ex.valueCodeableConcept?.coding?.find((ex2) => ex2.code === ItemControlType.step),
+                                )
+                                    ? true
+                                    : false
+                            }
+                            label={t('Step in step-view')}
+                        />
+                    </FormField>
+                </>
+            )}
             <div className="horizontal full">
                 <FormField
                     label={t('After completing the form')}
@@ -451,31 +476,6 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     name={'elementSaveCapability-radio'}
                 />
             </FormField>
-            {props.item.type === IQuestionnaireItemType.group && (
-                <>
-                    <div className="horizontal full">
-                        <FormField
-                            label={t('Step')}
-                            sublabel={t('Select whether the group is a step or not')}
-                        ></FormField>
-                    </div>
-                    <FormField>
-                        <SwitchBtn
-                            onChange={() => {
-                                setItemControlExtension(props.item, ItemControlType.step, dispatch);
-                            }}
-                            value={
-                                props.item.extension?.find((ex) =>
-                                    ex.valueCodeableConcept?.coding?.find((ex2) => ex2.code === ItemControlType.step),
-                                )
-                                    ? true
-                                    : false
-                            }
-                            label={t('Is a step')}
-                        />
-                    </FormField>
-                </>
-            )}
         </>
     );
 };
