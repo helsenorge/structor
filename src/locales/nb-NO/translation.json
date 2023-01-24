@@ -394,5 +394,8 @@
     "Display only in form filler": "Vises kun i skjemautfyller",
     "Hide in form filler and PDF": "Skjules i skjemautfyller og PDF",
     "Retrieve input data from field": "Hent inputdata fra felt",
-    "data receiver does not have an earlier question": "datamottaker har ikke et tidligere spørsmål"
+    "data receiver does not have an earlier question": "datamottaker har ikke et tidligere spørsmål",
+    "Step-view": "Stegvisning",
+    "Select whether the group should be a step in step-view": "Velg om denne gruppen skal være et steg i stegvising",
+    "Step in step-view": "Steg i stegvisning"
 }
