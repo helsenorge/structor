@@ -12,7 +12,13 @@ import HyperlinkTargetElementToggle from './HyperlinkTargetElementToggle';
 import UriField from '../FormField/UriField';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
-import { ICodeSystem, IExtentionType, IItemProperty, IValueSetSystem } from '../../types/IQuestionnareItemType';
+import {
+    ICodeSystem,
+    IExtentionType,
+    IItemProperty,
+    IQuestionnaireItemType,
+    IValueSetSystem,
+} from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 import Initial from './Initial/Initial';
 import FormField from '../FormField/FormField';
@@ -445,6 +451,31 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     name={'elementSaveCapability-radio'}
                 />
             </FormField>
+            {props.item.type === IQuestionnaireItemType.group && (
+                <>
+                    <div className="horizontal full">
+                        <FormField
+                            label={t('Step')}
+                            sublabel={t('Select whether the group is a step or not')}
+                        ></FormField>
+                    </div>
+                    <FormField>
+                        <SwitchBtn
+                            onChange={() => {
+                                setItemControlExtension(props.item, ItemControlType.step, dispatch);
+                            }}
+                            value={
+                                props.item.extension?.find((ex) =>
+                                    ex.valueCodeableConcept?.coding?.find((ex2) => ex2.code === ItemControlType.step),
+                                )
+                                    ? true
+                                    : false
+                            }
+                            label={t('Is a step')}
+                        />
+                    </FormField>
+                </>
+            )}
         </>
     );
 };
