@@ -21,6 +21,7 @@ import {
     isVisibilityHideSublabel,
     setItemControlExtension,
     VisibilityType,
+    isVisibilityHideProgress,
 } from '../../helpers/globalVisibilityHelper';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import InputField from '../InputField/inputField';
@@ -208,6 +209,16 @@ const QuestionnaireSettings = (): JSX.Element => {
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSidebar, dispatch)}
                     value={isVisibilityHideSidebar(qMetadata)}
                     label={t('Hide sidebar texts in PDF')}
+                />
+            </FormField>
+            <FormField
+                label={t('Progress indicator display')}
+                sublabel={t('Choose whether you want to display a progress indicator or not. Used in step schemes.')}
+            >
+                <CheckboxBtn
+                    onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideProgress, dispatch)}
+                    value={isVisibilityHideProgress(qMetadata)}
+                    label={t('Variant 1')}
                 />
             </FormField>
             <FormField label={t('Navigation')} sublabel={t('Choose whether to use the navigator')}>
