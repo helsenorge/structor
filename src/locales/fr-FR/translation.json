@@ -392,7 +392,10 @@
     "Display in form filler and PDF": "Affichage sous forme et PDF",
     "Display only in PDF": "Afficher uniquement en PDF",
     "Display only in form filler": "Afficher uniquement dans le formulaire",
-    "Hide in form filler and PDF": "Masquer dans le formulaire et le PDF",    
+    "Hide in form filler and PDF": "Masquer dans le formulaire et le PDF",
     "Retrieve input data from field": "Récupérer les données d'entrée du champ",
-    "data receiver does not have an earlier question": "le destinataire des données n'a pas de question antérieure"
+    "data receiver does not have an earlier question": "le destinataire des données n'a pas de question antérieure",
+    "Step-view": "Vue par étapes",
+    "Select whether the group should be a step in step-view": "Sélectionnez si le groupe doit être une vue étape par étape",
+    "Step in step-view": "Étape par étape"
 }
