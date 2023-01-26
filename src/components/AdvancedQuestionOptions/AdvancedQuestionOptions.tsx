@@ -164,6 +164,10 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
         }
     };
 
+    const isGroupItemOnGlobalLevel = (groupId: string): boolean => {
+        return [qOrder].find((i) => i[0].linkId === groupId) ? true : false;
+    };
+
     return (
         <>
             {canTypeBeReadonly(props.item) && (
@@ -368,7 +372,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     </FormField>
                 </>
             )}
-            {props.item.type === IQuestionnaireItemType.group && (
+            {props.item.type === IQuestionnaireItemType.group && isGroupItemOnGlobalLevel(props.item.linkId) && (
                 <>
                     <div className="horizontal full">
                         <FormField
