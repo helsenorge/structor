@@ -165,7 +165,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
     };
 
     const isGroupItemOnGlobalLevel = (groupId: string): boolean => {
-        return [qOrder].find((i) => i[0].linkId === groupId) ? true : false;
+        return qOrder.find((i) => i.linkId === groupId) ? true : false;
     };
 
     return (
