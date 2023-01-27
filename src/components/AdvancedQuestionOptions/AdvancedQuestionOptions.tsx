@@ -387,7 +387,9 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                             }}
                             value={
                                 props.item.extension?.find((ex) =>
-                                    ex.valueCodeableConcept?.coding?.find((ex2) => ex2.code === ItemControlType.step),
+                                    ex.valueCodeableConcept?.coding?.find(
+                                        (coding) => coding.code === ItemControlType.step,
+                                    ),
                                 )
                                     ? true
                                     : false
