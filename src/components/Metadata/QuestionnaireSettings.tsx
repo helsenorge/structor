@@ -214,13 +214,13 @@ const QuestionnaireSettings = (): JSX.Element => {
             <FormField
                 label={t('Progress indicator')}
                 sublabel={t(
-                    'Choose whether you want to display a progress indicator. The progress indicator is only available if the form is using a step-view',
+                    'Choose whether you want to hide the progress indicator. The progress indicator is only available if the form is using a step-view',
                 )}
             >
                 <SwitchBtn
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideProgress, dispatch)}
                     value={isVisibilityHideProgress(qMetadata)}
-                    label={t('Display progress indicator')}
+                    label={t('Hide progress indicator')}
                 />
             </FormField>
             <FormField label={t('Navigation')} sublabel={t('Choose whether to use the navigator')}>
