@@ -234,6 +234,7 @@ export const initialState: TreeState = {
                     coding: [
                         createVisibilityCoding(VisibilityType.hideHelp),
                         createVisibilityCoding(VisibilityType.hideSublabel),
+                        createVisibilityCoding(VisibilityType.hideProgress),
                     ],
                 },
             },
