@@ -116,7 +116,7 @@ const exportItemTranslations = (
                 `item[${linkId}]._text.extension[${IExtentionType.markdown}].valueMarkdown,${stringValues}\n`;
         } else {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
-                return additionalLanguages[lang].items[linkId].text;
+                return additionalLanguages[lang].items[linkId]?.text;
             });
             const stringValues = escapeValues([item.text, ...translatedValues]);
             returnString = returnString + `item[${linkId}].text,${stringValues}\n`;
