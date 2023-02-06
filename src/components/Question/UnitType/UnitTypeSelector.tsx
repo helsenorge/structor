@@ -23,6 +23,14 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 
+    const getTranslatedQuantityUnitType = (code: string) => {
+        const type = quantityUnitTypes.find(({ code: predefinedCode }) => predefinedCode === code);
+        if (type) {
+            return { code: type.code, display: t(type.display), system: type.system };
+        }
+        return type;
+    };
+
     const updateQuantityUnitType = (event: ChangeEvent<HTMLSelectElement>): void => {
         const {
             target: { value: quantityUnitTypeCode },
@@ -33,7 +41,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
             const coding =
                 quantityUnitTypeCode === QUANTITY_UNIT_TYPE_CUSTOM
                     ? { code: '', display: '', system: createUriUUID() }
-                    : quantityUnitTypes.find(({ code: predefinedCode }) => predefinedCode === quantityUnitTypeCode);
+                    : getTranslatedQuantityUnitType(quantityUnitTypeCode);
             const unitExtension: Extension = {
                 url: IExtentionType.questionnaireUnit,
                 valueCoding: coding,
@@ -83,7 +91,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
             (type) =>
                 type.code !== QUANTITY_UNIT_TYPE_CUSTOM &&
                 type.code === currentCode &&
-                type.display === currentDisplay &&
+                t(type.display) === currentDisplay &&
                 type.system === currentSystem,
         );
 
