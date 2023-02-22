@@ -66,7 +66,7 @@ import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { saveStateToDb } from './indexedDbHelper';
 import { isRecipientList } from '../../helpers/QuestionHelper';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
-import { createAttachmentRenderCoding, VisibilityType } from '../../helpers/globalVisibilityHelper';
+import { createVisibilityCoding, VisibilityType } from '../../helpers/globalVisibilityHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -232,8 +232,8 @@ export const initialState: TreeState = {
                 url: IExtentionType.globalVisibility,
                 valueCodeableConcept: {
                     coding: [
-                        createAttachmentRenderCoding(VisibilityType.hideHelp),
-                        createAttachmentRenderCoding(VisibilityType.hideSublabel),
+                        createVisibilityCoding(VisibilityType.hideHelp),
+                        createVisibilityCoding(VisibilityType.hideSublabel),
                     ],
                 },
             },
