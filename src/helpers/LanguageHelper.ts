@@ -10,11 +10,11 @@ import { isValidId } from './MetadataHelper';
 import { IExtentionType } from '../types/IQuestionnareItemType';
 import { Extension } from '../types/fhir';
 
-export const INITIAL_LANGUAGE: Language = { code: 'nb-NO', display: 'Norsk Bokmål', localDisplay: 'Norsk bokmål' };
+export const INITIAL_LANGUAGE: Language = { code: 'nb-NO', display: 'Bokmål', localDisplay: 'Bokmål' };
 
 export const supportedLanguages: Language[] = [
     INITIAL_LANGUAGE,
-    { code: 'nn-NO', display: 'Nynorsk', localDisplay: 'Norsk nynorsk' },
+    { code: 'nn-NO', display: 'Nynorsk', localDisplay: 'Nynorsk' },
     { code: 'se-NO', display: 'Samisk', localDisplay: 'Davvisámegillii' },
     { code: 'en-GB', display: 'Engelsk', localDisplay: 'English' },
     { code: 'pl-PL', display: 'Polsk', localDisplay: 'Polskie' },
