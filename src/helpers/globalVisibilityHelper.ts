@@ -8,12 +8,14 @@ export const globalVisibility = [
     { code: 'hide-sidebar', display: 'Hide sidebar texts' },
     { code: 'hide-help', display: 'Hide help texts' },
     { code: 'hide-sublabel', display: 'Hide sublabel texts' },
+    { code: 'hide-progress', display: 'Hide progress indicator' },
 ];
 
 export enum VisibilityType {
     hideSidebar = 'hide-sidebar',
     hideHelp = 'hide-help',
     hideSublabel = 'hide-sublabel',
+    hideProgress = 'hide-progress',
 }
 
 const createItemControlExtensionWithTypes = (types: VisibilityType[]): Extension => {
@@ -24,18 +26,24 @@ const createItemControlExtensionWithTypes = (types: VisibilityType[]): Extension
     };
 
     types.forEach((type: VisibilityType) => {
-        extension.valueCodeableConcept.coding.push(createAttachmentRenderCoding(type));
+        extension.valueCodeableConcept.coding.push(createVisibilityCoding(type));
     });
     return extension;
 };
 
 export const createItemControlExtension = (type: VisibilityType): Extension => {
+    let codingSystem = '';
+    if (type === VisibilityType.hideProgress) {
+        codingSystem = ICodeSystem.progressIndicatorOptions;
+    } else {
+        codingSystem = ICodeSystem.attachmentRenderOptions;
+    }
     return {
         url: IExtentionType.globalVisibility,
         valueCodeableConcept: {
             coding: [
                 {
-                    system: ICodeSystem.attachmentRenderOptions,
+                    system: codingSystem,
                     code: type,
                     display: getVisibilityCodeDisplay(type),
                 },
@@ -86,6 +94,10 @@ export const isVisibilityHideSublabel = (item: IQuestionnaireMetadata): boolean 
     return existItemControlWithCode(item, VisibilityType.hideSublabel);
 };
 
+export const isVisibilityHideProgress = (item: IQuestionnaireMetadata): boolean => {
+    return existItemControlWithCode(item, VisibilityType.hideProgress);
+};
+
 export const setItemControlExtension = (
     item: IQuestionnaireMetadata,
     code: VisibilityType,
@@ -103,9 +115,15 @@ export const getVisibilityCodeDisplay = (code: VisibilityType): string | undefin
     return globalVisibility.find((c) => c.code === code)?.display;
 };
 
-export const createAttachmentRenderCoding = (code: VisibilityType): Coding => {
+export const createVisibilityCoding = (code: VisibilityType): Coding => {
+    let codingSystem = '';
+    if (code === VisibilityType.hideProgress) {
+        codingSystem = ICodeSystem.progressIndicatorOptions;
+    } else {
+        codingSystem = ICodeSystem.attachmentRenderOptions;
+    }
     return {
-        system: ICodeSystem.attachmentRenderOptions,
+        system: codingSystem,
         code: code,
         display: getVisibilityCodeDisplay(code),
     };
