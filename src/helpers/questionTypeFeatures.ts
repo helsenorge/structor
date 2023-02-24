@@ -154,12 +154,7 @@ export const canTypeBeBeriket = (item: QuestionnaireItem): boolean => {
 };
 
 export const canTypeHaveHelp = (item: QuestionnaireItem): boolean => {
-    return (
-        item.type !== IQuestionnaireItemType.display &&
-        !isItemControlInline(item) &&
-        !isItemControlHighlight(item) &&
-        !isItemControlReceiverComponent(item)
-    );
+    return item.type !== IQuestionnaireItemType.display && !isItemControlInline(item) && !isItemControlHighlight(item);
 };
 
 export const canTypeHaveSummary = (item: QuestionnaireItem): boolean => {
