@@ -63,7 +63,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const [newValueSet, setNewValueSet] = useState<ValueSet>({ ...initValueSet() });
     const { qContained } = state;
-
+    console.log('qContained', qContained);
     const addNewElement = () => {
         newValueSet?.compose?.include[0].concept?.push({
             id: createUUID(),
@@ -86,7 +86,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
     const handleConceptItem = (value: string, updateField: 'code' | 'display', id?: string) => {
         const compose = { ...newValueSet.compose };
         const item = compose.include && compose.include[0]?.concept?.find((x) => x && x.id === id);
-
+        console.log('Here handleConceptItem', item);
         if (item) {
             item[updateField] = value;
         }
@@ -145,6 +145,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
     };
 
     const handleEdit = (valueSet: ValueSet) => {
+        console.log('newValueSet', newValueSet);
         const o = JSON.stringify(valueSet);
         setNewValueSet(JSON.parse(o));
     };
