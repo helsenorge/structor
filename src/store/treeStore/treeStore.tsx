@@ -598,8 +598,8 @@ function reorderItem(draft: TreeState, action: ReorderItemAction): void {
 }
 
 function updateValueSet(draft: TreeState, action: UpdateValueSetAction): void {
-    const indexToUpdate = draft?.qContained?.findIndex((x) => x.id === action.item.id);
-    if (draft.qContained && indexToUpdate && indexToUpdate >= 0) {
+    const indexToUpdate = draft?.qContained?.findIndex((x) => x.id === action.item.id) ?? -1;
+    if (draft.qContained && indexToUpdate >= 0) {
         draft.qContained[indexToUpdate] = action.item;
     } else {
         draft.qContained = [...(draft?.qContained || []), action.item];
