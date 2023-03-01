@@ -220,7 +220,7 @@ const validateEnableWhen = (
             );
         }
 
-        // does the quantity system and code match?
+        // does the Coding exist or the quantity system and code match?
         if (
             itemExists &&
             qItems[ew.question].type === IQuestionnaireItemType.quantity &&
