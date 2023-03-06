@@ -220,8 +220,12 @@ const validateEnableWhen = (
             );
         }
 
-        // does the quantity system and code match?
-        if (itemExists && qItems[ew.question].type === IQuestionnaireItemType.quantity) {
+        // does the Coding exist or the quantity system and code match?
+        if (
+            itemExists &&
+            qItems[ew.question].type === IQuestionnaireItemType.quantity &&
+            ew.operator !== IOperator.exists
+        ) {
             const quantityExtension = qItems[ew.question].extension?.find(
                 (x) => x.url === IExtentionType.questionnaireUnit,
             );
