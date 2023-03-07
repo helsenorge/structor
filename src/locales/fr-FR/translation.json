@@ -401,5 +401,9 @@
     "Step-view": "Vue par étapes",
     "Select whether the group should be a step in step-view": "Sélectionnez si le groupe doit être une vue étape par étape",
     "Step in step-view": "Étape par étape",
-    "Change": "Changement"
+    "Change": "Changement",
+    "Workflow request": "Demande de flux de travail",
+    "Should the questionaire be part of a Workflow request?": "Le formulaire doit-il faire partie d'un flux de travail de type enquête?",
+    "Workflow Setting": "Paramètre de flux de travail",
+    "Request": "Demande"
 }
