@@ -121,6 +121,7 @@ export enum IExtentionType {
     hyperlinkTarget = 'http://helsenorge.no/fhir/StructureDefinition/sdf-hyperlink-target',
     globalVisibility = 'http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility',
     copyExpression = 'http://hl7.org/fhir/StructureDefinition/cqf-expression',
+    workflow = 'http://hl7.org/fhir/ValueSet/usage-context-type',
 }
 
 export enum UseContextSystem {

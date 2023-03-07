@@ -251,6 +251,38 @@ const QuestionnaireSettings = (): JSX.Element => {
                     label={t('Navigator')}
                 />
             </FormField>
+            <FormField
+                label={t('Workflow request')}
+                sublabel={t('Should the questionaire be part of a Workflow request?')}
+            >
+                <SwitchBtn
+                    onChange={() => {
+                        const hasWorkflowExtension = !!qMetadata?.extension?.find(
+                            (ex) => ex.url === IExtentionType.workflow,
+                        );
+                        if (hasWorkflowExtension) {
+                            // remove extension
+                            removeMetaExtension(IExtentionType.workflow);
+                        } else {
+                            // set extension
+                            updateMetaExtension({
+                                url: IExtentionType.workflow,
+                                valueCodeableConcept: {
+                                    coding: [
+                                        {
+                                            system: 'http://helsenorge.no/fhir/CodeSystem/workflow',
+                                            code: 'request',
+                                            display: 'Request',
+                                        },
+                                    ],
+                                },
+                            });
+                        }
+                    }}
+                    value={!!qMetadata?.extension?.find((ex) => ex.url === IExtentionType.workflow) || false}
+                    label={t('Workflow Setting')}
+                />
+            </FormField>
         </Accordion>
     );
 };
