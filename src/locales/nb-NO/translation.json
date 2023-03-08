@@ -403,7 +403,7 @@
     "Step in step-view": "Steg i stegvisning",
     "Change": "Endre",
     "Workflow request": "Arbeidsflyt forespørsel",
-    "Should the questionaire be part of a Workflow request?": "Skal skjema inngå i en arbeidsflyt av type henvendelse?",
+    "Should the form be part of a Workflow request?": "Skal skjema inngå i en arbeidsflyt av type henvendelse?",
     "Workflow Setting": "Arbeidsflyt innstilling",
     "Request": "Henvendelse"
 }
