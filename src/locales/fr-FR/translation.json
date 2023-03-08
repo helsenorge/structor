@@ -403,7 +403,7 @@
     "Step in step-view": "Étape par étape",
     "Change": "Changement",
     "Workflow request": "Demande de flux de travail",
-    "Should the questionaire be part of a Workflow request?": "Le formulaire doit-il faire partie d'un flux de travail de type enquête?",
+    "Should the form be part of a Workflow request?": "Le formulaire doit-il faire partie d'un workflow",
     "Workflow Setting": "Paramètre de flux de travail",
     "Request": "Demande"
 }
