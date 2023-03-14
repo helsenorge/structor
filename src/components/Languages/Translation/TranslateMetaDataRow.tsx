@@ -42,6 +42,18 @@ const TranslateMetaDataRow = ({
         </>
     );
 
+    const createNewGuid = (existingValue: string): string => {
+        if (metadataProperty.label === 'Id') {
+            if (existingValue === undefined || existingValue === '') {
+                if (baseValue !== undefined && baseValue !== '') {
+                    const id = crypto.randomUUID();
+                    return id;
+                }
+            }
+        }
+        return existingValue;
+    };
+
     const renderTranslation = () => (
         <>
             {markdown ? (
@@ -54,7 +66,7 @@ const TranslateMetaDataRow = ({
                 />
             ) : (
                 <textarea
-                    defaultValue={translatedValue}
+                    defaultValue={createNewGuid(translatedValue)}
                     onBlur={(event) => {
                         dispatchPropertyUpdate(event.target.value);
                     }}

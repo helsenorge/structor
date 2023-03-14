@@ -10,7 +10,7 @@ import {
 import Accordion from '../Accordion/Accordion';
 import DatePicker from '../DatePicker/DatePicker';
 import FormField from '../FormField/FormField';
-import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
+import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
 import { ContactDetail, Extension, Meta, UsageContext } from '../../types/fhir';
 import { TreeContext } from '../../store/treeStore/treeStore';
@@ -66,7 +66,7 @@ const MetadataEditor = (): JSX.Element => {
 
                 <FormField label={t('Id')}>
                     <InputField
-                        defaultValue={qMetadata.id}
+                        defaultValue={createNewGuid(qMetadata)}
                         onChange={(e) => {
                             setDisplayIdValidationError(!isValidId(e.target.value));
                         }}
@@ -196,5 +196,13 @@ const MetadataEditor = (): JSX.Element => {
         </div>
     );
 };
+
+function createNewGuid(qMetadata: IQuestionnaireMetadata): string | undefined {
+    if (qMetadata.id === undefined) {
+        const id = crypto.randomUUID();
+        return id;
+    }
+    return qMetadata.id;
+}
 
 export default MetadataEditor;
