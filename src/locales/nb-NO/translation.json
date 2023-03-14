@@ -402,8 +402,7 @@
     "Select whether the group should be a step in step-view": "Velg om denne gruppen skal være et steg i stegvising",
     "Step in step-view": "Steg i stegvisning",
     "Change": "Endre",
-    "Workflow request": "Arbeidsflyt forespørsel",
-    "Should the form be part of a request workflow?": "Skal skjema inngå i en arbeidsflyt av type henvendelse?",
-    "Workflow Setting": "Arbeidsflyt innstilling",
+    "Workflow": "Arbeidsflyt",
+    "Should the form be part of a request workflow?": "Skal skjema inngå i en henvendelsesarbeidsflyt?",
     "Request": "Henvendelse"
 }

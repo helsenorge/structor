@@ -251,7 +251,7 @@ const QuestionnaireSettings = (): JSX.Element => {
                     label={t('Navigator')}
                 />
             </FormField>
-            <FormField label={t('Workflow request')} sublabel={t('Should the form be part of a request workflow?')}>
+            <FormField label={t('Workflow')} sublabel={t('Should the form be part of a request workflow?')}>
                 <SwitchBtn
                     onChange={() => {
                         const hasWorkflowExtension = !!qMetadata?.extension?.find(
@@ -277,7 +277,7 @@ const QuestionnaireSettings = (): JSX.Element => {
                         }
                     }}
                     value={!!qMetadata?.extension?.find((ex) => ex.url === IExtentionType.workflow) || false}
-                    label={t('Workflow Setting')}
+                    label={t('Request')}
                 />
             </FormField>
         </Accordion>
