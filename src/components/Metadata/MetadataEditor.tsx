@@ -44,6 +44,16 @@ const MetadataEditor = (): JSX.Element => {
         return system || UseContextSystem.helsetjeneste_full;
     };
 
+    // Auto creates a random guid / id for the questionnaire and also returns it as the default value
+    const createNewGuid = (qMetadata: IQuestionnaireMetadata): string | undefined => {
+        if (qMetadata.id === undefined) {
+            const id = crypto.randomUUID();
+            updateMeta(IQuestionnaireMetadataType.id, id);
+            return id;
+        }
+        return qMetadata.id;
+    };
+
     return (
         <div id="metadata-editor">
             <Accordion title={t('Questionnaire details')}>
@@ -196,13 +206,5 @@ const MetadataEditor = (): JSX.Element => {
         </div>
     );
 };
-
-function createNewGuid(qMetadata: IQuestionnaireMetadata): string | undefined {
-    if (qMetadata.id === undefined) {
-        const id = crypto.randomUUID();
-        return id;
-    }
-    return qMetadata.id;
-}
 
 export default MetadataEditor;
