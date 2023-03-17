@@ -175,7 +175,15 @@ export interface TreeState {
     qAdditionalLanguages?: Languages;
 }
 
-export const initialState: TreeState = {
+export const getInitialState = (): TreeState => {
+    // Autocreates a random questionnaire id for the user which will be the default value
+    if (initialState.qMetadata.id === undefined || initialState.qMetadata.id === '') {
+        initialState.qMetadata.id = crypto.randomUUID();
+    }
+    return initialState;
+};
+
+const initialState: TreeState = {
     isDirty: false,
     qItems: {},
     qOrder: [],
@@ -248,6 +256,11 @@ function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
     if (!draft.qAdditionalLanguages) {
         draft.qAdditionalLanguages = {};
     }
+    // Autocreates a random questionnaire id for the translated version for the user which will be the default value
+    if (action.translation.metaData.id === undefined || action.translation.metaData.id === '') {
+        action.translation.metaData.id = crypto.randomUUID();
+    }
+
     draft.qAdditionalLanguages[action.additionalLanguageCode] = action.translation;
 }
 
@@ -525,7 +538,7 @@ function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value
 }
 
 function resetQuestionnaire(draft: TreeState, action: ResetQuestionnaireAction): void {
-    const newState: TreeState = action.newState || initialState;
+    const newState: TreeState = action.newState || getInitialState();
     draft.isDirty = newState.isDirty;
     draft.qOrder = newState.qOrder;
     draft.qItems = newState.qItems;
@@ -758,12 +771,12 @@ export const TreeContext = createContext<{
     state: TreeState;
     dispatch: Dispatch<ActionType>;
 }>({
-    state: initialState,
+    state: getInitialState(),
     dispatch: () => null,
 });
 
 export const TreeContextProvider = (props: { children: JSX.Element }): JSX.Element => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, getInitialState());
 
     useEffect(() => {
         const startTime = performance.now();
