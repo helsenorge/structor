@@ -9,7 +9,7 @@ import {
 } from '../../helpers/MetadataHelper';
 import Accordion from '../Accordion/Accordion';
 import FormField from '../FormField/FormField';
-import { Extension } from '../../types/fhir';
+import { ContactDetail, Extension, Meta, UsageContext } from '../../types/fhir';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { IExtentionType, IValueSetSystem } from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
@@ -26,6 +26,8 @@ import {
 import RadioBtn from '../RadioBtn/RadioBtn';
 import InputField from '../InputField/inputField';
 import { translatableSettings } from '../../helpers/LanguageHelper';
+import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
+import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 
 const QuestionnaireSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -34,6 +36,28 @@ const QuestionnaireSettings = (): JSX.Element => {
 
     const updateMetaExtension = (extension: Extension) => {
         setQuestionnaireExtension(qMetadata, extension, dispatch);
+    };
+
+    const updateMeta = (
+        propName: IQuestionnaireMetadataType,
+        value: string | Meta | Extension[] | ContactDetail[] | UsageContext,
+    ) => {
+        dispatch(updateQuestionnaireMetadataAction(propName, value));
+    };
+
+    const hasUseContextWorkflowRequest = () => {
+        const existing = (qMetadata.useContext || []).filter((x: UsageContext) => {
+            return x.valueCodeableConcept?.coding?.find((obj) => {
+                return (
+                    obj.system === IValueSetSystem.workflow && obj.code === 'request' && obj.display === 'Henvendelse'
+                );
+            });
+        });
+        if (existing === undefined || existing.length === 0) {
+            return false;
+        } else {
+            return true;
+        }
     };
 
     const removeMetaExtension = (extensionUrl: string) => {
@@ -254,29 +278,53 @@ const QuestionnaireSettings = (): JSX.Element => {
             <FormField label={t('Workflow')} sublabel={t('Should the form be part of a Workflow request?')}>
                 <SwitchBtn
                     onChange={() => {
-                        const hasWorkflowExtension = !!qMetadata?.extension?.find(
-                            (ex) => ex.url === IExtentionType.workflow,
-                        );
-                        if (hasWorkflowExtension) {
-                            // remove extension
-                            removeMetaExtension(IExtentionType.workflow);
-                        } else {
-                            // set extension
-                            updateMetaExtension({
-                                url: IExtentionType.workflow,
-                                valueCodeableConcept: {
-                                    coding: [
-                                        {
-                                            system: 'http://helsenorge.no/fhir/CodeSystem/workflow',
-                                            code: 'request',
-                                            display: 'Request',
-                                        },
-                                    ],
-                                },
+                        const updateValue = {
+                            code: {
+                                system: 'http://hl7.org/fhir/ValueSet/usage-context-type',
+                                code: 'workflow',
+                                display: 'Workflow Setting',
+                            },
+                            valueCodeableConcept: {
+                                coding: [
+                                    {
+                                        system: 'http://helsenorge.no/fhir/CodeSystem/workflow',
+                                        code: 'request',
+                                        display: 'Henvendelse',
+                                    },
+                                ],
+                            },
+                        };
+
+                        if (hasUseContextWorkflowRequest()) {
+                            console.log('Has use context workflow request === true');
+                            // Removes extension by creating a new array without the spesific value and overwrite meta
+                            const extensionsToSet = (qMetadata.useContext || []).filter((x: UsageContext) => {
+                                return x.valueCodeableConcept?.coding?.find((obj) => {
+                                    return (
+                                        obj.system !== IValueSetSystem.workflow &&
+                                        obj.code !== 'request' &&
+                                        obj.display !== 'Henvendelse'
+                                    );
+                                });
                             });
+                            updateMeta(IQuestionnaireMetadataType.useContext, extensionsToSet);
+                        } else {
+                            // Adds extension by pushing value on the existing ones
+                            console.log('Has use context workflow request === false');
+                            const existingExtensions = (qMetadata.useContext || []).filter((x: UsageContext) => {
+                                return x.valueCodeableConcept?.coding?.find((obj) => {
+                                    return (
+                                        obj.system !== IValueSetSystem.workflow &&
+                                        obj.code !== 'request' &&
+                                        obj.display !== 'Henvendelse'
+                                    );
+                                });
+                            });
+                            existingExtensions.push(updateValue);
+                            updateMeta(IQuestionnaireMetadataType.useContext, existingExtensions);
                         }
                     }}
-                    value={!!qMetadata?.extension?.find((ex) => ex.url === IExtentionType.workflow) || false}
+                    value={hasUseContextWorkflowRequest() || false}
                     label={t('Request')}
                 />
             </FormField>
