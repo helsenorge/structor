@@ -296,7 +296,6 @@ const QuestionnaireSettings = (): JSX.Element => {
                         };
 
                         if (hasUseContextWorkflowRequest()) {
-                            console.log('Has use context workflow request === true');
                             // Removes extension by creating a new array without the spesific value and overwrite meta
                             const extensionsToSet = (qMetadata.useContext || []).filter((x: UsageContext) => {
                                 return x.valueCodeableConcept?.coding?.find((obj) => {
@@ -310,7 +309,6 @@ const QuestionnaireSettings = (): JSX.Element => {
                             updateMeta(IQuestionnaireMetadataType.useContext, extensionsToSet);
                         } else {
                             // Adds extension by pushing value on the existing ones
-                            console.log('Has use context workflow request === false');
                             const existingExtensions = (qMetadata.useContext || []).filter((x: UsageContext) => {
                                 return x.valueCodeableConcept?.coding?.find((obj) => {
                                     return (
