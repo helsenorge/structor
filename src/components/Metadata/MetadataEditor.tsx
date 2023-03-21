@@ -14,7 +14,7 @@ import DatePicker from '../DatePicker/DatePicker';
 import FormField from '../FormField/FormField';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import { ContactDetail, Extension, Meta, UsageContext, Coding } from '../../types/fhir';
+import { ContactDetail, Extension, Meta, UsageContext } from '../../types/fhir';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import RadioBtn from '../RadioBtn/RadioBtn';
