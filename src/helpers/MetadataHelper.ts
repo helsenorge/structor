@@ -91,7 +91,7 @@ export const isValidTechnicalName = (value: string, stateValue?: string): boolea
     return regExp.test(value);
 };
 
-export const mapUseContextToMetaSecurity = (useContext: string) => {
+export const mapUseContextToMetaSecurity = (useContext: string): Coding => {
     switch (useContext) {
         case UseContextSystem.journalinnsyn_basispluss:
             return getMetaSecurity(metaSecurityCode.pasientjournal);
