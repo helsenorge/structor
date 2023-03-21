@@ -2,22 +2,23 @@ import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatISO, parseISO } from 'date-fns';
 import {
+    getMetaSecurity,
     isValidId,
     isValidTechnicalName,
+    metaSecurityOptions,
     questionnaireStatusOptions,
-    useContextSystem,
+    metaSecurityCode,
 } from '../../helpers/MetadataHelper';
 import Accordion from '../Accordion/Accordion';
 import DatePicker from '../DatePicker/DatePicker';
 import FormField from '../FormField/FormField';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import MarkdownEditor from '../MarkdownEditor/MarkdownEditor';
-import { ContactDetail, Extension, Meta, UsageContext } from '../../types/fhir';
+import { ContactDetail, Extension, Meta, UsageContext, Coding } from '../../types/fhir';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import InputField from '../InputField/inputField';
-import { UseContextSystem } from '../../types/IQuestionnareItemType';
 
 const MetadataEditor = (): JSX.Element => {
     const { t } = useTranslation();
@@ -33,15 +34,14 @@ const MetadataEditor = (): JSX.Element => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
     };
 
-    const getUseContextSystem = (): string => {
+    const getMetaSecuritySystem = (): string => {
         const system =
-            qMetadata.useContext &&
-            qMetadata.useContext.length > 0 &&
-            qMetadata.useContext[0].valueCodeableConcept?.coding &&
-            qMetadata.useContext[0].valueCodeableConcept.coding.length > 0 &&
-            qMetadata.useContext[0].valueCodeableConcept.coding[0].system;
+            qMetadata.meta &&
+            qMetadata.meta.security &&
+            qMetadata.meta.security.length > 0 &&
+            qMetadata.meta.security[0].code;
 
-        return system || UseContextSystem.helsetjeneste_full;
+        return system || metaSecurityCode.helsehjelp;
     };
 
     return (
@@ -168,28 +168,16 @@ const MetadataEditor = (): JSX.Element => {
                 </FormField>
                 <FormField label={t('Access control')}>
                     <RadioBtn
-                        checked={getUseContextSystem()}
+                        checked={getMetaSecuritySystem()}
                         onChange={(newValue: string) => {
-                            const updateValue = [
-                                {
-                                    code: {
-                                        system: 'http://hl7.org/fhir/ValueSet/usage-context-type',
-                                        code: 'focus',
-                                        display: 'Clinical Focus',
-                                    },
-                                    valueCodeableConcept: {
-                                        coding: [
-                                            {
-                                                system: newValue,
-                                            },
-                                        ],
-                                    },
-                                },
-                            ];
-                            updateMeta(IQuestionnaireMetadataType.useContext, updateValue);
+                            const newMeta = {
+                                ...qMetadata.meta,
+                                security: [getMetaSecurity(newValue)],
+                            } as Meta;
+                            updateMeta(IQuestionnaireMetadataType.meta, newMeta);
                         }}
-                        options={useContextSystem}
-                        name={'useContext-radio'}
+                        options={metaSecurityOptions}
+                        name={'metaSecurity-radio'}
                     />
                 </FormField>
             </Accordion>

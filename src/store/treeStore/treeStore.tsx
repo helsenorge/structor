@@ -58,7 +58,7 @@ import {
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
-import { IItemProperty, UseContextSystem } from '../../types/IQuestionnareItemType';
+import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { isIgnorableItem } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
@@ -67,6 +67,7 @@ import { saveStateToDb } from './indexedDbHelper';
 import { isRecipientList } from '../../helpers/QuestionHelper';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
 import { createVisibilityCoding, VisibilityType } from '../../helpers/globalVisibilityHelper';
+import { metaSecurityCode, getMetaSecurity } from '../../helpers/MetadataHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -204,23 +205,9 @@ const initialState: TreeState = {
                     display: INITIAL_LANGUAGE.display,
                 },
             ],
+            security: [getMetaSecurity(metaSecurityCode.helsehjelp)],
         },
-        useContext: [
-            {
-                code: {
-                    system: 'http://hl7.org/fhir/ValueSet/usage-context-type',
-                    code: 'focus',
-                    display: 'Clinical Focus',
-                },
-                valueCodeableConcept: {
-                    coding: [
-                        {
-                            system: UseContextSystem.helsetjeneste_full,
-                        },
-                    ],
-                },
-            },
-        ],
+        useContext: [],
         contact: [
             {
                 name: 'http://www.nhn.no',
