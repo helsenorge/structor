@@ -1,5 +1,6 @@
-import { Coding } from '../types/fhir';
+import { Coding, Questionnaire, Meta } from '../types/fhir';
 import { IQuestionnaireStatus } from '../types/IQuestionnaireMetadataType';
+import { UseContextSystem } from '../types/IQuestionnareItemType';
 
 export const questionnaireStatusOptions = [
     {
@@ -88,4 +89,39 @@ export const isValidTechnicalName = (value: string, stateValue?: string): boolea
     }
     const regExp = /^[A-Z]([A-Za-z0-9_]){0,254}$/;
     return regExp.test(value);
+};
+
+export const mapUseContextToMetaSecurity = (useContext: string) => {
+    switch (useContext) {
+        case UseContextSystem.journalinnsyn_basispluss:
+            return getMetaSecurity(metaSecurityCode.pasientjournal);
+        case UseContextSystem.registerinnsyn_basis:
+            return getMetaSecurity(metaSecurityCode.helseregister);
+        case UseContextSystem.helsetjeneste_full:
+        default:
+            return getMetaSecurity(metaSecurityCode.helsehjelp);
+    }
+};
+
+export const getUseContextSystem = (questionnaire: Questionnaire): string => {
+    const system =
+        questionnaire.useContext &&
+        questionnaire.useContext.length > 0 &&
+        questionnaire.useContext[0].valueCodeableConcept?.coding &&
+        questionnaire.useContext[0].valueCodeableConcept.coding.length > 0 &&
+        questionnaire.useContext[0].valueCodeableConcept.coding[0].system;
+
+    return system || UseContextSystem.helsetjeneste_full;
+};
+
+export const addMetaSecurityIfDoesNotExist = (questionnaire: Questionnaire): Questionnaire => {
+    if (!questionnaire.meta?.security) {
+        const useContextCode = getUseContextSystem(questionnaire);
+        const newMeta = {
+            ...questionnaire.meta,
+            security: [mapUseContextToMetaSecurity(useContextCode)],
+        } as Meta;
+        questionnaire = { ...questionnaire, meta: newMeta } as Questionnaire;
+    }
+    return questionnaire;
 };
