@@ -30,6 +30,7 @@ import {
 import { IExtentionType } from '../types/IQuestionnareItemType';
 import { initPredefinedValueSet } from './initPredefinedValueSet';
 import { getValueSetValues } from './valueSetHelper';
+import { addMetaSecurityIfDoesNotExist } from './MetadataHelper';
 
 function extractMetadata(questionnaireObj: Questionnaire) {
     const getMetadataParts = ({
@@ -254,7 +255,7 @@ export function mapToTreeState(resource: Bundle | Questionnaire): TreeState {
     } else {
         mainQuestionnaire = resource as Questionnaire;
     }
-
+    mainQuestionnaire = addMetaSecurityIfDoesNotExist(mainQuestionnaire);
     const qMetadata: IQuestionnaireMetadata = extractMetadata(mainQuestionnaire);
     const qContained = (mainQuestionnaire.contained as Array<ValueSet>) || []; // we expect contained to only contain ValueSets
     const { qItems, qOrder } = extractItemsAndOrder(mainQuestionnaire.item);
