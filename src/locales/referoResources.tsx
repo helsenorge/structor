@@ -96,6 +96,9 @@ export const getResources = (language: string): { [id: string]: string } => {
             adresseKomponent_velgTjeneste: 'Select place of treatment',
             adresseKomponent_feilmelding: 'You must select a recipient.',
             adresseKomponent_loadError: 'Technical error. Could not load recipients.',
+            linkOpensInNewTab: '',
+            nextStep: '',
+            previousStep: '',
         };
     }
     if (language === 'fr-FR') {
@@ -195,6 +198,9 @@ export const getResources = (language: string): { [id: string]: string } => {
             adresseKomponent_velgTjeneste: 'Sélectionnez le lieu de soin',
             adresseKomponent_feilmelding: 'Vous devez sélectionner un destinataire.',
             adresseKomponent_loadError: 'Erreur technique. Impossible de charger les destinataires.',
+            linkOpensInNewTab: `S'ouvre dans un nouvel onglet`,
+            nextStep: 'Suivant',
+            previousStep: 'Précédent',
         };
     }
     return {
@@ -294,5 +300,8 @@ export const getResources = (language: string): { [id: string]: string } => {
         adresseKomponent_velgTjeneste: 'Velg behandlingssted',
         adresseKomponent_feilmelding: 'Du må velge en mottaker',
         adresseKomponent_loadError: 'Teknisk feil: kunne ikke laste liste over mottakere',
+        linkOpensInNewTab: 'Åpnes i ny fane',
+        nextStep: 'Neste',
+        previousStep: 'Forrige',
     };
 };
