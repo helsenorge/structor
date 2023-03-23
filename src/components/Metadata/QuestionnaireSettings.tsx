@@ -275,7 +275,12 @@ const QuestionnaireSettings = (): JSX.Element => {
                     label={t('Navigator')}
                 />
             </FormField>
-            <FormField label={t('Workflow')} sublabel={t('Should the form be part of a Workflow request?')}>
+            <FormField
+                label={t('Workflow')}
+                sublabel={t(
+                    'Should the form be included in a workflow at Helsenorge? This field is only used by Norsk helsennett.',
+                )}
+            >
                 <SwitchBtn
                     onChange={() => {
                         const updateValue = {
@@ -287,7 +292,7 @@ const QuestionnaireSettings = (): JSX.Element => {
                             valueCodeableConcept: {
                                 coding: [
                                     {
-                                        system: 'http://helsenorge.no/fhir/CodeSystem/workflow',
+                                        system: IValueSetSystem.workflow,
                                         code: 'request',
                                         display: 'Henvendelse',
                                     },
