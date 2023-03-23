@@ -403,7 +403,7 @@
     "Step in step-view": "Steg i stegvisning",
     "Change": "Endre",
     "Workflow request": "Arbeidsflyt forespørsel",
-    "Should the form be part of a Workflow request?": "Skal skjema inngå i en henvendelsesarbeidsflyt?",
+    "Should the form be included in a workflow at Helsenorge? This field is only used by Norsk helsennett.": "Skal skjema inngå i en arbeidsflyt på Helsenorge? Dette feltet brukes kun av Norsk helsenett.",
     "Workflow": "Arbeidsflyt",
     "Request": "Henvendelse"
 }

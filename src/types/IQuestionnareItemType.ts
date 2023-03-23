@@ -77,6 +77,7 @@ export enum IValueSetSystem {
     presentationbuttonsValueSet = 'http://helsenorge.no/fhir/ValueSet/presentationbuttons',
     sotHeader = 'http://ehelse.no/fhir/ValueSet/SOTHeaders',
     hyperlinkTargetValueset = 'http://helsenorge.no/fhir/ValueSet/sdf-hyperlink-target',
+    workflow = 'http://helsenorge.no/fhir/CodeSystem/workflow',
 }
 
 export enum ICodeSystem {
