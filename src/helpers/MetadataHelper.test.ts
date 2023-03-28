@@ -45,7 +45,7 @@ describe(`MetadataHelpere`, () => {
         it(`Does not add security according to useContext when form does have a security from before`, () => {
             const newMeta = {
                 ...questionnaire.meta,
-                security: [getMetaSecurity(metaSecurityCode.ungdom)],
+                security: [getMetaSecurity(metaSecurityCode.sekundærbruk)],
             } as Meta;
             questionnaire = { ...questionnaire, meta: newMeta } as Questionnaire;
 
