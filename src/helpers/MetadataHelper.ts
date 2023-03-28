@@ -52,7 +52,6 @@ export enum metaSecurityDisplay {
     helsehjelp = 'Helsehjelp',
     forvaltning = 'Forvaltning',
     sekundærbruk = 'Sekundærbruk',
-    ungdom = 'Ungdom',
 }
 
 export enum metaSecurityCode {
@@ -61,7 +60,6 @@ export enum metaSecurityCode {
     helsehjelp = '3',
     forvaltning = '4',
     sekundærbruk = '5',
-    ungdom = '6',
 }
 
 export const metaSecurityOptions = [
@@ -70,7 +68,6 @@ export const metaSecurityOptions = [
     { code: metaSecurityCode.helsehjelp, display: metaSecurityDisplay.helsehjelp, system: metaSecuritySystem },
     { code: metaSecurityCode.forvaltning, display: metaSecurityDisplay.forvaltning, system: metaSecuritySystem },
     { code: metaSecurityCode.sekundærbruk, display: metaSecurityDisplay.sekundærbruk, system: metaSecuritySystem },
-    { code: metaSecurityCode.ungdom, display: metaSecurityDisplay.ungdom, system: metaSecuritySystem },
 ];
 
 export const getMetaSecurity = (code: string): Coding => {
