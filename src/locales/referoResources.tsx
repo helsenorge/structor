@@ -96,9 +96,9 @@ export const getResources = (language: string): { [id: string]: string } => {
             adresseKomponent_velgTjeneste: 'Select place of treatment',
             adresseKomponent_feilmelding: 'You must select a recipient.',
             adresseKomponent_loadError: 'Technical error. Could not load recipients.',
-            linkOpensInNewTab: '',
-            nextStep: '',
-            previousStep: '',
+            linkOpensInNewTab: 'Opens in new tab',
+            nextStep: 'Next',
+            previousStep: 'Previous',
         };
     }
     if (language === 'fr-FR') {
