@@ -178,7 +178,7 @@ export interface TreeState {
 export const getInitialState = (): TreeState => {
     // Autocreates a random questionnaire id for the user which will be the default value
     if (initialState.qMetadata.id === undefined || initialState.qMetadata.id === '') {
-        initialState.qMetadata.id = crypto.randomUUID();
+        initialState.qMetadata.id = createUUID();
     }
     return initialState;
 };
@@ -258,7 +258,7 @@ function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
     }
     // Autocreates a random questionnaire id for the translated version for the user which will be the default value
     if (action.translation.metaData.id === undefined || action.translation.metaData.id === '') {
-        action.translation.metaData.id = crypto.randomUUID();
+        action.translation.metaData.id = createUUID();
     }
 
     draft.qAdditionalLanguages[action.additionalLanguageCode] = action.translation;
