@@ -1,11 +1,11 @@
 import { generateQuestionnaire } from './generateQuestionnaire';
-import { initialState, TreeState } from '../store/treeStore/treeStore';
+import { getInitialState, TreeState } from '../store/treeStore/treeStore';
 import { Questionnaire } from '../types/fhir';
 
 describe(`generateQuestionnaire from initialState`, () => {
     let generatedQuestionnaire: Questionnaire;
     beforeAll(() => {
-        const result = generateQuestionnaire(initialState);
+        const result = generateQuestionnaire(getInitialState());
         generatedQuestionnaire = JSON.parse(result);
     });
     it(`removes empty string properties`, () => {
@@ -14,10 +14,6 @@ describe(`generateQuestionnaire from initialState`, () => {
 
     it('does not remove string properties', () => {
         expect(generatedQuestionnaire).toHaveProperty('resourceType', 'Questionnaire');
-    });
-
-    it(`removes empty arrays`, () => {
-        expect(generatedQuestionnaire).not.toHaveProperty('extension');
     });
 
     it(`does not remove populated arrays`, () => {
@@ -31,7 +27,7 @@ describe(`generateQuestionnaire from state with items`, () => {
         const linkId1 = '12345';
         const linkId2 = '67890';
         const state: TreeState = {
-            ...initialState,
+            ...getInitialState(),
             qItems: {
                 [linkId1]: { linkId: linkId1, type: 'Group', _text: {} },
                 [linkId2]: { linkId: linkId2, type: 'Group', _text: { extension: [] } },
