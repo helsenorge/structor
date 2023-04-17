@@ -4,15 +4,15 @@
     "private": true,
     "dependencies": {
         "@ckeditor/ckeditor5-react": "^3.0.0",
-        "@helsenorge/autosuggest": "^26.3.2",
+        "@helsenorge/autosuggest": "^27.1.4",
         "@helsenorge/ckeditor5-build-markdown": "^24.0.0",
-        "@helsenorge/core-utils": "^26.3.2",
-        "@helsenorge/date-time": "^26.3.2",
-        "@helsenorge/designsystem-react": "^2.6.2",
-        "@helsenorge/file-upload": "^26.3.2",
-        "@helsenorge/form": "^26.3.2",
-        "@helsenorge/refero": "^11.0.0",
-        "@helsenorge/toolkit": "21.3.0-prerelease",
+        "@helsenorge/core-utils": "^27.1.4",
+        "@helsenorge/date-time": "^27.1.4",
+        "@helsenorge/designsystem-react": "^3.0.1",
+        "@helsenorge/file-upload": "^27.1.4",
+        "@helsenorge/form": "^27.1.4",
+        "@helsenorge/refero": "^12.0.0",
+        "@helsenorge/toolkit": "^21.3.0-prerelease",
         "@nosferatu500/react-sortable-tree": "^3.0.3",
         "axios": "^0.21.4",
         "crypto-js": "^4.0.0",
@@ -54,18 +54,11 @@
             "strict": "off"
         }
     },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+    ],
     "proxy": "http://localhost:8888",
     "devDependencies": {
         "@testing-library/jest-dom": "^5.11.9",
