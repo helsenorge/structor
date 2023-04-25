@@ -23,7 +23,7 @@ type Props = {
 
 const View = ({ item }: Props): JSX.Element => {
     const { t } = useTranslation();
-    const { state, dispatch } = useContext(TreeContext);
+    const { dispatch } = useContext(TreeContext);
 
     const checkedRenderOptions = () => {
         return item.extension?.find((ex) => ex.url === IExtentionType.hidden)?.valueBoolean
