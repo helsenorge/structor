@@ -1,9 +1,10 @@
 import createUUID from './CreateUUID';
+import { TFunction } from 'react-i18next';
 import { Coding } from '../types/fhir';
 import { ICodeSystem } from '../types/IQuestionnareItemType';
 import { deleteItemCodeAction, addItemCodeAction } from '../store/treeStore/treeActions';
 import { ActionType } from '../store/treeStore/treeStore';
-import { QuestionnaireItem } from '../types/fhir';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 
 export enum RenderingOptionsEnum {
     None = '0',
@@ -30,10 +31,10 @@ export const renderingOptions = [
     { code: RenderingOptionsEnum.Hidden, display: 'Hide in form filler and PDF' },
 ];
 
-export const choiceRenderOptions = [
-    { code: ChoiceRenderOptionCodes.Default, display: 'Show only answered options' },
-    { code: ChoiceRenderOptionCodes.Full, display: 'Full display' },
-    { code: ChoiceRenderOptionCodes.Compact, display: 'Compact display' },
+export const choiceRenderOptions = (t: TFunction<'translation'>): ValueSetComposeIncludeConcept[] => [
+    { code: ChoiceRenderOptionCodes.Default, display: t('Show only answered options') },
+    { code: ChoiceRenderOptionCodes.Full, display: t('Full display') },
+    { code: ChoiceRenderOptionCodes.Compact, display: t('Compact display') },
 ];
 
 export const erRenderingOption = (code: Coding): boolean => {
@@ -71,9 +72,10 @@ export const addRenderOptionItemCode = (
 export const addChoiceRenderOptionItemCode = (
     item: QuestionnaireItem,
     code: string,
+    t: TFunction<'translation'>,
     dispatch: (value: ActionType) => void,
 ): void => {
-    const choiceRenderOption = choiceRenderOptions.find((c) => c.code === code);
+    const choiceRenderOption = choiceRenderOptions(t).find((c) => c.code === code);
     if (choiceRenderOption) {
         const coding = {
             code: choiceRenderOption.code,

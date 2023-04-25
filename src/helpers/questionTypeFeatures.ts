@@ -165,6 +165,10 @@ export const canTypeHavePrefix = (item: QuestionnaireItem): boolean => {
     return item.type !== IQuestionnaireItemType.display && !isItemControlInline(item) && !isItemControlHighlight(item);
 };
 
+export const canTypeHaveChoiceRender = (item: QuestionnaireItem): boolean => {
+    return item.type === IQuestionnaireItemType.choice || item.type === IQuestionnaireItemType.openChoice;
+};
+
 export const canTypeHaveInitialValue = (item: QuestionnaireItem): boolean => {
     return (
         item.type !== IQuestionnaireItemType.display &&
