@@ -82,6 +82,7 @@ export enum IValueSetSystem {
 
 export enum ICodeSystem {
     renderOptionsCodeSystem = 'http://helsenorge.no/fhir/CodeSystem/RenderOptions',
+    choiceRenderOptions = 'http://helsenorge.no/fhir/CodeSystem/ChoiceRenderOptions',
     attachmentRenderOptions = 'http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions',
     progressIndicatorOptions = 'http://helsenorge.no/fhir/CodeSystem/ProgressIndicatorOptions',
 }
