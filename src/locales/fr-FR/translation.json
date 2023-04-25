@@ -405,5 +405,9 @@
     "Workflow request": "Demande de flux de travail",
     "Should the form be included in a workflow at Helsenorge? This field is only used by Norsk helsennett.": "Le formulaire doit-il être inclus dans un Flux de travail chez Helsenorge? Ce champ n'est utilisé que par Norsk helsennett.",
     "Workflow": "Flux de travail",
-    "Request": "Demande"
+    "Request": "Demande",
+    "Show only answered options": "Afficher uniquement les options répondues",
+    "Full display": "Affichage complet",
+    "Compact display": "Affichage compact",
+    "Choose whether all answer options should be displayed in PDF": "Choisissez si toutes les options de réponse doivent être affichées en PDF"
 }
