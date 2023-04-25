@@ -53,7 +53,15 @@ import {
 } from '../../helpers/questionTypeFeatures';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import { elementSaveCapability } from '../../helpers/QuestionHelper';
-import { renderingOptions, removeItemCode, addItemCode, RenderingOptionsEnum } from '../../helpers/codeHelper';
+import {
+    renderingOptions,
+    removeItemCode,
+    addRenderOptionItemCode,
+    RenderingOptionsEnum,
+    choiceRenderOptions,
+    ChoiceRenderOptionCodes,
+    addChoiceRenderOptionItemCode,
+} from '../../helpers/codeHelper';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -141,13 +149,13 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
     const hasSummaryContainerExtension = isItemControlSummaryContainer(props.item);
 
     const helpTextItem = getHelpTextItem();
-    const checkedView = () => {
+    const checkedRenderOptions = () => {
         return props.item.extension?.find((ex) => ex.url === IExtentionType.hidden)?.valueBoolean
             ? RenderingOptionsEnum.Hidden
-            : props.item.code?.find((codee) => codee.system === ICodeSystem.renderOptionsCodeSystem)?.code ??
+            : props.item.code?.find((code) => code.system === ICodeSystem.renderOptionsCodeSystem)?.code ??
                   RenderingOptionsEnum.None;
     };
-    const onChangeView = (newValue: string) => {
+    const onChangeRenderOptions = (newValue: string) => {
         removeItemExtension(props.item, IExtentionType.hidden, dispatch);
         removeItemCode(props.item, ICodeSystem.renderOptionsCodeSystem, dispatch);
         switch (newValue) {
@@ -159,9 +167,18 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                 setItemExtension(props.item, extension, dispatch);
                 break;
             default:
-                addItemCode(props.item, newValue, dispatch);
+                addRenderOptionItemCode(props.item, newValue, dispatch);
                 break;
         }
+    };
+
+    const checkedChoiceRenderOptions = () => {
+        const choiceRendering = props.item.code?.find((code) => code.system === ICodeSystem.choiceRenderOptions);
+        return choiceRendering === undefined ? ChoiceRenderOptionCodes.Default : choiceRendering.code;
+    };
+    const onChangeChoiceRenderOptions = (newValue: string) => {
+        removeItemCode(props.item, ICodeSystem.choiceRenderOptions, dispatch);
+        addChoiceRenderOptionItemCode(props.item, newValue, dispatch);
     };
 
     const isGroupItemOnGlobalLevel = (groupId: string): boolean => {
@@ -447,13 +464,23 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     )}
                 </>
             )}
-            <FormField label={t('View')} sublabel={t('Choose if/where the component should be displayed')}>
-                <RadioBtn
-                    onChange={onChangeView}
-                    checked={checkedView()}
-                    options={renderingOptions}
-                    name={'elementView-radio'}
-                />
+            <FormField label={t('View')}>
+                <FormField sublabel={t('Choose if/where the component should be displayed')}>
+                    <RadioBtn
+                        onChange={onChangeRenderOptions}
+                        checked={checkedRenderOptions()}
+                        options={renderingOptions}
+                        name={'elementView-radio'}
+                    />
+                </FormField>
+                <FormField sublabel={t('Choose if all choice answers should be displayed')}>
+                    <RadioBtn
+                        onChange={onChangeChoiceRenderOptions}
+                        checked={checkedChoiceRenderOptions()}
+                        options={choiceRenderOptions}
+                        name={'elementChoiceView-radio'}
+                    />
+                </FormField>
             </FormField>
             <FormField label={t('Save capabilities')}>
                 <RadioBtn

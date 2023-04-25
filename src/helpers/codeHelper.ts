@@ -13,6 +13,12 @@ export enum RenderingOptionsEnum {
     Hidden = '4',
 }
 
+export enum ChoiceRenderOptionCodes {
+    Default = 'Default',
+    Full = 'Full',
+    Compact = 'Compact',
+}
+
 export const renderingOptions = [
     { code: RenderingOptionsEnum.Default, display: 'Display in form filler and PDF', codeDisplay: 'Default' },
     { code: RenderingOptionsEnum.KunPdf, display: 'Display only in PDF', codeDisplay: 'KunPdf' },
@@ -22,6 +28,12 @@ export const renderingOptions = [
         codeDisplay: 'KunSkjemautfyller',
     },
     { code: RenderingOptionsEnum.Hidden, display: 'Hide in form filler and PDF' },
+];
+
+export const choiceRenderOptions = [
+    { code: ChoiceRenderOptionCodes.Default, display: 'Show only answered options' },
+    { code: ChoiceRenderOptionCodes.Full, display: 'Full display' },
+    { code: ChoiceRenderOptionCodes.Compact, display: 'Compact display' },
 ];
 
 export const erRenderingOption = (code: Coding): boolean => {
@@ -39,13 +51,34 @@ export const removeItemCode = (
     }
 };
 
-export const addItemCode = (item: QuestionnaireItem, code: string, dispatch: (value: ActionType) => void): void => {
+export const addRenderOptionItemCode = (
+    item: QuestionnaireItem,
+    code: string,
+    dispatch: (value: ActionType) => void,
+): void => {
     const renderOption = renderingOptions.find((c) => c.code === code);
     if (renderOption) {
         const coding = {
             code: renderOption.code,
             display: renderOption.codeDisplay,
             system: ICodeSystem.renderOptionsCodeSystem,
+            id: createUUID(),
+        };
+        dispatch(addItemCodeAction(item.linkId, coding));
+    }
+};
+
+export const addChoiceRenderOptionItemCode = (
+    item: QuestionnaireItem,
+    code: string,
+    dispatch: (value: ActionType) => void,
+): void => {
+    const choiceRenderOption = choiceRenderOptions.find((c) => c.code === code);
+    if (choiceRenderOption) {
+        const coding = {
+            code: choiceRenderOption.code,
+            display: choiceRenderOption.display,
+            system: ICodeSystem.choiceRenderOptions,
             id: createUUID(),
         };
         dispatch(addItemCodeAction(item.linkId, coding));
