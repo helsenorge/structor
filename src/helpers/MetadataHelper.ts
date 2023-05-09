@@ -1,3 +1,4 @@
+import { Coding, Questionnaire, Meta } from '../types/fhir';
 import { IQuestionnaireStatus } from '../types/IQuestionnaireMetadataType';
 import { UseContextSystem } from '../types/IQuestionnareItemType';
 
@@ -43,11 +44,35 @@ export const saveCapability = [
     { code: '3', display: 'No saving' },
 ];
 
-export const useContextSystem = [
-    { code: UseContextSystem.helsetjeneste_full, display: 'Helsetjeneste (Full) (standard setting)' },
-    { code: UseContextSystem.journalinnsyn_basispluss, display: 'Journalinnsyn (Basis +)' },
-    { code: UseContextSystem.registerinnsyn_basis, display: 'Registerinnsyn (Basis)' },
+export const metaSecuritySystem = 'urn:oid:2.16.578.1.12.4.1.1.7618';
+
+export enum metaSecurityDisplay {
+    helseregister = 'Helseregister',
+    pasientjournal = 'Pasientjournal',
+    helsehjelp = 'Helsehjelp',
+    forvaltning = 'Forvaltning',
+    sekundærbruk = 'Sekundærbruk',
+}
+
+export enum metaSecurityCode {
+    helseregister = '1',
+    pasientjournal = '2',
+    helsehjelp = '3',
+    forvaltning = '4',
+    sekundærbruk = '5',
+}
+
+export const metaSecurityOptions = [
+    { code: metaSecurityCode.helseregister, display: metaSecurityDisplay.helseregister, system: metaSecuritySystem },
+    { code: metaSecurityCode.pasientjournal, display: metaSecurityDisplay.pasientjournal, system: metaSecuritySystem },
+    { code: metaSecurityCode.helsehjelp, display: metaSecurityDisplay.helsehjelp, system: metaSecuritySystem },
+    { code: metaSecurityCode.forvaltning, display: metaSecurityDisplay.forvaltning, system: metaSecuritySystem },
+    { code: metaSecurityCode.sekundærbruk, display: metaSecurityDisplay.sekundærbruk, system: metaSecuritySystem },
 ];
+
+export const getMetaSecurity = (code: string): Coding => {
+    return metaSecurityOptions.filter((option) => option.code === code)?.[0];
+};
 
 export const isValidId = (value: string): boolean => {
     const regExp = /^[A-Za-z0-9-.]{1,64}$/;
@@ -61,4 +86,39 @@ export const isValidTechnicalName = (value: string, stateValue?: string): boolea
     }
     const regExp = /^[A-Z]([A-Za-z0-9_]){0,254}$/;
     return regExp.test(value);
+};
+
+export const mapUseContextToMetaSecurity = (useContext: string): Coding => {
+    switch (useContext) {
+        case UseContextSystem.journalinnsyn_basispluss:
+            return getMetaSecurity(metaSecurityCode.pasientjournal);
+        case UseContextSystem.registerinnsyn_basis:
+            return getMetaSecurity(metaSecurityCode.helseregister);
+        case UseContextSystem.helsetjeneste_full:
+        default:
+            return getMetaSecurity(metaSecurityCode.helsehjelp);
+    }
+};
+
+export const getUseContextSystem = (questionnaire: Questionnaire): string => {
+    const system =
+        questionnaire.useContext &&
+        questionnaire.useContext.length > 0 &&
+        questionnaire.useContext[0].valueCodeableConcept?.coding &&
+        questionnaire.useContext[0].valueCodeableConcept.coding.length > 0 &&
+        questionnaire.useContext[0].valueCodeableConcept.coding[0].system;
+
+    return system || UseContextSystem.helsetjeneste_full;
+};
+
+export const addMetaSecurityIfDoesNotExist = (questionnaire: Questionnaire): Questionnaire => {
+    if (!questionnaire.meta?.security) {
+        const useContextCode = getUseContextSystem(questionnaire);
+        const newMeta = {
+            ...questionnaire.meta,
+            security: [mapUseContextToMetaSecurity(useContextCode)],
+        } as Meta;
+        questionnaire = { ...questionnaire, meta: newMeta } as Questionnaire;
+    }
+    return questionnaire;
 };

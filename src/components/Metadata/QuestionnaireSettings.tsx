@@ -278,7 +278,7 @@ const QuestionnaireSettings = (): JSX.Element => {
             <FormField
                 label={t('Workflow')}
                 sublabel={t(
-                    'Should the form be included in a workflow at Helsenorge? This field is only used by Norsk helsennett.',
+                    'Should the form be included in a workflow at Helsenorge? This field is only used by Norsk helsenett.',
                 )}
             >
                 <SwitchBtn

@@ -125,7 +125,8 @@ const FormFillerPreview = ({ showFormFiller, language, state }: Props): JSX.Elem
                                         setQuestionnaireResponse(questionnaireResponse);
                                         setShowResponse(true);
                                     }}
-                                    onSubmit={console.log('Submitbutton clicked')}
+                                    onPause={() => console.log('onPause')}
+                                    onSubmit={() => console.log('onSubmit')}
                                     authorized={true}
                                     resources={getResources(language || '')}
                                     sticky={true}
