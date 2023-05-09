@@ -24,7 +24,7 @@ FROM node:14-bullseye-slim as build
     COPY . .
     RUN npm run build --if-present
 
-    ### 2 Runnable image ###
+### 2 Runnable image ###
 FROM nginx:1.21.0-alpine
 
     COPY --from=build /src/build /usr/share/nginx/html
