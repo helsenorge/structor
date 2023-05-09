@@ -403,7 +403,7 @@
     "Step in step-view": "Étape par étape",
     "Change": "Changement",
     "Workflow request": "Demande de flux de travail",
-    "Should the form be included in a workflow at Helsenorge? This field is only used by Norsk helsennett.": "Le formulaire doit-il être inclus dans un Flux de travail chez Helsenorge? Ce champ n'est utilisé que par Norsk helsennett.",
+    "Should the form be included in a workflow at Helsenorge? This field is only used by Norsk helsenett.": "Le formulaire doit-il être inclus dans un Flux de travail chez Helsenorge? Ce champ n'est utilisé que par Norsk helsenett.",
     "Workflow": "Flux de travail",
     "Request": "Demande",
     "Show only answered options": "Afficher uniquement les options répondues",
