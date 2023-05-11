@@ -12,6 +12,7 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import InputField from '../InputField/inputField';
+import MetaSecurityEditor from './MetaSecurityEditor';
 
 const MetadataEditor = (): JSX.Element => {
     const { t } = useTranslation();
@@ -149,6 +150,7 @@ const MetadataEditor = (): JSX.Element => {
                         onBlur={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
                     />
                 </FormField>
+                <MetaSecurityEditor />
             </Accordion>
         </div>
     );
