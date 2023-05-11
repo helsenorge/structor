@@ -13,7 +13,6 @@ import UriField from '../FormField/UriField';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
 import {
-    ICodeSystem,
     IExtentionType,
     IItemProperty,
     IQuestionnaireItemType,
@@ -37,6 +36,7 @@ import GuidanceParam from './Guidance/GuidanceParam';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
 import CalculatedExpression from './CalculatedExpression/CalculatedExpression';
 import CopyFrom from './CopyFrom/CopyFrom';
+import View from './View/view';
 import { createMarkdownExtension, removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
 import InputField from '../InputField/inputField';
 import {
@@ -53,7 +53,6 @@ import {
 } from '../../helpers/questionTypeFeatures';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import { elementSaveCapability } from '../../helpers/QuestionHelper';
-import { renderingOptions, removeItemCode, addItemCode, RenderingOptionsEnum } from '../../helpers/codeHelper';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -141,28 +140,6 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
     const hasSummaryContainerExtension = isItemControlSummaryContainer(props.item);
 
     const helpTextItem = getHelpTextItem();
-    const checkedView = () => {
-        return props.item.extension?.find((ex) => ex.url === IExtentionType.hidden)?.valueBoolean
-            ? RenderingOptionsEnum.Hidden
-            : props.item.code?.find((codee) => codee.system === ICodeSystem.renderOptionsCodeSystem)?.code ??
-                  RenderingOptionsEnum.None;
-    };
-    const onChangeView = (newValue: string) => {
-        removeItemExtension(props.item, IExtentionType.hidden, dispatch);
-        removeItemCode(props.item, ICodeSystem.renderOptionsCodeSystem, dispatch);
-        switch (newValue) {
-            case RenderingOptionsEnum.Hidden:
-                const extension = {
-                    url: IExtentionType.hidden,
-                    valueBoolean: true,
-                };
-                setItemExtension(props.item, extension, dispatch);
-                break;
-            default:
-                addItemCode(props.item, newValue, dispatch);
-                break;
-        }
-    };
 
     const isGroupItemOnGlobalLevel = (groupId: string): boolean => {
         return qOrder.find((i) => i.linkId === groupId) ? true : false;
@@ -447,14 +424,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     )}
                 </>
             )}
-            <FormField label={t('View')} sublabel={t('Choose if/where the component should be displayed')}>
-                <RadioBtn
-                    onChange={onChangeView}
-                    checked={checkedView()}
-                    options={renderingOptions}
-                    name={'elementView-radio'}
-                />
-            </FormField>
+            <View item={props.item} />
             <FormField label={t('Save capabilities')}>
                 <RadioBtn
                     onChange={(newValue: string) => {

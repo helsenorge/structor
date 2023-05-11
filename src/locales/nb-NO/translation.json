@@ -407,5 +407,9 @@
     "Workflow request": "Arbeidsflyt forespørsel",
     "Should the form be included in a workflow at Helsenorge? This field is only used by Norsk helsenett.": "Skal skjema inngå i en arbeidsflyt på Helsenorge? Dette feltet brukes kun av Norsk helsenett.",
     "Workflow": "Arbeidsflyt",
-    "Request": "Henvendelse"
+    "Request": "Henvendelse",
+    "Show only answered options": "Viser kun besvarte alternativer",
+    "Full display": "Full vising",
+    "Compact display": "Kompakt vising",
+    "Choose whether all answer options should be displayed in PDF": "Velg om alle svaralternativer skal vises i PDF"
 }
