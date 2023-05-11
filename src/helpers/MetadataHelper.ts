@@ -151,6 +151,62 @@ export const getTilgangsstyringCoding = (code: string): Coding => {
     return tilgangsstyringOptions.filter((option) => option.code === code)?.[0];
 };
 
+export enum skjemaUtfyllerCode {
+    Standard = 'Standard',
+    Tilpassert = 'Tilpassert',
+}
+
+export enum skjemaUtfyllerDisplay {
+    Standard = 'Standard tilgangsstyring (innbygger selv, foreldre på vegne av barn < 12 år, foreldre på vegne av barn 12-16 år, representant med tildelt fullmarkt)',
+    Tilpassert = 'Tilpassert tilgangsstyring',
+}
+
+export const skjemaUtfyllerOptions = [
+    { code: skjemaUtfyllerCode.Standard, display: skjemaUtfyllerDisplay.Standard },
+    { code: skjemaUtfyllerCode.Tilpassert, display: skjemaUtfyllerDisplay.Tilpassert },
+];
+
+export enum formFillingAccessCode {
+    kunInnbygger = '1',
+    barnUnder12 = '2',
+    barnMellom12Og16 = '3',
+    representantOrdinaertFullmakt = '4',
+}
+
+export enum formFillingAccessDisplay {
+    kunInnbygger = 'Innbygger selv',
+    barnUnder12 = 'Foreldre på vegne av barn < 12 år',
+    barnMellom12Og16 = 'Foreldre på vegne av barn 12-16 år',
+    representantOrdinaertFullmakt = 'Representant med ordinær fullmakt',
+}
+
+export const formFillingAccessOptions = [
+    {
+        code: formFillingAccessCode.kunInnbygger,
+        display: formFillingAccessDisplay.kunInnbygger,
+        system: MetaSecuritySystem.kanUtforesAv,
+    },
+    {
+        code: formFillingAccessCode.barnUnder12,
+        display: formFillingAccessDisplay.barnUnder12,
+        system: MetaSecuritySystem.kanUtforesAv,
+    },
+    {
+        code: formFillingAccessCode.barnMellom12Og16,
+        display: formFillingAccessDisplay.barnMellom12Og16,
+        system: MetaSecuritySystem.kanUtforesAv,
+    },
+    {
+        code: formFillingAccessCode.representantOrdinaertFullmakt,
+        display: formFillingAccessDisplay.representantOrdinaertFullmakt,
+        system: MetaSecuritySystem.kanUtforesAv,
+    },
+];
+
+export const getFormFillingAccess = (code: string): Coding => {
+    return formFillingAccessOptions.filter((option) => option.code === code)?.[0];
+};
+
 export const isValidId = (value: string): boolean => {
     const regExp = /^[A-Za-z0-9-.]{1,64}$/;
     return regExp.test(value);
