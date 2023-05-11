@@ -1,6 +1,6 @@
 import { Coding, Questionnaire, Meta } from '../types/fhir';
 import { IQuestionnaireStatus } from '../types/IQuestionnaireMetadataType';
-import { UseContextSystem } from '../types/IQuestionnareItemType';
+import { MetaSecuritySystem, UseContextSystem } from '../types/IQuestionnareItemType';
 
 export const questionnaireStatusOptions = [
     {
@@ -44,14 +44,12 @@ export const saveCapability = [
     { code: '3', display: 'No saving' },
 ];
 
-export const metaSecuritySystem = 'urn:oid:2.16.578.1.12.4.1.1.7618';
-
 export enum metaSecurityDisplay {
-    helseregister = 'Helseregister',
-    pasientjournal = 'Pasientjournal',
-    helsehjelp = 'Helsehjelp',
-    forvaltning = 'Forvaltning',
-    sekundærbruk = 'Sekundærbruk',
+    helseregister = 'Helseregister (Basis)',
+    pasientjournal = 'Pasientjournal (Basis +)',
+    helsehjelp = 'Helsehjelp (Full)',
+    forvaltning = 'Forvaltning (Full)',
+    sekundærbruk = 'Sekundærbruk (Full)',
 }
 
 export enum metaSecurityCode {
@@ -63,15 +61,91 @@ export enum metaSecurityCode {
 }
 
 export const metaSecurityOptions = [
-    { code: metaSecurityCode.helseregister, display: metaSecurityDisplay.helseregister, system: metaSecuritySystem },
-    { code: metaSecurityCode.pasientjournal, display: metaSecurityDisplay.pasientjournal, system: metaSecuritySystem },
-    { code: metaSecurityCode.helsehjelp, display: metaSecurityDisplay.helsehjelp, system: metaSecuritySystem },
-    { code: metaSecurityCode.forvaltning, display: metaSecurityDisplay.forvaltning, system: metaSecuritySystem },
-    { code: metaSecurityCode.sekundærbruk, display: metaSecurityDisplay.sekundærbruk, system: metaSecuritySystem },
+    {
+        code: metaSecurityCode.helseregister,
+        display: metaSecurityDisplay.helseregister,
+        system: MetaSecuritySystem.tjenesteomraade,
+    },
+    {
+        code: metaSecurityCode.pasientjournal,
+        display: metaSecurityDisplay.pasientjournal,
+        system: MetaSecuritySystem.tjenesteomraade,
+    },
+    {
+        code: metaSecurityCode.helsehjelp,
+        display: metaSecurityDisplay.helsehjelp,
+        system: MetaSecuritySystem.tjenesteomraade,
+    },
+    {
+        code: metaSecurityCode.forvaltning,
+        display: metaSecurityDisplay.forvaltning,
+        system: MetaSecuritySystem.tjenesteomraade,
+    },
+    {
+        code: metaSecurityCode.sekundærbruk,
+        display: metaSecurityDisplay.sekundærbruk,
+        system: MetaSecuritySystem.tjenesteomraade,
+    },
 ];
 
 export const getMetaSecurity = (code: string): Coding => {
     return metaSecurityOptions.filter((option) => option.code === code)?.[0];
+};
+
+export enum skjemaUtfyllerCode {
+    Standard = 'Standard',
+    Tilpassert = 'Tilpassert',
+}
+
+export enum skjemaUtfyllerDisplay {
+    Standard = 'Standard tilgangsstyring (innbygger selv, foreldre på vegne av barn < 12 år, foreldre på vegne av barn 12-16 år, representant med tildelt fullmarkt)',
+    Tilpassert = 'Tilpassert tilgangsstyring',
+}
+
+export const skjemaUtfyllerOptions = [
+    { code: skjemaUtfyllerCode.Standard, display: skjemaUtfyllerDisplay.Standard },
+    { code: skjemaUtfyllerCode.Tilpassert, display: skjemaUtfyllerDisplay.Tilpassert },
+];
+
+export enum formFillingAccessCode {
+    kunInnbygger = '1',
+    barnUnder12 = '2',
+    barnMellom12Og16 = '3',
+    representantOrdinaertFullmakt = '4',
+}
+
+export enum formFillingAccessDisplay {
+    kunInnbygger = 'Innbygger selv',
+    barnUnder12 = 'Foreldre på vegne av barn < 12 år',
+    barnMellom12Og16 = 'Foreldre på vegne av barn 12-16 år',
+    representantOrdinaertFullmakt = 'Representant med ordinær fullmakt',
+}
+
+export const formFillingAccessOptions = [
+    {
+        code: formFillingAccessCode.kunInnbygger,
+        display: formFillingAccessDisplay.kunInnbygger,
+        system: MetaSecuritySystem.kanUtforesAv,
+    },
+    {
+        code: formFillingAccessCode.barnUnder12,
+        display: formFillingAccessDisplay.barnUnder12,
+        system: MetaSecuritySystem.kanUtforesAv,
+    },
+    {
+        code: formFillingAccessCode.barnMellom12Og16,
+        display: formFillingAccessDisplay.barnMellom12Og16,
+        system: MetaSecuritySystem.kanUtforesAv,
+    },
+    {
+        code: formFillingAccessCode.representantOrdinaertFullmakt,
+        display: formFillingAccessDisplay.representantOrdinaertFullmakt,
+        system: MetaSecuritySystem.kanUtforesAv,
+    },
+];
+
+export const getFormFillingAccess = (code: string): Coding => {
+    return formFillingAccessOptions.filter((option) => option.code === code)?.[0];
 };
 
 export const isValidId = (value: string): boolean => {
