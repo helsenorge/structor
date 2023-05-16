@@ -7,6 +7,7 @@ import {
 import { updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import { MetaSecuritySystem, UseContextSystem } from '../types/IQuestionnareItemType';
 import { ActionType } from '../store/treeStore/treeStore';
+import { CheckboxOption } from '../types/OptionTypes';
 
 export const questionnaireStatusOptions = [
     {
@@ -152,12 +153,12 @@ export const formFillingAccessOptions = [
         system: MetaSecuritySystem.kanUtforesAv,
         disabled: false,
     },
-];
+] as CheckboxOption[];
 
 export const getFormFillingAccess = (code: string): Coding => {
     return formFillingAccessOptions
         .filter((option) => option.code === code)
-        ?.map((s: any) => {
+        ?.map((s: CheckboxOption) => {
             return { code: s.code, system: s.system, display: s.display } as Coding;
         })?.[0];
 };
