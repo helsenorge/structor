@@ -5,7 +5,7 @@ import {
     IQuestionnaireMetadataType,
 } from '../types/IQuestionnaireMetadataType';
 import { updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
-import { MetaSecuritySystem, UseContextSystem } from '../types/IQuestionnareItemType';
+import { IExtentionType, MetaSecuritySystem, UseContextSystem } from '../types/IQuestionnareItemType';
 import { ActionType } from '../store/treeStore/treeStore';
 import { CheckboxOption } from '../types/OptionTypes';
 
@@ -213,6 +213,23 @@ export const addMetaSecurityIfDoesNotExist = (questionnaire: Questionnaire): Que
             security: [mapUseContextToMetaSecurity(useContextCode)],
         } as Meta;
         questionnaire = { ...questionnaire, meta: newMeta } as Questionnaire;
+    }
+    return questionnaire;
+};
+
+export const addMetaSecurityIfCanBePerformedByExist = (questionnaire: Questionnaire): Questionnaire => {
+    const metadata = questionnaire?.extension?.find((ex) => ex.url === IExtentionType.canBePerformedBy)?.valueCoding
+        ?.code;
+    if (metadata) {
+        if (metadata === '2') {
+            const securityToUpdate = questionnaire.meta?.security || [];
+            securityToUpdate?.push(getFormFillingAccess(formFillingAccessCode.kunInnbygger));
+            const extentionToUpdate = questionnaire?.extension?.filter(
+                (ex) => ex.url !== IExtentionType.canBePerformedBy,
+            );
+            const newMeta = { ...questionnaire.meta, security: securityToUpdate } as Meta;
+            questionnaire = { ...questionnaire, meta: newMeta, extension: extentionToUpdate } as Questionnaire;
+        }
     }
     return questionnaire;
 };
