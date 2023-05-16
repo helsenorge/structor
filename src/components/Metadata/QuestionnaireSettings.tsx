@@ -1,11 +1,7 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-    authenticationRequirement,
-    presentationButtons,
-    saveCapability,
-} from '../../helpers/MetadataHelper';
+import { authenticationRequirement, presentationButtons, saveCapability } from '../../helpers/MetadataHelper';
 import Accordion from '../Accordion/Accordion';
 import FormField from '../FormField/FormField';
 import { ContactDetail, Extension, Meta, UsageContext } from '../../types/fhir';
