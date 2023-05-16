@@ -19,5 +19,6 @@ export const isOptionGroup = (optionElement: Option | OptionGroup): boolean => {
 export type CheckboxOption = {
     code: string;
     display: string;
+    system?: string;
     disabled?: boolean;
 };
