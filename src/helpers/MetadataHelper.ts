@@ -1,6 +1,12 @@
 import { Coding, Questionnaire, Meta } from '../types/fhir';
-import { IQuestionnaireStatus } from '../types/IQuestionnaireMetadataType';
+import {
+    IQuestionnaireStatus,
+    IQuestionnaireMetadata,
+    IQuestionnaireMetadataType,
+} from '../types/IQuestionnaireMetadataType';
+import { updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import { MetaSecuritySystem, UseContextSystem } from '../types/IQuestionnareItemType';
+import { ActionType } from '../store/treeStore/treeStore';
 
 export const questionnaireStatusOptions = [
     {
@@ -126,26 +132,34 @@ export const formFillingAccessOptions = [
         code: formFillingAccessCode.kunInnbygger,
         display: formFillingAccessDisplay.kunInnbygger,
         system: MetaSecuritySystem.kanUtforesAv,
+        disabled: true,
     },
     {
         code: formFillingAccessCode.barnUnder12,
         display: formFillingAccessDisplay.barnUnder12,
         system: MetaSecuritySystem.kanUtforesAv,
+        disabled: false,
     },
     {
         code: formFillingAccessCode.barnMellom12Og16,
         display: formFillingAccessDisplay.barnMellom12Og16,
         system: MetaSecuritySystem.kanUtforesAv,
+        disabled: false,
     },
     {
         code: formFillingAccessCode.representantOrdinaertFullmakt,
         display: formFillingAccessDisplay.representantOrdinaertFullmakt,
         system: MetaSecuritySystem.kanUtforesAv,
+        disabled: false,
     },
 ];
 
 export const getFormFillingAccess = (code: string): Coding => {
-    return formFillingAccessOptions.filter((option) => option.code === code)?.[0];
+    return formFillingAccessOptions
+        .filter((option) => option.code === code)
+        ?.map((s: any) => {
+            return { code: s.code, system: s.system, display: s.display } as Coding;
+        })?.[0];
 };
 
 export const isValidId = (value: string): boolean => {
@@ -185,6 +199,16 @@ export const getUseContextSystem = (questionnaire: Questionnaire): string => {
     return system || UseContextSystem.helsetjeneste_full;
 };
 
+export const getTilgangsstyringCodes = (qMetadata: IQuestionnaireMetadata): (string | undefined)[] => {
+    const kanUtforesAv =
+        qMetadata.meta &&
+        qMetadata.meta.security &&
+        qMetadata.meta.security.length &&
+        qMetadata.meta.security.filter((f) => f.system === MetaSecuritySystem.kanUtforesAv)?.map((m) => m.code);
+
+    return kanUtforesAv || [];
+};
+
 export const addMetaSecurityIfDoesNotExist = (questionnaire: Questionnaire): Questionnaire => {
     if (!questionnaire.meta?.security) {
         const useContextCode = getUseContextSystem(questionnaire);
@@ -195,4 +219,17 @@ export const addMetaSecurityIfDoesNotExist = (questionnaire: Questionnaire): Que
         questionnaire = { ...questionnaire, meta: newMeta } as Questionnaire;
     }
     return questionnaire;
+};
+
+export const updateMetaSecurity = (
+    qMetadata: IQuestionnaireMetadata,
+    securityToSet: Coding[],
+    dispatch: React.Dispatch<ActionType>,
+): void => {
+    const newMeta = {
+        ...qMetadata.meta,
+        security: securityToSet,
+    } as Meta;
+
+    dispatch(updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.meta, newMeta));
 };

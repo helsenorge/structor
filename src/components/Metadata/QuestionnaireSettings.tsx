@@ -13,7 +13,6 @@ import { ContactDetail, Extension, Meta, UsageContext } from '../../types/fhir';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { IExtentionType, IValueSetSystem } from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
-import CheckboxBtn from '../CheckboxBtn/CheckboxBtn';
 import { removeQuestionnaireExtension, setQuestionnaireExtension } from '../../helpers/extensionHelper';
 import {
     isVisibilityHideSidebar,
@@ -28,6 +27,7 @@ import InputField from '../InputField/inputField';
 import { translatableSettings } from '../../helpers/LanguageHelper';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
+import Checkbox from '@helsenorge/designsystem-react/components/Checkbox';
 
 const QuestionnaireSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -219,19 +219,22 @@ const QuestionnaireSettings = (): JSX.Element => {
                     value={getGeneratePdfValue()}
                     label={t('Generate PDF on submit')}
                 />
-                <CheckboxBtn
+                <Checkbox
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideHelp, dispatch)}
-                    value={isVisibilityHideHelp(qMetadata)}
+                    checked={isVisibilityHideHelp(qMetadata)}
+                    value={VisibilityType.hideHelp}
                     label={t('Hide help texts in PDF')}
                 />
-                <CheckboxBtn
+                <Checkbox
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSublabel, dispatch)}
-                    value={isVisibilityHideSublabel(qMetadata)}
+                    checked={isVisibilityHideSublabel(qMetadata)}
+                    value={VisibilityType.hideSublabel}
                     label={t('Hide sublabels in PDF')}
                 />
-                <CheckboxBtn
+                <Checkbox
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSidebar, dispatch)}
-                    value={isVisibilityHideSidebar(qMetadata)}
+                    checked={isVisibilityHideSidebar(qMetadata)}
+                    value={VisibilityType.hideSidebar}
                     label={t('Hide sidebar texts in PDF')}
                 />
             </FormField>
