@@ -34,11 +34,6 @@ export const presentationButtons = [
     { code: 'static', display: 'Static (at the bottom of the questionnaire)' },
 ];
 
-export const canBePerformedBy = [
-    { code: '1', display: 'Questionnaire can be answered by a representative (standard setting)' },
-    { code: '2', display: 'Can only be answered by logged in patient' },
-];
-
 export const authenticationRequirement = [
     { code: '3', display: 'Required (standard setting)' },
     { code: '1', display: 'Anonymous' },

@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 
 import {
     authenticationRequirement,
-    canBePerformedBy,
     presentationButtons,
     saveCapability,
 } from '../../helpers/MetadataHelper';
@@ -155,29 +154,6 @@ const QuestionnaireSettings = (): JSX.Element => {
                     }
                     options={authenticationRequirement}
                     name={'authenticationRequirement-radio'}
-                />
-            </FormField>
-            <FormField label={t('Describes if representative can answer questionnaire')}>
-                <RadioBtn
-                    onChange={(newValue: string) => {
-                        if (newValue) {
-                            updateMetaExtension({
-                                url: IExtentionType.canBePerformedBy,
-                                valueCoding: {
-                                    system: IValueSetSystem.canBePerformedByValueSet,
-                                    code: newValue,
-                                },
-                            });
-                        } else {
-                            removeMetaExtension(IExtentionType.canBePerformedBy);
-                        }
-                    }}
-                    checked={
-                        qMetadata?.extension?.find((ex) => ex.url === IExtentionType.canBePerformedBy)?.valueCoding
-                            ?.code ?? '1'
-                    }
-                    options={canBePerformedBy}
-                    name={'canBePerformedBy-radio'}
                 />
             </FormField>
             <FormField label={t('Save capabilities')}>
