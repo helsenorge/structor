@@ -67,7 +67,7 @@ import { saveStateToDb } from './indexedDbHelper';
 import { isRecipientList } from '../../helpers/QuestionHelper';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
 import { createVisibilityCoding, VisibilityType } from '../../helpers/globalVisibilityHelper';
-import { metaSecurityCode, getMetaSecurity } from '../../helpers/MetadataHelper';
+import { tjenesteomraadeCode, getTjenesteomraadeCoding } from '../../helpers/MetadataHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -205,7 +205,7 @@ const initialState: TreeState = {
                     display: INITIAL_LANGUAGE.display,
                 },
             ],
-            security: [getMetaSecurity(metaSecurityCode.helsehjelp)],
+            security: [getTjenesteomraadeCoding(tjenesteomraadeCode.helsehjelp)],
         },
         useContext: [],
         contact: [

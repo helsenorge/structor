@@ -46,7 +46,7 @@ export const saveCapability = [
     { code: '3', display: 'No saving' },
 ];
 
-export enum metaSecurityDisplay {
+export enum tjenesteomraadeDisplay {
     helseregister = 'Helseregister (Basis)',
     pasientjournal = 'Pasientjournal (Basis +)',
     helsehjelp = 'Helsehjelp (Full)',
@@ -54,7 +54,7 @@ export enum metaSecurityDisplay {
     sekundærbruk = 'Sekundærbruk (Full)',
 }
 
-export enum metaSecurityCode {
+export enum tjenesteomraadeCode {
     helseregister = '1',
     pasientjournal = '2',
     helsehjelp = '3',
@@ -62,36 +62,36 @@ export enum metaSecurityCode {
     sekundærbruk = '5',
 }
 
-export const metaSecurityOptions = [
+export const tjenesteomaadeOptions = [
     {
-        code: metaSecurityCode.helseregister,
-        display: metaSecurityDisplay.helseregister,
+        code: tjenesteomraadeCode.helseregister,
+        display: tjenesteomraadeDisplay.helseregister,
         system: MetaSecuritySystem.tjenesteomraade,
     },
     {
-        code: metaSecurityCode.pasientjournal,
-        display: metaSecurityDisplay.pasientjournal,
+        code: tjenesteomraadeCode.pasientjournal,
+        display: tjenesteomraadeDisplay.pasientjournal,
         system: MetaSecuritySystem.tjenesteomraade,
     },
     {
-        code: metaSecurityCode.helsehjelp,
-        display: metaSecurityDisplay.helsehjelp,
+        code: tjenesteomraadeCode.helsehjelp,
+        display: tjenesteomraadeDisplay.helsehjelp,
         system: MetaSecuritySystem.tjenesteomraade,
     },
     {
-        code: metaSecurityCode.forvaltning,
-        display: metaSecurityDisplay.forvaltning,
+        code: tjenesteomraadeCode.forvaltning,
+        display: tjenesteomraadeDisplay.forvaltning,
         system: MetaSecuritySystem.tjenesteomraade,
     },
     {
-        code: metaSecurityCode.sekundærbruk,
-        display: metaSecurityDisplay.sekundærbruk,
+        code: tjenesteomraadeCode.sekundærbruk,
+        display: tjenesteomraadeDisplay.sekundærbruk,
         system: MetaSecuritySystem.tjenesteomraade,
     },
 ];
 
-export const getMetaSecurity = (code: string): Coding => {
-    return metaSecurityOptions.filter((option) => option.code === code)?.[0];
+export const getTjenesteomraadeCoding = (code: string): Coding => {
+    return tjenesteomaadeOptions.filter((option) => option.code === code)?.[0];
 };
 
 export enum skjemaUtfyllerCode {
@@ -109,49 +109,49 @@ export const skjemaUtfyllerOptions = [
     { code: skjemaUtfyllerCode.Tilpassert, display: skjemaUtfyllerDisplay.Tilpassert },
 ];
 
-export enum formFillingAccessCode {
+export enum tilgangsstyringsCode {
     kunInnbygger = '1',
     barnUnder12 = '2',
     barnMellom12Og16 = '3',
     representantOrdinaertFullmakt = '4',
 }
 
-export enum formFillingAccessDisplay {
+export enum tilgangsstyringsDisplay {
     kunInnbygger = 'Innbygger selv',
     barnUnder12 = 'Foreldre på vegne av barn < 12 år',
     barnMellom12Og16 = 'Foreldre på vegne av barn 12-16 år',
     representantOrdinaertFullmakt = 'Representant med ordinær fullmakt',
 }
 
-export const formFillingAccessOptions = [
+export const tilgangsstyringOptions = [
     {
-        code: formFillingAccessCode.kunInnbygger,
-        display: formFillingAccessDisplay.kunInnbygger,
+        code: tilgangsstyringsCode.kunInnbygger,
+        display: tilgangsstyringsDisplay.kunInnbygger,
         system: MetaSecuritySystem.kanUtforesAv,
         disabled: true,
     },
     {
-        code: formFillingAccessCode.barnUnder12,
-        display: formFillingAccessDisplay.barnUnder12,
+        code: tilgangsstyringsCode.barnUnder12,
+        display: tilgangsstyringsDisplay.barnUnder12,
         system: MetaSecuritySystem.kanUtforesAv,
         disabled: false,
     },
     {
-        code: formFillingAccessCode.barnMellom12Og16,
-        display: formFillingAccessDisplay.barnMellom12Og16,
+        code: tilgangsstyringsCode.barnMellom12Og16,
+        display: tilgangsstyringsDisplay.barnMellom12Og16,
         system: MetaSecuritySystem.kanUtforesAv,
         disabled: false,
     },
     {
-        code: formFillingAccessCode.representantOrdinaertFullmakt,
-        display: formFillingAccessDisplay.representantOrdinaertFullmakt,
+        code: tilgangsstyringsCode.representantOrdinaertFullmakt,
+        display: tilgangsstyringsDisplay.representantOrdinaertFullmakt,
         system: MetaSecuritySystem.kanUtforesAv,
         disabled: false,
     },
 ] as CheckboxOption[];
 
-export const getFormFillingAccess = (code: string): Coding => {
-    return formFillingAccessOptions
+export const getTilgangsstyringCoding = (code: string): Coding => {
+    return tilgangsstyringOptions
         .filter((option) => option.code === code)
         ?.map((s: CheckboxOption) => {
             return { code: s.code, system: s.system, display: s.display } as Coding;
@@ -172,15 +172,15 @@ export const isValidTechnicalName = (value: string, stateValue?: string): boolea
     return regExp.test(value);
 };
 
-export const mapUseContextToMetaSecurity = (useContext: string): Coding => {
+export const mapUseContextToTjenesteomraadeMetaSecurity = (useContext: string): Coding => {
     switch (useContext) {
         case UseContextSystem.journalinnsyn_basispluss:
-            return getMetaSecurity(metaSecurityCode.pasientjournal);
+            return getTjenesteomraadeCoding(tjenesteomraadeCode.pasientjournal);
         case UseContextSystem.registerinnsyn_basis:
-            return getMetaSecurity(metaSecurityCode.helseregister);
+            return getTjenesteomraadeCoding(tjenesteomraadeCode.helseregister);
         case UseContextSystem.helsetjeneste_full:
         default:
-            return getMetaSecurity(metaSecurityCode.helsehjelp);
+            return getTjenesteomraadeCoding(tjenesteomraadeCode.helsehjelp);
     }
 };
 
@@ -200,7 +200,7 @@ export const getTilgangsstyringCodes = (qMetadata: IQuestionnaireMetadata): (str
         qMetadata.meta &&
         qMetadata.meta.security &&
         qMetadata.meta.security.length &&
-        qMetadata.meta.security.filter((f) => f.system === MetaSecuritySystem.kanUtforesAv)?.map((m) => m.code);
+        filterMetaSecurity(qMetadata, MetaSecuritySystem.kanUtforesAv)?.map((m) => m.code);
 
     return kanUtforesAv || [];
 };
@@ -210,7 +210,7 @@ export const addMetaSecurityIfDoesNotExist = (questionnaire: Questionnaire): Que
         const useContextCode = getUseContextSystem(questionnaire);
         const newMeta = {
             ...questionnaire.meta,
-            security: [mapUseContextToMetaSecurity(useContextCode)],
+            security: [mapUseContextToTjenesteomraadeMetaSecurity(useContextCode)],
         } as Meta;
         questionnaire = { ...questionnaire, meta: newMeta } as Questionnaire;
     }
@@ -218,12 +218,13 @@ export const addMetaSecurityIfDoesNotExist = (questionnaire: Questionnaire): Que
 };
 
 export const addMetaSecurityIfCanBePerformedByExist = (questionnaire: Questionnaire): Questionnaire => {
-    const metadata = questionnaire?.extension?.find((ex) => ex.url === IExtentionType.canBePerformedBy)?.valueCoding
-        ?.code;
-    if (metadata) {
-        if (metadata === '2') {
+    const canBePerformedBy = questionnaire?.extension?.find((ex) => ex.url === IExtentionType.canBePerformedBy)
+        ?.valueCoding?.code;
+    const kunInnbyggerExtensionCode = '2';
+    if (canBePerformedBy) {
+        if (canBePerformedBy === kunInnbyggerExtensionCode) {
             const securityToUpdate = questionnaire.meta?.security || [];
-            securityToUpdate?.push(getFormFillingAccess(formFillingAccessCode.kunInnbygger));
+            securityToUpdate?.push(getTilgangsstyringCoding(tilgangsstyringsCode.kunInnbygger));
             const extentionToUpdate = questionnaire?.extension?.filter(
                 (ex) => ex.url !== IExtentionType.canBePerformedBy,
             );
@@ -245,4 +246,18 @@ export const updateMetaSecurity = (
     } as Meta;
 
     dispatch(updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.meta, newMeta));
+};
+
+export const filterMetaSecurity = (
+    qMetadata: IQuestionnaireMetadata,
+    systemCode: MetaSecuritySystem,
+): undefined | Coding[] => {
+    return qMetadata.meta?.security?.filter((f) => f.system === systemCode);
+};
+
+export const filterOutMetaSecurity = (
+    qMetadata: IQuestionnaireMetadata,
+    systemCode: MetaSecuritySystem,
+): undefined | Coding[] => {
+    return qMetadata.meta?.security?.filter((f) => f.system !== systemCode);
 };
