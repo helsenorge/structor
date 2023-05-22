@@ -1,16 +1,18 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-    getMetaSecurity,
-    metaSecurityOptions,
-    metaSecurityCode,
+    getTjenesteomraadeCoding,
+    tjenesteomaadeOptions,
+    tjenesteomraadeCode,
     skjemaUtfyllerOptions,
-    formFillingAccessCode,
+    tilgangsstyringsCode,
     skjemaUtfyllerCode,
-    formFillingAccessOptions,
-    getFormFillingAccess,
+    tilgangsstyringOptions,
+    getTilgangsstyringCoding,
     updateMetaSecurity,
     getTilgangsstyringCodes,
+    filterMetaSecurity,
+    filterOutMetaSecurity,
 } from '../../helpers/MetadataHelper';
 import FormField from '../FormField/FormField';
 import { TreeContext } from '../../store/treeStore/treeStore';
@@ -28,20 +30,19 @@ const MetaSecurityEditor = (): JSX.Element => {
     );
 
     const updateTjenesteomraadeMetaSecurity = (code: string): void => {
-        const securityToSet =
-            qMetadata.meta?.security?.filter((f) => f.system !== MetaSecuritySystem.tjenesteomraade) || [];
-        securityToSet.push(getMetaSecurity(code));
+        const securityToSet = filterOutMetaSecurity(qMetadata, MetaSecuritySystem.tjenesteomraade) || [];
+        securityToSet.push(getTjenesteomraadeCoding(code));
         updateMetaSecurity(qMetadata, securityToSet, dispatch);
     };
 
-    const getTjenesteOmraadeSystem = (): string => {
+    const getTjenesteomraadeSystem = (): string => {
         const system =
             qMetadata.meta &&
             qMetadata.meta.security &&
             qMetadata.meta.security.length > 0 &&
-            qMetadata.meta.security.filter((f) => f.system === MetaSecuritySystem.tjenesteomraade)?.[0]?.code;
+            filterMetaSecurity(qMetadata, MetaSecuritySystem.tjenesteomraade)?.[0]?.code;
 
-        return system || metaSecurityCode.helsehjelp;
+        return system || tjenesteomraadeCode.helsehjelp;
     };
 
     const optionsIsChecked = (v: CheckboxOption): boolean => {
@@ -50,10 +51,9 @@ const MetaSecurityEditor = (): JSX.Element => {
 
     const onChangeUtfyllingAvSkjema = (value: string) => {
         setDisplayTilgangsstyring(value !== skjemaUtfyllerCode.Standard);
-        const securityToSet =
-            qMetadata.meta?.security?.filter((f) => f.system !== MetaSecuritySystem.kanUtforesAv) || [];
+        const securityToSet = filterOutMetaSecurity(qMetadata, MetaSecuritySystem.kanUtforesAv) || [];
         if (value !== skjemaUtfyllerCode.Standard) {
-            securityToSet.push(getFormFillingAccess(formFillingAccessCode.kunInnbygger));
+            securityToSet.push(getTilgangsstyringCoding(tilgangsstyringsCode.kunInnbygger));
         }
         updateMetaSecurity(qMetadata, securityToSet, dispatch);
     };
@@ -64,10 +64,9 @@ const MetaSecurityEditor = (): JSX.Element => {
             [];
 
         const finnes =
-            qMetadata.meta?.security?.find((f) => f.code === code && f.system === MetaSecuritySystem.kanUtforesAv) !==
-            undefined;
+            filterMetaSecurity(qMetadata, MetaSecuritySystem.kanUtforesAv)?.find((f) => f.code === code) !== undefined;
         if (!finnes) {
-            securityToSet.push(getFormFillingAccess(code));
+            securityToSet.push(getTilgangsstyringCoding(code));
         }
         updateMetaSecurity(qMetadata, securityToSet, dispatch);
     };
@@ -80,9 +79,9 @@ const MetaSecurityEditor = (): JSX.Element => {
                 sublabel={t('Which service area the bruker needs to have to have access to form')}
             >
                 <RadioBtn
-                    checked={getTjenesteOmraadeSystem()}
+                    checked={getTjenesteomraadeSystem()}
                     onChange={updateTjenesteomraadeMetaSecurity}
-                    options={metaSecurityOptions}
+                    options={tjenesteomaadeOptions}
                     name={'servicearea-radio'}
                 />
             </FormField>
@@ -105,7 +104,7 @@ const MetaSecurityEditor = (): JSX.Element => {
             {/* Skjema Utfylling Tilgangsstyring */}
             {displayTilgangsstyring && (
                 <FormField label={t('Hvem skal kunne fylle ut skjemaet?')}>
-                    {formFillingAccessOptions.map((option) => {
+                    {tilgangsstyringOptions.map((option) => {
                         return (
                             <Checkbox
                                 key={option.code}
@@ -115,8 +114,6 @@ const MetaSecurityEditor = (): JSX.Element => {
                                 name={option.code}
                                 checked={optionsIsChecked(option)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    // eslint-disable-next-line
-                                    console.log('e', e.target.value);
                                     onChangeTilgangsstyring(e.target.value);
                                 }}
                                 inputId={option.code}
