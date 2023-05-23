@@ -75,8 +75,8 @@ const MetaSecurityEditor = (): JSX.Element => {
         <>
             {/* Tjenesteomraade Tilgangsstyring */}
             <FormField
-                label={t('Select service area')}
-                sublabel={t('Which service area the bruker needs to have to have access to form')}
+                label={'Velg tjenesteområde'}
+                sublabel={'Hvilket tjenesteområde må innbyggeren ha for å få tilgang til skjema'}
             >
                 <RadioBtn
                     checked={getTjenesteomraadeSystem()}
@@ -88,13 +88,13 @@ const MetaSecurityEditor = (): JSX.Element => {
 
             {/* Utfylling Av Skjema */}
             <FormField
-                label={t('Filling out form')}
-                sublabel={t(
-                    'Who fills out the form is controlled by a standard access service. If the form is to have access control other than standard, this must be selected here. Choose which representation conditions should be able to fill in the form.',
-                )}
+                label={'Utfylling av skjema'}
+                sublabel={
+                    'Hvem som kan fylle ut skjemaet styres av en standard tilgangstjeneste. Dersom skjemaet skal ha annen tilgangsstyring enn standard, må dette velges her. Velg hvilke representasjonsforhold som skal kunne fylle ut skjemaet.'
+                }
             >
                 <RadioBtn
-                    checked={displayTilgangsstyring ? skjemaUtfyllerCode.Tilpassert : skjemaUtfyllerCode.Standard}
+                    checked={displayTilgangsstyring ? skjemaUtfyllerCode.Tilpasset : skjemaUtfyllerCode.Standard}
                     onChange={onChangeUtfyllingAvSkjema}
                     options={skjemaUtfyllerOptions}
                     name={'formfilling-radio'}

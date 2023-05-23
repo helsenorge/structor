@@ -96,31 +96,33 @@ export const getTjenesteomraadeCoding = (code: string): Coding => {
 
 export enum skjemaUtfyllerCode {
     Standard = 'Standard',
-    Tilpassert = 'Tilpassert',
+    Tilpasset = 'Tilpasset',
 }
 
 export enum skjemaUtfyllerDisplay {
-    Standard = 'Standard tilgangsstyring (innbygger selv, foreldre på vegne av barn < 12 år, foreldre på vegne av barn 12-16 år, representant med tildelt fullmarkt)',
-    Tilpassert = 'Tilpassert tilgangsstyring',
+    Standard = 'Standard tilgangsstyring (innbygger selv, foreldre på vegne av barn < 12 år, foreldre på vegne av barn 12-16 år, representant med tildelt fullmakt)',
+    Tilpasset = 'Tilpasset tilgangsstyring',
 }
 
 export const skjemaUtfyllerOptions = [
     { code: skjemaUtfyllerCode.Standard, display: skjemaUtfyllerDisplay.Standard },
-    { code: skjemaUtfyllerCode.Tilpassert, display: skjemaUtfyllerDisplay.Tilpassert },
+    { code: skjemaUtfyllerCode.Tilpasset, display: skjemaUtfyllerDisplay.Tilpasset },
 ];
 
 export enum tilgangsstyringsCode {
     kunInnbygger = '1',
     barnUnder12 = '2',
     barnMellom12Og16 = '3',
-    representantOrdinaertFullmakt = '4',
+    representantTildeltFullmakt = '4',
+    representantOrdinaerFullmakt = '5',
 }
 
 export enum tilgangsstyringsDisplay {
     kunInnbygger = 'Innbygger selv',
     barnUnder12 = 'Foreldre på vegne av barn < 12 år',
     barnMellom12Og16 = 'Foreldre på vegne av barn 12-16 år',
-    representantOrdinaertFullmakt = 'Representant med ordinær fullmakt',
+    representantTildeltFullmakt = 'Representant med tildelt fullmakt',
+    representantOrdinaerFullmakt = 'Representant med ordinær fullmakt',
 }
 
 export const tilgangsstyringOptions = [
@@ -143,8 +145,14 @@ export const tilgangsstyringOptions = [
         disabled: false,
     },
     {
-        code: tilgangsstyringsCode.representantOrdinaertFullmakt,
-        display: tilgangsstyringsDisplay.representantOrdinaertFullmakt,
+        code: tilgangsstyringsCode.representantTildeltFullmakt,
+        display: tilgangsstyringsDisplay.representantTildeltFullmakt,
+        system: MetaSecuritySystem.kanUtforesAv,
+        disabled: false,
+    },
+    {
+        code: tilgangsstyringsCode.representantOrdinaerFullmakt,
+        display: tilgangsstyringsDisplay.representantOrdinaerFullmakt,
         system: MetaSecuritySystem.kanUtforesAv,
         disabled: false,
     },
@@ -220,18 +228,21 @@ export const addMetaSecurityIfDoesNotExist = (questionnaire: Questionnaire): Que
 export const addMetaSecurityIfCanBePerformedByExist = (questionnaire: Questionnaire): Questionnaire => {
     const canBePerformedBy = questionnaire?.extension?.find((ex) => ex.url === IExtentionType.canBePerformedBy)
         ?.valueCoding?.code;
+    const kanUtforesAv = questionnaire?.meta?.security?.find((ex) => ex.system === MetaSecuritySystem.kanUtforesAv);
     const kunInnbyggerExtensionCode = '2';
     if (canBePerformedBy) {
-        if (canBePerformedBy === kunInnbyggerExtensionCode) {
-            const securityToUpdate = questionnaire.meta?.security || [];
-            securityToUpdate?.push(getTilgangsstyringCoding(tilgangsstyringsCode.kunInnbygger));
-            const extentionToUpdate = questionnaire?.extension?.filter(
-                (ex) => ex.url !== IExtentionType.canBePerformedBy,
-            );
-            const newMeta = { ...questionnaire.meta, security: securityToUpdate } as Meta;
-            questionnaire = { ...questionnaire, meta: newMeta, extension: extentionToUpdate } as Questionnaire;
+        const extentionToUpdate = questionnaire?.extension?.filter((ex) => ex.url !== IExtentionType.canBePerformedBy);
+        if (!kanUtforesAv) {
+            if (canBePerformedBy === kunInnbyggerExtensionCode) {
+                const securityToUpdate = questionnaire.meta?.security || [];
+                securityToUpdate?.push(getTilgangsstyringCoding(tilgangsstyringsCode.kunInnbygger));
+                const newMeta = { ...questionnaire.meta, security: securityToUpdate } as Meta;
+                questionnaire = { ...questionnaire, meta: newMeta } as Questionnaire;
+            }
         }
+        questionnaire = { ...questionnaire, extension: extentionToUpdate } as Questionnaire;
     }
+
     return questionnaire;
 };
 
