@@ -22,8 +22,8 @@ import InputField from '../InputField/inputField';
 import { translatableSettings } from '../../helpers/LanguageHelper';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
-import Checkbox from '@helsenorge/designsystem-react/components/Checkbox';
 import MetaSecurityEditor from './MetaSecurityEditor';
+import CheckboxBtn from '../CheckboxBtn/CheckboxBtn';
 
 const QuestionnaireSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -193,19 +193,19 @@ const QuestionnaireSettings = (): JSX.Element => {
                     value={getGeneratePdfValue()}
                     label={t('Generate PDF on submit')}
                 />
-                <Checkbox
+                <CheckboxBtn
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideHelp, dispatch)}
                     checked={isVisibilityHideHelp(qMetadata)}
                     value={VisibilityType.hideHelp}
                     label={t('Hide help texts in PDF')}
                 />
-                <Checkbox
+                <CheckboxBtn
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSublabel, dispatch)}
                     checked={isVisibilityHideSublabel(qMetadata)}
                     value={VisibilityType.hideSublabel}
                     label={t('Hide sublabels in PDF')}
                 />
-                <Checkbox
+                <CheckboxBtn
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSidebar, dispatch)}
                     checked={isVisibilityHideSidebar(qMetadata)}
                     value={VisibilityType.hideSidebar}
