@@ -23,6 +23,7 @@ import { translatableSettings } from '../../helpers/LanguageHelper';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import Checkbox from '@helsenorge/designsystem-react/components/Checkbox';
+import MetaSecurityEditor from './MetaSecurityEditor';
 
 const QuestionnaireSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -106,6 +107,7 @@ const QuestionnaireSettings = (): JSX.Element => {
                     }}
                 />
             </FormField>
+            <MetaSecurityEditor />
             <FormField label={t('Button bar display')}>
                 <RadioBtn
                     onChange={(newValue: string) => {
