@@ -18,8 +18,8 @@ import FormField from '../FormField/FormField';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import { MetaSecuritySystem } from '../../types/IQuestionnareItemType';
-import Checkbox from '@helsenorge/designsystem-react/components/Checkbox';
 import { CheckboxOption } from '../../types/OptionTypes';
+import CheckboxBtn from '../CheckboxBtn/CheckboxBtn';
 
 const MetaSecurityEditor = (): JSX.Element => {
     const { t } = useTranslation();
@@ -106,17 +106,15 @@ const MetaSecurityEditor = (): JSX.Element => {
                 <FormField label={t('Hvem skal kunne fylle ut skjemaet?')}>
                     {tilgangsstyringOptions.map((option) => {
                         return (
-                            <Checkbox
+                            <CheckboxBtn
                                 key={option.code}
                                 label={option.display}
                                 disabled={option.disabled}
                                 value={option.code}
-                                name={option.code}
                                 checked={optionsIsChecked(option)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     onChangeTilgangsstyring(e.target.value);
                                 }}
-                                inputId={option.code}
                             />
                         );
                     })}
