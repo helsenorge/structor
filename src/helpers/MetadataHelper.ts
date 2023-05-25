@@ -118,7 +118,7 @@ export enum tilgangsstyringsCode {
 }
 
 export enum tilgangsstyringsDisplay {
-    kunInnbygger = 'Innbygger selv',
+    kunInnbygger = 'Kun innbygger selv',
     barnUnder12 = 'Foreldre på vegne av barn < 12 år',
     barnMellom12Og16 = 'Foreldre på vegne av barn 12-16 år',
     representantTildeltFullmakt = 'Representant med tildelt fullmakt',
@@ -127,43 +127,29 @@ export enum tilgangsstyringsDisplay {
 
 export const tilgangsstyringOptions = [
     {
-        code: tilgangsstyringsCode.kunInnbygger,
-        display: tilgangsstyringsDisplay.kunInnbygger,
-        system: MetaSecuritySystem.kanUtforesAv,
-        disabled: true,
-    },
-    {
         code: tilgangsstyringsCode.barnUnder12,
         display: tilgangsstyringsDisplay.barnUnder12,
         system: MetaSecuritySystem.kanUtforesAv,
-        disabled: false,
     },
     {
         code: tilgangsstyringsCode.barnMellom12Og16,
         display: tilgangsstyringsDisplay.barnMellom12Og16,
         system: MetaSecuritySystem.kanUtforesAv,
-        disabled: false,
     },
     {
         code: tilgangsstyringsCode.representantTildeltFullmakt,
         display: tilgangsstyringsDisplay.representantTildeltFullmakt,
         system: MetaSecuritySystem.kanUtforesAv,
-        disabled: false,
     },
     {
         code: tilgangsstyringsCode.representantOrdinaerFullmakt,
         display: tilgangsstyringsDisplay.representantOrdinaerFullmakt,
         system: MetaSecuritySystem.kanUtforesAv,
-        disabled: false,
     },
-] as CheckboxOption[];
+];
 
 export const getTilgangsstyringCoding = (code: string): Coding => {
-    return tilgangsstyringOptions
-        .filter((option) => option.code === code)
-        ?.map((s: CheckboxOption) => {
-            return { code: s.code, system: s.system, display: s.display } as Coding;
-        })?.[0];
+    return tilgangsstyringOptions.filter((option) => option.code === code)?.[0];
 };
 
 export const isValidId = (value: string): boolean => {
@@ -235,7 +221,7 @@ export const addMetaSecurityIfCanBePerformedByExist = (questionnaire: Questionna
         if (!kanUtforesAv) {
             if (canBePerformedBy === kunInnbyggerExtensionCode) {
                 const securityToUpdate = questionnaire.meta?.security || [];
-                securityToUpdate?.push(getTilgangsstyringCoding(tilgangsstyringsCode.kunInnbygger));
+                securityToUpdate?.push(kunInnbyggerMetaSecurity);
                 const newMeta = { ...questionnaire.meta, security: securityToUpdate } as Meta;
                 questionnaire = { ...questionnaire, meta: newMeta } as Questionnaire;
             }
@@ -271,4 +257,10 @@ export const filterOutMetaSecurity = (
     systemCode: MetaSecuritySystem,
 ): undefined | Coding[] => {
     return qMetadata.meta?.security?.filter((f) => f.system !== systemCode);
+};
+
+export const kunInnbyggerMetaSecurity = {
+    code: tilgangsstyringsCode.kunInnbygger,
+    display: tilgangsstyringsDisplay.kunInnbygger,
+    system: MetaSecuritySystem.kanUtforesAv,
 };

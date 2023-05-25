@@ -68,3 +68,13 @@
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+
+.checkbox-container input:disabled ~ .checkmark {
+    background-color: #a0aec0;
+    border-color: #08667c;    
+}
+
+div .disabled {
+    text-decoration: none;
+    color: #a0aec0;
+}
