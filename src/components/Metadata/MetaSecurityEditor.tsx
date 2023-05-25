@@ -5,7 +5,6 @@ import {
     tjenesteomaadeOptions,
     tjenesteomraadeCode,
     skjemaUtfyllerOptions,
-    tilgangsstyringsCode,
     skjemaUtfyllerCode,
     tilgangsstyringOptions,
     getTilgangsstyringCoding,
@@ -13,6 +12,7 @@ import {
     getTilgangsstyringCodes,
     filterMetaSecurity,
     filterOutMetaSecurity,
+    kunInnbyggerMetaSecurity,
 } from '../../helpers/MetadataHelper';
 import FormField from '../FormField/FormField';
 import { TreeContext } from '../../store/treeStore/treeStore';
@@ -20,6 +20,7 @@ import RadioBtn from '../RadioBtn/RadioBtn';
 import { MetaSecuritySystem } from '../../types/IQuestionnareItemType';
 import { CheckboxOption } from '../../types/OptionTypes';
 import CheckboxBtn from '../CheckboxBtn/CheckboxBtn';
+import InfoCheckbox from '../CheckboxBtn/InfoCheckbox';
 
 const MetaSecurityEditor = (): JSX.Element => {
     const { t } = useTranslation();
@@ -53,20 +54,29 @@ const MetaSecurityEditor = (): JSX.Element => {
         setDisplayTilgangsstyring(value !== skjemaUtfyllerCode.Standard);
         const securityToSet = filterOutMetaSecurity(qMetadata, MetaSecuritySystem.kanUtforesAv) || [];
         if (value !== skjemaUtfyllerCode.Standard) {
-            securityToSet.push(getTilgangsstyringCoding(tilgangsstyringsCode.kunInnbygger));
+            securityToSet.push(kunInnbyggerMetaSecurity);
         }
         updateMetaSecurity(qMetadata, securityToSet, dispatch);
     };
 
     const onChangeTilgangsstyring = (code: string): void => {
         const securityToSet =
-            qMetadata.meta?.security?.filter((f) => f.code !== code || f.system !== MetaSecuritySystem.kanUtforesAv) ||
-            [];
+            qMetadata.meta?.security?.filter(
+                (f) =>
+                    (f.code !== code || f.system !== MetaSecuritySystem.kanUtforesAv) &&
+                    f.code !== kunInnbyggerMetaSecurity.code,
+            ) || [];
 
         const finnes =
             filterMetaSecurity(qMetadata, MetaSecuritySystem.kanUtforesAv)?.find((f) => f.code === code) !== undefined;
         if (!finnes) {
             securityToSet.push(getTilgangsstyringCoding(code));
+        }
+        const trengerIkkeKunInnbygger = securityToSet.find(
+            (f) => f.system === MetaSecuritySystem.kanUtforesAv && f.code !== kunInnbyggerMetaSecurity.code,
+        );
+        if (!trengerIkkeKunInnbygger) {
+            securityToSet.push(kunInnbyggerMetaSecurity);
         }
         updateMetaSecurity(qMetadata, securityToSet, dispatch);
     };
@@ -104,12 +114,16 @@ const MetaSecurityEditor = (): JSX.Element => {
             {/* Skjema Utfylling Tilgangsstyring */}
             {displayTilgangsstyring && (
                 <FormField label={t('Hvem skal kunne fylle ut skjemaet?')}>
+                    <InfoCheckbox
+                        key={kunInnbyggerMetaSecurity.code}
+                        label={kunInnbyggerMetaSecurity.display}
+                        checked={true}
+                    />
                     {tilgangsstyringOptions.map((option) => {
                         return (
                             <CheckboxBtn
                                 key={option.code}
                                 label={option.display}
-                                disabled={option.disabled}
                                 value={option.code}
                                 checked={optionsIsChecked(option)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
