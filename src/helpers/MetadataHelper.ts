@@ -7,7 +7,6 @@ import {
 import { updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import { IExtentionType, MetaSecuritySystem, UseContextSystem } from '../types/IQuestionnareItemType';
 import { ActionType } from '../store/treeStore/treeStore';
-import { CheckboxOption } from '../types/OptionTypes';
 
 export const questionnaireStatusOptions = [
     {
