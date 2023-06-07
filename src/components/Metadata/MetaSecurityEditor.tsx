@@ -63,8 +63,7 @@ const MetaSecurityEditor = (): JSX.Element => {
         const securityToSet =
             qMetadata.meta?.security?.filter(
                 (f) =>
-                    (f.code !== code || f.system !== MetaSecuritySystem.kanUtforesAv) &&
-                    f.code !== kunInnbyggerMetaSecurity.code,
+                    (f.code !== code || f.system !== MetaSecuritySystem.kanUtforesAv) && f !== kunInnbyggerMetaSecurity,
             ) || [];
 
         const finnes =
