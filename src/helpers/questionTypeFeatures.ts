@@ -1,4 +1,4 @@
-import { Coding, MeasureScoring, QuestionnaireItem } from '../types/fhir';
+import { QuestionnaireItem } from '../types/fhir';
 import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { createNewAnswerOption } from './answerOptionHelper';
 import CreateUUID from './CreateUUID';
