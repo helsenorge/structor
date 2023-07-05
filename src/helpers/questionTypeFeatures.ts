@@ -1,4 +1,4 @@
-import { QuestionnaireItem } from '../types/fhir';
+import { Coding, MeasureScoring, QuestionnaireItem } from '../types/fhir';
 import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { createNewAnswerOption } from './answerOptionHelper';
 import CreateUUID from './CreateUUID';
@@ -10,7 +10,13 @@ import {
     isItemControlReceiverComponent,
     ItemControlType,
 } from './itemControl';
-import { ATTACHMENT_DEFAULT_MAX_SIZE, dropdownExtension, isRecipientList, valueSetTqqcCoding } from './QuestionHelper';
+import {
+    ATTACHMENT_DEFAULT_MAX_SIZE,
+    dropdownExtension,
+    isRecipientList,
+    scoreCoding,
+    valueSetTqqcCoding,
+} from './QuestionHelper';
 import { createUriUUID } from './uriHelper';
 
 export const createInlineItem = (): QuestionnaireItem => {
@@ -71,6 +77,7 @@ export const getInitialItemConfig = (
         newQuestionnaireItem.type = IQuestionnaireItemType.dateTime;
     } else if (questionType === IQuestionnaireItemType.decimal) {
         newQuestionnaireItem.type = IQuestionnaireItemType.decimal;
+        newQuestionnaireItem.code?.push(scoreCoding);
     } else if (questionType === IQuestionnaireItemType.display) {
         newQuestionnaireItem.type = IQuestionnaireItemType.display;
     } else if (questionType === IQuestionnaireItemType.inline) {
@@ -80,12 +87,14 @@ export const getInitialItemConfig = (
         newQuestionnaireItem.item?.push(createInlineItem());
     } else if (questionType === IQuestionnaireItemType.integer) {
         newQuestionnaireItem.type = IQuestionnaireItemType.integer;
+        newQuestionnaireItem.code?.push(scoreCoding);
     } else if (questionType === IQuestionnaireItemType.openChoice) {
         newQuestionnaireItem.type = IQuestionnaireItemType.openChoice;
         const system = createUriUUID();
         newQuestionnaireItem.answerOption = [createNewAnswerOption(system), createNewAnswerOption(system)];
     } else if (questionType === IQuestionnaireItemType.quantity) {
         newQuestionnaireItem.type = IQuestionnaireItemType.quantity;
+        newQuestionnaireItem.code?.push(scoreCoding);
     } else if (questionType === IQuestionnaireItemType.string) {
         newQuestionnaireItem.type = IQuestionnaireItemType.string;
     } else if (questionType === IQuestionnaireItemType.text) {
