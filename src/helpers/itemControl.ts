@@ -21,6 +21,7 @@ export enum ItemControlType {
     dynamic = 'dynamic',
     dataReceiver = 'data-receiver',
     step = 'step',
+    score = 'score',
 }
 
 export const createItemControlExtension = (itemControlType: ItemControlType): Extension => {
