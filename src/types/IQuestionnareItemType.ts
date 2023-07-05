@@ -85,6 +85,7 @@ export enum ICodeSystem {
     choiceRenderOptions = 'http://helsenorge.no/fhir/CodeSystem/ChoiceRenderOptions',
     attachmentRenderOptions = 'http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions',
     progressIndicatorOptions = 'http://helsenorge.no/fhir/CodeSystem/ProgressIndicatorOptions',
+    scoreCodeSystem = 'http://ehelse.no/Score',
 }
 
 export enum IExtentionType {
