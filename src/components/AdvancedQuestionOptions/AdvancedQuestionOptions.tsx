@@ -452,6 +452,47 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     name={'elementSaveCapability-radio'}
                 />
             </FormField>
+
+            {(props.item.type === IQuestionnaireItemType.integer ||
+                props.item.type === IQuestionnaireItemType.decimal) && (
+                <>
+                    <div className="horizontal full">
+                        <FormField
+                            label={t('Scoring sum')}
+                            sublabel={t(
+                                'Select whether the field should display the sum of a section or the total sum',
+                            )}
+                        ></FormField>
+                    </div>
+                    <FormField>
+                        <RadioBtn
+                            onChange={(newValue: string) => {
+                                if (newValue === '0') {
+                                    removeCode(IExtentionType.saveCapability);
+                                } else {
+                                    setItemCode(
+                                        props.item,
+                                        {
+                                            url: IExtentionType.saveCapability,
+                                            valueCoding: {
+                                                system: 'http://ehelse.no/Score',
+                                                code: newValue,
+                                            },
+                                        },
+                                        dispatch,
+                                    );
+                                }
+                            }}
+                            checked={
+                                props.item.extension?.find((ex) => ex.url === IExtentionType.saveCapability)
+                                    ?.valueCoding?.code ?? '0'
+                            }
+                            options={elementSaveCapability}
+                            name={'elementSaveCapability-radio'}
+                        />
+                    </FormField>
+                </>
+            )}
         </>
     );
 };
