@@ -1,7 +1,7 @@
 import React, { FocusEvent, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { findTreeArray, TreeContext } from '../../store/treeStore/treeStore';
-import { Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
+import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import {
     deleteItemAction,
     newItemHelpIconAction,
@@ -13,6 +13,7 @@ import UriField from '../FormField/UriField';
 import UndoIcon from '../../images/icons/arrow-undo-outline.svg';
 import './AdvancedQuestionOptions.css';
 import {
+    ICodeSystem,
     IExtentionType,
     IItemProperty,
     IQuestionnaireItemType,
@@ -30,6 +31,7 @@ import {
     ItemControlType,
     setItemControlExtension,
     isItemControlDataReceiver,
+    existItemWithCode,
 } from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
@@ -52,7 +54,9 @@ import {
     canTypeCopyData,
 } from '../../helpers/questionTypeFeatures';
 import RadioBtn from '../RadioBtn/RadioBtn';
-import { elementSaveCapability } from '../../helpers/QuestionHelper';
+import { elementSaveCapability, scoreSumOptions } from '../../helpers/QuestionHelper';
+import { addItemCode, removeItemCode } from '../../helpers/codeHelper';
+import { ScoringFormulaCodes } from '../../types/scoringFormulas';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -68,6 +72,9 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
     const [linkId, setLinkId] = useState(props.item.linkId);
     const { qItems, qOrder } = state;
     const [isDataReceiver, setDataReceiverState] = useState(isItemControlDataReceiver(props.item));
+    const [hasQuestionScoreCode, setHasQuestionScoreCode] = useState(
+        existItemWithCode(props.item, ScoringFormulaCodes.questionScore),
+    );
 
     const dispatchUpdateItem = (name: IItemProperty, value: boolean) => {
         dispatch(updateItemAction(props.item.linkId, name, value));
@@ -143,6 +150,16 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
 
     const isGroupItemOnGlobalLevel = (groupId: string): boolean => {
         return qOrder.find((i) => i.linkId === groupId) ? true : false;
+    };
+
+    const getSelectedScoreCode = (code: Coding[]) => {
+        let codeToReturn = '0';
+        code.forEach((x) => {
+            if (x.code && x.system === ICodeSystem.score) {
+                codeToReturn = x.code.toString();
+            }
+        });
+        return codeToReturn;
     };
 
     return (
@@ -468,27 +485,56 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                         <RadioBtn
                             onChange={(newValue: string) => {
                                 if (newValue === '0') {
-                                    removeCode(IExtentionType.saveCapability);
+                                    removeItemCode(props.item, ICodeSystem.scoringFormulas, dispatch);
                                 } else {
-                                    setItemCode(
+                                    removeItemCode(props.item, ICodeSystem.scoringFormulas, dispatch);
+                                    addItemCode(
                                         props.item,
                                         {
-                                            url: IExtentionType.saveCapability,
-                                            valueCoding: {
-                                                system: 'http://ehelse.no/Score',
-                                                code: newValue,
-                                            },
+                                            system: ICodeSystem.scoringFormulas,
+                                            code: newValue,
+                                            display: newValue,
                                         },
                                         dispatch,
                                     );
                                 }
                             }}
-                            checked={
-                                props.item.extension?.find((ex) => ex.url === IExtentionType.saveCapability)
-                                    ?.valueCoding?.code ?? '0'
-                            }
-                            options={elementSaveCapability}
-                            name={'elementSaveCapability-radio'}
+                            checked={props.item.code ? getSelectedScoreCode(props.item.code) : '0'}
+                            options={scoreSumOptions}
+                            name={'scoreSumOptions-radio'}
+                        />
+                    </FormField>
+                </>
+            )}
+            {props.item.type === IQuestionnaireItemType.choice && (
+                <>
+                    <div className="horizontal full">
+                        <FormField
+                            label={t('Question score')}
+                            sublabel={t('Select whether the field should display the sum of a choice')}
+                        ></FormField>
+                    </div>
+                    <FormField>
+                        <SwitchBtn
+                            onChange={() => {
+                                if (hasQuestionScoreCode) {
+                                    removeItemCode(props.item, ICodeSystem.scoringFormulas, dispatch);
+                                    setHasQuestionScoreCode(false);
+                                } else {
+                                    addItemCode(
+                                        props.item,
+                                        {
+                                            system: ICodeSystem.scoringFormulas,
+                                            code: ScoringFormulaCodes.questionScore,
+                                            display: 'Question score',
+                                        },
+                                        dispatch,
+                                    );
+                                    setHasQuestionScoreCode(true);
+                                }
+                            }}
+                            value={hasQuestionScoreCode}
+                            label={t('Display the sum of a choice')}
                         />
                     </FormField>
                 </>
