@@ -41,6 +41,10 @@ export const erRenderingOption = (code: Coding): boolean => {
     return code.system === ICodeSystem.renderOptionsCodeSystem;
 };
 
+export const addItemCode = (item: QuestionnaireItem, code: Coding, dispatch: (value: ActionType) => void): void => {
+    dispatch(addItemCodeAction(item.linkId, code));
+};
+
 export const removeItemCode = (
     item: QuestionnaireItem,
     systemUrl: string,
