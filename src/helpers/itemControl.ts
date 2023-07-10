@@ -78,6 +78,11 @@ const existItemControlWithCode = (item: QuestionnaireItem, code: string): boolea
     return exist;
 };
 
+export const existItemWithCode = (item: QuestionnaireItem, code: string): boolean => {
+    const exist = item.code?.find((x: Coding) => x.code === code);
+    return exist ? true : false;
+};
+
 const existItemControlExtension = (item: QuestionnaireItem): boolean => {
     return item.extension?.find((x: Extension) => x.url === IExtentionType.itemControl) !== undefined;
 };

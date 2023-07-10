@@ -2,6 +2,7 @@ import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } f
 import { ICodeSystem, IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { CodingSystemType } from './uriHelper';
 import { createItemControlExtension, isItemControlReceiverComponent, ItemControlType } from './itemControl';
+import { ScoringFormulaNames } from '../types/scoringFormulas';
 
 export const ATTACHMENT_DEFAULT_MAX_SIZE = 5.0;
 
@@ -153,19 +154,6 @@ export const enableWhenOperator: ValueSetComposeIncludeConcept[] = [
     },
 ];
 
-export const elementSaveCapability = [
-    { code: '0', display: 'Not set' },
-    { code: '1', display: 'Save submitted questionnaire and intermediate save (standard setting)' },
-    { code: '2', display: 'Only submitted questionnaire is saved' },
-    { code: '3', display: 'No saving' },
-];
-
-export const scoreSumOptions = [
-    { code: '0', display: 'No score sum' },
-    { code: 'SS', display: 'Section score' },
-    { code: 'TS', display: 'Total score' },
-];
-
 export const getInitialText = (item?: QuestionnaireItem): string => {
     if (
         (item?.type === IQuestionnaireItemType.text || item?.type === IQuestionnaireItemType.string) &&
@@ -230,6 +218,12 @@ export const elementSaveCapability = [
     { code: '3', display: 'No saving' },
 ];
 
+export const scoreSumOptions = [
+    { code: '0', display: 'No score sum' },
+    { code: 'SS', display: ScoringFormulaNames.sectionScore },
+    { code: 'TS', display: ScoringFormulaNames.totalScore },
+];
+
 export const valueSetTqqcCoding: Coding = {
     system: CodingSystemType.valueSetTqqc,
     code: '1',
@@ -237,7 +231,7 @@ export const valueSetTqqcCoding: Coding = {
 };
 
 export const scoreCoding: Coding = {
-    system: ICodeSystem.scoreCodeSystem,
+    system: ICodeSystem.score,
     code: ItemControlType.score,
     display: ItemControlType.score,
 };
