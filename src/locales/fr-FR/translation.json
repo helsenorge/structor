@@ -409,5 +409,12 @@
     "Show only answered options": "Afficher uniquement les options répondues",
     "Full display": "Affichage complet",
     "Compact display": "Affichage compact",
-    "Choose whether all answer options should be displayed in PDF": "Choisissez si toutes les options de réponse doivent être affichées en PDF"
+    "Choose whether all answer options should be displayed in PDF": "Choisissez si toutes les options de réponse doivent être affichées en PDF",
+    "Scoring": "Score",
+    "Select whether the field should be a section scoring field or a total scoring field": "Sélectionnez si le champ doit être un champ de score de section ou un champ de score total",
+    "Not a scoring field": "Pas un champ de score",
+    "Section scoring field": "Champ de score de section",
+    "Total scoring field": "Champ de score total",
+    "Select whether the field should be a scoring field": "Sélectionnez si le champ doit être un champ de score",
+    "Scoring field": "Champ de score"
 }

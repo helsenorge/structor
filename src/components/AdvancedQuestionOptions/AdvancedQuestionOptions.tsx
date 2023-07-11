@@ -56,7 +56,7 @@ import {
 import RadioBtn from '../RadioBtn/RadioBtn';
 import { elementSaveCapability, scoreSumOptions } from '../../helpers/QuestionHelper';
 import { addItemCode, removeItemCode } from '../../helpers/codeHelper';
-import { ScoringFormulaCodes } from '../../types/scoringFormulas';
+import { ScoringFormulaCodes, ScoringFormulaNames } from '../../types/scoringFormulas';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -155,7 +155,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
     const getSelectedScoreCode = (code: Coding[]) => {
         let codeToReturn = '0';
         code.forEach((x) => {
-            if (x.code && x.system === ICodeSystem.score) {
+            if (x.code && x.system === ICodeSystem.scoringFormulas) {
                 codeToReturn = x.code.toString();
             }
         });
@@ -475,9 +475,9 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                 <>
                     <div className="horizontal full">
                         <FormField
-                            label={t('Scoring sum')}
+                            label={t('Scoring')}
                             sublabel={t(
-                                'Select whether the field should display the sum of a section or the total sum',
+                                'Select whether the field should be a section scoring field or a total scoring field',
                             )}
                         ></FormField>
                     </div>
@@ -510,8 +510,8 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                 <>
                     <div className="horizontal full">
                         <FormField
-                            label={t('Question score')}
-                            sublabel={t('Select whether the field should display the sum of a choice')}
+                            label={t('Scoring')}
+                            sublabel={t('Select whether the field should be a scoring field')}
                         ></FormField>
                     </div>
                     <FormField>
@@ -526,7 +526,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                                         {
                                             system: ICodeSystem.scoringFormulas,
                                             code: ScoringFormulaCodes.questionScore,
-                                            display: 'Question score',
+                                            display: ScoringFormulaNames.questionScore,
                                         },
                                         dispatch,
                                     );
@@ -534,7 +534,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                                 }
                             }}
                             value={hasQuestionScoreCode}
-                            label={t('Display the sum of a choice')}
+                            label={t('Scoring field')}
                         />
                     </FormField>
                 </>

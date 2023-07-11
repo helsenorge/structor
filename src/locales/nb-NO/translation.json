@@ -409,5 +409,12 @@
     "Show only answered options": "Viser kun besvarte alternativer",
     "Full display": "Full vising",
     "Compact display": "Kompakt vising",
-    "Choose whether all answer options should be displayed in PDF": "Velg om alle svaralternativer skal vises i PDF"
+    "Choose whether all answer options should be displayed in PDF": "Velg om alle svaralternativer skal vises i PDF",
+    "Scoring": "Skåring",
+    "Select whether the field should be a section scoring field or a total scoring field": "Velg om feltet skal være et seksjon skåring felt eller et total skåring felt",
+    "Not a scoring field": "Ikke et skåring felt",
+    "Section scoring field": "Seksjon skåring felt",
+    "Total scoring field": "Total skåring felt",
+    "Select whether the field should be a scoring field": "Velg om feltet skal være et skåring felt",
+    "Scoring field": "Skåring felt"
 }
