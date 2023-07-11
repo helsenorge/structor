@@ -2,7 +2,6 @@ import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } f
 import { ICodeSystem, IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { CodingSystemType } from './uriHelper';
 import { createItemControlExtension, isItemControlReceiverComponent, ItemControlType } from './itemControl';
-import { ScoringFormulaNames } from '../types/scoringFormulas';
 
 export const ATTACHMENT_DEFAULT_MAX_SIZE = 5.0;
 
@@ -219,9 +218,9 @@ export const elementSaveCapability = [
 ];
 
 export const scoreSumOptions = [
-    { code: '0', display: 'No score sum' },
-    { code: 'SS', display: ScoringFormulaNames.sectionScore },
-    { code: 'TS', display: ScoringFormulaNames.totalScore },
+    { code: '0', display: 'Not a scoring field' },
+    { code: 'SS', display: 'Section scoring field' },
+    { code: 'TS', display: 'Total scoring field' },
 ];
 
 export const valueSetTqqcCoding: Coding = {
