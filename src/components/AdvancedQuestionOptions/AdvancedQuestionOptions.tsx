@@ -471,7 +471,8 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
             </FormField>
 
             {(props.item.type === IQuestionnaireItemType.integer ||
-                props.item.type === IQuestionnaireItemType.decimal) && (
+                props.item.type === IQuestionnaireItemType.decimal ||
+                props.item.type === IQuestionnaireItemType.quantity) && (
                 <>
                     <div className="horizontal full">
                         <FormField
