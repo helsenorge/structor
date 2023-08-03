@@ -1,7 +1,7 @@
 import React, { FocusEvent, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { findTreeArray, TreeContext } from '../../store/treeStore/treeStore';
-import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
+import { Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import {
     deleteItemAction,
     newItemHelpIconAction,
