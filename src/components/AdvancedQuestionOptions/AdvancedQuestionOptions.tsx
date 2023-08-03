@@ -57,6 +57,7 @@ import RadioBtn from '../RadioBtn/RadioBtn';
 import { elementSaveCapability, scoreSumOptions } from '../../helpers/QuestionHelper';
 import { addItemCode, removeItemCode } from '../../helpers/codeHelper';
 import { ScoringFormulaCodes, ScoringFormulaNames } from '../../types/scoringFormulas';
+import { getScoringFormulaName, getSelectedScoringCode } from '../../utils/scoringUtils';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -150,16 +151,6 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
 
     const isGroupItemOnGlobalLevel = (groupId: string): boolean => {
         return qOrder.find((i) => i.linkId === groupId) ? true : false;
-    };
-
-    const getSelectedScoreCode = (code: Coding[]) => {
-        let codeToReturn = '0';
-        code.forEach((x) => {
-            if (x.code && x.system === ICodeSystem.scoringFormulas) {
-                codeToReturn = x.code.toString();
-            }
-        });
-        return codeToReturn;
     };
 
     return (
@@ -494,13 +485,13 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                                         {
                                             system: ICodeSystem.scoringFormulas,
                                             code: newValue,
-                                            display: newValue,
+                                            display: getScoringFormulaName(newValue),
                                         },
                                         dispatch,
                                     );
                                 }
                             }}
-                            checked={props.item.code ? getSelectedScoreCode(props.item.code) : '0'}
+                            checked={props.item.code ? getSelectedScoringCode(props.item.code) : '0'}
                             options={scoreSumOptions}
                             name={'scoreSumOptions-radio'}
                         />
