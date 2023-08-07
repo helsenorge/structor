@@ -259,6 +259,7 @@
     "Coding expected in this enableWhen does not exist": "Le Coding attendu dans l'enableWhen n'existe pas",
     "Operator used in this enableWhen is not supported": "L'operateurr utilisé dans l'enableWhen n'est pas supporté",
     "The ValueSet referenced in this enableWhen does not exist": "Le ValueSet référencé dans l'enableWhen n'existe pas",
+    "Items with code \"SS\" (section score) must be inside a group": "Les éléments avec le code \"SS\" (score de section) doivent être à l'intérieur d'un groupe",
     "Active": "Actif",
     "Draft": "Brouillon",
     "Retired": "Retiré",
