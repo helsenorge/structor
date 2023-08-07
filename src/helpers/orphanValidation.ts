@@ -14,6 +14,8 @@ import { hasExtension } from './extensionHelper';
 import { isRecipientList } from './QuestionHelper';
 import { isUriValid } from './uriHelper';
 import { getValueSetValues } from './valueSetHelper';
+import { getAllGroups } from '../utils/getAllGroups';
+import { ScoringFormulaCodes } from '../types/scoringFormulas';
 
 export interface ValidationErrors {
     linkId: string;
@@ -95,6 +97,32 @@ const validateItemCode = (t: TFunction<'translation'>, qItem: QuestionnaireItem)
         }
         if (code.system && !isUriValid(code.system)) {
             returnErrors.push(createError(qItem.linkId, 'code', t('Code does not have a valid system'), index));
+        }
+    });
+    return returnErrors;
+};
+
+const validateSectionScore = (
+    t: TFunction<'translation'>,
+    qItems: Items,
+    qItem: QuestionnaireItem,
+    qOrder: OrderItem[],
+): ValidationErrors[] => {
+    const returnErrors: ValidationErrors[] = [];
+    (qItem.code || []).forEach((code, index) => {
+        if (code.code === ScoringFormulaCodes.sectionScore) {
+            const allGroups = getAllGroups(qOrder, qItems, [] as OrderItem[]);
+            const isItemInAGroup = allGroups.find((group) => group.items.find((item) => item.linkId === qItem.linkId));
+            if (!isItemInAGroup) {
+                returnErrors.push(
+                    createError(
+                        qItem.linkId,
+                        'code.code',
+                        t('Items with code "SS" (section score) must be inside a group'),
+                        index,
+                    ),
+                );
+            }
         }
     });
     return returnErrors;
@@ -363,7 +391,7 @@ export const validateOrphanedElements = (
 ): ValidationErrors[] => {
     const errors: ValidationErrors[] = [];
 
-    qOrder.forEach((x) => validate(t, x, qItems, qContained, errors));
+    qOrder.forEach((x) => validate(t, x, qItems, qOrder, qContained, errors));
 
     return errors;
 };
@@ -372,6 +400,7 @@ const validate = (
     t: TFunction<'translation'>,
     currentItem: OrderItem,
     qItems: Items,
+    qOrder: OrderItem[],
     qContained: ValueSet[],
     errors: ValidationErrors[],
 ): void => {
@@ -388,6 +417,9 @@ const validate = (
 
     // validate item.code
     errors.push(...validateItemCode(t, qItem));
+
+    // validate that no items with code "SS" (system score) is outside a group
+    errors.push(...validateSectionScore(t, qItems, qItem, qOrder));
 
     // validate system in answerOptions
     errors.push(...validateAnswerOptionSystem(t, qItem));
@@ -407,7 +439,7 @@ const validate = (
     // validate data-receiver
     errors.push(...validateDataReceiver(t, qItem));
 
-    currentItem.items.forEach((x) => validate(t, x, qItems, qContained, errors));
+    currentItem.items.forEach((x) => validate(t, x, qItems, qOrder, qContained, errors));
 };
 
 const validateSidebarTranslations = (
