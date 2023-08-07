@@ -260,6 +260,7 @@
     "Coding expected in this enableWhen does not exist": "Coding denne enableWhen forventer eksisterer ikke",
     "Operator used in this enableWhen is not supported": "Operator brukt i denne enableWhen er ikke støttet",
     "The ValueSet referenced in this enableWhen does not exist": "Verdisettet denne enableWhen refererer til finnes ikke",
+    "Items with code \"SS\" (section score) must be inside a group": "Elementer med kode \"SS\" (seksjon skåring) må være inni en gruppe",
     "Active": "Aktiv",
     "Draft": "Skisse",
     "Retired": "Avsluttet",
