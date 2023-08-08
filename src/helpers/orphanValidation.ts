@@ -16,6 +16,7 @@ import { isUriValid } from './uriHelper';
 import { getValueSetValues } from './valueSetHelper';
 import { getAllGroups } from '../utils/getAllGroups';
 import { ScoringFormulaCodes } from '../types/scoringFormulas';
+import { isItemInArray } from '../utils/isItemInArray';
 
 export interface ValidationErrors {
     linkId: string;
@@ -111,8 +112,8 @@ const validateSectionScore = (
     const returnErrors: ValidationErrors[] = [];
     (qItem.code || []).forEach((code, index) => {
         if (code.code === ScoringFormulaCodes.sectionScore) {
-            const allGroups = getAllGroups(qOrder, qItems, [] as OrderItem[]);
-            const isItemInAGroup = allGroups.find((group) => group.items.find((item) => item.linkId === qItem.linkId));
+            const allGroups = getAllGroups(qOrder, qItems);
+            const isItemInAGroup = isItemInArray(allGroups, qItem);
             if (!isItemInAGroup) {
                 returnErrors.push(
                     createError(
