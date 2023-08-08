@@ -7,15 +7,9 @@ export const isItemInArray = (arrayToSearch: OrderItem[], qItem: QuestionnaireIt
             valueToReturn = true;
             return;
         }
-        item.items.forEach((itemInItem) => {
-            if (itemInItem.linkId === qItem.linkId) {
-                valueToReturn = true;
-                return;
-            }
-            if (itemInItem.items) {
-                valueToReturn = isItemInArray(itemInItem.items, qItem, valueToReturn);
-            }
-        });
+        if (item.items) {
+            valueToReturn = isItemInArray(item.items, qItem, valueToReturn);
+        }
     });
     return valueToReturn;
 };
