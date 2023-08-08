@@ -1,15 +1,15 @@
 import { OrderItem, Items } from '../store/treeStore/treeStore';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 
-export const getAllGroups = (qOrder: OrderItem[], qItems: Items, newArray: OrderItem[]): OrderItem[] => {
-    for (let i = 0; i < qOrder.length; i++) {
-        const item = qItems[qOrder[i].linkId];
-        if (item.type === IQuestionnaireItemType.group) {
-            newArray.push(qOrder[i]);
+export const getAllGroups = (qOrder: OrderItem[], qItems: Items, newArray: OrderItem[] = []): OrderItem[] => {
+    qOrder.forEach((orderItem) => {
+        const qItem = qItems[orderItem.linkId];
+        if (qItem.type === IQuestionnaireItemType.group) {
+            newArray.push(orderItem);
         }
-        if (qOrder[i].items) {
-            getAllGroups(qOrder[i].items, qItems, newArray);
+        if (orderItem.items) {
+            getAllGroups(orderItem.items, qItems, newArray);
         }
-    }
+    });
     return newArray;
 };
