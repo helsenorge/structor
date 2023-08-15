@@ -414,8 +414,8 @@
     "Scoring": "Score",
     "Scoring and sum": "Score et somme",
     "Select whether the field should be a scoring field, a section sum field or a total sum field": "Sélectionnez si le champ doit être un champ de score, un champ de somme de section ou un champ de somme totale",
-    "Section sum field": "Champ de score de section",
-    "Total sum field": "Champ de score total",
+    "Section sum field": "Champ de somme de section",
+    "Total sum field": "Champ somme totale",
     "Select whether the field should be a scoring field": "Sélectionnez si le champ doit être un champ de score",
     "Scoring field": "Champ de score"
 }
