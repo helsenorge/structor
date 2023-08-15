@@ -54,7 +54,7 @@ import {
     canTypeCopyData,
 } from '../../helpers/questionTypeFeatures';
 import RadioBtn from '../RadioBtn/RadioBtn';
-import { elementSaveCapability, scoreSumOptions } from '../../helpers/QuestionHelper';
+import { QSCoding, elementSaveCapability, scoreCoding, scoreSumOptions } from '../../helpers/QuestionHelper';
 import { addItemCode, removeItemCode } from '../../helpers/codeHelper';
 import { ScoringFormulaCodes, ScoringFormulaNames } from '../../types/scoringFormulas';
 import { getScoringFormulaName, getSelectedScoringCode } from '../../utils/scoringUtils';
@@ -467,9 +467,9 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                 <>
                     <div className="horizontal full">
                         <FormField
-                            label={t('Scoring')}
+                            label={t('Scoring and sum')}
                             sublabel={t(
-                                'Select whether the field should be a section scoring field or a total scoring field',
+                                'Select whether the field should be a scoring field, a section sum field or a total sum field',
                             )}
                         ></FormField>
                     </div>
@@ -478,8 +478,14 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                             onChange={(newValue: string) => {
                                 if (newValue === '0') {
                                     removeItemCode(props.item, ICodeSystem.scoringFormulas, dispatch);
+                                    removeItemCode(props.item, ICodeSystem.score, dispatch);
+                                } else if (newValue === 'score') {
+                                    removeItemCode(props.item, ICodeSystem.score, dispatch);
+                                    addItemCode(props.item, scoreCoding, dispatch);
                                 } else {
                                     removeItemCode(props.item, ICodeSystem.scoringFormulas, dispatch);
+                                    removeItemCode(props.item, ICodeSystem.score, dispatch);
+                                    addItemCode(props.item, scoreCoding, dispatch);
                                     addItemCode(
                                         props.item,
                                         {
@@ -510,18 +516,12 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                         <SwitchBtn
                             onChange={() => {
                                 if (hasQuestionScoreCode) {
+                                    removeItemCode(props.item, ICodeSystem.score, dispatch);
                                     removeItemCode(props.item, ICodeSystem.scoringFormulas, dispatch);
                                     setHasQuestionScoreCode(false);
                                 } else {
-                                    addItemCode(
-                                        props.item,
-                                        {
-                                            system: ICodeSystem.scoringFormulas,
-                                            code: ScoringFormulaCodes.questionScore,
-                                            display: ScoringFormulaNames.questionScore,
-                                        },
-                                        dispatch,
-                                    );
+                                    addItemCode(props.item, scoreCoding, dispatch);
+                                    addItemCode(props.item, QSCoding, dispatch);
                                     setHasQuestionScoreCode(true);
                                 }
                             }}

@@ -5,7 +5,7 @@ import { ScoringFormulaCodes, ScoringFormulaNames } from '../types/scoringFormul
 export const getSelectedScoringCode = (code: Coding[]): string => {
     let codeToReturn = '0';
     code.forEach((x) => {
-        if (x.code && x.system === ICodeSystem.scoringFormulas) {
+        if (x.code && (x.system === ICodeSystem.scoringFormulas || (x.code && x.system === ICodeSystem.score))) {
             codeToReturn = x.code.toString();
         }
     });
