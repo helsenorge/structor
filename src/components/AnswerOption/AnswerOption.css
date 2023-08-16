@@ -7,11 +7,17 @@
     margin: 5px 15px;
 }
 
-.answer-option-content input {
+.answer-option-content .twoColumns {
     width: 48%;
-}
-.answer-option-content input:first-of-type {
     margin-right: 4%;
+}
+.answer-option-content .threeColumns {
+    width: 28%;
+    margin-right: 4%;
+}
+
+.answer-option-content input:last-of-type {
+    margin-right: 0%;
 }
 
 .answer-option-item button {
