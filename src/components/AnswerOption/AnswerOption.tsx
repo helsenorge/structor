@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { QuestionnaireItemAnswerOption } from '../../types/fhir';
@@ -25,12 +25,15 @@ const AnswerOption = ({
     disabled,
 }: Props): JSX.Element => {
     const { t } = useTranslation();
+    const [displayScoringField, setDisplayScoringField] = useState(true);
+    const inputFieldClassName = displayScoringField ? 'threeColumns' : 'twoColumns';
     return (
         <div className="answer-option-item align-everything">
             {!disabled && <span {...handleDrag} className="reorder-icon" aria-label="reorder element" />}
             <div className="answer-option-content">
                 <InputField
                     name="beskrivelse"
+                    className={inputFieldClassName}
                     onBlur={(event) => changeDisplay(event)}
                     defaultValue={answerOption?.valueCoding?.display}
                     disabled={disabled}
@@ -39,10 +42,20 @@ const AnswerOption = ({
                 <InputField
                     key={answerOption?.valueCoding?.code} // set key to update defaultValue when display field is blurred
                     name="verdi"
+                    className={inputFieldClassName}
                     defaultValue={answerOption?.valueCoding?.code}
                     placeholder={t('Enter a value..')}
                     onBlur={(event) => changeCode(event)}
                 />
+                {displayScoringField && (
+                    <InputField
+                        name="skåring"
+                        className={inputFieldClassName}
+                        defaultValue={''}
+                        placeholder={t('Enter a scoring value..')}
+                        onBlur={(event) => changeCode(event)}
+                    />
+                )}
             </div>
             {showDelete && (
                 <button type="button" name={t('Remove element')} onClick={deleteItem} className="align-everything" />
