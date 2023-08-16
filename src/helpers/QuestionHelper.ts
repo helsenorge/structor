@@ -220,9 +220,9 @@ export const elementSaveCapability = [
 
 export const scoreSumOptions = [
     { code: '0', display: 'Not set' },
-    { code: 'score', display: 'Scoring field' },
-    { code: 'SS', display: 'Section sum field' },
-    { code: 'TS', display: 'Total sum field' },
+    { code: 'score', display: 'Calculation' },
+    { code: 'SS', display: 'Section score' },
+    { code: 'TS', display: 'Total score' },
 ];
 
 export const valueSetTqqcCoding: Coding = {

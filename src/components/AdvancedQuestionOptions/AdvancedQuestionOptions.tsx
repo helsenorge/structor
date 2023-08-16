@@ -467,9 +467,9 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                 <>
                     <div className="horizontal full">
                         <FormField
-                            label={t('Scoring and sum')}
+                            label={t('Summation field')}
                             sublabel={t(
-                                'Select whether the field should be a scoring field, a section sum field or a total sum field',
+                                'Select whether the field should be a summation field for calculation, a summation field for section score, or a summation field for total score',
                             )}
                         ></FormField>
                     </div>
