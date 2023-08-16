@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
-import { QuestionnaireItemAnswerOption } from '../../types/fhir';
+import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
 import './AnswerOption.css';
 import InputField from '../InputField/inputField';
+import { doesItemHaveCode } from '../../utils/doesItemHaveCode';
 
 type Props = {
+    item: QuestionnaireItem;
     answerOption?: QuestionnaireItemAnswerOption;
     handleDrag?: DraggableProvidedDragHandleProps;
     changeDisplay: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -16,6 +18,7 @@ type Props = {
 };
 
 const AnswerOption = ({
+    item,
     answerOption,
     handleDrag,
     changeDisplay,
@@ -25,8 +28,14 @@ const AnswerOption = ({
     disabled,
 }: Props): JSX.Element => {
     const { t } = useTranslation();
-    const [displayScoringField, setDisplayScoringField] = useState(true);
+
+    const [displayScoringField, setDisplayScoringField] = useState(false);
     const inputFieldClassName = displayScoringField ? 'threeColumns' : 'twoColumns';
+
+    useEffect(() => {
+        setDisplayScoringField(doesItemHaveCode(item, 'score'));
+    }, [item]);
+
     return (
         <div className="answer-option-item align-everything">
             {!disabled && <span {...handleDrag} className="reorder-icon" aria-label="reorder element" />}

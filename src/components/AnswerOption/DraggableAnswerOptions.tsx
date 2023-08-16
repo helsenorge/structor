@@ -76,6 +76,7 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                             )}
                                         >
                                             <AnswerOption
+                                                item={item}
                                                 changeDisplay={(event) => {
                                                     const newArray = updateAnswerOption(
                                                         item.answerOption || [],
