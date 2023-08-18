@@ -469,7 +469,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                         <FormField
                             label={t('Summation field')}
                             sublabel={t(
-                                'Select whether the field should be a summation field for calculation, a summation field for section score, or a summation field for total score',
+                                'Select whether the field should be a summation field for section score or total score',
                             )}
                         ></FormField>
                     </div>
@@ -479,9 +479,6 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                                 if (newValue === '0') {
                                     removeItemCode(props.item, ICodeSystem.scoringFormulas, dispatch);
                                     removeItemCode(props.item, ICodeSystem.score, dispatch);
-                                } else if (newValue === 'score') {
-                                    removeItemCode(props.item, ICodeSystem.score, dispatch);
-                                    addItemCode(props.item, scoreCoding, dispatch);
                                 } else {
                                     removeItemCode(props.item, ICodeSystem.scoringFormulas, dispatch);
                                     removeItemCode(props.item, ICodeSystem.score, dispatch);

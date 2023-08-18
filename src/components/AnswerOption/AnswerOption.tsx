@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
-import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
+import { Extension, QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
 import './AnswerOption.css';
 import InputField from '../InputField/inputField';
 import { doesItemHaveCode } from '../../utils/doesItemHaveCode';
+import { setItemExtension } from '../../helpers/extensionHelper';
+import { TreeContext } from '../../store/treeStore/treeStore';
+import { findExtensionInExtensionArrayByUrl } from '../../utils/findExtensionInExtensionArrayByUrl';
+import { IExtentionType } from '../../types/IQuestionnareItemType';
 
 type Props = {
     item: QuestionnaireItem;
@@ -12,6 +16,7 @@ type Props = {
     handleDrag?: DraggableProvidedDragHandleProps;
     changeDisplay: (event: React.ChangeEvent<HTMLInputElement>) => void;
     changeCode: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    changeExtension: (event: React.ChangeEvent<HTMLInputElement>) => void;
     deleteItem?: () => void;
     showDelete?: boolean;
     disabled?: boolean;
@@ -23,6 +28,7 @@ const AnswerOption = ({
     handleDrag,
     changeDisplay,
     changeCode,
+    changeExtension,
     deleteItem,
     showDelete,
     disabled,
@@ -30,11 +36,23 @@ const AnswerOption = ({
     const { t } = useTranslation();
 
     const [displayScoringField, setDisplayScoringField] = useState(false);
+
     const inputFieldClassName = displayScoringField ? 'threeColumns' : 'twoColumns';
+
+    const getDefaultScoreValue = (): string => {
+        let stringToReturn = '';
+        const scoreExtension =
+            answerOption?.valueCoding?.extension &&
+            findExtensionInExtensionArrayByUrl(answerOption?.valueCoding?.extension, IExtentionType.ordinalValue);
+        if (scoreExtension) {
+            stringToReturn = scoreExtension?.valueDecimal?.toString() || '';
+        }
+        return stringToReturn;
+    };
 
     useEffect(() => {
         setDisplayScoringField(doesItemHaveCode(item, 'score'));
-    }, [item]);
+    }, [item, answerOption]);
 
     return (
         <div className="answer-option-item align-everything">
@@ -60,9 +78,9 @@ const AnswerOption = ({
                     <InputField
                         name="skåring"
                         className={inputFieldClassName}
-                        defaultValue={''}
+                        defaultValue={getDefaultScoreValue()}
                         placeholder={t('Enter a scoring value..')}
-                        onBlur={(event) => changeCode(event)}
+                        onBlur={(event) => changeExtension(event)}
                     />
                 )}
             </div>
