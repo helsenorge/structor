@@ -1,4 +1,5 @@
-import { QuestionnaireItemAnswerOption } from '../types/fhir';
+import { IExtentionType } from '../types/IQuestionnareItemType';
+import { Extension, QuestionnaireItemAnswerOption } from '../types/fhir';
 import createUUID from './CreateUUID';
 import { removeSpace } from './formatHelper';
 import { createUriUUID } from './uriHelper';
@@ -54,6 +55,28 @@ export const updateAnswerOptionCode = (
                   valueCoding: {
                       ...x.valueCoding,
                       code: codeValue,
+                  },
+              } as QuestionnaireItemAnswerOption)
+            : x;
+    });
+};
+
+export const updateAnswerOptionExtension = (
+    values: QuestionnaireItemAnswerOption[],
+    targetId: string,
+    scoreValue: string,
+): QuestionnaireItemAnswerOption[] => {
+    return values.map((x) => {
+        return x.valueCoding?.id === targetId
+            ? ({
+                  valueCoding: {
+                      ...x.valueCoding,
+                      extension: [
+                          {
+                              url: IExtentionType.ordinalValue,
+                              valueDecimal: Number(scoreValue),
+                          },
+                      ],
                   },
               } as QuestionnaireItemAnswerOption)
             : x;

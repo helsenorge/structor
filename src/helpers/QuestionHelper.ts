@@ -220,7 +220,6 @@ export const elementSaveCapability = [
 
 export const scoreSumOptions = [
     { code: '0', display: 'Not set' },
-    { code: 'score', display: 'Calculation' },
     { code: 'SS', display: 'Section score' },
     { code: 'TS', display: 'Total score' },
 ];

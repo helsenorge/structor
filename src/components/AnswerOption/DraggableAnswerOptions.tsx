@@ -12,6 +12,7 @@ import {
     reorderPositions,
     updateAnswerOption,
     updateAnswerOptionCode,
+    updateAnswerOptionExtension,
 } from '../../helpers/answerOptionHelper';
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
 import { IItemProperty } from '../../types/IQuestionnareItemType';
@@ -87,6 +88,14 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                 }}
                                                 changeCode={(event) => {
                                                     const newArray = updateAnswerOptionCode(
+                                                        item.answerOption || [],
+                                                        answerOption.valueCoding?.id || '',
+                                                        event.target.value,
+                                                    );
+                                                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                                                }}
+                                                changeExtension={(event) => {
+                                                    const newArray = updateAnswerOptionExtension(
                                                         item.answerOption || [],
                                                         answerOption.valueCoding?.id || '',
                                                         event.target.value,
