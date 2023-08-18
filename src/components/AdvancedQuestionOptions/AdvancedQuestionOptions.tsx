@@ -56,7 +56,7 @@ import {
 import RadioBtn from '../RadioBtn/RadioBtn';
 import { QSCoding, elementSaveCapability, scoreCoding, scoreSumOptions } from '../../helpers/QuestionHelper';
 import { addItemCode, removeItemCode } from '../../helpers/codeHelper';
-import { ScoringFormulaCodes, ScoringFormulaNames } from '../../types/scoringFormulas';
+import { ScoringFormulaCodes } from '../../types/scoringFormulas';
 import { getScoringFormulaName, getSelectedScoringCode } from '../../utils/scoringUtils';
 
 type AdvancedQuestionOptionsProps = {
