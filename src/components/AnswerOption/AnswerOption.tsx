@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
-import { Extension, QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
+import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
 import './AnswerOption.css';
 import InputField from '../InputField/inputField';
 import { doesItemHaveCode } from '../../utils/doesItemHaveCode';
-import { setItemExtension } from '../../helpers/extensionHelper';
-import { TreeContext } from '../../store/treeStore/treeStore';
 import { findExtensionInExtensionArrayByUrl } from '../../utils/findExtensionInExtensionArrayByUrl';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
 
