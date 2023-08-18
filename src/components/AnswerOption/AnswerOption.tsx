@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
