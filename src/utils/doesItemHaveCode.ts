@@ -1,11 +1,11 @@
 import { QuestionnaireItem } from '../types/fhir';
 
 export const doesItemHaveCode = (item: QuestionnaireItem, code: string): boolean => {
-    let test = false;
+    let itemHasCode = false;
     item.code?.forEach((x) => {
         if (x.code === code) {
-            test = true;
+            itemHasCode = true;
         }
     });
-    return test;
+    return itemHasCode;
 };
