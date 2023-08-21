@@ -102,14 +102,6 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                     );
                                                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                 }}
-                                                addDefaultExtension={(value) => {
-                                                    const newArray = updateAnswerOptionExtension(
-                                                        item.answerOption || [],
-                                                        answerOption.valueCoding?.id || '',
-                                                        value,
-                                                    );
-                                                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                                }}
                                                 deleteItem={() => {
                                                     const newArray = removeOptionFromAnswerOptionArray(
                                                         item.answerOption || [],
