@@ -15,7 +15,6 @@ type Props = {
     changeDisplay: (event: React.ChangeEvent<HTMLInputElement>) => void;
     changeCode: (event: React.ChangeEvent<HTMLInputElement>) => void;
     changeExtension: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    addDefaultExtension: (value: string) => void;
     deleteItem?: () => void;
     showDelete?: boolean;
     disabled?: boolean;
@@ -28,7 +27,6 @@ const AnswerOption = ({
     changeDisplay,
     changeCode,
     changeExtension,
-    addDefaultExtension,
     deleteItem,
     showDelete,
     disabled,
@@ -36,13 +34,13 @@ const AnswerOption = ({
     const { t } = useTranslation();
 
     const [displayScoringField, setDisplayScoringField] = useState(false);
-    const scoreExtension =
-        answerOption?.valueCoding?.extension &&
-        findExtensionInExtensionArrayByUrl(answerOption?.valueCoding?.extension, IExtentionType.ordinalValue);
     const inputFieldClassName = displayScoringField ? 'threeColumns' : 'twoColumns';
 
     const getDefaultScoreValue = (): string => {
         let stringToReturn = '';
+        const scoreExtension =
+            answerOption?.valueCoding?.extension &&
+            findExtensionInExtensionArrayByUrl(answerOption?.valueCoding?.extension, IExtentionType.ordinalValue);
         if (scoreExtension) {
             stringToReturn = scoreExtension?.valueDecimal?.toString() || '';
         }
@@ -51,9 +49,6 @@ const AnswerOption = ({
 
     useEffect(() => {
         setDisplayScoringField(doesItemHaveCode(item, 'score'));
-        // if (displayScoringField && !scoreExtension) {
-        //     addDefaultExtension('0');
-        // }
     }, [item, answerOption]);
 
     return (

@@ -21,8 +21,7 @@ export const addDefaultOrdinalValueExtensionToAllAnswerOptions = (
     dispatch: React.Dispatch<ActionType>,
 ) => {
     if (item.answerOption) {
-        const newArray = [];
-        newArray.push(addOrdinalValueExtensionToAllAnswerOptions(item.answerOption || [], '0'));
+        const newArray = addOrdinalValueExtensionToAllAnswerOptions(item.answerOption || [], '0');
         dispatch(updateItemAction(item.linkId, IItemProperty.answerOption, newArray));
     }
 };
