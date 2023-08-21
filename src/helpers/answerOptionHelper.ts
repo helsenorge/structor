@@ -26,6 +26,25 @@ export const addEmptyOptionToAnswerOptionArray = (
     return [...values, newValueCoding];
 };
 
+export const addOrdinalValueExtensionToAllAnswerOptions = (
+    values: QuestionnaireItemAnswerOption[],
+    scoreValue: string,
+): QuestionnaireItemAnswerOption[] => {
+    return values.map((x) => {
+        return {
+            valueCoding: {
+                ...x.valueCoding,
+                extension: [
+                    {
+                        url: IExtentionType.ordinalValue,
+                        valueDecimal: Number(scoreValue),
+                    },
+                ],
+            },
+        } as QuestionnaireItemAnswerOption;
+    });
+};
+
 export const updateAnswerOption = (
     values: QuestionnaireItemAnswerOption[],
     targetId: string,
