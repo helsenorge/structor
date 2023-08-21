@@ -59,6 +59,7 @@ type ItemValueType =
     | IEnableWhen[]
     | number
     | QuestionnaireItemAnswerOption[]
+    | QuestionnaireItemAnswerOption[][]
     | Element
     | QuestionnaireItemInitial[]
     | Coding[]
