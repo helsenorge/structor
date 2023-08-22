@@ -11,7 +11,7 @@
         "@helsenorge/designsystem-react": "^3.0.1",
         "@helsenorge/file-upload": "^27.1.4",
         "@helsenorge/form": "^27.1.4",
-        "@helsenorge/refero": "^12.3.0-beta01",
+        "@helsenorge/refero": "^13.1.0-beta03",
         "@helsenorge/toolkit": "^21.3.0-prerelease",
         "@nosferatu500/react-sortable-tree": "^3.0.3",
         "axios": "^0.21.4",
