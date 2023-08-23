@@ -123,6 +123,20 @@ export const removeOptionFromAnswerOptionArray = (
     return values.filter((x) => x.valueCoding?.id !== targetId);
 };
 
+export const removeExtensionFromAnswerOptions = (
+    values: QuestionnaireItemAnswerOption[],
+    extensionUrl: IExtentionType,
+): QuestionnaireItemAnswerOption[] => {
+    return values.map((x) => {
+        return {
+            valueCoding: {
+                ...x.valueCoding,
+                extension: x.valueCoding?.extension?.filter((y) => y.url !== extensionUrl),
+            } as QuestionnaireItemAnswerOption,
+        };
+    });
+};
+
 export const reorderPositions = (
     list: QuestionnaireItemAnswerOption[],
     to: number,

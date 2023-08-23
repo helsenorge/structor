@@ -58,7 +58,10 @@ import { QSCoding, elementSaveCapability, scoreCoding, scoreSumOptions } from '.
 import { addItemCode, removeItemCode } from '../../helpers/codeHelper';
 import { ScoringFormulaCodes } from '../../types/scoringFormulas';
 import { getScoringFormulaName, getSelectedScoringCode } from '../../utils/scoringUtils';
-import { addDefaultOrdinalValueExtensionToAllAnswerOptions } from '../../utils/extensionUtils';
+import {
+    addDefaultOrdinalValueExtensionToAllAnswerOptions,
+    removeOrdinalValueExtensionfromAnswerOptions,
+} from '../../utils/answerOptionExtensionUtils';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -516,6 +519,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                                 if (hasQuestionScoreCode) {
                                     removeItemCode(props.item, ICodeSystem.score, dispatch);
                                     removeItemCode(props.item, ICodeSystem.scoringFormulas, dispatch);
+                                    removeOrdinalValueExtensionfromAnswerOptions(props.item, dispatch);
                                     setHasQuestionScoreCode(false);
                                 } else {
                                     addItemCode(props.item, scoreCoding, dispatch);
