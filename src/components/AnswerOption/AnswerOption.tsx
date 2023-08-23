@@ -44,12 +44,15 @@ const AnswerOption = ({
         if (scoreExtension) {
             stringToReturn = scoreExtension?.valueDecimal?.toString() || '';
         }
+        if (stringToReturn === '0') {
+            stringToReturn = '';
+        }
         return stringToReturn;
     };
 
     useEffect(() => {
         setDisplayScoringField(doesItemHaveCode(item, 'score'));
-    }, [item, answerOption]);
+    }, [item]);
 
     return (
         <div className="answer-option-item align-everything">
@@ -76,8 +79,10 @@ const AnswerOption = ({
                         name="skåring"
                         className={inputFieldClassName}
                         defaultValue={getDefaultScoreValue()}
-                        placeholder={t('Enter a scoring value..')}
-                        onBlur={(event) => changeExtension(event)}
+                        placeholder={t('Enter a scoring value.. (default value: 0)')}
+                        onBlur={(event) => {
+                            changeExtension(event);
+                        }}
                     />
                 )}
             </div>
