@@ -11,7 +11,7 @@ import {
 } from '../../helpers/MetadataHelper';
 import FormField from '../FormField/FormField';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
-import { ContactDetail, Extension, Meta, UsageContext } from '../../types/fhir';
+import { Meta } from '../../types/fhir';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import RadioBtn from '../RadioBtn/RadioBtn';
@@ -68,64 +68,64 @@ const MetaSecurityEditor = (): JSX.Element => {
         console.log('Here', code);
     };
 
- return (
-    <>
-        {/* Tjenesteomraade Tilgangsstyring */}
-        <FormField
-            label={t('Select service area')}
-            sublabel={t('Which service area the bruker needs to have to have access to form')}
-        >
-            <RadioBtn
-                checked={getTjenesteOmraadeSystem()}
-                onChange={updateTjenesteomraadeMetaSecurity}
-                options={metaSecurityOptions}
-                name={'servicearea-radio'}
-            />
-        </FormField>
-
-        {/* Utfylling Av Skjema */}
-        <FormField
-            label={t('Filling out form')}
-            sublabel={t(
-                'Who fills out the form is controlled by a standard access service. If the form is to have access control other than standard, this must be selected here. Choose which representation conditions should be able to fill in the form.',
-            )}
-        >
-            <RadioBtn
-                checked={getUtfyllingAvSkjema()}
-                onChange={onChangeUtfyllingAvSkjema}
-                options={skjemaUtfyllerOptions}
-                name={'formfilling-radio'}
-            />
-        </FormField>
-
-        {/* Skjema Utfylling Tilgangsstyring */}
-        {displayTilgangsstyring && (
-            <FormField label={t('Hvem skal kunne fylle ut skjemaet?')}>
-                <CheckboxBtn
-                    value={true}
-                    disabled={true}
-                    label={formFillingAccessDisplay.kunInnbygger}
-                    onChange={() => onChangeTilgangsstyring(formFillingAccessCode.kunInnbygger)}
-                />
-                <CheckboxBtn
-                    value={false}
-                    label={formFillingAccessDisplay.barnUnder12}
-                    onChange={() => onChangeTilgangsstyring(formFillingAccessCode.barnUnder12)}
-                />
-                <CheckboxBtn
-                    value={false}
-                    label={formFillingAccessDisplay.barnMellom12Og16}
-                    onChange={() => onChangeTilgangsstyring(formFillingAccessCode.barnMellom12Og16)}
-                />
-                <CheckboxBtn
-                    value={false}
-                    label={formFillingAccessDisplay.representantOrdinaertFullmakt}
-                    onChange={() => onChangeTilgangsstyring(formFillingAccessCode.representantOrdinaertFullmakt)}
+    return (
+        <>
+            {/* Tjenesteomraade Tilgangsstyring */}
+            <FormField
+                label={t('Select service area')}
+                sublabel={t('Which service area the bruker needs to have to have access to form')}
+            >
+                <RadioBtn
+                    checked={getTjenesteOmraadeSystem()}
+                    onChange={updateTjenesteomraadeMetaSecurity}
+                    options={metaSecurityOptions}
+                    name={'servicearea-radio'}
                 />
             </FormField>
-        )}
-    </>
- );
+
+            {/* Utfylling Av Skjema */}
+            <FormField
+                label={t('Filling out form')}
+                sublabel={t(
+                    'Who fills out the form is controlled by a standard access service. If the form is to have access control other than standard, this must be selected here. Choose which representation conditions should be able to fill in the form.',
+                )}
+            >
+                <RadioBtn
+                    checked={getUtfyllingAvSkjema()}
+                    onChange={onChangeUtfyllingAvSkjema}
+                    options={skjemaUtfyllerOptions}
+                    name={'formfilling-radio'}
+                />
+            </FormField>
+
+            {/* Skjema Utfylling Tilgangsstyring */}
+            {displayTilgangsstyring && (
+                <FormField label={t('Hvem skal kunne fylle ut skjemaet?')}>
+                    <CheckboxBtn
+                        value={true}
+                        disabled={true}
+                        label={formFillingAccessDisplay.kunInnbygger}
+                        onChange={() => onChangeTilgangsstyring(formFillingAccessCode.kunInnbygger)}
+                    />
+                    <CheckboxBtn
+                        value={false}
+                        label={formFillingAccessDisplay.barnUnder12}
+                        onChange={() => onChangeTilgangsstyring(formFillingAccessCode.barnUnder12)}
+                    />
+                    <CheckboxBtn
+                        value={false}
+                        label={formFillingAccessDisplay.barnMellom12Og16}
+                        onChange={() => onChangeTilgangsstyring(formFillingAccessCode.barnMellom12Og16)}
+                    />
+                    <CheckboxBtn
+                        value={false}
+                        label={formFillingAccessDisplay.representantOrdinaertFullmakt}
+                        onChange={() => onChangeTilgangsstyring(formFillingAccessCode.representantOrdinaertFullmakt)}
+                    />
+                </FormField>
+            )}
+        </>
+    );
 };
 
 export default MetaSecurityEditor;

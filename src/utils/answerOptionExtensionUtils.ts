@@ -10,7 +10,7 @@ import { QuestionnaireItem } from '../types/fhir';
 export const addDefaultOrdinalValueExtensionToAllAnswerOptions = (
     item: QuestionnaireItem,
     dispatch: React.Dispatch<ActionType>,
-) => {
+): void => {
     if (item.answerOption) {
         const newArray = addOrdinalValueExtensionToAllAnswerOptions(item.answerOption || [], '0');
         dispatch(updateItemAction(item.linkId, IItemProperty.answerOption, newArray));
@@ -20,7 +20,7 @@ export const addDefaultOrdinalValueExtensionToAllAnswerOptions = (
 export const removeOrdinalValueExtensionfromAnswerOptions = (
     item: QuestionnaireItem,
     dispatch: React.Dispatch<ActionType>,
-) => {
+): void => {
     if (item.answerOption) {
         const newArray = removeExtensionFromAnswerOptions(item.answerOption || [], IExtentionType.ordinalValue);
         dispatch(updateItemAction(item.linkId, IItemProperty.answerOption, newArray));
