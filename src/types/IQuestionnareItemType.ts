@@ -134,3 +134,8 @@ export enum UseContextSystem {
     journalinnsyn_basispluss = 'urn:oid:2.16.578.1.12.4.1.1.7614',
     registerinnsyn_basis = 'urn:oid:2.16.578.1.12.4.1.1.7615',
 }
+
+export enum MetaSecuritySystem {
+    tjenesteomraade = 'urn:oid:2.16.578.1.12.4.1.1.7618',
+    kanUtforesAv = 'http://helsenorge.no/fhir/KanUtforesAv',
+}

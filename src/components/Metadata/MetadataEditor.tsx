@@ -1,14 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatISO, parseISO } from 'date-fns';
-import {
-    getMetaSecurity,
-    isValidId,
-    isValidTechnicalName,
-    metaSecurityOptions,
-    questionnaireStatusOptions,
-    metaSecurityCode,
-} from '../../helpers/MetadataHelper';
+import { isValidId, isValidTechnicalName, questionnaireStatusOptions } from '../../helpers/MetadataHelper';
 import Accordion from '../Accordion/Accordion';
 import DatePicker from '../DatePicker/DatePicker';
 import FormField from '../FormField/FormField';
@@ -19,6 +12,7 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import RadioBtn from '../RadioBtn/RadioBtn';
 import InputField from '../InputField/inputField';
+import MetaSecurityEditor from './MetaSecurityEditor';
 
 const MetadataEditor = (): JSX.Element => {
     const { t } = useTranslation();
@@ -32,16 +26,6 @@ const MetadataEditor = (): JSX.Element => {
         value: string | Meta | Extension[] | ContactDetail[] | UsageContext[],
     ) => {
         dispatch(updateQuestionnaireMetadataAction(propName, value));
-    };
-
-    const getMetaSecuritySystem = (): string => {
-        const system =
-            qMetadata.meta &&
-            qMetadata.meta.security &&
-            qMetadata.meta.security.length > 0 &&
-            qMetadata.meta.security[0].code;
-
-        return system || metaSecurityCode.helsehjelp;
     };
 
     return (
@@ -166,20 +150,7 @@ const MetadataEditor = (): JSX.Element => {
                         onBlur={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
                     />
                 </FormField>
-                <FormField label={t('Access control')}>
-                    <RadioBtn
-                        checked={getMetaSecuritySystem()}
-                        onChange={(newValue: string) => {
-                            const newMeta = {
-                                ...qMetadata.meta,
-                                security: [getMetaSecurity(newValue)],
-                            } as Meta;
-                            updateMeta(IQuestionnaireMetadataType.meta, newMeta);
-                        }}
-                        options={metaSecurityOptions}
-                        name={'metaSecurity-radio'}
-                    />
-                </FormField>
+                <MetaSecurityEditor />
             </Accordion>
         </div>
     );
