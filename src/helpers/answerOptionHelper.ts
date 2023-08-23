@@ -30,18 +30,28 @@ export const addOrdinalValueExtensionToAllAnswerOptions = (
     values: QuestionnaireItemAnswerOption[],
     scoreValue: string,
 ): QuestionnaireItemAnswerOption[] => {
+    const extensionToAdd = { url: IExtentionType.ordinalValue, valueDecimal: Number(scoreValue) };
     return values.map((x) => {
         return {
             valueCoding: {
                 ...x.valueCoding,
-                extension: [
-                    {
-                        url: IExtentionType.ordinalValue,
-                        valueDecimal: Number(scoreValue),
-                    },
-                ],
+                extension: x.valueCoding?.extension?.concat(extensionToAdd),
             },
         } as QuestionnaireItemAnswerOption;
+    });
+};
+
+export const removeExtensionFromAnswerOptions2 = (
+    values: QuestionnaireItemAnswerOption[],
+    extensionUrl: IExtentionType,
+): QuestionnaireItemAnswerOption[] => {
+    return values.map((x) => {
+        return {
+            valueCoding: {
+                ...x.valueCoding,
+                extension: x.valueCoding?.extension?.filter((y) => y.url !== extensionUrl),
+            } as QuestionnaireItemAnswerOption,
+        };
     });
 };
 

@@ -7,15 +7,7 @@ import { IExtentionType, IValueSetSystem, IItemProperty } from '../types/IQuesti
 import createUUID from './CreateUUID';
 
 export const findExtensionInExtensionArray = (extensionArray: Extension[], url: string): Extension | undefined => {
-    let extensionToReturn: Extension = { url: '', valueDecimal: 0 };
-    extensionArray.find((x) => {
-        if (x.url === url) {
-            extensionToReturn = x;
-        }
-    });
-    if (extensionToReturn.url !== '' && extensionToReturn.valueDecimal !== 0) {
-        return extensionToReturn;
-    }
+    return extensionArray.find((x) => x.url === url);
 };
 
 export const setItemExtension = (
