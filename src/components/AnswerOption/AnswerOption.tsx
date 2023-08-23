@@ -5,7 +5,7 @@ import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fh
 import './AnswerOption.css';
 import InputField from '../InputField/inputField';
 import { doesItemHaveCode } from '../../utils/doesItemHaveCode';
-import { findExtensionInExtensionArrayByUrl } from '../../utils/extensionUtils';
+import { findExtensionInExtensionArray } from '../../helpers/extensionHelper';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
 
 type Props = {
@@ -40,7 +40,7 @@ const AnswerOption = ({
         let stringToReturn = '';
         const scoreExtension =
             answerOption?.valueCoding?.extension &&
-            findExtensionInExtensionArrayByUrl(answerOption?.valueCoding?.extension, IExtentionType.ordinalValue);
+            findExtensionInExtensionArray(answerOption?.valueCoding?.extension, IExtentionType.ordinalValue);
         if (scoreExtension) {
             stringToReturn = scoreExtension?.valueDecimal?.toString() || '';
         }
