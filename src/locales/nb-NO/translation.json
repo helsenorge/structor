@@ -414,14 +414,15 @@
     "Full display": "Full vising",
     "Compact display": "Kompakt vising",
     "Choose whether all answer options should be displayed in PDF": "Velg om alle svaralternativer skal vises i PDF",
+    "Scoring": "Skåring",
+    "Select whether the field should be a scoring field": "Velg om feltet skal være et skåring felt",
+    "Scoring field": "Skåring felt",
     "Summation field": "Summeringsfelt",
     "Select whether the field should be a summation field for section score or total score": "Velg om feltet skal være et summeringsfelt for seksjon skåring eller total skåring",
     "Section score": "Seksjon skåring",
     "Total score": "Total skåring",
-    "Scoring": "Skåring",
-    "Select whether the field should be a scoring field": "Velg om feltet skal være et skåring felt",
-    "Scoring field": "Skåring felt",
-    "Items with code \"SS\" (section score) requires that an item with code \"QS\" (question score) exists in the questionnaire": "Elementer med kode \"SS\" (section score) krever at et element med kode \"QS\" (question score) finnes i skjemaet",
-    "Items with code \"TS\" (total score) requires that an item with code \"QS\" (question score) exists in the questionnaire": "Elementer med kode \"TS\" (total score) krever at et element med kode \"QS\" (question score) finnes i skjemaet",
-    "Items with code \"QS\" (question score) requires that an item with code \"SS\" (section score) or \"TS\" (total score) exists in the questionnaire": "Elementer med kode \"QS\" (question score) krever at et element med kode \"SS\" (section score) eller \"TS\" (total score) finnes i skjemaet"
+    "A section score summation field must be inside a group": "Et seksjon skåring felt må være inni en gruppe",
+    "A summation field requires that a scoring field exists in the questionnaire": "Et summeringsfelt krever at et skåring felt finnes i skjemaet",
+    "A summation field cannot have a calculation formula": "Et summeringsfelt kan ikke ha en kalkuleringsformel",
+    "A scoring field requires that a summation field exists in the questionnaire": "Et skåring felt krever at et summeringsfelt finnes i skjemaet"
 }

@@ -414,14 +414,15 @@
     "Full display": "Affichage complet",
     "Compact display": "Affichage compact",
     "Choose whether all answer options should be displayed in PDF": "Choisissez si toutes les options de réponse doivent être affichées en PDF",
+    "Scoring": "Score",
+    "Select whether the field should be a scoring field": "Sélectionnez si le champ doit être un champ de score",
+    "Scoring field": "Champ de score",
     "Summation field": "Champ de sommation",
     "Select whether the field should be a summation field for section score or total score": "Sélectionnez si le champ doit être un champ de somme pour le score de section ou le score total",
     "Section score": "Score de section",
     "Total score": "Score total",
-    "Scoring": "Score",
-    "Select whether the field should be a scoring field": "Sélectionnez si le champ doit être un champ de score",
-    "Scoring field": "Champ de score",
-    "Items with code \"SS\" (section score) requires that an item with code \"QS\" (question score) exists in the questionnaire": "Les items avec le code \"SS\" (section score) nécessitent qu'un item avec le code \"QS\" (question score) existe dans le questionnaire.",
-    "Items with code \"TS\" (total score) requires that an item with code \"QS\" (question score) exists in the questionnaire": "Les items avec le code \"TS\" (total score) nécessitent qu'un item avec le code \"QS\" (question score) existe dans le questionnaire",
-    "Items with code \"QS\" (question score) requires that an item with code \"SS\" (section score) or \"TS\" (total score) exists in the questionnaire": "Les items avec le code \"QS\" (question score) nécessitent qu'un item avec le code \"SS\" (section score) ou \"TS\" (total score) existe dans le questionnaire."
+    "A section score summation field must be inside a group": "Un champ de sommation des scores de section doit être à l'intérieur d'un groupe",
+    "A summation field requires that a scoring field exists in the questionnaire": "Un champ de sommation nécessite qu'un champ de score existe dans le questionnaire",
+    "A summation field cannot have a calculation formula": "Un champ de somme ne peut pas avoir de formule de calcul",
+    "A scoring field requires that a summation field exists in the questionnaire": "Un champ de score nécessite qu'un champ de sommation existe dans le questionnaire"
 }
