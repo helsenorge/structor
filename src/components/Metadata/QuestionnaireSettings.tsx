@@ -1,19 +1,13 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-    authenticationRequirement,
-    canBePerformedBy,
-    presentationButtons,
-    saveCapability,
-} from '../../helpers/MetadataHelper';
+import { authenticationRequirement, presentationButtons, saveCapability } from '../../helpers/MetadataHelper';
 import Accordion from '../Accordion/Accordion';
 import FormField from '../FormField/FormField';
 import { ContactDetail, Extension, Meta, UsageContext } from '../../types/fhir';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { IExtentionType, IValueSetSystem } from '../../types/IQuestionnareItemType';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
-import CheckboxBtn from '../CheckboxBtn/CheckboxBtn';
 import { removeQuestionnaireExtension, setQuestionnaireExtension } from '../../helpers/extensionHelper';
 import {
     isVisibilityHideSidebar,
@@ -28,6 +22,8 @@ import InputField from '../InputField/inputField';
 import { translatableSettings } from '../../helpers/LanguageHelper';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
+import MetaSecurityEditor from './MetaSecurityEditor';
+import CheckboxBtn from '../CheckboxBtn/CheckboxBtn';
 
 const QuestionnaireSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -111,6 +107,7 @@ const QuestionnaireSettings = (): JSX.Element => {
                     }}
                 />
             </FormField>
+            <MetaSecurityEditor />
             <FormField label={t('Button bar display')}>
                 <RadioBtn
                     onChange={(newValue: string) => {
@@ -157,29 +154,6 @@ const QuestionnaireSettings = (): JSX.Element => {
                     name={'authenticationRequirement-radio'}
                 />
             </FormField>
-            <FormField label={t('Describes if representative can answer questionnaire')}>
-                <RadioBtn
-                    onChange={(newValue: string) => {
-                        if (newValue) {
-                            updateMetaExtension({
-                                url: IExtentionType.canBePerformedBy,
-                                valueCoding: {
-                                    system: IValueSetSystem.canBePerformedByValueSet,
-                                    code: newValue,
-                                },
-                            });
-                        } else {
-                            removeMetaExtension(IExtentionType.canBePerformedBy);
-                        }
-                    }}
-                    checked={
-                        qMetadata?.extension?.find((ex) => ex.url === IExtentionType.canBePerformedBy)?.valueCoding
-                            ?.code ?? '1'
-                    }
-                    options={canBePerformedBy}
-                    name={'canBePerformedBy-radio'}
-                />
-            </FormField>
             <FormField label={t('Save capabilities')}>
                 <RadioBtn
                     onChange={(newValue: string) => {
@@ -221,17 +195,20 @@ const QuestionnaireSettings = (): JSX.Element => {
                 />
                 <CheckboxBtn
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideHelp, dispatch)}
-                    value={isVisibilityHideHelp(qMetadata)}
+                    checked={isVisibilityHideHelp(qMetadata)}
+                    value={VisibilityType.hideHelp}
                     label={t('Hide help texts in PDF')}
                 />
                 <CheckboxBtn
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSublabel, dispatch)}
-                    value={isVisibilityHideSublabel(qMetadata)}
+                    checked={isVisibilityHideSublabel(qMetadata)}
+                    value={VisibilityType.hideSublabel}
                     label={t('Hide sublabels in PDF')}
                 />
                 <CheckboxBtn
                     onChange={() => setItemControlExtension(qMetadata, VisibilityType.hideSidebar, dispatch)}
-                    value={isVisibilityHideSidebar(qMetadata)}
+                    checked={isVisibilityHideSidebar(qMetadata)}
+                    value={VisibilityType.hideSidebar}
                     label={t('Hide sidebar texts in PDF')}
                 />
             </FormField>

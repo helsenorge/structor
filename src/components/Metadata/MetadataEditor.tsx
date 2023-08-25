@@ -150,7 +150,6 @@ const MetadataEditor = (): JSX.Element => {
                         onBlur={(copyright: string) => updateMeta(IQuestionnaireMetadataType.copyright, copyright)}
                     />
                 </FormField>
-                <MetaSecurityEditor />
             </Accordion>
         </div>
     );

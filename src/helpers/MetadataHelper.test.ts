@@ -1,5 +1,5 @@
 import { Questionnaire, Meta } from '../types/fhir';
-import { addMetaSecurityIfDoesNotExist, getMetaSecurity, metaSecurityCode } from './MetadataHelper';
+import { addMetaSecurityIfDoesNotExist, getTjenesteomraadeCoding, tjenesteomraadeCode } from './MetadataHelper';
 
 describe(`MetadataHelpere`, () => {
     let questionnaire: Questionnaire;
@@ -39,18 +39,18 @@ describe(`MetadataHelpere`, () => {
     describe('addMetaSecurityIfDoesNotExist', () => {
         it(`Add security according to useContext when form does not have a security from before`, () => {
             questionnaire = addMetaSecurityIfDoesNotExist(questionnaire);
-            expect(questionnaire.meta?.security?.[0]).toBe(getMetaSecurity(metaSecurityCode.helseregister));
+            expect(questionnaire.meta?.security?.[0]).toBe(getTjenesteomraadeCoding(tjenesteomraadeCode.helseregister));
         });
 
         it(`Does not add security according to useContext when form does have a security from before`, () => {
             const newMeta = {
                 ...questionnaire.meta,
-                security: [getMetaSecurity(metaSecurityCode.sekundærbruk)],
+                security: [getTjenesteomraadeCoding(tjenesteomraadeCode.sekundærbruk)],
             } as Meta;
             questionnaire = { ...questionnaire, meta: newMeta } as Questionnaire;
 
             questionnaire = addMetaSecurityIfDoesNotExist(questionnaire);
-            expect(questionnaire.meta?.security?.[0]).not.toBe(getMetaSecurity(metaSecurityCode.helseregister));
+            expect(questionnaire.meta?.security?.[0]).not.toBe(getTjenesteomraadeCoding(tjenesteomraadeCode.helseregister));
         });
     });
 });

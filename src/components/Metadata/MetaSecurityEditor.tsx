@@ -1,97 +1,109 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-    getMetaSecurity,
-    metaSecurityOptions,
-    metaSecurityCode,
+    getTjenesteomraadeCoding,
+    tjenesteomaadeOptions,
+    tjenesteomraadeCode,
     skjemaUtfyllerOptions,
-    formFillingAccessDisplay,
-    formFillingAccessCode,
     skjemaUtfyllerCode,
+    tilgangsstyringOptions,
+    getTilgangsstyringCoding,
+    updateMetaSecurity,
+    getTilgangsstyringCodes,
+    filterMetaSecurity,
+    filterOutMetaSecurity,
+    kunInnbyggerMetaSecurity,
 } from '../../helpers/MetadataHelper';
 import FormField from '../FormField/FormField';
-import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
-import { Meta } from '../../types/fhir';
 import { TreeContext } from '../../store/treeStore/treeStore';
-import { updateQuestionnaireMetadataAction } from '../../store/treeStore/treeActions';
 import RadioBtn from '../RadioBtn/RadioBtn';
-import CheckboxBtn from '../CheckboxBtn/CheckboxBtn';
 import { MetaSecuritySystem } from '../../types/IQuestionnareItemType';
+import { CheckboxOption } from '../../types/OptionTypes';
+import CheckboxBtn from '../CheckboxBtn/CheckboxBtn';
+import InfoCheckbox from '../CheckboxBtn/InfoCheckbox';
 
 const MetaSecurityEditor = (): JSX.Element => {
     const { t } = useTranslation();
     const { state, dispatch } = React.useContext(TreeContext);
     const { qMetadata } = state;
-    const [displayTilgangsstyring, setDisplayTilgangsstyring] = React.useState(false);
+    const [displayTilgangsstyring, setDisplayTilgangsstyring] = React.useState(
+        getTilgangsstyringCodes(qMetadata)?.length > 0,
+    );
 
     const updateTjenesteomraadeMetaSecurity = (code: string): void => {
-        const securityToSet =
-            qMetadata.meta?.security?.filter((f) => f.system !== MetaSecuritySystem.tjenesteomraade) || [];
-        securityToSet.push(getMetaSecurity(code));
-
-        const newMeta = {
-            ...qMetadata.meta,
-            security: securityToSet,
-        } as Meta;
-
-        dispatch(updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.meta, newMeta));
+        const securityToSet = filterOutMetaSecurity(qMetadata, MetaSecuritySystem.tjenesteomraade) || [];
+        securityToSet.push(getTjenesteomraadeCoding(code));
+        updateMetaSecurity(qMetadata, securityToSet, dispatch);
     };
 
-    const getTjenesteOmraadeSystem = (): string => {
+    const getTjenesteomraadeSystem = (): string => {
         const system =
             qMetadata.meta &&
             qMetadata.meta.security &&
             qMetadata.meta.security.length > 0 &&
-            qMetadata.meta.security.filter((f) => f.system === MetaSecuritySystem.tjenesteomraade)?.[0]?.code;
+            filterMetaSecurity(qMetadata, MetaSecuritySystem.tjenesteomraade)?.[0]?.code;
 
-        return system || metaSecurityCode.helsehjelp;
+        return system || tjenesteomraadeCode.helsehjelp;
     };
 
-    const getUtfyllingAvSkjema = () => {
-        const utforesAvCode =
-            qMetadata.meta &&
-            qMetadata.meta.security &&
-            qMetadata.meta.security.length > 0 &&
-            qMetadata.meta.security.filter((f) => f.system === MetaSecuritySystem.kanUtforesAv)?.[0]?.code;
-
-        const system = displayTilgangsstyring ? skjemaUtfyllerCode.Tilpassert : utforesAvCode;
-
-        return system ? skjemaUtfyllerCode.Tilpassert : skjemaUtfyllerCode.Standard;
+    const optionsIsChecked = (v: CheckboxOption): boolean => {
+        return getTilgangsstyringCodes(qMetadata)?.find((f) => f === v.code) !== undefined;
     };
 
     const onChangeUtfyllingAvSkjema = (value: string) => {
         setDisplayTilgangsstyring(value !== skjemaUtfyllerCode.Standard);
+        const securityToSet = filterOutMetaSecurity(qMetadata, MetaSecuritySystem.kanUtforesAv) || [];
+        if (value !== skjemaUtfyllerCode.Standard) {
+            securityToSet.push(kunInnbyggerMetaSecurity);
+        }
+        updateMetaSecurity(qMetadata, securityToSet, dispatch);
     };
 
     const onChangeTilgangsstyring = (code: string): void => {
-        /* eslint-disable */
-        console.log('Here', code);
+        const securityToSet =
+            qMetadata.meta?.security?.filter(
+                (f) =>
+                    (f.code !== code || f.system !== MetaSecuritySystem.kanUtforesAv) && f !== kunInnbyggerMetaSecurity,
+            ) || [];
+
+        const finnes =
+            filterMetaSecurity(qMetadata, MetaSecuritySystem.kanUtforesAv)?.find((f) => f.code === code) !== undefined;
+        if (!finnes) {
+            securityToSet.push(getTilgangsstyringCoding(code));
+        }
+        const trengerIkkeKunInnbygger = securityToSet.find(
+            (f) => f.system === MetaSecuritySystem.kanUtforesAv && f.code !== kunInnbyggerMetaSecurity.code,
+        );
+        if (!trengerIkkeKunInnbygger) {
+            securityToSet.push(kunInnbyggerMetaSecurity);
+        }
+        updateMetaSecurity(qMetadata, securityToSet, dispatch);
     };
 
     return (
         <>
             {/* Tjenesteomraade Tilgangsstyring */}
             <FormField
-                label={t('Select service area')}
-                sublabel={t('Which service area the bruker needs to have to have access to form')}
+                label={'Velg tjenesteområde'}
+                sublabel={'Hvilket tjenesteområde må innbyggeren ha for å få tilgang til skjema'}
             >
                 <RadioBtn
-                    checked={getTjenesteOmraadeSystem()}
+                    checked={getTjenesteomraadeSystem()}
                     onChange={updateTjenesteomraadeMetaSecurity}
-                    options={metaSecurityOptions}
+                    options={tjenesteomaadeOptions}
                     name={'servicearea-radio'}
                 />
             </FormField>
 
             {/* Utfylling Av Skjema */}
             <FormField
-                label={t('Filling out form')}
-                sublabel={t(
-                    'Who fills out the form is controlled by a standard access service. If the form is to have access control other than standard, this must be selected here. Choose which representation conditions should be able to fill in the form.',
-                )}
+                label={'Utfylling av skjema'}
+                sublabel={
+                    'Hvem som kan fylle ut skjemaet styres av en standard tilgangstjeneste. Dersom skjemaet skal ha annen tilgangsstyring enn standard, må dette velges her. Velg hvilke representasjonsforhold som skal kunne fylle ut skjemaet.'
+                }
             >
                 <RadioBtn
-                    checked={getUtfyllingAvSkjema()}
+                    checked={displayTilgangsstyring ? skjemaUtfyllerCode.Tilpasset : skjemaUtfyllerCode.Standard}
                     onChange={onChangeUtfyllingAvSkjema}
                     options={skjemaUtfyllerOptions}
                     name={'formfilling-radio'}
@@ -101,27 +113,24 @@ const MetaSecurityEditor = (): JSX.Element => {
             {/* Skjema Utfylling Tilgangsstyring */}
             {displayTilgangsstyring && (
                 <FormField label={t('Hvem skal kunne fylle ut skjemaet?')}>
-                    <CheckboxBtn
-                        value={true}
-                        disabled={true}
-                        label={formFillingAccessDisplay.kunInnbygger}
-                        onChange={() => onChangeTilgangsstyring(formFillingAccessCode.kunInnbygger)}
+                    <InfoCheckbox
+                        key={kunInnbyggerMetaSecurity.code}
+                        label={kunInnbyggerMetaSecurity.display}
+                        checked={true}
                     />
-                    <CheckboxBtn
-                        value={false}
-                        label={formFillingAccessDisplay.barnUnder12}
-                        onChange={() => onChangeTilgangsstyring(formFillingAccessCode.barnUnder12)}
-                    />
-                    <CheckboxBtn
-                        value={false}
-                        label={formFillingAccessDisplay.barnMellom12Og16}
-                        onChange={() => onChangeTilgangsstyring(formFillingAccessCode.barnMellom12Og16)}
-                    />
-                    <CheckboxBtn
-                        value={false}
-                        label={formFillingAccessDisplay.representantOrdinaertFullmakt}
-                        onChange={() => onChangeTilgangsstyring(formFillingAccessCode.representantOrdinaertFullmakt)}
-                    />
+                    {tilgangsstyringOptions.map((option) => {
+                        return (
+                            <CheckboxBtn
+                                key={option.code}
+                                label={option.display}
+                                value={option.code}
+                                checked={optionsIsChecked(option)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    onChangeTilgangsstyring(e.target.value);
+                                }}
+                            />
+                        );
+                    })}
                 </FormField>
             )}
         </>

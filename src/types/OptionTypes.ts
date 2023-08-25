@@ -15,3 +15,10 @@ export type Options = {
 export const isOptionGroup = (optionElement: Option | OptionGroup): boolean => {
     return !!(<OptionGroup>optionElement).options;
 };
+
+export type CheckboxOption = {
+    code: string;
+    display: string;
+    system?: string;
+    disabled?: boolean;
+};
