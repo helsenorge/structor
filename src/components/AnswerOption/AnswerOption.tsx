@@ -4,7 +4,7 @@ import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
 import './AnswerOption.css';
 import InputField from '../InputField/inputField';
-import { doesItemHaveCode } from '../../utils/doesItemHaveCode';
+import { doesItemHaveCode } from '../../utils/itemSearchUtils';
 import { findExtensionInExtensionArray } from '../../helpers/extensionHelper';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
 

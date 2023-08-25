@@ -14,9 +14,8 @@ import { hasExtension } from './extensionHelper';
 import { isRecipientList } from './QuestionHelper';
 import { isUriValid } from './uriHelper';
 import { getValueSetValues } from './valueSetHelper';
-import { getAllGroups } from '../utils/getAllGroups';
 import { ScoringFormulaCodes } from '../types/scoringFormulas';
-import { isItemInArray } from '../utils/isItemInArray';
+import { doesItemWithCodeExistInArray, isItemInArray, getAllGroups } from '../utils/itemSearchUtils';
 
 export interface ValidationErrors {
     linkId: string;
@@ -103,7 +102,7 @@ const validateItemCode = (t: TFunction<'translation'>, qItem: QuestionnaireItem)
     return returnErrors;
 };
 
-const validateSectionScore = (
+const validateScoring = (
     t: TFunction<'translation'>,
     qItems: Items,
     qItem: QuestionnaireItem,
@@ -120,6 +119,33 @@ const validateSectionScore = (
                         qItem.linkId,
                         'code.code',
                         t('Items with code "SS" (section score) must be inside a group'),
+                        index,
+                    ),
+                );
+            }
+        }
+        if (code.code === ScoringFormulaCodes.sectionScore || code.code === ScoringFormulaCodes.totalScore) {
+            const errorText =
+                code.code === ScoringFormulaCodes.sectionScore
+                    ? 'Items with code "SS" (section score) requires that an item with code "QS" (question score) exists in the questionnaire'
+                    : 'Items with code "TS" (total score) requires that an item with code "QS" (question score) exists in the questionnaire';
+            const doesQSExist = doesItemWithCodeExistInArray(qOrder, qItems, ScoringFormulaCodes.questionScore);
+            if (!doesQSExist) {
+                returnErrors.push(createError(qItem.linkId, 'code.code', t(errorText), index));
+            }
+        }
+        if (code.code === ScoringFormulaCodes.questionScore) {
+            const doesSSOrTSExist =
+                doesItemWithCodeExistInArray(qOrder, qItems, ScoringFormulaCodes.sectionScore) ||
+                doesItemWithCodeExistInArray(qOrder, qItems, ScoringFormulaCodes.totalScore);
+            if (!doesSSOrTSExist) {
+                returnErrors.push(
+                    createError(
+                        qItem.linkId,
+                        'code.code',
+                        t(
+                            'Items with code "QS" (question score) requires that an item with code "SS" (section score) or "TS" (total score) exists in the questionnaire',
+                        ),
                         index,
                     ),
                 );
@@ -419,8 +445,8 @@ const validate = (
     // validate item.code
     errors.push(...validateItemCode(t, qItem));
 
-    // validate that no items with code "SS" (system score) is outside a group
-    errors.push(...validateSectionScore(t, qItems, qItem, qOrder));
+    // validate scoring
+    errors.push(...validateScoring(t, qItems, qItem, qOrder));
 
     // validate system in answerOptions
     errors.push(...validateAnswerOptionSystem(t, qItem));
