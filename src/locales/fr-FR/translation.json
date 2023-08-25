@@ -419,5 +419,8 @@
     "Total score": "Score total",
     "Scoring": "Score",
     "Select whether the field should be a scoring field": "Sélectionnez si le champ doit être un champ de score",
-    "Scoring field": "Champ de score"
+    "Scoring field": "Champ de score",
+    "Items with code \"SS\" (section score) requires that an item with code \"QS\" (question score) exists in the questionnaire": "Les items avec le code \"SS\" (section score) nécessitent qu'un item avec le code \"QS\" (question score) existe dans le questionnaire.",
+    "Items with code \"TS\" (total score) requires that an item with code \"QS\" (question score) exists in the questionnaire": "Les items avec le code \"TS\" (total score) nécessitent qu'un item avec le code \"QS\" (question score) existe dans le questionnaire",
+    "Items with code \"QS\" (question score) requires that an item with code \"SS\" (section score) or \"TS\" (total score) exists in the questionnaire": "Les items avec le code \"QS\" (question score) nécessitent qu'un item avec le code \"SS\" (section score) ou \"TS\" (total score) existe dans le questionnaire."
 }
