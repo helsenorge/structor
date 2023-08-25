@@ -118,20 +118,34 @@ const validateScoring = (
                     createError(
                         qItem.linkId,
                         'code.code',
-                        t('Items with code "SS" (section score) must be inside a group'),
+                        t('A section score summation field must be inside a group'),
                         index,
                     ),
                 );
             }
         }
         if (code.code === ScoringFormulaCodes.sectionScore || code.code === ScoringFormulaCodes.totalScore) {
-            const errorText =
-                code.code === ScoringFormulaCodes.sectionScore
-                    ? 'Items with code "SS" (section score) requires that an item with code "QS" (question score) exists in the questionnaire'
-                    : 'Items with code "TS" (total score) requires that an item with code "QS" (question score) exists in the questionnaire';
             const doesQSExist = doesItemWithCodeExistInArray(qOrder, qItems, ScoringFormulaCodes.questionScore);
             if (!doesQSExist) {
-                returnErrors.push(createError(qItem.linkId, 'code.code', t(errorText), index));
+                returnErrors.push(
+                    createError(
+                        qItem.linkId,
+                        'code.code',
+                        t('A summation field requires that a scoring field exists in the questionnaire'),
+                        index,
+                    ),
+                );
+            }
+            const hasCalculatedExpressionExtension = hasExtension(qItem, IExtentionType.calculatedExpression);
+            if (hasCalculatedExpressionExtension) {
+                returnErrors.push(
+                    createError(
+                        qItem.linkId,
+                        'code.code',
+                        t('A summation field cannot have a calculation formula'),
+                        index,
+                    ),
+                );
             }
         }
         if (code.code === ScoringFormulaCodes.questionScore) {
@@ -143,9 +157,7 @@ const validateScoring = (
                     createError(
                         qItem.linkId,
                         'code.code',
-                        t(
-                            'Items with code "QS" (question score) requires that an item with code "SS" (section score) or "TS" (total score) exists in the questionnaire',
-                        ),
+                        t('A scoring field requires that a summation field exists in the questionnaire'),
                         index,
                     ),
                 );

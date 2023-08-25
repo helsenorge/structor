@@ -2,6 +2,16 @@ import { Items, OrderItem } from '../store/treeStore/treeStore';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../types/fhir';
 
+export const doesItemHaveCode = (item: QuestionnaireItem, code: string): boolean => {
+    let itemHasCode = false;
+    item.code?.forEach((x) => {
+        if (x.code === code) {
+            itemHasCode = true;
+        }
+    });
+    return itemHasCode;
+};
+
 export const isItemInArray = (qOrder: OrderItem[], qItem: QuestionnaireItem, valueToReturn = false): boolean => {
     qOrder.forEach((item) => {
         if (item.linkId === qItem.linkId) {
@@ -39,16 +49,6 @@ export const doesItemWithCodeExistInArray = (
     });
 
     return valueToReturn;
-};
-
-export const doesItemHaveCode = (item: QuestionnaireItem, code: string): boolean => {
-    let itemHasCode = false;
-    item.code?.forEach((x) => {
-        if (x.code === code) {
-            itemHasCode = true;
-        }
-    });
-    return itemHasCode;
 };
 
 export const getAllGroups = (qOrder: OrderItem[], qItems: Items, newArray: OrderItem[] = []): OrderItem[] => {
