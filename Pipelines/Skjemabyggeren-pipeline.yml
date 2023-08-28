@@ -1,37 +1,39 @@
 resources:
   repositories:
-    - repository: templates # internt navn på repo, brukes i referanser
-      type: git # type repo (les mer i dokumentasjon)
-      name: HN-AzureDevopsPipelines # Navn på repo som inneholder templates
+      - repository: templates # internt navn på repo, brukes i referanser
+        type: git # type repo (les mer i dokumentasjon)
+        name: HN-AzureDevopsPipelines # Navn på repo som inneholder templates
 
 trigger:
   branches:
-    include:
-      - master
-      - release/*
-      - hotfix/*
-      - feature/*
+      include:
+          - master
+          - release/*
+          - hotfix/*
+          - feature/*
 pool:
   name: Helsenorge_LinuxScaleSetAgents
-  
+
 variables:
   - group: Release-versjonering # henter ut variabelsett der versjonsnummer for releaser er satt¨
   - template: Templates/Variables/versioning-variables.yml@templates # Setter versjonerings variabel basert på branch. Bruker verdier fra Release-versjonering variabelsett
+  - name: ENABLE_STYLELINT_PLUGIN
+    value: true
 
 stages:
   # Stage - Build versioning
   - template: Templates/Versioning/pipeline-version-stage.yml@templates
     parameters:
-      build_version: ${{ variables.build_version }} # variable hentet fra variabeltemplate Templates/Variables/versioning.yml@templates
-  
-  # Stage - Containers
-  - stage: Containers
-    dependsOn: ['Versioning']
-    displayName: Build and Push containers
-    jobs: 
+        build_version: ${{ variables.build_version }} # variable hentet fra variabeltemplate Templates/Variables/versioning.yml@templates
+
+# Stage - Containers
+- stage: Containers
+  dependsOn: ['Versioning']
+  displayName: Build and Push containers
+  jobs:
       - template: Templates/Docker/build-and-push-containers-job.yml@templates
         parameters:
-          containers:
-          - containerRepository: helsenorge/skjemabyggeren
-            dockerFile: Dockerfile
-            tag: ${{ variables.build_version }}
+            containers:
+                - containerRepository: helsenorge/skjemabyggeren
+                  dockerFile: Dockerfile
+                  tag: ${{ variables.build_version }}
