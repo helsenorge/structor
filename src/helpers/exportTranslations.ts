@@ -108,8 +108,9 @@ const exportItemTranslations = (
                 );
             }
 
-            const markdownValue = item._text?.extension?.find((extension) => extension.url === IExtentionType.markdown)
-                ?.valueMarkdown;
+            const markdownValue = item._text?.extension?.find(
+                (extension) => extension.url === IExtentionType.markdown,
+            )?.valueMarkdown;
             const stringValues = escapeValues([markdownValue, ...translatedValues]);
             returnString =
                 returnString +
