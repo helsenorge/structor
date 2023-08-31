@@ -524,7 +524,6 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                                 } else {
                                     addItemCode(props.item, scoreCoding, dispatch);
                                     addItemCode(props.item, QSCoding, dispatch);
-                                    addDefaultOrdinalValueExtensionToAllAnswerOptions(props.item, dispatch);
                                     setHasQuestionScoreCode(true);
                                 }
                             }}
