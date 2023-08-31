@@ -41,20 +41,6 @@ export const addOrdinalValueExtensionToAllAnswerOptions = (
     });
 };
 
-export const removeExtensionFromAnswerOptions2 = (
-    values: QuestionnaireItemAnswerOption[],
-    extensionUrl: IExtentionType,
-): QuestionnaireItemAnswerOption[] => {
-    return values.map((x) => {
-        return {
-            valueCoding: {
-                ...x.valueCoding,
-                extension: x.valueCoding?.extension?.filter((y) => y.url !== extensionUrl),
-            } as QuestionnaireItemAnswerOption,
-        };
-    });
-};
-
 export const updateAnswerOption = (
     values: QuestionnaireItemAnswerOption[],
     targetId: string,
@@ -144,6 +130,23 @@ export const removeExtensionFromAnswerOptions = (
                 extension: x.valueCoding?.extension?.filter((y) => y.url !== extensionUrl),
             } as QuestionnaireItemAnswerOption,
         };
+    });
+};
+
+export const removeExtensionFromSingleAnswerOption = (
+    values: QuestionnaireItemAnswerOption[],
+    valueCodingId: string,
+    extensionUrl: IExtentionType,
+): QuestionnaireItemAnswerOption[] => {
+    return values.map((x) => {
+        return x.valueCoding?.id === valueCodingId
+            ? {
+                  valueCoding: {
+                      ...x.valueCoding,
+                      extension: x.valueCoding?.extension?.filter((y) => y.url !== extensionUrl),
+                  } as QuestionnaireItemAnswerOption,
+              }
+            : x;
     });
 };
 
