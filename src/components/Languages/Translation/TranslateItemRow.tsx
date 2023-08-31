@@ -66,8 +66,9 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
 
     function getReadOnlyInputField(): JSX.Element {
         if (isMarkdown) {
-            const valueMarkdown = item._text?.extension?.find((extension) => extension.url === IExtentionType.markdown)
-                ?.valueMarkdown;
+            const valueMarkdown = item._text?.extension?.find(
+                (extension) => extension.url === IExtentionType.markdown,
+            )?.valueMarkdown;
             return <MarkdownEditor data={valueMarkdown || item.text || ''} disabled={true} />;
         }
         return <textarea defaultValue={item.text} disabled={true} />;

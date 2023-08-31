@@ -22,7 +22,7 @@ export const generateSectionContent = (header: string, content: string[]): JSX.E
 };
 
 export const getSidebarElements = (questionnaire: Questionnaire): { [id: string]: string[] } => {
-    const sidebarData = getSidebarSections((questionnaire as unknown) as QuestionnaireRefero);
+    const sidebarData = getSidebarSections(questionnaire as unknown as QuestionnaireRefero);
 
     const seksjonerFraSkjema: { [id: string]: string[] } = {
         'SOT-1': [],

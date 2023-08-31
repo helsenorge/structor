@@ -110,7 +110,7 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                 }}
                                                 answerOption={answerOption}
-                                                handleDrag={providedDrag.dragHandleProps}
+                                                handleDrag={providedDrag.dragHandleProps || undefined}
                                                 showDelete={
                                                     !!item.answerOption?.length && item.answerOption?.length > 2
                                                 }

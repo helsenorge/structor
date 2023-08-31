@@ -144,8 +144,9 @@ function translateContained(base: Array<ValueSet>, translation: Array<ValueSet>)
 function translateItem(translationItem: QuestionnaireItem | undefined): ItemTranslation {
     const answerOptions = translateAnswerOptions(translationItem?.answerOption);
     const entryFormatText = getPlaceHolderText(translationItem);
-    const markdownValue = translationItem?._text?.extension?.find((ext) => ext.url === IExtentionType.markdown)
-        ?.valueMarkdown;
+    const markdownValue = translationItem?._text?.extension?.find(
+        (ext) => ext.url === IExtentionType.markdown,
+    )?.valueMarkdown;
     const text = markdownValue || translationItem?.text || '';
     const validationText = getValidationMessage(translationItem);
     const initial = getInitialText(translationItem);
