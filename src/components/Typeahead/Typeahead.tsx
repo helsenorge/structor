@@ -40,7 +40,13 @@ const Typeahead = ({ items, onChange, defaultValue, placeholder }: Props): JSX.E
         const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
         return (
             <span>
-                {parts.map((part) => (part.toLowerCase() === highlight.toLowerCase() ? <strong>{part}</strong> : part))}
+                {parts.map((part, index) =>
+                    part.toLowerCase() === highlight.toLowerCase() ? (
+                        <strong key={part + index.toString()}>{part}</strong>
+                    ) : (
+                        part
+                    ),
+                )}
             </span>
         );
     };
