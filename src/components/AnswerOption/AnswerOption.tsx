@@ -14,7 +14,7 @@ type Props = {
     handleDrag?: DraggableProvidedDragHandleProps;
     changeDisplay: (event: React.ChangeEvent<HTMLInputElement>) => void;
     changeCode: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    changeExtension: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    changeOrdinalValueExtension: (event: React.ChangeEvent<HTMLInputElement>) => void;
     deleteItem?: () => void;
     showDelete?: boolean;
     disabled?: boolean;
@@ -26,7 +26,7 @@ const AnswerOption = ({
     handleDrag,
     changeDisplay,
     changeCode,
-    changeExtension,
+    changeOrdinalValueExtension,
     deleteItem,
     showDelete,
     disabled,
@@ -43,9 +43,6 @@ const AnswerOption = ({
             findExtensionInExtensionArray(answerOption?.valueCoding?.extension, IExtentionType.ordinalValue);
         if (scoreExtension) {
             stringToReturn = scoreExtension?.valueDecimal?.toString() || '';
-        }
-        if (stringToReturn === '0') {
-            stringToReturn = '';
         }
         return stringToReturn;
     };
@@ -79,9 +76,9 @@ const AnswerOption = ({
                         name="skåring"
                         className={inputFieldClassName}
                         defaultValue={getDefaultScoreValue()}
-                        placeholder={t('Enter a scoring value.. (default value: 0)')}
-                        onBlur={(event) => {
-                            changeExtension(event);
+                        placeholder={t('Enter a scoring value..')}
+                        onChange={(event) => {
+                            changeOrdinalValueExtension(event);
                         }}
                     />
                 )}
