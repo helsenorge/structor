@@ -15,7 +15,12 @@ import { isRecipientList } from './QuestionHelper';
 import { isUriValid } from './uriHelper';
 import { getValueSetValues } from './valueSetHelper';
 import { ScoringFormulaCodes } from '../types/scoringFormulas';
-import { doesItemWithCodeExistInArray, isItemInArray, getAllGroups } from '../utils/itemSearchUtils';
+import {
+    doesItemWithCodeExistInArray,
+    isItemInArray,
+    getAllGroups,
+    doesAllAnswerOptionsInItemHaveExtenison,
+} from '../utils/itemSearchUtils';
 
 export interface ValidationErrors {
     linkId: string;
@@ -158,6 +163,20 @@ const validateScoring = (
                         qItem.linkId,
                         'code.code',
                         t('A scoring field requires that a summation field exists in the questionnaire'),
+                        index,
+                    ),
+                );
+            }
+            const doesAllAnswerOptionsInItemHaveOrdinalValueExtenison = doesAllAnswerOptionsInItemHaveExtenison(
+                qItem,
+                IExtentionType.ordinalValue,
+            );
+            if (!doesAllAnswerOptionsInItemHaveOrdinalValueExtenison) {
+                returnErrors.push(
+                    createError(
+                        qItem.linkId,
+                        'code.code',
+                        t('A scoring field must have a scoring value in all answer options'),
                         index,
                     ),
                 );

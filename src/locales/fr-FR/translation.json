@@ -420,5 +420,6 @@
     "A section score summation field must be inside a group": "Un champ de sommation des scores de section doit être à l'intérieur d'un groupe",
     "A summation field requires that a scoring field exists in the questionnaire": "Un champ de sommation nécessite qu'un champ de score existe dans le questionnaire",
     "A summation field cannot have a calculation formula": "Un champ de somme ne peut pas avoir de formule de calcul",
-    "A scoring field requires that a summation field exists in the questionnaire": "Un champ de score nécessite qu'un champ de sommation existe dans le questionnaire"
+    "A scoring field requires that a summation field exists in the questionnaire": "Un champ de score nécessite qu'un champ de sommation existe dans le questionnaire",
+    "A scoring field must have a scoring value in all answer options": "Un champ de score doit avoir une valeur de score dans toutes les options de réponse"
 }

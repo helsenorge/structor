@@ -423,5 +423,6 @@
     "A section score summation field must be inside a group": "Et seksjon skåring felt må være inni en gruppe",
     "A summation field requires that a scoring field exists in the questionnaire": "Et summeringsfelt krever at et skåring felt finnes i skjemaet",
     "A summation field cannot have a calculation formula": "Et summeringsfelt kan ikke ha en kalkuleringsformel",
-    "A scoring field requires that a summation field exists in the questionnaire": "Et skåring felt krever at et summeringsfelt finnes i skjemaet"
+    "A scoring field requires that a summation field exists in the questionnaire": "Et skåring felt krever at et summeringsfelt finnes i skjemaet",
+    "A scoring field must have a scoring value in all answer options": "Et skåring felt må ha en skåring verdi i alle svaralternativer"
 }
