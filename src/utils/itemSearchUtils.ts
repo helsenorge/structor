@@ -1,5 +1,5 @@
 import { Items, OrderItem } from '../store/treeStore/treeStore';
-import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../types/fhir';
 
 export const doesItemHaveCode = (item: QuestionnaireItem, code: string): boolean => {
@@ -48,6 +48,28 @@ export const doesItemWithCodeExistInArray = (
         }
     });
 
+    return valueToReturn;
+};
+
+export const doesAllAnswerOptionsInItemHaveExtenison = (
+    qItem: QuestionnaireItem,
+    extensionToSearchFor: IExtentionType,
+): boolean => {
+    let foundExtension = false;
+    let valueToReturn = true;
+    qItem.answerOption?.forEach((answerOption) => {
+        foundExtension = false;
+        if (answerOption.valueCoding?.extension) {
+            answerOption.valueCoding?.extension.forEach((extension) => {
+                if (extension.url === extensionToSearchFor) {
+                    foundExtension = true;
+                }
+            });
+        }
+        if (foundExtension === false) {
+            valueToReturn = false;
+        }
+    });
     return valueToReturn;
 };
 
