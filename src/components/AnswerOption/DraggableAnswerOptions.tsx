@@ -8,7 +8,6 @@ import {
     NotDraggingStyle,
 } from 'react-beautiful-dnd';
 import {
-    removeExtensionFromAnswerOptions,
     removeExtensionFromSingleAnswerOption,
     removeOptionFromAnswerOptionArray,
     reorderPositions,

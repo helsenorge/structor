@@ -58,10 +58,7 @@ import { QSCoding, elementSaveCapability, scoreCoding, scoreSumOptions } from '.
 import { addItemCode, removeItemCode } from '../../helpers/codeHelper';
 import { ScoringFormulaCodes } from '../../types/scoringFormulas';
 import { getScoringFormulaName, getSelectedScoringCode } from '../../utils/scoringUtils';
-import {
-    addDefaultOrdinalValueExtensionToAllAnswerOptions,
-    removeOrdinalValueExtensionfromAnswerOptions,
-} from '../../utils/answerOptionExtensionUtils';
+import { removeOrdinalValueExtensionfromAnswerOptions } from '../../utils/answerOptionExtensionUtils';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
