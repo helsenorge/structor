@@ -99,7 +99,7 @@ export enum skjemaUtfyllerCode {
 }
 
 export enum skjemaUtfyllerDisplay {
-    Standard = 'Standard tilgangsstyring (innbygger selv, foreldre på vegne av barn < 12 år, foreldre på vegne av barn 12-16 år, representant med tildelt fullmakt)',
+    Standard = 'Standard tilgangsstyring (innbygger selv, foreldre på vegne av barn < 12 år, foreldre på vegne av barn 12-16 år, representant med tildelt fullmakt, representant med ordinær fullmakt)',
     Tilpasset = 'Tilpasset tilgangsstyring',
 }
 
