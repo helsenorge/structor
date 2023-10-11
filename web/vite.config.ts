@@ -1,6 +1,7 @@
 import { PluginOption, defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
+import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
 
 // https://vitejs.dev/config/
 
@@ -32,8 +33,14 @@ export default () => {
                 replacement: '$1',
             },
         ],
-       
-    },
+      },
+      optimizeDeps:{
+        esbuildOptions:{
+          plugins:[
+            esbuildCommonjs(['react-router-dom'])
+          ]
+        }
+      }
     });
 }
 

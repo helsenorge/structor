@@ -52,15 +52,15 @@ interface QuestionProps {
     dispatch: React.Dispatch<ActionType>;
 }
 
+import removeMd from 'remove-markdown';
+
+
 const Question = (props: QuestionProps): JSX.Element => {
     const { t } = useTranslation();
     const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(!!props.item._text);
     const codeElements = props.item.code
         ? `(${props.item.code.filter((value) => !erRenderingOption(value)).length})`
         : '(0)';
-
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const removeMd = require('remove-markdown');
 
     const dispatchUpdateItem = (
         name: IItemProperty,

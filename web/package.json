@@ -25,6 +25,7 @@
     "@helsenorge/refero": "^13.1.0",
     "@helsenorge/toolkit": "^21.2.0",
     "@nosferatu500/react-sortable-tree": "^3.0.3",
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "crypto-js": "^4.1.1",
     "date-fns": "^2.30.0",
     "i18next": "^19.6.3",
