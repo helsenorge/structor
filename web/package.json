@@ -18,7 +18,7 @@
     "@helsenorge/ckeditor5-build-markdown": "^24.0.0",
     "@helsenorge/core-utils": "^28.2.2",
     "@helsenorge/date-time": "^28.2.1",
-    "@helsenorge/designsystem-react": "^4.3.0",
+    "@helsenorge/designsystem-react": "^4.4.0",
     "@helsenorge/file-upload": "^28.2.1",
     "@helsenorge/form": "^28.2.2",
     "@helsenorge/refero": "^13.1.0",
