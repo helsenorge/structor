@@ -1,6 +1,7 @@
 {
   "name": "@helsenorge/skjemabygger",
   "private": true,
+  "displayName": "skjemabygger",
   "version": "0.0.0",
   "type": "module",
   "maintainers": [
