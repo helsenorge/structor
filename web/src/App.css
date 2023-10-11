@@ -1,0 +1,122 @@
+body > * {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 500;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  margin: 0;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+  resize: vertical;
+}
+
+iframe {
+  border-width: 0;
+}
+
+html {
+  height: 100%;
+  --antd-wave-shadow-color: var(--primary-1) !important;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-base-2) !important;
+  width: 100%;
+  height: 100%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.root {
+  text-align: center;
+  height: 100%;
+}
+
+:root {
+  --primary-1: #a61e7b;
+  /* Buttons */
+  --primary-2: #006d84;
+  /* Header color 006D84 */
+  --color-base-1: #ffffff;
+  /* Box color */
+  --color-base-2: #fafafa;
+  /* Background of page D8D8D8 */
+  --color-base-3: #f0f0f0;
+  /* Section header grey E1E2E4 EEEFF1 */
+  /* --color-base-4: #8AB5B5;    Title color */
+}
+
+.controller {
+  border-right: solid var(--color-base-2) 0.5px;
+}
+
+p {
+  text-align: left;
+}
+
+.standard {
+  padding: 10px;
+  text-align: left;
+}
+
+.wrapper {
+  margin: 10px;
+  width: 95%;
+  box-shadow: 0 4px 8px 4px #c7c7c7c7;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.index-buttons {
+  background-color: var(--primary-1);
+  color: var(--color-base-1);
+  cursor: pointer;
+  border: 1px solid var(--primary-1);
+  display: inline-block;
+  height: 45px;
+  width: 160px;
+  padding: 9px 12px;
+}
+
+.icon-buttons:hover {
+  background-color: #e0e0e0 !important;
+}
+.validation-error {
+  box-shadow: 0 0 0 4px red;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+.center-text {
+  text-align: center;
+}
