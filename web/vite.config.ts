@@ -13,7 +13,7 @@ export default () => {
 
     return defineConfig({
       base: process.env.NODE_ENV === 'production' ? '/static_skjemabygger/' : '/',
-      plugins: [react(  {include: '**/*.{jsx,tsx}'}), svgr(), reactVirtualized(), noAttr()],
+      plugins: [react(  {include: '**/*.{jsx,tsx}'}), svgr(), reactVirtualized()],
       server: {
         port: 3000,
       },
@@ -45,14 +45,14 @@ export default () => {
 
 
 
-const noAttr = () => {
+/*const noAttr = () => {
   return {
     name: "no-attribute",
     transformIndexHtml(html) {
       return html.replace(`type="module" crossorigin`, `type="module"`);
     }
 }
-}
+}*/
 
 
 
