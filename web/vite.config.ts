@@ -12,7 +12,7 @@ dns.setDefaultResultOrder('verbatim');
 export default () => {
 
     return defineConfig({
-     
+      base: process.env.NODE_ENV === 'production' ? '/static_skjemabygger/' : '/',
       plugins: [react(  {include: '**/*.{jsx,tsx}'}), svgr(), reactVirtualized(), noAttr()],
       server: {
         port: 3000,
