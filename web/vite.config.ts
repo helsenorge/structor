@@ -13,7 +13,7 @@ export default () => {
 
     return defineConfig({
      
-      plugins: [react(  {include: '**/*.{jsx,tsx}'}), svgr(), reactVirtualized()],
+      plugins: [react(  {include: '**/*.{jsx,tsx}'}), svgr(), reactVirtualized(), noAttr()],
       server: {
         port: 3000,
       },
@@ -42,6 +42,18 @@ export default () => {
       }
     });
 }
+
+
+
+const noAttr = () => {
+  return {
+    name: "no-attribute",
+    transformIndexHtml(html) {
+      return html.replace(`type="module" crossorigin`, "");
+    }
+}
+}
+
 
 
 import fs from "node:fs/promises";
