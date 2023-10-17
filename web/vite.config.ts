@@ -14,7 +14,7 @@ export default () => {
     return defineConfig({
      
       plugins: [react(  {include: '**/*.{jsx,tsx}'}), svgr(), reactVirtualized()],
-      base: process.env.NODE_ENV === 'production' ? '/assets/' : '/',
+      base: process.env.NODE_ENV === 'production' ? '/static_skjemabygger/' : '/',
       server: {
         port: 3000,
       },
