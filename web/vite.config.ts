@@ -49,7 +49,7 @@ const noAttr = () => {
   return {
     name: "no-attribute",
     transformIndexHtml(html) {
-      return html.replace(`type="module" crossorigin`, "");
+      return html.replace(`type="module" crossorigin`, `type="module"`);
     }
 }
 }
