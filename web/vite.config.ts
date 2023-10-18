@@ -19,6 +19,13 @@ export default () => {
       server: {
         port: 3000,
       },
+      build: {
+        outDir: 'build',
+        manifest: true,
+        commonjsOptions: {
+          transformMixedEsModules: true,
+        },
+      },
       css: {
         preprocessorOptions: {
           scss: {
