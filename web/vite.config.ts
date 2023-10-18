@@ -20,7 +20,7 @@ export default () => {
         port: 3000,
       },
       build: {
-        outDir: 'build',
+        outDir: 'dist',
         manifest: true,
         commonjsOptions: {
           transformMixedEsModules: true,
