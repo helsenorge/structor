@@ -1,8 +1,8 @@
 import { PluginOption, defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
-import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
-
+import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs';
+import legacy from '@vitejs/plugin-legacy';
 // https://vitejs.dev/config/
 
 import dns from 'dns';
@@ -13,7 +13,9 @@ export default () => {
 
     return defineConfig({
       base: process.env.NODE_ENV === 'production' ? '/static_skjemabygger/' : '/',
-      plugins: [removeCrossOriginAttr(), react(  {include: '**/*.{jsx,tsx}'}), svgr(), reactVirtualized()],
+      plugins: [removeCrossOriginAttr(), react(  {include: '**/*.{jsx,tsx}'}), svgr(), reactVirtualized(), legacy({
+        targets: ['defaults', 'not IE 11'],
+      }), ],
       server: {
         port: 3000,
       },
