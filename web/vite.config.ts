@@ -38,7 +38,7 @@ export default () => {
       optimizeDeps:{
         esbuildOptions:{
           plugins:[
-            esbuildCommonjs(['react-router-dom'])
+            esbuildCommonjs(['react-router-dom', 'react-s3'],)
           ]
         }
       }
