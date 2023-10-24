@@ -1,16 +1,7 @@
 
-// import './index.css';
-// import './components/Refero/styles/refero.scss';
-
-// window.global ||= window;
-
-import './index.css';
 import './components/Refero/styles/refero.scss';
-
 import './App.css';
-
 import "./init"
-
 import App from "./App";
 import React from "react";
 import ReactDOM from "react-dom";
