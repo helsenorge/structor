@@ -1,4 +1,7 @@
-import { PluginOption, defineConfig } from "vite";
+import { PluginOption } from "vite";
+
+import { defineConfig } from 'vitest/config';
+
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs';
@@ -13,6 +16,7 @@ export default () => {
 
     return defineConfig({
       base: process.env.NODE_ENV === 'production' ? '/static_skjemabygger/' : '/',
+    
       plugins: [removeCrossOriginAttr(), react(  {include: '**/*.{jsx,tsx}'}), svgr(), reactVirtualized(), legacy({
         targets: ['defaults', 'not IE 11'],
       }), ],
@@ -26,6 +30,18 @@ export default () => {
           transformMixedEsModules: true,
         },
       },
+      test: {
+        coverage: {
+          reporter: ['cobertura', 'text'],
+        },
+        reporters: ['json', 'verbose', 'vitest-sonar-reporter'],
+        outputFile: {
+          json: './report/my-json-report.json',
+          'vitest-sonar-reporter': './sonar-report.xml',
+        },
+      
+      },
+      
       css: {
         preprocessorOptions: {
           scss: {

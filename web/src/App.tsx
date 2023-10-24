@@ -1,4 +1,3 @@
- import './index.css';
  import './components/Refero/styles/refero.scss';
 
  import './App.css';
