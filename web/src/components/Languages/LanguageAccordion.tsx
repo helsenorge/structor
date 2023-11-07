@@ -26,6 +26,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const { qItems, qMetadata, qContained, qAdditionalLanguages } = state;
     const uploadRef = React.useRef<HTMLInputElement>(null);
+    const uploadTranslation = React.useRef<HTMLInputElement>(null);
 
     const [selectedLang, setSelectedLang] = useState('');
     const [fileUploadError, setFileUploadError] = useState<string>('');
@@ -117,6 +118,33 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
         }
     };
 
+    const onLoadUploadedTranslationFile = (event: ProgressEvent<FileReader>) => {
+        if (event.target?.result) {
+            try {
+                console.log(event.target.result);
+            } catch {
+                setFileUploadError('Could not read uploaded file');
+            }
+
+            // Reset file input
+            if (uploadTranslation.current) {
+                uploadTranslation.current.value = '';
+            }
+        }
+    };
+
+    const uploadTranslationFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const reader = new FileReader();
+        reader.onload = onLoadUploadedTranslationFile;
+        reader.onerror = () => {
+            setFileUploadError('Could not read uploaded file');
+        };
+        if (event.target.files && event.target.files[0]) {
+            reader.readAsText(event.target.files[0]);
+            setFileUploadError('');
+        }
+    };
+
     const languageInUse = getLanguagesInUse(state).map((x) => x.code);
     const additionalLanguagesInUse = languageInUse.filter((x) => x.toLowerCase() !== qMetadata.language?.toLowerCase());
 
@@ -183,6 +211,13 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                     accept="application/JSON"
                     style={{ display: 'none' }}
                 />
+                <input
+                    type="file"
+                    ref={uploadTranslation}
+                    onChange={uploadTranslationFile}
+                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                    style={{ display: 'none' }}
+                />
                 <div className="horizontal equal">
                     <div>
                         <Btn
@@ -211,6 +246,16 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                                     additionalLanguagesInUse,
                                     qAdditionalLanguages,
                                 );
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <Btn
+                            title={t('Upload translation')}
+                            type="button"
+                            variant="secondary"
+                            onClick={() => {
+                                uploadTranslation.current?.click();
                             }}
                         />
                     </div>

@@ -70,7 +70,7 @@ const exportPredefinedValueSets = (
         valueSetsToTranslate.forEach((valueSet) => {
             getValueSetValues(valueSet).forEach((coding) => {
                 const translatedValues = additionalLanguagesInUse.map((lang) => {
-                    return additionalLanguages[lang].contained[valueSet.id || ''].concepts[coding.code || ''];
+                    return additionalLanguages[lang]?.contained[valueSet.id || '']?.concepts[coding.code || ''];
                 });
                 const stringValues = escapeValues([coding.display, ...translatedValues]);
 
