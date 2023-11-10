@@ -508,8 +508,6 @@ function updateSidebarTranslation(draft: TreeState, action: UpdateSidebarTransla
 }
 
 function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value }: UpdateQuestionnaireMetadataAction) {
-    console.log('propName', propName);
-    console.log('value', value);
     draft.qMetadata = {
         ...draft.qMetadata,
         [propName]: value,

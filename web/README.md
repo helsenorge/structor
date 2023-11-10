@@ -25,3 +25,15 @@ If you are developing a production application, we recommend updating the config
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+## Build and start
+   - 1) Download node 18.16.0
+   - 2) npm install
+   - 3) For build run 
+      # npm run build
+   - 4) For start run 
+      # npm run dev
+      # http://localhost:3000/static_skjemabygger
+   - 5 For preview
+      # npm run preview
+      # http://localhost:4173/static_skjemabygger/

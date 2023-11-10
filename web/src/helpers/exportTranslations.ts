@@ -103,7 +103,7 @@ const exportItemTranslations = (
             } else {
                 translatedValues.push(
                     ...additionalLanguagesInUse.map((lang) => {
-                        return additionalLanguages[lang].items[linkId].text;
+                        return additionalLanguages[lang].items[linkId]?.text;
                     }),
                 );
             }
@@ -143,7 +143,7 @@ const exportItemTranslations = (
 
         if (getValidationMessage(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
-                return additionalLanguages[lang].items[linkId].validationText;
+                return additionalLanguages[lang].items[linkId]?.validationText;
             });
             const stringValues = escapeValues([getValidationMessage(item), ...translatedValues]);
             returnString =
@@ -170,7 +170,7 @@ const exportItemTranslations = (
 
         if (getPrefix(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
-                return additionalLanguages[lang].items[linkId].prefix;
+                return additionalLanguages[lang].items[linkId]?.prefix;
             });
             const stringValues = escapeValues([getPrefix(item), ...translatedValues]);
             returnString = returnString + `item[${linkId}].prefix,${stringValues}\n`;

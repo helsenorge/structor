@@ -7,15 +7,17 @@ import {
     addQuestionnaireLanguageAction,
     removeQuestionnaireLanguageAction,
     updateQuestionnaireMetadataAction,
+    updateItemTranslationAction,
 } from '../../store/treeStore/treeActions';
 import { Translation, TreeContext } from '../../store/treeStore/treeStore';
-import { Meta, Questionnaire } from '../../types/fhir';
+import { Meta, Questionnaire, QuestionnaireItem } from '../../types/fhir';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import Accordion from '../Accordion/Accordion';
 import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
 import Select from '../Select/Select';
 import { exportTranslations } from '../../helpers/exportTranslations';
+import { TranslatableItemProperty } from '../../types/LanguageTypes';
 
 interface LanguageAccordionProps {
     setTranslateLang: (language: string) => void;
@@ -121,7 +123,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     const onLoadUploadedTranslationFile = (event: ProgressEvent<FileReader>) => {
         if (event.target?.result) {
             try {
-                console.log(event.target.result);
+                convertCSVToJson(event.target.result as string);
             } catch {
                 setFileUploadError('Could not read uploaded file');
             }
@@ -132,6 +134,44 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
             }
         }
     };
+
+    const convertCSVToJson = (csvData: string): void => {
+        const lines = csvData.split("\n");
+        const headers = lines[0].split(",");
+        const result = [];
+
+        for (let i = 1; i < lines.length; i++) {
+          const obj: any = {};
+          const currentLine = lines[i].split(",");
+          if (currentLine.length === headers.length) {
+            for (let j = 0; j < headers.length; j++) {             
+              obj[headers[j]?.trim()] = currentLine[j]?.trim();
+            }            
+            result.push(obj);
+          }
+        }
+        updateQuestionniareWithTranslation(result, headers);
+    };
+
+    const updateQuestionniareWithTranslation = (translatableItems: any[], csvHeaders: string[]) => {
+        for (let itemIndex = 1; itemIndex < translatableItems.length; itemIndex++) {
+            if (translatableItems[itemIndex].key.startsWith('item')) {
+                const itemLinkId = translatableItems[itemIndex].key.split('[')[1].split(']')[0];
+                for (let languageIndex = 2; languageIndex < csvHeaders.length; languageIndex++) {
+                    const languageCode = csvHeaders[languageIndex];
+                    const input = translatableItems[itemIndex][languageCode];
+                    if (input !== null && input.length >= 2 && input.charAt(0) === '\"' && input.charAt(input.length - 1) === '\"') {
+                        const text = input.substring(1, input.length - 1);
+                        dispatchUpdateItemTranslation(languageCode, qItems[itemLinkId], text);
+                    }
+                }
+            }
+        }
+    }
+
+    const dispatchUpdateItemTranslation = (targetLanguage: string, item: QuestionnaireItem, text: string): void => {
+        dispatch(updateItemTranslationAction(targetLanguage, item.linkId, TranslatableItemProperty.text, text));
+    }
 
     const uploadTranslationFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         const reader = new FileReader();
