@@ -40,3 +40,10 @@ export enum TranslatableItemProperty {
     repeatsText = 'repeatsText',
     prefix = 'prefix',
 }
+
+export enum TranslatableKeyProptey {
+    item = 'item',
+    metadata = 'metadata',
+    valueSet = 'valueSet',
+    answerOption = 'answerOption',
+}
