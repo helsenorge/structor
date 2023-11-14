@@ -14,41 +14,22 @@ import {
 } from '../types/LanguageTypes';
 import { IExtentionType } from '../types/IQuestionnareItemType';
 import { isItemControlSidebar } from "./itemControl";
+import Papa from "papaparse";
 
-export const importCSV = (scvData: string, qItems: Items, dispatch: React.Dispatch<ActionType>): void => {
-    const result = convertCSVToJson(scvData);
-    updateQuestionniareWithTranslation(result.translatableItems, result.headers, qItems, dispatch);
+export const importCSV = (csvData: string, qItems: Items, dispatch: React.Dispatch<ActionType>): void => {
+    const parsedCsv = Papa.parse(csvData, {skipEmptyLines: true});
+    updateQuestionniareWithTranslation(parsedCsv.data as any[], parsedCsv.data[0] as any[], qItems, dispatch);
 }
-
-const convertCSVToJson = (csvData: string): {headers: any[], translatableItems: any[]} => {
-    const lines = csvData.split("\n");
-    const headers = lines[0].split(",");
-    const translatableItems = [];
-
-    for (let i = 1; i < lines.length; i++) {
-      const obj: any = {};
-      const currentLine = lines[i].split(",");
-      if (currentLine.length === headers.length) {
-        for (let j = 0; j < headers.length; j++) {             
-          obj[headers[j]?.trim()] = currentLine[j]?.trim();
-        }            
-        translatableItems.push(obj);
-      }
-    }
-
-    return {headers, translatableItems};
-};
 
 const updateQuestionniareWithTranslation = (translatableItems: any[], csvHeaders: string[], qItems: Items, dispatch: React.Dispatch<ActionType>) => {
     for (let languageIndex = 2; languageIndex < csvHeaders.length; languageIndex++) {
         const languageCode = csvHeaders[languageIndex];
-        for (let itemIndex = 0; itemIndex < translatableItems.length; itemIndex++) {
-            const key = translatableItems[itemIndex].key;
-            const input = translatableItems[itemIndex][languageCode];
-            if (input !== null && input.length >= 2 && input.charAt(0) === '\"' && input.charAt(input.length - 1) === '\"') {
 
-                const text = input.substring(1, input.length - 1);
+        for (let itemIndex = 1; itemIndex < translatableItems.length; itemIndex++) {
+            const key = translatableItems[itemIndex][0];
+            const text = translatableItems[itemIndex][languageIndex];
 
+            if (text !== null) {
                 if (key.startsWith(TranslatableKeyProptey.item)) {
                     const itemLinkId = key.split('[')[1].split(']')[0];
 

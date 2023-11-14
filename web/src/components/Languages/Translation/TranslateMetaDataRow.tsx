@@ -24,7 +24,7 @@ const TranslateMetaDataRow = ({
     const baseValue = state.qMetadata[propertyName];
     const translatedMetadata =
         state.qAdditionalLanguages && state.qAdditionalLanguages[targetLanguage]
-            ? state.qAdditionalLanguages[targetLanguage].metaData
+            ? state.qAdditionalLanguages[targetLanguage]?.metaData
             : {};
     const [translatedValue, setTranslatedValue] = useState(translatedMetadata[propertyName]);
     const validationMessage = validate ? t(validate(translatedValue, state, targetLanguage)) : '';
