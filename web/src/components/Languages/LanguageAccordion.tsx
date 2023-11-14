@@ -122,7 +122,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     const onLoadUploadedTranslationFile = (event: ProgressEvent<FileReader>) => {
         if (event.target?.result) {
             try {
-                importCSV(event.target.result as string, dispatch);
+                importCSV(event.target.result as string, qItems, dispatch);
             } catch {
                 setFileUploadError('Could not read uploaded file');
             }
