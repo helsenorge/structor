@@ -117,10 +117,6 @@ const Navbar = ({
     return `${profile.given_name} ${profile.family_name}`;
   }
 
-  const hasTranslations = (languages: Languages | undefined): boolean => {
-    return !!languages && Object.keys(languages).length > 0;
-  };
-
   return (
     <>
       <header ref={navBarRef}>
@@ -176,6 +172,7 @@ const Navbar = ({
                     t,
                     state.qOrder,
                     state.qItems,
+                    state.qMetadata,
                     state.qAdditionalLanguages
                   )
                 );
@@ -242,7 +239,7 @@ const Navbar = ({
         <ValidationErrorsModal
           validationErrors={validationErrors}
           translationErrors={translationErrors}
-          hasTranslations={hasTranslations(state.qAdditionalLanguages)}
+          qAdditionalLanguages={state.qAdditionalLanguages}
           onClose={() => setShowValidationErrors(false)}
         />
       )}
