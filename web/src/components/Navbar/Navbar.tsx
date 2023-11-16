@@ -13,6 +13,7 @@ import {
   validateOrphanedElements,
   validateTranslations,
   ValidationErrors,
+  validateMetadata,
 } from "../../helpers/orphanValidation";
 import { ValidationErrorsModal } from "../ValidationErrorsModal/validationErrorsModal";
 import { useTranslation } from "react-i18next";
@@ -20,9 +21,11 @@ import { useTranslation } from "react-i18next";
 type Props = {
   showFormFiller: () => void;
   setValidationErrors: (errors: ValidationErrors[]) => void;
+  setTranslationErrors: (errors: ValidationErrors[]) => void;
+  setMetadataErrors: (errors: ValidationErrors[]) => void;
   validationErrors: ValidationErrors[];
   translationErrors: ValidationErrors[];
-  setTranslationErrors: (errors: ValidationErrors[]) => void;
+  metadataErrors: ValidationErrors[];
 };
 
 enum MenuItem {
@@ -34,9 +37,11 @@ enum MenuItem {
 const Navbar = ({
   showFormFiller,
   setValidationErrors,
+  setTranslationErrors,
+  setMetadataErrors,
   validationErrors,
   translationErrors,
-  setTranslationErrors,
+  metadataErrors,
 }: Props): JSX.Element => {
   const { i18n, t } = useTranslation();
   const { state, dispatch } = useContext(TreeContext);
@@ -176,6 +181,7 @@ const Navbar = ({
                     state.qAdditionalLanguages
                   )
                 );
+                setMetadataErrors(validateMetadata(t, state.qMetadata));
                 setShowValidationErrors(true);
               }}
             />
@@ -239,6 +245,7 @@ const Navbar = ({
         <ValidationErrorsModal
           validationErrors={validationErrors}
           translationErrors={translationErrors}
+          metadataErrors={metadataErrors}
           qAdditionalLanguages={state.qAdditionalLanguages}
           onClose={() => setShowValidationErrors(false)}
         />

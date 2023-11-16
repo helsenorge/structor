@@ -21,6 +21,7 @@ const FormBuilder = (): JSX.Element => {
     const [showPreview, setShowPreview] = useState(false);
     const [validationErrors, setValidationErrors] = useState<Array<ValidationErrors>>([]);
     const [translationErrors, setTranslationErrors] = useState<Array<ValidationErrors>>([]);
+    const [metadataErrors, setMetadataErrors] = useState<Array<ValidationErrors>>([]);
     const [translateLang, setTranslateLang] = useState('');
 
     const toggleFormDetails = useCallback(() => {
@@ -31,10 +32,12 @@ const FormBuilder = (): JSX.Element => {
         <>
             <Navbar
                 showFormFiller={() => setShowPreview(!showPreview)}
-                validationErrors={validationErrors}
                 setValidationErrors={setValidationErrors}
-                translationErrors={translationErrors}
                 setTranslationErrors={setTranslationErrors}
+                setMetadataErrors={setMetadataErrors}
+                translationErrors={translationErrors}
+                validationErrors={validationErrors}
+                metadataErrors={metadataErrors}
             />
 
             <div className="editor">
