@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { languageToIsoString, translateQuestionnaire } from '../../helpers/FhirToTreeStateMapper';
-import { generateMainQuestionnaire, getUsedValueSet } from '../../helpers/generateQuestionnaire';
-import { supportedLanguages, getLanguageFromCode, getLanguagesInUse } from '../../helpers/LanguageHelper';
+import { generateMainQuestionnaire, getUsedValueSetToTranslate } from '../../helpers/generateQuestionnaire';
+import { supportedLanguages, getLanguageFromCode, getLanguagesInUse, getAdditionalLanguages } from '../../helpers/LanguageHelper';
 import {
     addQuestionnaireLanguageAction,
     removeQuestionnaireLanguageAction,
@@ -147,7 +147,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     };
 
     const languageInUse = getLanguagesInUse(state).map((x) => x.code);
-    const additionalLanguagesInUse = languageInUse.filter((x) => x.toLowerCase() !== qMetadata.language?.toLowerCase());
+    const additionalLanguagesInUse = getAdditionalLanguages(state);
 
     const getUnusedLanguage = supportedLanguages
         .filter((language) => language.code !== qMetadata.language)
@@ -236,10 +236,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                             type="button"
                             variant="secondary"
                             onClick={() => {
-                                const usedValueSet = getUsedValueSet(state);
-                                const valueSetsToTranslate = qContained?.filter(
-                                    (x) => x.id && usedValueSet?.includes(x.id) && x,
-                                );
+                                const valueSetsToTranslate = getUsedValueSetToTranslate(state);
                                 exportTranslations(
                                     qMetadata,
                                     qItems,

@@ -20,17 +20,16 @@ import { isSupportedLanguage, translatableMetadata, translatableSettings } from 
 import { isItemControlSidebar } from './itemControl';
 import {
     getInitialText,
-    getMarkdownText,
     getPlaceHolderText,
     getSublabel,
     getRepeatsText,
     getValidationMessage,
     getPrefix,
 } from './QuestionHelper';
-import { IExtentionType } from '../types/IQuestionnareItemType';
 import { initPredefinedValueSet } from './initPredefinedValueSet';
 import { getValueSetValues } from './valueSetHelper';
 import { addMetaSecurityIfDoesNotExist, addMetaSecurityIfCanBePerformedByExist } from './MetadataHelper';
+import { getTextExtensionMarkdown } from '../utils/translationUtils';
 
 function extractMetadata(questionnaireObj: Questionnaire) {
     const getMetadataParts = ({
@@ -144,9 +143,7 @@ function translateContained(base: Array<ValueSet>, translation: Array<ValueSet>)
 function translateItem(translationItem: QuestionnaireItem | undefined): ItemTranslation {
     const answerOptions = translateAnswerOptions(translationItem?.answerOption);
     const entryFormatText = getPlaceHolderText(translationItem);
-    const markdownValue = translationItem?._text?.extension?.find(
-        (ext) => ext.url === IExtentionType.markdown,
-    )?.valueMarkdown;
+    const markdownValue = getTextExtensionMarkdown(translationItem);
     const text = markdownValue || translationItem?.text || '';
     const validationText = getValidationMessage(translationItem);
     const initial = getInitialText(translationItem);
@@ -184,7 +181,7 @@ function translateMetadata(to: Questionnaire): MetadataTranslations {
 }
 
 function translateSidebarItem(translationItem: QuestionnaireItem | undefined): SidebarItemTranslation {
-    const markdown = getMarkdownText(translationItem?._text?.extension);
+    const markdown = getTextExtensionMarkdown(translationItem) ?? '';
     return { markdown };
 }
 

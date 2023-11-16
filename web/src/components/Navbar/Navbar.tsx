@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import { generateQuestionnaire } from "../../helpers/generateQuestionnaire";
-import { Languages, TreeContext } from "../../store/treeStore/treeStore";
+import { TreeContext } from "../../store/treeStore/treeStore";
 import Btn from "../Btn/Btn";
 import MoreIcon from "../../images/icons/ellipsis-horizontal-outline.svg";
 import useOutsideClick from "../../hooks/useOutsideClick";
@@ -11,9 +11,9 @@ import ImportValueSet from "../ImportValueSet/ImportValueSet";
 import { saveAction } from "../../store/treeStore/treeActions";
 import {
   validateOrphanedElements,
+  validateSidebar,
   validateTranslations,
   ValidationErrors,
-  validateMetadata,
 } from "../../helpers/orphanValidation";
 import { ValidationErrorsModal } from "../ValidationErrorsModal/validationErrorsModal";
 import { useTranslation } from "react-i18next";
@@ -22,10 +22,10 @@ type Props = {
   showFormFiller: () => void;
   setValidationErrors: (errors: ValidationErrors[]) => void;
   setTranslationErrors: (errors: ValidationErrors[]) => void;
-  setMetadataErrors: (errors: ValidationErrors[]) => void;
+  setSidebarErrors: (errors: ValidationErrors[]) => void;
   validationErrors: ValidationErrors[];
   translationErrors: ValidationErrors[];
-  metadataErrors: ValidationErrors[];
+  sidebarErrors: ValidationErrors[];
 };
 
 enum MenuItem {
@@ -38,10 +38,10 @@ const Navbar = ({
   showFormFiller,
   setValidationErrors,
   setTranslationErrors,
-  setMetadataErrors,
+  setSidebarErrors,
   validationErrors,
   translationErrors,
-  metadataErrors,
+  sidebarErrors,
 }: Props): JSX.Element => {
   const { i18n, t } = useTranslation();
   const { state, dispatch } = useContext(TreeContext);
@@ -175,13 +175,11 @@ const Navbar = ({
                 setTranslationErrors(
                   validateTranslations(
                     t,
-                    state.qOrder,
-                    state.qItems,
-                    state.qMetadata,
-                    state.qAdditionalLanguages
+                    state,
                   )
                 );
-                setMetadataErrors(validateMetadata(t, state.qMetadata));
+                setSidebarErrors(validateSidebar(t, state.qItems, state.qMetadata));
+
                 setShowValidationErrors(true);
               }}
             />
@@ -245,7 +243,7 @@ const Navbar = ({
         <ValidationErrorsModal
           validationErrors={validationErrors}
           translationErrors={translationErrors}
-          metadataErrors={metadataErrors}
+          sidebarErrors={sidebarErrors}
           qAdditionalLanguages={state.qAdditionalLanguages}
           onClose={() => setShowValidationErrors(false)}
         />

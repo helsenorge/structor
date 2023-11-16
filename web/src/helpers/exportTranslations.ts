@@ -14,6 +14,7 @@ import {
 import { ValueSet } from '../types/fhir';
 import { getValueSetValues } from './valueSetHelper';
 import { TranslatableKeyProptey, TranslatableItemProperty } from '../types/LanguageTypes';
+import { getTextExtensionMarkdown } from '../utils/translationUtils';
 
 export const exportTranslations = (
     qMetadata: IQuestionnaireMetadata,
@@ -109,9 +110,7 @@ const exportItemTranslations = (
                 );
             }
 
-            const markdownValue = item._text?.extension?.find(
-                (extension) => extension.url === IExtentionType.markdown,
-            )?.valueMarkdown;
+            const markdownValue = getTextExtensionMarkdown(item);
             const stringValues = escapeValues([markdownValue, ...translatedValues]);
             returnString =
                 returnString +

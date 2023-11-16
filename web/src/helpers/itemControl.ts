@@ -3,6 +3,7 @@ import { IExtentionType, IQuestionnaireItemType, IValueSetSystem, IItemProperty 
 import { getEnumKeyByString } from './enumHelper';
 import { ActionType } from '../store/treeStore/treeStore';
 import { updateItemAction } from '../store/treeStore/treeActions';
+import { getTextExtensionMarkdown } from '../utils/translationUtils';
 
 export enum ItemControlType {
     inline = 'inline',
@@ -160,7 +161,7 @@ export const getHelpText = (item: QuestionnaireItem): string => {
     if (!isItemControlHelp(item)) {
         return '';
     }
-    return item._text?.extension?.find((ex) => ex.url === IExtentionType.markdown)?.valueMarkdown || item.text || '';
+    return getTextExtensionMarkdown(item)|| item.text || '';
 };
 
 export const setItemControlExtension = (

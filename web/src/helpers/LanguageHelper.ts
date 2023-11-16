@@ -40,6 +40,11 @@ export const getLanguagesInUse = ({ qMetadata, qAdditionalLanguages }: TreeState
     );
 };
 
+export const getAdditionalLanguages = (state: TreeState): string[] => {
+    const languageInUse = getLanguagesInUse(state).map((x) => x.code);
+    return languageInUse.filter((x) => x.toLowerCase() !== state.qMetadata.language?.toLowerCase());
+}
+
 export const isUniqueAcrossLanguages = (
     propertyName: TranslatableMetadataProperty,
     value: string,

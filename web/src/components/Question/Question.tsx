@@ -53,6 +53,7 @@ interface QuestionProps {
 }
 
 import removeMd from 'remove-markdown';
+import { getTextExtensionMarkdown } from '../../utils/translationUtils';
 
 
 const Question = (props: QuestionProps): JSX.Element => {
@@ -72,8 +73,7 @@ const Question = (props: QuestionProps): JSX.Element => {
     const getLabelText = (): string => {
         let labelText = '';
         if (isMarkdownActivated) {
-            labelText =
-                props.item._text?.extension?.find((x) => x.url === IExtentionType.markdown)?.valueMarkdown || '';
+            labelText = getTextExtensionMarkdown(props.item) || '';
         }
         return labelText || props.item.text || '';
     };
