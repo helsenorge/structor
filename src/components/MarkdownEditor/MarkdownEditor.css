@@ -1,3 +1,29 @@
-.ck-content {
-    white-space: break-spaces;
+.draft-js-container {
+    border: 1px solid #a0aec0;
+    border-radius: 4px;
+    height: 100%;
+    margin-top: 5px;
+}
+
+.draft-js-editor-toolbar {
+    border-bottom: 1px solid #a0aec0 !important;
+    background-color: #fafafa !important;
+    padding: 0 5px !important;
+}
+
+.draft-js-editor-container {
+    padding: 0 0.6em !important;
+}
+
+.draft-js-editor-toolbar > div > div {
+    background-color: #fafafa;
+    border: 0;
+}
+
+.draft-js-editor-toolbar-separator {
+    border-left: 1px solid #d1d1d1;
+}
+
+h1 {
+    color: unset !important;
 }
