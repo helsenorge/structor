@@ -189,6 +189,7 @@ const PredefinedValueSetModal = (props: Props): JSX.Element => {
                                     <DragDropContext onDragEnd={handleOrder}>
                                         <Droppable
                                             droppableId={`droppable-new-value-set-${include.system}`}
+                                            key={`droppable-new-value-set-${include.system}`}
                                             type="value-set"
                                         >
                                             {(provided, snapshot) => (

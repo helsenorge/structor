@@ -109,7 +109,10 @@ const OptionReference = ({ item }: Props): JSX.Element => {
     return (
         <>
             <DragDropContext onDragEnd={handleReorder}>
-                <Droppable droppableId={`droppable-${item.linkId}-option-reference`}>
+                <Droppable 
+                    droppableId={`droppable-${item.linkId}-option-reference`} 
+                    key={`droppable-${item.linkId}-option-reference`}
+                >
                     {(provided, snapshot) => (
                         <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
                             {optionReferences?.map((reference, index) => {

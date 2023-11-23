@@ -58,7 +58,11 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
 
     return (
         <DragDropContext onDragEnd={handleChange}>
-            <Droppable droppableId={`droppable-${item.linkId}-answer-options`} type="stuff">
+            <Droppable 
+                droppableId={`droppable-${item.linkId}-answer-options`} 
+                key={`droppable-${item.linkId}-answer-options`} 
+                type="stuff"
+            >
                 {(provided, snapshot) => (
                     <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
                         {item.answerOption?.map((answerOption, index) => {

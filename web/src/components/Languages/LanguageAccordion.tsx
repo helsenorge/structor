@@ -230,6 +230,8 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                             }}
                         />
                     </div>
+                </div>
+                <div className="horizontal">
                     <div>
                         <Btn
                             title={t('Export translations')}

@@ -53,7 +53,6 @@ const Navbar = ({
     useState<boolean>(false);
   const navBarRef = useRef<HTMLDivElement>(null);
   const fileExtension = "json";
-
   const hideMenu = () => {
     setSelectedMenuItem(MenuItem.none);
   };
