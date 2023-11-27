@@ -12,11 +12,11 @@ import { saveAction } from "../../store/treeStore/treeActions";
 import {
   validateOrphanedElements,
   validateSidebar,
-  validateTranslations,
   ValidationErrors,
 } from "../../helpers/orphanValidation";
 import { ValidationErrorsModal } from "../ValidationErrorsModal/validationErrorsModal";
 import { useTranslation } from "react-i18next";
+import { validateTranslations } from "../../helpers/translationValidation";
 
 type Props = {
   showFormFiller: () => void;
