@@ -59,6 +59,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
         return (
             <textarea
                 value={translatedText}
+                className={!translatedText ?  "validation-error" : ""}
                 onChange={(e) => setTranslatedText(e.target.value)}
                 onBlur={(e) => dispatchUpdateItemTranslation(e.target.value, TranslatableItemProperty.text)}
             />
@@ -121,6 +122,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                             />
                         ) : (
                             <textarea
+                                className={!translatedText ?  "validation-error" : ""}
                                 defaultValue={itemPropertyTranslation}
                                 onBlur={(event) => dispatchUpdateItemTranslation(event.target.value, propertyName)}
                             />

@@ -45,6 +45,7 @@ const TranslateContainedValueSets = ({
                             <FormField>
                                 <textarea
                                     defaultValue={translatedText}
+                                    className={!translatedText ?  "validation-error" : ""}
                                     onBlur={(event) => {
                                         dispatch(
                                             updateContainedValueSetTranslationAction(

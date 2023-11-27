@@ -46,6 +46,7 @@ const TranslateSidebar = ({
                 }
                 const { code, display } = item.code[0];
                 const { valueMarkdown } = item._text.extension[0];
+                const translatedMarkdown = getTranslation(item.linkId);
 
                 return (
                     <div key={`${targetLanguage}-${item.linkId}`} className="translation-group">
@@ -58,7 +59,7 @@ const TranslateSidebar = ({
                             </FormField>
                             <FormField>
                                 <MarkdownEditor
-                                    data={getTranslation(item.linkId)}
+                                    data={translatedMarkdown}
                                     onBlur={(value) => dispatchTranslation(item.linkId, value)}
                                 />
                             </FormField>

@@ -42,6 +42,10 @@ const TranslateMetaDataRow = ({
         </>
     );
 
+    const missingTitelTranslation = (): boolean => {
+        return propertyName === 'title' && !translatedValue;
+    };
+
     const renderTranslation = () => (
         <>
             {markdown ? (
@@ -53,11 +57,12 @@ const TranslateMetaDataRow = ({
                     placeholder={t('Enter translation..')}
                 />
             ) : (
-                <textarea
+                <textarea                    
                     defaultValue={translatedValue}
                     onBlur={(event) => {
                         dispatchPropertyUpdate(event.target.value);
                     }}
+                    className={missingTitelTranslation() ?  "validation-error" : ""}
                     onChange={(event) => {
                         setTranslatedValue(event.target.value);
                     }}
