@@ -9,6 +9,25 @@ import createUUID from './CreateUUID';
 export const findExtensionInExtensionArray = (extensionArray: Extension[], url: string): Extension | undefined => {
     return extensionArray.find((x) => x.url === url);
 };
+export const findExtensionByUrl = (extentions: Extension[] | undefined, url: string): Extension | undefined => {
+    return extentions?.find(ext => ext.url === url);
+}
+export const isExtensionValueTrue = (extensions: Extension[] | undefined, url: string, valueType: keyof Extension): boolean | undefined => {
+    const extension = findExtensionByUrl(extensions, url);
+    if(!extension || typeof extension[valueType] !== 'boolean'){
+        return undefined;
+    }
+
+    return extension ? extension[valueType] === true : false;
+}
+export const getExtensionValue = <T extends keyof Extension>(
+    extensions: Extension[] | undefined,
+    url: string,
+    valueType: T
+): Extension[T] | undefined => {
+    const extension = findExtensionByUrl(extensions, url);
+    return extension ? extension[valueType] : undefined;
+};
 
 export const setItemExtension = (
     item: QuestionnaireItem,
@@ -88,7 +107,7 @@ export const hasExtension = (extensionParent: Element | undefined, extensionType
 };
 
 export const getExtensionStringValue = (item: QuestionnaireItem, extensionType: IExtentionType): string | undefined => {
-    return item.extension?.find((f: Extension) => f.url === extensionType)?.valueString;
+    return findExtensionByUrl(item.extension, extensionType)?.valueString;
 };
 
 export const createGuidanceActionExtension = (valueString = ''): Extension => ({
@@ -119,3 +138,29 @@ export const getQuantityUnit = (extensions: Extension[]): string | undefined => 
     const unit = extensions.filter((f: Extension) => f.url === IExtentionType.questionnaireUnit);
     return unit.length > 0 ? unit[0].valueCoding?.code : undefined;
 };
+export const getExtentionsFromElement = (element: Element) => {
+    return element.extension;
+};
+export const getExtentionByType = (extentions: Extension[], type: IExtentionType) => {
+    return extentions.find(x => x.url === type);
+}
+
+type ExclusiveExtensionKeys = Exclude<keyof Extension, keyof Element>;
+
+type ExclusiveExtensionValues = {
+    [K in ExclusiveExtensionKeys]: Extension[K];
+};
+
+export function getExtentionValueByType<T extends ExclusiveExtensionKeys>(
+    element: Element,
+    extentionType: IExtentionType,
+    valueType: T
+): ExclusiveExtensionValues[T] | undefined {
+    const extentions = getExtentionsFromElement(element) || [];
+    const extention = getExtentionByType(extentions || [], extentionType);
+
+    if (!extention || !(valueType in extention)) {
+        return undefined;
+    }
+    return (extention as ExclusiveExtensionValues)[valueType];
+}
