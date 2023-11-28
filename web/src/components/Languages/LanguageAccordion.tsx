@@ -219,7 +219,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                     style={{ display: 'none' }}
                 />
-                <div className="horizontal equal">
+                <div className="horizontal">
                     <div>
                         <Btn
                             title={t('Upload questionnaire in additional language')}

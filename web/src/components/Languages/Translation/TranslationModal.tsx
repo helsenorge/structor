@@ -22,7 +22,7 @@ import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 import { IExtentionType } from '../../../types/IQuestionnareItemType';
 import TranslateSettings from './TranslateSettings';
-import { getValueSetToTranslate } from '../../../utils/translationUtils';
+import { getValueSetToTranslate, isHiddenItem } from '../../../utils/translationUtils';
 
 type TranslationModalProps = {
     close: () => void;
@@ -43,10 +43,8 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     const [flattOrder, setFlattOrder] = useState<FlattOrderTranslation[]>([]);
     const [count, setLimit] = useState(20);
 
-    const isTranslatableItem = (item: QuestionnaireItem): boolean =>
-        // Hidden items
-        !item.extension?.some((ext) => ext.url === IExtentionType.hidden && ext.valueBoolean) &&
-        !isItemControlSidebar(item);
+    const isTranslatableItem = (item: QuestionnaireItem): boolean =>        
+        !isHiddenItem(item) && !isItemControlSidebar(item);
 
     const translatableItems = Object.values(qItems).filter((question) => {
         return isTranslatableItem(question);

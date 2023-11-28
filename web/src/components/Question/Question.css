@@ -85,6 +85,7 @@
 .horizontal {
     display: flex;
     align-items: center;
+    padding-top: 3px;
 }
 
 .horizontal > *:first-of-type {
