@@ -451,7 +451,7 @@ function updateItemCodeProperty(draft: TreeState, action: UpdateItemCodeProperty
 }
 
 function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAction) {
-    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
+    if (draft.qAdditionalLanguages) {
         if (!draft.qAdditionalLanguages[action.languageCode].items[action.linkId]) {
             draft.qAdditionalLanguages[action.languageCode].items[action.linkId] = {};
         }
@@ -460,7 +460,7 @@ function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAc
 }
 
 function updateItemOptionTranslation(draft: TreeState, action: UpdateItemOptionTranslationAction) {
-    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
+    if (draft.qAdditionalLanguages) {
         const item = draft.qAdditionalLanguages[action.languageCode].items[action.linkId];
         if (!item.answerOptions) {
             item.answerOptions = {};
@@ -470,13 +470,13 @@ function updateItemOptionTranslation(draft: TreeState, action: UpdateItemOptionT
 }
 
 function updateMetadataTranslation(draft: TreeState, action: UpdateMetadataTranslationAction) {
-    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
+    if (draft.qAdditionalLanguages) {
         draft.qAdditionalLanguages[action.languageCode].metaData[action.propertyName] = action.translation;
     }
 }
 
 function updateSettingTranslationAction(draft: TreeState, action: UpdateSettingTranslationAction) {
-    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
+    if (draft.qAdditionalLanguages) {
         const settings = draft.qAdditionalLanguages[action.languageCode].settings;
 
         if (action.translatedValue) {
@@ -488,7 +488,7 @@ function updateSettingTranslationAction(draft: TreeState, action: UpdateSettingT
 }
 
 function updateContainedValueSetTranslation(draft: TreeState, action: UpdateContainedValueSetTranslationAction) {
-    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
+    if (draft.qAdditionalLanguages) {
         const contained = draft.qAdditionalLanguages[action.languageCode].contained;
         if (!contained[action.valueSetId]) {
             contained[action.valueSetId] = { concepts: {} };
@@ -498,7 +498,7 @@ function updateContainedValueSetTranslation(draft: TreeState, action: UpdateCont
 }
 
 function updateSidebarTranslation(draft: TreeState, action: UpdateSidebarTranslationAction) {
-    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
+    if (draft.qAdditionalLanguages) {
         const sidebarItems = draft.qAdditionalLanguages[action.languageCode].sidebarItems;
         if (!sidebarItems[action.linkId]) {
             sidebarItems[action.linkId] = { markdown: '' };
@@ -508,6 +508,7 @@ function updateSidebarTranslation(draft: TreeState, action: UpdateSidebarTransla
 }
 
 function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value }: UpdateQuestionnaireMetadataAction) {
+
     draft.qMetadata = {
         ...draft.qMetadata,
         [propName]: value,

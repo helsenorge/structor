@@ -3,7 +3,7 @@ import { ActionType } from '../store/treeStore/treeStore';
 import { Element, Extension, QuestionnaireItem } from '../types/fhir';
 import { HyperlinkTarget } from '../types/hyperlinkTargetType';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import { IExtentionType, IValueSetSystem, IItemProperty } from '../types/IQuestionnareItemType';
+import { IExtentionType, IValueSetSystem, IItemProperty, ICodeSystem } from '../types/IQuestionnareItemType';
 import createUUID from './CreateUUID';
 
 export const findExtensionInExtensionArray = (extensionArray: Extension[], url: string): Extension | undefined => {
@@ -163,4 +163,13 @@ export function getExtentionValueByType<T extends ExclusiveExtensionKeys>(
         return undefined;
     }
     return (extention as ExclusiveExtensionValues)[valueType];
+}
+
+export const findExtentionByCode = ( code: ICodeSystem, extentions?: Extension[]): Extension | undefined => {
+    return extentions?.find(x => x.valueCoding?.system === code)
+}
+
+export const getExtensionByCodeAndElement = (element: Element, code: ICodeSystem): Extension | undefined => {
+    const extentions = getExtentionsFromElement(element);
+    return findExtentionByCode(code, extentions)
 }
