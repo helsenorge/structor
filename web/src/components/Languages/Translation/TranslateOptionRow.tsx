@@ -23,7 +23,7 @@ const TranslateOptionRow = ({ option, translation, onBlur }: TranslateOptionRowP
                     onChange={(event) => {
                         setTranslatedText(event.target.value);
                     }}
-                    className={!translatedText ?  "validation-error" : ""}
+                    className={!translatedText?.trim() ?  "validation-error" : ""}
                     onBlur={(event) => onBlur(event.target.value)}
                 />
             </FormField>

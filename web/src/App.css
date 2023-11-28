@@ -109,7 +109,9 @@ p {
 .validation-error {
   box-shadow: 0 0 0 4px red;
 }
-
+.validation-warning {
+  box-shadow: 0 0 0 4px orange;
+}
 .truncate {
   white-space: nowrap;
   overflow: hidden;

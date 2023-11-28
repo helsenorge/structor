@@ -50,16 +50,18 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
     function getInputField(): JSX.Element {
         if (isMarkdown) {
             return (
-                <MarkdownEditor
-                    data={translatedText}
-                    onBlur={(text) => dispatchUpdateItemTranslation(text, TranslatableItemProperty.text)}
-                />
+                <div className={!itemTranslation.text?.trim() ?  "validation-error" : "validation-warning"}>
+                    <MarkdownEditor
+                        data={translatedText}
+                        onBlur={(text) => dispatchUpdateItemTranslation(text, TranslatableItemProperty.text)}
+                    />
+                </div>                
             );
         }
         return (
             <textarea
                 value={translatedText}
-                className={!translatedText ?  "validation-error" : ""}
+                className={!itemTranslation.text?.trim() ?  "validation-error" : ""}
                 onChange={(e) => setTranslatedText(e.target.value)}
                 onBlur={(e) => dispatchUpdateItemTranslation(e.target.value, TranslatableItemProperty.text)}
             />
@@ -116,13 +118,15 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                     </FormField>
                     <FormField>
                         {isMarkdownField ? (
-                            <MarkdownEditor
-                                data={itemPropertyTranslation}
-                                onBlur={(newValue: string) => dispatchUpdateItemTranslation(newValue, propertyName)}
-                            />
+                            <div className={!itemPropertyTranslation?.trim() ?  "validation-error" : "validation-warning"}>
+                                <MarkdownEditor
+                                    data={itemPropertyTranslation}
+                                    onBlur={(newValue: string) => dispatchUpdateItemTranslation(newValue, propertyName)}
+                                />
+                            </div>                            
                         ) : (
                             <textarea
-                                className={!translatedText ?  "validation-error" : ""}
+                                className={!itemPropertyTranslation?.trim() ?  "validation-error" : ""}
                                 defaultValue={itemPropertyTranslation}
                                 onBlur={(event) => dispatchUpdateItemTranslation(event.target.value, propertyName)}
                             />

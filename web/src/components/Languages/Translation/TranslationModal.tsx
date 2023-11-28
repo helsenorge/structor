@@ -101,19 +101,21 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                         <MarkdownEditor data={helpText} disabled={true} />
                     </FormField>
                     <FormField>
-                        <MarkdownEditor
-                            data={translatedHelpText}
-                            onBlur={(value) =>
-                                dispatch(
-                                    updateItemTranslationAction(
-                                        props.targetLanguage,
-                                        linkId,
-                                        TranslatableItemProperty.text,
-                                        value,
-                                    ),
-                                )
-                            }
-                        />
+                        <div className={!translatedHelpText?.trim() ?  "validation-error" : "validation-warning"}>
+                            <MarkdownEditor
+                                data={translatedHelpText}
+                                onBlur={(value) =>
+                                    dispatch(
+                                        updateItemTranslationAction(
+                                            props.targetLanguage,
+                                            linkId,
+                                            TranslatableItemProperty.text,
+                                            value,
+                                        ),
+                                    )
+                                }
+                            />
+                        </div>
                     </FormField>
                 </div>
             </>

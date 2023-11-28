@@ -58,10 +58,12 @@ const TranslateSidebar = ({
                                 <MarkdownEditor data={valueMarkdown || ''} disabled={true} />
                             </FormField>
                             <FormField>
-                                <MarkdownEditor
-                                    data={translatedMarkdown}
-                                    onBlur={(value) => dispatchTranslation(item.linkId, value)}
-                                />
+                                <div className={!translatedMarkdown?.trim() ?  "validation-error" : "validation-warning"}>
+                                    <MarkdownEditor
+                                        data={translatedMarkdown}
+                                        onBlur={(value) => dispatchTranslation(item.linkId, value)}
+                                    />
+                                </div>                                
                             </FormField>
                         </div>
                     </div>
