@@ -47,7 +47,9 @@
 .msg-error {
     color: #ff0000;
 }
-
+.msg-warning {
+    color: #ffaa00;
+}
 .form-field.field-error input,
 .form-field.field-error input:focus,
 .form-field.field-error select,

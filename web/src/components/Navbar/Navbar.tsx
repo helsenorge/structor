@@ -9,23 +9,22 @@ import JSONView from "../JSONView/JSONView";
 import PredefinedValueSetModal from "../PredefinedValueSetModal/PredefinedValueSetModal";
 import ImportValueSet from "../ImportValueSet/ImportValueSet";
 import { saveAction } from "../../store/treeStore/treeActions";
-import {
-  validateOrphanedElements,
-  validateSidebar,
-  ValidationErrors,
-} from "../../helpers/orphanValidation";
+import { validateOrphanedElements, validateSidebar } from "../../helpers/orphanValidation";
 import { ValidationErrorsModal } from "../ValidationErrorsModal/validationErrorsModal";
 import { useTranslation } from "react-i18next";
-import { validateTranslations } from "../../helpers/translationValidation";
+import { validateTranslations, warnMarkdownInTranslations } from "../../helpers/translationValidation";
+import { ValidationErrors } from "../../utils/translationUtils";
 
 type Props = {
   showFormFiller: () => void;
   setValidationErrors: (errors: ValidationErrors[]) => void;
   setTranslationErrors: (errors: ValidationErrors[]) => void;
   setSidebarErrors: (errors: ValidationErrors[]) => void;
+  setMarkdownWarning: (warning: ValidationErrors) => void;
   validationErrors: ValidationErrors[];
   translationErrors: ValidationErrors[];
   sidebarErrors: ValidationErrors[];
+  markdownWarning: ValidationErrors;
 };
 
 enum MenuItem {
@@ -39,9 +38,11 @@ const Navbar = ({
   setValidationErrors,
   setTranslationErrors,
   setSidebarErrors,
+  setMarkdownWarning,
   validationErrors,
   translationErrors,
   sidebarErrors,
+  markdownWarning,
 }: Props): JSX.Element => {
   const { i18n, t } = useTranslation();
   const { state, dispatch } = useContext(TreeContext);
@@ -178,7 +179,7 @@ const Navbar = ({
                   )
                 );
                 setSidebarErrors(validateSidebar(t, state.qItems, state.qMetadata));
-
+                setMarkdownWarning(warnMarkdownInTranslations(t, state));
                 setShowValidationErrors(true);
               }}
             />
@@ -243,6 +244,7 @@ const Navbar = ({
           validationErrors={validationErrors}
           translationErrors={translationErrors}
           sidebarErrors={sidebarErrors}
+          markdownWarning={markdownWarning}
           qAdditionalLanguages={state.qAdditionalLanguages}
           onClose={() => setShowValidationErrors(false)}
         />

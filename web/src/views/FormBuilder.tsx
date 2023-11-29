@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { TreeContext } from '../store/treeStore/treeStore';
-import { ValidationErrors } from '../helpers/orphanValidation';
 
 import AnchorMenu from '../components/AnchorMenu/AnchorMenu';
 import FormDetailsDrawer from '../components/Drawer/FormDetailsDrawer/FormDetailsDrawer';
@@ -13,6 +12,7 @@ import TranslationModal from '../components/Languages/Translation/TranslationMod
 import FormFillerPreview from '../components/Refero/FormFillerPreview';
 
 import './FormBuilder.css';
+import { ValidationErrors } from '../utils/translationUtils';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -22,6 +22,7 @@ const FormBuilder = (): JSX.Element => {
     const [validationErrors, setValidationErrors] = useState<Array<ValidationErrors>>([]);
     const [translationErrors, setTranslationErrors] = useState<Array<ValidationErrors>>([]);
     const [sidebarErrors, setSidebarErrors] = useState<Array<ValidationErrors>>([]);
+    const [markdownWarning, setMarkdownWarning] = useState<ValidationErrors>({} as ValidationErrors);
     const [translateLang, setTranslateLang] = useState('');
 
     const toggleFormDetails = useCallback(() => {
@@ -35,9 +36,11 @@ const FormBuilder = (): JSX.Element => {
                 setValidationErrors={setValidationErrors}
                 setTranslationErrors={setTranslationErrors}
                 setSidebarErrors={setSidebarErrors}
+                setMarkdownWarning={setMarkdownWarning}
                 translationErrors={translationErrors}
                 validationErrors={validationErrors}
                 sidebarErrors={sidebarErrors}
+                markdownWarning={markdownWarning}
             />
 
             <div className="editor">
