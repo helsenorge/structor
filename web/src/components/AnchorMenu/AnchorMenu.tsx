@@ -22,7 +22,6 @@ import {
   reorderItemAction,
   updateMarkedLinkIdAction,
 } from "../../store/treeStore/treeActions";
-import { ValidationErrors } from "../../helpers/orphanValidation";
 import { SortableTreeWithoutDndContext as SortableTree } from "@nosferatu500/react-sortable-tree";
 import "@nosferatu500/react-sortable-tree/style.css";
 import { isIgnorableItem } from "../../helpers/itemControl";
@@ -31,6 +30,7 @@ import {
   canTypeHaveChildren,
   getInitialItemConfig,
 } from "../../helpers/questionTypeFeatures";
+import { ValidationErrors } from "../../utils/validationUtils";
 
 interface AnchorMenuProps {
   qOrder: OrderItem[];

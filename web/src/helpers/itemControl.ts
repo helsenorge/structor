@@ -3,7 +3,7 @@ import { IExtentionType, IQuestionnaireItemType, IValueSetSystem, IItemProperty 
 import { getEnumKeyByString } from './enumHelper';
 import { ActionType } from '../store/treeStore/treeStore';
 import { updateItemAction } from '../store/treeStore/treeActions';
-import { getTextExtensionMarkdown } from '../utils/translationUtils';
+import { getTextExtensionMarkdown } from '../utils/validationUtils';
 
 export enum ItemControlType {
     inline = 'inline',

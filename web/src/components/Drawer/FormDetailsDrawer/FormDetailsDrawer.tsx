@@ -6,23 +6,25 @@ import LanguageAccordion from '../../Languages/LanguageAccordion';
 import Drawer from '../Drawer';
 import { useKeyPress } from '../../../hooks/useKeyPress';
 import QuestionnaireSettings from '../../Metadata/QuestionnaireSettings';
+import { ValidationErrors } from '../../../utils/validationUtils';
 
 type FormDetailsDrawerProps = {
     setTranslateLang: (language: string) => void;
     closeDrawer: () => void;
+    sidebarErrors: ValidationErrors[];
     isOpen?: boolean;
 };
 
-const FormDetailsDrawer = ({ setTranslateLang, closeDrawer, isOpen = false }: FormDetailsDrawerProps): JSX.Element => {
+const FormDetailsDrawer = ({ setTranslateLang, closeDrawer, sidebarErrors, isOpen = false }: FormDetailsDrawerProps): JSX.Element => {
     const { t } = useTranslation();
 
     useKeyPress('Escape', closeDrawer, !isOpen);
 
     return (
         <Drawer title={t('Questionnaire details')} position="left" visible={isOpen} hide={closeDrawer}>
-            <MetadataEditor />
+            <MetadataEditor sidebarErrors={sidebarErrors} />
             <QuestionnaireSettings />
-            <Sidebar />
+            <Sidebar sidebarErrors={sidebarErrors} />
             <LanguageAccordion setTranslateLang={setTranslateLang} />
         </Drawer>
     );

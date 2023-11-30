@@ -42,14 +42,21 @@ const TranslateMetaDataRow = ({
         </>
     );
 
-    const missingTitelTranslation = (): boolean => {
-        return propertyName === 'title' && !translatedValue?.trim();
-    };
+    const getClassName = (): string => {
+        if (propertyName === 'title') {
+            if (!translatedValue?.trim()) {
+                return 'validation-error';
+            } else {
+                return 'validation-warning';
+            }
+        }
+        return '';
+    }
 
     const renderTranslation = () => (
         <>
             {markdown ? (
-                <div className={missingTitelTranslation() ?  "validation-error" : "validation-warning"}>
+                <div className={getClassName()}>
                     <MarkdownEditor
                         data={translatedValue}
                         onBlur={(value) => {
@@ -64,7 +71,7 @@ const TranslateMetaDataRow = ({
                     onBlur={(event) => {
                         dispatchPropertyUpdate(event.target.value);
                     }}
-                    className={missingTitelTranslation() ?  "validation-error" : ""}
+                    className={getClassName()}
                     onChange={(event) => {
                         setTranslatedValue(event.target.value);
                     }}

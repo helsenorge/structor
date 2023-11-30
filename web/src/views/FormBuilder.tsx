@@ -12,7 +12,7 @@ import TranslationModal from '../components/Languages/Translation/TranslationMod
 import FormFillerPreview from '../components/Refero/FormFillerPreview';
 
 import './FormBuilder.css';
-import { ValidationErrors } from '../utils/translationUtils';
+import { ValidationErrors } from '../utils/validationUtils';
 
 const FormBuilder = (): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
@@ -77,6 +77,7 @@ const FormBuilder = (): JSX.Element => {
                         setTranslateLang(language);
                         toggleFormDetails();
                     }}
+                    sidebarErrors={sidebarErrors}
                     closeDrawer={toggleFormDetails}
                     isOpen={showFormDetails}
                 />

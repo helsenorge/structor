@@ -13,7 +13,7 @@ import { useKeyPress } from '../../hooks/useKeyPress';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import Drawer from '../Drawer/Drawer';
 import { generateItemButtons } from '../AnchorMenu/ItemButtons/ItemButtons';
-import { ValidationErrors } from '../../helpers/orphanValidation';
+import { ValidationErrors } from '../../utils/validationUtils';
 
 interface Props {
     validationErrors: ValidationErrors[];

@@ -20,9 +20,8 @@ import TranslateSidebar from './TranslateSidebar';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
-import { IExtentionType } from '../../../types/IQuestionnareItemType';
 import TranslateSettings from './TranslateSettings';
-import { getValueSetToTranslate, isHiddenItem } from '../../../utils/translationUtils';
+import { getValueSetToTranslate, isHiddenItem } from '../../../utils/validationUtils';
 
 type TranslationModalProps = {
     close: () => void;

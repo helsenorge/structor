@@ -13,7 +13,7 @@ import { validateOrphanedElements, validateSidebar } from "../../helpers/orphanV
 import { ValidationErrorsModal } from "../ValidationErrorsModal/validationErrorsModal";
 import { useTranslation } from "react-i18next";
 import { validateTranslations, warnMarkdownInTranslations } from "../../helpers/translationValidation";
-import { ValidationErrors } from "../../utils/translationUtils";
+import { ValidationErrors } from "../../utils/validationUtils";
 
 type Props = {
   showFormFiller: () => void;

@@ -32,7 +32,6 @@ import OptionReference from './QuestionType/OptionReference';
 import FormField from '../FormField/FormField';
 import UnitTypeSelector from './UnitType/UnitTypeSelector';
 import { DateType } from './QuestionType/DateType';
-import { ValidationErrors } from '../../helpers/orphanValidation';
 import {
     canTypeBeRequired,
     canTypeBeValidated,
@@ -40,6 +39,8 @@ import {
     getItemDisplayType,
 } from '../../helpers/questionTypeFeatures';
 import { erRenderingOption } from '../../helpers/codeHelper';
+import removeMd from 'remove-markdown';
+import { getTextExtensionMarkdown, ValidationErrors } from '../../utils/validationUtils';
 
 interface QuestionProps {
     item: QuestionnaireItem;
@@ -51,10 +52,6 @@ interface QuestionProps {
     getItem: (linkId: string) => QuestionnaireItem;
     dispatch: React.Dispatch<ActionType>;
 }
-
-import removeMd from 'remove-markdown';
-import { getTextExtensionMarkdown } from '../../utils/translationUtils';
-
 
 const Question = (props: QuestionProps): JSX.Element => {
     const { t } = useTranslation();

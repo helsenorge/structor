@@ -14,7 +14,7 @@ import {
 import { ValueSet } from '../types/fhir';
 import { getValueSetValues } from './valueSetHelper';
 import { TranslatableKeyProptey, TranslatableItemProperty } from '../types/LanguageTypes';
-import { getTextExtensionMarkdown } from '../utils/translationUtils';
+import { getTextExtensionMarkdown } from '../utils/validationUtils';
 
 export const exportTranslations = (
     qMetadata: IQuestionnaireMetadata,

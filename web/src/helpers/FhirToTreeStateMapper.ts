@@ -29,7 +29,7 @@ import {
 import { initPredefinedValueSet } from './initPredefinedValueSet';
 import { getValueSetValues } from './valueSetHelper';
 import { addMetaSecurityIfDoesNotExist, addMetaSecurityIfCanBePerformedByExist } from './MetadataHelper';
-import { getTextExtensionMarkdown } from '../utils/translationUtils';
+import { getTextExtensionMarkdown } from '../utils/validationUtils';
 
 function extractMetadata(questionnaireObj: Questionnaire) {
     const getMetadataParts = ({
