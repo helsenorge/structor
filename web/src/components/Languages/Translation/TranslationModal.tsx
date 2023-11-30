@@ -67,7 +67,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
         </div>
     );
 
-    const renderWarningMessages = (): JSX.Element => {
+    const renderWarningMessages = (): React.JSX.Element => {
         if (props.markdownWarning) {
             return (
                 <h3 className="msg-warning">
