@@ -15,7 +15,12 @@ type FormDetailsDrawerProps = {
     isOpen?: boolean;
 };
 
-const FormDetailsDrawer = ({ setTranslateLang, closeDrawer, sidebarErrors, isOpen = false }: FormDetailsDrawerProps): JSX.Element => {
+const FormDetailsDrawer = ({
+    setTranslateLang,
+    closeDrawer,
+    sidebarErrors,
+    isOpen = false,
+}: FormDetailsDrawerProps): JSX.Element => {
     const { t } = useTranslation();
 
     useKeyPress('Escape', closeDrawer, !isOpen);

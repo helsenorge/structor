@@ -59,7 +59,11 @@ const FormBuilder = (): JSX.Element => {
                     />
                 )}
                 {translateLang && (
-                    <TranslationModal close={() => setTranslateLang('')} targetLanguage={translateLang} />
+                    <TranslationModal
+                        markdownWarning={markdownWarning}
+                        close={() => setTranslateLang('')}
+                        targetLanguage={translateLang}
+                    />
                 )}
             </div>
             <div className="page-wrapper">
@@ -77,7 +81,7 @@ const FormBuilder = (): JSX.Element => {
                         setTranslateLang(language);
                         toggleFormDetails();
                     }}
-                    sidebarErrors={sidebarErrors}
+                    sidebarErrors={sidebarErrors}                   
                     closeDrawer={toggleFormDetails}
                     isOpen={showFormDetails}
                 />

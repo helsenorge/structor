@@ -12,8 +12,8 @@ export interface ValidationErrors {
 }
 
 export const getTextExtensionMarkdown = (item: QuestionnaireItem | undefined): string | undefined =>{
-    return item?._text?.extension?.find((x) => x.url === IExtentionType.markdown)?.valueMarkdown
-};
+    return item?._text?.extension?.find((x) => x.url === IExtentionType.markdown)?.valueMarkdown;
+}
 
 export const getValueSetToTranslate = (state: TreeState): ValueSet[] | undefined => {
     const usedValueSet = getUsedValueSet(state);

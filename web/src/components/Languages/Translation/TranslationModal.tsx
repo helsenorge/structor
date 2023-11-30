@@ -21,10 +21,11 @@ import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 import TranslateSettings from './TranslateSettings';
-import { getValueSetToTranslate, isHiddenItem } from '../../../utils/validationUtils';
+import { getValueSetToTranslate, isHiddenItem, ValidationErrors } from '../../../utils/validationUtils';
 
 type TranslationModalProps = {
     close: () => void;
+    markdownWarning: ValidationErrors;
     targetLanguage: string;
 };
 
@@ -65,6 +66,17 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
             )}
         </div>
     );
+
+    const renderWarningMessages = (): JSX.Element => {
+        if (props.markdownWarning) {
+            return (
+                <h3 className="msg-warning">
+                    {props.markdownWarning.errorReadableText}
+                </h3>
+            );
+        }
+        return (<></>);
+    };
 
     const renderInlineText = (linkId: string): JSX.Element | null => {
         if (!qAdditionalLanguages) {
@@ -229,6 +241,7 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                 bottomCloseText={t('Close')}
             >
                 {getHeader()}
+                {renderWarningMessages()}
                 <div style={{ position: 'relative' }}>
                     <>
                         {qAdditionalLanguages && (
