@@ -426,7 +426,10 @@
     "A scoring field requires that a summation field exists in the questionnaire": "Et skåring felt krever at et summeringsfelt finnes i skjemaet",
     "A scoring field must have a scoring value in all answer options": "Et skåring felt må ha en skåring verdi i alle svaralternativer",
     "Element can not be required and hidden": "Elementet kan ikke være skjult og påkrevd på samme tid",
-    "minValue and/or maxValue can not be set on calculated expressions": "minValue og/eller maxValue kan ikke være satt på kalkuleringsfelter",
-    "minValue and/or maxValue can not be set on scoring fields": "minValue og/eller maxValue kan ikke være satt på scoring felter"
+    "MinValue and/or maxValue can not be set on calculated expressions": "MinValue og/eller maxValue kan ikke være satt på kalkuleringsfelter",
+    "MinValue and/or maxValue can not be set on scoring fields": "MinValue og/eller maxValue kan ikke være satt på scoring felter",
+    "MinLength and/or maxLength can not be set on enrichment fields": "MinLength og/eller maxLength kan ikke settes på berikede felter",
+    "Required can not be set on enrichment fields": "Påkrevd kan ikke settes på berikede felter",
+    "Regular expressions can not be set on enrichment fields": "Regulære uttrykk kan ikke settes på berikede felter"
 
 }
