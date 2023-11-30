@@ -105,6 +105,9 @@ export const hasExtension = (extensionParent: Element | undefined, extensionType
     }
     return false;
 };
+export const hasOneOrMoreExtensions = (extensions: Extension[], extensionTypes: IExtentionType[]): boolean => {
+    return extensions.some(ex => extensionTypes.includes(ex.url as IExtentionType));
+}
 
 export const getExtensionStringValue = (item: QuestionnaireItem, extensionType: IExtentionType): string | undefined => {
     return findExtensionByUrl(item.extension, extensionType)?.valueString;
