@@ -15,6 +15,7 @@ import { ValueSet } from '../types/fhir';
 import { getValueSetValues } from './valueSetHelper';
 import { TranslatableKeyProptey, TranslatableItemProperty } from '../types/LanguageTypes';
 import { getTextExtensionMarkdown } from '../utils/validationUtils';
+import Papa, { UnparseConfig } from "papaparse";
 
 export const exportTranslations = (
     qMetadata: IQuestionnaireMetadata,
@@ -23,22 +24,32 @@ export const exportTranslations = (
     additionalLanguagesInUse: string[],
     qAdditionalLanguages: Languages | undefined,
 ): void => {
-    let returnString = `key,${[qMetadata.language, ...additionalLanguagesInUse]}\n`;
     const additionalLanguages = qAdditionalLanguages || {};
+    const papaparseConfig = {
+        quoteChar: "'",
+        escapeChar: "'",
+        delimiter: "|",
+        header: true,
+        newline: "\r\n",
+        skipEmptyLines: false,
+    } as UnparseConfig;
+    const header = ['key', qMetadata.language, ...additionalLanguagesInUse] as string[];
 
+    let data: string[][] = [];
     // add metadata translations: all fields from translatableMetadata.
-    returnString = returnString + exportMetadataTranslations(qMetadata, additionalLanguagesInUse, additionalLanguages);
+    exportMetadataTranslations(qMetadata, additionalLanguagesInUse, additionalLanguages, data);
 
     // add predefined valueset translations
-    returnString =
-        returnString + exportPredefinedValueSets(valueSetsToTranslate, additionalLanguagesInUse, additionalLanguages);
+    exportPredefinedValueSets(valueSetsToTranslate, additionalLanguagesInUse, additionalLanguages, data);
 
     // add item translations: text/_text, sublabel, repeatsText, validationMessage, placeholderText, initial, answerOption.display
-    returnString = returnString + exportItemTranslations(qItems, additionalLanguagesInUse, additionalLanguages);
-
+    exportItemTranslations(qItems, additionalLanguagesInUse, additionalLanguages, data);
+    
+    const csv = Papa.unparse({fields: header, data}, papaparseConfig);
+    var csvData = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
     const a = document.createElement('a');
     a.download = `${qMetadata.name}.csv`;
-    a.href = 'data:' + 'text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(returnString);
+    a.href = window.URL.createObjectURL(csvData);
     a.target = '_blank';
     document.body.appendChild(a);
     a.click();
@@ -49,24 +60,23 @@ const exportMetadataTranslations = (
     qMetadata: IQuestionnaireMetadata,
     additionalLanguagesInUse: string[],
     additionalLanguages: Languages,
-): string => {
-    let returnString = '';
+    data: string[][],
+) => {
     translatableMetadata.forEach((prop) => {
         const translatedValues = additionalLanguagesInUse.map((lang) => {
             return additionalLanguages[lang].metaData[prop.propertyName];
         });
-        const stringValues = escapeValues([qMetadata[prop.propertyName], ...translatedValues]);
-        returnString = returnString + `${TranslatableKeyProptey.metadata}.${prop.propertyName},${stringValues}\n`;
+        const key = `${TranslatableKeyProptey.metadata}.${prop.propertyName}`;
+        data.push([key, qMetadata[prop.propertyName], ...translatedValues] as string[]);
     });
-    return returnString;
 };
 
 const exportPredefinedValueSets = (
     valueSetsToTranslate: ValueSet[],
     additionalLanguagesInUse: string[],
     additionalLanguages: Languages,
-): string => {
-    let returnString = '';
+    data: string[][],
+) => {
     if (valueSetsToTranslate.length > 0) {
         // for each valueset, for each row, add one translation row
         valueSetsToTranslate.forEach((valueSet) => {
@@ -74,23 +84,19 @@ const exportPredefinedValueSets = (
                 const translatedValues = additionalLanguagesInUse.map((lang) => {
                     return additionalLanguages[lang]?.contained[valueSet.id || '']?.concepts[coding.code || ''];
                 });
-                const stringValues = escapeValues([coding.display, ...translatedValues]);
-
-                returnString =
-                    returnString +
-                    `${TranslatableKeyProptey.valueSet}[${valueSet.id}][${coding.system}][${coding.code}].display,${stringValues}\n`;
+                const key = `${TranslatableKeyProptey.valueSet}[${valueSet.id}][${coding.system}][${coding.code}].display`;
+                data.push([key, coding.display, ...translatedValues] as string[]);
             });
         });
     }
-    return returnString;
 };
 
 const exportItemTranslations = (
     qItems: Items,
     additionalLanguagesInUse: string[],
     additionalLanguages: Languages,
-): string => {
-    let returnString = '';
+    data: string[][],
+) => {
     Object.keys(qItems).forEach((linkId) => {
         const item = qItems[linkId];
 
@@ -111,69 +117,62 @@ const exportItemTranslations = (
             }
 
             const markdownValue = getTextExtensionMarkdown(item);
-            const stringValues = escapeValues([markdownValue, ...translatedValues]);
-            returnString =
-                returnString +
-                `${TranslatableKeyProptey.item}[${linkId}]._text.extension[${IExtentionType.markdown}].valueMarkdown,${stringValues}\n`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}]._text.extension[${IExtentionType.markdown}].valueMarkdown`;
+            data.push([key, markdownValue, ...translatedValues] as string[]);
         } else {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
                 return additionalLanguages[lang].items[linkId]?.text;
             });
-            const stringValues = escapeValues([item.text, ...translatedValues]);
-            returnString = returnString + `${TranslatableKeyProptey.item}[${linkId}].text,${stringValues}\n`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}].text`;
+            data.push([key, item.text, ...translatedValues] as string[]);
         }
 
         if (getSublabel(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
                 return additionalLanguages[lang].items[linkId]?.sublabel;
             });
-            const stringValues = escapeValues([getSublabel(item), ...translatedValues]);
-            returnString =
-                returnString + `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtentionType.sublabel}].valueMarkdown,${stringValues}\n`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtentionType.sublabel}].valueMarkdown`;
+            data.push([key, getSublabel(item), ...translatedValues] as string[]);          
         }
 
         if (getRepeatsText(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
                 return additionalLanguages[lang].items[linkId]?.repeatsText;
             });
-            const stringValues = escapeValues([getRepeatsText(item), ...translatedValues]);
-            returnString =
-                returnString + `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtentionType.repeatstext}].valueString,${stringValues}\n`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtentionType.repeatstext}].valueString`;
+            data.push([key, getRepeatsText(item), ...translatedValues] as string[]);            
         }
 
         if (getValidationMessage(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
                 return additionalLanguages[lang].items[linkId]?.validationText;
             });
-            const stringValues = escapeValues([getValidationMessage(item), ...translatedValues]);
-            returnString =
-                returnString +
-                `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtentionType.validationtext}].valueString,${stringValues}\n`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtentionType.validationtext}].valueString`;
+            data.push([key, getValidationMessage(item), ...translatedValues] as string[]);            
         }
 
         if (getPlaceHolderText(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
                 return additionalLanguages[lang].items[linkId]?.entryFormatText;
             });
-            const stringValues = escapeValues([getPlaceHolderText(item), ...translatedValues]);
-            returnString =
-                returnString + `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtentionType.entryFormat}].valueString,${stringValues}\n`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtentionType.entryFormat}].valueString`;
+            data.push([key, getPlaceHolderText(item), ...translatedValues] as string[]);            
         }
 
         if (getInitialText(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
                 return additionalLanguages[lang].items[linkId]?.initial;
             });
-            const stringValues = escapeValues([getInitialText(item), ...translatedValues]);
-            returnString = returnString + `${TranslatableKeyProptey.item}[${linkId}].${TranslatableItemProperty.initial}[0].valueString,${stringValues}\n`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}].${TranslatableItemProperty.initial}[0].valueString`;
+            data.push([key, getInitialText(item), ...translatedValues] as string[]);            
         }
 
         if (getPrefix(item)) {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
                 return additionalLanguages[lang].items[linkId]?.prefix;
             });
-            const stringValues = escapeValues([getPrefix(item), ...translatedValues]);
-            returnString = returnString + `${TranslatableKeyProptey.item}[${linkId}].${TranslatableItemProperty.prefix},${stringValues}\n`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}].${TranslatableItemProperty.prefix}`;
+            data.push([key, getPrefix(item), ...translatedValues] as string[]);            
         }
 
         if (item.answerOption) {
@@ -181,18 +180,13 @@ const exportItemTranslations = (
                 return additionalLanguages[lang].items[linkId]?.answerOptions;
             });
             item.answerOption.forEach((x) => {
-                const stringValues = escapeValues([
+                const key = `${TranslatableKeyProptey.item}[${linkId}].answerOption[${x.valueCoding?.code}].display`;
+                data.push([
+                    key,
                     x.valueCoding?.display,
                     ...translatedOptions.map((y) => y && y[x.valueCoding?.code || '']),
-                ]);
-                returnString =
-                    returnString + `${TranslatableKeyProptey.item}[${linkId}].answerOption[${x.valueCoding?.code}].display,${stringValues}\n`;
+                ] as string[]);
             });
         }
     });
-    return returnString;
-};
-
-const escapeValues = (values: Array<string | undefined>): string => {
-    return values.map((value) => `"${value || ''}"`).join(',');
 };
