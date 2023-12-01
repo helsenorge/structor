@@ -100,10 +100,7 @@ export const createMarkdownExtension = (markdownValue: string): Element => {
 };
 
 export const hasExtension = (extensionParent: Element | undefined, extensionType: IExtentionType): boolean => {
-    if (extensionParent && extensionParent.extension) {
-        return extensionParent.extension.some((ext) => ext.url === extensionType);
-    }
-    return false;
+    return extensionParent && extensionParent.extension ?  extensionParent.extension.some((ext) => ext.url === extensionType) : false;
 };
 export const hasOneOrMoreExtensions = (extensions: Extension[], extensionTypes: IExtentionType[]): boolean => {
     return extensions.some(ex => extensionTypes.includes(ex.url as IExtentionType));
@@ -159,13 +156,10 @@ export function getExtentionValueByType<T extends ExclusiveExtensionKeys>(
     extentionType: IExtentionType,
     valueType: T
 ): ExclusiveExtensionValues[T] | undefined {
-    const extentions = getExtentionsFromElement(element) || [];
+    const extentions = getExtentionsFromElement(element) ?? [];
     const extention = getExtentionByType(extentions || [], extentionType);
 
-    if (!extention || !(valueType in extention)) {
-        return undefined;
-    }
-    return (extention as ExclusiveExtensionValues)[valueType];
+    return !extention || !(valueType in extention) ? undefined : (extention as ExclusiveExtensionValues)[valueType];
 }
 
 export const findExtentionByCode = ( code: ICodeSystem, extentions?: Extension[]): Extension | undefined => {
