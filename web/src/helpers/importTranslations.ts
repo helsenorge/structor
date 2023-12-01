@@ -30,78 +30,113 @@ const updateQuestionniareWithTranslation = (translatableItems: any[], csvHeaders
             const text = translatableItems[itemIndex][languageIndex];
 
             if (text !== null) {
-                if (key.startsWith(TranslatableKeyProptey.item)) {
-                    const itemLinkId = key.split('[')[1].split(']')[0];
+                const itemUpdated = updateItemTranslation(key, languageCode, qItems, text, dispatch);
+                if (itemUpdated) continue;
 
-                    if (key.includes(`.${TranslatableItemProperty.prefix}`)) {
-                        dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.prefix, text));
-                        continue;
-                    }
-                    if (key.includes(IExtentionType.validationtext)) {
-                        dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.validationText, text));
-                        continue;
-                    }
-                    if (key.includes(IExtentionType.sublabel)) {
-                        dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.sublabel, text));
-                        continue;
-                    }
-                    if (key.includes(IExtentionType.repeatstext)) {
-                        dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.repeatsText, text));
-                        continue;
-                    }
-                    if (key.includes(TranslatableItemProperty.initial)) {
-                        dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.initial, text));
-                        continue;
-                    }
-                    if (key.includes(IExtentionType.entryFormat)) {
-                        dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.entryFormatText, text));
-                        continue;
-                    }
-                    if (key.includes(`.${TranslatableKeyProptey.answerOption}`)) {
-                        const optionCode = key.split('[')[2].split(']')[0];
+                const metadataUpdated = updateMetadataTranslation(key, languageCode, text, dispatch);
+                if (metadataUpdated) continue;
 
-                        dispatch(updateItemOptionTranslationAction(languageCode, itemLinkId, text, optionCode));
-                        continue;
-                    }
-                    if (isItemControlSidebar(qItems[itemLinkId])) {
-                        dispatch(updateSidebarTranslationAction(languageCode, itemLinkId, text));
-                        continue;
-                    }
-                    dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.text, text));                 
-                }
-
-                if (key.startsWith(TranslatableKeyProptey.metadata)) {
-                    if (key.includes(`.${TranslatableMetadataProperty.publisher}`)) {
-                        dispatch(updateMetadataTranslationAction(languageCode, TranslatableMetadataProperty.publisher, text));
-                        continue;
-                    }
-                    if (key.includes(`.${TranslatableMetadataProperty.description}`)) {
-                        dispatch(updateMetadataTranslationAction(languageCode, TranslatableMetadataProperty.description, text));
-                        continue;
-                    }
-                    if (key.includes(`.${TranslatableMetadataProperty.title}`)) {
-                        dispatch(updateMetadataTranslationAction(languageCode, TranslatableMetadataProperty.title, text));
-                        continue;
-                    }
-                    if (key.includes(`.${TranslatableMetadataProperty.purpose}`)) {
-                        dispatch(updateMetadataTranslationAction(languageCode, TranslatableMetadataProperty.purpose, text));
-                        continue;
-                    }
-                    if (key.includes(`.${TranslatableMetadataProperty.copyright}`)) {
-                        dispatch(updateMetadataTranslationAction(languageCode, TranslatableMetadataProperty.copyright, text));
-                        continue;
-                    }
-                    continue;
-                }
-
-                if (key.startsWith(TranslatableKeyProptey.valueSet)) {
-                    const valueSetId = key.split('[')[1].split(']')[0];
-                    const conceptId = key.split('[')[3].split(']')[0];
-
-                    dispatch(updateContainedValueSetTranslationAction(languageCode, valueSetId, conceptId, text));
-                    continue;
-                }
+                const valuesetUpdated = updateValueSetTranslation(key, languageCode, text, dispatch);
+                if (valuesetUpdated) continue;
             }
         }
     }
 };
+
+const updateItemTranslation = (
+    key: string,
+    languageCode: string,
+    qItems: Items,
+    text: string,
+    dispatch: React.Dispatch<ActionType>,
+): boolean => {
+    if (key.startsWith(TranslatableKeyProptey.item)) {
+        const itemLinkId = key.split('[')[1].split(']')[0];
+
+        if (key.includes(`.${TranslatableItemProperty.prefix}`)) {
+            dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.prefix, text));
+            return true;
+        }
+        if (key.includes(IExtentionType.validationtext)) {
+            dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.validationText, text));
+            return true;
+        }
+        if (key.includes(IExtentionType.sublabel)) {
+            dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.sublabel, text));
+            return true;
+        }
+        if (key.includes(IExtentionType.repeatstext)) {
+            dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.repeatsText, text));
+            return true;
+        }
+        if (key.includes(TranslatableItemProperty.initial)) {
+            dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.initial, text));
+            return true;
+        }
+        if (key.includes(IExtentionType.entryFormat)) {
+            dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.entryFormatText, text));
+            return true;
+        }
+        if (key.includes(`.${TranslatableKeyProptey.answerOption}`)) {
+            const optionCode = key.split('[')[2].split(']')[0];
+
+            dispatch(updateItemOptionTranslationAction(languageCode, itemLinkId, text, optionCode));
+            return true;
+        }
+        if (isItemControlSidebar(qItems[itemLinkId])) {
+            dispatch(updateSidebarTranslationAction(languageCode, itemLinkId, text));
+            return true;
+        }
+        dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.text, text));
+        return false;
+    }
+    return false;
+}
+
+const updateMetadataTranslation = (
+    key: string,
+    languageCode: string,
+    text: string,
+    dispatch: React.Dispatch<ActionType>,
+): boolean => {
+    if (key.startsWith(TranslatableKeyProptey.metadata)) {
+        if (key.includes(`.${TranslatableMetadataProperty.publisher}`)) {
+            dispatch(updateMetadataTranslationAction(languageCode, TranslatableMetadataProperty.publisher, text));
+            return true;
+        }
+        if (key.includes(`.${TranslatableMetadataProperty.description}`)) {
+            dispatch(updateMetadataTranslationAction(languageCode, TranslatableMetadataProperty.description, text));
+            return true;
+        }
+        if (key.includes(`.${TranslatableMetadataProperty.title}`)) {
+            dispatch(updateMetadataTranslationAction(languageCode, TranslatableMetadataProperty.title, text));
+            return true;
+        }
+        if (key.includes(`.${TranslatableMetadataProperty.purpose}`)) {
+            dispatch(updateMetadataTranslationAction(languageCode, TranslatableMetadataProperty.purpose, text));
+            return true;
+        }
+        if (key.includes(`.${TranslatableMetadataProperty.copyright}`)) {
+            dispatch(updateMetadataTranslationAction(languageCode, TranslatableMetadataProperty.copyright, text));
+            return true;
+        }
+        return true;
+    }
+    return false;
+}
+
+const updateValueSetTranslation = (
+    key: string,
+    languageCode: string,
+    text: string,
+    dispatch: React.Dispatch<ActionType>,
+): boolean => {
+    if (key.startsWith(TranslatableKeyProptey.valueSet)) {
+        const valueSetId = key.split('[')[1].split(']')[0];
+        const conceptId = key.split('[')[3].split(']')[0];
+
+        dispatch(updateContainedValueSetTranslationAction(languageCode, valueSetId, conceptId, text));
+        return true;
+    }
+    return false;
+}
