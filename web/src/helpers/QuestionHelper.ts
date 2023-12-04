@@ -192,7 +192,7 @@ export const getTextExtensionMarkdown = (item: QuestionnaireItem | undefined): s
     return item?._text?.extension?.find((x) => x.url === IExtentionType.markdown)?.valueMarkdown;
 };
 
-export const isHiddenItem = (item: QuestionnaireItem): boolean => {;
+export const isHiddenItem = (item: QuestionnaireItem): boolean => {
     return !!item.extension?.some((ext) => ext.url === IExtentionType.hidden && ext.valueBoolean);
 };
 
