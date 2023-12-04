@@ -25,15 +25,14 @@ export const exportTranslations = (
     qAdditionalLanguages: Languages | undefined,
 ): void => {
     const additionalLanguages = qAdditionalLanguages || {};
-    const papaparseConfig = {
-        quoteChar: "'",
-        escapeChar: "'",
-        delimiter: "|",
-        header: true,
-        newline: "\r\n",
-        skipEmptyLines: false,
-    } as UnparseConfig;
     const header = ['key', qMetadata.language, ...additionalLanguagesInUse] as string[];
+    const papaparseConfig = {
+        quoteChar: '"',
+        escapeChar: '"',
+        delimiter: "|",
+        newline: "\r\n",
+    } as UnparseConfig;
+
 
     let data: string[][] = [];
     // add metadata translations: all fields from translatableMetadata.
