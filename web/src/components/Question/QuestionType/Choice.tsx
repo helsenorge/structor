@@ -11,15 +11,17 @@ import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types
 import Btn from '../../Btn/Btn';
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { checkboxExtension, dropdownExtension, radiobuttonExtension } from '../../../helpers/QuestionHelper';
 import { removeItemAttributeAction, updateItemAction } from '../../../store/treeStore/treeActions';
 
 import UriField from '../../FormField/UriField';
 import {
+    checkboxExtension,
+    dropdownExtension,
     isItemControlCheckbox,
     isItemControlDropDown,
     isItemControlRadioButton,
     ItemControlType,
+    radiobuttonExtension,
 } from '../../../helpers/itemControl';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import FormField from '../../FormField/FormField';

@@ -9,12 +9,12 @@ import {
     getPrefix,
     getRepeatsText,
     getSublabel,
+    getTextExtensionMarkdown,
     getValidationMessage,
 } from './QuestionHelper';
 import { ValueSet } from '../types/fhir';
 import { getValueSetValues } from './valueSetHelper';
 import { TranslatableKeyProptey, TranslatableItemProperty } from '../types/LanguageTypes';
-import { getTextExtensionMarkdown } from '../utils/validationUtils';
 import Papa, { UnparseConfig } from "papaparse";
 
 export const exportTranslations = (

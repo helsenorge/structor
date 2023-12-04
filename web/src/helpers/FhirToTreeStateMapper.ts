@@ -25,11 +25,11 @@ import {
     getRepeatsText,
     getValidationMessage,
     getPrefix,
+    getTextExtensionMarkdown,
 } from './QuestionHelper';
 import { initPredefinedValueSet } from './initPredefinedValueSet';
 import { getValueSetValues } from './valueSetHelper';
 import { addMetaSecurityIfDoesNotExist, addMetaSecurityIfCanBePerformedByExist } from './MetadataHelper';
-import { getTextExtensionMarkdown } from '../utils/validationUtils';
 
 function extractMetadata(questionnaireObj: Questionnaire) {
     const getMetadataParts = ({

@@ -5,12 +5,14 @@ import CreateUUID from './CreateUUID';
 
 import {
     createItemControlExtension,
+    dropdownExtension,
     isItemControlHighlight,
     isItemControlInline,
     isItemControlReceiverComponent,
+    isRecipientList,
     ItemControlType,
 } from './itemControl';
-import { ATTACHMENT_DEFAULT_MAX_SIZE, dropdownExtension, isRecipientList, valueSetTqqcCoding } from './QuestionHelper';
+import { ATTACHMENT_DEFAULT_MAX_SIZE, valueSetTqqcCoding } from './QuestionHelper';
 import { createUriUUID } from './uriHelper';
 
 export const createInlineItem = (): QuestionnaireItem => {

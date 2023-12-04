@@ -1,7 +1,6 @@
 import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { ICodeSystem, IExtentionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { CodingSystemType } from './uriHelper';
-import { createItemControlExtension, isItemControlReceiverComponent, ItemControlType } from './itemControl';
 import { ScoringFormulaCodes, ScoringFormulaNames } from '../types/scoringFormulas';
 
 export const ATTACHMENT_DEFAULT_MAX_SIZE = 5.0;
@@ -160,56 +159,55 @@ export const getInitialText = (item?: QuestionnaireItem): string => {
         item?.initial &&
         item.initial[0]
     ) {
-        return item.initial[0].valueString ?? '';
+        return item.initial[0].valueString || '';
     }
     return '';
 };
 
 export const getPrefix = (item?: QuestionnaireItem): string => {
-    return item?.prefix ?? '';
+    return item?.prefix || '';
 };
 
 export const getSublabel = (item?: QuestionnaireItem): string => {
-    return item?.extension?.find((extension) => extension.url === IExtentionType.sublabel)?.valueMarkdown ?? '';
+    return item?.extension?.find((extension) => extension.url === IExtentionType.sublabel)?.valueMarkdown || '';
 };
 
 export const getRepeatsText = (item?: QuestionnaireItem): string => {
-    return item?.extension?.find((extension) => extension.url === IExtentionType.repeatstext)?.valueString ?? '';
+    return item?.extension?.find((extension) => extension.url === IExtentionType.repeatstext)?.valueString || '';
 };
 
 export const getValidationMessage = (item?: QuestionnaireItem): string => {
-    return item?.extension?.find((extension) => extension.url === IExtentionType.validationtext)?.valueString ?? '';
+    return item?.extension?.find((extension) => extension.url === IExtentionType.validationtext)?.valueString || '';
 };
 
 export const getPlaceHolderText = (item?: QuestionnaireItem): string => {
-    return item?.extension?.find((extension) => extension.url === IExtentionType.entryFormat)?.valueString ?? '';
+    return item?.extension?.find((extension) => extension.url === IExtentionType.entryFormat)?.valueString || '';
 };
 
 export const getMarkdownText = (extensions?: Extension[]): string => {
-    return extensions?.find((extension) => extension.url === IExtentionType.markdown)?.valueMarkdown ?? '';
+    return extensions?.find((extension) => extension.url === IExtentionType.markdown)?.valueMarkdown || '';
+};
+
+export const getTextExtensionMarkdown = (item: QuestionnaireItem | undefined): string | undefined => {
+    return item?._text?.extension?.find((x) => x.url === IExtentionType.markdown)?.valueMarkdown;
+};
+
+export const isHiddenItem = (item: QuestionnaireItem): boolean => {;
+    return !!item.extension?.some((ext) => ext.url === IExtentionType.hidden && ext.valueBoolean);
 };
 
 export const getGuidanceAction = (item?: QuestionnaireItem): string => {
-    return item?.extension?.find((extension) => extension.url === IExtentionType.guidanceAction)?.valueString ?? '';
+    return item?.extension?.find((extension) => extension.url === IExtentionType.guidanceAction)?.valueString || '';
 };
 
 export const getGuidanceParameterName = (item?: QuestionnaireItem): string => {
-    return item?.extension?.find((extension) => extension.url === IExtentionType.guidanceParam)?.valueString ?? '';
+    return item?.extension?.find((extension) => extension.url === IExtentionType.guidanceParam)?.valueString || '';
 };
 
 export const isValidGuidanceParameterName = (name: string): boolean => {
     const regExp = /^[A-Za-z0-9_]{1,254}$/;
     return regExp.test(name);
 };
-
-export const isRecipientList = (item: QuestionnaireItem): boolean => {
-    const isReceiverComponent = isItemControlReceiverComponent(item);
-    return !isReceiverComponent && item.code?.find((x) => x.system === CodingSystemType.valueSetTqqc) !== undefined;
-};
-
-export const checkboxExtension = createItemControlExtension(ItemControlType.checkbox);
-export const dropdownExtension = createItemControlExtension(ItemControlType.dropdown);
-export const radiobuttonExtension = createItemControlExtension(ItemControlType.radioButton);
 
 export const elementSaveCapability = [
     { code: '0', display: 'Not set' },
@@ -228,12 +226,6 @@ export const valueSetTqqcCoding: Coding = {
     system: CodingSystemType.valueSetTqqc,
     code: '1',
     display: 'Technical endpoint for receiving QuestionnaireResponse',
-};
-
-export const scoreCoding: Coding = {
-    system: ICodeSystem.score,
-    code: ItemControlType.score,
-    display: ItemControlType.score,
 };
 
 export const QSCoding: Coding = {

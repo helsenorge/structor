@@ -21,7 +21,8 @@ import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 import TranslateSettings from './TranslateSettings';
-import { getValueSetToTranslate, isHiddenItem, ValidationErrors } from '../../../utils/validationUtils';
+import { getValueSetToTranslate, ValidationErrors } from '../../../utils/validationUtils';
+import { isHiddenItem } from '../../../helpers/QuestionHelper';
 
 type TranslationModalProps = {
     close: () => void;

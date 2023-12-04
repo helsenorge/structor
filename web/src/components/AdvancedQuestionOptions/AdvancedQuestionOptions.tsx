@@ -32,6 +32,7 @@ import {
     setItemControlExtension,
     isItemControlDataReceiver,
     existItemWithCode,
+    scoreCoding,
 } from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
@@ -54,7 +55,7 @@ import {
     canTypeCopyData,
 } from '../../helpers/questionTypeFeatures';
 import RadioBtn from '../RadioBtn/RadioBtn';
-import { QSCoding, elementSaveCapability, scoreCoding, scoreSumOptions } from '../../helpers/QuestionHelper';
+import { QSCoding, elementSaveCapability, scoreSumOptions } from '../../helpers/QuestionHelper';
 import { addItemCode, removeItemCode } from '../../helpers/codeHelper';
 import { ScoringFormulaCodes } from '../../types/scoringFormulas';
 import { getScoringFormulaName, getSelectedScoringCode } from '../../utils/scoringUtils';

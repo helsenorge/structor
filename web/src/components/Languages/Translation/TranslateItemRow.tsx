@@ -12,12 +12,12 @@ import {
     getPrefix,
     getRepeatsText,
     getSublabel,
+    getTextExtensionMarkdown,
     getValidationMessage,
 } from '../../../helpers/QuestionHelper';
 import { getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
-import { getTextExtensionMarkdown } from '../../../utils/validationUtils';
 
 type TranslationRowProps = {
     targetLanguage: string;

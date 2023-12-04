@@ -13,9 +13,14 @@ import {
 import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 
 import { updateItemAction } from '../../store/treeStore/treeActions';
-import { isRecipientList } from '../../helpers/QuestionHelper';
+import { getTextExtensionMarkdown } from '../../helpers/QuestionHelper';
 import { createMarkdownExtension, removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
-import { isItemControlInline, isItemControlReceiverComponent, isItemControlHighlight } from '../../helpers/itemControl';
+import {
+    isItemControlInline,
+    isItemControlReceiverComponent,
+    isItemControlHighlight,
+    isRecipientList,
+} from '../../helpers/itemControl';
 
 import Accordion from '../Accordion/Accordion';
 import { ActionType } from '../../store/treeStore/treeStore';
@@ -40,7 +45,7 @@ import {
 } from '../../helpers/questionTypeFeatures';
 import { erRenderingOption } from '../../helpers/codeHelper';
 import removeMd from 'remove-markdown';
-import { getTextExtensionMarkdown, ValidationErrors } from '../../utils/validationUtils';
+import { ValidationErrors } from '../../utils/validationUtils';
 
 interface QuestionProps {
     item: QuestionnaireItem;

@@ -1,9 +1,10 @@
 import { Extension, QuestionnaireItem, Coding } from '../types/fhir';
-import { IExtentionType, IQuestionnaireItemType, IValueSetSystem, IItemProperty } from '../types/IQuestionnareItemType';
+import { IExtentionType, IQuestionnaireItemType, IValueSetSystem, IItemProperty, ICodeSystem } from '../types/IQuestionnareItemType';
 import { getEnumKeyByString } from './enumHelper';
 import { ActionType } from '../store/treeStore/treeStore';
 import { updateItemAction } from '../store/treeStore/treeActions';
-import { getTextExtensionMarkdown } from '../utils/validationUtils';
+import { getTextExtensionMarkdown } from './QuestionHelper';
+import { CodingSystemType } from './uriHelper';
 
 export enum ItemControlType {
     inline = 'inline',
@@ -54,6 +55,10 @@ export const createItemControlExtensionWithTypes = (types: string[]): Extension 
     });
     return extension;
 };
+
+export const checkboxExtension = createItemControlExtension(ItemControlType.checkbox);
+export const dropdownExtension = createItemControlExtension(ItemControlType.dropdown);
+export const radiobuttonExtension = createItemControlExtension(ItemControlType.radioButton);
 
 const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefined => {
     const itemControlExtension = item?.extension?.find((x) => x.url === IExtentionType.itemControl);
@@ -175,4 +180,15 @@ export const setItemControlExtension = (
         extensionsToSet.push(extension);
     }
     dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensionsToSet));
+};
+
+export const scoreCoding: Coding = {
+    system: ICodeSystem.score,
+    code: ItemControlType.score,
+    display: ItemControlType.score,
+};
+
+export const isRecipientList = (item: QuestionnaireItem): boolean => {
+    const isReceiverComponent = isItemControlReceiverComponent(item);
+    return !isReceiverComponent && item.code?.find((x) => x.system === CodingSystemType.valueSetTqqc) !== undefined;
 };
