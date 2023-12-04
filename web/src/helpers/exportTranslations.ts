@@ -45,7 +45,7 @@ export const exportTranslations = (
     exportItemTranslations(qItems, additionalLanguagesInUse, additionalLanguages, data);
     
     const csv = Papa.unparse({fields: header, data}, papaparseConfig);
-    var csvData = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+    const csvData = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
     const a = document.createElement('a');
     a.download = `${qMetadata.name}.csv`;
     a.href = window.URL.createObjectURL(csvData);
