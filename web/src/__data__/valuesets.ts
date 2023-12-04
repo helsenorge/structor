@@ -1,5 +1,3 @@
-import { QuestionnaireItem } from "../types/fhir";
-
 export const valuesetJaNei = {
     url: "http://ehelse.no/fhir/ValueSet/Predefined",
     resourceType: "ValueSet",
@@ -91,36 +89,3 @@ export const valuesetJaNeiUsikker = {
         ]
     }
 };
-
-export const item_JaNei = {
-    linkId: "item_JaNei",
-    type: "choice",
-    text: "Choice",
-    extension: [],
-    code: [],
-    item: [],
-    required: false,
-    answerValueSet: "#1101"
-} as QuestionnaireItem;
-
-export const item_JaNeiVetIkke = {
-    linkId: "item_JaNeiVetIkke",
-    type: "choice",
-    text: "Choice",
-    extension: [],
-    code: [],
-    item: [],
-    required: false,
-    answerValueSet: "#1102"
-} as QuestionnaireItem;
-
-export const item_JaNeiUsikker = {
-    linkId: "item_JaNeiUsikker",
-    type: "choice",
-    text: "Choice",
-    extension: [],
-    code: [],
-    item: [],
-    required: false,
-    answerValueSet: "#9523"
-} as QuestionnaireItem;
