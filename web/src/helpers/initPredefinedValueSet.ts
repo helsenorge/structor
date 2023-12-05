@@ -1,6 +1,5 @@
 import { ValueSet } from '../types/fhir';
-
-export const predefinedValueSetUri = 'http://ehelse.no/fhir/ValueSet/Predefined';
+import { predefinedValueSetUri } from '../types/IQuestionnareItemType';
 
 export const initPredefinedValueSet = [
     {

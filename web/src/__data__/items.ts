@@ -1,5 +1,6 @@
 import { RenderingOptionsEnum } from "../helpers/codeHelper";
 import { QuestionnaireItem } from "../types/fhir";
+import { ICodeSystem, IExtentionType } from "../types/IQuestionnareItemType";
 
 export const hiddenItem = {
     linkId: "hidden_item",
@@ -10,7 +11,7 @@ export const hiddenItem = {
     required: false,
     extension: [
         {
-            url: "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden",
+            url: IExtentionType.hidden,
             valueBoolean: true
         }
     ]
@@ -18,14 +19,14 @@ export const hiddenItem = {
 
 export const itemWithRenderOption = (renderOptions: RenderingOptionsEnum): QuestionnaireItem => {
     return {
-        linkId: "1ed6433c-c15f-4cc1-86b9-1ee29dd1d2df",
+        linkId: "renderOption_item",
         type: "string",
         text: "Answer here is shown",
         code: [
             {
                 code: renderOptions,
                 display: "KunPdf",
-                system: "http://helsenorge.no/fhir/CodeSystem/RenderOptions",
+                system: ICodeSystem.renderOptionsCodeSystem,
                 id: "06d7fc02-c17d-486d-d5f2-cb2b1dff1ee4"
             }
         ],

@@ -1,5 +1,7 @@
+import { predefinedValueSetUri } from "../types/IQuestionnareItemType";
+
 export const valuesetJaNei = {
-    url: "http://ehelse.no/fhir/ValueSet/Predefined",
+    url: predefinedValueSetUri,
     resourceType: "ValueSet",
     id: "1101",
     version: "1.0",
@@ -27,7 +29,7 @@ export const valuesetJaNei = {
 };
 
 export const valuesetJaNeiVetIkke = {
-    url: "http://ehelse.no/fhir/ValueSet/Predefined",
+    url:  predefinedValueSetUri,
     resourceType: "ValueSet",
     id: "1102",
     version: "1.0",
@@ -59,7 +61,7 @@ export const valuesetJaNeiVetIkke = {
 };
 
 export const valuesetJaNeiUsikker = {
-    url: "http://ehelse.no/fhir/ValueSet/Predefined",
+    url: predefinedValueSetUri,
     resourceType: "ValueSet",
     id: "9523",
     version: "1.0",

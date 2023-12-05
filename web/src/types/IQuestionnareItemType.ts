@@ -69,6 +69,8 @@ export type IEnableWhen = {
     question?: string;
 };
 
+export const predefinedValueSetUri = 'http://ehelse.no/fhir/ValueSet/Predefined';
+
 export enum IValueSetSystem {
     saveCapabilityValueSet = 'http://helsenorge.no/fhir/ValueSet/sdf-save-capabilities',
     authenticationRequirementValueSet = 'http://ehelse.no/fhir/ValueSet/AuthenticationRequirement',
