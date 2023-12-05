@@ -9,7 +9,6 @@ import {
     NotDraggingStyle,
 } from 'react-beautiful-dnd';
 import createUUID from '../../helpers/CreateUUID';
-import { predefinedValueSetUri } from '../../helpers/initPredefinedValueSet';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateValueSetAction } from '../../store/treeStore/treeActions';
 import { ValueSet } from '../../types/fhir';
@@ -22,6 +21,7 @@ import UriField from '../FormField/UriField';
 import { createUriUUID } from '../../helpers/uriHelper';
 import InputField from '../InputField/inputField';
 import { getValueSetValues } from '../../helpers/valueSetHelper';
+import { predefinedValueSetUri } from '../../types/IQuestionnareItemType';
 
 type Props = {
     close: () => void;
