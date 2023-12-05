@@ -58,14 +58,18 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
 
     return (
         <DragDropContext onDragEnd={handleChange}>
-            <Droppable droppableId={`droppable-${item.linkId}-answer-options`} type="stuff">
+            <Droppable 
+                droppableId={`droppable-${item.linkId}-answer-options`} 
+                key={`droppable-${item.linkId}-answer-options`} 
+                type="stuff"
+            >
                 {(provided, snapshot) => (
                     <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
                         {item.answerOption?.map((answerOption, index) => {
                             return (
                                 <Draggable
                                     key={answerOption.valueCoding?.id}
-                                    draggableId={answerOption.valueCoding?.id ?? '1'}
+                                    draggableId={answerOption.valueCoding?.id || '1'}
                                     index={index}
                                 >
                                     {(providedDrag, snapshotDrag) => (
@@ -81,16 +85,16 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                 item={item}
                                                 changeDisplay={(event) => {
                                                     const newArray = updateAnswerOption(
-                                                        item.answerOption ?? [],
-                                                        answerOption.valueCoding?.id ?? '',
+                                                        item.answerOption || [],
+                                                        answerOption.valueCoding?.id || '',
                                                         event.target.value,
                                                     );
                                                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                 }}
                                                 changeCode={(event) => {
                                                     const newArray = updateAnswerOptionCode(
-                                                        item.answerOption ?? [],
-                                                        answerOption.valueCoding?.id ?? '',
+                                                        item.answerOption || [],
+                                                        answerOption.valueCoding?.id || '',
                                                         event.target.value,
                                                     );
                                                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
@@ -98,15 +102,15 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                 changeOrdinalValueExtension={(event) => {
                                                     if (event.target.value === '') {
                                                         const newArray = removeExtensionFromSingleAnswerOption(
-                                                            item.answerOption ?? [],
-                                                            answerOption.valueCoding?.id ?? '',
+                                                            item.answerOption || [],
+                                                            answerOption.valueCoding?.id || '',
                                                             IExtentionType.ordinalValue,
                                                         );
                                                         dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                     } else {
                                                         const newArray = updateAnswerOptionExtension(
-                                                            item.answerOption ?? [],
-                                                            answerOption.valueCoding?.id ?? '',
+                                                            item.answerOption || [],
+                                                            answerOption.valueCoding?.id || '',
                                                             event.target.value,
                                                         );
                                                         dispatchUpdateItem(IItemProperty.answerOption, newArray);
@@ -114,13 +118,13 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                 }}
                                                 deleteItem={() => {
                                                     const newArray = removeOptionFromAnswerOptionArray(
-                                                        item.answerOption ?? [],
-                                                        answerOption.valueCoding?.id ?? '',
+                                                        item.answerOption || [],
+                                                        answerOption.valueCoding?.id || '',
                                                     );
                                                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                 }}
                                                 answerOption={answerOption}
-                                                handleDrag={providedDrag.dragHandleProps ?? undefined}
+                                                handleDrag={providedDrag.dragHandleProps || undefined}
                                                 showDelete={
                                                     !!item.answerOption?.length && item.answerOption?.length > 2
                                                 }
