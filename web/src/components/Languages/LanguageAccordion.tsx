@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { languageToIsoString, translateQuestionnaire } from '../../helpers/FhirToTreeStateMapper';
-import { generateMainQuestionnaire, getUsedValueSetToTranslate } from '../../helpers/generateQuestionnaire';
-import { supportedLanguages, getLanguageFromCode, getLanguagesInUse, getAdditionalLanguages } from '../../helpers/LanguageHelper';
+import { generateMainQuestionnaire, getUsedValueSet } from '../../helpers/generateQuestionnaire';
+import { supportedLanguages, getLanguageFromCode, getLanguagesInUse } from '../../helpers/LanguageHelper';
 import {
     addQuestionnaireLanguageAction,
     removeQuestionnaireLanguageAction,
@@ -16,7 +16,6 @@ import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
 import Select from '../Select/Select';
 import { exportTranslations } from '../../helpers/exportTranslations';
-import { importCSV } from '../../helpers/importTranslations';
 
 interface LanguageAccordionProps {
     setTranslateLang: (language: string) => void;
@@ -122,7 +121,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     const onLoadUploadedTranslationFile = (event: ProgressEvent<FileReader>) => {
         if (event.target?.result) {
             try {
-                importCSV(event.target.result as string, qItems, dispatch);
+                console.log(event.target.result);
             } catch {
                 setFileUploadError('Could not read uploaded file');
             }
@@ -147,7 +146,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     };
 
     const languageInUse = getLanguagesInUse(state).map((x) => x.code);
-    const additionalLanguagesInUse = getAdditionalLanguages(state);
+    const additionalLanguagesInUse = languageInUse.filter((x) => x.toLowerCase() !== qMetadata.language?.toLowerCase());
 
     const getUnusedLanguage = supportedLanguages
         .filter((language) => language.code !== qMetadata.language)
@@ -219,7 +218,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                     style={{ display: 'none' }}
                 />
-                <div className="horizontal">
+                <div className="horizontal equal">
                     <div>
                         <Btn
                             title={t('Upload questionnaire in additional language')}
@@ -230,15 +229,16 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
                             }}
                         />
                     </div>
-                </div>
-                <div className="horizontal">
                     <div>
                         <Btn
                             title={t('Export translations')}
                             type="button"
                             variant="secondary"
                             onClick={() => {
-                                const valueSetsToTranslate = getUsedValueSetToTranslate(state);
+                                const usedValueSet = getUsedValueSet(state);
+                                const valueSetsToTranslate = qContained?.filter(
+                                    (x) => x.id && usedValueSet?.includes(x.id) && x,
+                                );
                                 exportTranslations(
                                     qMetadata,
                                     qItems,
