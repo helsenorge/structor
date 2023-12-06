@@ -6,12 +6,14 @@ import {
     IExtentionType,
     IQuestionnaireItemType
 } from '../../types/IQuestionnareItemType';
-import Initial from './Initial/Initial';
-import { isItemControlDataReceiver } from '../../helpers/itemControl';
+import InitialOption from './OptionComponents/initial-option';
+import {
+    isItemControlDataReceiver
+} from '../../helpers/itemControl';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
-import CalculatedExpression from './CalculatedExpression/CalculatedExpression';
-import CopyFrom from './CopyFrom/CopyFrom';
-import View from './View/view';
+import CalculatedExpressionOption from './OptionComponents/calculatedExpression-option';
+import CopyFromOption from './OptionComponents/copyFrom-option';
+import ViewOption from './OptionComponents/view-option';
 import { removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
 import {
     canTypeBeBeriket,
@@ -24,20 +26,20 @@ import {
     canTypeHaveSummary,
     canTypeCopyData,
 } from '../../helpers/questionTypeFeatures';
-import { ScoringOption } from './AdvancedQuestionOption/scoring-option';
-import { SummationOption } from './AdvancedQuestionOption/summation-option';
-import { SaveCapabilityOption } from './AdvancedQuestionOption/saveCapability-option';
-import { HelpOption } from './AdvancedQuestionOption/help-option';
-import { SummaryOption } from './AdvancedQuestionOption/summary-option';
-import { AfterCompleteFormOption } from './AdvancedQuestionOption/afterCompleteForm-option';
-import { StepViewOption } from './AdvancedQuestionOption/stepView-option';
-import { RepetitionOption } from './AdvancedQuestionOption/repetition-option';
-import { DefinitionOption } from './AdvancedQuestionOption/definition-option';
-import { PrefixOption } from './AdvancedQuestionOption/prefix-option';
-import { LinkIdOption } from './AdvancedQuestionOption/linkId-option';
-import { LinksOption } from './AdvancedQuestionOption/links-option';
-import { PlaceholderOption } from './AdvancedQuestionOption/placeholder-option';
-import { ReadOnlyOption } from './AdvancedQuestionOption/readOnly-option';
+import { ScoringOption } from './OptionComponents/scoring-option';
+import { SummationOption } from './OptionComponents/summation-option';
+import { SaveCapabilityOption } from './OptionComponents/saveCapability-option';
+import { HelpOption } from './OptionComponents/help-option';
+import { SummaryOption } from './OptionComponents/summary-option';
+import { AfterCompleteFormOption } from './OptionComponents/afterCompleteForm-option';
+import { StepViewOption } from './OptionComponents/stepView-option';
+import { RepetitionOption } from './OptionComponents/repetition-option';
+import { DefinitionOption } from './OptionComponents/definition-option';
+import { PrefixOption } from './OptionComponents/prefix-option';
+import { LinkIdOption } from './OptionComponents/linkId-option';
+import { LinksOption } from './OptionComponents/links-option';
+import { PlaceholderOption } from './OptionComponents/placeholder-option';
+import { ReadOnlyOption } from './OptionComponents/readOnly-option';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -69,7 +71,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                 <ReadOnlyOption item={props.item} dispatch={dispatch} isDataReceiver={isDataReceiver}/>
             )}
             {canTypeCopyData(props.item) && (
-                <CopyFrom
+                <CopyFromOption
                     item={props.item}
                     conditionalArray={props.conditionalArray}
                     isDataReceiver={isDataReceiver}
@@ -79,7 +81,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                 />
             )}
             {canTypeHaveCalculatedExpressionExtension(props.item) && (
-                <CalculatedExpression
+                <CalculatedExpressionOption
                     item={props.item}
                     disabled={isDataReceiver}
                     updateExtension={handleExtension}
@@ -91,7 +93,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                 <PlaceholderOption item={props.item} dispatch={dispatch}/>
             )}
             {canTypeHaveInitialValue(props.item) && (
-                <Initial item={props.item} />
+                <InitialOption item={props.item} />
             )}
             <LinksOption item={props.item}/>
             <LinkIdOption item={props.item} dispatch={dispatch} qItems={qItems} parentArray={props.parentArray}></LinkIdOption>
@@ -110,7 +112,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                 <SummaryOption item={props.item} dispatch={dispatch}></SummaryOption>
             )}
             <HelpOption item={props.item} dispatch={dispatch} parentArray={props.parentArray} qItems={qItems} qOrder={qOrder} />
-            <View item={props.item} />
+            <ViewOption item={props.item} />
             <SaveCapabilityOption item={props.item} dispatch={dispatch} />
             {(props.item.type === IQuestionnaireItemType.integer ||
                 props.item.type === IQuestionnaireItemType.decimal ||
