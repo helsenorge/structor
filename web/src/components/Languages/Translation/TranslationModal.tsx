@@ -5,7 +5,7 @@ import { OrderItem, TreeContext } from '../../../store/treeStore/treeStore';
 import { updateItemTranslationAction } from '../../../store/treeStore/treeActions';
 import './TranslationModal.css';
 import TranslateItemRow from './TranslateItemRow';
-import { getItemPropertyTranslation, getLanguageFromCode } from '../../../helpers/LanguageHelper';
+import { getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
 import { QuestionnaireItem } from '../../../types/fhir';
 import TranslateMetaData from './TranslateMetaData';
 import TranslateContainedValueSets from './TranslateContainedValueSets';
@@ -23,6 +23,8 @@ import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 import TranslateSettings from './TranslateSettings';
 import { getValueSetToTranslate, ValidationErrors } from '../../../utils/validationUtils';
 import { isHiddenItem } from '../../../helpers/QuestionHelper';
+import ModalHeader from './modalHeader';
+import WarningMessages from './warningMessages';
 
 type TranslationModalProps = {
     close: () => void;
@@ -52,32 +54,6 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     });
     
     const valueSetsToTranslate = getValueSetToTranslate(state);
-
-    const getHeader = (): JSX.Element => (
-        <div className="sticky-header">
-            {qMetadata.language && (
-                <div className="horizontal equal">
-                    <div>
-                        <label>{getLanguageFromCode(qMetadata.language)?.display}</label>
-                    </div>
-                    <div>
-                        <label>{getLanguageFromCode(props.targetLanguage)?.display}</label>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-
-    const renderWarningMessages = (): React.JSX.Element => {
-        if (props.markdownWarning) {
-            return (
-                <h3 className="msg-warning">
-                    {props.markdownWarning.errorReadableText}
-                </h3>
-            );
-        }
-        return (<></>);
-    };
 
     const renderInlineText = (linkId: string): JSX.Element | null => {
         if (!qAdditionalLanguages) {
@@ -241,8 +217,8 @@ const TranslationModal = (props: TranslationModalProps): JSX.Element => {
                 id="translation-modal"
                 bottomCloseText={t('Close')}
             >
-                {getHeader()}
-                {renderWarningMessages()}
+                <ModalHeader qMetadata={qMetadata} targetLanguage={props.targetLanguage} />
+                <WarningMessages markdownWarning={props.markdownWarning} />
                 <div style={{ position: 'relative' }}>
                     <>
                         {qAdditionalLanguages && (
