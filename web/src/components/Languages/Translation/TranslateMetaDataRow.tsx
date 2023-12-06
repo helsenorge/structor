@@ -46,8 +46,6 @@ const TranslateMetaDataRow = ({
         if (propertyName === 'title') {
             if (!translatedValue?.trim()) {
                 return 'validation-error';
-            } else {
-                return 'validation-warning';
             }
         }
         return '';
