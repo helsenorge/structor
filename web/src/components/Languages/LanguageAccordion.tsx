@@ -27,7 +27,6 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const { qItems, qMetadata, qContained, qAdditionalLanguages } = state;
     const uploadRef = React.useRef<HTMLInputElement>(null);
-    const uploadTranslation = React.useRef<HTMLInputElement>(null);
 
     const [selectedLang, setSelectedLang] = useState('');
     const [fileUploadError, setFileUploadError] = useState<string>('');
