@@ -7,6 +7,10 @@
   "maintainers": [
     "VAK"
   ],
+  "engines": {
+    "node": "^18.0.0",
+    "npm": "^9.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -27,7 +31,6 @@
     "@helsenorge/toolkit": "^21.2.0",
     "@nosferatu500/react-sortable-tree": "^3.0.3",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
-    "@types/papaparse": "^5.3.11",
     "crypto-js": "^4.1.1",
     "date-fns": "^2.30.0",
     "i18next": "^19.6.3",
@@ -35,7 +38,6 @@
     "immer": "^8.0.1",
     "jose": "^3.11.3",
     "openid-client": "^4.7.2",
-    "papaparse": "^5.4.1",
     "qs": "^6.11.2",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.1",
