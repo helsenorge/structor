@@ -4,13 +4,13 @@
 
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import Routes from "./router/index";
+import GetRoutes from "./router/index";
 
 function App() {
   return (
     <>
       <Router>
-        <Routes></Routes>
+        <GetRoutes></GetRoutes>
       </Router>
     </>
   );

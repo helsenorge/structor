@@ -30,7 +30,8 @@ export const getSidebarElements = (questionnaire: Questionnaire): { [id: string]
         'SOT-3': [],
     };
 
-    sidebarData.forEach((x) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    sidebarData.forEach((x: any) => {
         if (x.item.code && x.item.code.length > 0 && x.item.code[0].code) {
             if (seksjonerFraSkjema[x.item.code[0].code]) {
                 seksjonerFraSkjema[x.item.code[0].code].push(x.markdownText);
