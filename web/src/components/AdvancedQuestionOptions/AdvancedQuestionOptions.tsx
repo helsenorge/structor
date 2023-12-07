@@ -6,14 +6,14 @@ import {
     IExtentionType,
     IQuestionnaireItemType
 } from '../../types/IQuestionnareItemType';
-import InitialOption from './OptionComponents/initial-option';
+import InitialOption from './optionComponents/initial-option';
 import {
     isItemControlDataReceiver
 } from '../../helpers/itemControl';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
-import CalculatedExpressionOption from './OptionComponents/calculatedExpression-option';
-import CopyFromOption from './OptionComponents/copyFrom-option';
-import ViewOption from './OptionComponents/view-option';
+import CalculatedExpressionOption from './optionComponents/calculatedExpression-option';
+import CopyFromOption from './optionComponents/copyFrom-option';
+import ViewOption from './optionComponents/view-option';
 import { removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
 import {
     canTypeBeBeriket,
@@ -26,20 +26,20 @@ import {
     canTypeHaveSummary,
     canTypeCopyData,
 } from '../../helpers/questionTypeFeatures';
-import { ScoringOption } from './OptionComponents/scoring-option';
-import { SummationOption } from './OptionComponents/summation-option';
-import { SaveCapabilityOption } from './OptionComponents/saveCapability-option';
-import { HelpOption } from './OptionComponents/help-option';
-import { SummaryOption } from './OptionComponents/summary-option';
-import { AfterCompleteFormOption } from './OptionComponents/afterCompleteForm-option';
-import { StepViewOption } from './OptionComponents/stepView-option';
-import { RepetitionOption } from './OptionComponents/repetition-option';
-import { DefinitionOption } from './OptionComponents/definition-option';
-import { PrefixOption } from './OptionComponents/prefix-option';
-import { LinkIdOption } from './OptionComponents/linkId-option';
-import { LinksOption } from './OptionComponents/links-option';
-import { PlaceholderOption } from './OptionComponents/placeholder-option';
-import { ReadOnlyOption } from './OptionComponents/readOnly-option';
+import { ScoringOption } from './optionComponents/scoring-option';
+import { SummationOption } from './optionComponents/summation-option';
+import { SaveCapabilityOption } from './optionComponents/saveCapability-option';
+import { HelpOption } from './optionComponents/help-option';
+import { SummaryOption } from './optionComponents/summary-option';
+import { AfterCompleteFormOption } from './optionComponents/afterCompleteForm-option';
+import { StepViewOption } from './optionComponents/stepView-option';
+import { RepetitionOption } from './optionComponents/repetition-option';
+import { DefinitionOption } from './optionComponents/definition-option';
+import { PrefixOption } from './optionComponents/prefix-option';
+import { LinkIdOption } from './optionComponents/linkId-option';
+import { LinksOption } from './optionComponents/links-option';
+import { PlaceholderOption } from './optionComponents/placeholder-option';
+import { ReadOnlyOption } from './optionComponents/readOnly-option';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
