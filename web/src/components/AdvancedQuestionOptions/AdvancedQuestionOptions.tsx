@@ -40,6 +40,7 @@ import { LinkIdOption } from './optionComponents/linkId-option';
 import { LinksOption } from './optionComponents/links-option';
 import { PlaceholderOption } from './optionComponents/placeholder-option';
 import { ReadOnlyOption } from './optionComponents/readOnly-option';
+import { TableOption } from './optionComponents/table-option';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -111,6 +112,8 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
             {canTypeHaveSummary(props.item) && (
                 <SummaryOption item={props.item} dispatch={dispatch}></SummaryOption>
             )}
+            {props.item.type === IQuestionnaireItemType.group && <TableOption item={props.item} dispatch={dispatch} />
+            }
             <HelpOption item={props.item} dispatch={dispatch} parentArray={props.parentArray} qItems={qItems} qOrder={qOrder} />
             <ViewOption item={props.item} />
             <SaveCapabilityOption item={props.item} dispatch={dispatch} />
