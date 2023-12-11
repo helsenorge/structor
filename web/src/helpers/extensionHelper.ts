@@ -6,8 +6,14 @@ import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQu
 import { IExtentionType, IValueSetSystem, IItemProperty, ICodeSystem } from '../types/IQuestionnareItemType';
 import createUUID from './CreateUUID';
 
-export const findExtensionInExtensionArray = (extensionArray: Extension[], url: string): Extension | undefined => {
-    return extensionArray.find((x) => x.url === url);
+export const setQuestionnaireExtension = (
+    qMetadata: IQuestionnaireMetadata,
+    extensionValue: Extension,
+    dispatch: (value: ActionType) => void,
+): void => {
+    const extensionsToSet = (qMetadata.extension || []).filter((x: Extension) => x.url !== extensionValue.url);
+    extensionsToSet.push(extensionValue);
+    dispatch(updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.extension, extensionsToSet));
 };
 export const findExtensionByUrl = (extentions: Extension[] | undefined, url: string): Extension | undefined => {
     return extentions?.find(ext => ext.url === url);
@@ -29,20 +35,14 @@ export const getExtensionValue = <T extends keyof Extension>(
     return extension ? extension[valueType] : undefined;
 };
 
-export const createExtensionWithSystemAndCoding = (item: QuestionnaireItem, extensionUrl: IExtentionType, system: IValueSetSystem, code: string, dispatch: React.Dispatch<ActionType>) => {
-    const newExtension: Extension = {
-      url: extensionUrl,
-      valueCodeableConcept: {
-        coding: [
-          {
-            system: system,
-            code: code,
-          },
-        ],
-      },
-    };
-    setItemExtension(item, newExtension, dispatch);
-}
+export const removeQuestionnaireExtension = (
+    qMetadata: IQuestionnaireMetadata,
+    extensionUrl: string,
+    dispatch: (value: ActionType) => void,
+): void => {
+    const extensionsToSet = (qMetadata.extension || []).filter((x: Extension) => x.url !== extensionUrl);
+    dispatch(updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.extension, extensionsToSet));
+};
 
 export const setItemExtension = (
     item: QuestionnaireItem,
@@ -65,6 +65,21 @@ export const removeItemExtension = (
     dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensionsToSet));
 };
 
+export const createExtensionWithSystemAndCoding = (item: QuestionnaireItem, extensionUrl: IExtentionType, system: IValueSetSystem, code: string, dispatch: React.Dispatch<ActionType>) => {
+    const newExtension: Extension = {
+      url: extensionUrl,
+      valueCodeableConcept: {
+        coding: [
+          {
+            system: system,
+            code: code,
+          },
+        ],
+      },
+    };
+    setItemExtension(item, newExtension, dispatch);
+}
+
 export const addCodeToValueCodeableConcept = (item: QuestionnaireItem, extension: Extension, system: string, code: string, dispatch: React.Dispatch<ActionType>): void => {
     extension.valueCodeableConcept?.coding?.push({
       system: system,
@@ -73,23 +88,15 @@ export const addCodeToValueCodeableConcept = (item: QuestionnaireItem, extension
     setItemExtension(item, extension, dispatch);
 }
 
-export const setQuestionnaireExtension = (
-    qMetadata: IQuestionnaireMetadata,
-    extensionValue: Extension,
-    dispatch: (value: ActionType) => void,
-): void => {
-    const extensionsToSet = (qMetadata.extension || []).filter((x: Extension) => x.url !== extensionValue.url);
-    extensionsToSet.push(extensionValue);
-    dispatch(updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.extension, extensionsToSet));
-};
-
-export const removeQuestionnaireExtension = (
-    qMetadata: IQuestionnaireMetadata,
-    extensionUrl: string,
-    dispatch: (value: ActionType) => void,
-): void => {
-    const extensionsToSet = (qMetadata.extension || []).filter((x: Extension) => x.url !== extensionUrl);
-    dispatch(updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.extension, extensionsToSet));
+export const createMarkdownExtension = (markdownValue: string): Element => {
+    return {
+        extension: [
+            {
+                url: IExtentionType.markdown,
+                valueMarkdown: markdownValue,
+            },
+        ],
+    };
 };
 
 export const createOptionReferenceExtensions = [
@@ -111,23 +118,16 @@ export const createOptionReferenceExtensions = [
     },
 ];
 
-export const createMarkdownExtension = (markdownValue: string): Element => {
-    return {
-        extension: [
-            {
-                url: IExtentionType.markdown,
-                valueMarkdown: markdownValue,
-            },
-        ],
-    };
-};
-
 export const hasExtension = (extensionParent: Element | undefined, extensionType: IExtentionType): boolean => {
     return extensionParent && extensionParent.extension ?  extensionParent.extension.some((ext) => ext.url === extensionType) : false;
 };
 export const hasOneOrMoreExtensions = (extensions: Extension[], extensionTypes: IExtentionType[]): boolean => {
     return extensions.some(ex => extensionTypes.includes(ex.url as IExtentionType));
 }
+
+export const findExtensionInExtensionArray = (extensionArray: Extension[], url: string): Extension | undefined => {
+    return extensionArray.find((x) => x.url === url);
+};
 
 export const getExtensionStringValue = (item: QuestionnaireItem, extensionType: IExtentionType): string | undefined => {
     return findExtensionByUrl(item.extension, extensionType)?.valueString;
