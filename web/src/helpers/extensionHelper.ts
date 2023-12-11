@@ -29,6 +29,21 @@ export const getExtensionValue = <T extends keyof Extension>(
     return extension ? extension[valueType] : undefined;
 };
 
+export const createExtensionWithSystemAndCoding = (item: QuestionnaireItem, extensionUrl: IExtentionType, system: IValueSetSystem, code: string, dispatch: React.Dispatch<ActionType>) => {
+    const newExtension: Extension = {
+      url: extensionUrl,
+      valueCodeableConcept: {
+        coding: [
+          {
+            system: system,
+            code: code,
+          },
+        ],
+      },
+    };
+    setItemExtension(item, newExtension, dispatch);
+}
+
 export const setItemExtension = (
     item: QuestionnaireItem,
     extensionValue: Extension,
@@ -49,6 +64,14 @@ export const removeItemExtension = (
         : (item.extension || []).filter((x: Extension) => x.url !== extensionUrl);
     dispatch(updateItemAction(item.linkId, IItemProperty.extension, extensionsToSet));
 };
+
+export const addCodeToValueCodeableConcept = (item: QuestionnaireItem, extension: Extension, system: string, code: string, dispatch: React.Dispatch<ActionType>): void => {
+    extension.valueCodeableConcept?.coding?.push({
+      system: system,
+      code: code,
+    });
+    setItemExtension(item, extension, dispatch);
+}
 
 export const setQuestionnaireExtension = (
     qMetadata: IQuestionnaireMetadata,
