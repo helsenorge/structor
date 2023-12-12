@@ -20,8 +20,10 @@ import {
     isItemControlCheckbox,
     isItemControlDropDown,
     isItemControlRadioButton,
+    isItemControlSlider,
     ItemControlType,
     radiobuttonExtension,
+    sliderExtension,
 } from '../../../helpers/itemControl';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import FormField from '../../FormField/FormField';
@@ -48,6 +50,8 @@ const Choice = ({ item }: Props): JSX.Element => {
             setItemExtension(item, dropdownExtension, dispatch);
         } else if (type === ItemControlType.radioButton && !isItemControlRadioButton(item)) {
             setItemExtension(item, radiobuttonExtension, dispatch);
+        } else if (type === ItemControlType.slider && !isItemControlSlider(item)) {
+            setItemExtension(item, sliderExtension, dispatch);
         }
     };
 
@@ -93,7 +97,7 @@ const Choice = ({ item }: Props): JSX.Element => {
             <FormField>
                 <SwitchBtn
                     onChange={() => {
-                        if (!!item.answerValueSet) {
+                        if (item.answerValueSet) {
                             const system = createUriUUID();
                             dispatchRemoveAttribute(IItemProperty.answerValueSet);
                             dispatchUpdateItem(IItemProperty.answerOption, [
@@ -109,7 +113,7 @@ const Choice = ({ item }: Props): JSX.Element => {
                     label={t('Use predefined valueset')}
                 />
             </FormField>
-            {!!item.answerValueSet ? (
+            {item.answerValueSet ? (
                 <PredefinedValueSets item={item} qContained={qContained} dispatchUpdateItem={dispatchUpdateItem} />
             ) : (
                 <>

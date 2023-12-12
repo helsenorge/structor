@@ -3,16 +3,18 @@
 }
 
 .answer-option-item .answer-option-content {
+    display: flex;
+    flex-wrap: wrap;
     flex: 1;
-    margin: 5px 15px;
+    margin: 10px 15px;
 }
 
-.answer-option-content .twoColumns {
-    width: 48%;
+.answer-option-content .two-columns {
+    width: 46%;
     margin-right: 4%;
 }
-.answer-option-content .threeColumns {
-    width: 30%;
+.answer-option-content .three-columns {
+    width: 29.2%;
     margin-right: 4%;
 }
 

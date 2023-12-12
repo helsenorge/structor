@@ -22,6 +22,7 @@ export enum ItemControlType {
     receiverComponent = 'receiver-component',
     dynamic = 'dynamic',
     dataReceiver = 'data-receiver',
+    slider = 'slider',
     step = 'step',
     score = 'score',
 }
@@ -59,6 +60,8 @@ export const createItemControlExtensionWithTypes = (types: string[]): Extension 
 export const checkboxExtension = createItemControlExtension(ItemControlType.checkbox);
 export const dropdownExtension = createItemControlExtension(ItemControlType.dropdown);
 export const radiobuttonExtension = createItemControlExtension(ItemControlType.radioButton);
+export const sliderExtension = createItemControlExtension(ItemControlType.slider);
+
 
 const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefined => {
     const itemControlExtension = item?.extension?.find((x) => x.url === IExtentionType.itemControl);
@@ -120,6 +123,10 @@ export const isItemControlReceiverComponent = (item: QuestionnaireItem): boolean
 
 export const isItemControlDropDown = (item: QuestionnaireItem): boolean => {
     return getItemControlType(item) === ItemControlType.dropdown;
+};
+
+export const isItemControlSlider = (item: QuestionnaireItem): boolean => {
+    return getItemControlType(item) === ItemControlType.slider;
 };
 
 export const isItemControlRadioButton = (item: QuestionnaireItem): boolean => {

@@ -76,27 +76,48 @@ export const updateAnswerOptionCode = (
     });
 };
 
+const getExtension = (url: string, scoreValue: string) => {
+    if(url === IExtentionType.ordinalValue) {
+        return { url: url, valueDecimal: Number(scoreValue) };
+    } else if (url === IExtentionType.valueSetLabel) {
+        return { url: url, valueString: scoreValue};
+    }
+
+    return { url: url };
+}
+
 export const updateAnswerOptionExtension = (
     values: QuestionnaireItemAnswerOption[],
     targetId: string,
     scoreValue: string,
+    url: string
 ): QuestionnaireItemAnswerOption[] => {
     return values.map((x) => {
-        return x.valueCoding?.id === targetId
-            ? ({
-                  valueCoding: {
-                      ...x.valueCoding,
-                      extension: [
-                          {
-                              url: IExtentionType.ordinalValue,
-                              valueDecimal: Number(scoreValue),
-                          },
-                      ],
-                  },
-              } as QuestionnaireItemAnswerOption)
-            : x;
+        if (x.valueCoding?.id === targetId) {
+            const currentExtensions = x.valueCoding.extension || [];
+            const index = currentExtensions.findIndex(ext => ext.url === url);
+
+            let updatedExtensions;
+            if (index >= 0) {
+                updatedExtensions = [...currentExtensions];
+                updatedExtensions[index] = getExtension(url, scoreValue);
+            } else {
+                updatedExtensions = [...currentExtensions, getExtension(url, scoreValue)];
+            }
+
+            return {
+                ...x,
+                valueCoding: {
+                    ...x.valueCoding,
+                    extension: updatedExtensions,
+                },
+            } as QuestionnaireItemAnswerOption;
+        } else {
+            return x;
+        }
     });
 };
+
 
 export const updateAnswerOptionSystem = (
     values: QuestionnaireItemAnswerOption[],

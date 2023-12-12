@@ -7,6 +7,7 @@ import InputField from '../InputField/inputField';
 import { doesItemHaveCode } from '../../utils/itemSearchUtils';
 import { findExtensionInExtensionArray } from '../../helpers/extensionHelper';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
+import { ItemControlType } from '../../helpers/itemControl';
 
 type Props = {
     item: QuestionnaireItem;
@@ -15,6 +16,7 @@ type Props = {
     changeDisplay: (event: React.ChangeEvent<HTMLInputElement>) => void;
     changeCode: (event: React.ChangeEvent<HTMLInputElement>) => void;
     changeOrdinalValueExtension: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    changeValueSetLabel: (event: React.ChangeEvent<HTMLInputElement>) => void;
     deleteItem?: () => void;
     showDelete?: boolean;
     disabled?: boolean;
@@ -27,6 +29,7 @@ const AnswerOption = ({
     changeDisplay,
     changeCode,
     changeOrdinalValueExtension,
+    changeValueSetLabel,
     deleteItem,
     showDelete,
     disabled,
@@ -34,7 +37,9 @@ const AnswerOption = ({
     const { t } = useTranslation();
 
     const [displayScoringField, setDisplayScoringField] = useState(false);
-    const inputFieldClassName = displayScoringField ? 'threeColumns' : 'twoColumns';
+    const twoColomnsClass = 'two-columns';
+    const inputFieldClassName = displayScoringField ? 'three-columns' : twoColomnsClass;
+    const isSlider = item.extension?.some((ex) => ex.valueCodeableConcept?.coding?.some(cd => cd.code ===  ItemControlType.slider));
 
     const getDefaultScoreValue = (): string => {
         let stringToReturn = '';
@@ -45,6 +50,22 @@ const AnswerOption = ({
             stringToReturn = scoreExtension?.valueDecimal?.toString() || '';
         }
         return stringToReturn;
+    };
+
+    // TODO: Er det riktig å bruke ordinalValue både i value feltet og scoring feltet? Kan vi ha to separate ordinalValues?
+    const getDefaultOrdinalValue = (): string => {
+        const scoreExtension =
+            answerOption?.valueCoding?.extension &&
+            findExtensionInExtensionArray(answerOption?.valueCoding?.extension, IExtentionType.ordinalValue);
+        return  scoreExtension?.valueDecimal?.toString() || '';
+    };
+
+
+    const getDefaultValueSetLabel = (): string => {
+        const scoreExtension =
+            answerOption?.valueCoding?.extension &&
+            findExtensionInExtensionArray(answerOption?.valueCoding?.extension, IExtentionType.valueSetLabel);
+        return scoreExtension?.valueString?.toString() || '';
     };
 
     useEffect(() => {
@@ -82,6 +103,23 @@ const AnswerOption = ({
                         }}
                     />
                 )}
+                {isSlider && (
+                <>
+                    <InputField
+                        name="emojicode"
+                        className={twoColomnsClass}
+                        defaultValue={getDefaultValueSetLabel()}
+                        placeholder={t('Enter an emoji..')}
+                        onChange={(event) => changeValueSetLabel(event)}
+                    />
+                    <InputField
+                        name="decimal value"
+                        className={twoColomnsClass}
+                        defaultValue={getDefaultOrdinalValue()}
+                        placeholder={t('Enter a label..')}
+                        onChange={(event) => changeOrdinalValueExtension(event)}
+                    />
+                </>)}
             </div>
             {showDelete && (
                 <button type="button" name={t('Remove element')} onClick={deleteItem} className="align-everything" />
