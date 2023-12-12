@@ -1,5 +1,5 @@
 export enum TableOptionsEnum {
-    Ingen = 'ingen',
+    None = 'none',
     GTable = 'gTable',
     Table = 'table',
     TableHN1 = 'tableHN1',

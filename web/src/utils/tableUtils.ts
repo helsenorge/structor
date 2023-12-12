@@ -43,7 +43,7 @@ export const handleTableOptionChange = (selectedValue: string, item: Questionnai
   );
   if (extensionWithItemControl && item.extension) {
     const extension: Extension = parseExtension(extensionWithItemControl);
-    if (selectedValue === TableOptionsEnum.Ingen) {
+    if (selectedValue === TableOptionsEnum.None) {
       if (areAllCodesTableCodes(extension)) {
         removeItemExtension(item, IExtentionType.itemControl, dispatch);
       } else {
