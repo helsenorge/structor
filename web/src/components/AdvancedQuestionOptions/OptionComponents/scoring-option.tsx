@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { scoreCoding, QSCoding } from "../../../helpers/QuestionHelper";
+import { QSCoding } from "../../../helpers/QuestionHelper";
 import { removeItemCode, addItemCode } from "../../../helpers/codeHelper";
-import { existItemWithCode } from "../../../helpers/itemControl";
+import { existItemWithCode, scoreCoding } from "../../../helpers/itemControl";
 import { ICodeSystem } from "../../../types/IQuestionnareItemType";
 import { ScoringFormulaCodes } from "../../../types/scoringFormulas";
 import { removeOrdinalValueExtensionfromAnswerOptions } from "../../../utils/answerOptionExtensionUtils";

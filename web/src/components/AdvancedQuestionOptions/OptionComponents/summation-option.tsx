@@ -1,4 +1,4 @@
-import { scoreCoding, scoreSumOptions } from "../../../helpers/QuestionHelper";
+import { scoreSumOptions } from "../../../helpers/QuestionHelper";
 import { removeItemCode, addItemCode } from "../../../helpers/codeHelper";
 import { ICodeSystem } from "../../../types/IQuestionnareItemType";
 import FormField from "../../FormField/FormField";
@@ -7,6 +7,7 @@ import { ActionType } from "../../../store/treeStore/treeStore";
 import { useTranslation } from "react-i18next";
 import RadioBtn from "../../RadioBtn/RadioBtn";
 import { getScoringFormulaName, getSelectedScoringCode } from "../../../utils/scoringUtils";
+import { scoreCoding } from "../../../helpers/itemControl";
 
 type SummationOptionProps = {
     item: QuestionnaireItem;
