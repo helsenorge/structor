@@ -26,3 +26,6 @@
 /web/yarn-debug.log*
 /web/yarn-error.log*
 /web/debug.log
+
+# vite
+/web/vite.config.ts.timestamp*
