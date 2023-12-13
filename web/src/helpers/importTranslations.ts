@@ -12,7 +12,7 @@ import {
     TranslatableKeyProptey,
     TranslatableMetadataProperty,
 } from '../types/LanguageTypes';
-import { IExtentionType } from '../types/IQuestionnareItemType';
+import { IExtensionType } from '../types/IQuestionnareItemType';
 import { isItemControlSidebar } from "./itemControl";
 import Papa from "papaparse";
 
@@ -57,15 +57,15 @@ const updateItemTranslation = (
             dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.prefix, text));
             return true;
         }
-        if (key.includes(IExtentionType.validationtext)) {
+        if (key.includes(IExtensionType.validationtext)) {
             dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.validationText, text));
             return true;
         }
-        if (key.includes(IExtentionType.sublabel)) {
+        if (key.includes(IExtensionType.sublabel)) {
             dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.sublabel, text));
             return true;
         }
-        if (key.includes(IExtentionType.repeatstext)) {
+        if (key.includes(IExtensionType.repeatstext)) {
             dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.repeatsText, text));
             return true;
         }
@@ -73,7 +73,7 @@ const updateItemTranslation = (
             dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.initial, text));
             return true;
         }
-        if (key.includes(IExtentionType.entryFormat)) {
+        if (key.includes(IExtensionType.entryFormat)) {
             dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.entryFormatText, text));
             return true;
         }

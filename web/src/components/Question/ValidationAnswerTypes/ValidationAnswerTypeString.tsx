@@ -4,7 +4,7 @@ import { removeItemExtension, setItemExtension } from '../../../helpers/extensio
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { Extension, QuestionnaireItem } from '../../../types/fhir';
-import { IItemProperty, IExtentionType } from '../../../types/IQuestionnareItemType';
+import { IItemProperty, IExtensionType } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
 import InputField from '../../InputField/inputField';
 import Select from '../../Select/Select';
@@ -56,15 +56,15 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
 
     const setRegexExtension = (regexValue: string): void => {
         const newExtention: Extension = {
-            url: IExtentionType.regEx,
+            url: IExtensionType.regEx,
             valueString: regexValue,
         };
         setItemExtension(item, newExtention, dispatch);
     };
 
-    const validationText = item?.extension?.find((x) => x.url === IExtentionType.validationtext)?.valueString || '';
-    const selectedRegEx = item?.extension?.find((x) => x.url === IExtentionType.regEx)?.valueString || '';
-    const minLength = item?.extension?.find((x) => x.url === IExtentionType.minLength)?.valueInteger;
+    const validationText = item?.extension?.find((x) => x.url === IExtensionType.validationtext)?.valueString || '';
+    const selectedRegEx = item?.extension?.find((x) => x.url === IExtensionType.regEx)?.valueString || '';
+    const minLength = item?.extension?.find((x) => x.url === IExtensionType.minLength)?.valueInteger;
     const isSelectedRegexCustomRegex = selectedRegEx ? !regexOptions.find((x) => x.code === selectedRegEx) : false;
 
     const [isCustomRegex, setIsCustomRegex] = React.useState<boolean>(isSelectedRegexCustomRegex);
@@ -81,11 +81,11 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                     ]}
                     onChange={(event) => {
                         if (!event.target.value) {
-                            removeItemExtension(item, IExtentionType.regEx, dispatch);
+                            removeItemExtension(item, IExtensionType.regEx, dispatch);
                             setIsCustomRegex(false);
                         } else if (event.target.value === CUSTOM_REGEX_OPTION) {
                             setIsCustomRegex(true);
-                            removeItemExtension(item, IExtentionType.regEx, dispatch);
+                            removeItemExtension(item, IExtensionType.regEx, dispatch);
                         } else {
                             setIsCustomRegex(false);
                             setRegexExtension(event.target.value);
@@ -98,7 +98,7 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                         placeholder={t('Enter custom regular expression')}
                         onBlur={(event) => {
                             if (!event.target.value) {
-                                removeItemExtension(item, IExtentionType.regEx, dispatch);
+                                removeItemExtension(item, IExtensionType.regEx, dispatch);
                             } else {
                                 setRegexExtension(event.target.value);
                             }
@@ -111,10 +111,10 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                     defaultValue={validationText}
                     onChange={(event) => {
                         if (!event.target.value) {
-                            removeItemExtension(item, IExtentionType.validationtext, dispatch);
+                            removeItemExtension(item, IExtensionType.validationtext, dispatch);
                         } else {
                             const newExtention: Extension = {
-                                url: IExtentionType.validationtext,
+                                url: IExtensionType.validationtext,
                                 valueString: event.target.value,
                             };
                             setItemExtension(item, newExtention, dispatch);
@@ -131,10 +131,10 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
                         onBlur={(e) => {
                             const newValue = parseInt(e.target.value);
                             if (!newValue) {
-                                removeItemExtension(item, IExtentionType.minLength, dispatch);
+                                removeItemExtension(item, IExtensionType.minLength, dispatch);
                             } else {
                                 const extension = {
-                                    url: IExtentionType.minLength,
+                                    url: IExtensionType.minLength,
                                     valueInteger: newValue,
                                 };
                                 setItemExtension(item, extension, dispatch);

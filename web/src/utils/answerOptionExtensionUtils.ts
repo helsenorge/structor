@@ -4,7 +4,7 @@ import {
 } from '../helpers/answerOptionHelper';
 import { updateItemAction } from '../store/treeStore/treeActions';
 import { ActionType } from '../store/treeStore/treeStore';
-import { IExtentionType, IItemProperty } from '../types/IQuestionnareItemType';
+import { IExtensionType, IItemProperty } from '../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../types/fhir';
 
 export const addDefaultOrdinalValueExtensionToAllAnswerOptions = (
@@ -22,7 +22,7 @@ export const removeOrdinalValueExtensionfromAnswerOptions = (
     dispatch: React.Dispatch<ActionType>,
 ): void => {
     if (item.answerOption) {
-        const newArray = removeExtensionFromAnswerOptions(item.answerOption || [], IExtentionType.ordinalValue);
+        const newArray = removeExtensionFromAnswerOptions(item.answerOption || [], IExtensionType.ordinalValue);
         dispatch(updateItemAction(item.linkId, IItemProperty.answerOption, newArray));
     }
 };

@@ -16,7 +16,7 @@ import {
     updateAnswerOptionExtension,
 } from '../../helpers/answerOptionHelper';
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
-import { IExtentionType, IItemProperty } from '../../types/IQuestionnareItemType';
+import { IExtensionType, IItemProperty } from '../../types/IQuestionnareItemType';
 import AnswerOption from './AnswerOption';
 
 interface DraggableAnswerOptionsProps {
@@ -104,7 +104,7 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                         const newArray = removeExtensionFromSingleAnswerOption(
                                                             item.answerOption || [],
                                                             answerOption.valueCoding?.id || '',
-                                                            IExtentionType.ordinalValue,
+                                                            IExtensionType.ordinalValue,
                                                         );
                                                         dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                     } else {
@@ -112,7 +112,7 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                             item.answerOption || [],
                                                             answerOption.valueCoding?.id || '',
                                                             event.target.value,
-                                                            IExtentionType.ordinalValue
+                                                            IExtensionType.ordinalValue
                                                         );
                                                         dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                     }
@@ -122,7 +122,7 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                         const newArray = removeExtensionFromSingleAnswerOption(
                                                             item.answerOption || [],
                                                             answerOption.valueCoding?.id || '',
-                                                            IExtentionType.valueSetLabel,
+                                                            IExtensionType.valueSetLabel,
                                                         );
                                                         dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                     } else {
@@ -130,7 +130,7 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                             item.answerOption || [],
                                                             answerOption.valueCoding?.id || '',
                                                             event.target.value,
-                                                            IExtentionType.valueSetLabel
+                                                            IExtensionType.valueSetLabel
                                                         );
                                                         dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                     }

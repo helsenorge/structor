@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
@@ -16,10 +16,10 @@ interface ValidationTypeProp {
 const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
-    const validationText = item?.extension?.find((x) => x.url === IExtentionType.validationtext)?.valueString || '';
-    const minValue = item?.extension?.find((x) => x.url === IExtentionType.minValue)?.valueInteger;
-    const maxValue = item?.extension?.find((x) => x.url === IExtentionType.maxValue)?.valueInteger;
-    const maxDecimalPlaces = item?.extension?.find((x) => x.url === IExtentionType.maxDecimalPlaces)?.valueInteger;
+    const validationText = item?.extension?.find((x) => x.url === IExtensionType.validationtext)?.valueString || '';
+    const minValue = item?.extension?.find((x) => x.url === IExtensionType.minValue)?.valueInteger;
+    const maxValue = item?.extension?.find((x) => x.url === IExtensionType.maxValue)?.valueInteger;
+    const maxDecimalPlaces = item?.extension?.find((x) => x.url === IExtensionType.maxDecimalPlaces)?.valueInteger;
     const isDecimal = item?.type === IQuestionnaireItemType.decimal || item?.type === IQuestionnaireItemType.quantity;
 
     const dispatchUpdateItemType = (value: IQuestionnaireItemType.decimal | IQuestionnaireItemType.integer) => {
@@ -34,7 +34,7 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
 
         dispatchUpdateItemType(newItemType);
         if (newItemType === IQuestionnaireItemType.integer) {
-            removeItemExtension(item, IExtentionType.maxDecimalPlaces, dispatch);
+            removeItemExtension(item, IExtensionType.maxDecimalPlaces, dispatch);
         }
     };
 
@@ -54,10 +54,10 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                             defaultValue={maxDecimalPlaces}
                             onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
                                 if (!event.target.value) {
-                                    removeItemExtension(item, IExtentionType.maxDecimalPlaces, dispatch);
+                                    removeItemExtension(item, IExtensionType.maxDecimalPlaces, dispatch);
                                 } else {
                                     const extension = {
-                                        url: IExtentionType.maxDecimalPlaces,
+                                        url: IExtensionType.maxDecimalPlaces,
                                         valueInteger: parseInt(event.target.value),
                                     };
                                     setItemExtension(item, extension, dispatch);
@@ -75,10 +75,10 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                         defaultValue={minValue}
                         onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
                             if (!event.target.value) {
-                                removeItemExtension(item, IExtentionType.minValue, dispatch);
+                                removeItemExtension(item, IExtensionType.minValue, dispatch);
                             } else {
                                 const extension = {
-                                    url: IExtentionType.minValue,
+                                    url: IExtensionType.minValue,
                                     valueInteger: parseInt(event.target.value),
                                 };
                                 setItemExtension(item, extension, dispatch);
@@ -92,10 +92,10 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                         defaultValue={maxValue}
                         onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
                             if (!event.target.value) {
-                                removeItemExtension(item, IExtentionType.maxValue, dispatch);
+                                removeItemExtension(item, IExtensionType.maxValue, dispatch);
                             } else {
                                 const extension = {
-                                    url: IExtentionType.maxValue,
+                                    url: IExtensionType.maxValue,
                                     valueInteger: parseInt(event.target.value),
                                 };
                                 setItemExtension(item, extension, dispatch);
@@ -111,10 +111,10 @@ const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element =
                     placeholder={t('error message')}
                     onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
                         if (!event.target.value) {
-                            removeItemExtension(item, IExtentionType.validationtext, dispatch);
+                            removeItemExtension(item, IExtensionType.validationtext, dispatch);
                         } else {
                             const extension = {
-                                url: IExtentionType.validationtext,
+                                url: IExtensionType.validationtext,
                                 valueString: event.target.value,
                             };
                             setItemExtension(item, extension, dispatch);

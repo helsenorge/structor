@@ -8,7 +8,7 @@ import {
     removeItemExtension,
     setItemExtension,
 } from '../../../helpers/extensionHelper';
-import { IExtentionType } from '../../../types/IQuestionnareItemType';
+import { IExtensionType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 
@@ -23,12 +23,12 @@ type GuidanceActionProps = {
 const GuidanceAction = (props: GuidanceActionProps): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
-    const hasGuidanceAction = hasExtension(props.item, IExtentionType.guidanceAction);
+    const hasGuidanceAction = hasExtension(props.item, IExtensionType.guidanceAction);
     const action = getGuidanceAction(props.item);
 
     const toggleGuidanceAction = (): void => {
         if (hasGuidanceAction) {
-            removeItemExtension(props.item, IExtentionType.guidanceAction, dispatch);
+            removeItemExtension(props.item, IExtensionType.guidanceAction, dispatch);
         } else {
             setItemExtension(props.item, createGuidanceActionExtension(), dispatch);
         }

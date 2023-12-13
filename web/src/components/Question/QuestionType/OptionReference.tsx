@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import './OptionReference.css';
 import { Extension, QuestionnaireItem } from '../../../types/fhir';
-import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
+import { IExtensionType, IItemProperty } from '../../../types/IQuestionnareItemType';
 import Btn from '../../Btn/Btn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
@@ -28,7 +28,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
     const dispatchNewItem = () => {
         const newItem = [
             {
-                url: IExtentionType.optionReference,
+                url: IExtensionType.optionReference,
                 valueReference: {
                     reference: '',
                     display: '',
@@ -81,7 +81,7 @@ const OptionReference = ({ item }: Props): JSX.Element => {
         background: isDraggingOver ? 'lightblue' : 'transparent',
     });
 
-    const optionReferences = item.extension?.filter((x) => x.url === IExtentionType.optionReference);
+    const optionReferences = item.extension?.filter((x) => x.url === IExtensionType.optionReference);
 
     const reorderExtension = (list: Extension[], to: number, from: number): Extension[] => {
         const itemToMove = list.splice(from, 1);
@@ -99,8 +99,8 @@ const OptionReference = ({ item }: Props): JSX.Element => {
 
         if (fromIndex !== toIndex) {
             const tempList = item.extension ? [...item.extension] : [];
-            const nonOptionReferences = tempList.filter((x) => x.url !== IExtentionType.optionReference);
-            const currentOptionReferences = tempList.filter((x) => x.url === IExtentionType.optionReference);
+            const nonOptionReferences = tempList.filter((x) => x.url !== IExtensionType.optionReference);
+            const currentOptionReferences = tempList.filter((x) => x.url === IExtensionType.optionReference);
             const reordered = reorderExtension(currentOptionReferences, toIndex, fromIndex);
             dispatch(updateItemAction(item.linkId, IItemProperty.extension, [...nonOptionReferences, ...reordered]));
         }

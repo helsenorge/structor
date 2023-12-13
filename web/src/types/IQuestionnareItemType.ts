@@ -91,7 +91,7 @@ export enum ICodeSystem {
     scoringFormulas = 'http://ehelse.no/scoringFormulas',
 }
 
-export enum IExtentionType {
+export enum IExtensionType {
     authenticationRequirement = 'http://ehelse.no/fhir/StructureDefinition/sdf-authenticationrequirement',
     calculatedExpression = 'http://ehelse.no/fhir/StructureDefinition/sdf-calculatedExpression',
     canBePerformedBy = 'http://ehelse.no/fhir/StructureDefinition/sdf-canbeperformedby',

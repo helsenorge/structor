@@ -1,5 +1,5 @@
 import { Items, OrderItem } from '../store/treeStore/treeStore';
-import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IExtensionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../types/fhir';
 
 export const doesItemHaveCode = (item: QuestionnaireItem, code: string): boolean => {
@@ -53,7 +53,7 @@ export const doesItemWithCodeExistInArray = (
 
 export const doesAllAnswerOptionsInItemHaveExtenison = (
     qItem: QuestionnaireItem,
-    extensionToSearchFor: IExtentionType,
+    extensionToSearchFor: IExtensionType,
 ): boolean => {
     let foundExtension = false;
     let valueToReturn = true;

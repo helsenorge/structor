@@ -10,7 +10,7 @@ import {
     ValueSet,
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
-import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 
 import { updateItemAction } from '../../store/treeStore/treeActions';
 import { getTextExtensionMarkdown } from '../../helpers/QuestionHelper';
@@ -81,7 +81,7 @@ const Question = (props: QuestionProps): JSX.Element => {
     };
 
     const getSublabelText = (): string => {
-        return props.item.extension?.find((x) => x.url === IExtentionType.sublabel)?.valueMarkdown || '';
+        return props.item.extension?.find((x) => x.url === IExtensionType.sublabel)?.valueMarkdown || '';
     };
 
     const convertToPlaintext = (stringToBeConverted: string) => {
@@ -199,12 +199,12 @@ const Question = (props: QuestionProps): JSX.Element => {
                             onBlur={(newValue: string) => {
                                 if (newValue) {
                                     const newExtension = {
-                                        url: IExtentionType.sublabel,
+                                        url: IExtensionType.sublabel,
                                         valueMarkdown: newValue,
                                     };
                                     setItemExtension(props.item, newExtension, props.dispatch);
                                 } else {
-                                    removeItemExtension(props.item, IExtentionType.sublabel, props.dispatch);
+                                    removeItemExtension(props.item, IExtensionType.sublabel, props.dispatch);
                                 }
                             }}
                         />

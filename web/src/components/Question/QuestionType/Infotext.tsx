@@ -4,7 +4,7 @@ import { TreeContext } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { findElementInTreeArray } from '../../../helpers/treeHelper';
-import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { deleteItemAction, newItemAction, updateItemAction } from '../../../store/treeStore/treeActions';
 import {
     createMarkdownExtension,
@@ -70,7 +70,7 @@ const Infotext = ({ item, parentArray }: InfotextProps): JSX.Element => {
         if (extension) {
             setItemExtension(item, extension, dispatch);
         } else {
-            removeItemExtension(item, IExtentionType.itemControl, dispatch);
+            removeItemExtension(item, IExtensionType.itemControl, dispatch);
         }
         dispatch(updateItemAction(item.linkId, IItemProperty.type, IQuestionnaireItemType.display));
         if (childItemLinkId) {

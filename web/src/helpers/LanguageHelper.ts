@@ -7,7 +7,7 @@ import {
 } from '../types/LanguageTypes';
 import { Languages, TreeState } from '../store/treeStore/treeStore';
 import { isValidId } from './MetadataHelper';
-import { IExtentionType } from '../types/IQuestionnareItemType';
+import { IExtensionType } from '../types/IQuestionnareItemType';
 import { Extension } from '../types/fhir';
 
 export const INITIAL_LANGUAGE: Language = { code: 'nb-NO', display: 'Bokmål', localDisplay: 'Bokmål' };
@@ -118,13 +118,13 @@ export const translatableMetadata: MetadataProperty[] = [
     },
 ];
 
-export const translatableSettings: { [key in IExtentionType]?: SettingsProperty } = {
-    [IExtentionType.printVersion.toString()]: {
-        extension: IExtentionType.printVersion,
+export const translatableSettings: { [key in IExtensionType]?: SettingsProperty } = {
+    [IExtensionType.printVersion.toString()]: {
+        extension: IExtensionType.printVersion,
         label: 'Print version',
         generate: (value: string): Extension => {
             return {
-                url: IExtentionType.printVersion,
+                url: IExtensionType.printVersion,
                 valueReference: {
                     reference: value,
                 },

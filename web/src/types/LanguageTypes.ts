@@ -1,6 +1,6 @@
 import { TreeState } from '../store/treeStore/treeStore';
 import { Extension } from './fhir';
-import { IExtentionType } from './IQuestionnareItemType';
+import { IExtensionType } from './IQuestionnareItemType';
 
 export type Language = {
     code: string;
@@ -25,7 +25,7 @@ export type MetadataProperty = {
 };
 
 export type SettingsProperty = {
-    extension: IExtentionType;
+    extension: IExtensionType;
     label: string;
     generate: (value: string) => Extension;
     getValue: (extension: Extension) => string | undefined;

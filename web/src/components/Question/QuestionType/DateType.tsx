@@ -5,7 +5,7 @@ import { createItemControlExtension, ItemControlType } from '../../../helpers/it
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { ActionType } from '../../../store/treeStore/treeStore';
 import { QuestionnaireItem } from '../../../types/fhir';
-import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
 import RadioBtn from '../../RadioBtn/RadioBtn';
 
@@ -22,7 +22,7 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
         if (item.type === IQuestionnaireItemType.dateTime) {
             return DAYTIME_CHOICE;
         } else {
-            const itemControl = item?.extension?.find((x) => x.url === IExtentionType.itemControl);
+            const itemControl = item?.extension?.find((x) => x.url === IExtensionType.itemControl);
             return itemControl?.valueCodeableConcept?.coding?.find((x) => !!x.code)?.code || '';
         }
     };
@@ -37,14 +37,14 @@ export const DateType = ({ item, dispatch }: Props): JSX.Element => {
             <RadioBtn
                 onChange={(newValue) => {
                     if (newValue === DAYTIME_CHOICE) {
-                        removeItemExtension(item, IExtentionType.itemControl, dispatch);
+                        removeItemExtension(item, IExtensionType.itemControl, dispatch);
                         dispatch(updateItemAction(item.linkId, IItemProperty.type, IQuestionnaireItemType.dateTime));
                     } else {
                         dispatch(updateItemAction(item.linkId, IItemProperty.type, IQuestionnaireItemType.date));
                         if (newValue) {
                             setItemControlExtension(newValue);
                         } else {
-                            removeItemExtension(item, IExtentionType.itemControl, dispatch);
+                            removeItemExtension(item, IExtensionType.itemControl, dispatch);
                         }
                     }
                 }}

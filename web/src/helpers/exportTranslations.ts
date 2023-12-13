@@ -2,7 +2,7 @@ import { translatableMetadata } from './LanguageHelper';
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { Items, Languages } from '../store/treeStore/treeStore';
 import { isItemControlSidebar } from './itemControl';
-import { IExtentionType } from '../types/IQuestionnareItemType';
+import { IExtensionType } from '../types/IQuestionnareItemType';
 import {
     getInitialText,
     getPlaceHolderText,
@@ -116,7 +116,7 @@ const exportItemTranslations = (
             }
 
             const markdownValue = getTextExtensionMarkdown(item);
-            const key = `${TranslatableKeyProptey.item}[${linkId}]._text.extension[${IExtentionType.markdown}].valueMarkdown`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}]._text.extension[${IExtensionType.markdown}].valueMarkdown`;
             data.push([key, markdownValue, ...translatedValues] as string[]);
         } else {
             const translatedValues = additionalLanguagesInUse.map((lang) => {
@@ -130,7 +130,7 @@ const exportItemTranslations = (
             const translatedValues = additionalLanguagesInUse.map((lang) => {
                 return additionalLanguages[lang].items[linkId]?.sublabel;
             });
-            const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtentionType.sublabel}].valueMarkdown`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtensionType.sublabel}].valueMarkdown`;
             data.push([key, getSublabel(item), ...translatedValues] as string[]);          
         }
 
@@ -138,7 +138,7 @@ const exportItemTranslations = (
             const translatedValues = additionalLanguagesInUse.map((lang) => {
                 return additionalLanguages[lang].items[linkId]?.repeatsText;
             });
-            const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtentionType.repeatstext}].valueString`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtensionType.repeatstext}].valueString`;
             data.push([key, getRepeatsText(item), ...translatedValues] as string[]);            
         }
 
@@ -146,7 +146,7 @@ const exportItemTranslations = (
             const translatedValues = additionalLanguagesInUse.map((lang) => {
                 return additionalLanguages[lang].items[linkId]?.validationText;
             });
-            const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtentionType.validationtext}].valueString`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtensionType.validationtext}].valueString`;
             data.push([key, getValidationMessage(item), ...translatedValues] as string[]);            
         }
 
@@ -154,7 +154,7 @@ const exportItemTranslations = (
             const translatedValues = additionalLanguagesInUse.map((lang) => {
                 return additionalLanguages[lang].items[linkId]?.entryFormatText;
             });
-            const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtentionType.entryFormat}].valueString`;
+            const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtensionType.entryFormat}].valueString`;
             data.push([key, getPlaceHolderText(item), ...translatedValues] as string[]);            
         }
 

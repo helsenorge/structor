@@ -1,6 +1,6 @@
 import { TreeState } from "../store/treeStore/treeStore";
 import { QuestionnaireItem } from "../types/fhir";
-import { IExtentionType } from "../types/IQuestionnareItemType";
+import { IExtensionType } from "../types/IQuestionnareItemType";
 import { valuesetJaNei, valuesetJaNeiVetIkke, valuesetJaNeiUsikker } from "./valuesets";
 
 export const defaultState = {
@@ -22,7 +22,7 @@ export const item_markdown = {
     _text: {
         extension: [
             {
-                url: IExtentionType.markdown,
+                url: IExtensionType.markdown,
                 valueMarkdown: "**This is information**\n\n*   Step 1 is …\n*   Step 2 is …"
             }
         ]

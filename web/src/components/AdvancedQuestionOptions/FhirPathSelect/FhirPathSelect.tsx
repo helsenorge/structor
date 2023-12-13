@@ -4,7 +4,7 @@ import { TreeContext } from '../../../store/treeStore/treeStore';
 import GroupedSelect from '../../Select/GroupedSelect';
 import { CreateOptionSetForType } from '../../../helpers/EnrichmentSet';
 import FormField from '../../FormField/FormField';
-import { IExtentionType, IItemProperty } from '../../../types/IQuestionnareItemType';
+import { IExtensionType, IItemProperty } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
@@ -40,12 +40,12 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
     };
 
     const dispatchRemoveFhirPath = () => {
-        removeItemExtension(props.item, IExtentionType.fhirPath, dispatch);
+        removeItemExtension(props.item, IExtensionType.fhirPath, dispatch);
     };
 
     const dispatchUpdateFhirPath = (value: string) => {
         const extension = {
-            url: IExtentionType.fhirPath,
+            url: IExtensionType.fhirPath,
             valueString: value,
         };
         setItemExtension(props.item, extension, dispatch);
@@ -83,7 +83,7 @@ const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
         return fhirPath;
     };
 
-    const fhirPath = props.item.extension?.find((x) => x.url === IExtentionType.fhirPath)?.valueString ?? '';
+    const fhirPath = props.item.extension?.find((x) => x.url === IExtensionType.fhirPath)?.valueString ?? '';
     const isCustom = isCustomFhirPath(fhirPath);
 
     return (

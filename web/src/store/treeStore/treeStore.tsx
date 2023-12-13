@@ -64,7 +64,7 @@ import { isIgnorableItem, isRecipientList } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { saveStateToDb } from './indexedDbHelper';
-import { IExtentionType } from '../../types/IQuestionnareItemType';
+import { IExtensionType } from '../../types/IQuestionnareItemType';
 import { createVisibilityCoding, VisibilityType } from '../../helpers/globalVisibilityHelper';
 import { tjenesteomraadeCode, getTjenesteomraadeCoding } from '../../helpers/MetadataHelper';
 
@@ -223,7 +223,7 @@ const initialState: TreeState = {
                 valueCoding: { system: 'http://helsenorge.no/fhir/ValueSet/sdf-information-message', code: '1' },
             },
             {
-                url: IExtentionType.globalVisibility,
+                url: IExtensionType.globalVisibility,
                 valueCodeableConcept: {
                     coding: [
                         createVisibilityCoding(VisibilityType.hideHelp),
@@ -507,7 +507,6 @@ function updateSidebarTranslation(draft: TreeState, action: UpdateSidebarTransla
 }
 
 function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value }: UpdateQuestionnaireMetadataAction) {
-
     draft.qMetadata = {
         ...draft.qMetadata,
         [propName]: value,

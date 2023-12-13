@@ -1,5 +1,5 @@
 import { Extension, Coding } from '../types/fhir';
-import { ICodeSystem, IExtentionType } from '../types/IQuestionnareItemType';
+import { ICodeSystem, IExtensionType } from '../types/IQuestionnareItemType';
 import { ActionType } from '../store/treeStore/treeStore';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import { updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
@@ -21,7 +21,7 @@ export enum VisibilityType {
 const createItemControlExtensionWithTypes = (types: VisibilityType[]): Extension => {
     const initCodingArray: Coding[] = [];
     const extension = {
-        url: IExtentionType.globalVisibility,
+        url: IExtensionType.globalVisibility,
         valueCodeableConcept: { coding: initCodingArray },
     };
 
@@ -39,7 +39,7 @@ export const createItemControlExtension = (type: VisibilityType): Extension => {
         codingSystem = ICodeSystem.attachmentRenderOptions;
     }
     return {
-        url: IExtentionType.globalVisibility,
+        url: IExtensionType.globalVisibility,
         valueCodeableConcept: {
             coding: [
                 {
@@ -53,13 +53,13 @@ export const createItemControlExtension = (type: VisibilityType): Extension => {
 };
 
 const existItemControlExtension = (item: IQuestionnaireMetadata): boolean => {
-    return item.extension?.find((x: Extension) => x.url === IExtentionType.globalVisibility) !== undefined;
+    return item.extension?.find((x: Extension) => x.url === IExtensionType.globalVisibility) !== undefined;
 };
 
 const existItemControlWithCode = (item: IQuestionnaireMetadata, code: string): boolean => {
     const exist =
         item.extension
-            ?.filter((x: Extension) => x.url === IExtentionType.globalVisibility)
+            ?.filter((x: Extension) => x.url === IExtensionType.globalVisibility)
             ?.find((x: Extension) => x.valueCodeableConcept?.coding?.some((s: Coding) => s.code === code)) !==
         undefined;
     return exist;
@@ -71,7 +71,7 @@ const handleTypeInItemControlExtension = (item: IQuestionnaireMetadata, code: Vi
     }
 
     const coding = item.extension
-        ?.find((f: Extension) => f.url === IExtentionType.globalVisibility)
+        ?.find((f: Extension) => f.url === IExtensionType.globalVisibility)
         ?.valueCodeableConcept?.coding?.filter((f: Coding) => f.code !== code)
         ?.map((c: Coding) => c.code) as VisibilityType[];
 
@@ -103,7 +103,7 @@ export const setItemControlExtension = (
     code: VisibilityType,
     dispatch: (value: ActionType) => void,
 ): void => {
-    const extensionsToSet = (item.extension || []).filter((x: Extension) => x.url !== IExtentionType.globalVisibility);
+    const extensionsToSet = (item.extension || []).filter((x: Extension) => x.url !== IExtensionType.globalVisibility);
     const extension = handleTypeInItemControlExtension(item, code);
     if (extension) {
         extensionsToSet.push(extension);

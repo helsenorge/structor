@@ -1,4 +1,4 @@
-import { IExtentionType } from '../types/IQuestionnareItemType';
+import { IExtensionType } from '../types/IQuestionnareItemType';
 import { QuestionnaireItemAnswerOption } from '../types/fhir';
 import createUUID from './CreateUUID';
 import { removeSpace } from './formatHelper';
@@ -30,7 +30,7 @@ export const addOrdinalValueExtensionToAllAnswerOptions = (
     values: QuestionnaireItemAnswerOption[],
     scoreValue: string,
 ): QuestionnaireItemAnswerOption[] => {
-    const extensionToAdd = { url: IExtentionType.ordinalValue, valueDecimal: Number(scoreValue) };
+    const extensionToAdd = { url: IExtensionType.ordinalValue, valueDecimal: Number(scoreValue) };
     return values.map((x) => {
         return {
             valueCoding: {
@@ -77,9 +77,9 @@ export const updateAnswerOptionCode = (
 };
 
 const getExtension = (url: string, scoreValue: string) => {
-    if(url === IExtentionType.ordinalValue) {
+    if(url === IExtensionType.ordinalValue) {
         return { url: url, valueDecimal: Number(scoreValue) };
-    } else if (url === IExtentionType.valueSetLabel) {
+    } else if (url === IExtensionType.valueSetLabel) {
         return { url: url, valueString: scoreValue};
     }
 
@@ -142,7 +142,7 @@ export const removeOptionFromAnswerOptionArray = (
 
 export const removeExtensionFromAnswerOptions = (
     values: QuestionnaireItemAnswerOption[],
-    extensionUrl: IExtentionType,
+    extensionUrl: IExtensionType,
 ): QuestionnaireItemAnswerOption[] => {
     return values.map((x) => {
         return {
@@ -157,7 +157,7 @@ export const removeExtensionFromAnswerOptions = (
 export const removeExtensionFromSingleAnswerOption = (
     values: QuestionnaireItemAnswerOption[],
     valueCodingId: string,
-    extensionUrl: IExtentionType,
+    extensionUrl: IExtensionType,
 ): QuestionnaireItemAnswerOption[] => {
     return values.map((x) => {
         return x.valueCoding?.id === valueCodingId

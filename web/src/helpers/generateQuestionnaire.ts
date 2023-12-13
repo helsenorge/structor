@@ -8,7 +8,7 @@ import {
     QuestionnaireItemInitial,
     ValueSet,
 } from '../types/fhir';
-import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IExtensionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { getLanguageFromCode, translatableMetadata, translatableSettings } from './LanguageHelper';
 import { isItemControlSidebar } from './itemControl';
@@ -16,7 +16,7 @@ import { emptyPropertyReplacer } from './emptyPropertyReplacer';
 import { FhirpathAgeExpression, FhirpathGenderExpression } from './EnrichmentSet';
 import { getValueSetValues } from './valueSetHelper';
 
-const getExtension = (extensions: Extension[] | undefined, extensionType: IExtentionType): Extension | undefined => {
+const getExtension = (extensions: Extension[] | undefined, extensionType: IExtensionType): Extension | undefined => {
     return extensions?.find((ext) => ext.url === extensionType);
 };
 
@@ -89,7 +89,7 @@ const getTranslatedSidebarItem = (translation: Translation, currentItem: Questio
     // Set text to an emty sting if translation is not set
     const translatedText =
         sidebarItemTranslation && sidebarItemTranslation.markdown ? sidebarItemTranslation.markdown : '';
-    const markdownExtension = getExtension(currentItem._text?.extension, IExtentionType.markdown);
+    const markdownExtension = getExtension(currentItem._text?.extension, IExtensionType.markdown);
     if (markdownExtension) {
         const translatedMarkdownExtension = { ...markdownExtension, valueMarkdown: translatedText };
         _text = { extension: updateTranslatedExtension(currentItem._text?.extension, translatedMarkdownExtension) };
@@ -108,7 +108,7 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
     // item.text
     let _text = undefined;
     const translatedText = itemTranslation?.text;
-    const markdownExtension = getExtension(currentItem._text?.extension, IExtentionType.markdown);
+    const markdownExtension = getExtension(currentItem._text?.extension, IExtensionType.markdown);
     if (markdownExtension) {
         const translatedMarkdownExtension = { ...markdownExtension, valueMarkdown: translatedText };
         _text = { extension: updateTranslatedExtension(currentItem._text?.extension, translatedMarkdownExtension) };
@@ -120,7 +120,7 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
     }
 
     // ValidationMessage
-    const validationTextExtension = getExtension(extension, IExtentionType.validationtext);
+    const validationTextExtension = getExtension(extension, IExtensionType.validationtext);
     if (validationTextExtension) {
         const translatedValidationTextExtension = {
             ...validationTextExtension,
@@ -130,7 +130,7 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
     }
 
     // Placeholder
-    const entryFormatExtension = getExtension(extension, IExtentionType.entryFormat);
+    const entryFormatExtension = getExtension(extension, IExtensionType.entryFormat);
     if (entryFormatExtension) {
         const translatedEntryFormatExtension = {
             ...entryFormatExtension,
@@ -140,7 +140,7 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
     }
 
     // Sublabel
-    const sublabelExtension = getExtension(extension, IExtentionType.sublabel);
+    const sublabelExtension = getExtension(extension, IExtensionType.sublabel);
     if (sublabelExtension) {
         const translatedSublabelExtension = {
             ...sublabelExtension,
@@ -150,7 +150,7 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
     }
 
     // Repeatstext
-    const repeatsTextExtension = getExtension(extension, IExtentionType.repeatstext);
+    const repeatsTextExtension = getExtension(extension, IExtensionType.repeatstext);
     if (repeatsTextExtension) {
         const translatedRepeatsTextExtension = {
             ...repeatsTextExtension,
@@ -186,7 +186,7 @@ const getTranslatedExtensions = (qMetadata: IQuestionnaireMetadata, translation:
     const translatedSettings = translation.settings;
     const extensions = [];
     for (const e of qMetadata.extension || []) {
-        const translatable = translatableSettings[e.url as IExtentionType];
+        const translatable = translatableSettings[e.url as IExtensionType];
         if (translatable) continue;
 
         extensions.push(e);
@@ -332,7 +332,7 @@ const setEnrichmentValues = (
         (qItem.extension || []).forEach((extension) => {
             replacementValues.forEach((replacementValue) => {
                 if (
-                    extension.url === IExtentionType.fhirPath &&
+                    extension.url === IExtensionType.fhirPath &&
                     extension.valueString?.replace(' ', '') === replacementValue.expression.replace(' ', '')
                 ) {
                     qItem.initial = [replacementValue.initialValue];

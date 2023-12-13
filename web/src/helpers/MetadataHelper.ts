@@ -5,7 +5,7 @@ import {
     IQuestionnaireMetadataType,
 } from '../types/IQuestionnaireMetadataType';
 import { updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
-import { IExtentionType, MetaSecuritySystem, UseContextSystem } from '../types/IQuestionnareItemType';
+import { IExtensionType, MetaSecuritySystem, UseContextSystem } from '../types/IQuestionnareItemType';
 import { ActionType } from '../store/treeStore/treeStore';
 
 export const questionnaireStatusOptions = [
@@ -211,12 +211,12 @@ export const addMetaSecurityIfDoesNotExist = (questionnaire: Questionnaire): Que
 };
 
 export const addMetaSecurityIfCanBePerformedByExist = (questionnaire: Questionnaire): Questionnaire => {
-    const canBePerformedBy = questionnaire?.extension?.find((ex) => ex.url === IExtentionType.canBePerformedBy)
+    const canBePerformedBy = questionnaire?.extension?.find((ex) => ex.url === IExtensionType.canBePerformedBy)
         ?.valueCoding?.code;
     const kanUtforesAv = questionnaire?.meta?.security?.find((ex) => ex.system === MetaSecuritySystem.kanUtforesAv);
     const kunInnbyggerExtensionCode = '2';
     if (canBePerformedBy) {
-        const extentionToUpdate = questionnaire?.extension?.filter((ex) => ex.url !== IExtentionType.canBePerformedBy);
+        const extentionToUpdate = questionnaire?.extension?.filter((ex) => ex.url !== IExtensionType.canBePerformedBy);
         if (!kanUtforesAv) {
             if (canBePerformedBy === kunInnbyggerExtensionCode) {
                 const securityToUpdate = questionnaire.meta?.security || [];

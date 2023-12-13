@@ -6,7 +6,7 @@ import './AnswerOption.css';
 import InputField from '../InputField/inputField';
 import { doesItemHaveCode } from '../../utils/itemSearchUtils';
 import { findExtensionInExtensionArray } from '../../helpers/extensionHelper';
-import { IExtentionType } from '../../types/IQuestionnareItemType';
+import { IExtensionType } from '../../types/IQuestionnareItemType';
 import { ItemControlType } from '../../helpers/itemControl';
 
 type Props = {
@@ -37,35 +37,31 @@ const AnswerOption = ({
     const { t } = useTranslation();
 
     const [displayScoringField, setDisplayScoringField] = useState(false);
-    const twoColomnsClass = 'two-columns';
-    const inputFieldClassName = displayScoringField ? 'three-columns' : twoColomnsClass;
     const isSlider = item.extension?.some((ex) => ex.valueCodeableConcept?.coding?.some(cd => cd.code ===  ItemControlType.slider));
+    const inputFieldClassName = displayScoringField && !isSlider ? 'three-columns' : 'two-columns';
+    const ordinalValuePlaceholder = displayScoringField ? (isSlider ? t('Enter a scoring value as label..') : t('Enter a scoring value..')) : isSlider ? t('Enter a label..') : '';
 
-    const getDefaultScoreValue = (): string => {
+    const getDefaultOrdinalValue = (): string => {
         let stringToReturn = '';
         const scoreExtension =
             answerOption?.valueCoding?.extension &&
-            findExtensionInExtensionArray(answerOption?.valueCoding?.extension, IExtentionType.ordinalValue);
+            findExtensionInExtensionArray(answerOption?.valueCoding?.extension, IExtensionType.ordinalValue);
         if (scoreExtension) {
             stringToReturn = scoreExtension?.valueDecimal?.toString() || '';
         }
         return stringToReturn;
     };
 
-    // TODO: Er det riktig å bruke ordinalValue både i value feltet og scoring feltet? Kan vi ha to separate ordinalValues?
-    const getDefaultOrdinalValue = (): string => {
-        const scoreExtension =
-            answerOption?.valueCoding?.extension &&
-            findExtensionInExtensionArray(answerOption?.valueCoding?.extension, IExtentionType.ordinalValue);
-        return  scoreExtension?.valueDecimal?.toString() || '';
-    };
-
 
     const getDefaultValueSetLabel = (): string => {
+        let stringToReturn = '';
         const scoreExtension =
             answerOption?.valueCoding?.extension &&
-            findExtensionInExtensionArray(answerOption?.valueCoding?.extension, IExtentionType.valueSetLabel);
-        return scoreExtension?.valueString?.toString() || '';
+            findExtensionInExtensionArray(answerOption?.valueCoding?.extension, IExtensionType.valueSetLabel);
+            if (scoreExtension) {
+                stringToReturn = scoreExtension?.valueString?.toString() || '';
+            }
+        return stringToReturn;
     };
 
     useEffect(() => {
@@ -92,12 +88,12 @@ const AnswerOption = ({
                     placeholder={t('Enter a value..')}
                     onBlur={(event) => changeCode(event)}
                 />
-                {displayScoringField && (
+                {(displayScoringField || isSlider) && (
                     <InputField
                         name="skåring"
                         className={inputFieldClassName}
-                        defaultValue={getDefaultScoreValue()}
-                        placeholder={t('Enter a scoring value..')}
+                        defaultValue={getDefaultOrdinalValue()}
+                        placeholder={ordinalValuePlaceholder}
                         onChange={(event) => {
                             changeOrdinalValueExtension(event);
                         }}
@@ -107,17 +103,10 @@ const AnswerOption = ({
                 <>
                     <InputField
                         name="emojicode"
-                        className={twoColomnsClass}
+                        className={inputFieldClassName}
                         defaultValue={getDefaultValueSetLabel()}
                         placeholder={t('Enter an emoji..')}
                         onChange={(event) => changeValueSetLabel(event)}
-                    />
-                    <InputField
-                        name="decimal value"
-                        className={twoColomnsClass}
-                        defaultValue={getDefaultOrdinalValue()}
-                        placeholder={t('Enter a label..')}
-                        onChange={(event) => changeOrdinalValueExtension(event)}
                     />
                 </>)}
             </div>

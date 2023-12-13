@@ -1,6 +1,6 @@
 import { RenderingOptionsEnum } from "../helpers/codeHelper";
 import { QuestionnaireItem } from "../types/fhir";
-import { ICodeSystem, IExtentionType } from "../types/IQuestionnareItemType";
+import { ICodeSystem, IExtensionType } from "../types/IQuestionnareItemType";
 
 export const hiddenItem = {
     linkId: "hidden_item",
@@ -11,7 +11,7 @@ export const hiddenItem = {
     required: false,
     extension: [
         {
-            url: IExtentionType.hidden,
+            url: IExtensionType.hidden,
             valueBoolean: true
         }
     ]

@@ -9,7 +9,7 @@ import {
 
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
 import Btn from '../../Btn/Btn';
-import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { removeItemAttributeAction, updateItemAction } from '../../../store/treeStore/treeActions';
 
@@ -43,7 +43,7 @@ const Choice = ({ item }: Props): JSX.Element => {
     const { qContained } = state;
 
     const dispatchExtentionUpdate = (type: ItemControlType) => {
-        removeItemExtension(item, IExtentionType.itemControl, dispatch);
+        removeItemExtension(item, IExtensionType.itemControl, dispatch);
         if (type === ItemControlType.checkbox && !isItemControlCheckbox(item)) {
             setItemExtension(item, checkboxExtension, dispatch);
         } else if (type === ItemControlType.dropdown && !isItemControlDropDown(item)) {

@@ -1,5 +1,5 @@
 import { QuestionnaireItem } from '../types/fhir';
-import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IExtensionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { createNewAnswerOption } from './answerOptionHelper';
 import CreateUUID from './CreateUUID';
 
@@ -44,7 +44,7 @@ export const getInitialItemConfig = (
         newQuestionnaireItem.type = IQuestionnaireItemType.group;
     } else if (questionType === IQuestionnaireItemType.attachment) {
         const maxFileSizeExtension = {
-            url: IExtentionType.maxSize,
+            url: IExtensionType.maxSize,
             valueDecimal: ATTACHMENT_DEFAULT_MAX_SIZE,
         };
         newQuestionnaireItem.extension?.push(maxFileSizeExtension);
