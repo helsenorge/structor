@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import FrontPage from "../views/FrontPage";
 import { TreeContextProvider } from "../store/treeStore/treeStore";
 
-export default function GetRoutes(): JSX.Element {
+export default function GetRoutes(): React.JSX.Element {
   return (
     <Routes>
       <Route path="/static_skjemabygger/" element={<TreeContextProvider><FrontPage /></TreeContextProvider>} />
