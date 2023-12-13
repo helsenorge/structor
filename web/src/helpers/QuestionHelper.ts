@@ -159,33 +159,33 @@ export const getInitialText = (item?: QuestionnaireItem): string => {
         item?.initial &&
         item.initial[0]
     ) {
-        return item.initial[0].valueString || '';
+        return item.initial[0].valueString ?? '';
     }
     return '';
 };
 
 export const getPrefix = (item?: QuestionnaireItem): string => {
-    return item?.prefix || '';
+    return item?.prefix ?? '';
 };
 
 export const getSublabel = (item?: QuestionnaireItem): string => {
-    return item?.extension?.find((extension) => extension.url === IExtensionType.sublabel)?.valueMarkdown || '';
+    return item?.extension?.find((extension) => extension.url === IExtensionType.sublabel)?.valueMarkdown ?? '';
 };
 
 export const getRepeatsText = (item?: QuestionnaireItem): string => {
-    return item?.extension?.find((extension) => extension.url === IExtensionType.repeatstext)?.valueString || '';
+    return item?.extension?.find((extension) => extension.url === IExtensionType.repeatstext)?.valueString ?? '';
 };
 
 export const getValidationMessage = (item?: QuestionnaireItem): string => {
-    return item?.extension?.find((extension) => extension.url === IExtensionType.validationtext)?.valueString || '';
+    return item?.extension?.find((extension) => extension.url === IExtensionType.validationtext)?.valueString ?? '';
 };
 
 export const getPlaceHolderText = (item?: QuestionnaireItem): string => {
-    return item?.extension?.find((extension) => extension.url === IExtensionType.entryFormat)?.valueString || '';
+    return item?.extension?.find((extension) => extension.url === IExtensionType.entryFormat)?.valueString ?? '';
 };
 
 export const getMarkdownText = (extensions?: Extension[]): string => {
-    return extensions?.find((extension) => extension.url === IExtensionType.markdown)?.valueMarkdown || '';
+    return extensions?.find((extension) => extension.url === IExtensionType.markdown)?.valueMarkdown ?? '';
 };
 
 export const getTextExtensionMarkdown = (item: QuestionnaireItem | undefined): string | undefined => {
@@ -197,11 +197,11 @@ export const isHiddenItem = (item: QuestionnaireItem): boolean => {
 };
 
 export const getGuidanceAction = (item?: QuestionnaireItem): string => {
-    return item?.extension?.find((extension) => extension.url === IExtensionType.guidanceAction)?.valueString || '';
+    return item?.extension?.find((extension) => extension.url === IExtensionType.guidanceAction)?.valueString ?? '';
 };
 
 export const getGuidanceParameterName = (item?: QuestionnaireItem): string => {
-    return item?.extension?.find((extension) => extension.url === IExtensionType.guidanceParam)?.valueString || '';
+    return item?.extension?.find((extension) => extension.url === IExtensionType.guidanceParam)?.valueString ?? '';
 };
 
 export const isValidGuidanceParameterName = (name: string): boolean => {

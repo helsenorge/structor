@@ -3,11 +3,30 @@ import { ActionType } from '../store/treeStore/treeStore';
 import { Element, Extension, QuestionnaireItem } from '../types/fhir';
 import { HyperlinkTarget } from '../types/hyperlinkTargetType';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import { IExtensionType, IValueSetSystem, IItemProperty } from '../types/IQuestionnareItemType';
+import { IExtensionType, IValueSetSystem, IItemProperty, ICodeSystem } from '../types/IQuestionnareItemType';
 import createUUID from './CreateUUID';
 
 export const findExtensionInExtensionArray = (extensionArray: Extension[], url: string): Extension | undefined => {
     return extensionArray.find((x) => x.url === url);
+};
+export const findExtensionByUrl = (extentions: Extension[] | undefined, url: string): Extension | undefined => {
+    return extentions?.find(ext => ext.url === url);
+}
+export const isExtensionValueTrue = (extensions: Extension[] | undefined, url: string, valueType: keyof Extension): boolean | undefined => {
+    const extension = findExtensionByUrl(extensions, url);
+    if(!extension || typeof extension[valueType] !== 'boolean'){
+        return undefined;
+    }
+
+    return extension ? extension[valueType] === true : false;
+}
+export const getExtensionValue = <T extends keyof Extension>(
+    extensions: Extension[] | undefined,
+    url: string,
+    valueType: T
+): Extension[T] | undefined => {
+    const extension = findExtensionByUrl(extensions, url);
+    return extension ? extension[valueType] : undefined;
 };
 
 export const setItemExtension = (
@@ -81,14 +100,14 @@ export const createMarkdownExtension = (markdownValue: string): Element => {
 };
 
 export const hasExtension = (extensionParent: Element | undefined, extensionType: IExtensionType): boolean => {
-    if (extensionParent && extensionParent.extension) {
-        return extensionParent.extension.some((ext) => ext.url === extensionType);
-    }
-    return false;
+    return extensionParent && extensionParent.extension ?  extensionParent.extension.some((ext) => ext.url === extensionType) : false;
 };
+export const hasOneOrMoreExtensions = (extensions: Extension[], extensionTypes: IExtensionType[]): boolean => {
+    return extensions.some(ex => extensionTypes.includes(ex.url as IExtensionType));
+}
 
 export const getExtensionStringValue = (item: QuestionnaireItem, extensionType: IExtensionType): string | undefined => {
-    return item.extension?.find((f: Extension) => f.url === extensionType)?.valueString;
+    return findExtensionByUrl(item.extension, extensionType)?.valueString;
 };
 
 export const createGuidanceActionExtension = (valueString = ''): Extension => ({
@@ -119,3 +138,35 @@ export const getQuantityUnit = (extensions: Extension[]): string | undefined => 
     const unit = extensions.filter((f: Extension) => f.url === IExtensionType.questionnaireUnit);
     return unit.length > 0 ? unit[0].valueCoding?.code : undefined;
 };
+export const getExtentionsFromElement = (element: Element) => {
+    return element.extension;
+};
+export const getExtentionByType = (extentions: Extension[], type: IExtensionType) => {
+    return extentions.find(x => x.url === type);
+}
+
+type ExclusiveExtensionKeys = Exclude<keyof Extension, keyof Element>;
+
+type ExclusiveExtensionValues = {
+    [K in ExclusiveExtensionKeys]: Extension[K];
+};
+
+export function getExtentionValueByType<T extends ExclusiveExtensionKeys>(
+    element: Element,
+    extentionType: IExtensionType,
+    valueType: T
+): ExclusiveExtensionValues[T] | undefined {
+    const extentions = getExtentionsFromElement(element) ?? [];
+    const extention = getExtentionByType(extentions || [], extentionType);
+
+    return !extention || !(valueType in extention) ? undefined : (extention as ExclusiveExtensionValues)[valueType];
+}
+
+export const findExtentionByCode = ( code: ICodeSystem, extentions?: Extension[]): Extension | undefined => {
+    return extentions?.find(x => x.valueCoding?.system === code)
+}
+
+export const getExtensionByCodeAndElement = (element: Element, code: ICodeSystem): Extension | undefined => {
+    const extentions = getExtentionsFromElement(element);
+    return findExtentionByCode(code, extentions)
+}
