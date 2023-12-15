@@ -58,12 +58,13 @@ import {
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
-import { IItemProperty, IExtensionType } from '../../types/IQuestionnareItemType';
+import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { isIgnorableItem, isRecipientList } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { saveStateToDb } from './indexedDbHelper';
+import { IExtentionType } from '../../types/IQuestionnareItemType';
 import { createVisibilityCoding, VisibilityType } from '../../helpers/globalVisibilityHelper';
 import { tjenesteomraadeCode, getTjenesteomraadeCoding } from '../../helpers/MetadataHelper';
 
@@ -222,7 +223,7 @@ const initialState: TreeState = {
                 valueCoding: { system: 'http://helsenorge.no/fhir/ValueSet/sdf-information-message', code: '1' },
             },
             {
-                url: IExtensionType.globalVisibility,
+                url: IExtentionType.globalVisibility,
                 valueCodeableConcept: {
                     coding: [
                         createVisibilityCoding(VisibilityType.hideHelp),

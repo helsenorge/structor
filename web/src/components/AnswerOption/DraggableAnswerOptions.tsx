@@ -16,7 +16,7 @@ import {
     updateAnswerOptionExtension,
 } from '../../helpers/answerOptionHelper';
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
-import { IExtensionType, IItemProperty } from '../../types/IQuestionnareItemType';
+import { IExtentionType, IItemProperty } from '../../types/IQuestionnareItemType';
 import AnswerOption from './AnswerOption';
 
 interface DraggableAnswerOptionsProps {
@@ -104,7 +104,7 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                         const newArray = removeExtensionFromSingleAnswerOption(
                                                             item.answerOption ?? [],
                                                             answerOption.valueCoding?.id ?? '',
-                                                            IExtensionType.ordinalValue,
+                                                            IExtentionType.ordinalValue,
                                                         );
                                                         dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                     } else {
@@ -112,25 +112,6 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                             item.answerOption ?? [],
                                                             answerOption.valueCoding?.id ?? '',
                                                             event.target.value,
-                                                            IExtensionType.ordinalValue
-                                                        );
-                                                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                                    }
-                                                }}
-                                                changeValueSetLabel={(event) => {
-                                                    if (event.target.value === '') {
-                                                        const newArray = removeExtensionFromSingleAnswerOption(
-                                                            item.answerOption || [],
-                                                            answerOption.valueCoding?.id || '',
-                                                            IExtensionType.valueSetLabel,
-                                                        );
-                                                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                                                    } else {
-                                                        const newArray = updateAnswerOptionExtension(
-                                                            item.answerOption || [],
-                                                            answerOption.valueCoding?.id || '',
-                                                            event.target.value,
-                                                            IExtensionType.valueSetLabel
                                                         );
                                                         dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                     }
