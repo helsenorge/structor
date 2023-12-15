@@ -99,6 +99,7 @@ export const getResources = (language: string): { [id: string]: string } => {
             linkOpensInNewTab: 'Opens in new tab',
             nextStep: 'Next',
             previousStep: 'Previous',
+            openChoiceOption: 'Other',
         };
     }
     if (language === 'fr-FR') {
@@ -201,6 +202,7 @@ export const getResources = (language: string): { [id: string]: string } => {
             linkOpensInNewTab: `S'ouvre dans un nouvel onglet`,
             nextStep: 'Suivant',
             previousStep: 'Précédent',
+            openChoiceOption: 'Autre',
         };
     }
     return {
@@ -303,5 +305,6 @@ export const getResources = (language: string): { [id: string]: string } => {
         linkOpensInNewTab: 'Åpnes i ny fane',
         nextStep: 'Neste',
         previousStep: 'Forrige',
+        openChoiceOption: 'Annet',
     };
 };
