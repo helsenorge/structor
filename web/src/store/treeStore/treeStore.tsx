@@ -459,12 +459,13 @@ function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAc
 }
 
 function updateItemOptionTranslation(draft: TreeState, action: UpdateItemOptionTranslationAction) {
-    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
-        const item = draft.qAdditionalLanguages[action.languageCode].items[action.linkId];
+    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {        
+        const item = draft.qAdditionalLanguages[action.languageCode].items[action.linkId] ?? {} as ItemTranslation;
         if (!item.answerOptions) {
-            item.answerOptions = {};
+            item.answerOptions = {} as CodeStringValue;
         }
         item.answerOptions[action.optionCode] = action.text;
+        draft.qAdditionalLanguages[action.languageCode].items[action.linkId] = item;
     }
 }
 
