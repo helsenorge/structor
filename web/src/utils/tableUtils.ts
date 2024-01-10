@@ -58,3 +58,10 @@ export const handleTableOptionChange = (selectedValue: string, item: Questionnai
     createExtensionWithSystemAndCoding(item, IExtentionType.itemControl, IValueSetSystem.itemControlValueSet, selectedValue, dispatch);
   }
 }
+
+export const tableCodes = [
+  TableOptionsEnum.GTable,
+  TableOptionsEnum.Table,
+  TableOptionsEnum.TableHN1,
+  TableOptionsEnum.TableHN2
+];

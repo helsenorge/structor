@@ -2,6 +2,11 @@ export enum TableOptionsEnum {
     None = 'none',
     GTable = 'gTable',
     Table = 'table',
-    TableHN1 = 'tableHN1',
-    TableHN2 = 'tableHN2',
+    TableHN1 = 'table-hn1',
+    TableHN2 = 'table-hn2',
+}
+
+export enum TableColumnOrderingOptionsEnum {
+    Ascending = 'ASC',
+    Descending = 'DESC',
 }

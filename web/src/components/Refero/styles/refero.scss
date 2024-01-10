@@ -22,6 +22,12 @@
         font-weight: 600;
     }
 
+    &__table_hn1 {
+        &__heading {
+            font-weight: bold;
+        }
+    }
+
     p {
         padding: 0;
     }
