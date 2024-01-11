@@ -43,7 +43,7 @@ import { LinksOption } from './optionComponents/links-option';
 import { PlaceholderOption } from './optionComponents/placeholder-option';
 import { ReadOnlyOption } from './optionComponents/readOnly-option';
 import { TableOption } from './optionComponents/tableOptions/table-option';
-import { TableColumnOption } from './optionComponents/tableOptions/tableColumn-option';
+import { ColumnOption } from './optionComponents/tableOptions/column-option';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -119,7 +119,7 @@ const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} 
                 <SummaryOption item={item} dispatch={dispatch}></SummaryOption>
             )}
             {item.type === IQuestionnaireItemType.group && <TableOption item={item} dispatch={dispatch} />}
-            {parentItemHasTableCode && <TableColumnOption item={item} parentItem={parentItem} dispatch={dispatch} />}
+            {parentItemHasTableCode && <ColumnOption item={item} parentItem={parentItem} dispatch={dispatch} />}
             <HelpOption item={item} dispatch={dispatch} parentArray={parentArray} qItems={qItems} qOrder={qOrder} />
             <ViewOption item={item} />
             <SaveCapabilityOption item={item} dispatch={dispatch} />

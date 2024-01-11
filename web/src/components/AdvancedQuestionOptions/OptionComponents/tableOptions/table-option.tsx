@@ -5,11 +5,11 @@ import { ActionType } from "../../../../store/treeStore/treeStore";
 import RadioBtn from "../../../RadioBtn/RadioBtn";
 import { IExtentionType } from "../../../../types/IQuestionnareItemType";
 import { TableOptionsEnum } from "../../../../types/tableOptions";
-import { TableColumnOrderingOption } from "./tableColumnOrdering-option";
+import { ColumnOrderingFunctionOption } from "./columnOrderingFunction-option";
 import { ItemControlType, createItemControlExtension, existItemControlWithCode } from "../../../../helpers/itemControl";
 import { removeItemExtension, setItemExtension } from "../../../../helpers/extensionHelper";
-import { TableColumnToOrderByOption } from "./tableColumnToOrderBy-option";
-import { TableColumnNameOption } from "./tableColumnName";
+import { ColumnToOrderByOption } from "./columnToOrderBy-option";
+import { ColumnNameOption } from "./columnName-option";
 
 type TableOptionProps = {
     item: QuestionnaireItem;
@@ -74,7 +74,7 @@ export const TableOption = ({item, dispatch}: TableOptionProps) => {
 
     return (
         <>
-            <FormField label={t('Table')} sublabel={t('Choose whether the group should be displayed as a table')}>
+            <FormField label={t('Table')} sublabel={t('Choose whether the group should be displayed as a summary table')}>
                 <RadioBtn
                     onChange={onChangeTableOption}
                     checked={checkedTableOption()}
@@ -84,11 +84,11 @@ export const TableOption = ({item, dispatch}: TableOptionProps) => {
             </FormField>
             {
                showColumnOptions && (
-                <>
-                    <TableColumnOrderingOption item={item} dispatch={dispatch} />
-                    <TableColumnToOrderByOption item={item} dispatch={dispatch} />
-                    <TableColumnNameOption item={item} dispatch={dispatch} />
-                </>
+                <div className="table-column-options">
+                    <ColumnNameOption item={item} dispatch={dispatch} />
+                    <ColumnToOrderByOption item={item} dispatch={dispatch} />
+                    <ColumnOrderingFunctionOption item={item} dispatch={dispatch} />
+                </div>
                )
             }
         </>
