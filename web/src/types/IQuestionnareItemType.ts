@@ -90,7 +90,8 @@ export enum ICodeSystem {
     score = 'http://ehelse.no/Score',
     scoringFormulas = 'http://ehelse.no/scoringFormulas',
     tableColumn = 'http://helsenorge.no/fhir/CodeSystem/TableColumn',
-    tableColumnOrdering = 'http://helsenorge.no/fhir/CodeSystem/TableOrderingFunctions',
+    tableOrderingFunctions = 'http://helsenorge.no/fhir/CodeSystem/TableOrderingFunctions',
+    tableOrderingColumn = 'http://helsenorge.no/fhir/CodeSystem/TableOrderingColumn',
     tableColumnName = 'http://helsenorge.no/fhir/CodeSystem/TableColumnName',
 }
 

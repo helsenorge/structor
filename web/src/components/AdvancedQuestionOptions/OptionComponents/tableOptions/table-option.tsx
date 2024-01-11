@@ -9,6 +9,7 @@ import { TableColumnOrderingOption } from "./tableColumnOrdering-option";
 import { ItemControlType, createItemControlExtension, existItemControlWithCode } from "../../../../helpers/itemControl";
 import { removeItemExtension, setItemExtension } from "../../../../helpers/extensionHelper";
 import { removeItemCode } from "../../../../helpers/codeHelper";
+import { TableColumnToOrderByOption } from "./tableColumnToOrderBy-option";
 
 type TableOptionProps = {
     item: QuestionnaireItem;
@@ -57,7 +58,7 @@ export const TableOption = ({item, dispatch}: TableOptionProps) => {
                 break;
             default:
                 removeItemExtension(item, IExtentionType.itemControl, dispatch);
-                removeItemCode(item,ICodeSystem.tableColumnOrdering, dispatch);
+                removeItemCode(item,ICodeSystem.tableOrderingFunctions, dispatch);
         }
     };
 
@@ -83,7 +84,12 @@ export const TableOption = ({item, dispatch}: TableOptionProps) => {
                 />
             </FormField>
             {
-               showTableColumnOrderingOption && <TableColumnOrderingOption item={item} dispatch={dispatch} />
+               showTableColumnOrderingOption && (
+                <>
+                    <TableColumnOrderingOption item={item} dispatch={dispatch} />
+                    <TableColumnToOrderByOption item={item} dispatch={dispatch} />
+                </>
+               )
             }
         </>
     )
