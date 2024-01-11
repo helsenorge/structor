@@ -3,13 +3,13 @@ import { Extension, QuestionnaireItem } from "../../../../types/fhir";
 import { useTranslation } from "react-i18next";
 import { ActionType } from "../../../../store/treeStore/treeStore";
 import RadioBtn from "../../../RadioBtn/RadioBtn";
-import { ICodeSystem, IExtentionType } from "../../../../types/IQuestionnareItemType";
+import { IExtentionType } from "../../../../types/IQuestionnareItemType";
 import { TableOptionsEnum } from "../../../../types/tableOptions";
 import { TableColumnOrderingOption } from "./tableColumnOrdering-option";
 import { ItemControlType, createItemControlExtension, existItemControlWithCode } from "../../../../helpers/itemControl";
 import { removeItemExtension, setItemExtension } from "../../../../helpers/extensionHelper";
-import { removeItemCode } from "../../../../helpers/codeHelper";
 import { TableColumnToOrderByOption } from "./tableColumnToOrderBy-option";
+import { TableColumnNameOption } from "./tableColumnName";
 
 type TableOptionProps = {
     item: QuestionnaireItem;
@@ -58,7 +58,6 @@ export const TableOption = ({item, dispatch}: TableOptionProps) => {
                 break;
             default:
                 removeItemExtension(item, IExtentionType.itemControl, dispatch);
-                removeItemCode(item,ICodeSystem.tableOrderingFunctions, dispatch);
         }
     };
 
@@ -71,7 +70,7 @@ export const TableOption = ({item, dispatch}: TableOptionProps) => {
         { code: TableOptionsEnum.TableHN1, display: t('Table with question and answer in two columns') },
         { code: TableOptionsEnum.TableHN2, display: t('Table with custom columns and column headers') },
     ];
-    const showTableColumnOrderingOption: boolean = hasTableCode && checkedTableOption() === TableOptionsEnum.TableHN2;
+    const showColumnOptions: boolean = hasTableCode && checkedTableOption() === TableOptionsEnum.TableHN2;
 
     return (
         <>
@@ -84,10 +83,11 @@ export const TableOption = ({item, dispatch}: TableOptionProps) => {
                 />
             </FormField>
             {
-               showTableColumnOrderingOption && (
+               showColumnOptions && (
                 <>
                     <TableColumnOrderingOption item={item} dispatch={dispatch} />
                     <TableColumnToOrderByOption item={item} dispatch={dispatch} />
+                    <TableColumnNameOption item={item} dispatch={dispatch} />
                 </>
                )
             }
