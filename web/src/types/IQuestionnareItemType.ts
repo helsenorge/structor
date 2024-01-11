@@ -91,6 +91,7 @@ export enum ICodeSystem {
     scoringFormulas = 'http://ehelse.no/scoringFormulas',
     tableColumn = 'http://helsenorge.no/fhir/CodeSystem/TableColumn',
     tableColumnOrdering = 'http://helsenorge.no/fhir/CodeSystem/TableOrderingFunctions',
+    tableColumnName = 'http://helsenorge.no/fhir/CodeSystem/TableColumnName',
 }
 
 export enum IExtentionType {

@@ -8,6 +8,8 @@ import {
 } from '../../types/IQuestionnareItemType';
 import InitialOption from './optionComponents/initial-option';
 import {
+    ItemControlType,
+    existItemControlWithCode,
     isItemControlDataReceiver
 } from '../../helpers/itemControl';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
@@ -54,6 +56,9 @@ const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} 
     const { state, dispatch } = useContext(TreeContext);
     const { qItems, qOrder } = state;
     const [isDataReceiver, setDataReceiverState] = useState(isItemControlDataReceiver(item));
+
+    const parentItem = getItem(parentArray[parentArray.length -1]);
+    const parentItemHasTableCode = existItemControlWithCode(parentItem, ItemControlType.tableHN2);
 
     const handleExtension = (extension: Extension) => {
         setItemExtension(item, extension, dispatch);
@@ -114,7 +119,7 @@ const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} 
                 <SummaryOption item={item} dispatch={dispatch}></SummaryOption>
             )}
             {item.type === IQuestionnaireItemType.group && <TableOption item={item} dispatch={dispatch} />}
-            {<TableColumnOption item={item} dispatch={dispatch} />}
+            {parentItemHasTableCode && <TableColumnOption item={item} parentItem={parentItem} dispatch={dispatch} />}
             <HelpOption item={item} dispatch={dispatch} parentArray={parentArray} qItems={qItems} qOrder={qOrder} />
             <ViewOption item={item} />
             <SaveCapabilityOption item={item} dispatch={dispatch} />
