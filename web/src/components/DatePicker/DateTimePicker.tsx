@@ -17,7 +17,7 @@ type DateTimePickerProps = {
 setDefaultLocale('nb');
 registerLocale('nb', nb);
 
-const DateTimePicker = ({ disabled = true, callback, nowButton, selected }: DateTimePickerProps): JSX.Element => {
+const DateTimePicker = ({ disabled = true, callback, nowButton, selected }: DateTimePickerProps): React.JSX.Element => {
     const { t } = useTranslation();
     const [startDate, setStartDate] = useState<Date>();
     return (

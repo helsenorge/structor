@@ -5,8 +5,8 @@ interface WarningMessagesProps {
     markdownWarning: ValidationErrors;
 };
 
-const WarningMessages = (props: WarningMessagesProps): React.JSX.Element => {
-    const renderWarningMessage = (): React.JSX.Element => {
+const WarningMessages = (props: WarningMessagesProps): React.React.JSX.Element => {
+    const renderWarningMessage = (): React.React.JSX.Element => {
         return (
             <h3 className="msg-warning">
                 {props.markdownWarning.errorReadableText}

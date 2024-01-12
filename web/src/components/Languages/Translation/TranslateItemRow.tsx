@@ -25,7 +25,7 @@ type TranslationRowProps = {
     itemHeading: string;
 };
 
-const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowProps): JSX.Element => {
+const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowProps): React.JSX.Element => {
     const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
 
@@ -47,7 +47,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
         }
     }
 
-    function getInputField(): JSX.Element {
+    function getInputField(): React.JSX.Element {
         if (isMarkdown) {
             return (
                 <div className={!itemTranslation.text?.trim() ?  "validation-error" : "validation-warning"}>
@@ -68,7 +68,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
         );
     }
 
-    function getReadOnlyInputField(): JSX.Element {
+    function getReadOnlyInputField(): React.JSX.Element {
         if (isMarkdown) {
             const valueMarkdown = getTextExtensionMarkdown(item);
             return <MarkdownEditor data={valueMarkdown || item.text || ''} disabled={true} />;
@@ -76,7 +76,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
         return <textarea defaultValue={item.text} disabled={true} />;
     }
 
-    function getOptionRow(option: QuestionnaireItemAnswerOption): JSX.Element | null {
+    function getOptionRow(option: QuestionnaireItemAnswerOption): React.JSX.Element | null {
         if (option.valueCoding?.code) {
             const translation = itemTranslation.answerOptions
                 ? itemTranslation.answerOptions[option.valueCoding.code] || ''
@@ -98,7 +98,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
         textValue: string,
         propertyName: TranslatableItemProperty,
         isMarkdownField: boolean,
-    ): JSX.Element {
+    ): React.JSX.Element {
         const itemPropertyTranslation = getItemPropertyTranslation(
             targetLanguage,
             qAdditionalLanguages,

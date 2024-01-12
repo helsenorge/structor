@@ -13,7 +13,7 @@ type Props = {
 
 export const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider = ({ children }: Props): JSX.Element => {
+export const UserProvider = ({ children }: Props): React.JSX.Element => {
     const [locale, setLocale] = useState(defaultLocale);
 
     return <UserContext.Provider value={{ locale, setLocale }}>{children}</UserContext.Provider>;

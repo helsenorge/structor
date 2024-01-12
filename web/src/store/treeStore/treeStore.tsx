@@ -459,13 +459,12 @@ function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAc
 }
 
 function updateItemOptionTranslation(draft: TreeState, action: UpdateItemOptionTranslationAction) {
-    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {        
-        const item = draft.qAdditionalLanguages[action.languageCode].items[action.linkId] ?? {} as ItemTranslation;
+    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
+        const item = draft.qAdditionalLanguages[action.languageCode].items[action.linkId];
         if (!item.answerOptions) {
-            item.answerOptions = {} as CodeStringValue;
+            item.answerOptions = {};
         }
         item.answerOptions[action.optionCode] = action.text;
-        draft.qAdditionalLanguages[action.languageCode].items[action.linkId] = item;
     }
 }
 
@@ -763,7 +762,7 @@ export const TreeContext = createContext<{
     dispatch: () => null,
 });
 
-export const TreeContextProvider = (props: { children: JSX.Element }): JSX.Element => {
+export const TreeContextProvider = (props: { children: React.JSX.Element }): React.JSX.Element => {
     const [state, dispatch] = useReducer(reducer, getInitialState());
 
     useEffect(() => {

@@ -24,7 +24,7 @@ interface FhirPathDateValidationProps {
     onChangeOperatorValue: (newValue: string) => void;
 }
 
-export const FhirPathDateValidation = (props: FhirPathDateValidationProps): JSX.Element => {
+export const FhirPathDateValidation = (props: FhirPathDateValidationProps): React.JSX.Element => {
     const { t } = useTranslation();
     return (
         <div className="horizontal">

@@ -19,7 +19,7 @@ const GroupedSelect = ({
     placeholder,
     compact,
     displaySelectedValue,
-}: GroupedSelectProps): JSX.Element => {
+}: GroupedSelectProps): React.JSX.Element => {
     const { t } = useTranslation();
     return (
         <div className={`selector ${compact ? 'compact' : ''}`}>

@@ -14,7 +14,7 @@ interface MarkdownEditorProps {
     placeholder?: string;
 }
 
-const MarkdownEditor = (props: MarkdownEditorProps): JSX.Element => {
+const MarkdownEditor = (props: MarkdownEditorProps): React.JSX.Element => {
     const [value, setValue] = useState<string>(props.data);
     const handleChange = (event: Event, editor: Editor) => {
         setValue(editor.getData());

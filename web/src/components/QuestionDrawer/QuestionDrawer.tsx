@@ -19,7 +19,7 @@ interface Props {
     validationErrors: ValidationErrors[];
 }
 
-const QuestionDrawer = ({ validationErrors }: Props): JSX.Element | null => {
+const QuestionDrawer = ({ validationErrors }: Props): React.JSX.Element | null => {
     const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const { previous, next, hasNext, hasPrevious } = useItemNavigation();

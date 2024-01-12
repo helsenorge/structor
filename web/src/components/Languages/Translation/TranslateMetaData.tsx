@@ -10,7 +10,7 @@ type TranslateMetaDataProps = {
     dispatch: React.Dispatch<ActionType>;
 };
 
-const TranslateMetaData = ({ state, targetLanguage, dispatch }: TranslateMetaDataProps): JSX.Element => {
+const TranslateMetaData = ({ state, targetLanguage, dispatch }: TranslateMetaDataProps): React.JSX.Element => {
     const { t } = useTranslation();
     return (
         <div className="translation-group">

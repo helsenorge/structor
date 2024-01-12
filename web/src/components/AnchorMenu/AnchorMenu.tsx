@@ -88,7 +88,7 @@ const externalNodeCollect = (connect: DragSourceConnector) => ({
 const ExternalNodeBaseComponent = (props: {
   connectDragSource: ConnectDragSource;
   node: Node;
-}): JSX.Element | null => {
+}): React.JSX.Element | null => {
   return props.connectDragSource(
     <div className="anchor-menu__dragcomponent">
       {props.node.nodeReadableType}
@@ -105,7 +105,7 @@ const YourExternalNodeComponent = DragSource(
   externalNodeCollect
 )(ExternalNodeBaseComponent);
 
-const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
+const AnchorMenu = (props: AnchorMenuProps): React.JSX.Element => {
   const { t } = useTranslation();
   const [collapsedNodes, setCollapsedNodes] = React.useState<string[]>([]);
 
@@ -164,7 +164,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
   const createTypeComponent = (
     type: IQuestionnaireItemType,
     text: string
-  ): JSX.Element => {
+  ): React.JSX.Element => {
     return (
       <YourExternalNodeComponent
         node={{

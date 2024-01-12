@@ -1,7 +1,7 @@
 import React from 'react';
 import './SpinnerBox.css';
 
-const SpinnerBox = (): JSX.Element => {
+const SpinnerBox = (): React.JSX.Element => {
     return (
         <div className="spinner-box">
             <div className="configure-border-1">

@@ -7,13 +7,13 @@ import './Modal.css';
 type Props = {
     close?: () => void;
     title?: string;
-    children: JSX.Element | JSX.Element[];
+    children: React.JSX.Element | React.JSX.Element[];
     size?: 'large' | 'small';
     id?: string;
     bottomCloseText?: string;
 };
 
-const Modal = ({ close, children, title, size = 'small', id, bottomCloseText }: Props): JSX.Element => {
+const Modal = ({ close, children, title, size = 'small', id, bottomCloseText }: Props): React.JSX.Element => {
     const { t } = useTranslation();
     return (
         <div className="overlay align-everything">

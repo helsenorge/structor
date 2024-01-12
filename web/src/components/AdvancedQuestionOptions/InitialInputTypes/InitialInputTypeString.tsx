@@ -9,7 +9,7 @@ type InitialInputTypeStringProps = {
     dispatchAction: (value: QuestionnaireItemInitial | undefined) => void;
 };
 
-const InitialInputTypeString = (props: InitialInputTypeStringProps): JSX.Element => {
+const InitialInputTypeString = (props: InitialInputTypeStringProps): React.JSX.Element => {
     const { t } = useTranslation();
     const [initialValue, setInitialValue] = useState(getValue(props.initial));
 

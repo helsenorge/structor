@@ -6,8 +6,7 @@ import './AnswerOption.css';
 import InputField from '../InputField/inputField';
 import { doesItemHaveCode } from '../../utils/itemSearchUtils';
 import { findExtensionInExtensionArray } from '../../helpers/extensionHelper';
-import { IExtensionType } from '../../types/IQuestionnareItemType';
-import { ItemControlType } from '../../helpers/itemControl';
+import { IExtentionType } from '../../types/IQuestionnareItemType';
 
 type Props = {
     item: QuestionnaireItem;
@@ -16,7 +15,6 @@ type Props = {
     changeDisplay: (event: React.ChangeEvent<HTMLInputElement>) => void;
     changeCode: (event: React.ChangeEvent<HTMLInputElement>) => void;
     changeOrdinalValueExtension: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    changeValueSetLabel: (event: React.ChangeEvent<HTMLInputElement>) => void;
     deleteItem?: () => void;
     showDelete?: boolean;
     disabled?: boolean;
@@ -29,38 +27,23 @@ const AnswerOption = ({
     changeDisplay,
     changeCode,
     changeOrdinalValueExtension,
-    changeValueSetLabel,
     deleteItem,
     showDelete,
     disabled,
-}: Props): JSX.Element => {
+}: Props): React.JSX.Element => {
     const { t } = useTranslation();
 
     const [displayScoringField, setDisplayScoringField] = useState(false);
-    const isSlider = item.extension?.some((ex) => ex.valueCodeableConcept?.coding?.some(cd => cd.code ===  ItemControlType.slider));
-    const inputFieldClassName = displayScoringField && !isSlider ? 'three-columns' : 'two-columns';
-    const ordinalValuePlaceholder = displayScoringField ? (isSlider ? t('Enter a scoring value as label..') : t('Enter a scoring value..')) : isSlider ? t('Enter a label..') : '';
+    const inputFieldClassName = displayScoringField ? 'threeColumns' : 'twoColumns';
 
-    const getDefaultOrdinalValue = (): string => {
+    const getDefaultScoreValue = (): string => {
         let stringToReturn = '';
         const scoreExtension =
             answerOption?.valueCoding?.extension &&
-            findExtensionInExtensionArray(answerOption?.valueCoding?.extension, IExtensionType.ordinalValue);
+            findExtensionInExtensionArray(answerOption?.valueCoding?.extension, IExtentionType.ordinalValue);
         if (scoreExtension) {
             stringToReturn = scoreExtension?.valueDecimal?.toString() || '';
         }
-        return stringToReturn;
-    };
-
-
-    const getDefaultValueSetLabel = (): string => {
-        let stringToReturn = '';
-        const scoreExtension =
-            answerOption?.valueCoding?.extension &&
-            findExtensionInExtensionArray(answerOption?.valueCoding?.extension, IExtensionType.valueSetLabel);
-            if (scoreExtension) {
-                stringToReturn = scoreExtension?.valueString?.toString() || '';
-            }
         return stringToReturn;
     };
 
@@ -88,27 +71,17 @@ const AnswerOption = ({
                     placeholder={t('Enter a value..')}
                     onBlur={(event) => changeCode(event)}
                 />
-                {(displayScoringField || isSlider) && (
+                {displayScoringField && (
                     <InputField
                         name="skåring"
                         className={inputFieldClassName}
-                        defaultValue={getDefaultOrdinalValue()}
-                        placeholder={ordinalValuePlaceholder}
+                        defaultValue={getDefaultScoreValue()}
+                        placeholder={t('Enter a scoring value..')}
                         onChange={(event) => {
                             changeOrdinalValueExtension(event);
                         }}
                     />
                 )}
-                {isSlider && (
-                <>
-                    <InputField
-                        name="emojicode"
-                        className={inputFieldClassName}
-                        defaultValue={getDefaultValueSetLabel()}
-                        placeholder={t('Enter an emoji..')}
-                        onChange={(event) => changeValueSetLabel(event)}
-                    />
-                </>)}
             </div>
             {showDelete && (
                 <button type="button" name={t('Remove element')} onClick={deleteItem} className="align-everything" />

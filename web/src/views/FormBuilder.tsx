@@ -14,7 +14,7 @@ import FormFillerPreview from '../components/Refero/FormFillerPreview';
 import './FormBuilder.css';
 import { ValidationErrors } from '../utils/validationUtils';
 
-const FormBuilder = (): JSX.Element => {
+const FormBuilder = (): React.JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const { t } = useTranslation();
     const [showFormDetails, setShowFormDetails] = useState(false);

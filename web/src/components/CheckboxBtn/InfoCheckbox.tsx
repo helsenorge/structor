@@ -6,7 +6,7 @@ type CheckboxBtnProps = {
     label: string;
 };
 
-const InfoCheckbox = ({ checked, label }: CheckboxBtnProps): JSX.Element => {
+const InfoCheckbox = ({ checked, label }: CheckboxBtnProps): React.JSX.Element => {
     return (
         <div className="switch-btn">
             <label className="checkbox-container">

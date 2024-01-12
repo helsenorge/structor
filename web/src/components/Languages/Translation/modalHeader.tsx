@@ -7,7 +7,7 @@ interface ModalHeaderProps {
     targetLanguage: string;
 };
 
-const ModalHeader = (props: ModalHeaderProps): React.JSX.Element => {
+const ModalHeader = (props: ModalHeaderProps): React.React.JSX.Element => {
     return ( <div className="sticky-header">
     {props.qMetadata.language && (
         <div className="horizontal equal">

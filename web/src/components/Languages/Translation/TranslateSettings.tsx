@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Languages } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
-import { IExtensionType } from '../../../types/IQuestionnareItemType';
+import { IExtentionType } from '../../../types/IQuestionnareItemType';
 import { Extension } from '../../../types/fhir';
 import { translatableSettings } from '../../../helpers/LanguageHelper';
 import { updateSettingTranslationAction } from '../../../store/treeStore/treeActions';
@@ -19,15 +19,15 @@ const TranslateSettings = ({
     translations,
     extensions,
     dispatch,
-}: TranslateSettingsProps): JSX.Element | null => {
+}: TranslateSettingsProps): React.JSX.Element | null => {
     const { t } = useTranslation();
 
     const translatedSettings = translations[targetLanguage].settings;
-    const getTranslation = (extension: IExtensionType) => {
+    const getTranslation = (extension: IExtentionType) => {
         return translatedSettings[extension];
     };
 
-    const dispatchTranslation = (extension: IExtensionType, value: Extension | null) => {
+    const dispatchTranslation = (extension: IExtentionType, value: Extension | null) => {
         dispatch(updateSettingTranslationAction(targetLanguage, extension, value));
     };
 

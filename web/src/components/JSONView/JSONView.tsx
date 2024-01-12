@@ -8,7 +8,7 @@ type Props = {
     showJSONView: () => void;
 };
 
-const JSONView = ({ showJSONView }: Props): JSX.Element => {
+const JSONView = ({ showJSONView }: Props): React.JSX.Element => {
     const { t } = useTranslation();
     const { state } = useContext(TreeContext);
 

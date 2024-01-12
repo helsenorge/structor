@@ -36,7 +36,7 @@ const getLinkIdFromValueString = (item: QuestionnaireItem): string => {
     return extensionValueString.substring(startIndex, endIndex);
 };
 
-const CopyFromOption = (props: CopyFromOptionProps): JSX.Element => {
+const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const getSelectedValue = () => props.conditionalArray.find((f) => f.code === getLinkIdFromValueString(props.item));

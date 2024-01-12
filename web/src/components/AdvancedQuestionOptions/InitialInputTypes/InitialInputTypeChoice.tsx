@@ -11,7 +11,7 @@ type InitialInputTypeChoiceProps = {
     dispatchAction: (value: QuestionnaireItemInitial | undefined) => void;
 };
 
-const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element => {
+const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): React.JSX.Element => {
     const { t } = useTranslation();
     const { state } = useContext(TreeContext);
     const { qContained } = state;
@@ -39,7 +39,7 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
 
     // TODO Support multiple initial values (for checkboxes)?
 
-    const renderAnswerOption = (initialOption: Coding): JSX.Element => {
+    const renderAnswerOption = (initialOption: Coding): React.JSX.Element => {
         return (
             <div key={initialOption.code} className="answerOption">
                 <div className="radioBtn-div">
@@ -76,7 +76,7 @@ const InitialInputTypeChoice = (props: InitialInputTypeChoiceProps): JSX.Element
         return getValueSetValues(containedValueSet);
     };
 
-    const renderAnswerOptions = (): JSX.Element => {
+    const renderAnswerOptions = (): React.JSX.Element => {
         let initialOptions: Coding[];
         if (props.item.answerValueSet) {
             initialOptions = getContainedValueSetValues();

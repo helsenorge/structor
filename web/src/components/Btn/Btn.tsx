@@ -10,7 +10,7 @@ type BtnProps = {
     variant?: 'primary' | 'secondary';
 };
 
-const Btn = ({ title, onClick, id, type = 'button', icon, variant }: BtnProps): JSX.Element => {
+const Btn = ({ title, onClick, id, type = 'button', icon, variant }: BtnProps): React.JSX.Element => {
     return (
         <button type={type} className={`regular-btn ${variant}`} id={id} onClick={onClick}>
             {icon && <i className={icon} />} {title}

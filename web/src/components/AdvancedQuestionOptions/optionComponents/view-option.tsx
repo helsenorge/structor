@@ -21,7 +21,7 @@ type ViewOptionProps = {
     item: QuestionnaireItem;
 };
 
-const ViewOption = ({ item }: ViewOptionProps): JSX.Element => {
+const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 

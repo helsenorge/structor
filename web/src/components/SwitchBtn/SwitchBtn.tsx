@@ -8,7 +8,7 @@ type SwitchBtnProps = {
     disabled?: boolean;
 };
 
-const SwitchBtn = ({ onChange, value, label, disabled }: SwitchBtnProps): JSX.Element => {
+const SwitchBtn = ({ onChange, value, label, disabled }: SwitchBtnProps): React.JSX.Element => {
     return (
         <div className="switch-btn">
             <label>{label}</label>

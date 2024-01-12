@@ -9,7 +9,7 @@ type CheckboxBtnProps = {
     disabled?: boolean;
 };
 
-const CheckboxBtn = ({ onChange, checked, label, value, disabled }: CheckboxBtnProps): JSX.Element => {
+const CheckboxBtn = ({ onChange, checked, label, value, disabled }: CheckboxBtnProps): React.JSX.Element => {
     return (
         <div className="switch-btn">
             <label className="checkbox-container">

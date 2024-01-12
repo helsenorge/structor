@@ -6,7 +6,7 @@ type AccordionProps = {
     children: React.ReactNode;
 };
 
-const Accordion = (props: AccordionProps): JSX.Element => {
+const Accordion = (props: AccordionProps): React.JSX.Element => {
     const [open, setOpen] = useState(false);
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {

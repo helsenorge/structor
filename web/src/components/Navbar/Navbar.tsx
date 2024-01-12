@@ -43,7 +43,7 @@ const Navbar = ({
   translationErrors,
   sidebarErrors,
   markdownWarning,
-}: Props): JSX.Element => {
+}: Props): React.JSX.Element => {
   const { i18n, t } = useTranslation();
   const { state, dispatch } = useContext(TreeContext);
   const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);

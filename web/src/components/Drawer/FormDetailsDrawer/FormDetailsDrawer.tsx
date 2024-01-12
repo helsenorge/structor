@@ -20,7 +20,7 @@ const FormDetailsDrawer = ({
     closeDrawer,
     sidebarErrors,
     isOpen = false,
-}: FormDetailsDrawerProps): React.JSX.Element => {
+}: FormDetailsDrawerProps): React.React.JSX.Element => {
     const { t } = useTranslation();
 
     useKeyPress('Escape', closeDrawer, !isOpen);

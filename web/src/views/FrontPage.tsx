@@ -10,7 +10,7 @@ import FormBuilder from './FormBuilder';
 import Btn from '../components/Btn/Btn';
 import './FrontPage.css';
 
-const FrontPage = (): JSX.Element => {
+const FrontPage = (): React.JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const [stateFromStorage, setStateFromStorage] = useState<TreeState>();

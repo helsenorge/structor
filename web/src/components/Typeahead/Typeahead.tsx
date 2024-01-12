@@ -9,7 +9,7 @@ type Props = {
     placeholder?: string;
 };
 
-const Typeahead = ({ items, onChange, defaultValue, placeholder }: Props): JSX.Element => {
+const Typeahead = ({ items, onChange, defaultValue, placeholder }: Props): React.JSX.Element => {
     const ref = useRef(null);
 
     const [value, setValue] = useState<string>(defaultValue || '');

@@ -8,7 +8,7 @@ type Props = {
     children?: ReactNode;
 };
 
-const FormField = ({ label, sublabel, isOptional, children }: Props): JSX.Element => {
+const FormField = ({ label, sublabel, isOptional, children }: Props): React.JSX.Element => {
     const { t } = useTranslation();
 
     return (

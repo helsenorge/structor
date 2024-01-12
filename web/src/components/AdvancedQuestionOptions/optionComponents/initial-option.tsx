@@ -13,7 +13,7 @@ type InitialOptionProps = {
     item: QuestionnaireItem;
 };
 
-const InitialOption = (props: InitialOptionProps): JSX.Element => {
+const InitialOption = (props: InitialOptionProps): React.JSX.Element => {
     const { dispatch } = useContext(TreeContext);
 
     const dispatchUpdateItem = (value: QuestionnaireItemInitial | undefined) => {

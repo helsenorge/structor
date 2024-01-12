@@ -18,7 +18,7 @@ const TranslateSidebar = ({
     translations,
     items,
     dispatch,
-}: TranslateSidebarProps): JSX.Element | null => {
+}: TranslateSidebarProps): React.JSX.Element | null => {
     const { t } = useTranslation();
     const sidebarItems = Object.values(items).filter((item) => isItemControlSidebar(item));
     if (!sidebarItems || sidebarItems.length < 1) {

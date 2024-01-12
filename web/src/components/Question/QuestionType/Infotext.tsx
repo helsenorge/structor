@@ -4,7 +4,7 @@ import { TreeContext } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { findElementInTreeArray } from '../../../helpers/treeHelper';
-import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { deleteItemAction, newItemAction, updateItemAction } from '../../../store/treeStore/treeActions';
 import {
     createMarkdownExtension,
@@ -37,7 +37,7 @@ const radioOptions = [
     { code: INLINE_OPTION, display: 'Expanded text' },
 ];
 
-const Infotext = ({ item, parentArray }: InfotextProps): JSX.Element => {
+const Infotext = ({ item, parentArray }: InfotextProps): React.JSX.Element => {
     const { t } = useTranslation();
     const {
         state: { qItems, qOrder },
@@ -70,7 +70,7 @@ const Infotext = ({ item, parentArray }: InfotextProps): JSX.Element => {
         if (extension) {
             setItemExtension(item, extension, dispatch);
         } else {
-            removeItemExtension(item, IExtensionType.itemControl, dispatch);
+            removeItemExtension(item, IExtentionType.itemControl, dispatch);
         }
         dispatch(updateItemAction(item.linkId, IItemProperty.type, IQuestionnaireItemType.display));
         if (childItemLinkId) {

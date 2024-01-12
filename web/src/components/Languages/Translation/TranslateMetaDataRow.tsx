@@ -18,7 +18,7 @@ const TranslateMetaDataRow = ({
     metadataProperty,
     state,
     targetLanguage,
-}: TranslateMetaDataRowProps): JSX.Element => {
+}: TranslateMetaDataRowProps): React.JSX.Element => {
     const { t } = useTranslation();
     const { propertyName, label, markdown, validate } = metadataProperty;
     const baseValue = state.qMetadata[propertyName];

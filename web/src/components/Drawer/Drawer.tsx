@@ -13,7 +13,7 @@ type DrawerProps = {
     children?: ReactNode;
 };
 
-const Drawer = (props: DrawerProps): JSX.Element => {
+const Drawer = (props: DrawerProps): React.JSX.Element => {
     const { t } = useTranslation();
     const drawerRef = useRef<HTMLDivElement | null>(null);
     useOutsideClick(drawerRef, props.hide, !props.visible);

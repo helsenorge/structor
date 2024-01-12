@@ -4,7 +4,7 @@ import { importCSV } from '../../helpers/importTranslations';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import Btn from '../Btn/Btn';
 
-const UploadTranslation = (): React.JSX.Element => {
+const UploadTranslation = (): React.React.JSX.Element => {
     const { t } = useTranslation();
     const uploadTranslation = React.useRef<HTMLInputElement>(null);
     const { state, dispatch } = useContext(TreeContext);

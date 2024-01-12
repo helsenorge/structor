@@ -26,7 +26,7 @@ const InputField = ({
     className,
     onChange,
     onBlur,
-}: InputFieldProps): JSX.Element => {
+}: InputFieldProps): React.JSX.Element => {
     return (
         <input
             className={className ? className : ''}

@@ -52,7 +52,7 @@ type AdvancedQuestionOptionsProps = {
     getItem: (linkId: string) => QuestionnaireItem;
 };
 
-const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} : AdvancedQuestionOptionsProps): JSX.Element => {
+const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} : AdvancedQuestionOptionsProps): React.JSX.Element => {
     const { state, dispatch } = useContext(TreeContext);
     const { qItems, qOrder } = state;
     const [isDataReceiver, setDataReceiverState] = useState(isItemControlDataReceiver(item));

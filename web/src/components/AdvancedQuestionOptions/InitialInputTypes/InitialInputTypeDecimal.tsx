@@ -8,7 +8,7 @@ type InitialInputTypeIntegerProps = {
     dispatchAction: (value: QuestionnaireItemInitial | undefined) => void;
 };
 
-const InitialInputTypeDecimal = (props: InitialInputTypeIntegerProps): JSX.Element => {
+const InitialInputTypeDecimal = (props: InitialInputTypeIntegerProps): React.JSX.Element => {
     const { t } = useTranslation();
     const [initialValue, setInitialValue] = useState(getValue(props.initial));
 
