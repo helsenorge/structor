@@ -58,7 +58,7 @@ const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} 
     const [isDataReceiver, setDataReceiverState] = useState(isItemControlDataReceiver(item));
 
     const parentItem = getItem(parentArray[parentArray.length -1]);
-    const parentItemHasTableCode = existItemControlWithCode(parentItem, ItemControlType.tableHN2);
+    const parentItemHasTableHN2Code = existItemControlWithCode(parentItem, ItemControlType.tableHN2);
 
     const handleExtension = (extension: Extension) => {
         setItemExtension(item, extension, dispatch);
@@ -119,7 +119,7 @@ const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} 
                 <SummaryOption item={item} dispatch={dispatch}></SummaryOption>
             )}
             {item.type === IQuestionnaireItemType.group && <TableOption item={item} dispatch={dispatch} />}
-            {parentItemHasTableCode && <ColumnOption item={item} parentItem={parentItem} dispatch={dispatch} />}
+            {parentItemHasTableHN2Code && <ColumnOption item={item} parentItem={parentItem} dispatch={dispatch} />}
             <HelpOption item={item} dispatch={dispatch} parentArray={parentArray} qItems={qItems} qOrder={qOrder} />
             <ViewOption item={item} />
             <SaveCapabilityOption item={item} dispatch={dispatch} />

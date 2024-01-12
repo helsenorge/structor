@@ -24,12 +24,12 @@ export const ColumnOrderingFunctionOption = ({item, dispatch}: ColumnOrderingFun
 
     const addDefaultColumnOrdering = () => {
         const columnCodeExist = existItemWithSystem(item, ICodeSystem.tableOrderingFunctions);
-        const defaultColumnOrdering: Coding = {
-            system: ICodeSystem.tableOrderingFunctions,
-            code: TableColumnOrderingOptionsEnum.Descending,
-            display: 'Descending',
-        }
         if (!columnCodeExist) {
+            const defaultColumnOrdering: Coding = {
+                system: ICodeSystem.tableOrderingFunctions,
+                code: TableColumnOrderingOptionsEnum.Descending,
+                display: 'Descending',
+            }
             addItemCode(item, defaultColumnOrdering, dispatch);
         }
     };
