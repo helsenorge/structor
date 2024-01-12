@@ -34,17 +34,14 @@ const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
     const onChangeRenderOptions = (newValue: string) => {
         removeItemExtension(item, IExtentionType.hidden, dispatch);
         removeItemCode(item, ICodeSystem.renderOptionsCodeSystem, dispatch);
-        switch (newValue) {
-            case RenderingOptionsEnum.Hidden:
-                const extension = {
-                    url: IExtentionType.hidden,
-                    valueBoolean: true,
-                };
-                setItemExtension(item, extension, dispatch);
-                break;
-            default:
-                addRenderOptionItemCode(item, newValue, dispatch);
-                break;
+        if (newValue === RenderingOptionsEnum.Hidden) {
+            const extension = {
+                url: IExtentionType.hidden,
+                valueBoolean: true,
+            };
+            setItemExtension(item, extension, dispatch);
+        } else {
+            addRenderOptionItemCode(item, newValue, dispatch);
         }
     };
 

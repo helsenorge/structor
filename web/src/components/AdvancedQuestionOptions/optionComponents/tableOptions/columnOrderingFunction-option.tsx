@@ -41,24 +41,21 @@ export const ColumnOrderingFunctionOption = ({item, dispatch}: ColumnOrderingFun
     const onChangeColumnOrderingOption = (newValue: string) => {
         removeItemCode(item,ICodeSystem.tableOrderingFunctions, dispatch);
         let columnOrderingCoding: Coding = {};
-        switch (newValue) {
-            case TableColumnOrderingOptionsEnum.Ascending:
-                columnOrderingCoding = {
-                    system: ICodeSystem.tableOrderingFunctions,
-                    code: TableColumnOrderingOptionsEnum.Ascending,
-                    display: 'Ascending',
-                }
-                break;
-            default:
-                columnOrderingCoding = {
-                    system: ICodeSystem.tableOrderingFunctions,
-                    code: TableColumnOrderingOptionsEnum.Descending,
-                    display: 'Descending',
-                }
-                break;
+        if (newValue === TableColumnOrderingOptionsEnum.Ascending) {
+            columnOrderingCoding = {
+                system: ICodeSystem.tableOrderingFunctions,
+                code: TableColumnOrderingOptionsEnum.Ascending,
+                display: 'Ascending',
+            }
+        } else {
+           columnOrderingCoding = {
+                system: ICodeSystem.tableOrderingFunctions,
+                code: TableColumnOrderingOptionsEnum.Descending,
+                display: 'Descending',
+            } 
         }
         addItemCode(item, columnOrderingCoding, dispatch);
-    }
+    };
 
     const checkedColumnOrderingOption = () => {
         const itemWithColumnOrderingSystem = item.code?.find((code) => code.system === ICodeSystem.tableOrderingFunctions);
