@@ -37,6 +37,21 @@ export const choiceRenderOptions = (t: TFunction<'translation'>): ValueSetCompos
     { code: ChoiceRenderOptionCodes.Compact, display: t('Compact display') },
 ];
 
+export const getAllMatchingCodes = (item: QuestionnaireItem, system: ICodeSystem): Coding[] | undefined => {
+    const matchingCodes = item.code?.filter((code: Coding) => code.system === system);
+    return matchingCodes;
+}
+
+export const getDisplayValuesFromAllMatchingCodes = (item: QuestionnaireItem, system: ICodeSystem): string[] => {
+    const stringArrayToReturn: string[] = [];
+    item.code?.forEach((code: Coding) => {
+        if (code.system === system && code.display) {
+            stringArrayToReturn.push(code.display)
+        }
+    });
+    return stringArrayToReturn;
+}
+
 export const erRenderingOption = (code: Coding): boolean => {
     return code.system === ICodeSystem.renderOptionsCodeSystem;
 };
