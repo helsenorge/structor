@@ -69,9 +69,8 @@ export const ColumnNameOption = ({item, dispatch}: ColumnNameOptionProps) => {
     return (
         <div className="horizontal full">
             <FormField label={t('Table columns')} sublabel={t('Add columns to the table')}>
-                
                 {columnNames.map((columnName, index) => (
-                    <>
+                    <div className="columnNames-fieldWrapper">
                         <InputField
                             key={columnName + index.toString()}
                             defaultValue={columnName}
@@ -80,20 +79,22 @@ export const ColumnNameOption = ({item, dispatch}: ColumnNameOptionProps) => {
                         />
                         {columnNames[index] !== '' &&
                             <button
-                                className="delete-column-button" 
+                                className="columnNames-deleteButton" 
                                 type="button" 
                                 name={t('Remove element')} 
                                 onClick={() => onDeleteButtonClicked(index)}
                             />
                         }
-                    </>
+                    </div>
                 ))}
-                <Btn
-                    title={t('+ Add column')}
-                    type="button"
-                    onClick={() => onAddButtonClicked()}
-                    variant="secondary"
-                />
+                <div className="columnNames-addButton">
+                    <Btn
+                        title={t('+ Add column')}
+                        type="button"
+                        onClick={() => onAddButtonClicked()}
+                        variant="secondary"
+                    />
+                </div>
             </FormField>
         </div>
     )
