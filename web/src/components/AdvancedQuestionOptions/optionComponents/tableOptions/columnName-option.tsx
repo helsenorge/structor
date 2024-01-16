@@ -32,16 +32,18 @@ export const ColumnNameOption = ({item, dispatch}: ColumnNameOptionProps) => {
     };
 
     const addUpdatedColumnNameCodes = (updatedColumnNames: string[]) => {
+        let columnOrder = 1;
         updatedColumnNames.forEach((columnName) => {
             addItemCode(
               item,
               {
                 system: ICodeSystem.tableColumnName,
-                code: columnName,
+                code: columnOrder.toString(),
                 display: columnName,
               },
               dispatch
             );
+            columnOrder += 1;
           });
     };
 
