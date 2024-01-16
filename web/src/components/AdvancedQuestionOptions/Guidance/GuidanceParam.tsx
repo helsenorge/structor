@@ -8,7 +8,7 @@ import {
     removeItemExtension,
     setItemExtension,
 } from '../../../helpers/extensionHelper';
-import { IExtentionType } from '../../../types/IQuestionnareItemType';
+import { IExtensionType } from '../../../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../../../types/fhir';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 
@@ -20,16 +20,16 @@ type GuidanceParamProps = {
     item: QuestionnaireItem;
 };
 
-const GuidanceParam = (props: GuidanceParamProps): React.JSX.Element => {
+const GuidanceParam = (props: GuidanceParamProps): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
-    const hasGuidanceParam = hasExtension(props.item, IExtentionType.guidanceParam);
+    const hasGuidanceParam = hasExtension(props.item, IExtensionType.guidanceParam);
     const [parameterName, setParameterName] = useState(getGuidanceParameterName(props.item));
     const [validationMessage, setValidationMessage] = useState('');
 
     const toggleGuidanceParam = () => {
         if (hasGuidanceParam) {
-            removeItemExtension(props.item, IExtentionType.guidanceParam, dispatch);
+            removeItemExtension(props.item, IExtensionType.guidanceParam, dispatch);
         } else {
             setItemExtension(props.item, createGuidanceParameterExtension(), dispatch);
         }

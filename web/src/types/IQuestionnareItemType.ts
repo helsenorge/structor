@@ -89,13 +89,9 @@ export enum ICodeSystem {
     progressIndicatorOptions = 'http://helsenorge.no/fhir/CodeSystem/ProgressIndicatorOptions',
     score = 'http://ehelse.no/Score',
     scoringFormulas = 'http://ehelse.no/scoringFormulas',
-    tableColumn = 'http://helsenorge.no/fhir/CodeSystem/TableColumn',
-    tableOrderingFunctions = 'http://helsenorge.no/fhir/CodeSystem/TableOrderingFunctions',
-    tableOrderingColumn = 'http://helsenorge.no/fhir/CodeSystem/TableOrderingColumn',
-    tableColumnName = 'http://helsenorge.no/fhir/CodeSystem/TableColumnName',
 }
 
-export enum IExtentionType {
+export enum IExtensionType {
     authenticationRequirement = 'http://ehelse.no/fhir/StructureDefinition/sdf-authenticationrequirement',
     calculatedExpression = 'http://ehelse.no/fhir/StructureDefinition/sdf-calculatedExpression',
     canBePerformedBy = 'http://ehelse.no/fhir/StructureDefinition/sdf-canbeperformedby',
@@ -115,6 +111,7 @@ export enum IExtentionType {
     minLength = 'http://hl7.org/fhir/StructureDefinition/minLength',
     optionReference = 'http://ehelse.no/fhir/StructureDefinition/sdf-optionReference',
     ordinalValue = 'http://hl7.org/fhir/StructureDefinition/ordinalValue',
+    valueSetLabel = 'http://hl7.org/fhir/StructureDefinition/valueset-label',
     presentationbuttons = 'http://helsenorge.no/fhir/StructureDefinition/sdf-presentationbuttons',
     questionnaireUnit = 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
     regEx = 'http://hl7.org/fhir/StructureDefinition/regex',

@@ -1,17 +1,13 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import FrontPage from "../views/FrontPage";
 import { TreeContextProvider } from "../store/treeStore/treeStore";
 
-export default function Routes(): React.JSX.Element {
+export default function GetRoutes(): React.JSX.Element {
   return (
-    <Switch>
-      <Route>
-        <TreeContextProvider>
-          <FrontPage />
-        </TreeContextProvider>
-      </Route>
-    </Switch>
+    <Routes>
+      <Route path="/static_skjemabygger/" element={<TreeContextProvider><FrontPage /></TreeContextProvider>} />
+    </Routes>
   );
 }

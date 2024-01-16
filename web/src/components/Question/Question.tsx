@@ -10,7 +10,7 @@ import {
     ValueSet,
     ValueSetComposeIncludeConcept,
 } from '../../types/fhir';
-import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
+import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 
 import { updateItemAction } from '../../store/treeStore/treeActions';
 import { getTextExtensionMarkdown } from '../../helpers/QuestionHelper';
@@ -58,7 +58,7 @@ interface QuestionProps {
     dispatch: React.Dispatch<ActionType>;
 }
 
-const Question = (props: QuestionProps): React.JSX.Element => {
+const Question = (props: QuestionProps): JSX.Element => {
     const { t } = useTranslation();
     const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(!!props.item._text);
     const codeElements = props.item.code
@@ -81,7 +81,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
     };
 
     const getSublabelText = (): string => {
-        return props.item.extension?.find((x) => x.url === IExtentionType.sublabel)?.valueMarkdown || '';
+        return props.item.extension?.find((x) => x.url === IExtensionType.sublabel)?.valueMarkdown || '';
     };
 
     const convertToPlaintext = (stringToBeConverted: string) => {
@@ -99,7 +99,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
         dispatchUpdateItem(IItemProperty.text, convertToPlaintext(newLabel));
     };
 
-    const respondType = (): React.JSX.Element => {
+    const respondType = (): JSX.Element => {
         if (isItemControlReceiverComponent(props.item)) {
             return <div>{t('Recipient component is configured in Helsenorge admin')}</div>;
         }
@@ -199,12 +199,12 @@ const Question = (props: QuestionProps): React.JSX.Element => {
                             onBlur={(newValue: string) => {
                                 if (newValue) {
                                     const newExtension = {
-                                        url: IExtentionType.sublabel,
+                                        url: IExtensionType.sublabel,
                                         valueMarkdown: newValue,
                                     };
                                     setItemExtension(props.item, newExtension, props.dispatch);
                                 } else {
-                                    removeItemExtension(props.item, IExtentionType.sublabel, props.dispatch);
+                                    removeItemExtension(props.item, IExtensionType.sublabel, props.dispatch);
                                 }
                             }}
                         />

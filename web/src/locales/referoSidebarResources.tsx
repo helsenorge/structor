@@ -3,7 +3,7 @@ import { getSidebarSections } from '@helsenorge/refero/util/extension';
 import { Questionnaire } from '../types/fhir';
 import { Questionnaire as QuestionnaireRefero } from '@helsenorge/refero/types/fhir';
 
-export const generateSectionContent = (header: string, content: string[]): React.JSX.Element | null => {
+export const generateSectionContent = (header: string, content: string[]): JSX.Element | null => {
     return content.length > 0 ? (
         <>
             <h2>{header}</h2>
@@ -30,7 +30,8 @@ export const getSidebarElements = (questionnaire: Questionnaire): { [id: string]
         'SOT-3': [],
     };
 
-    sidebarData.forEach((x) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    sidebarData.forEach((x: any) => {
         if (x.item.code && x.item.code.length > 0 && x.item.code[0].code) {
             if (seksjonerFraSkjema[x.item.code[0].code]) {
                 seksjonerFraSkjema[x.item.code[0].code].push(x.markdownText);

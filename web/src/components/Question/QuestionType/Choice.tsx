@@ -9,7 +9,7 @@ import {
 
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
 import Btn from '../../Btn/Btn';
-import { IExtentionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { removeItemAttributeAction, updateItemAction } from '../../../store/treeStore/treeActions';
 
@@ -20,8 +20,10 @@ import {
     isItemControlCheckbox,
     isItemControlDropDown,
     isItemControlRadioButton,
+    isItemControlSlider,
     ItemControlType,
     radiobuttonExtension,
+    sliderExtension,
 } from '../../../helpers/itemControl';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import FormField from '../../FormField/FormField';
@@ -35,19 +37,21 @@ type Props = {
     item: QuestionnaireItem;
 };
 
-const Choice = ({ item }: Props): React.JSX.Element => {
+const Choice = ({ item }: Props): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch, state } = useContext(TreeContext);
     const { qContained } = state;
 
     const dispatchExtentionUpdate = (type: ItemControlType) => {
-        removeItemExtension(item, IExtentionType.itemControl, dispatch);
+        removeItemExtension(item, IExtensionType.itemControl, dispatch);
         if (type === ItemControlType.checkbox && !isItemControlCheckbox(item)) {
             setItemExtension(item, checkboxExtension, dispatch);
         } else if (type === ItemControlType.dropdown && !isItemControlDropDown(item)) {
             setItemExtension(item, dropdownExtension, dispatch);
         } else if (type === ItemControlType.radioButton && !isItemControlRadioButton(item)) {
             setItemExtension(item, radiobuttonExtension, dispatch);
+        } else if (type === ItemControlType.slider && !isItemControlSlider(item)) {
+            setItemExtension(item, sliderExtension, dispatch);
         }
     };
 
@@ -93,7 +97,7 @@ const Choice = ({ item }: Props): React.JSX.Element => {
             <FormField>
                 <SwitchBtn
                     onChange={() => {
-                        if (!!item.answerValueSet) {
+                        if (item.answerValueSet) {
                             const system = createUriUUID();
                             dispatchRemoveAttribute(IItemProperty.answerValueSet);
                             dispatchUpdateItem(IItemProperty.answerOption, [
@@ -109,7 +113,7 @@ const Choice = ({ item }: Props): React.JSX.Element => {
                     label={t('Use predefined valueset')}
                 />
             </FormField>
-            {!!item.answerValueSet ? (
+            {item.answerValueSet ? (
                 <PredefinedValueSets item={item} qContained={qContained} dispatchUpdateItem={dispatchUpdateItem} />
             ) : (
                 <>

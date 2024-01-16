@@ -12,7 +12,7 @@ import {
 import { isItemControlInline } from '../../helpers/itemControl';
 import { QuestionnaireItem } from '../../types/fhir';
 import { HyperlinkTarget } from '../../types/hyperlinkTargetType';
-import { IExtentionType } from '../../types/IQuestionnareItemType';
+import { IExtensionType } from '../../types/IQuestionnareItemType';
 import FormField from '../FormField/FormField';
 import SwitchBtn from '../SwitchBtn/SwitchBtn';
 
@@ -20,7 +20,7 @@ interface Props {
     item: QuestionnaireItem;
 }
 
-const HyperlinkTargetElementToggle = ({ item }: Props): React.JSX.Element => {
+const HyperlinkTargetElementToggle = ({ item }: Props): JSX.Element => {
     const { t } = useTranslation();
     const {
         state: { qItems, qOrder, qMetadata },
@@ -56,11 +56,11 @@ const HyperlinkTargetElementToggle = ({ item }: Props): React.JSX.Element => {
         if (!itemHyperValue && !formHyperValue) {
             setItemExtension(questionnaireItem, createHyperlinkTargetExtension(), dispatch);
         } else if (itemHyperValue === HyperlinkTarget.DEFAULT && formHyperValue === HyperlinkTarget.SAME_WINDOW) {
-            removeItemExtension(questionnaireItem, IExtentionType.hyperlinkTarget, dispatch);
+            removeItemExtension(questionnaireItem, IExtensionType.hyperlinkTarget, dispatch);
         } else if (itemHyperValue === HyperlinkTarget.DEFAULT && !formHyperValue) {
             setItemExtension(questionnaireItem, createHyperlinkTargetExtension(), dispatch);
         } else if (itemHyperValue === HyperlinkTarget.SAME_WINDOW && !formHyperValue) {
-            removeItemExtension(questionnaireItem, IExtentionType.hyperlinkTarget, dispatch);
+            removeItemExtension(questionnaireItem, IExtensionType.hyperlinkTarget, dispatch);
         } else if (!itemHyperValue && formHyperValue === HyperlinkTarget.SAME_WINDOW) {
             setItemExtension(questionnaireItem, createHyperlinkTargetExtension(HyperlinkTarget.DEFAULT), dispatch);
         }

@@ -5,6 +5,7 @@ import {
     isItemControlCheckbox,
     isItemControlDropDown,
     isItemControlRadioButton,
+    isItemControlSlider,
     ItemControlType,
 } from '../../../helpers/itemControl';
 import { QuestionnaireItem } from '../../../types/fhir';
@@ -16,7 +17,7 @@ interface Props {
     dispatchExtentionUpdate: (newValue: ItemControlType) => void;
 }
 
-const ChoiceTypeSelect = ({ item, dispatchExtentionUpdate }: Props): React.JSX.Element => {
+const ChoiceTypeSelect = ({ item, dispatchExtentionUpdate }: Props): JSX.Element => {
     const { t } = useTranslation();
 
     const getSelectedItemControlValue = () => {
@@ -26,7 +27,10 @@ const ChoiceTypeSelect = ({ item, dispatchExtentionUpdate }: Props): React.JSX.E
             return ItemControlType.dropdown;
         } else if (isItemControlRadioButton(item)) {
             return ItemControlType.radioButton;
+        } else if (isItemControlSlider(item)) {
+            return ItemControlType.slider;
         }
+        
         return ItemControlType.dynamic;
     };
 
@@ -54,6 +58,10 @@ const ChoiceTypeSelect = ({ item, dispatchExtentionUpdate }: Props): React.JSX.E
                         {
                             code: ItemControlType.checkbox,
                             display: t('Checkbox (Allow selection of multiple values)'),
+                        },
+                        {
+                            code: ItemControlType.slider,
+                            display: t('Slider'),
                         },
                     ]}
                     name="choice-item-control-radio"

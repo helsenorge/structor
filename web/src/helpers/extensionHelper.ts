@@ -3,7 +3,7 @@ import { ActionType } from '../store/treeStore/treeStore';
 import { Element, Extension, QuestionnaireItem } from '../types/fhir';
 import { HyperlinkTarget } from '../types/hyperlinkTargetType';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
-import { IExtentionType, IValueSetSystem, IItemProperty, ICodeSystem } from '../types/IQuestionnareItemType';
+import { IExtensionType, IValueSetSystem, IItemProperty, ICodeSystem } from '../types/IQuestionnareItemType';
 import createUUID from './CreateUUID';
 
 export const findExtensionInExtensionArray = (extensionArray: Extension[], url: string): Extension | undefined => {
@@ -71,7 +71,7 @@ export const removeQuestionnaireExtension = (
 
 export const createOptionReferenceExtensions = [
     {
-        url: IExtentionType.optionReference,
+        url: IExtensionType.optionReference,
         valueReference: {
             reference: '',
             display: '',
@@ -79,7 +79,7 @@ export const createOptionReferenceExtensions = [
         },
     },
     {
-        url: IExtentionType.optionReference,
+        url: IExtensionType.optionReference,
         valueReference: {
             reference: '',
             display: '',
@@ -92,41 +92,41 @@ export const createMarkdownExtension = (markdownValue: string): Element => {
     return {
         extension: [
             {
-                url: IExtentionType.markdown,
+                url: IExtensionType.markdown,
                 valueMarkdown: markdownValue,
             },
         ],
     };
 };
 
-export const hasExtension = (extensionParent: Element | undefined, extensionType: IExtentionType): boolean => {
+export const hasExtension = (extensionParent: Element | undefined, extensionType: IExtensionType): boolean => {
     return extensionParent && extensionParent.extension ?  extensionParent.extension.some((ext) => ext.url === extensionType) : false;
 };
-export const hasOneOrMoreExtensions = (extensions: Extension[], extensionTypes: IExtentionType[]): boolean => {
-    return extensions.some(ex => extensionTypes.includes(ex.url as IExtentionType));
+export const hasOneOrMoreExtensions = (extensions: Extension[], extensionTypes: IExtensionType[]): boolean => {
+    return extensions.some(ex => extensionTypes.includes(ex.url as IExtensionType));
 }
 
-export const getExtensionStringValue = (item: QuestionnaireItem, extensionType: IExtentionType): string | undefined => {
+export const getExtensionStringValue = (item: QuestionnaireItem, extensionType: IExtensionType): string | undefined => {
     return findExtensionByUrl(item.extension, extensionType)?.valueString;
 };
 
 export const createGuidanceActionExtension = (valueString = ''): Extension => ({
-    url: IExtentionType.guidanceAction,
+    url: IExtensionType.guidanceAction,
     valueString,
 });
 
 export const createGuidanceParameterExtension = (valueString = ''): Extension => ({
-    url: IExtentionType.guidanceParam,
+    url: IExtensionType.guidanceParam,
     valueString,
 });
 
 export const createHyperlinkTargetExtension = (codeValue = 2): Extension => ({
-    url: IExtentionType.hyperlinkTarget,
+    url: IExtensionType.hyperlinkTarget,
     valueCoding: { system: IValueSetSystem.hyperlinkTargetValueset, code: `${codeValue}` },
 });
 
 export const getHyperlinkTargetvalue = (extensions: Extension[]): HyperlinkTarget | undefined => {
-    const hyperlinkExtension = extensions?.find((extension) => extension.url === IExtentionType.hyperlinkTarget);
+    const hyperlinkExtension = extensions?.find((extension) => extension.url === IExtensionType.hyperlinkTarget);
     if (hyperlinkExtension) {
         const value = hyperlinkExtension.valueCoding?.code;
         if (value) return ~~value;
@@ -135,13 +135,13 @@ export const getHyperlinkTargetvalue = (extensions: Extension[]): HyperlinkTarge
 };
 
 export const getQuantityUnit = (extensions: Extension[]): string | undefined => {
-    const unit = extensions.filter((f: Extension) => f.url === IExtentionType.questionnaireUnit);
+    const unit = extensions.filter((f: Extension) => f.url === IExtensionType.questionnaireUnit);
     return unit.length > 0 ? unit[0].valueCoding?.code : undefined;
 };
 export const getExtentionsFromElement = (element: Element) => {
     return element.extension;
 };
-export const getExtentionByType = (extentions: Extension[], type: IExtentionType) => {
+export const getExtentionByType = (extentions: Extension[], type: IExtensionType) => {
     return extentions.find(x => x.url === type);
 }
 
@@ -153,7 +153,7 @@ type ExclusiveExtensionValues = {
 
 export function getExtentionValueByType<T extends ExclusiveExtensionKeys>(
     element: Element,
-    extentionType: IExtentionType,
+    extentionType: IExtensionType,
     valueType: T
 ): ExclusiveExtensionValues[T] | undefined {
     const extentions = getExtentionsFromElement(element) ?? [];
