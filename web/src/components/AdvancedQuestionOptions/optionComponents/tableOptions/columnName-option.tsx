@@ -70,16 +70,14 @@ export const ColumnNameOption = ({item, dispatch}: ColumnNameOptionProps) => {
         <div className="horizontal full">
             <FormField label={t('Table columns')} sublabel={t('Add columns to the table')}>
                 {columnNames.map((columnName, index) => (
-                    <div className="columnNames-fieldWrapper">
+                    <div key={columnName + index.toString()} className="columnNames-fieldWrapper">
                         <InputField
-                            key={columnName + index.toString()}
                             defaultValue={columnName}
                             placeholder={t('Enter column name..')}
                             onBlur={(e) => {onBlurInput(e.target.value, index)}}
                         />
                         {columnNames[index] !== '' &&
                             <button
-                                key={columnName + index.toString() + ' deleteButton'}
                                 className="columnNames-deleteButton" 
                                 type="button" 
                                 name={t('Remove element')} 
