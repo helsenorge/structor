@@ -79,6 +79,7 @@ export const ColumnNameOption = ({item, dispatch}: ColumnNameOptionProps) => {
                         />
                         {columnNames[index] !== '' &&
                             <button
+                                key={columnName + index.toString() + ' deleteButton'}
                                 className="columnNames-deleteButton" 
                                 type="button" 
                                 name={t('Remove element')} 
