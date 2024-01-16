@@ -40,7 +40,7 @@ export const choiceRenderOptions = (t: TFunction<'translation'>): ValueSetCompos
 export const getAllMatchingCodes = (item: QuestionnaireItem, system: ICodeSystem): Coding[] | undefined => {
     const matchingCodes = item.code?.filter((code: Coding) => code.system === system);
     return matchingCodes;
-}
+};
 
 export const getDisplayValuesFromAllMatchingCodes = (item: QuestionnaireItem, system: ICodeSystem): string[] => {
     const stringArrayToReturn: string[] = [];
@@ -50,7 +50,11 @@ export const getDisplayValuesFromAllMatchingCodes = (item: QuestionnaireItem, sy
         }
     });
     return stringArrayToReturn;
-}
+};
+
+export const getItemCode = (item: QuestionnaireItem, system: ICodeSystem) => {
+    return item.code?.find((code: Coding) => code.system === system);
+};
 
 export const erRenderingOption = (code: Coding): boolean => {
     return code.system === ICodeSystem.renderOptionsCodeSystem;

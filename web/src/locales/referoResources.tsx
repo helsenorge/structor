@@ -202,7 +202,7 @@ export const getResources = (language: string): { [id: string]: string } => {
             linkOpensInNewTab: `S'ouvre dans un nouvel onglet`,
             nextStep: 'Suivant',
             previousStep: 'Précédent',
-            openChoiceOption: 'Autre',
+            openChoiceOption: 'ánnet',
         };
     }
     return {
