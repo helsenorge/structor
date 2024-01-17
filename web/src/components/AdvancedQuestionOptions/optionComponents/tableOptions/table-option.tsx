@@ -86,10 +86,13 @@ export const TableOption = ({item, qItems, qOrder, dispatch}: TableOptionProps) 
             </FormField>
             {
                showColumnOptions && (
-                <div className="table-column-options">
-                    <ColumnNameOption item={item} qItems={qItems} qOrder={qOrder} dispatch={dispatch} />
-                    <ColumnToOrderByOption item={item} dispatch={dispatch} />
-                    <ColumnOrderingFunctionOption item={item} dispatch={dispatch} />
+                <div className="table-column-options-wrapper">
+                    <div className="indentation-element" />
+                    <div className="table-column-options">
+                        <ColumnNameOption item={item} qItems={qItems} qOrder={qOrder} dispatch={dispatch} />
+                        <ColumnToOrderByOption item={item} dispatch={dispatch} />
+                        <ColumnOrderingFunctionOption item={item} dispatch={dispatch} />
+                    </div>
                 </div>
                )
             }

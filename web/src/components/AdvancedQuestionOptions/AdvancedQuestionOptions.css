@@ -6,6 +6,23 @@
     font-weight: 700;
 }
 
+.table-column-options-wrapper {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.indentation-element {
+    vertical-align: top;
+    width: 12px;
+    height: auto;
+    background-color: #e4f7f9;
+}
+
+.table-column-options {
+    vertical-align: top;
+    margin-left: 24px;
+}
+
 .columnNames-fieldWrapper {
     display: inline-flex;
     margin-right: auto;
