@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { removeItemCode, addItemCode, getItemCode } from "../../../../helpers/codeHelper";
+import { removeItemCode, addItemCode } from "../../../../helpers/codeHelper";
 import { ActionType } from "../../../../store/treeStore/treeStore";
 import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
 import FormField from "../../../FormField/FormField";
@@ -30,12 +30,6 @@ export const ColumnOption = ({item, parentItem, dispatch}: ColumnOptionProps) =>
             dispatch
         );
     }
-
-    const blablubb = () => {
-        const hei = getItemCode(parentItem, ICodeSystem.tableColumn);
-        const hei2 = getItemCode(item, ICodeSystem.tableColumn);
-    }
-
 
     return (
         <div className="horizontal full">

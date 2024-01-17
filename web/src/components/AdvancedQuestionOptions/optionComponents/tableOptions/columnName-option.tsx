@@ -1,27 +1,38 @@
 import { QuestionnaireItem } from "../../../../types/fhir";
 import { useTranslation } from "react-i18next";
-import { ActionType } from "../../../../store/treeStore/treeStore";
+import { ActionType, Items, OrderItem } from "../../../../store/treeStore/treeStore";
 import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
 import FormField from "../../../FormField/FormField";
 import InputField from "../../../InputField/inputField";
-import { removeItemCode, addItemCode, getDisplayValuesFromAllMatchingCodes } from "../../../../helpers/codeHelper";
+import { 
+    removeItemCode, 
+    addItemCode, 
+    getDisplayValuesFromAllMatchingCodes, 
+    updateChildrenWithMatchingSystemAndCode, 
+    getAllMatchingCodes 
+} from "../../../../helpers/codeHelper";
 import { useEffect, useState } from "react";
 import Btn from "../../../Btn/Btn";
 
 type ColumnNameOptionProps = {
     item: QuestionnaireItem;
+    qItems: Items;
+    qOrder: OrderItem[];
     dispatch: React.Dispatch<ActionType>;
 };
 
-export const ColumnNameOption = ({item, dispatch}: ColumnNameOptionProps) => {
+export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOptionProps) => {
     const { t } = useTranslation();
     const existingColumnCodes = getDisplayValuesFromAllMatchingCodes(item, ICodeSystem.tableColumnName);
     const initialColumnCodesValues = existingColumnCodes.length > 0 ? existingColumnCodes : [''];
     const [columnNames, setColumnNames] = useState<string[]>(initialColumnCodesValues);
 
-    useEffect(() => {
-        setColumnNames(initialColumnCodesValues);
-    }, [item]);
+    const updateChildrenWithTableColumnCoding = (): void => {
+        const allTableColumnNameCodings = getAllMatchingCodes(item, ICodeSystem.tableColumnName);
+        if (allTableColumnNameCodings) {
+            updateChildrenWithMatchingSystemAndCode(item, qItems, qOrder, allTableColumnNameCodings, ICodeSystem.tableColumn, dispatch);
+        }
+    }
 
     const removeAllColumnNameCodes = (item: QuestionnaireItem) => {
         item.code?.forEach((code) => {
@@ -54,7 +65,7 @@ export const ColumnNameOption = ({item, dispatch}: ColumnNameOptionProps) => {
         setColumnNames(arrayWithoutEmptyStrings);
 
         removeAllColumnNameCodes(item);
-        addUpdatedColumnNameCodes(arrayWithoutEmptyStrings)
+        addUpdatedColumnNameCodes(arrayWithoutEmptyStrings);
     };
 
     const onAddButtonClicked = (): void => {
@@ -67,6 +78,11 @@ export const ColumnNameOption = ({item, dispatch}: ColumnNameOptionProps) => {
         removeAllColumnNameCodes(item);
         addUpdatedColumnNameCodes(arrayWithoutDeletedColumn);
     };
+
+    useEffect(() => {
+        setColumnNames(initialColumnCodesValues);
+        updateChildrenWithTableColumnCoding();
+    }, [item.code]);
 
     return (
         <div className="horizontal full">

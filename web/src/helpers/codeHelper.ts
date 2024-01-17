@@ -3,7 +3,7 @@ import { TFunction } from 'react-i18next';
 import { Coding } from '../types/fhir';
 import { ICodeSystem } from '../types/IQuestionnareItemType';
 import { deleteItemCodeAction, addItemCodeAction } from '../store/treeStore/treeActions';
-import { ActionType } from '../store/treeStore/treeStore';
+import { ActionType, Items, OrderItem } from '../store/treeStore/treeStore';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 
 export enum RenderingOptionsEnum {
@@ -37,6 +37,19 @@ export const choiceRenderOptions = (t: TFunction<'translation'>): ValueSetCompos
     { code: ChoiceRenderOptionCodes.Compact, display: t('Compact display') },
 ];
 
+export const getItemCode = (item: QuestionnaireItem, system: ICodeSystem) => {
+    return item.code?.find((code: Coding) => code.system === system);
+};
+
+export const getItemCodeWithMatchingSystemAndCode = (item: QuestionnaireItem, system: ICodeSystem, code: string): Coding | undefined => {
+    let returnValue: Coding = {};
+    item.code?.forEach((coding) => {
+        if (coding.system === system && coding.code === code) {
+            returnValue = coding;
+        }});
+    return returnValue;
+}
+
 export const getAllMatchingCodes = (item: QuestionnaireItem, system: ICodeSystem): Coding[] | undefined => {
     const matchingCodes = item.code?.filter((code: Coding) => code.system === system);
     return matchingCodes;
@@ -52,8 +65,37 @@ export const getDisplayValuesFromAllMatchingCodes = (item: QuestionnaireItem, sy
     return stringArrayToReturn;
 };
 
-export const getItemCode = (item: QuestionnaireItem, system: ICodeSystem) => {
-    return item.code?.find((code: Coding) => code.system === system);
+export const getChildrenWithMatchingSystemAndCode = (
+    qItems: Items,
+    qOrder: OrderItem[], 
+    itemToSearchIn: QuestionnaireItem, 
+    systemToSearchFor: ICodeSystem, 
+    codeToSearchFor: string, 
+    itemsToReturn: QuestionnaireItem[] = []
+    ): QuestionnaireItem[] => {
+        qOrder.forEach((orderItem) => {
+            const qItem = qItems[orderItem.linkId];
+
+            if  (qItem.linkId === itemToSearchIn.linkId) {
+                orderItem.items.forEach((childItem) => {
+                    const qItemChild = qItems[childItem.linkId];
+                    if (qItemChild.code) {
+                        qItemChild.code.forEach((coding) => {
+                            if (coding.system === systemToSearchFor && coding.code === codeToSearchFor) {
+                                itemsToReturn.push(qItemChild);
+                                return;
+                            }
+                        })
+                    }
+                })
+            }
+    
+            if (orderItem.items && !itemsToReturn.length) {
+                itemsToReturn = getChildrenWithMatchingSystemAndCode(qItems, orderItem.items, itemToSearchIn, systemToSearchFor, codeToSearchFor, itemsToReturn);
+            }
+        });
+    
+        return itemsToReturn;
 };
 
 export const erRenderingOption = (code: Coding): boolean => {
@@ -108,4 +150,38 @@ export const addChoiceRenderOptionItemCode = (
         };
         dispatch(addItemCodeAction(item.linkId, coding));
     }
+};
+
+export const updateChildrenWithMatchingSystemAndCode = (
+    item: QuestionnaireItem, 
+    qItems: Items, 
+    qOrder: OrderItem[], 
+    parentCodingArray: Coding[] | undefined,
+    systemToSearchFor: ICodeSystem,
+    dispatch: React.Dispatch<ActionType>): void => {
+
+    parentCodingArray?.forEach((parentCoding) => {
+        const codeToSearchFor = parentCoding.code?.toString() || '';
+        const childrenMatch = 
+            getChildrenWithMatchingSystemAndCode(qItems, qOrder, item, systemToSearchFor, codeToSearchFor);
+        childrenMatch.forEach((childItem) => {
+            childItem?.code?.forEach((childCoding) => {
+                if (childCoding.system === systemToSearchFor && childCoding.code === codeToSearchFor) {
+                    const parentValueHasChanged = childCoding.display !== parentCoding.display;
+                    if (parentValueHasChanged) {
+                        removeItemCode(childItem, systemToSearchFor, dispatch);
+                        addItemCode(
+                            childItem, 
+                            {
+                                system: systemToSearchFor,
+                                code: parentCoding?.code,
+                                display: parentCoding?.display,
+                            }, 
+                            dispatch
+                        );
+                    }
+                }
+            })
+        })
+    })
 };

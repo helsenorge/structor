@@ -1,7 +1,7 @@
 import FormField from "../../../FormField/FormField";
 import { Extension, QuestionnaireItem } from "../../../../types/fhir";
 import { useTranslation } from "react-i18next";
-import { ActionType } from "../../../../store/treeStore/treeStore";
+import { ActionType, Items, OrderItem } from "../../../../store/treeStore/treeStore";
 import RadioBtn from "../../../RadioBtn/RadioBtn";
 import { IExtentionType } from "../../../../types/IQuestionnareItemType";
 import { TableOptionsEnum } from "../../../../types/tableOptions";
@@ -13,10 +13,12 @@ import { ColumnNameOption } from "./columnName-option";
 
 type TableOptionProps = {
     item: QuestionnaireItem;
+    qItems: Items;
+    qOrder: OrderItem[];
     dispatch: React.Dispatch<ActionType>;
 };
 
-export const TableOption = ({item, dispatch}: TableOptionProps) => {
+export const TableOption = ({item, qItems, qOrder, dispatch}: TableOptionProps) => {
     const { t } = useTranslation();
 
     const getTableCode = (extension: Extension | undefined): string | undefined => {
@@ -85,7 +87,7 @@ export const TableOption = ({item, dispatch}: TableOptionProps) => {
             {
                showColumnOptions && (
                 <div className="table-column-options">
-                    <ColumnNameOption item={item} dispatch={dispatch} />
+                    <ColumnNameOption item={item} qItems={qItems} qOrder={qOrder} dispatch={dispatch} />
                     <ColumnToOrderByOption item={item} dispatch={dispatch} />
                     <ColumnOrderingFunctionOption item={item} dispatch={dispatch} />
                 </div>
