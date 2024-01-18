@@ -72,7 +72,9 @@ export const TableOption = ({item, qItems, qOrder, dispatch}: TableOptionProps) 
         { code: TableOptionsEnum.TableHN1, display: t('Table with question and answer in two columns') },
         { code: TableOptionsEnum.TableHN2, display: t('Table with custom columns and column headers') },
     ];
-    const showColumnOptions: boolean = hasTableCode && checkedTableOption() === TableOptionsEnum.TableHN2;
+    const showColumnOptions: boolean = hasTableCode 
+        && checkedTableOption() === TableOptionsEnum.Table 
+            || checkedTableOption() === TableOptionsEnum.TableHN2;
 
     return (
         <>
@@ -89,7 +91,9 @@ export const TableOption = ({item, qItems, qOrder, dispatch}: TableOptionProps) 
                 <div className="table-column-options-wrapper">
                     <div className="indentation-element" />
                     <div className="table-column-options">
-                        <ColumnNameOption item={item} qItems={qItems} qOrder={qOrder} dispatch={dispatch} />
+                        {checkedTableOption() === TableOptionsEnum.TableHN2 && 
+                            <ColumnNameOption item={item} qItems={qItems} qOrder={qOrder} dispatch={dispatch} />
+                        }
                         <ColumnToOrderByOption item={item} dispatch={dispatch} />
                         <ColumnOrderingFunctionOption item={item} dispatch={dispatch} />
                     </div>
