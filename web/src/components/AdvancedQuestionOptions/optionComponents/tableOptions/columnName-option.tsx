@@ -5,12 +5,12 @@ import { ICodeSystem, ICodingProperty } from "../../../../types/IQuestionnareIte
 import FormField from "../../../FormField/FormField";
 import InputField from "../../../InputField/inputField";
 import { 
-    removeItemCode, 
+    removeItemCode2, 
     addItemCode,
     updateChildrenWithMatchingSystemAndCode, 
     getAllMatchingCodes,
 } from "../../../../helpers/codeHelper";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Btn from "../../../Btn/Btn";
 import { updateItemCodePropertyAction2 } from "../../../../store/treeStore/treeActions";
 
@@ -26,12 +26,6 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
     const existingColumnCodes = getAllMatchingCodes(item, ICodeSystem.tableColumnName);
     const lastItem = existingColumnCodes && existingColumnCodes[existingColumnCodes?.length -1];
 
-    const [isCodeOrDisplayInLastItemEmpty, setIsCodeOrDisplayInLastItemEmpty] = useState<boolean>(lastItem?.code === '' || lastItem?.display === '');
-
-    useEffect(() => {
-        setIsCodeOrDisplayInLastItemEmpty(lastItem?.code === '' || lastItem?.display === '');
-    }, [item.code])
-
     const onBlurNameInput = (oldCodeValue: string, newDisplayValue: string): void => {
         if (newDisplayValue === '') {
             return;
@@ -40,18 +34,6 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
             item.linkId, 
             ICodingProperty.display, 
             newDisplayValue, 
-            ICodeSystem.tableColumnName,
-            oldCodeValue));
-    };
-
-    const onBlurCodeInput = (oldCodeValue: string, newCodeValue: string) => {
-        if (newCodeValue === '') {
-            return;
-        }
-        dispatch(updateItemCodePropertyAction2(
-            item.linkId, 
-            ICodingProperty.code, 
-            newCodeValue,
             ICodeSystem.tableColumnName,
             oldCodeValue));
     };
@@ -71,8 +53,8 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
           );
     }
 
-    const onDeleteButtonClicked = (): void => {
-        removeItemCode(item, ICodeSystem.tableColumnName, dispatch);
+    const onDeleteButtonClicked = (code: string): void => {
+        removeItemCode2(item, ICodeSystem.tableColumnName, code, dispatch);
     };
 
     const updateChildrenWithTableColumnCoding = (): void => {
@@ -97,17 +79,12 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
                             placeholder={t('Enter column name..')}
                             onBlur={(e) => {onBlurNameInput(coding.code || '', e.target.value)}}
                         />
-                        <InputField
-                            defaultValue={coding.code}
-                            placeholder={t('Enter column order..')}
-                            onBlur={(e) => {onBlurCodeInput(coding.code || '', e.target.value)}}
-                        />
                         {
                             <button
                                 className="columnNames-deleteButton" 
                                 type="button" 
                                 name={t('Remove element')} 
-                                onClick={() => onDeleteButtonClicked()}
+                                onClick={() => onDeleteButtonClicked(coding.code || '')}
                             />
                         }
                     </div>
@@ -115,10 +92,9 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
                 <div className="columnNames-addButton">
                     <Btn
                         title={t('+ Add column')}
-                        disabled={isCodeOrDisplayInLastItemEmpty ? true : false}
                         type="button"
                         onClick={() => onAddButtonClicked()}
-                        variant={isCodeOrDisplayInLastItemEmpty ? "disabled" : "secondary"}
+                        variant={"secondary"}
                     />
                 </div>
             </FormField>

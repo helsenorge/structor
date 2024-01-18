@@ -118,6 +118,18 @@ export const removeItemCode = (
     }
 };
 
+export const removeItemCode2 = (
+    item: QuestionnaireItem,
+    systemUrl: string,
+    code: string,
+    dispatch: (value: ActionType) => void,
+): void => {
+    const index = item.code?.findIndex((coding) => coding.system === systemUrl && coding.code === code);
+    if (index !== undefined && index > -1) {
+        dispatch(deleteItemCodeAction(item.linkId, index));
+    }
+};
+
 export const addRenderOptionItemCode = (
     item: QuestionnaireItem,
     code: string,
