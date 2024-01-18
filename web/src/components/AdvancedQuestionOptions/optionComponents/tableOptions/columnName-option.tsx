@@ -1,18 +1,18 @@
 import { QuestionnaireItem } from "../../../../types/fhir";
 import { useTranslation } from "react-i18next";
 import { ActionType, Items, OrderItem } from "../../../../store/treeStore/treeStore";
-import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
+import { ICodeSystem, ICodingProperty } from "../../../../types/IQuestionnareItemType";
 import FormField from "../../../FormField/FormField";
 import InputField from "../../../InputField/inputField";
 import { 
     removeItemCode, 
-    addItemCode, 
-    getDisplayValuesFromAllMatchingCodes, 
+    addItemCode,
     updateChildrenWithMatchingSystemAndCode, 
-    getAllMatchingCodes 
+    getAllMatchingCodes,
 } from "../../../../helpers/codeHelper";
 import { useEffect, useState } from "react";
 import Btn from "../../../Btn/Btn";
+import { updateItemCodePropertyAction2 } from "../../../../store/treeStore/treeActions";
 
 type ColumnNameOptionProps = {
     item: QuestionnaireItem;
@@ -23,9 +23,57 @@ type ColumnNameOptionProps = {
 
 export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOptionProps) => {
     const { t } = useTranslation();
-    const existingColumnCodes = getDisplayValuesFromAllMatchingCodes(item, ICodeSystem.tableColumnName);
-    const initialColumnCodesValues = existingColumnCodes.length > 0 ? existingColumnCodes : [''];
-    const [columnNames, setColumnNames] = useState<string[]>(initialColumnCodesValues);
+    const existingColumnCodes = getAllMatchingCodes(item, ICodeSystem.tableColumnName);
+    const lastItem = existingColumnCodes && existingColumnCodes[existingColumnCodes?.length -1];
+
+    const [isCodeOrDisplayInLastItemEmpty, setIsCodeOrDisplayInLastItemEmpty] = useState<boolean>(lastItem?.code === '' || lastItem?.display === '');
+
+    useEffect(() => {
+        setIsCodeOrDisplayInLastItemEmpty(lastItem?.code === '' || lastItem?.display === '');
+    }, [item.code])
+
+    const onBlurNameInput = (oldCodeValue: string, newDisplayValue: string): void => {
+        if (newDisplayValue === '') {
+            return;
+        }
+        dispatch(updateItemCodePropertyAction2(
+            item.linkId, 
+            ICodingProperty.display, 
+            newDisplayValue, 
+            ICodeSystem.tableColumnName,
+            oldCodeValue));
+    };
+
+    const onBlurCodeInput = (oldCodeValue: string, newCodeValue: string) => {
+        if (newCodeValue === '') {
+            return;
+        }
+        dispatch(updateItemCodePropertyAction2(
+            item.linkId, 
+            ICodingProperty.code, 
+            newCodeValue,
+            ICodeSystem.tableColumnName,
+            oldCodeValue));
+    };
+
+    const onAddButtonClicked = (): void => {
+        const previousCode = lastItem?.code;
+        const previousCodeNumber = previousCode ? parseInt(previousCode) + 1 : '1';
+        
+        addItemCode(
+            item,
+            {
+              system: ICodeSystem.tableColumnName,
+              code: previousCodeNumber.toString(),
+              display: '',
+            },
+            dispatch
+          );
+    }
+
+    const onDeleteButtonClicked = (): void => {
+        removeItemCode(item, ICodeSystem.tableColumnName, dispatch);
+    };
 
     const updateChildrenWithTableColumnCoding = (): void => {
         const allTableColumnNameCodings = getAllMatchingCodes(item, ICodeSystem.tableColumnName);
@@ -34,72 +82,32 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
         }
     }
 
-    const removeAllColumnNameCodes = (item: QuestionnaireItem) => {
-        item.code?.forEach((code) => {
-            if (code.system === ICodeSystem.tableColumnName) {
-                removeItemCode(item, ICodeSystem.tableColumnName, dispatch);
-            }
-        })
-    };
-
-    const addUpdatedColumnNameCodes = (updatedColumnNames: string[]) => {
-        let columnOrder = 1;
-        updatedColumnNames.forEach((columnName) => {
-            addItemCode(
-              item,
-              {
-                system: ICodeSystem.tableColumnName,
-                code: columnOrder.toString(),
-                display: columnName,
-              },
-              dispatch
-            );
-            columnOrder += 1;
-          });
-    };
-
-    const onBlurInput = (newValue: string, index: number) => {
-        const columnNamesCopy = [...columnNames];
-        columnNamesCopy[index] = newValue;
-        const arrayWithoutEmptyStrings = columnNamesCopy.filter((x) => x !== '');
-        setColumnNames(arrayWithoutEmptyStrings);
-
-        removeAllColumnNameCodes(item);
-        addUpdatedColumnNameCodes(arrayWithoutEmptyStrings);
-    };
-
-    const onAddButtonClicked = (): void => {
-        setColumnNames([...columnNames, '']);
-    }
-
-    const onDeleteButtonClicked = (index: number): void => {
-        const columnNamesCopy = [...columnNames];
-        const arrayWithoutDeletedColumn = columnNamesCopy.filter((columnName) => columnNamesCopy.indexOf(columnName) !== index);
-        removeAllColumnNameCodes(item);
-        addUpdatedColumnNameCodes(arrayWithoutDeletedColumn);
-    };
-
     useEffect(() => {
-        setColumnNames(initialColumnCodesValues);
+        // setColumnNamesCodings(initialColumnCodesValues);
         updateChildrenWithTableColumnCoding();
     }, [item.code]);
 
     return (
         <div className="horizontal full">
             <FormField label={t('Table columns')} sublabel={t('Add columns to the table')}>
-                {columnNames.map((columnName, index) => (
-                    <div key={columnName + index.toString()} className="columnNames-fieldWrapper">
+                {existingColumnCodes?.map((coding, index) => (
+                    <div key={coding.display + index.toString()} className="columnNames-fieldWrapper">
                         <InputField
-                            defaultValue={columnName}
+                            defaultValue={coding.display}
                             placeholder={t('Enter column name..')}
-                            onBlur={(e) => {onBlurInput(e.target.value, index)}}
+                            onBlur={(e) => {onBlurNameInput(coding.code || '', e.target.value)}}
                         />
-                        {columnNames[index] !== '' &&
+                        <InputField
+                            defaultValue={coding.code}
+                            placeholder={t('Enter column order..')}
+                            onBlur={(e) => {onBlurCodeInput(coding.code || '', e.target.value)}}
+                        />
+                        {
                             <button
                                 className="columnNames-deleteButton" 
                                 type="button" 
                                 name={t('Remove element')} 
-                                onClick={() => onDeleteButtonClicked(index)}
+                                onClick={() => onDeleteButtonClicked()}
                             />
                         }
                     </div>
@@ -107,9 +115,10 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
                 <div className="columnNames-addButton">
                     <Btn
                         title={t('+ Add column')}
+                        disabled={isCodeOrDisplayInLastItemEmpty ? true : false}
                         type="button"
                         onClick={() => onAddButtonClicked()}
-                        variant="secondary"
+                        variant={isCodeOrDisplayInLastItemEmpty ? "disabled" : "secondary"}
                     />
                 </div>
             </FormField>

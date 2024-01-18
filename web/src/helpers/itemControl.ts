@@ -1,5 +1,5 @@
 import { Extension, QuestionnaireItem, Coding } from '../types/fhir';
-import { IExtensionType, IQuestionnaireItemType, IValueSetSystem, IItemProperty, ICodeSystem } from '../types/IQuestionnareItemType';
+import { IExtentionType, IQuestionnaireItemType, IValueSetSystem, IItemProperty, ICodeSystem } from '../types/IQuestionnareItemType';
 import { getEnumKeyByString } from './enumHelper';
 import { ActionType } from '../store/treeStore/treeStore';
 import { updateItemAction } from '../store/treeStore/treeActions';
@@ -22,14 +22,17 @@ export enum ItemControlType {
     receiverComponent = 'receiver-component',
     dynamic = 'dynamic',
     dataReceiver = 'data-receiver',
-    slider = 'slider',
     step = 'step',
     score = 'score',
+    gTable = 'gTable',
+    table = 'table',
+    tableHN1 = 'table-hn1',
+    tableHN2 = 'table-hn2',
 }
 
 export const createItemControlExtension = (itemControlType: ItemControlType): Extension => {
     return {
-        url: IExtensionType.itemControl,
+        url: IExtentionType.itemControl,
         valueCodeableConcept: {
             coding: [
                 {
@@ -44,7 +47,7 @@ export const createItemControlExtension = (itemControlType: ItemControlType): Ex
 export const createItemControlExtensionWithTypes = (types: string[]): Extension => {
     const initCodingArray: Coding[] = [];
     const extension = {
-        url: IExtensionType.itemControl,
+        url: IExtentionType.itemControl,
         valueCodeableConcept: { coding: initCodingArray },
     };
 
@@ -60,11 +63,9 @@ export const createItemControlExtensionWithTypes = (types: string[]): Extension 
 export const checkboxExtension = createItemControlExtension(ItemControlType.checkbox);
 export const dropdownExtension = createItemControlExtension(ItemControlType.dropdown);
 export const radiobuttonExtension = createItemControlExtension(ItemControlType.radioButton);
-export const sliderExtension = createItemControlExtension(ItemControlType.slider);
-
 
 const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefined => {
-    const itemControlExtension = item?.extension?.find((x) => x.url === IExtensionType.itemControl);
+    const itemControlExtension = item?.extension?.find((x) => x.url === IExtentionType.itemControl);
     if (itemControlExtension) {
         const code = itemControlExtension.valueCodeableConcept?.coding
             ? itemControlExtension.valueCodeableConcept.coding[0].code
@@ -78,10 +79,10 @@ const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefin
     return undefined;
 };
 
-const existItemControlWithCode = (item: QuestionnaireItem, code: string): boolean => {
+export const existItemControlWithCode = (item: QuestionnaireItem, code: string): boolean => {
     const exist =
-        item.extension
-            ?.filter((x: Extension) => x.url === IExtensionType.itemControl)
+        item?.extension
+            ?.filter((x: Extension) => x.url === IExtentionType.itemControl)
             ?.find((x: Extension) => x.valueCodeableConcept?.coding?.some((s: Coding) => s.code === code)) !==
         undefined;
     return exist;
@@ -92,8 +93,13 @@ export const existItemWithCode = (item: QuestionnaireItem, code: string): boolea
     return exist ? true : false;
 };
 
+export const existItemWithSystem = (item: QuestionnaireItem, system: ICodeSystem): boolean => {
+    const exist = item.code?.find((x: Coding) => x.system === system);
+    return exist ? true : false;
+};
+
 const existItemControlExtension = (item: QuestionnaireItem): boolean => {
-    return item.extension?.find((x: Extension) => x.url === IExtensionType.itemControl) !== undefined;
+    return item.extension?.find((x: Extension) => x.url === IExtentionType.itemControl) !== undefined;
 };
 
 const handleTypeInItemControlExtension = (item: QuestionnaireItem, code: ItemControlType): Extension | null => {
@@ -102,7 +108,7 @@ const handleTypeInItemControlExtension = (item: QuestionnaireItem, code: ItemCon
     }
 
     const coding = item.extension
-        ?.find((f: Extension) => f.url === IExtensionType.itemControl)
+        ?.find((f: Extension) => f.url === IExtentionType.itemControl)
         ?.valueCodeableConcept?.coding?.filter((f: Coding) => f.code !== code)
         ?.map((c: Coding) => c.code) as string[];
 
@@ -123,10 +129,6 @@ export const isItemControlReceiverComponent = (item: QuestionnaireItem): boolean
 
 export const isItemControlDropDown = (item: QuestionnaireItem): boolean => {
     return getItemControlType(item) === ItemControlType.dropdown;
-};
-
-export const isItemControlSlider = (item: QuestionnaireItem): boolean => {
-    return getItemControlType(item) === ItemControlType.slider;
 };
 
 export const isItemControlRadioButton = (item: QuestionnaireItem): boolean => {
@@ -181,7 +183,7 @@ export const setItemControlExtension = (
     code: ItemControlType,
     dispatch: (value: ActionType) => void,
 ): void => {
-    const extensionsToSet = (item.extension || []).filter((x: Extension) => x.url !== IExtensionType.itemControl);
+    const extensionsToSet = (item.extension || []).filter((x: Extension) => x.url !== IExtentionType.itemControl);
     const extension = handleTypeInItemControlExtension(item, code);
     if (extension) {
         extensionsToSet.push(extension);

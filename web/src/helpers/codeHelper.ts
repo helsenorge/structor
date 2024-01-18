@@ -5,6 +5,7 @@ import { ICodeSystem } from '../types/IQuestionnareItemType';
 import { deleteItemCodeAction, addItemCodeAction } from '../store/treeStore/treeActions';
 import { ActionType, Items, OrderItem } from '../store/treeStore/treeStore';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
+import { Option } from '../types/OptionTypes';
 
 export enum RenderingOptionsEnum {
     None = '0',
@@ -55,11 +56,11 @@ export const getAllMatchingCodes = (item: QuestionnaireItem, system: ICodeSystem
     return matchingCodes;
 };
 
-export const getDisplayValuesFromAllMatchingCodes = (item: QuestionnaireItem, system: ICodeSystem): string[] => {
-    const stringArrayToReturn: string[] = [];
+export const getDisplayAndCodeValuesFromAllMatchingCodes = (item: QuestionnaireItem, system: ICodeSystem): Option[] => {
+    const stringArrayToReturn: Option[] = [];
     item.code?.forEach((code: Coding) => {
-        if (code.system === system && code.display) {
-            stringArrayToReturn.push(code.display)
+        if (code.system === system && code.code && code.display) {
+            stringArrayToReturn.push({code: code?.code, display: code?.display})
         }
     });
     return stringArrayToReturn;
@@ -153,9 +154,9 @@ export const addChoiceRenderOptionItemCode = (
 };
 
 export const updateChildrenWithMatchingSystemAndCode = (
-    item: QuestionnaireItem, 
-    qItems: Items, 
-    qOrder: OrderItem[], 
+    item: QuestionnaireItem,
+    qItems: Items,
+    qOrder: OrderItem[],
     parentCodingArray: Coding[] | undefined,
     systemToSearchFor: ICodeSystem,
     dispatch: React.Dispatch<ActionType>): void => {
@@ -171,7 +172,7 @@ export const updateChildrenWithMatchingSystemAndCode = (
                     if (parentValueHasChanged) {
                         removeItemCode(childItem, systemToSearchFor, dispatch);
                         addItemCode(
-                            childItem, 
+                            childItem,
                             {
                                 system: systemToSearchFor,
                                 code: parentCoding?.code,

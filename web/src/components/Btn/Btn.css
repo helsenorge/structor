@@ -9,14 +9,6 @@
     -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
     cursor: pointer;
-    -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
     padding: 8px 12px;
     border-radius: 24px;
     color: white;
@@ -38,6 +30,16 @@
     margin-right: auto;
 }
 
+#btn-grey {
+    font-weight: 600;
+    background-color: #2a69ac;
+    border-radius: 25px;
+    height: 45px;
+    width: 130px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .regular-btn.primary {
     background: #2a69ac;
     color: white;
@@ -50,6 +52,12 @@
 .regular-btn.secondary {
     border: 3px solid #2a69ac;
     color: #2a69ac;
+}
+
+.regular-btn.disabled {
+    border: 3px solid lightgrey;
+    color: lightgrey;
+    cursor: default;
 }
 
 .btn-group button {
