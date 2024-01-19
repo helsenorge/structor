@@ -1,3 +1,4 @@
+import { Items, OrderItem } from '../store/treeStore/treeStore';
 import { Coding, ValueSet, ValueSetCompose } from '../types/fhir';
 import createUUID from './CreateUUID';
 import { initPredefinedValueSet } from './initPredefinedValueSet';
@@ -43,3 +44,19 @@ export const getValueSetValues = (valueSet: ValueSet | undefined): Coding[] => {
 
     return codings;
 };
+
+export const getAllAnswerValueSetFromOrderItem = (orderItem: OrderItem[], qItems: Items): string[] => {
+    const newArray: string[] = [];
+    orderItem.forEach((item) => {
+        const qItem = qItems[item.linkId];
+        if (qItem.answerValueSet) {
+            newArray.push(qItem.answerValueSet)
+        }
+    })
+    return newArray;
+}
+
+export const doesAllItemsHaveSameAnswerValueSet = (orderItem: OrderItem[], qItems: Items): boolean => {
+    const allChoiceAnswerValueSet = getAllAnswerValueSetFromOrderItem(orderItem, qItems);
+    return allChoiceAnswerValueSet.every((answerValueSet) => answerValueSet === allChoiceAnswerValueSet[0])
+}

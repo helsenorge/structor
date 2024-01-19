@@ -1,6 +1,8 @@
+import { getAllAnswerValueSetFromOrderItem } from '../helpers/valueSetHelper';
+import { OrderItem, Items } from '../store/treeStore/treeStore';
 import { ICodeSystem } from '../types/IQuestionnareItemType';
 import { Option } from '../types/OptionTypes';
-import { QuestionnaireItem } from '../types/fhir';
+import { QuestionnaireItem, ValueSet } from '../types/fhir';
 
 export const createOptionsFromQItemCode = (item: QuestionnaireItem, system: ICodeSystem): Option[] => {
     const newArray: Option[] = [];
@@ -35,3 +37,23 @@ export const getDisplayValueInOption = (options: Option[], codeToSearchIn: strin
     })
     return stringToReturn;
 };
+
+export const getContainedOptions = (orderItem: OrderItem[], qItems: Items, qContained: ValueSet[] | undefined): Option[] => {
+    const optionArray: Option[] = [];
+    const firstChoiceAnswerValueSet = getAllAnswerValueSetFromOrderItem(orderItem, qItems)[0];
+
+    if (firstChoiceAnswerValueSet) {
+        const idToSearchFor: string = firstChoiceAnswerValueSet.replace('#', '');
+
+        qContained?.forEach((contained) => {
+            if (contained.id === idToSearchFor) {
+                contained.compose?.include.forEach((include) => {
+                    include.concept?.forEach((concept) => {
+                        concept.display && optionArray.push({code: concept.code, display: concept.display});
+                    })
+                })
+            }
+        })
+    }
+    return optionArray;
+}

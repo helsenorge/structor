@@ -1,48 +1,67 @@
 import { removeItemCode, addItemCode } from "../../../../helpers/codeHelper";
 import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
 import FormField from "../../../FormField/FormField";
-import { QuestionnaireItem } from "../../../../types/fhir";
-import { ActionType } from "../../../../store/treeStore/treeStore";
+import { QuestionnaireItem, ValueSet } from "../../../../types/fhir";
+import { ActionType, Items, OrderItem } from "../../../../store/treeStore/treeStore";
 import { useTranslation } from "react-i18next";
 import Select from "../../../Select/Select";
-import { createOptionsFromQItemCode, getDisplayValueInOption, getSelectedValue } from "../../../../utils/optionsUtils";
+import { createOptionsFromQItemCode, getContainedOptions, getDisplayValueInOption, getSelectedValue } from "../../../../utils/optionsUtils";
+import { TableOptionsEnum } from "../../../../types/tableOptions";
+import { Option } from "../../../../types/OptionTypes";
 
 type ColumnToOrderByOptionProps = {
     item: QuestionnaireItem;
+    tableType: TableOptionsEnum,
+    qItems?: Items;
+    qContained?: ValueSet[] | undefined,
+    allChoiceItems?: OrderItem[],
     dispatch: React.Dispatch<ActionType>;
 };
 
-export const ColumnToOrderByOption = ({item, dispatch}: ColumnToOrderByOptionProps) => {
+export const ColumnToOrderByOption = ({item, qItems, qContained, tableType, allChoiceItems, dispatch}: ColumnToOrderByOptionProps) => {
     const { t } = useTranslation();
 
-    const options = createOptionsFromQItemCode(item, ICodeSystem.tableColumnName);
+    const getOptionsToUse = (): Option[] | undefined => {
+        if (tableType === TableOptionsEnum.Table && allChoiceItems && qItems && qContained) {
+            const tableOptions = getContainedOptions(allChoiceItems, qItems, qContained);
+            return tableOptions;
+        } else {
+            const tableHN2Options = createOptionsFromQItemCode(item, ICodeSystem.tableColumnName);
+            return tableHN2Options;
+        }
+    }
+    const optionsToUse = getOptionsToUse();
 
     const onChangeOption = (newValue: string) => {
         removeItemCode(item, ICodeSystem.tableOrderingColumn, dispatch);
-        addItemCode(
+        optionsToUse && addItemCode(
             item, 
             {
                 system: ICodeSystem.tableOrderingColumn,
                 code: newValue,
-                display: getDisplayValueInOption(options, newValue),
+                display: getDisplayValueInOption(optionsToUse, newValue),
             }, 
             dispatch
         );
     }
 
     return (
-        <div className="horizontal full">
-            <FormField
-                label={t('Ordering column')}
-                sublabel={t('Select the column to order the table by')}
-            >
-            <Select
-                placeholder={t('Choose a column:')}
-                options={options}
-                value={getSelectedValue(item, ICodeSystem.tableOrderingColumn)}
-                onChange={(e) => onChangeOption(e.target.value)}
-            />
-            </FormField>
-        </div>
+        <>
+            {optionsToUse &&
+                <div className="horizontal full">
+                    <FormField
+                        label={t('Ordering column')}
+                        sublabel={t('Select the column to order the table by')}
+                    >
+                    <Select
+                        placeholder={t('Choose a column:')}
+                        options={optionsToUse}
+                        value={getSelectedValue(item, ICodeSystem.tableOrderingColumn)}
+                        onChange={(e) => onChangeOption(e.target.value)}
+                    />
+                    </FormField>
+                </div>
+            }
+        </>
     )
 }

@@ -3,14 +3,16 @@ import { Extension, QuestionnaireItem, ValueSet } from "../../../../types/fhir";
 import { useTranslation } from "react-i18next";
 import { ActionType, Items, OrderItem } from "../../../../store/treeStore/treeStore";
 import RadioBtn from "../../../RadioBtn/RadioBtn";
-import { IExtentionType } from "../../../../types/IQuestionnareItemType";
+import { IExtentionType, IQuestionnaireItemType } from "../../../../types/IQuestionnareItemType";
 import { TableOptionsEnum } from "../../../../types/tableOptions";
 import { ColumnOrderingFunctionOption } from "./columnOrderingFunction-option";
 import { ItemControlType, createItemControlExtension, existItemControlWithCode } from "../../../../helpers/itemControl";
 import { removeItemExtension, setItemExtension } from "../../../../helpers/extensionHelper";
 import { ColumnToOrderByOption } from "./columnToOrderBy-option";
 import { ColumnNameOption } from "./columnName-option";
-import { ColumnToOrderByOption2 } from "./columnToOrderBy-option2";
+import { getTableCode } from "../../../../utils/tableutils";
+import { getAllItemTypes } from "../../../../utils/itemSearchUtils";
+import { doesAllItemsHaveSameAnswerValueSet } from "../../../../helpers/valueSetHelper";
 
 type TableOptionProps = {
     item: QuestionnaireItem;
@@ -23,24 +25,10 @@ type TableOptionProps = {
 export const TableOption = ({item, qItems, qOrder, qContained, dispatch}: TableOptionProps) => {
     const { t } = useTranslation();
 
-    const getTableCode = (extension: Extension | undefined): string | undefined => {
-        let stringToReturn: string | undefined = undefined;
-        extension?.valueCodeableConcept?.coding?.find((coding) => {
-            if (coding.code === TableOptionsEnum.GTable
-                || coding.code === TableOptionsEnum.Table 
-                || coding.code === TableOptionsEnum.TableHN1 
-                || coding.code === TableOptionsEnum.TableHN2) {
-            stringToReturn = coding.code
-            }
-        })
-        return stringToReturn;
-    };
-
-    const checkedTableOption = (): string => {
+    const getCheckedTableOption = (): string => {
         const tableCode = getTableCode(itemControlExtension) || TableOptionsEnum.None;
         return tableCode;
     };
-
     const onChangeTableOption = (newValue: string) => {
         let newExtension: Extension;
         switch (newValue) {
@@ -64,7 +52,6 @@ export const TableOption = ({item, qItems, qOrder, qContained, dispatch}: TableO
                 removeItemExtension(item, IExtentionType.itemControl, dispatch);
         }
     };
-
     const itemControlExtension = item.extension?.find((extension) => extension.url === IExtentionType.itemControl);
     const hasTableCode = existItemControlWithCode(item, getTableCode(itemControlExtension) || '');
     const tableOptions = [
@@ -74,33 +61,42 @@ export const TableOption = ({item, qItems, qOrder, qContained, dispatch}: TableO
         { code: TableOptionsEnum.TableHN1, display: t('Table with question and answer in two columns') },
         { code: TableOptionsEnum.TableHN2, display: t('Table with custom columns and column headers') },
     ];
+    const checkedTableOption = getCheckedTableOption();
     const showColumnOptions: boolean = hasTableCode 
-        && checkedTableOption() === TableOptionsEnum.Table 
-            || checkedTableOption() === TableOptionsEnum.TableHN2;
+        && checkedTableOption === TableOptionsEnum.Table 
+            || checkedTableOption === TableOptionsEnum.TableHN2;
 
+    const allChoiceItems: OrderItem[] = getAllItemTypes(qOrder, qItems, IQuestionnaireItemType.choice);
+    const allChoiceItemsHaveSameAnswerValueSet: boolean = doesAllItemsHaveSameAnswerValueSet(allChoiceItems, qItems);
+    
     return (
         <>
             <FormField label={t('Table')} sublabel={t('Choose whether the group should be displayed as a summary table')}>
                 <RadioBtn
                     onChange={onChangeTableOption}
-                    checked={checkedTableOption()}
+                    checked={checkedTableOption}
                     options={tableOptions}
                     name={'tableOption-radio'}
                 />
             </FormField>
-            {
-               showColumnOptions && (
+            {showColumnOptions && (
                 <div className="table-column-options-wrapper">
                     <div className="indentation-element" />
                     <div className="table-column-options">
-                        { checkedTableOption() === TableOptionsEnum.TableHN2 && 
-                            <ColumnNameOption item={item} qItems={qItems} qOrder={qOrder} dispatch={dispatch} />
+                        {checkedTableOption === TableOptionsEnum.TableHN2 && 
+                            <>
+                                <ColumnNameOption item={item} qItems={qItems} qOrder={qOrder} dispatch={dispatch} />
+                                <ColumnToOrderByOption item={item} tableType={TableOptionsEnum.TableHN2} dispatch={dispatch} />
+                            </>
                         }
-                        { checkedTableOption() === TableOptionsEnum.TableHN2 &&
-                            <ColumnToOrderByOption item={item} dispatch={dispatch} />
-                        }
-                        { checkedTableOption() === TableOptionsEnum.Table &&
-                            <ColumnToOrderByOption2 item={item} qItems={qItems} qOrder={qOrder} qContained={qContained} dispatch={dispatch} />
+                        {checkedTableOption === TableOptionsEnum.Table && allChoiceItemsHaveSameAnswerValueSet &&
+                            <ColumnToOrderByOption 
+                                item={item} 
+                                tableType={TableOptionsEnum.Table} 
+                                qItems={qItems} 
+                                qContained={qContained} 
+                                allChoiceItems={allChoiceItems}
+                                dispatch={dispatch} />
                         }
                         <ColumnOrderingFunctionOption item={item} dispatch={dispatch} />
                     </div>
