@@ -1,5 +1,5 @@
 import { Items, OrderItem } from '../store/treeStore/treeStore';
-import { IExtensionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../types/fhir';
 
 export const doesItemHaveCode = (item: QuestionnaireItem, code: string): boolean => {
@@ -53,7 +53,7 @@ export const doesItemWithCodeExistInArray = (
 
 export const doesAllAnswerOptionsInItemHaveExtenison = (
     qItem: QuestionnaireItem,
-    extensionToSearchFor: IExtensionType,
+    extensionToSearchFor: IExtentionType,
 ): boolean => {
     let foundExtension = false;
     let valueToReturn = true;
@@ -77,6 +77,19 @@ export const getAllGroups = (qOrder: OrderItem[], qItems: Items, newArray: Order
     qOrder.forEach((orderItem) => {
         const qItem = qItems[orderItem.linkId];
         if (qItem.type === IQuestionnaireItemType.group) {
+            newArray.push(orderItem);
+        }
+        if (orderItem.items) {
+            getAllGroups(orderItem.items, qItems, newArray);
+        }
+    });
+    return newArray;
+};
+
+export const getAllChoice = (qOrder: OrderItem[], qItems: Items, newArray: OrderItem[] = []): OrderItem[] => {
+    qOrder.forEach((orderItem) => {
+        const qItem = qItems[orderItem.linkId];
+        if (qItem.type === IQuestionnaireItemType.choice) {
             newArray.push(orderItem);
         }
         if (orderItem.items) {

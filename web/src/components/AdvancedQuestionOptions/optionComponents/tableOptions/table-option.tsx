@@ -1,5 +1,5 @@
 import FormField from "../../../FormField/FormField";
-import { Extension, QuestionnaireItem } from "../../../../types/fhir";
+import { Extension, QuestionnaireItem, ValueSet } from "../../../../types/fhir";
 import { useTranslation } from "react-i18next";
 import { ActionType, Items, OrderItem } from "../../../../store/treeStore/treeStore";
 import RadioBtn from "../../../RadioBtn/RadioBtn";
@@ -10,15 +10,17 @@ import { ItemControlType, createItemControlExtension, existItemControlWithCode }
 import { removeItemExtension, setItemExtension } from "../../../../helpers/extensionHelper";
 import { ColumnToOrderByOption } from "./columnToOrderBy-option";
 import { ColumnNameOption } from "./columnName-option";
+import { ColumnToOrderByOption2 } from "./columnToOrderBy-option2";
 
 type TableOptionProps = {
     item: QuestionnaireItem;
     qItems: Items;
     qOrder: OrderItem[];
+    qContained: ValueSet[] | undefined,
     dispatch: React.Dispatch<ActionType>;
 };
 
-export const TableOption = ({item, qItems, qOrder, dispatch}: TableOptionProps) => {
+export const TableOption = ({item, qItems, qOrder, qContained, dispatch}: TableOptionProps) => {
     const { t } = useTranslation();
 
     const getTableCode = (extension: Extension | undefined): string | undefined => {
@@ -91,10 +93,15 @@ export const TableOption = ({item, qItems, qOrder, dispatch}: TableOptionProps) 
                 <div className="table-column-options-wrapper">
                     <div className="indentation-element" />
                     <div className="table-column-options">
-                        {checkedTableOption() === TableOptionsEnum.TableHN2 && 
+                        { checkedTableOption() === TableOptionsEnum.TableHN2 && 
                             <ColumnNameOption item={item} qItems={qItems} qOrder={qOrder} dispatch={dispatch} />
                         }
-                        <ColumnToOrderByOption item={item} dispatch={dispatch} />
+                        { checkedTableOption() === TableOptionsEnum.TableHN2 &&
+                            <ColumnToOrderByOption item={item} dispatch={dispatch} />
+                        }
+                        { checkedTableOption() === TableOptionsEnum.Table &&
+                            <ColumnToOrderByOption2 item={item} qItems={qItems} qOrder={qOrder} qContained={qContained} dispatch={dispatch} />
+                        }
                         <ColumnOrderingFunctionOption item={item} dispatch={dispatch} />
                     </div>
                 </div>

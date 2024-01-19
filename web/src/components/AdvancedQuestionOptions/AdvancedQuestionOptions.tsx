@@ -118,7 +118,7 @@ const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} 
             {canTypeHaveSummary(item) && (
                 <SummaryOption item={item} dispatch={dispatch}></SummaryOption>
             )}
-            {item.type === IQuestionnaireItemType.group && <TableOption item={item} qItems={qItems} qOrder={qOrder} dispatch={dispatch} />}
+            {item.type === IQuestionnaireItemType.group && <TableOption item={item} qItems={qItems} qOrder={qOrder} qContained={state.qContained} dispatch={dispatch} />}
             {parentItemHasTableHN2Code && <ColumnOption item={item} parentItem={parentItem} dispatch={dispatch} />}
             <HelpOption item={item} dispatch={dispatch} parentArray={parentArray} qItems={qItems} qOrder={qOrder} />
             <ViewOption item={item} />
