@@ -40,13 +40,13 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
 
     const onAddButtonClicked = (): void => {
         const previousCode = lastItem?.code;
-        const previousCodeNumber = previousCode ? parseInt(previousCode) + 1 : '1';
+        const newCode = previousCode ? parseInt(previousCode) + 1 : 1;
         
         addItemCode(
             item,
             {
               system: ICodeSystem.tableColumnName,
-              code: previousCodeNumber.toString(),
+              code: newCode.toString(),
               display: '',
             },
             dispatch

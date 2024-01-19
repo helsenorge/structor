@@ -13,7 +13,7 @@ type ColumnToOrderByOptionProps = {
     item: QuestionnaireItem;
     tableType: TableOptionsEnum,
     qItems?: Items;
-    qContained?: ValueSet[] | undefined,
+    qContained?: ValueSet[],
     allChoiceItems?: OrderItem[],
     dispatch: React.Dispatch<ActionType>;
 };

@@ -460,11 +460,10 @@ function updateItemCodeProperty2(draft: TreeState, action: UpdateItemCodePropert
         return;
     }
 
-    // Find the specific coding based on display and code
+    
     const targetCodingIndex = code.findIndex((item) => item.system === action.system && item.code === action.code);
 
     if (targetCodingIndex !== -1) {
-        // Update the property value for the specific coding
         code[targetCodingIndex][action.property] = action.value;
     }
 }
