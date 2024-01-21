@@ -34,7 +34,7 @@ import {
     UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION,
     UPDATE_ITEM_ACTION,
     UPDATE_ITEM_CODE_PROPERTY_ACTION,
-    UPDATE_ITEM_CODE_PROPERTY_ACTION_2,
+    UPDATE_ITEM_CODE_PROPERTY_WITH_CODE_ACTION,
     UPDATE_ITEM_OPTION_TRANSLATION_ACTION,
     UPDATE_ITEM_TRANSLATION_ACTION,
     UPDATE_LINK_ID_ACTION,
@@ -46,7 +46,7 @@ import {
     UpdateContainedValueSetTranslationAction,
     UpdateItemAction,
     UpdateItemCodePropertyAction,
-    UpdateItemCodePropertyAction2,
+    UpdateItemCodePropertyWithCodeAction,
     UpdateItemOptionTranslationAction,
     UpdateItemTranslationAction,
     UpdateLinkIdAction,
@@ -77,7 +77,7 @@ export type ActionType =
     | ImportValueSetAction
     | RemoveQuestionnaireLanguageAction
     | UpdateItemCodePropertyAction
-    | UpdateItemCodePropertyAction2
+    | UpdateItemCodePropertyWithCodeAction
     | UpdateItemTranslationAction
     | UpdateItemOptionTranslationAction
     | ResetQuestionnaireAction
@@ -452,7 +452,7 @@ function updateItemCodeProperty(draft: TreeState, action: UpdateItemCodeProperty
     }
 }
 
-function updateItemCodeProperty2(draft: TreeState, action: UpdateItemCodePropertyAction2): void {
+function updateItemCodePropertyWithCode(draft: TreeState, action: UpdateItemCodePropertyWithCodeAction): void {
     const code = draft.qItems[action.linkId]?.code;
 
     if (!code) {
@@ -701,8 +701,8 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
         case UPDATE_ITEM_CODE_PROPERTY_ACTION:
             updateItemCodeProperty(draft, action);
             break;
-        case UPDATE_ITEM_CODE_PROPERTY_ACTION_2:
-            updateItemCodeProperty2(draft, action);
+        case UPDATE_ITEM_CODE_PROPERTY_WITH_CODE_ACTION:
+            updateItemCodePropertyWithCode(draft, action);
             break;
         case ADD_QUESTIONNAIRE_LANGUAGE_ACTION:
             addLanguage(draft, action);

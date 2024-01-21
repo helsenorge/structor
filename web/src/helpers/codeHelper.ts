@@ -118,7 +118,7 @@ export const removeItemCode = (
     }
 };
 
-export const removeItemCode2 = (
+export const removeItemCodeWithCode = (
     item: QuestionnaireItem,
     systemUrl: string,
     code: string,

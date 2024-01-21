@@ -5,14 +5,14 @@ import { ICodeSystem, ICodingProperty } from "../../../../types/IQuestionnareIte
 import FormField from "../../../FormField/FormField";
 import InputField from "../../../InputField/inputField";
 import { 
-    removeItemCode2, 
+    removeItemCodeWithCode, 
     addItemCode,
     updateChildrenWithMatchingSystemAndCode, 
     getAllMatchingCodes,
 } from "../../../../helpers/codeHelper";
 import { useEffect } from "react";
 import Btn from "../../../Btn/Btn";
-import { updateItemCodePropertyAction2 } from "../../../../store/treeStore/treeActions";
+import { updateItemCodePropertyWithCodeAction } from "../../../../store/treeStore/treeActions";
 
 type ColumnNameOptionProps = {
     item: QuestionnaireItem;
@@ -30,7 +30,7 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
         if (newDisplayValue === '') {
             return;
         }
-        dispatch(updateItemCodePropertyAction2(
+        dispatch(updateItemCodePropertyWithCodeAction(
             item.linkId, 
             ICodingProperty.display, 
             newDisplayValue, 
@@ -54,7 +54,7 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
     }
 
     const onDeleteButtonClicked = (code: string): void => {
-        removeItemCode2(item, ICodeSystem.tableColumnName, code, dispatch);
+        removeItemCodeWithCode(item, ICodeSystem.tableColumnName, code, dispatch);
     };
 
     const updateChildrenWithTableColumnCoding = (): void => {
