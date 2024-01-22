@@ -7,8 +7,8 @@ import InputField from "../../../InputField/inputField";
 import { 
     removeItemCodeWithCode, 
     addItemCode,
-    updateChildrenWithMatchingSystemAndCode, 
     getAllMatchingCodes,
+    getOrderItemByLinkId,
 } from "../../../../helpers/codeHelper";
 import { useEffect } from "react";
 import Btn from "../../../Btn/Btn";
@@ -23,7 +23,7 @@ type ColumnNameOptionProps = {
 
 export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOptionProps) => {
     const { t } = useTranslation();
-    const existingColumnCodes = getAllMatchingCodes(item, ICodeSystem.tableColumnName);
+    let existingColumnCodes = getAllMatchingCodes(item, ICodeSystem.tableColumnName);
     const lastItem = existingColumnCodes && existingColumnCodes[existingColumnCodes?.length -1];
 
     const onBlurNameInput = (oldCodeValue: string, newDisplayValue: string): void => {
@@ -35,7 +35,9 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
             ICodingProperty.display, 
             newDisplayValue, 
             ICodeSystem.tableColumnName,
-            oldCodeValue));
+            oldCodeValue
+        ));
+        updateChildWithMatchingCode(newDisplayValue, ICodeSystem.tableColumn, oldCodeValue);
     };
 
     const onAddButtonClicked = (): void => {
@@ -57,16 +59,22 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
         removeItemCodeWithCode(item, ICodeSystem.tableColumnName, code, dispatch);
     };
 
-    const updateChildrenWithTableColumnCoding = (): void => {
-        const allTableColumnNameCodings = getAllMatchingCodes(item, ICodeSystem.tableColumnName);
-        if (allTableColumnNameCodings) {
-            updateChildrenWithMatchingSystemAndCode(item, qItems, qOrder, allTableColumnNameCodings, ICodeSystem.tableColumn, dispatch);
-        }
-    }
+    const updateChildWithMatchingCode = (displayValue: string, systemValue: ICodeSystem, codeValue: string) => {
+        const parentOrderItem = getOrderItemByLinkId(qOrder, item.linkId);
+        parentOrderItem?.items.forEach((childOrderItem) => {
+            const childItem = qItems[childOrderItem.linkId];
+            dispatch(updateItemCodePropertyWithCodeAction(
+                childItem.linkId, 
+                ICodingProperty.display, 
+                displayValue, 
+                systemValue,
+                codeValue,
+            ));
+        })
+    };
 
     useEffect(() => {
-        // setColumnNamesCodings(initialColumnCodesValues);
-        updateChildrenWithTableColumnCoding();
+        existingColumnCodes = getAllMatchingCodes(item, ICodeSystem.tableColumnName);
     }, [item.code]);
 
     return (

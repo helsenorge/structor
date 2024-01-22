@@ -3,7 +3,7 @@ import { TFunction } from 'react-i18next';
 import { Coding } from '../types/fhir';
 import { ICodeSystem } from '../types/IQuestionnareItemType';
 import { deleteItemCodeAction, addItemCodeAction } from '../store/treeStore/treeActions';
-import { ActionType, Items, OrderItem } from '../store/treeStore/treeStore';
+import { ActionType, OrderItem } from '../store/treeStore/treeStore';
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { Option } from '../types/OptionTypes';
 
@@ -64,39 +64,6 @@ export const getDisplayAndCodeValuesFromAllMatchingCodes = (item: QuestionnaireI
         }
     });
     return stringArrayToReturn;
-};
-
-export const getChildrenWithMatchingSystemAndCode = (
-    qItems: Items,
-    qOrder: OrderItem[], 
-    itemToSearchIn: QuestionnaireItem, 
-    systemToSearchFor: ICodeSystem, 
-    codeToSearchFor: string, 
-    itemsToReturn: QuestionnaireItem[] = []
-    ): QuestionnaireItem[] => {
-        qOrder.forEach((orderItem) => {
-            const qItem = qItems[orderItem.linkId];
-
-            if  (qItem.linkId === itemToSearchIn.linkId) {
-                orderItem.items.forEach((childItem) => {
-                    const qItemChild = qItems[childItem.linkId];
-                    if (qItemChild.code) {
-                        qItemChild.code.forEach((coding) => {
-                            if (coding.system === systemToSearchFor && coding.code === codeToSearchFor) {
-                                itemsToReturn.push(qItemChild);
-                                return;
-                            }
-                        })
-                    }
-                })
-            }
-    
-            if (orderItem.items && !itemsToReturn.length) {
-                itemsToReturn = getChildrenWithMatchingSystemAndCode(qItems, orderItem.items, itemToSearchIn, systemToSearchFor, codeToSearchFor, itemsToReturn);
-            }
-        });
-    
-        return itemsToReturn;
 };
 
 export const erRenderingOption = (code: Coding): boolean => {
@@ -165,36 +132,19 @@ export const addChoiceRenderOptionItemCode = (
     }
 };
 
-export const updateChildrenWithMatchingSystemAndCode = (
-    item: QuestionnaireItem,
-    qItems: Items,
-    qOrder: OrderItem[],
-    parentCodingArray: Coding[] | undefined,
-    systemToSearchFor: ICodeSystem,
-    dispatch: React.Dispatch<ActionType>): void => {
+export const getOrderItemByLinkId = (qOrder: OrderItem[], linkIdToSearch: string): OrderItem | undefined => {
+    for (const orderItem of qOrder) {
+        if (orderItem.linkId === linkIdToSearch) {
+            return orderItem;
+        }
 
-    parentCodingArray?.forEach((parentCoding) => {
-        const codeToSearchFor = parentCoding.code?.toString() || '';
-        const childrenMatch = 
-            getChildrenWithMatchingSystemAndCode(qItems, qOrder, item, systemToSearchFor, codeToSearchFor);
-        childrenMatch.forEach((childItem) => {
-            childItem?.code?.forEach((childCoding) => {
-                if (childCoding.system === systemToSearchFor && childCoding.code === codeToSearchFor) {
-                    const parentValueHasChanged = childCoding.display !== parentCoding.display;
-                    if (parentValueHasChanged) {
-                        removeItemCode(childItem, systemToSearchFor, dispatch);
-                        addItemCode(
-                            childItem,
-                            {
-                                system: systemToSearchFor,
-                                code: parentCoding?.code,
-                                display: parentCoding?.display,
-                            }, 
-                            dispatch
-                        );
-                    }
-                }
-            })
-        })
-    })
+        if (orderItem.items) {
+            const nestedResult = getOrderItemByLinkId(orderItem.items, linkIdToSearch);
+            if (nestedResult) {
+                return nestedResult;
+            }
+        }
+    }
+
+    return undefined;
 };
