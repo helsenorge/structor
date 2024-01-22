@@ -1,5 +1,5 @@
 import { Items, OrderItem } from '../store/treeStore/treeStore';
-import { IExtentionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { IExtensionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { QuestionnaireItem } from '../types/fhir';
 
 export const doesItemHaveCode = (item: QuestionnaireItem, code: string): boolean => {
@@ -53,7 +53,7 @@ export const doesItemWithCodeExistInArray = (
 
 export const doesAllAnswerOptionsInItemHaveExtenison = (
     qItem: QuestionnaireItem,
-    extensionToSearchFor: IExtentionType,
+    extensionToSearchFor: IExtensionType,
 ): boolean => {
     let foundExtension = false;
     let valueToReturn = true;
@@ -73,19 +73,15 @@ export const doesAllAnswerOptionsInItemHaveExtenison = (
     return valueToReturn;
 };
 
-export const getAllItemTypes = (
-    qOrder: OrderItem[], 
-    qItems: Items, 
-    itemType: IQuestionnaireItemType, 
-    newArray: OrderItem[] = []): OrderItem[] => {
-        qOrder.forEach((orderItem) => {
-            const qItem = qItems[orderItem.linkId];
-            if (qItem.type === itemType) {
-                newArray.push(orderItem);
-            }
-            if (orderItem.items) {
-                getAllItemTypes(orderItem.items, qItems, itemType, newArray);
-            }
-        });
-        return newArray;
+export const getAllGroups = (qOrder: OrderItem[], qItems: Items, newArray: OrderItem[] = []): OrderItem[] => {
+    qOrder.forEach((orderItem) => {
+        const qItem = qItems[orderItem.linkId];
+        if (qItem.type === IQuestionnaireItemType.group) {
+            newArray.push(orderItem);
+        }
+        if (orderItem.items) {
+            getAllGroups(orderItem.items, qItems, newArray);
+        }
+    });
+    return newArray;
 };
