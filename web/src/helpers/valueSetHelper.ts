@@ -45,6 +45,17 @@ export const getValueSetValues = (valueSet: ValueSet | undefined): Coding[] => {
     return codings;
 };
 
+export const getFirstAnswerValueSetFromOrderItem = (orderItem: OrderItem[], qItems: Items): string => {
+    let newString: string = '';
+    orderItem.forEach((item) => {
+        const qItem = qItems[item.linkId];
+        if (qItem.answerValueSet) {
+            newString = qItem.answerValueSet;
+        }
+    })
+    return newString;
+}
+
 export const getAllAnswerValueSetFromOrderItem = (orderItem: OrderItem[], qItems: Items): string[] => {
     const newArray: string[] = [];
     orderItem.forEach((item) => {

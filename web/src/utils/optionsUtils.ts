@@ -1,4 +1,4 @@
-import { getAllAnswerValueSetFromOrderItem } from '../helpers/valueSetHelper';
+import { getAllAnswerValueSetFromOrderItem, getFirstAnswerValueSetFromOrderItem } from '../helpers/valueSetHelper';
 import { OrderItem, Items } from '../store/treeStore/treeStore';
 import { ICodeSystem } from '../types/IQuestionnareItemType';
 import { Option } from '../types/OptionTypes';
@@ -40,7 +40,7 @@ export const getDisplayValueInOption = (options: Option[], codeToSearchIn: strin
 
 export const getContainedOptions = (orderItem: OrderItem[], qItems: Items, qContained: ValueSet[] | undefined): Option[] => {
     const optionArray: Option[] = [];
-    const firstChoiceAnswerValueSet = getAllAnswerValueSetFromOrderItem(orderItem, qItems)[0];
+    const firstChoiceAnswerValueSet = getFirstAnswerValueSetFromOrderItem(orderItem, qItems);
 
     if (firstChoiceAnswerValueSet) {
         const idToSearchFor: string = firstChoiceAnswerValueSet.replace('#', '');
