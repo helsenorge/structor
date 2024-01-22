@@ -8,7 +8,7 @@ import {
     removeItemCodeWithCode, 
     addItemCode,
     getAllMatchingCodes,
-    getOrderItemByLinkId,
+    updateChildWithMatchingCode,
 } from "../../../../helpers/codeHelper";
 import { useEffect } from "react";
 import Btn from "../../../Btn/Btn";
@@ -37,7 +37,7 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
             ICodeSystem.tableColumnName,
             oldCodeValue
         ));
-        updateChildWithMatchingCode(newDisplayValue, ICodeSystem.tableColumn, oldCodeValue);
+        updateChildWithMatchingCode(item, qItems, qOrder, newDisplayValue, ICodeSystem.tableColumn, oldCodeValue, dispatch);
     };
 
     const onAddButtonClicked = (): void => {
@@ -57,20 +57,6 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
 
     const onDeleteButtonClicked = (code: string): void => {
         removeItemCodeWithCode(item, ICodeSystem.tableColumnName, code, dispatch);
-    };
-
-    const updateChildWithMatchingCode = (displayValue: string, systemValue: ICodeSystem, codeValue: string) => {
-        const parentOrderItem = getOrderItemByLinkId(qOrder, item.linkId);
-        parentOrderItem?.items.forEach((childOrderItem) => {
-            const childItem = qItems[childOrderItem.linkId];
-            dispatch(updateItemCodePropertyWithCodeAction(
-                childItem.linkId, 
-                ICodingProperty.display, 
-                displayValue, 
-                systemValue,
-                codeValue,
-            ));
-        })
     };
 
     useEffect(() => {
