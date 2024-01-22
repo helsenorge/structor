@@ -68,6 +68,11 @@ export const getAllAnswerValueSetFromOrderItem = (orderItem: OrderItem[], qItems
 }
 
 export const doesAllItemsHaveSameAnswerValueSet = (orderItem: OrderItem[], qItems: Items): boolean => {
-    const allChoiceAnswerValueSet = getAllAnswerValueSetFromOrderItem(orderItem, qItems);
-    return allChoiceAnswerValueSet.every((answerValueSet) => answerValueSet === allChoiceAnswerValueSet[0])
+    const allAnswerValueSet = getAllAnswerValueSetFromOrderItem(orderItem, qItems);
+    const allAnswerValueSetHasSameValue = allAnswerValueSet.every((answerValueSet) => answerValueSet === allAnswerValueSet[0]);
+    if (allAnswerValueSet.length && allAnswerValueSetHasSameValue) {
+        return true;
+    } else {
+        return false;
+    };
 }

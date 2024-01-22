@@ -12,7 +12,6 @@ import { ColumnToOrderByOption } from "./columnToOrderBy-option";
 import { ColumnNameOption } from "./columnName-option";
 import { getTableCode } from "../../../../utils/tableutils";
 import { getAllItemTypes } from "../../../../utils/itemSearchUtils";
-import { doesAllItemsHaveSameAnswerValueSet } from "../../../../helpers/valueSetHelper";
 
 type TableOptionProps = {
     item: QuestionnaireItem;
@@ -67,7 +66,6 @@ export const TableOption = ({item, qItems, qOrder, qContained, dispatch}: TableO
             || checkedTableOption === TableOptionsEnum.TableHN2;
 
     const allChoiceItems: OrderItem[] = getAllItemTypes(qOrder, qItems, IQuestionnaireItemType.choice);
-    const allChoiceItemsHaveSameAnswerValueSet: boolean = doesAllItemsHaveSameAnswerValueSet(allChoiceItems, qItems);
     
     return (
         <>
@@ -89,7 +87,7 @@ export const TableOption = ({item, qItems, qOrder, qContained, dispatch}: TableO
                                 <ColumnToOrderByOption item={item} tableType={TableOptionsEnum.TableHN2} dispatch={dispatch} />
                             </>
                         }
-                        {checkedTableOption === TableOptionsEnum.Table && allChoiceItemsHaveSameAnswerValueSet &&
+                        {checkedTableOption === TableOptionsEnum.Table &&
                             <ColumnToOrderByOption 
                                 item={item} 
                                 tableType={TableOptionsEnum.Table} 
