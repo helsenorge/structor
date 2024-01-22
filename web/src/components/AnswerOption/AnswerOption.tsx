@@ -38,8 +38,20 @@ const AnswerOption = ({
 
     const [displayScoringField, setDisplayScoringField] = useState(false);
     const isSlider = item.extension?.some((ex) => ex.valueCodeableConcept?.coding?.some(cd => cd.code ===  ItemControlType.slider));
-    const inputFieldClassName = displayScoringField && !isSlider ? 'three-columns' : 'two-columns';
-    const ordinalValuePlaceholder = displayScoringField ? (isSlider ? t('Enter a scoring value as label..') : t('Enter a scoring value..')) : isSlider ? t('Enter a label..') : '';
+
+    let inputFieldClassName;
+    if (displayScoringField && !isSlider) {
+        inputFieldClassName = 'three-columns';
+    } else {
+        inputFieldClassName = 'two-columns';
+    }
+
+    let ordinalValuePlaceholder;
+    if (displayScoringField) {
+        ordinalValuePlaceholder = isSlider ? t('Enter a scoring value as label..') : t('Enter a scoring value..');
+    } else {
+        ordinalValuePlaceholder = isSlider ? t('Enter a label..') : '';
+    }
 
     const getDefaultOrdinalValue = (): string => {
         let stringToReturn = '';
