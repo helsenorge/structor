@@ -62,8 +62,7 @@ export const TableOption = ({item, qItems, qOrder, qContained, dispatch}: TableO
     ];
     const checkedTableOption = getCheckedTableOption();
     const showColumnOptions: boolean = hasTableCode 
-        && checkedTableOption === TableOptionsEnum.Table 
-            || checkedTableOption === TableOptionsEnum.TableHN2;
+        && checkedTableOption !== TableOptionsEnum.TableHN1;
 
     const allChoiceItems: OrderItem[] = getAllItemTypes(qOrder, qItems, IQuestionnaireItemType.choice);
     
@@ -95,6 +94,9 @@ export const TableOption = ({item, qItems, qOrder, qContained, dispatch}: TableO
                                 qContained={qContained} 
                                 allChoiceItems={allChoiceItems}
                                 dispatch={dispatch} />
+                        }
+                        {checkedTableOption === TableOptionsEnum.GTable && 
+                            <ColumnToOrderByOption item={item} tableType={TableOptionsEnum.GTable} dispatch={dispatch} />
                         }
                         <ColumnOrderingFunctionOption item={item} dispatch={dispatch} />
                     </div>

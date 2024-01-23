@@ -26,8 +26,8 @@ export const ColumnToOrderByOption = ({item, qItems, qContained, tableType, allC
             const tableOptions = getContainedOptions(allChoiceItems, qItems, qContained);
             return tableOptions;
         } else {
-            const tableHN2Options = createOptionsFromQItemCode(item, ICodeSystem.tableColumnName);
-            return tableHN2Options;
+            const options = createOptionsFromQItemCode(item, ICodeSystem.tableColumnName);
+            return options;
         }
     }
     const optionsToUse = getOptionsToUse();
