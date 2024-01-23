@@ -34,6 +34,7 @@ import {
     UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION,
     UPDATE_ITEM_ACTION,
     UPDATE_ITEM_CODE_PROPERTY_ACTION,
+    UPDATE_ITEM_CODE_PROPERTY_WITH_CODE_ACTION,
     UPDATE_ITEM_OPTION_TRANSLATION_ACTION,
     UPDATE_ITEM_TRANSLATION_ACTION,
     UPDATE_LINK_ID_ACTION,
@@ -45,6 +46,7 @@ import {
     UpdateContainedValueSetTranslationAction,
     UpdateItemAction,
     UpdateItemCodePropertyAction,
+    UpdateItemCodePropertyWithCodeAction,
     UpdateItemOptionTranslationAction,
     UpdateItemTranslationAction,
     UpdateLinkIdAction,
@@ -58,12 +60,13 @@ import {
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
-import { IItemProperty, IExtensionType } from '../../types/IQuestionnareItemType';
+import { IItemProperty } from '../../types/IQuestionnareItemType';
 import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { isIgnorableItem, isRecipientList } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { saveStateToDb } from './indexedDbHelper';
+import { IExtentionType } from '../../types/IQuestionnareItemType';
 import { createVisibilityCoding, VisibilityType } from '../../helpers/globalVisibilityHelper';
 import { tjenesteomraadeCode, getTjenesteomraadeCoding } from '../../helpers/MetadataHelper';
 
@@ -74,6 +77,7 @@ export type ActionType =
     | ImportValueSetAction
     | RemoveQuestionnaireLanguageAction
     | UpdateItemCodePropertyAction
+    | UpdateItemCodePropertyWithCodeAction
     | UpdateItemTranslationAction
     | UpdateItemOptionTranslationAction
     | ResetQuestionnaireAction
@@ -222,7 +226,7 @@ const initialState: TreeState = {
                 valueCoding: { system: 'http://helsenorge.no/fhir/ValueSet/sdf-information-message', code: '1' },
             },
             {
-                url: IExtensionType.globalVisibility,
+                url: IExtentionType.globalVisibility,
                 valueCodeableConcept: {
                     coding: [
                         createVisibilityCoding(VisibilityType.hideHelp),
@@ -448,6 +452,22 @@ function updateItemCodeProperty(draft: TreeState, action: UpdateItemCodeProperty
     }
 }
 
+function updateItemCodePropertyWithCode(draft: TreeState, action: UpdateItemCodePropertyWithCodeAction): void {
+    const code = draft.qItems[action.linkId]?.code;
+
+    if (!code) {
+        console.error('Trying to update "code" from non-existent item or code');
+        return;
+    }
+
+    
+    const targetCodingIndex = code.findIndex((item) => item.system === action.system && item.code === action.code);
+
+    if (targetCodingIndex !== -1) {
+        code[targetCodingIndex][action.property] = action.value;
+    }
+}
+
 function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAction) {
     if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
         if (!draft.qAdditionalLanguages[action.languageCode].items[action.linkId]) {
@@ -458,13 +478,12 @@ function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAc
 }
 
 function updateItemOptionTranslation(draft: TreeState, action: UpdateItemOptionTranslationAction) {
-    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {        
-        const item = draft.qAdditionalLanguages[action.languageCode].items[action.linkId] ?? {} as ItemTranslation;
+    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
+        const item = draft.qAdditionalLanguages[action.languageCode].items[action.linkId];
         if (!item.answerOptions) {
-            item.answerOptions = {} as CodeStringValue;
+            item.answerOptions = {};
         }
         item.answerOptions[action.optionCode] = action.text;
-        draft.qAdditionalLanguages[action.languageCode].items[action.linkId] = item;
     }
 }
 
@@ -682,6 +701,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
         case UPDATE_ITEM_CODE_PROPERTY_ACTION:
             updateItemCodeProperty(draft, action);
             break;
+        case UPDATE_ITEM_CODE_PROPERTY_WITH_CODE_ACTION:
+            updateItemCodePropertyWithCode(draft, action);
+            break;
         case ADD_QUESTIONNAIRE_LANGUAGE_ACTION:
             addLanguage(draft, action);
             break;
@@ -762,7 +784,7 @@ export const TreeContext = createContext<{
     dispatch: () => null,
 });
 
-export const TreeContextProvider = (props: { children: JSX.Element }): JSX.Element => {
+export const TreeContextProvider = (props: { children: React.JSX.Element }): React.JSX.Element => {
     const [state, dispatch] = useReducer(reducer, getInitialState());
 
     useEffect(() => {

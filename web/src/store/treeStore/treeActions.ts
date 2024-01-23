@@ -2,7 +2,7 @@ import CreateUUID from '../../helpers/CreateUUID';
 import {
     ICodingProperty,
     IEnableWhen,
-    IExtensionType,
+    IExtentionType,
     IItemProperty,
     IQuestionnaireItemType,
     IValueSetSystem,
@@ -28,6 +28,7 @@ export const ADD_ITEM_CODE_ACTION = 'addItemCode';
 export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = 'addQuestionnaireLanguage';
 export const DELETE_ITEM_CODE_ACTION = 'deleteItemCode';
 export const UPDATE_ITEM_CODE_PROPERTY_ACTION = 'updateItemCodeProperty';
+export const UPDATE_ITEM_CODE_PROPERTY_WITH_CODE_ACTION = 'updateItemCodePropertyWithCode';
 export const REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION = 'removeQuestionnaireLanguage';
 export const UPDATE_ITEM_TRANSLATION_ACTION = 'updateItemTranslation';
 export const UPDATE_ITEM_OPTION_TRANSLATION_ACTION = 'updateItemOptionTranslation';
@@ -85,6 +86,15 @@ export interface UpdateItemCodePropertyAction {
     value: string;
 }
 
+export interface UpdateItemCodePropertyWithCodeAction {
+    type: typeof UPDATE_ITEM_CODE_PROPERTY_WITH_CODE_ACTION;
+    linkId: string;
+    property: ICodingProperty;
+    value: string;
+    system: string;
+    code: string;
+}
+
 export interface UpdateMarkedLinkId {
     type: typeof UPDATE_MARKED_LINK_ID;
     linkId?: string;
@@ -127,7 +137,7 @@ export interface UpdateMetadataTranslationAction {
 export interface UpdateSettingTranslationAction {
     type: typeof UPDATE_SETTING_TRANSLATION_ACTION;
     languageCode: string;
-    extension: IExtensionType;
+    extension: IExtentionType;
     translatedValue: Extension | null;
 }
 
@@ -270,6 +280,23 @@ export const updateItemCodePropertyAction = (
     };
 };
 
+export const updateItemCodePropertyWithCodeAction = (
+    linkId: string,
+    property: ICodingProperty,
+    value: string,
+    system: string,
+    code: string
+): UpdateItemCodePropertyWithCodeAction => {
+    return {
+        type: UPDATE_ITEM_CODE_PROPERTY_WITH_CODE_ACTION,
+        linkId,
+        property,
+        value,
+        system,
+        code
+    };
+};
+
 export const addQuestionnaireLanguageAction = (
     additionalLanguageCode: string,
     translation: Translation,
@@ -333,7 +360,7 @@ export const updateMetadataTranslationAction = (
 
 export const updateSettingTranslationAction = (
     languageCode: string,
-    extension: IExtensionType,
+    extension: IExtentionType,
     translatedValue: Extension | null,
 ): UpdateSettingTranslationAction => {
     return {
