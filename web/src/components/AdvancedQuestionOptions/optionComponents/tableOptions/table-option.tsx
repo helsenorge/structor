@@ -96,7 +96,13 @@ export const TableOption = ({item, qItems, qOrder, qContained, dispatch}: TableO
                                 dispatch={dispatch} />
                         }
                         {checkedTableOption === TableOptionsEnum.GTable && 
-                            <ColumnToOrderByOption item={item} tableType={TableOptionsEnum.GTable} dispatch={dispatch} />
+                            <ColumnToOrderByOption 
+                                item={item} 
+                                tableType={TableOptionsEnum.GTable} 
+                                qItems={qItems}
+                                qOrder={qOrder} 
+                                dispatch={dispatch} 
+                            />
                         }
                         <ColumnOrderingFunctionOption item={item} dispatch={dispatch} />
                     </div>

@@ -1,3 +1,4 @@
+import { getOrderItemByLinkId } from '../helpers/codeHelper';
 import { getAllAnswerValueSetFromOrderItem, getFirstAnswerValueSetFromOrderItem } from '../helpers/valueSetHelper';
 import { OrderItem, Items } from '../store/treeStore/treeStore';
 import { ICodeSystem } from '../types/IQuestionnareItemType';
@@ -56,4 +57,16 @@ export const getContainedOptions = (orderItem: OrderItem[], qItems: Items, qCont
         })
     }
     return optionArray;
+}
+
+export const getGTableOptions = (item: QuestionnaireItem, qOrder: OrderItem[], qItems: Items): Option[] => {
+    const newArray: Option[] = []
+    const orderItem = getOrderItemByLinkId(qOrder, item.linkId);
+    orderItem?.items.forEach((childOrderItem) => {
+        const childItem = qItems[childOrderItem.linkId];
+        if (childItem.text) {
+            newArray.push({code: childItem.linkId, display: childItem.text})
+        }
+    });
+    return newArray;
 }

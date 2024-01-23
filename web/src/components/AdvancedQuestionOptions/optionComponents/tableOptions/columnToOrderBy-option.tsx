@@ -1,11 +1,11 @@
-import { removeItemCode, addItemCode } from "../../../../helpers/codeHelper";
+import { removeItemCode, addItemCode, getOrderItemByLinkId } from "../../../../helpers/codeHelper";
 import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
 import FormField from "../../../FormField/FormField";
 import { QuestionnaireItem, ValueSet } from "../../../../types/fhir";
 import { ActionType, Items, OrderItem } from "../../../../store/treeStore/treeStore";
 import { useTranslation } from "react-i18next";
 import Select from "../../../Select/Select";
-import { createOptionsFromQItemCode, getContainedOptions, getDisplayValueInOption, getSelectedValue } from "../../../../utils/optionsUtils";
+import { createOptionsFromQItemCode, getContainedOptions, getDisplayValueInOption, getGTableOptions, getSelectedValue } from "../../../../utils/optionsUtils";
 import { TableOptionsEnum } from "../../../../types/tableOptions";
 import { Option } from "../../../../types/OptionTypes";
 
@@ -13,19 +13,24 @@ type ColumnToOrderByOptionProps = {
     item: QuestionnaireItem;
     tableType: TableOptionsEnum,
     qItems?: Items;
+    qOrder?: OrderItem[];
     qContained?: ValueSet[],
     allChoiceItems?: OrderItem[],
     dispatch: React.Dispatch<ActionType>;
 };
 
-export const ColumnToOrderByOption = ({item, qItems, qContained, tableType, allChoiceItems, dispatch}: ColumnToOrderByOptionProps) => {
+export const ColumnToOrderByOption = ({item, qItems, qOrder, qContained, tableType, allChoiceItems, dispatch}: ColumnToOrderByOptionProps) => {
     const { t } = useTranslation();
 
     const getOptionsToUse = (): Option[] | undefined => {
         if (tableType === TableOptionsEnum.Table && allChoiceItems && qItems && qContained) {
             const tableOptions = getContainedOptions(allChoiceItems, qItems, qContained);
             return tableOptions;
-        } else {
+        } else if (tableType === TableOptionsEnum.GTable && qItems && qOrder) {
+            const gTableOptions = getGTableOptions(item, qOrder, qItems);
+            return gTableOptions;
+        }
+        else {
             const options = createOptionsFromQItemCode(item, ICodeSystem.tableColumnName);
             return options;
         }
