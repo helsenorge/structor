@@ -1,5 +1,5 @@
 import { getOrderItemByLinkId } from '../helpers/codeHelper';
-import { getAllAnswerValueSetFromOrderItem, getFirstAnswerValueSetFromOrderItem } from '../helpers/valueSetHelper';
+import { getFirstAnswerValueSetFromOrderItem } from '../helpers/valueSetHelper';
 import { OrderItem, Items } from '../store/treeStore/treeStore';
 import { ICodeSystem } from '../types/IQuestionnareItemType';
 import { Option } from '../types/OptionTypes';

@@ -1,4 +1,4 @@
-import { removeItemCode, addItemCode, getOrderItemByLinkId } from "../../../../helpers/codeHelper";
+import { removeItemCode, addItemCode } from "../../../../helpers/codeHelper";
 import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
 import FormField from "../../../FormField/FormField";
 import { QuestionnaireItem, ValueSet } from "../../../../types/fhir";
