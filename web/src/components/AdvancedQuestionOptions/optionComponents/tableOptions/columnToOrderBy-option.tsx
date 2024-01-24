@@ -26,13 +26,14 @@ export const ColumnToOrderByOption = ({item, qItems, qOrder, qContained, tableTy
         if (tableType === TableOptionsEnum.Table && allChoiceItems && qItems && qContained) {
             const tableOptions = getContainedOptions(allChoiceItems, qItems, qContained);
             return tableOptions;
-        } else if (tableType === TableOptionsEnum.GTable && qItems && qOrder) {
+        } 
+        if (tableType === TableOptionsEnum.GTable && qItems && qOrder) {
             const gTableOptions = getGTableOptions(item, qOrder, qItems);
             return gTableOptions;
         }
-        else {
-            const options = createOptionsFromQItemCode(item, ICodeSystem.tableColumnName);
-            return options;
+        if (tableType === TableOptionsEnum.TableHN2) {
+            const tableHN2Options = createOptionsFromQItemCode(item, ICodeSystem.tableColumnName);
+            return tableHN2Options;
         }
     }
     const optionsToUse = getOptionsToUse();
