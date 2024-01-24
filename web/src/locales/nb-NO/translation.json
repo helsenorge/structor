@@ -457,5 +457,5 @@
     "Descending": "Synkende",
     "Table column": "Tabell kolonne",
     "Select a table column to link the item to": "Velg en tabell kolonne å knytte elementet til",
-    "All Choice items in a section must have the same answerValueSet value": "Alle Choice elementer i samme seksjon må ha samme answerValueSet verdi"
+    "All answerValueSet values within a group with coding \"table\" must be equal": "Alle answerValueSet verdier inni en gruppe med coding \"table\" må være like"
 }

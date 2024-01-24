@@ -149,6 +149,23 @@ export const getOrderItemByLinkId = (qOrder: OrderItem[], linkIdToSearch: string
     return undefined;
 };
 
+export const getAllOrderItemChildrenOfItem = (qOrder: OrderItem[], parentLinkId: string): OrderItem[] => {
+    const result: OrderItem[] = [];
+
+    for (const orderItem of qOrder) {
+        if (orderItem.linkId === parentLinkId && orderItem.items) {
+            result.push(...orderItem.items);
+        }
+
+        if (orderItem.items) {
+            const nestedResults = getAllOrderItemChildrenOfItem(orderItem.items, parentLinkId);
+            result.push(...nestedResults);
+        }
+    }
+
+    return result;
+};
+
 export const updateChildWithMatchingCode = (
     item: QuestionnaireItem,
     qItems: Items, 
