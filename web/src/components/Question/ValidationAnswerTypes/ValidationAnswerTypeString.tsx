@@ -36,11 +36,15 @@ const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
             code: '^((\\+|00)(\\d{1,3}))?\\d{5,12}$',
         },
         {
+            display: t('Characters approved in the national register (used for names and addresses)'),
+            code: "[\x00-\x7F\xA0-\xFF-ČĐŊŠŦŽčđŋšŧž'’]+$"
+        },
+        {
             display: t('Only norwegian characters'),
             code: '^[æøåÆØÅa-zA-Z ]*$',
         },
         {
-            display: t('Only norwegian characters + hyphen and space (used for names)'),
+            display: t('Only norwegian characters + hyphen and space'),
             code: '^[æøåÆØÅa-zA-Z\\- ]*$',
         },
         {
