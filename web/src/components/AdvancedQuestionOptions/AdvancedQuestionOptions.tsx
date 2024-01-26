@@ -3,7 +3,7 @@ import { TreeContext } from '../../store/treeStore/treeStore';
 import { Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
 import './AdvancedQuestionOptions.css';
 import {
-    IExtentionType,
+    IExtensionType,
     IQuestionnaireItemType
 } from '../../types/IQuestionnareItemType';
 import InitialOption from './optionComponents/initial-option';
@@ -65,7 +65,7 @@ const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} 
         setItemExtension(item, extension, dispatch);
     };
 
-    const removeExtension = (extensionUrl: IExtentionType) => {
+    const removeExtension = (extensionUrl: IExtensionType) => {
         removeItemExtension(item, extensionUrl, dispatch);
     };
 

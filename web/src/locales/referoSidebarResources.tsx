@@ -3,7 +3,7 @@ import { getSidebarSections } from '@helsenorge/refero/util/extension';
 import { Questionnaire } from '../types/fhir';
 import { Questionnaire as QuestionnaireRefero } from '@helsenorge/refero/types/fhir';
 
-export const generateSectionContent = (header: string, content: string[]): JSX.Element | null => {
+export const generateSectionContent = (header: string, content: string[]): React.JSX.Element | null => {
     return content.length > 0 ? (
         <>
             <h2>{header}</h2>

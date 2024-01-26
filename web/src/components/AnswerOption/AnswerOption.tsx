@@ -33,7 +33,7 @@ const AnswerOption = ({
     deleteItem,
     showDelete,
     disabled,
-}: Props): JSX.Element => {
+}: Props): React.JSX.Element => {
     const { t } = useTranslation();
 
     const [displayScoringField, setDisplayScoringField] = useState(false);

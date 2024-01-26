@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import SwitchBtn from "../../SwitchBtn/SwitchBtn";
 import { ActionType } from "../../../store/treeStore/treeStore";
 import { removeItemExtension, setItemExtension } from "../../../helpers/extensionHelper";
-import { IExtentionType, IItemProperty } from "../../../types/IQuestionnareItemType";
+import { IExtensionType, IItemProperty } from "../../../types/IQuestionnareItemType";
 import InputField from "../../InputField/inputField";
 import { updateItemAction } from "../../../store/treeStore/treeActions";
 
@@ -16,9 +16,9 @@ type RepetitionOptionProps = {
 export const RepetitionOption = ({item, dispatch}: RepetitionOptionProps) => {
     const { t } = useTranslation();
 
-    const getRepeatsText = item?.extension?.find((x) => x.url === IExtentionType.repeatstext)?.valueString ?? '';
-    const minOccurs = item?.extension?.find((x) => x.url === IExtentionType.minOccurs)?.valueInteger;
-    const maxOccurs = item?.extension?.find((x) => x.url === IExtentionType.maxOccurs)?.valueInteger;
+    const getRepeatsText = item?.extension?.find((x) => x.url === IExtensionType.repeatstext)?.valueString ?? '';
+    const minOccurs = item?.extension?.find((x) => x.url === IExtensionType.minOccurs)?.valueInteger;
+    const maxOccurs = item?.extension?.find((x) => x.url === IExtensionType.maxOccurs)?.valueInteger;
 
     return (
         <>
@@ -35,9 +35,9 @@ export const RepetitionOption = ({item, dispatch}: RepetitionOptionProps) => {
                             removeItemExtension(
                                 item,
                                 [
-                                    IExtentionType.repeatstext,
-                                    IExtentionType.minOccurs,
-                                    IExtentionType.maxOccurs,
+                                    IExtensionType.repeatstext,
+                                    IExtensionType.minOccurs,
+                                    IExtensionType.maxOccurs,
                                 ],
                                 dispatch,
                             );
@@ -55,13 +55,13 @@ export const RepetitionOption = ({item, dispatch}: RepetitionOptionProps) => {
                                 onBlur={(e) => {
                                     if (e.target.value) {
                                         const extension = {
-                                            url: IExtentionType.repeatstext,
+                                            url: IExtensionType.repeatstext,
                                             valueString: e.target.value,
                                         }
                                         setItemExtension(item, extension, dispatch);
                                         
                                     } else {
-                                        removeItemExtension(item, IExtentionType.repeatstext, dispatch);
+                                        removeItemExtension(item, IExtensionType.repeatstext, dispatch);
                                     }
                                 }}
                             />
@@ -78,10 +78,10 @@ export const RepetitionOption = ({item, dispatch}: RepetitionOptionProps) => {
                                     defaultValue={minOccurs}
                                     onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
                                         if (!event.target.value) {
-                                            removeItemExtension(item, IExtentionType.minOccurs, dispatch);
+                                            removeItemExtension(item, IExtensionType.minOccurs, dispatch);
                                         } else {
                                             const extension = {
-                                                url: IExtentionType.minOccurs,
+                                                url: IExtensionType.minOccurs,
                                                 valueInteger: parseInt(event.target.value),
                                             };
                                             setItemExtension(item, extension, dispatch);
@@ -100,10 +100,10 @@ export const RepetitionOption = ({item, dispatch}: RepetitionOptionProps) => {
                                     defaultValue={maxOccurs}
                                     onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
                                         if (!event.target.value) {
-                                            removeItemExtension(item, IExtentionType.maxOccurs, dispatch);
+                                            removeItemExtension(item, IExtensionType.maxOccurs, dispatch);
                                         } else {
                                             const extension = {
-                                                url: IExtentionType.maxOccurs,
+                                                url: IExtensionType.maxOccurs,
                                                 valueInteger: parseInt(event.target.value),
                                             };
                                             setItemExtension(item, extension, dispatch);

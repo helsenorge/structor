@@ -3,7 +3,7 @@ import { Extension, QuestionnaireItem, ValueSet } from "../../../../types/fhir";
 import { useTranslation } from "react-i18next";
 import { ActionType, Items, OrderItem } from "../../../../store/treeStore/treeStore";
 import RadioBtn from "../../../RadioBtn/RadioBtn";
-import { IExtentionType, IQuestionnaireItemType } from "../../../../types/IQuestionnareItemType";
+import { IExtensionType, IQuestionnaireItemType } from "../../../../types/IQuestionnareItemType";
 import { TableOptionsEnum } from "../../../../types/tableOptions";
 import { ColumnOrderingFunctionOption } from "./columnOrderingFunction-option";
 import { ItemControlType, createItemControlExtension, existItemControlWithCode } from "../../../../helpers/itemControl";
@@ -48,10 +48,10 @@ export const TableOption = ({item, qItems, qOrder, qContained, dispatch}: TableO
                 setItemExtension(item, newExtension, dispatch);
                 break;
             default:
-                removeItemExtension(item, IExtentionType.itemControl, dispatch);
+                removeItemExtension(item, IExtensionType.itemControl, dispatch);
         }
     };
-    const itemControlExtension = item.extension?.find((extension) => extension.url === IExtentionType.itemControl);
+    const itemControlExtension = item.extension?.find((extension) => extension.url === IExtensionType.itemControl);
     const hasTableCode = existItemControlWithCode(item, getTableCode(itemControlExtension) || '');
     const tableOptions = [
         { code: TableOptionsEnum.None, display: t(`Don't display as a table`) },

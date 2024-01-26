@@ -1,5 +1,5 @@
 import { elementSaveCapability } from "../../../helpers/QuestionHelper";
-import { IExtentionType, IValueSetSystem } from "../../../types/IQuestionnareItemType";
+import { IExtensionType, IValueSetSystem } from "../../../types/IQuestionnareItemType";
 import FormField from "../../FormField/FormField";
 import { QuestionnaireItem } from "../../../types/fhir";
 import { ActionType } from "../../../store/treeStore/treeStore";
@@ -20,12 +20,12 @@ export const SaveCapabilityOption = ({item, dispatch}: SaveCapabilityOptionProps
                 <RadioBtn
                     onChange={(newValue: string) => {
                         if (newValue === '0') {
-                            removeItemExtension(item, IExtentionType.saveCapability, dispatch);
+                            removeItemExtension(item, IExtensionType.saveCapability, dispatch);
                         } else {
                             setItemExtension(
                                 item,
                                 {
-                                    url: IExtentionType.saveCapability,
+                                    url: IExtensionType.saveCapability,
                                     valueCoding: {
                                         system: IValueSetSystem.saveCapabilityValueSet,
                                         code: newValue,
@@ -36,7 +36,7 @@ export const SaveCapabilityOption = ({item, dispatch}: SaveCapabilityOptionProps
                         }
                     }}
                     checked={
-                        item.extension?.find((ex) => ex.url === IExtentionType.saveCapability)?.valueCoding
+                        item.extension?.find((ex) => ex.url === IExtensionType.saveCapability)?.valueCoding
                             ?.code ?? '0'
                     }
                     options={elementSaveCapability}

@@ -89,6 +89,10 @@ export enum ICodeSystem {
     progressIndicatorOptions = 'http://helsenorge.no/fhir/CodeSystem/ProgressIndicatorOptions',
     score = 'http://ehelse.no/Score',
     scoringFormulas = 'http://ehelse.no/scoringFormulas',
+    tableColumn = 'http://helsenorge.no/fhir/CodeSystem/TableColumn',
+    tableOrderingFunctions = 'http://helsenorge.no/fhir/CodeSystem/TableOrderingFunctions',
+    tableOrderingColumn = 'http://helsenorge.no/fhir/CodeSystem/TableOrderingColumn',
+    tableColumnName = 'http://helsenorge.no/fhir/CodeSystem/TableColumnName',
 }
 
 export enum IExtensionType {

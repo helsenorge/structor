@@ -4,7 +4,7 @@ import { TreeContext } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
 import RadioBtn from '../../RadioBtn/RadioBtn';
 import { QuestionnaireItem } from '../../../types/fhir';
-import { ICodeSystem, IExtentionType } from '../../../types/IQuestionnareItemType';
+import { ICodeSystem, IExtensionType } from '../../../types/IQuestionnareItemType';
 import {
     renderingOptions,
     removeItemCode,
@@ -26,22 +26,25 @@ const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
     const { dispatch } = useContext(TreeContext);
 
     const checkedRenderOptions = () => {
-        return item.extension?.find((ex) => ex.url === IExtentionType.hidden)?.valueBoolean
+        return item.extension?.find((ex) => ex.url === IExtensionType.hidden)?.valueBoolean
             ? RenderingOptionsEnum.Hidden
             : item.code?.find((code) => code.system === ICodeSystem.renderOptionsCodeSystem)?.code ??
                   RenderingOptionsEnum.None;
     };
     const onChangeRenderOptions = (newValue: string) => {
-        removeItemExtension(item, IExtentionType.hidden, dispatch);
+        removeItemExtension(item, IExtensionType.hidden, dispatch);
         removeItemCode(item, ICodeSystem.renderOptionsCodeSystem, dispatch);
-        if (newValue === RenderingOptionsEnum.Hidden) {
-            const extension = {
-                url: IExtentionType.hidden,
-                valueBoolean: true,
-            };
-            setItemExtension(item, extension, dispatch);
-        } else {
-            addRenderOptionItemCode(item, newValue, dispatch);
+        switch (newValue) {
+            case RenderingOptionsEnum.Hidden:
+                const extension = {
+                    url: IExtensionType.hidden,
+                    valueBoolean: true,
+                };
+                setItemExtension(item, extension, dispatch);
+                break;
+            default:
+                addRenderOptionItemCode(item, newValue, dispatch);
+                break;
         }
     };
 

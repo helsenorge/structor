@@ -20,7 +20,7 @@ type GuidanceParamProps = {
     item: QuestionnaireItem;
 };
 
-const GuidanceParam = (props: GuidanceParamProps): JSX.Element => {
+const GuidanceParam = (props: GuidanceParamProps): React.JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const hasGuidanceParam = hasExtension(props.item, IExtensionType.guidanceParam);

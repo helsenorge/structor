@@ -17,7 +17,7 @@ interface Props {
     dispatchExtentionUpdate: (newValue: ItemControlType) => void;
 }
 
-const ChoiceTypeSelect = ({ item, dispatchExtentionUpdate }: Props): JSX.Element => {
+const ChoiceTypeSelect = ({ item, dispatchExtentionUpdate }: Props): React.JSX.Element => {
     const { t } = useTranslation();
 
     const getSelectedItemControlValue = () => {

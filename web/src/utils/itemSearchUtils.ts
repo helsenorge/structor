@@ -73,15 +73,19 @@ export const doesAllAnswerOptionsInItemHaveExtenison = (
     return valueToReturn;
 };
 
-export const getAllGroups = (qOrder: OrderItem[], qItems: Items, newArray: OrderItem[] = []): OrderItem[] => {
-    qOrder.forEach((orderItem) => {
-        const qItem = qItems[orderItem.linkId];
-        if (qItem.type === IQuestionnaireItemType.group) {
-            newArray.push(orderItem);
-        }
-        if (orderItem.items) {
-            getAllGroups(orderItem.items, qItems, newArray);
-        }
-    });
-    return newArray;
+export const getAllItemTypes = (
+    qOrder: OrderItem[], 
+    qItems: Items, 
+    itemType: IQuestionnaireItemType, 
+    newArray: OrderItem[] = []): OrderItem[] => {
+        qOrder.forEach((orderItem) => {
+            const qItem = qItems[orderItem.linkId];
+            if (qItem.type === itemType) {
+                newArray.push(orderItem);
+            }
+            if (orderItem.items) {
+                getAllItemTypes(orderItem.items, qItems, itemType, newArray);
+            }
+        });
+        return newArray;
 };

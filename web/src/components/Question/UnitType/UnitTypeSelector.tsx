@@ -19,7 +19,7 @@ type UnitTypeSelectorProps = {
     item: QuestionnaireItem;
 };
 
-const UnitTypeSelector = (props: UnitTypeSelectorProps): JSX.Element => {
+const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 

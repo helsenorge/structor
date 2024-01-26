@@ -2,7 +2,7 @@ import CreateUUID from '../../helpers/CreateUUID';
 import {
     ICodingProperty,
     IEnableWhen,
-    IExtentionType,
+    IExtensionType,
     IItemProperty,
     IQuestionnaireItemType,
     IValueSetSystem,
@@ -137,7 +137,7 @@ export interface UpdateMetadataTranslationAction {
 export interface UpdateSettingTranslationAction {
     type: typeof UPDATE_SETTING_TRANSLATION_ACTION;
     languageCode: string;
-    extension: IExtentionType;
+    extension: IExtensionType;
     translatedValue: Extension | null;
 }
 
@@ -360,7 +360,7 @@ export const updateMetadataTranslationAction = (
 
 export const updateSettingTranslationAction = (
     languageCode: string,
-    extension: IExtentionType,
+    extension: IExtensionType,
     translatedValue: Extension | null,
 ): UpdateSettingTranslationAction => {
     return {
