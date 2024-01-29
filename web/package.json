@@ -27,7 +27,7 @@
     "@helsenorge/designsystem-react": "^5.9.2",
     "@helsenorge/file-upload": "^29.5.2",
     "@helsenorge/form": "^29.5.2",
-    "@helsenorge/refero": "14.0.1-beta01",
+    "@helsenorge/refero": "14.0.1",
     "@helsenorge/toolkit": "^21.2.0",
     "@nosferatu500/react-sortable-tree": "^3.0.3",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
