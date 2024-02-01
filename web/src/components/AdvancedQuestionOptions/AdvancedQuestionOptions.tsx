@@ -57,7 +57,7 @@ const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} 
     const { qItems, qOrder } = state;
     const [isDataReceiver, setDataReceiverState] = useState(isItemControlDataReceiver(item));
 
-    const parentItem = getItem(parentArray[parentArray.length -1]);
+    const parentItem = getItem(parentArray[parentArray.length -1]) || [];
     const showTableColumnOption = existItemControlWithCode(parentItem, ItemControlType.tableHN2) 
         || existItemControlWithCode(parentItem, ItemControlType.gTable);
 
