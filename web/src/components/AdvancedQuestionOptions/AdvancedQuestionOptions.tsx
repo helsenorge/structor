@@ -58,8 +58,19 @@ const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} 
     const [isDataReceiver, setDataReceiverState] = useState(isItemControlDataReceiver(item));
 
     const parentItem = getItem(parentArray[parentArray.length -1]) || [];
-    const showTableColumnOption = existItemControlWithCode(parentItem, ItemControlType.tableHN2) 
-        || existItemControlWithCode(parentItem, ItemControlType.gTable);
+    const showTableColumnOption = () => {
+        let returnValue: boolean = false;
+        if (
+          parentItem &&
+          (
+            existItemControlWithCode(parentItem, ItemControlType.tableHN2) ||
+            existItemControlWithCode(parentItem, ItemControlType.gTable)
+          )
+        ) {
+          returnValue = true;
+        }
+        return returnValue;
+      }
 
     const handleExtension = (extension: Extension) => {
         setItemExtension(item, extension, dispatch);
@@ -120,7 +131,7 @@ const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} 
                 <SummaryOption item={item} dispatch={dispatch}></SummaryOption>
             )}
             {item.type === IQuestionnaireItemType.group && <TableOption item={item} qItems={qItems} qOrder={qOrder} qContained={state.qContained} dispatch={dispatch} />}
-            {showTableColumnOption && <ColumnOption item={item} parentItem={parentItem} dispatch={dispatch} />}
+            {showTableColumnOption() && <ColumnOption item={item} parentItem={parentItem} dispatch={dispatch} />}
             <HelpOption item={item} dispatch={dispatch} parentArray={parentArray} qItems={qItems} qOrder={qOrder} />
             <ViewOption item={item} />
             <SaveCapabilityOption item={item} dispatch={dispatch} />
