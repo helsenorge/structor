@@ -31,6 +31,7 @@
     "@helsenorge/toolkit": "^21.2.0",
     "@nosferatu500/react-sortable-tree": "^3.0.3",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@types/fhir": "^0.0.41",
     "@types/papaparse": "^5.3.11",
     "crypto-js": "^4.1.1",
     "date-fns": "^2.30.0",

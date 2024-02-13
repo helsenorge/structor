@@ -1,7 +1,7 @@
 import React from 'react';
 import { getSidebarSections } from '@helsenorge/refero/util/extension';
 import { Questionnaire } from '../types/fhir';
-import { Questionnaire as QuestionnaireRefero } from '@helsenorge/refero/types/fhir';
+import { Questionnaire as QuestionnaireRefero } from 'fhir/r4';
 
 export const generateSectionContent = (header: string, content: string[]): React.JSX.Element | null => {
     return content.length > 0 ? (

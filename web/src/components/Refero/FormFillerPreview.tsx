@@ -17,7 +17,7 @@ import Button from '@helsenorge/designsystem-react/components/Button';
 import IconBtn from '../IconBtn/IconBtn';
 import Select from '../Select/Select';
 
-import { QuestionnaireResponse } from '@helsenorge/refero/types/fhir';
+import { QuestionnaireResponse } from 'fhir/r4';
 
 type Props = {
     showFormFiller: () => void;
