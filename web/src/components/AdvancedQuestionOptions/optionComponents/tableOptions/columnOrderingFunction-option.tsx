@@ -1,9 +1,8 @@
 import { removeItemCode, addItemCode } from "../../../../helpers/codeHelper";
 import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
 import FormField from "../../../FormField/FormField";
-import { Coding } from "fhir/r4";
+import { Coding, QuestionnaireItem } from "fhir/r4";
 import { useEffect } from "react";
-import { QuestionnaireItem } from "fhir/r4";
 import { ActionType } from "../../../../store/treeStore/treeStore";
 import { useTranslation } from "react-i18next";
 import { TableColumnOrderingOptionsEnum } from "../../../../types/tableOptions";
