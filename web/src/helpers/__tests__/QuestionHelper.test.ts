@@ -2,11 +2,12 @@ import { describe, it, expect} from 'vitest';
 import { hiddenItem, itemWithRenderOption } from '../../__data__/items';
 import { RenderingOptionsEnum } from '../codeHelper';
 import { isHiddenItem } from '../QuestionHelper';
+import { QuestionnaireItem } from 'fhir/r4';
 
 describe('QuestionHelper', () => {
     describe('isHiddenItem', () => {
         it('Item is hidden, returns true', () => {
-            const result = isHiddenItem(hiddenItem);
+            const result = isHiddenItem(hiddenItem as QuestionnaireItem);
             expect(result).toBeTruthy();
         });
 
