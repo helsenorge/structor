@@ -3,7 +3,7 @@ import { removeItemCode, addItemCode } from "../../../../helpers/codeHelper";
 import { ActionType } from "../../../../store/treeStore/treeStore";
 import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
 import FormField from "../../../FormField/FormField";
-import { QuestionnaireItem } from "../../../../types/fhir";
+import { QuestionnaireItem } from "fhir/r4";
 import Select from "../../../Select/Select";
 import { createOptionsFromQItemCode, getDisplayValueInOption, getSelectedValue } from "../../../../utils/optionsUtils";
 
@@ -21,12 +21,12 @@ export const ColumnOption = ({item, parentItem, dispatch}: ColumnOptionProps) =>
     const onChangeOption = (newValue: string) => {
         removeItemCode(item, ICodeSystem.tableColumn, dispatch);
         addItemCode(
-            item, 
+            item,
             {
                 system: ICodeSystem.tableColumn,
                 code: newValue,
                 display: getDisplayValueInOption(options, newValue),
-            }, 
+            },
             dispatch
         );
     }

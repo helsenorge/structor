@@ -14,7 +14,7 @@ import {
     createHyperlinkTargetExtension,
 } from '../../../helpers/extensionHelper';
 import RadioBtn from '../../RadioBtn/RadioBtn';
-import { Extension, QuestionnaireItem } from '../../../types/fhir';
+import { Extension, QuestionnaireItem } from 'fhir/r4';
 import {
     createItemControlExtension,
     isItemControlHighlight,

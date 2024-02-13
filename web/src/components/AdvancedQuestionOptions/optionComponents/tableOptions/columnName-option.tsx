@@ -1,11 +1,11 @@
-import { QuestionnaireItem } from "../../../../types/fhir";
+import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { ActionType, Items, OrderItem } from "../../../../store/treeStore/treeStore";
 import { ICodeSystem, ICodingProperty } from "../../../../types/IQuestionnareItemType";
 import FormField from "../../../FormField/FormField";
 import InputField from "../../../InputField/inputField";
-import { 
-    removeItemCodeWithCode, 
+import {
+    removeItemCodeWithCode,
     addItemCode,
     getAllMatchingCodes,
     updateChildWithMatchingCode,
@@ -31,9 +31,9 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
             return;
         }
         dispatch(updateItemCodePropertyWithCodeAction(
-            item.linkId, 
-            ICodingProperty.display, 
-            newDisplayValue, 
+            item.linkId,
+            ICodingProperty.display,
+            newDisplayValue,
             ICodeSystem.tableColumnName,
             oldCodeValue
         ));
@@ -43,7 +43,7 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
     const onAddButtonClicked = (): void => {
         const previousCode = lastItem?.code;
         const newCode = previousCode ? parseInt(previousCode) + 1 : 1;
-        
+
         addItemCode(
             item,
             {
@@ -75,9 +75,9 @@ export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOpt
                         />
                         {
                             <button
-                                className="columnNames-deleteButton" 
-                                type="button" 
-                                name={t('Remove element')} 
+                                className="columnNames-deleteButton"
+                                type="button"
+                                name={t('Remove element')}
                                 onClick={() => onDeleteButtonClicked(coding.code || '')}
                             />
                         }

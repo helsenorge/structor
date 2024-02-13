@@ -7,7 +7,7 @@ import { ScoringFormulaCodes } from "../../../types/scoringFormulas";
 import { removeOrdinalValueExtensionfromAnswerOptions } from "../../../utils/answerOptionExtensionUtils";
 import FormField from "../../FormField/FormField";
 import SwitchBtn from "../../SwitchBtn/SwitchBtn";
-import { QuestionnaireItem } from "../../../types/fhir";
+import { QuestionnaireItem } from "fhir/r4";
 import { ActionType } from "../../../store/treeStore/treeStore";
 import { useTranslation } from "react-i18next";
 

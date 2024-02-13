@@ -1,5 +1,5 @@
 import FormField from "../../FormField/FormField";
-import { QuestionnaireItem } from "../../../types/fhir";
+import { QuestionnaireItem } from "fhir/r4";
 import { ActionType } from "../../../store/treeStore/treeStore";
 import { useTranslation } from "react-i18next";
 import { setItemControlExtension, ItemControlType, isItemControlSummary, isItemControlSummaryContainer } from "../../../helpers/itemControl";

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { TreeContext } from '../../store/treeStore/treeStore';
-import { Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
+import { Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from 'fhir/r4';
 import './AdvancedQuestionOptions.css';
 import {
     IExtensionType,

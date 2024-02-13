@@ -8,7 +8,7 @@ import {
 import { Languages, TreeState } from '../store/treeStore/treeStore';
 import { isValidId } from './MetadataHelper';
 import { IExtensionType } from '../types/IQuestionnareItemType';
-import { Extension } from '../types/fhir';
+import { Extension } from 'fhir/r4';
 
 export const INITIAL_LANGUAGE: Language = { code: 'nb-NO', display: 'Bokmål', localDisplay: 'Bokmål' };
 

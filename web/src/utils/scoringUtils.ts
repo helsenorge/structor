@@ -1,4 +1,4 @@
-import { Coding } from '../types/fhir';
+import { Coding } from 'fhir/r4';
 import { ICodeSystem } from '../types/IQuestionnareItemType';
 import { ScoringFormulaCodes, ScoringFormulaNames } from '../types/scoringFormulas';
 

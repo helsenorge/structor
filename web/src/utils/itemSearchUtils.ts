@@ -1,6 +1,6 @@
 import { Items, OrderItem } from '../store/treeStore/treeStore';
 import { IExtensionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
-import { QuestionnaireItem } from '../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 
 export const doesItemHaveCode = (item: QuestionnaireItem, code: string): boolean => {
     let itemHasCode = false;
@@ -74,9 +74,9 @@ export const doesAllAnswerOptionsInItemHaveExtenison = (
 };
 
 export const getAllItemTypes = (
-    qOrder: OrderItem[], 
-    qItems: Items, 
-    itemType: IQuestionnaireItemType, 
+    qOrder: OrderItem[],
+    qItems: Items,
+    itemType: IQuestionnaireItemType,
     newArray: OrderItem[] = []): OrderItem[] => {
         qOrder.forEach((orderItem) => {
             const qItem = qItems[orderItem.linkId];

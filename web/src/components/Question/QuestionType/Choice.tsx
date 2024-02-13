@@ -7,7 +7,7 @@ import {
     updateAnswerOptionSystem,
 } from '../../../helpers/answerOptionHelper';
 
-import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
+import { QuestionnaireItem, QuestionnaireItemAnswerOption } from 'fhir/r4';
 import Btn from '../../Btn/Btn';
 import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { TreeContext } from '../../../store/treeStore/treeStore';

@@ -6,7 +6,7 @@ import {
   ValueSetComposeIncludeConcept,
   Extension,
   QuestionnaireItemEnableWhen,
-} from '../../../types/fhir';
+} from 'fhir/r4';
 import FormField from '../../FormField/FormField';
 import Select from '../../Select/Select';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';

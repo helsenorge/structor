@@ -4,7 +4,7 @@ import { updateItemAction } from "../../../store/treeStore/treeActions";
 import FormField from "../../FormField/FormField";
 import UriField from "../../FormField/UriField";
 import { useTranslation } from "react-i18next";
-import { QuestionnaireItem } from "../../../types/fhir";
+import { QuestionnaireItem } from "fhir/r4";
 
 type DefinitionOptionProps = {
     item: QuestionnaireItem;

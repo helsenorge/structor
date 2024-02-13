@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ValueSetComposeIncludeConcept } from '../../types/fhir';
+import { ValueSetComposeIncludeConcept } from 'fhir/r4';
 import './RadioBtn.css';
 
 type Props = {

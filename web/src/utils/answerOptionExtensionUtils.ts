@@ -5,7 +5,7 @@ import {
 import { updateItemAction } from '../store/treeStore/treeActions';
 import { ActionType } from '../store/treeStore/treeStore';
 import { IExtensionType, IItemProperty } from '../types/IQuestionnareItemType';
-import { QuestionnaireItem } from '../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 
 export const addDefaultOrdinalValueExtensionToAllAnswerOptions = (
     item: QuestionnaireItem,

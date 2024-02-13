@@ -1,4 +1,4 @@
-import { Extension, Coding } from '../types/fhir';
+import { Extension, Coding } from 'fhir/r4';
 import { ICodeSystem, IExtensionType } from '../types/IQuestionnareItemType';
 import { ActionType } from '../store/treeStore/treeStore';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import FormField from '../../FormField/FormField';
 import { IExtensionType } from '../../../types/IQuestionnareItemType';
-import { QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { setItemExtension } from '../../../helpers/extensionHelper';
 

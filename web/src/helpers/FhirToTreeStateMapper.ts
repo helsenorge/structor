@@ -13,7 +13,7 @@ import {
     Translation,
     TreeState,
 } from '../store/treeStore/treeStore';
-import { Bundle, Questionnaire, QuestionnaireItem, QuestionnaireItemAnswerOption, ValueSet } from '../types/fhir';
+import { Bundle, Questionnaire, QuestionnaireItem, QuestionnaireItemAnswerOption, ValueSet } from 'fhir/r4';
 
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { isSupportedLanguage, translatableMetadata, translatableSettings } from './LanguageHelper';

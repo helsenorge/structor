@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../../store/treeStore/treeStore';
-import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../../types/fhir';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from 'fhir/r4';
 import './QuestionDrawer.css';
 import { calculateItemNumber } from '../../helpers/treeHelper';
 import Question from '../Question/Question';
@@ -50,7 +50,7 @@ const QuestionDrawer = ({ validationErrors }: Props): React.JSX.Element | null =
 
     const item = state.qCurrentItem?.linkId ? state.qItems[state.qCurrentItem?.linkId] : undefined;
     const parentArray = state.qCurrentItem?.parentArray || [];
-    const elementNumber = !!item
+    const elementNumber = item
         ? calculateItemNumber(item.linkId, parentArray, state.qOrder, state.qItems)
         : undefined;
     const title = elementNumber ? `Element ${elementNumber}` : '';

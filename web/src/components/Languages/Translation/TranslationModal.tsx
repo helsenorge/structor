@@ -6,7 +6,7 @@ import { updateItemTranslationAction } from '../../../store/treeStore/treeAction
 import './TranslationModal.css';
 import TranslateItemRow from './TranslateItemRow';
 import { getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
-import { QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 import TranslateMetaData from './TranslateMetaData';
 import TranslateContainedValueSets from './TranslateContainedValueSets';
 import {
@@ -46,13 +46,13 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
     const [flattOrder, setFlattOrder] = useState<FlattOrderTranslation[]>([]);
     const [count, setLimit] = useState(20);
 
-    const isTranslatableItem = (item: QuestionnaireItem): boolean =>        
+    const isTranslatableItem = (item: QuestionnaireItem): boolean =>
         !isHiddenItem(item) && !isItemControlSidebar(item);
 
     const translatableItems = Object.values(qItems).filter((question) => {
         return isTranslatableItem(question);
     });
-    
+
     const valueSetsToTranslate = getValueSetToTranslate(state);
 
     const renderInlineText = (linkId: string): React.JSX.Element | null => {

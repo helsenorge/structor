@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
-import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
+import { QuestionnaireItem, QuestionnaireItemAnswerOption } from 'fhir/r4';
 import './AnswerOption.css';
 import InputField from '../InputField/inputField';
 import { doesItemHaveCode } from '../../utils/itemSearchUtils';

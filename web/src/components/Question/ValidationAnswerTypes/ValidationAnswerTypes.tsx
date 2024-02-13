@@ -3,7 +3,7 @@ import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import ValidationAnswerTypeNumber from './ValidationAnswerTypeNumber';
 import ValidationAnswerTypeString from './ValidationAnswerTypeString';
 import ValidationAnswerTypeDate from './ValidationAnswerTypeDate';
-import { QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 import ValidationAnswerTypeAttachment from './ValidationAnswerTypeAttachment';
 interface ValidationTypeProp {
     item: QuestionnaireItem;

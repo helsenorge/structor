@@ -1,10 +1,9 @@
 import createUUID from './CreateUUID';
 import { TFunction } from 'react-i18next';
-import { Coding } from '../types/fhir';
+import { Coding, QuestionnaireItem, ValueSetComposeIncludeConcept } from 'fhir/r4';
 import { ICodeSystem, ICodingProperty } from '../types/IQuestionnareItemType';
 import { deleteItemCodeAction, addItemCodeAction, updateItemCodePropertyWithCodeAction } from '../store/treeStore/treeActions';
 import { ActionType, Items, OrderItem } from '../store/treeStore/treeStore';
-import { QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
 import { Option } from '../types/OptionTypes';
 
 export enum RenderingOptionsEnum {
@@ -168,19 +167,19 @@ export const getAllOrderItemChildrenOfItem = (qOrder: OrderItem[], parentLinkId:
 
 export const updateChildWithMatchingCode = (
     item: QuestionnaireItem,
-    qItems: Items, 
-    qOrder: OrderItem[], 
-    displayValue: string, 
-    systemValue: ICodeSystem, 
-    codeValue: string, 
+    qItems: Items,
+    qOrder: OrderItem[],
+    displayValue: string,
+    systemValue: ICodeSystem,
+    codeValue: string,
     dispatch: (value: ActionType) => void) => {
     const parentOrderItem = getOrderItemByLinkId(qOrder, item.linkId);
     parentOrderItem?.items.forEach((childOrderItem) => {
         const childItem = qItems[childOrderItem.linkId];
         dispatch(updateItemCodePropertyWithCodeAction(
-            childItem.linkId, 
-            ICodingProperty.display, 
-            displayValue, 
+            childItem.linkId,
+            ICodingProperty.display,
+            displayValue,
             systemValue,
             codeValue,
         ));

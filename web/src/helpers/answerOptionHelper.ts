@@ -1,5 +1,5 @@
 import { IExtensionType } from '../types/IQuestionnareItemType';
-import { QuestionnaireItemAnswerOption } from '../types/fhir';
+import { QuestionnaireItemAnswerOption } from 'fhir/r4';
 import createUUID from './CreateUUID';
 import { removeSpace } from './formatHelper';
 import { createUriUUID } from './uriHelper';

@@ -1,4 +1,4 @@
-import { FhirPathDateOperator } from '../components/Question/ValidationAnswerTypes/FhirPathDateValidation';
+import { FhirPathDateOperator } from "../components/Question/ValidationAnswerTypes/fhirPathDateOperator";
 
 export const getDateOperator = (extensionString: string | undefined, absExtensionDate: string | undefined): string => {
     let operator = '';

@@ -1,4 +1,4 @@
-import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from '../types/fhir';
+import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from 'fhir/r4';
 import { ICodeSystem, IExtensionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { CodingSystemType } from './uriHelper';
 import { ScoringFormulaCodes, ScoringFormulaNames } from '../types/scoringFormulas';

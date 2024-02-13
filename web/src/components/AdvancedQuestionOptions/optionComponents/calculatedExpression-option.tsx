@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Extension, QuestionnaireItem } from '../../../types/fhir';
+import { Extension, QuestionnaireItem } from 'fhir/r4';
 import { IExtensionType } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
 

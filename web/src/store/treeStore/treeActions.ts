@@ -17,7 +17,7 @@ import {
     Meta,
     Coding,
     ContactDetail,
-} from '../../types/fhir';
+} from 'fhir/r4';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import { TranslatableItemProperty } from '../../types/LanguageTypes';
 import { Translation, TreeState } from './treeStore';

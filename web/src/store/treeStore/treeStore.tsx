@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch, useEffect, useReducer } from 'react';
 import produce from 'immer';
 
-import { Extension, QuestionnaireItem, ValueSet } from '../../types/fhir';
+import { Extension, QuestionnaireItem, ValueSet } from 'fhir/r4';
 import {
     ADD_ITEM_CODE_ACTION,
     ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
@@ -60,14 +60,12 @@ import {
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
-import { IItemProperty, IExtensionType } from '../../types/IQuestionnareItemType';
-import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
+import { IItemProperty} from '../../types/IQuestionnareItemType';
 import { isIgnorableItem, isRecipientList } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
-import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { saveStateToDb } from './indexedDbHelper';
-import { createVisibilityCoding, VisibilityType } from '../../helpers/globalVisibilityHelper';
-import { tjenesteomraadeCode, getTjenesteomraadeCoding } from '../../helpers/MetadataHelper';
+import { getInitialState } from './initialState';
+import { findTreeArray } from './findTreeArray';
 
 export type ActionType =
     | AddItemCodeAction
@@ -177,68 +175,7 @@ export interface TreeState {
     qAdditionalLanguages?: Languages;
 }
 
-export const getInitialState = (): TreeState => {
-    // Autocreates a random questionnaire id for the user which will be the default value
-    if (initialState.qMetadata.id === undefined || initialState.qMetadata.id === '') {
-        initialState.qMetadata.id = createUUID();
-    }
-    return initialState;
-};
 
-const initialState: TreeState = {
-    isDirty: false,
-    qItems: {},
-    qOrder: [],
-    qMetadata: {
-        title: '',
-        description: '',
-        resourceType: 'Questionnaire',
-        language: INITIAL_LANGUAGE.code,
-        name: '',
-        status: 'draft',
-        publisher: 'NHN',
-        meta: {
-            profile: ['http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire'],
-            tag: [
-                {
-                    system: 'urn:ietf:bcp:47',
-                    code: INITIAL_LANGUAGE.code,
-                    display: INITIAL_LANGUAGE.display,
-                },
-            ],
-            security: [getTjenesteomraadeCoding(tjenesteomraadeCode.helsehjelp)],
-        },
-        useContext: [],
-        contact: [
-            {
-                name: 'http://www.nhn.no',
-            },
-        ],
-        subjectType: ['Patient'],
-        extension: [
-            {
-                url: 'http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar',
-                valueCoding: { system: 'http://helsenorge.no/fhir/ValueSet/sdf-sidebar', code: '1' },
-            },
-            {
-                url: 'http://helsenorge.no/fhir/StructureDefinition/sdf-information-message',
-                valueCoding: { system: 'http://helsenorge.no/fhir/ValueSet/sdf-information-message', code: '1' },
-            },
-            {
-                url: IExtensionType.globalVisibility,
-                valueCodeableConcept: {
-                    coding: [
-                        createVisibilityCoding(VisibilityType.hideHelp),
-                        createVisibilityCoding(VisibilityType.hideSublabel),
-                    ],
-                },
-            },
-        ],
-    },
-    qContained: initPredefinedValueSet,
-    qCurrentItem: undefined,
-    qAdditionalLanguages: {},
-};
 
 function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
     if (!draft.qAdditionalLanguages) {
@@ -259,14 +196,6 @@ function removeLanguage(draft: TreeState, action: RemoveQuestionnaireLanguageAct
     delete draft.qAdditionalLanguages[action.languageCode];
 }
 
-export function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
-    if (searchPath.length === 0) {
-        return searchItems;
-    }
-    // finn neste i searchPath:
-    const searchIndex = searchItems.findIndex((x) => x.linkId === searchPath[0]);
-    return findTreeArray(searchPath.slice(1), searchItems[searchIndex].items);
-}
 
 function getLinkIdOfAllSubItems(items: Array<OrderItem>, linkIds: Array<string>): Array<string> {
     items.forEach((x) => {
@@ -459,7 +388,7 @@ function updateItemCodePropertyWithCode(draft: TreeState, action: UpdateItemCode
         return;
     }
 
-    
+
     const targetCodingIndex = code.findIndex((item) => item.system === action.system && item.code === action.code);
 
     if (targetCodingIndex !== -1) {
@@ -477,7 +406,7 @@ function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAc
 }
 
 function updateItemOptionTranslation(draft: TreeState, action: UpdateItemOptionTranslationAction) {
-    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {        
+    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
         const item = draft.qAdditionalLanguages[action.languageCode].items[action.linkId] ?? {} as ItemTranslation;
         if (!item.answerOptions) {
             item.answerOptions = {} as CodeStringValue;

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { ValueSetComposeIncludeConcept } from '../../types/fhir';
+import { ValueSetComposeIncludeConcept } from 'fhir/r4';
 import './Typeahead.css';
 
 type Props = {

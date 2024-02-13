@@ -5,7 +5,7 @@ import GroupedSelect from '../../Select/GroupedSelect';
 import { CreateOptionSetForType } from '../../../helpers/EnrichmentSet';
 import FormField from '../../FormField/FormField';
 import { IExtensionType, IItemProperty } from '../../../types/IQuestionnareItemType';
-import { QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import { isOptionGroup, Option, OptionGroup } from '../../../types/OptionTypes';

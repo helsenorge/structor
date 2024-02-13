@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import './OptionReference.css';
-import { Extension, QuestionnaireItem } from '../../../types/fhir';
+import { Extension, QuestionnaireItem } from 'fhir/r4';
 import { IExtensionType, IItemProperty } from '../../../types/IQuestionnareItemType';
 import Btn from '../../Btn/Btn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
@@ -109,8 +109,8 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
     return (
         <>
             <DragDropContext onDragEnd={handleReorder}>
-                <Droppable 
-                    droppableId={`droppable-${item.linkId}-option-reference`} 
+                <Droppable
+                    droppableId={`droppable-${item.linkId}-option-reference`}
                     key={`droppable-${item.linkId}-option-reference`}
                 >
                     {(provided, snapshot) => (

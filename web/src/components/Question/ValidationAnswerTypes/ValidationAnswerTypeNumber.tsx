@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
-import { QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import FormField from '../../FormField/FormField';

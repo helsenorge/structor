@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { QuestionnaireItemInitial } from '../../../types/fhir';
+import { QuestionnaireItemInitial } from 'fhir/r4';
 import FormField from '../../FormField/FormField';
 
 type InitialInputTypeIntegerProps = {

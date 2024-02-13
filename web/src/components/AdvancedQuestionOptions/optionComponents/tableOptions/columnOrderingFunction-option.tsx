@@ -1,9 +1,9 @@
 import { removeItemCode, addItemCode } from "../../../../helpers/codeHelper";
 import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
 import FormField from "../../../FormField/FormField";
-import { Coding } from "@helsenorge/refero/types/fhir";
+import { Coding } from "fhir/r4";
 import { useEffect } from "react";
-import { QuestionnaireItem } from "../../../../types/fhir";
+import { QuestionnaireItem } from "fhir/r4";
 import { ActionType } from "../../../../store/treeStore/treeStore";
 import { useTranslation } from "react-i18next";
 import { TableColumnOrderingOptionsEnum } from "../../../../types/tableOptions";
@@ -52,7 +52,7 @@ export const ColumnOrderingFunctionOption = ({item, dispatch}: ColumnOrderingFun
                 system: ICodeSystem.tableOrderingFunctions,
                 code: TableColumnOrderingOptionsEnum.Descending,
                 display: 'Descending',
-            } 
+            }
         }
         addItemCode(item, columnOrderingCoding, dispatch);
     };

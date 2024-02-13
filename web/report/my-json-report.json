@@ -1,0 +1,112 @@
+{
+  "numTotalTestSuites": 6,
+  "numPassedTestSuites": 6,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 7,
+  "numPassedTests": 7,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "startTime": 1707827678732,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "",
+            "generateQuestionnaire from initialState"
+          ],
+          "fullName": " generateQuestionnaire from initialState removes empty string properties",
+          "status": "passed",
+          "title": "removes empty string properties",
+          "duration": 2,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "generateQuestionnaire from initialState"
+          ],
+          "fullName": " generateQuestionnaire from initialState does not remove string properties",
+          "status": "passed",
+          "title": "does not remove string properties",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "generateQuestionnaire from initialState"
+          ],
+          "fullName": " generateQuestionnaire from initialState does not remove populated arrays",
+          "status": "passed",
+          "title": "does not remove populated arrays",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "generateQuestionnaire from state with items"
+          ],
+          "fullName": " generateQuestionnaire from state with items removes empty objects",
+          "status": "passed",
+          "title": "removes empty objects",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "generateQuestionnaire from state with items"
+          ],
+          "fullName": " generateQuestionnaire from state with items does not remove populated objects",
+          "status": "passed",
+          "title": "does not remove populated objects",
+          "duration": 1,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1707827896514,
+      "endTime": 1707827896520,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Code/nhn/Structor/web/src/helpers/__tests__/generateQuestionnaire.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "",
+            "validationUtils",
+            "getValueSetToTranslate"
+          ],
+          "fullName": " validationUtils getValueSetToTranslate Returns used valueset in questionnaire",
+          "status": "passed",
+          "title": "Returns used valueset in questionnaire",
+          "duration": 4,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "validationUtils",
+            "getValueSetToTranslate"
+          ],
+          "fullName": " validationUtils getValueSetToTranslate Returns used valuesets in questionnaire",
+          "status": "passed",
+          "title": "Returns used valuesets in questionnaire",
+          "duration": 0,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1707827896466,
+      "endTime": 1707827896470,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Code/nhn/Structor/web/src/utils/__tests__/validationUtils.test.ts"
+    }
+  ]
+}

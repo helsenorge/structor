@@ -1,4 +1,4 @@
-import { Extension, QuestionnaireItem, Coding } from '../types/fhir';
+import { Extension, QuestionnaireItem, Coding } from 'fhir/r4';
 import { IExtensionType, IQuestionnaireItemType, IValueSetSystem, IItemProperty, ICodeSystem } from '../types/IQuestionnareItemType';
 import { getEnumKeyByString } from './enumHelper';
 import { ActionType } from '../store/treeStore/treeStore';

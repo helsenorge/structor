@@ -1,5 +1,5 @@
 import { Items, OrderItem } from '../store/treeStore/treeStore';
-import { Coding, ValueSet, ValueSetCompose } from '../types/fhir';
+import { Coding, ValueSet, ValueSetCompose } from 'fhir/r4';
 import createUUID from './CreateUUID';
 import { initPredefinedValueSet } from './initPredefinedValueSet';
 
@@ -74,5 +74,5 @@ export const doesAllItemsHaveSameAnswerValueSet = (orderItem: OrderItem[], qItem
         return true;
     } else {
         return false;
-    };
+    }
 }

@@ -12,7 +12,7 @@ import {
     getTextExtensionMarkdown,
     getValidationMessage,
 } from './QuestionHelper';
-import { ValueSet } from '../types/fhir';
+import { ValueSet } from 'fhir/r4';
 import { getValueSetValues } from './valueSetHelper';
 import { TranslatableKeyProptey, TranslatableItemProperty } from '../types/LanguageTypes';
 import Papa, { UnparseConfig } from "papaparse";
@@ -34,7 +34,7 @@ export const exportTranslations = (
     } as UnparseConfig;
 
 
-    let data: string[][] = [];
+    const data: string[][] = [];
     // add metadata translations: all fields from translatableMetadata.
     exportMetadataTranslations(qMetadata, additionalLanguagesInUse, additionalLanguages, data);
 
@@ -43,7 +43,7 @@ export const exportTranslations = (
 
     // add item translations: text/_text, sublabel, repeatsText, validationMessage, placeholderText, initial, answerOption.display
     exportItemTranslations(qItems, additionalLanguagesInUse, additionalLanguages, data);
-    
+
     const csv = Papa.unparse({fields: header, data}, papaparseConfig);
     const csvData = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
     const a = document.createElement('a');
@@ -131,7 +131,7 @@ const exportItemTranslations = (
                 return additionalLanguages[lang].items[linkId]?.sublabel;
             });
             const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtensionType.sublabel}].valueMarkdown`;
-            data.push([key, getSublabel(item), ...translatedValues] as string[]);          
+            data.push([key, getSublabel(item), ...translatedValues] as string[]);
         }
 
         if (getRepeatsText(item)) {
@@ -139,7 +139,7 @@ const exportItemTranslations = (
                 return additionalLanguages[lang].items[linkId]?.repeatsText;
             });
             const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtensionType.repeatstext}].valueString`;
-            data.push([key, getRepeatsText(item), ...translatedValues] as string[]);            
+            data.push([key, getRepeatsText(item), ...translatedValues] as string[]);
         }
 
         if (getValidationMessage(item)) {
@@ -147,7 +147,7 @@ const exportItemTranslations = (
                 return additionalLanguages[lang].items[linkId]?.validationText;
             });
             const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtensionType.validationtext}].valueString`;
-            data.push([key, getValidationMessage(item), ...translatedValues] as string[]);            
+            data.push([key, getValidationMessage(item), ...translatedValues] as string[]);
         }
 
         if (getPlaceHolderText(item)) {
@@ -155,7 +155,7 @@ const exportItemTranslations = (
                 return additionalLanguages[lang].items[linkId]?.entryFormatText;
             });
             const key = `${TranslatableKeyProptey.item}[${linkId}].extension[${IExtensionType.entryFormat}].valueString`;
-            data.push([key, getPlaceHolderText(item), ...translatedValues] as string[]);            
+            data.push([key, getPlaceHolderText(item), ...translatedValues] as string[]);
         }
 
         if (getInitialText(item)) {
@@ -163,7 +163,7 @@ const exportItemTranslations = (
                 return additionalLanguages[lang].items[linkId]?.initial;
             });
             const key = `${TranslatableKeyProptey.item}[${linkId}].${TranslatableItemProperty.initial}[0].valueString`;
-            data.push([key, getInitialText(item), ...translatedValues] as string[]);            
+            data.push([key, getInitialText(item), ...translatedValues] as string[]);
         }
 
         if (getPrefix(item)) {
@@ -171,7 +171,7 @@ const exportItemTranslations = (
                 return additionalLanguages[lang].items[linkId]?.prefix;
             });
             const key = `${TranslatableKeyProptey.item}[${linkId}].${TranslatableItemProperty.prefix}`;
-            data.push([key, getPrefix(item), ...translatedValues] as string[]);            
+            data.push([key, getPrefix(item), ...translatedValues] as string[]);
         }
 
         if (item.answerOption) {

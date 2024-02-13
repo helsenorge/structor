@@ -9,7 +9,7 @@ import {
     updateQuestionnaireMetadataAction,
 } from '../../store/treeStore/treeActions';
 import { Translation, TreeContext } from '../../store/treeStore/treeStore';
-import { Meta, Questionnaire } from '../../types/fhir';
+import { Meta, Questionnaire } from 'fhir/r4';
 import { IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import Accordion from '../Accordion/Accordion';
 import Btn from '../Btn/Btn';
@@ -25,7 +25,7 @@ interface LanguageAccordionProps {
 const LanguageAccordion = (props: LanguageAccordionProps): React.JSX.Element => {
     const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
-    const { qItems, qMetadata, qContained, qAdditionalLanguages } = state;
+    const { qItems, qMetadata, qAdditionalLanguages } = state;
     const uploadRef = React.useRef<HTMLInputElement>(null);
 
     const [selectedLang, setSelectedLang] = useState('');

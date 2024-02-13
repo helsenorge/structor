@@ -9,7 +9,7 @@ import {
     QuestionnaireItemAnswerOption,
     ValueSet,
     ValueSetComposeIncludeConcept,
-} from '../../types/fhir';
+} from 'fhir/r4';
 import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 
 import { updateItemAction } from '../../store/treeStore/treeActions';

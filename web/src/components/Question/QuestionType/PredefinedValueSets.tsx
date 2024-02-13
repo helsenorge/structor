@@ -6,7 +6,7 @@ import {
     QuestionnaireItemAnswerOption,
     ValueSet,
     ValueSetComposeIncludeConcept,
-} from '../../../types/fhir';
+} from 'fhir/r4';
 import { IItemProperty } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
 import Select from '../../Select/Select';

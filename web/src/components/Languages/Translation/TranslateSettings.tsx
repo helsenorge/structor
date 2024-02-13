@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ActionType, Languages } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
 import { IExtensionType } from '../../../types/IQuestionnareItemType';
-import { Extension } from '../../../types/fhir';
+import { Extension } from 'fhir/r4';
 import { translatableSettings } from '../../../helpers/LanguageHelper';
 import { updateSettingTranslationAction } from '../../../store/treeStore/treeActions';
 

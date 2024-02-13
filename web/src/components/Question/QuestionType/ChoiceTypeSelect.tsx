@@ -8,7 +8,7 @@ import {
     isItemControlSlider,
     ItemControlType,
 } from '../../../helpers/itemControl';
-import { QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 import FormField from '../../FormField/FormField';
 import RadioBtn from '../../RadioBtn/RadioBtn';
 
@@ -30,7 +30,7 @@ const ChoiceTypeSelect = ({ item, dispatchExtentionUpdate }: Props): React.JSX.E
         } else if (isItemControlSlider(item)) {
             return ItemControlType.slider;
         }
-        
+
         return ItemControlType.dynamic;
     };
 

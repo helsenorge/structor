@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ValueSet } from '../../../types/fhir';
+import { ValueSet } from 'fhir/r4';
 import { ActionType, Languages } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
 import { updateContainedValueSetTranslationAction } from '../../../store/treeStore/treeActions';

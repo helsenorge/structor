@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { TreeContext } from '../../../store/treeStore/treeStore';
-import { QuestionnaireItem, QuestionnaireItemInitial } from '../../../types/fhir';
+import { QuestionnaireItem, QuestionnaireItemInitial } from 'fhir/r4';
 import { IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import InitialInputTypeString from '../InitialInputTypes/InitialInputTypeString';

@@ -10,7 +10,7 @@ import {
     setItemExtension,
 } from '../../helpers/extensionHelper';
 import { isItemControlInline } from '../../helpers/itemControl';
-import { QuestionnaireItem } from '../../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 import { HyperlinkTarget } from '../../types/hyperlinkTargetType';
 import { IExtensionType } from '../../types/IQuestionnareItemType';
 import FormField from '../FormField/FormField';

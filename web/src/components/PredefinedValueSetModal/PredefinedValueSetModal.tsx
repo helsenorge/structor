@@ -11,7 +11,7 @@ import {
 import createUUID from '../../helpers/CreateUUID';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import { updateValueSetAction } from '../../store/treeStore/treeActions';
-import { ValueSet } from '../../types/fhir';
+import { ValueSet } from 'fhir/r4';
 import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
 import Modal from '../Modal/Modal';

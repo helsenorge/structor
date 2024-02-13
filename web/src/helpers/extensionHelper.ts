@@ -1,6 +1,6 @@
 import { updateItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import { ActionType } from '../store/treeStore/treeStore';
-import { Element, Extension, QuestionnaireItem } from '../types/fhir';
+import { Element, Extension, QuestionnaireItem } from 'fhir/r4';
 import { HyperlinkTarget } from '../types/hyperlinkTargetType';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import { IExtensionType, IValueSetSystem, IItemProperty, ICodeSystem } from '../types/IQuestionnareItemType';

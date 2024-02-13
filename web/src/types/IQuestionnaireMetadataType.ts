@@ -1,4 +1,4 @@
-import { ContactDetail, Extension, Meta, UsageContext } from './fhir';
+import { ContactDetail, Extension, Meta, UsageContext } from 'fhir/r4';
 
 export enum IQuestionnaireMetadataType {
     title = 'title',

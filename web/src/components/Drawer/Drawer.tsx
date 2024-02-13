@@ -35,4 +35,5 @@ const Drawer = (props: DrawerProps): React.JSX.Element => {
     );
 };
 
-export default forwardRef(Drawer);
+const ForwardedDrawer = forwardRef(Drawer);
+export default ForwardedDrawer;

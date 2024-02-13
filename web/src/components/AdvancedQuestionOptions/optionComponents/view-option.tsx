@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';
 import RadioBtn from '../../RadioBtn/RadioBtn';
-import { QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 import { ICodeSystem, IExtensionType } from '../../../types/IQuestionnareItemType';
 import {
     renderingOptions,
@@ -36,11 +36,10 @@ const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
         removeItemCode(item, ICodeSystem.renderOptionsCodeSystem, dispatch);
         switch (newValue) {
             case RenderingOptionsEnum.Hidden:
-                const extension = {
+                setItemExtension(item, {
                     url: IExtensionType.hidden,
                     valueBoolean: true,
-                };
-                setItemExtension(item, extension, dispatch);
+                }, dispatch);
                 break;
             default:
                 addRenderOptionItemCode(item, newValue, dispatch);

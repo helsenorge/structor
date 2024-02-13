@@ -4,7 +4,7 @@ import { removeItemExtension, setItemExtension } from '../../../helpers/extensio
 import { createItemControlExtension, ItemControlType } from '../../../helpers/itemControl';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 import { ActionType } from '../../../store/treeStore/treeStore';
-import { QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import FormField from '../../FormField/FormField';
 import RadioBtn from '../../RadioBtn/RadioBtn';

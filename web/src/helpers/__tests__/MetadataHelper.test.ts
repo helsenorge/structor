@@ -1,4 +1,4 @@
-import { Questionnaire, Meta } from '../../types/fhir';
+import { Questionnaire, Meta } from 'fhir/r4';
 import { addMetaSecurityIfDoesNotExist, getTjenesteomraadeCoding, tjenesteomraadeCode } from '../MetadataHelper';
 
 import { describe, beforeAll , it, expect} from 'vitest';

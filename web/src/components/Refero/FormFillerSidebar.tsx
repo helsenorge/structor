@@ -1,6 +1,6 @@
 import React from 'react';
 import { getSidebarElements, generateSectionContent } from '../../locales/referoSidebarResources';
-import { Questionnaire } from '../../types/fhir';
+import { Questionnaire } from 'fhir/r4';
 
 type Props = {
     questionnaire: Questionnaire;

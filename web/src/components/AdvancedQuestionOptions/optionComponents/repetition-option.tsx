@@ -1,5 +1,5 @@
 import FormField from "../../FormField/FormField";
-import { QuestionnaireItem } from "../../../types/fhir";
+import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import SwitchBtn from "../../SwitchBtn/SwitchBtn";
 import { ActionType } from "../../../store/treeStore/treeStore";
@@ -59,7 +59,7 @@ export const RepetitionOption = ({item, dispatch}: RepetitionOptionProps) => {
                                             valueString: e.target.value,
                                         }
                                         setItemExtension(item, extension, dispatch);
-                                        
+
                                     } else {
                                         removeItemExtension(item, IExtensionType.repeatstext, dispatch);
                                     }

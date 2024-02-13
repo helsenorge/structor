@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../../types/fhir';
+import { QuestionnaireItem, QuestionnaireItemAnswerOption } from 'fhir/r4';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
 import { updateItemOptionTranslationAction, updateItemTranslationAction } from '../../../store/treeStore/treeActions';
@@ -55,7 +55,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                         data={translatedText}
                         onBlur={(text) => dispatchUpdateItemTranslation(text, TranslatableItemProperty.text)}
                     />
-                </div>                
+                </div>
             );
         }
         return (
@@ -123,7 +123,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                                     data={itemPropertyTranslation}
                                     onBlur={(newValue: string) => dispatchUpdateItemTranslation(newValue, propertyName)}
                                 />
-                            </div>                            
+                            </div>
                         ) : (
                             <textarea
                                 className={!itemPropertyTranslation?.trim() ?  "validation-error" : ""}

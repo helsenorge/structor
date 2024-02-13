@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Coding, QuestionnaireItem, QuestionnaireItemInitial } from '../../../types/fhir';
+import { Coding, QuestionnaireItem, QuestionnaireItemInitial } from 'fhir/r4';
 import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import FormField from '../../FormField/FormField';

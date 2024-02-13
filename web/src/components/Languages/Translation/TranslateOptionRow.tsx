@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { QuestionnaireItemAnswerOption } from '../../../types/fhir';
+import { QuestionnaireItemAnswerOption } from 'fhir/r4';
 import FormField from '../../FormField/FormField';
 import InputField from '../../InputField/inputField';
 

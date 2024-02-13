@@ -1,5 +1,5 @@
 import { TreeState } from '../store/treeStore/treeStore';
-import { Extension } from './fhir';
+import { Extension } from 'fhir/r4';
 import { IExtensionType } from './IQuestionnareItemType';
 
 export type Language = {

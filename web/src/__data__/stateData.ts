@@ -1,11 +1,11 @@
 import { TreeState } from "../store/treeStore/treeStore";
-import { QuestionnaireItem } from "../types/fhir";
+import { QuestionnaireItem } from "fhir/r4";
 import { IExtensionType } from "../types/IQuestionnareItemType";
 import { valuesetJaNei, valuesetJaNeiVetIkke, valuesetJaNeiUsikker } from "./valuesets";
 
 export const defaultState = {
     qContained: [
-        valuesetJaNei,    
+        valuesetJaNei,
         valuesetJaNeiVetIkke,
         valuesetJaNeiUsikker,
     ]

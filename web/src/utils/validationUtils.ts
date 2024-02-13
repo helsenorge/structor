@@ -1,6 +1,6 @@
 import { getUsedValueSet } from "../helpers/generateQuestionnaire";
 import { TreeState } from "../store/treeStore/treeStore";
-import { ValueSet } from "../types/fhir";
+import { ValueSet } from "fhir/r4";
 
 export interface ValidationErrors {
     linkId: string;
@@ -11,6 +11,6 @@ export interface ValidationErrors {
 }
 
 export const getValueSetToTranslate = (state: TreeState): ValueSet[] | undefined => {
-    const usedValueSet = getUsedValueSet(state); 
+    const usedValueSet = getUsedValueSet(state);
     return state.qContained?.filter((x) => x.id && usedValueSet?.includes(x.id) && x);
 };

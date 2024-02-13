@@ -9,7 +9,7 @@ import {
 } from '../../../helpers/QuestionHelper';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
 import { IExtensionType } from '../../../types/IQuestionnareItemType';
-import { Coding, Extension, QuestionnaireItem } from '../../../types/fhir';
+import { Coding, Extension, QuestionnaireItem } from 'fhir/r4';
 import UriField from '../../FormField/UriField';
 import { createUriUUID } from '../../../helpers/uriHelper';
 import { TreeContext } from '../../../store/treeStore/treeStore';

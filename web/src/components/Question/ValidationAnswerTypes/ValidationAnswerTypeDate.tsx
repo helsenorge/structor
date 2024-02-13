@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { QuestionnaireItem, Extension } from '../../../types/fhir';
+import { QuestionnaireItem, Extension } from 'fhir/r4';
 import FormField from '../../FormField/FormField';
 import { IExtensionType, IItemProperty } from '../../../types/IQuestionnareItemType';
 import { TreeContext } from '../../../store/treeStore/treeStore';

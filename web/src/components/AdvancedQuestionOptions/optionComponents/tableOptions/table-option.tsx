@@ -1,5 +1,5 @@
 import FormField from "../../../FormField/FormField";
-import { Extension, QuestionnaireItem, ValueSet } from "../../../../types/fhir";
+import { Extension, QuestionnaireItem, ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { ActionType, Items, OrderItem } from "../../../../store/treeStore/treeStore";
 import RadioBtn from "../../../RadioBtn/RadioBtn";
@@ -61,11 +61,11 @@ export const TableOption = ({item, qItems, qOrder, qContained, dispatch}: TableO
         { code: TableOptionsEnum.TableHN2, display: t('Table with custom columns and column headers') },
     ];
     const checkedTableOption = getCheckedTableOption();
-    const showColumnOptions: boolean = hasTableCode 
+    const showColumnOptions: boolean = hasTableCode
         && checkedTableOption !== TableOptionsEnum.TableHN1;
 
     const allChoiceItems: OrderItem[] = getAllItemTypes(qOrder, qItems, IQuestionnaireItemType.choice);
-    
+
     return (
         <>
             <FormField label={t('Table')} sublabel={t('Choose whether the group should be displayed as a summary table')}>
@@ -80,28 +80,28 @@ export const TableOption = ({item, qItems, qOrder, qContained, dispatch}: TableO
                 <div className="table-column-options-wrapper">
                     <div className="indentation-element" />
                     <div className="table-column-options">
-                        {checkedTableOption === TableOptionsEnum.TableHN2 && 
+                        {checkedTableOption === TableOptionsEnum.TableHN2 &&
                             <>
                                 <ColumnNameOption item={item} qItems={qItems} qOrder={qOrder} dispatch={dispatch} />
                                 <ColumnToOrderByOption item={item} tableType={TableOptionsEnum.TableHN2} dispatch={dispatch} />
                             </>
                         }
                         {checkedTableOption === TableOptionsEnum.Table &&
-                            <ColumnToOrderByOption 
-                                item={item} 
-                                tableType={TableOptionsEnum.Table} 
-                                qItems={qItems} 
-                                qContained={qContained} 
+                            <ColumnToOrderByOption
+                                item={item}
+                                tableType={TableOptionsEnum.Table}
+                                qItems={qItems}
+                                qContained={qContained}
                                 allChoiceItems={allChoiceItems}
                                 dispatch={dispatch} />
                         }
-                        {checkedTableOption === TableOptionsEnum.GTable && 
-                            <ColumnToOrderByOption 
-                                item={item} 
-                                tableType={TableOptionsEnum.GTable} 
+                        {checkedTableOption === TableOptionsEnum.GTable &&
+                            <ColumnToOrderByOption
+                                item={item}
+                                tableType={TableOptionsEnum.GTable}
                                 qItems={qItems}
-                                qOrder={qOrder} 
-                                dispatch={dispatch} 
+                                qOrder={qOrder}
+                                dispatch={dispatch}
                             />
                         }
                         <ColumnOrderingFunctionOption item={item} dispatch={dispatch} />

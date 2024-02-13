@@ -1,7 +1,7 @@
 import { FocusEvent, useState } from 'react';
 import { ActionType, Items } from "../../../store/treeStore/treeStore";
 import { useTranslation } from "react-i18next";
-import { QuestionnaireItem } from "../../../types/fhir";
+import { QuestionnaireItem } from "fhir/r4";
 import InputField from "../../InputField/inputField";
 import { updateLinkIdAction } from "../../../store/treeStore/treeActions";
 import UndoIcon from '../../../images/icons/arrow-undo-outline.svg';

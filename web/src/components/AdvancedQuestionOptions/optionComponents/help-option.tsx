@@ -1,7 +1,7 @@
 import FormField from "../../FormField/FormField";
 import SwitchBtn from "../../SwitchBtn/SwitchBtn";
-import { QuestionnaireItem } from "../../../types/fhir";
-import { ActionType, Items, OrderItem, findTreeArray } from "../../../store/treeStore/treeStore";
+import { QuestionnaireItem } from "fhir/r4";
+import { ActionType, Items, OrderItem } from "../../../store/treeStore/treeStore";
 import { useTranslation } from "react-i18next";
 import { canTypeHaveHelp } from "../../../helpers/questionTypeFeatures";
 import { deleteItemAction, newItemHelpIconAction, updateItemAction } from "../../../store/treeStore/treeActions";
@@ -9,6 +9,7 @@ import { getHelpText, isItemControlHelp } from "../../../helpers/itemControl";
 import MarkdownEditor from "../../MarkdownEditor/MarkdownEditor";
 import { createMarkdownExtension } from "../../../helpers/extensionHelper";
 import { IItemProperty } from "../../../types/IQuestionnareItemType";
+import { findTreeArray } from "../../../store/treeStore/findTreeArray";
 
 type HelpOptionProps = {
     item: QuestionnaireItem;

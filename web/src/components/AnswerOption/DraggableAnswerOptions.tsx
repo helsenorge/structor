@@ -15,7 +15,7 @@ import {
     updateAnswerOptionCode,
     updateAnswerOptionExtension,
 } from '../../helpers/answerOptionHelper';
-import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
+import { QuestionnaireItem, QuestionnaireItemAnswerOption } from 'fhir/r4';
 import { IExtensionType, IItemProperty } from '../../types/IQuestionnareItemType';
 import AnswerOption from './AnswerOption';
 
@@ -58,9 +58,9 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
 
     return (
         <DragDropContext onDragEnd={handleChange}>
-            <Droppable 
-                droppableId={`droppable-${item.linkId}-answer-options`} 
-                key={`droppable-${item.linkId}-answer-options`} 
+            <Droppable
+                droppableId={`droppable-${item.linkId}-answer-options`}
+                key={`droppable-${item.linkId}-answer-options`}
                 type="stuff"
             >
                 {(provided, snapshot) => (

@@ -2,12 +2,13 @@ import { CodeStringValue, Items, Languages, OrderItem, Translation, TreeState } 
 import {
     Bundle,
     Extension,
+    FhirResource,
     Questionnaire,
     QuestionnaireItem,
     QuestionnaireItemAnswerOption,
     QuestionnaireItemInitial,
     ValueSet,
-} from '../types/fhir';
+} from 'fhir/r4';
 import { IExtensionType, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { IQuestionnaireMetadata } from '../types/IQuestionnaireMetadataType';
 import { getLanguageFromCode, translatableMetadata, translatableSettings } from './LanguageHelper';
@@ -244,7 +245,7 @@ export const generateMainQuestionnaire = (state: TreeState): Questionnaire => {
         ...state.qMetadata,
         contained: state.qContained?.filter((x) => x.id && usedValueSet?.includes(x.id) && x) as ValueSet[],
         resourceType: 'Questionnaire',
-        status: state.qMetadata.status || 'draft',
+        status: state.qMetadata.status as Questionnaire['status'] || 'draft',
         item: generateTree(state.qOrder, state.qItems),
     };
 };
@@ -260,9 +261,9 @@ const generateTranslatedQuestionnaire = (
         ...getLanguageData(state.qMetadata, languageCode),
         contained: getTranslatedContained(state.qContained, languages[languageCode]).filter(
             (x) => x.id && usedValueSet?.includes(x.id),
-        ),
+        ) as FhirResource[],
         resourceType: 'Questionnaire',
-        status: state.qMetadata.status || 'draft',
+        status: state.qMetadata.status as Questionnaire['status'],
         item: generateTreeWithTranslations(state.qOrder, state.qItems, languageCode, languages),
     };
 };

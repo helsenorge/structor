@@ -2,7 +2,7 @@ import React, { MouseEvent } from 'react';
 import { TFunction } from 'react-i18next';
 
 import { ActionType } from '../../../store/treeStore/treeStore';
-import { QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 
 import './ItemButtons.css';
 import { deleteItemAction, duplicateItemAction } from '../../../store/treeStore/treeActions';

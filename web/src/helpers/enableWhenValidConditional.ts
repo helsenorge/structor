@@ -1,5 +1,5 @@
 import { OrderItem, TreeState } from '../store/treeStore/treeStore';
-import { ValueSetComposeIncludeConcept } from '../types/fhir';
+import { ValueSetComposeIncludeConcept } from 'fhir/r4';
 import { IQuestionnaireItemType } from '../types/IQuestionnareItemType';
 import { isItemControlHelp, isItemControlHighlight, isItemControlInline, isItemControlSidebar } from './itemControl';
 

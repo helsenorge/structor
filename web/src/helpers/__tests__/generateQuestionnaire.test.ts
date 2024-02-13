@@ -1,6 +1,6 @@
 import { generateQuestionnaire } from '../generateQuestionnaire';
 import { getInitialState, TreeState } from '../../store/treeStore/treeStore';
-import { Questionnaire } from '../../types/fhir';
+import { Questionnaire } from 'fhir/r4';
 
 import { describe, beforeAll , it, expect} from 'vitest';
 
@@ -31,8 +31,8 @@ describe(`generateQuestionnaire from state with items`, () => {
         const state: TreeState = {
             ...getInitialState(),
             qItems: {
-                [linkId1]: { linkId: linkId1, type: 'Group', _text: {} },
-                [linkId2]: { linkId: linkId2, type: 'Group', _text: { extension: [] } },
+                [linkId1]: { linkId: linkId1, type: 'group', _text: {} },
+                [linkId2]: { linkId: linkId2, type: 'group', _text: { extension: [] } },
             },
             qOrder: [
                 { linkId: linkId1, items: [] },

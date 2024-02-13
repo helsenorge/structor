@@ -3,7 +3,7 @@ import { IItemProperty } from "../../../types/IQuestionnareItemType";
 import { updateItemAction } from "../../../store/treeStore/treeActions";
 import FormField from "../../FormField/FormField";
 import { useTranslation } from "react-i18next";
-import { QuestionnaireItem } from "../../../types/fhir";
+import { QuestionnaireItem } from "fhir/r4";
 import InputField from "../../InputField/inputField";
 
 type PrefixOptionProps = {

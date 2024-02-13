@@ -1,5 +1,5 @@
 import { RenderingOptionsEnum } from "../helpers/codeHelper";
-import { QuestionnaireItem } from "../types/fhir";
+import { QuestionnaireItem } from "fhir/r4";
 import { ICodeSystem, IExtensionType } from "../types/IQuestionnareItemType";
 
 export const hiddenItem = {

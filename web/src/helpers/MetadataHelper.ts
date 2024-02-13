@@ -1,4 +1,4 @@
-import { Coding, Questionnaire, Meta } from '../types/fhir';
+import { Coding, Questionnaire, Meta } from 'fhir/r4';
 import {
     IQuestionnaireStatus,
     IQuestionnaireMetadata,

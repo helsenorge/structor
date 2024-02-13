@@ -9,7 +9,7 @@ import {
     setItemExtension,
 } from '../../../helpers/extensionHelper';
 import { IExtensionType } from '../../../types/IQuestionnareItemType';
-import { QuestionnaireItem } from '../../../types/fhir';
+import { QuestionnaireItem } from 'fhir/r4';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 
 import FormField from '../../FormField/FormField';

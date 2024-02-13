@@ -3,14 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { format, parse } from 'date-fns';
 import Picker from '../../DatePicker/DatePicker';
 import Select from '../../Select/Select';
+import { FhirPathDateOperator } from './fhirPathDateOperator';
 
-export enum FhirPathDateOperator {
-    NOVALIDATION = 'no_validation',
-    ABSOLUTE = 'abs',
-    EXACT = 'exact',
-    PLUSS = '+',
-    MINUS = '-',
-}
 
 interface FhirPathDateValidationProps {
     descriptionText: string;

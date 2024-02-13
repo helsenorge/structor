@@ -3,7 +3,7 @@ import { getFirstAnswerValueSetFromOrderItem } from '../helpers/valueSetHelper';
 import { OrderItem, Items } from '../store/treeStore/treeStore';
 import { ICodeSystem } from '../types/IQuestionnareItemType';
 import { Option } from '../types/OptionTypes';
-import { QuestionnaireItem, ValueSet } from '../types/fhir';
+import { QuestionnaireItem, ValueSet } from 'fhir/r4';
 
 export const createOptionsFromQItemCode = (item: QuestionnaireItem, system: ICodeSystem): Option[] => {
     const newArray: Option[] = [];

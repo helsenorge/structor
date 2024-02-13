@@ -1,5 +1,5 @@
 import FormField from "../../FormField/FormField";
-import { QuestionnaireItem } from "../../../types/fhir";
+import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import HyperlinkTargetElementToggle from "../HyperlinkTargetElementToggle";
 

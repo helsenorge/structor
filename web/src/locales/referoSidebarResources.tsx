@@ -1,7 +1,6 @@
 import React from 'react';
 import { getSidebarSections } from '@helsenorge/refero/util/extension';
-import { Questionnaire } from '../types/fhir';
-import { Questionnaire as QuestionnaireRefero } from 'fhir/r4';
+import { Questionnaire } from 'fhir/r4';
 
 export const generateSectionContent = (header: string, content: string[]): React.JSX.Element | null => {
     return content.length > 0 ? (
@@ -22,7 +21,7 @@ export const generateSectionContent = (header: string, content: string[]): React
 };
 
 export const getSidebarElements = (questionnaire: Questionnaire): { [id: string]: string[] } => {
-    const sidebarData = getSidebarSections(questionnaire as unknown as QuestionnaireRefero);
+    const sidebarData = getSidebarSections(questionnaire);
 
     const seksjonerFraSkjema: { [id: string]: string[] } = {
         'SOT-1': [],
