@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 import { TreeContext } from '../../store/treeStore/treeStore';
 import IconBtn from '../IconBtn/IconBtn';
+import { generateQuestionnaire } from '../../helpers/generateQuestionnaire';
 
 type Props = {
     showJSONView: () => void;
