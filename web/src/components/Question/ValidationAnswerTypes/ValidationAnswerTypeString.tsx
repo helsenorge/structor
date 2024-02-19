@@ -15,7 +15,7 @@ type Props = {
     item: QuestionnaireItem;
 };
 
-const ValidationAnswerTypeString = ({ item }: Props): React.JSX.Element => {
+const ValidationAnswerTypeString = ({ item }: Props): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const regexOptions = [

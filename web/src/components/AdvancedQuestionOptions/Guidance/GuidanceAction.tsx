@@ -20,7 +20,7 @@ type GuidanceActionProps = {
     item: QuestionnaireItem;
 };
 
-const GuidanceAction = (props: GuidanceActionProps): React.JSX.Element => {
+const GuidanceAction = (props: GuidanceActionProps): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const hasGuidanceAction = hasExtension(props.item, IExtensionType.guidanceAction);

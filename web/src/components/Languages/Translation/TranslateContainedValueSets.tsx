@@ -18,11 +18,11 @@ const TranslateContainedValueSets = ({
     targetLanguage,
     translations,
     dispatch,
-}: TranslateContainedValueSetsProps): React.JSX.Element | null => {
+}: TranslateContainedValueSetsProps): JSX.Element | null => {
     const { t } = useTranslation();
     const containedTranslations = translations[targetLanguage].contained;
 
-    const renderValueSetOptions = (valueSet: ValueSet): React.JSX.Element => {
+    const renderValueSetOptions = (valueSet: ValueSet): JSX.Element => {
         const codings = getValueSetValues(valueSet);
         const { id } = valueSet;
         if (!codings || !id) {

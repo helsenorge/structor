@@ -1,6 +1,6 @@
 import { getUsedValueSet } from "../helpers/generateQuestionnaire";
 import { TreeState } from "../store/treeStore/treeStore";
-import { ValueSet } from "fhir/r4";
+import { ValueSet } from 'fhir/r4';
 
 export interface ValidationErrors {
     linkId: string;

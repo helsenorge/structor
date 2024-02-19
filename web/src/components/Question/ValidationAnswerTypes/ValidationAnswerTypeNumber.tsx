@@ -13,7 +13,7 @@ interface ValidationTypeProp {
     item: QuestionnaireItem;
 }
 
-const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): React.JSX.Element => {
+const ValidationAnswerTypeNumber = ({ item }: ValidationTypeProp): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const validationText = item?.extension?.find((x) => x.url === IExtensionType.validationtext)?.valueString || '';

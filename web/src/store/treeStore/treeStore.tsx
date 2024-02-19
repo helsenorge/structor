@@ -34,7 +34,6 @@ import {
     UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION,
     UPDATE_ITEM_ACTION,
     UPDATE_ITEM_CODE_PROPERTY_ACTION,
-    UPDATE_ITEM_CODE_PROPERTY_WITH_CODE_ACTION,
     UPDATE_ITEM_OPTION_TRANSLATION_ACTION,
     UPDATE_ITEM_TRANSLATION_ACTION,
     UPDATE_LINK_ID_ACTION,
@@ -46,7 +45,6 @@ import {
     UpdateContainedValueSetTranslationAction,
     UpdateItemAction,
     UpdateItemCodePropertyAction,
-    UpdateItemCodePropertyWithCodeAction,
     UpdateItemOptionTranslationAction,
     UpdateItemTranslationAction,
     UpdateLinkIdAction,
@@ -60,12 +58,14 @@ import {
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
-import { IItemProperty} from '../../types/IQuestionnareItemType';
+import { IItemProperty, IExtensionType } from '../../types/IQuestionnareItemType';
+import { INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { isIgnorableItem, isRecipientList } from '../../helpers/itemControl';
 import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
+import { initPredefinedValueSet } from '../../helpers/initPredefinedValueSet';
 import { saveStateToDb } from './indexedDbHelper';
-import { getInitialState } from './initialState';
-import { findTreeArray } from './findTreeArray';
+import { createVisibilityCoding, VisibilityType } from '../../helpers/globalVisibilityHelper';
+import { tjenesteomraadeCode, getTjenesteomraadeCoding } from '../../helpers/MetadataHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -74,7 +74,6 @@ export type ActionType =
     | ImportValueSetAction
     | RemoveQuestionnaireLanguageAction
     | UpdateItemCodePropertyAction
-    | UpdateItemCodePropertyWithCodeAction
     | UpdateItemTranslationAction
     | UpdateItemOptionTranslationAction
     | ResetQuestionnaireAction
@@ -175,7 +174,68 @@ export interface TreeState {
     qAdditionalLanguages?: Languages;
 }
 
+export const getInitialState = (): TreeState => {
+    // Autocreates a random questionnaire id for the user which will be the default value
+    if (initialState.qMetadata.id === undefined || initialState.qMetadata.id === '') {
+        initialState.qMetadata.id = createUUID();
+    }
+    return initialState;
+};
 
+const initialState: TreeState = {
+    isDirty: false,
+    qItems: {},
+    qOrder: [],
+    qMetadata: {
+        title: '',
+        description: '',
+        resourceType: 'Questionnaire',
+        language: INITIAL_LANGUAGE.code,
+        name: '',
+        status: 'draft',
+        publisher: 'NHN',
+        meta: {
+            profile: ['http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire'],
+            tag: [
+                {
+                    system: 'urn:ietf:bcp:47',
+                    code: INITIAL_LANGUAGE.code,
+                    display: INITIAL_LANGUAGE.display,
+                },
+            ],
+            security: [getTjenesteomraadeCoding(tjenesteomraadeCode.helsehjelp)],
+        },
+        useContext: [],
+        contact: [
+            {
+                name: 'http://www.nhn.no',
+            },
+        ],
+        subjectType: ['Patient'],
+        extension: [
+            {
+                url: 'http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar',
+                valueCoding: { system: 'http://helsenorge.no/fhir/ValueSet/sdf-sidebar', code: '1' },
+            },
+            {
+                url: 'http://helsenorge.no/fhir/StructureDefinition/sdf-information-message',
+                valueCoding: { system: 'http://helsenorge.no/fhir/ValueSet/sdf-information-message', code: '1' },
+            },
+            {
+                url: IExtensionType.globalVisibility,
+                valueCodeableConcept: {
+                    coding: [
+                        createVisibilityCoding(VisibilityType.hideHelp),
+                        createVisibilityCoding(VisibilityType.hideSublabel),
+                    ],
+                },
+            },
+        ],
+    },
+    qContained: initPredefinedValueSet,
+    qCurrentItem: undefined,
+    qAdditionalLanguages: {},
+};
 
 function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
     if (!draft.qAdditionalLanguages) {
@@ -196,6 +256,14 @@ function removeLanguage(draft: TreeState, action: RemoveQuestionnaireLanguageAct
     delete draft.qAdditionalLanguages[action.languageCode];
 }
 
+export function findTreeArray(searchPath: Array<string>, searchItems: Array<OrderItem>): Array<OrderItem> {
+    if (searchPath.length === 0) {
+        return searchItems;
+    }
+    // finn neste i searchPath:
+    const searchIndex = searchItems.findIndex((x) => x.linkId === searchPath[0]);
+    return findTreeArray(searchPath.slice(1), searchItems[searchIndex].items);
+}
 
 function getLinkIdOfAllSubItems(items: Array<OrderItem>, linkIds: Array<string>): Array<string> {
     items.forEach((x) => {
@@ -377,22 +445,6 @@ function updateItemCodeProperty(draft: TreeState, action: UpdateItemCodeProperty
 
     if (code && code[action.index]) {
         code[action.index][action.property] = action.value;
-    }
-}
-
-function updateItemCodePropertyWithCode(draft: TreeState, action: UpdateItemCodePropertyWithCodeAction): void {
-    const code = draft.qItems[action.linkId]?.code;
-
-    if (!code) {
-        console.error('Trying to update "code" from non-existent item or code');
-        return;
-    }
-
-
-    const targetCodingIndex = code.findIndex((item) => item.system === action.system && item.code === action.code);
-
-    if (targetCodingIndex !== -1) {
-        code[targetCodingIndex][action.property] = action.value;
     }
 }
 
@@ -630,9 +682,6 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
         case UPDATE_ITEM_CODE_PROPERTY_ACTION:
             updateItemCodeProperty(draft, action);
             break;
-        case UPDATE_ITEM_CODE_PROPERTY_WITH_CODE_ACTION:
-            updateItemCodePropertyWithCode(draft, action);
-            break;
         case ADD_QUESTIONNAIRE_LANGUAGE_ACTION:
             addLanguage(draft, action);
             break;
@@ -713,7 +762,7 @@ export const TreeContext = createContext<{
     dispatch: () => null,
 });
 
-export const TreeContextProvider = (props: { children: React.JSX.Element }): React.JSX.Element => {
+export const TreeContextProvider = (props: { children: JSX.Element }): JSX.Element => {
     const [state, dispatch] = useReducer(reducer, getInitialState());
 
     useEffect(() => {

@@ -19,7 +19,7 @@ const TranslateSettings = ({
     translations,
     extensions,
     dispatch,
-}: TranslateSettingsProps): React.JSX.Element | null => {
+}: TranslateSettingsProps): JSX.Element | null => {
     const { t } = useTranslation();
 
     const translatedSettings = translations[targetLanguage].settings;

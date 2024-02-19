@@ -27,7 +27,7 @@ interface DraggableAnswerOptionsProps {
     ) => void;
 }
 
-const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOptionsProps): React.JSX.Element => {
+const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOptionsProps): JSX.Element => {
     const handleChange = (result: DropResult) => {
         if (!result.source || !result.destination || !result.draggableId) {
             return;

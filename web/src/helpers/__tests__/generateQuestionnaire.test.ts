@@ -1,9 +1,8 @@
+import { generateQuestionnaire } from '../generateQuestionnaire';
+import { getInitialState, TreeState } from '../../store/treeStore/treeStore';
 import { Questionnaire } from 'fhir/r4';
 
 import { describe, beforeAll , it, expect} from 'vitest';
-import { getInitialState } from '../../store/treeStore/initialState';
-import { TreeState } from '../../store/treeStore/treeStore';
-import { generateQuestionnaire } from '../generateQuestionnaire';
 
 describe(`generateQuestionnaire from initialState`, () => {
     let generatedQuestionnaire: Questionnaire;

@@ -6,7 +6,7 @@ type Props = {
     questionnaire: Questionnaire;
 };
 
-const FormFillerSidebar = ({ questionnaire }: Props): React.JSX.Element => {
+const FormFillerSidebar = ({ questionnaire }: Props): JSX.Element => {
     const [isSidebarViewEnabled, setIsSidebarViewEnabled] = React.useState(false);
     const sidebarData = getSidebarElements(questionnaire);
 

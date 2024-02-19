@@ -1,10 +1,10 @@
 import createUUID from './CreateUUID';
 import { TFunction } from 'react-i18next';
-import { Coding, QuestionnaireItem, ValueSetComposeIncludeConcept } from 'fhir/r4';
-import { ICodeSystem, ICodingProperty } from '../types/IQuestionnareItemType';
-import { deleteItemCodeAction, addItemCodeAction, updateItemCodePropertyWithCodeAction } from '../store/treeStore/treeActions';
-import { ActionType, Items, OrderItem } from '../store/treeStore/treeStore';
-import { Option } from '../types/OptionTypes';
+
+import { ICodeSystem } from '../types/IQuestionnareItemType';
+import { deleteItemCodeAction, addItemCodeAction } from '../store/treeStore/treeActions';
+import { ActionType } from '../store/treeStore/treeStore';
+import { QuestionnaireItem, ValueSetComposeIncludeConcept, Coding } from 'fhir/r4';
 
 export enum RenderingOptionsEnum {
     None = '0',
@@ -37,34 +37,6 @@ export const choiceRenderOptions = (t: TFunction<'translation'>): ValueSetCompos
     { code: ChoiceRenderOptionCodes.Compact, display: t('Compact display') },
 ];
 
-export const getItemCode = (item: QuestionnaireItem, system: ICodeSystem) => {
-    return item.code?.find((code: Coding) => code.system === system);
-};
-
-export const getItemCodeWithMatchingSystemAndCode = (item: QuestionnaireItem, system: ICodeSystem, code: string): Coding | undefined => {
-    let returnValue: Coding = {};
-    item.code?.forEach((coding) => {
-        if (coding.system === system && coding.code === code) {
-            returnValue = coding;
-        }});
-    return returnValue;
-}
-
-export const getAllMatchingCodes = (item: QuestionnaireItem, system: ICodeSystem): Coding[] | undefined => {
-    const matchingCodes = item.code?.filter((code: Coding) => code.system === system);
-    return matchingCodes;
-};
-
-export const getDisplayAndCodeValuesFromAllMatchingCodes = (item: QuestionnaireItem, system: ICodeSystem): Option[] => {
-    const stringArrayToReturn: Option[] = [];
-    item.code?.forEach((code: Coding) => {
-        if (code.system === system && code.code && code.display) {
-            stringArrayToReturn.push({code: code?.code, display: code?.display})
-        }
-    });
-    return stringArrayToReturn;
-};
-
 export const erRenderingOption = (code: Coding): boolean => {
     return code.system === ICodeSystem.renderOptionsCodeSystem;
 };
@@ -79,18 +51,6 @@ export const removeItemCode = (
     dispatch: (value: ActionType) => void,
 ): void => {
     const index = item.code?.findIndex((code) => code.system === systemUrl);
-    if (index !== undefined && index > -1) {
-        dispatch(deleteItemCodeAction(item.linkId, index));
-    }
-};
-
-export const removeItemCodeWithCode = (
-    item: QuestionnaireItem,
-    systemUrl: string,
-    code: string,
-    dispatch: (value: ActionType) => void,
-): void => {
-    const index = item.code?.findIndex((coding) => coding.system === systemUrl && coding.code === code);
     if (index !== undefined && index > -1) {
         dispatch(deleteItemCodeAction(item.linkId, index));
     }
@@ -129,59 +89,4 @@ export const addChoiceRenderOptionItemCode = (
         };
         dispatch(addItemCodeAction(item.linkId, coding));
     }
-};
-
-export const getOrderItemByLinkId = (qOrder: OrderItem[], linkIdToSearch: string): OrderItem | undefined => {
-    for (const orderItem of qOrder) {
-        if (orderItem.linkId === linkIdToSearch) {
-            return orderItem;
-        }
-
-        if (orderItem.items) {
-            const nestedResult = getOrderItemByLinkId(orderItem.items, linkIdToSearch);
-            if (nestedResult) {
-                return nestedResult;
-            }
-        }
-    }
-
-    return undefined;
-};
-
-export const getAllOrderItemChildrenOfItem = (qOrder: OrderItem[], parentLinkId: string): OrderItem[] => {
-    const result: OrderItem[] = [];
-
-    for (const orderItem of qOrder) {
-        if (orderItem.linkId === parentLinkId && orderItem.items) {
-            result.push(...orderItem.items);
-        }
-
-        if (orderItem.items) {
-            const nestedResults = getAllOrderItemChildrenOfItem(orderItem.items, parentLinkId);
-            result.push(...nestedResults);
-        }
-    }
-
-    return result;
-};
-
-export const updateChildWithMatchingCode = (
-    item: QuestionnaireItem,
-    qItems: Items,
-    qOrder: OrderItem[],
-    displayValue: string,
-    systemValue: ICodeSystem,
-    codeValue: string,
-    dispatch: (value: ActionType) => void) => {
-    const parentOrderItem = getOrderItemByLinkId(qOrder, item.linkId);
-    parentOrderItem?.items.forEach((childOrderItem) => {
-        const childItem = qItems[childOrderItem.linkId];
-        dispatch(updateItemCodePropertyWithCodeAction(
-            childItem.linkId,
-            ICodingProperty.display,
-            displayValue,
-            systemValue,
-            codeValue,
-        ));
-    })
 };

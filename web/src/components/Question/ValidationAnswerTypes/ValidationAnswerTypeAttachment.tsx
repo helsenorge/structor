@@ -10,7 +10,7 @@ type ValidationAnswerTypeAttachmentProps = {
     item: QuestionnaireItem;
 };
 
-const ValidationAnswerTypeAttachment = ({ item }: ValidationAnswerTypeAttachmentProps): React.JSX.Element => {
+const ValidationAnswerTypeAttachment = ({ item }: ValidationAnswerTypeAttachmentProps): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const maxSize = item.extension?.find((ext) => ext.url === IExtensionType.maxSize)?.valueDecimal || '';

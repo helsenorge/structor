@@ -6,7 +6,7 @@ import { updateItemTranslationAction } from '../../../store/treeStore/treeAction
 import './TranslationModal.css';
 import TranslateItemRow from './TranslateItemRow';
 import { getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
-import { QuestionnaireItem } from 'fhir/r4';
+import { QuestionnaireItem }from 'fhir/r4';
 import TranslateMetaData from './TranslateMetaData';
 import TranslateContainedValueSets from './TranslateContainedValueSets';
 import {
@@ -39,7 +39,7 @@ interface FlattOrderTranslation {
     inlineItemLinkId?: string;
 }
 
-const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
+const TranslationModal = (props: TranslationModalProps): JSX.Element => {
     const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const { qItems, qOrder, qAdditionalLanguages, qMetadata, qContained } = state;
@@ -55,7 +55,7 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
 
     const valueSetsToTranslate = getValueSetToTranslate(state);
 
-    const renderInlineText = (linkId: string): React.JSX.Element | null => {
+    const renderInlineText = (linkId: string): JSX.Element | null => {
         if (!qAdditionalLanguages) {
             return null;
         }
@@ -68,7 +68,7 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
         );
     };
 
-    const renderHelpText = (linkId: string): React.JSX.Element | null => {
+    const renderHelpText = (linkId: string): JSX.Element | null => {
         if (!qAdditionalLanguages) {
             return null;
         }
@@ -184,7 +184,7 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
         };
     }, [qItems, qOrder]);
 
-    const renderItems = (orderItems: FlattOrderTranslation[]): Array<React.JSX.Element | null> => {
+    const renderItems = (orderItems: FlattOrderTranslation[]): Array<JSX.Element | null> => {
         if (translatableItems && qAdditionalLanguages) {
             return orderItems.map((orderItem) => {
                 const item = translatableItems.find((i) => i.linkId === orderItem.linkId);

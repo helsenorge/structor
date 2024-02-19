@@ -20,7 +20,7 @@ interface Props {
     item: QuestionnaireItem;
 }
 
-const HyperlinkTargetElementToggle = ({ item }: Props): React.JSX.Element => {
+const HyperlinkTargetElementToggle = ({ item }: Props): JSX.Element => {
     const { t } = useTranslation();
     const {
         state: { qItems, qOrder, qMetadata },

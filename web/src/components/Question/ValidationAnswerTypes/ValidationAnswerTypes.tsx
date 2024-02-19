@@ -9,7 +9,7 @@ interface ValidationTypeProp {
     item: QuestionnaireItem;
 }
 
-const ValidationAnswerTypes = ({ item }: ValidationTypeProp): React.JSX.Element => {
+const ValidationAnswerTypes = ({ item }: ValidationTypeProp): JSX.Element => {
     const respondType = (itemType: string) => {
         switch (itemType) {
             case IQuestionnaireItemType.attachment:

@@ -21,7 +21,7 @@ type Props = {
     item: QuestionnaireItem;
 };
 
-const OptionReference = ({ item }: Props): React.JSX.Element => {
+const OptionReference = ({ item }: Props): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 

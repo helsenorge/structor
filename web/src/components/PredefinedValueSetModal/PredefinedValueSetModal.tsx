@@ -58,7 +58,7 @@ const initValueSet = () =>
         },
     } as ValueSet);
 
-const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
+const PredefinedValueSetModal = (props: Props): JSX.Element => {
     const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
     const [newValueSet, setNewValueSet] = useState<ValueSet>({ ...initValueSet() });

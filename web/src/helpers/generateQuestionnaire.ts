@@ -2,7 +2,6 @@ import { CodeStringValue, Items, Languages, OrderItem, Translation, TreeState } 
 import {
     Bundle,
     Extension,
-    FhirResource,
     Questionnaire,
     QuestionnaireItem,
     QuestionnaireItemAnswerOption,
@@ -261,9 +260,9 @@ const generateTranslatedQuestionnaire = (
         ...getLanguageData(state.qMetadata, languageCode),
         contained: getTranslatedContained(state.qContained, languages[languageCode]).filter(
             (x) => x.id && usedValueSet?.includes(x.id),
-        ) as FhirResource[],
+        ) as Questionnaire['contained'],
         resourceType: 'Questionnaire',
-        status: state.qMetadata.status as Questionnaire['status'],
+        status: state.qMetadata.status as Questionnaire['status'] || 'draft',
         item: generateTreeWithTranslations(state.qOrder, state.qItems, languageCode, languages),
     };
 };

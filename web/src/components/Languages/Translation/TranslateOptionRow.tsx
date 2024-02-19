@@ -9,7 +9,7 @@ type TranslateOptionRowProps = {
     onBlur: (text: string) => void;
 };
 
-const TranslateOptionRow = ({ option, translation, onBlur }: TranslateOptionRowProps): React.JSX.Element => {
+const TranslateOptionRow = ({ option, translation, onBlur }: TranslateOptionRowProps): JSX.Element => {
     const [translatedText, setTranslatedText] = useState(translation);
 
     return (

@@ -37,7 +37,7 @@ const radioOptions = [
     { code: INLINE_OPTION, display: 'Expanded text' },
 ];
 
-const Infotext = ({ item, parentArray }: InfotextProps): React.JSX.Element => {
+const Infotext = ({ item, parentArray }: InfotextProps): JSX.Element => {
     const { t } = useTranslation();
     const {
         state: { qItems, qOrder },

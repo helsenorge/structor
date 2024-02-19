@@ -37,7 +37,7 @@ type Props = {
     item: QuestionnaireItem;
 };
 
-const Choice = ({ item }: Props): React.JSX.Element => {
+const Choice = ({ item }: Props): JSX.Element => {
     const { t } = useTranslation();
     const { dispatch, state } = useContext(TreeContext);
     const { qContained } = state;
