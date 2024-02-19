@@ -2,7 +2,7 @@ import { describe, it, expect} from 'vitest';
 import { hiddenItem, itemWithRenderOption } from '../../__data__/items';
 import { RenderingOptionsEnum } from '../codeHelper';
 import { isHiddenItem } from '../QuestionHelper';
-import { QuestionnaireItem } from 'fhir/r4';
+import {  QuestionnaireItem } from 'fhir/r4';
 
 describe('QuestionHelper', () => {
     describe('isHiddenItem', () => {
