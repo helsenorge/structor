@@ -13,7 +13,7 @@ export const generateItemButtons = (
     parentArray: Array<string>,
     showLabel: boolean,
     dispatch: React.Dispatch<ActionType>,
-): JSX.Element[] => {
+): React.JSX.Element[] => {
     if (!item) {
         return [];
     }

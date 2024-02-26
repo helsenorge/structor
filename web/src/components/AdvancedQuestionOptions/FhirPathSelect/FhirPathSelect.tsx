@@ -19,7 +19,7 @@ enum FhirPathOptionEnum {
     CUSTOM = 'CUSTOM',
 }
 
-const FhirPathSelect = (props: FhirPathSelectProps): JSX.Element => {
+const FhirPathSelect = (props: FhirPathSelectProps): React.JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
     const [isBlankButCustom, setIsBlankButCustom] = useState(false);

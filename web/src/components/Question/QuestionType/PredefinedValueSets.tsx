@@ -21,7 +21,7 @@ interface PredefinedValueSetsProps {
     ) => void;
 }
 
-const PredefinedValueSets = ({ item, qContained, dispatchUpdateItem }: PredefinedValueSetsProps): JSX.Element => {
+const PredefinedValueSets = ({ item, qContained, dispatchUpdateItem }: PredefinedValueSetsProps): React.JSX.Element => {
     const { t } = useTranslation();
 
     const containedValueSets =

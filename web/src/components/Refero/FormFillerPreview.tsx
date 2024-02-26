@@ -25,7 +25,7 @@ type Props = {
     state: TreeState;
 };
 
-const FormFillerPreview = ({ showFormFiller, language, state }: Props): JSX.Element => {
+const FormFillerPreview = ({ showFormFiller, language, state }: Props): React.JSX.Element => {
     const store: Store = createStore(rootReducer, applyMiddleware(thunk));
     const { t } = useTranslation();
     const languages = getLanguagesInUse(state);

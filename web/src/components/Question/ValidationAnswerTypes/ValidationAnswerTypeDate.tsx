@@ -19,7 +19,7 @@ type Props = {
     item: QuestionnaireItem;
 };
 
-const ValidationAnswerTypeDate = ({ item }: Props): JSX.Element => {
+const ValidationAnswerTypeDate = ({ item }: Props): React.JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 

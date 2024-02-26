@@ -22,10 +22,10 @@ interface LanguageAccordionProps {
     setTranslateLang: (language: string) => void;
 }
 
-const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
+const LanguageAccordion = (props: LanguageAccordionProps): React.JSX.Element => {
     const { t } = useTranslation();
     const { state, dispatch } = useContext(TreeContext);
-    const { qItems, qMetadata, qContained, qAdditionalLanguages } = state;
+    const { qItems, qMetadata, qAdditionalLanguages } = state;
     const uploadRef = React.useRef<HTMLInputElement>(null);
 
     const [selectedLang, setSelectedLang] = useState('');

@@ -11,7 +11,7 @@ type Props = {
     compact?: boolean;
 };
 
-const Select = ({ options, onChange, value, placeholder, compact }: Props): JSX.Element => {
+const Select = ({ options, onChange, value, placeholder, compact }: Props): React.JSX.Element => {
     const { t } = useTranslation();
     return (
         <div className={`selector ${compact ? 'compact' : ''}`}>

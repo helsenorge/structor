@@ -10,7 +10,7 @@ type Props = {
     name: string;
 };
 
-const RadioBtn = ({ checked, onChange, options, name }: Props): JSX.Element => {
+const RadioBtn = ({ checked, onChange, options, name }: Props): React.JSX.Element => {
     const { t } = useTranslation();
 
     return (

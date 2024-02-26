@@ -25,6 +25,10 @@ export enum ItemControlType {
     slider = 'slider',
     step = 'step',
     score = 'score',
+    gTable = 'gtable',
+    table = 'table',
+    tableHN1 = 'table-hn1',
+    tableHN2 = 'table-hn2',
 }
 
 export const createItemControlExtension = (itemControlType: ItemControlType): Extension => {
@@ -78,7 +82,7 @@ const getItemControlType = (item?: QuestionnaireItem): ItemControlType | undefin
     return undefined;
 };
 
-const existItemControlWithCode = (item: QuestionnaireItem, code: string): boolean => {
+export const existItemControlWithCode = (item: QuestionnaireItem, code: string): boolean => {
     const exist =
         item.extension
             ?.filter((x: Extension) => x.url === IExtensionType.itemControl)
@@ -89,6 +93,11 @@ const existItemControlWithCode = (item: QuestionnaireItem, code: string): boolea
 
 export const existItemWithCode = (item: QuestionnaireItem, code: string): boolean => {
     const exist = item.code?.find((x: Coding) => x.code === code);
+    return exist ? true : false;
+};
+
+export const existItemWithSystem = (item: QuestionnaireItem, system: ICodeSystem): boolean => {
+    const exist = item.code?.find((x: Coding) => x.system === system);
     return exist ? true : false;
 };
 

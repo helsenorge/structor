@@ -58,7 +58,7 @@ interface QuestionProps {
     dispatch: React.Dispatch<ActionType>;
 }
 
-const Question = (props: QuestionProps): JSX.Element => {
+const Question = (props: QuestionProps): React.JSX.Element => {
     const { t } = useTranslation();
     const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(!!props.item._text);
     const codeElements = props.item.code
@@ -99,7 +99,7 @@ const Question = (props: QuestionProps): JSX.Element => {
         dispatchUpdateItem(IItemProperty.text, convertToPlaintext(newLabel));
     };
 
-    const respondType = (): JSX.Element => {
+    const respondType = (): React.JSX.Element => {
         if (isItemControlReceiverComponent(props.item)) {
             return <div>{t('Recipient component is configured in Helsenorge admin')}</div>;
         }

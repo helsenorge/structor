@@ -16,7 +16,7 @@ type Props = {
 
 const DAYTIME_CHOICE = 'dayTime';
 
-export const DateType = ({ item, dispatch }: Props): JSX.Element => {
+export const DateType = ({ item, dispatch }: Props): React.JSX.Element => {
     const { t } = useTranslation();
     const getItemControlCode = (): string => {
         if (item.type === IQuestionnaireItemType.dateTime) {

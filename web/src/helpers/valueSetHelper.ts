@@ -1,3 +1,4 @@
+import { Items, OrderItem } from '../store/treeStore/treeStore';
 import { Coding, ValueSet, ValueSetCompose } from 'fhir/r4';
 import createUUID from './CreateUUID';
 import { initPredefinedValueSet } from './initPredefinedValueSet';
@@ -43,3 +44,35 @@ export const getValueSetValues = (valueSet: ValueSet | undefined): Coding[] => {
 
     return codings;
 };
+
+export const getFirstAnswerValueSetFromOrderItem = (orderItem: OrderItem[], qItems: Items): string => {
+    let newString: string = '';
+    orderItem.forEach((item) => {
+        const qItem = qItems[item.linkId];
+        if (qItem.answerValueSet) {
+            newString = qItem.answerValueSet;
+        }
+    })
+    return newString;
+}
+
+export const getAllAnswerValueSetFromOrderItem = (orderItem: OrderItem[], qItems: Items): string[] => {
+    const newArray: string[] = [];
+    orderItem.forEach((item) => {
+        const qItem = qItems[item.linkId];
+        if (qItem.answerValueSet) {
+            newArray.push(qItem.answerValueSet)
+        }
+    })
+    return newArray;
+}
+
+export const doesAllItemsHaveSameAnswerValueSet = (orderItem: OrderItem[], qItems: Items): boolean => {
+    const allAnswerValueSet = getAllAnswerValueSetFromOrderItem(orderItem, qItems);
+    const allAnswerValueSetHasSameValue = allAnswerValueSet.every((answerValueSet) => answerValueSet === allAnswerValueSet[0]);
+    if (allAnswerValueSet.length && allAnswerValueSetHasSameValue) {
+        return true;
+    } else {
+        return false;
+    }
+}
