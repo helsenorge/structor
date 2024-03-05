@@ -22,7 +22,8 @@ const FormBuilder = (): React.JSX.Element => {
     const [validationErrors, setValidationErrors] = useState<Array<ValidationErrors>>([]);
     const [translationErrors, setTranslationErrors] = useState<Array<ValidationErrors>>([]);
     const [sidebarErrors, setSidebarErrors] = useState<Array<ValidationErrors>>([]);
-    const [markdownWarning, setMarkdownWarning] = useState<ValidationErrors>({} as ValidationErrors);
+    const [markdownWarning, setMarkdownWarning] = useState<ValidationErrors|undefined>(undefined);
+    const [securityInformation, setSecurityInformation] = useState<ValidationErrors|undefined>(undefined);
     const [translateLang, setTranslateLang] = useState('');
 
     const toggleFormDetails = useCallback(() => {
@@ -37,10 +38,12 @@ const FormBuilder = (): React.JSX.Element => {
                 setTranslationErrors={setTranslationErrors}
                 setSidebarErrors={setSidebarErrors}
                 setMarkdownWarning={setMarkdownWarning}
+                setSecurityInformation={setSecurityInformation}
                 translationErrors={translationErrors}
                 validationErrors={validationErrors}
                 sidebarErrors={sidebarErrors}
                 markdownWarning={markdownWarning}
+                securityInformation={securityInformation}
             />
 
             <div className="editor">

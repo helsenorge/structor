@@ -45,9 +45,12 @@
 }
 
 .msg-error {
-    color: #ff0000;
+    color: #A31F0E;
 }
 .msg-warning {
+    color: #F15A3C;
+}
+.msg-info {
     color: #ffaa00;
 }
 .form-field.field-error input,

@@ -28,7 +28,7 @@ import WarningMessages from './warningMessages';
 
 type TranslationModalProps = {
     close: () => void;
-    markdownWarning: ValidationErrors;
+    markdownWarning: ValidationErrors | undefined;
     targetLanguage: string;
 };
 

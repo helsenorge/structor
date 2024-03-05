@@ -9,22 +9,25 @@ import JSONView from "../JSONView/JSONView";
 import PredefinedValueSetModal from "../PredefinedValueSetModal/PredefinedValueSetModal";
 import ImportValueSet from "../ImportValueSet/ImportValueSet";
 import { saveAction } from "../../store/treeStore/treeActions";
-import { validateOrphanedElements, validateSidebar } from "../../helpers/orphanValidation";
+import { validateOrphanedElements, validateSidebar } from "../../helpers/validation/orphanValidation";
 import { ValidationErrorsModal } from "../ValidationErrorsModal/validationErrorsModal";
 import { useTranslation } from "react-i18next";
-import { validateTranslations, warnMarkdownInTranslations } from "../../helpers/translationValidation";
+import { validateTranslations, warnMarkdownInTranslations } from "../../helpers/validation/translationValidation";
 import { ValidationErrors } from "../../utils/validationUtils";
+import { infoSecurity } from "../../helpers/validation/securityValidation";
 
 type Props = {
   showFormFiller: () => void;
   setValidationErrors: (errors: ValidationErrors[]) => void;
   setTranslationErrors: (errors: ValidationErrors[]) => void;
   setSidebarErrors: (errors: ValidationErrors[]) => void;
-  setMarkdownWarning: (warning: ValidationErrors) => void;
+  setMarkdownWarning: (warning: ValidationErrors | undefined) => void;
+  setSecurityInformation: (info: ValidationErrors | undefined) => void;
   validationErrors: ValidationErrors[];
   translationErrors: ValidationErrors[];
   sidebarErrors: ValidationErrors[];
-  markdownWarning: ValidationErrors;
+  markdownWarning: ValidationErrors | undefined;
+  securityInformation: ValidationErrors | undefined;
 };
 
 enum MenuItem {
@@ -39,10 +42,12 @@ const Navbar = ({
   setTranslationErrors,
   setSidebarErrors,
   setMarkdownWarning,
+  setSecurityInformation,
   validationErrors,
   translationErrors,
   sidebarErrors,
   markdownWarning,
+  securityInformation,
 }: Props): React.JSX.Element => {
   const { i18n, t } = useTranslation();
   const { state, dispatch } = useContext(TreeContext);
@@ -180,6 +185,7 @@ const Navbar = ({
                 );
                 setSidebarErrors(validateSidebar(t, state.qItems, state.qMetadata));
                 setMarkdownWarning(warnMarkdownInTranslations(t, state));
+                setSecurityInformation(infoSecurity(t, state.qMetadata))
                 setShowValidationErrors(true);
               }}
             />
@@ -245,6 +251,7 @@ const Navbar = ({
           translationErrors={translationErrors}
           sidebarErrors={sidebarErrors}
           markdownWarning={markdownWarning}
+          securityInformation={securityInformation}
           qAdditionalLanguages={state.qAdditionalLanguages}
           onClose={() => setShowValidationErrors(false)}
         />

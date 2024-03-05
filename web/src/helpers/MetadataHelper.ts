@@ -114,6 +114,7 @@ export enum tilgangsstyringsCode {
     barnMellom12Og16 = '3',
     representantTildeltFullmakt = '4',
     representantOrdinaerFullmakt = '5',
+    sperretAdresse = '6',
 }
 
 export enum tilgangsstyringsDisplay {
