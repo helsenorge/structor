@@ -8,13 +8,15 @@ The FHIR specification defines [Questionnaires](https://www.hl7.org/fhir/questio
 
 > A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.
 
+## Information
+
+Change in 2024: This repository is now a mirrored copy of the main repo at Helsenorge and does not allow new pull requests.
+We recommend cloning the repo or creating a fork. Tech stack: React, TypeScript and Vite as bundler.
+
+
 ## Quickstart
 
-Either open the demo at [formdesigner.helsenorgelab.no/](https://formdesigner.helsenorgelab.no/) or clone this repo, install Typescript, run `npm install` and run `npm start`.
-
-## Netlify functions
-
-Run `npm install -g netlify-cli` before running npm run functions :)
+Either open the demo at [formdesigner.helsenorgelab.no/](https://formdesigner.helsenorgelab.no/) or clone this repo, install Typescript, run `npm install` and run `npm start dev`.
 
 ## Docker
 See [Dockerfile](Dockerfile) for info.
