@@ -81,7 +81,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
             const initial = props.item.initial;
             if (initial) {
                 let newInitial: QuestionnaireItemInitial[] = [];
-                initial.map((m: QuestionnaireItemInitial) => {
+                initial.forEach((m: QuestionnaireItemInitial) => {
                     let valueQuantity = m.valueQuantity;
                     if (valueQuantity) {
                         newInitial.push({

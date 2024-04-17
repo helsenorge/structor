@@ -26,7 +26,7 @@ const InitialInputTypeQuantity = (props: InitialInputTypeQuantityProps): React.J
     }
 
     function getValueQuantity(value: number): Quantity | undefined {
-        if (props.item.extension && props.item.extension) {
+        if (props.item.extension) {
             const extesion = getQuantityExtension(props.item.extension);
             if (extesion) {
                 extesion.value = value;
