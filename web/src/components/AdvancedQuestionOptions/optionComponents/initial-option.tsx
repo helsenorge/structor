@@ -8,6 +8,7 @@ import InitialInputTypeInteger from '../InitialInputTypes/InitialInputTypeIntege
 import InitialInputTypeDecimal from '../InitialInputTypes/InitialInputTypeDecimal';
 import InitialInputTypeBoolean from '../InitialInputTypes/InitialInputTypeBoolean';
 import InitialInputTypeChoice from '../InitialInputTypes/InitialInputTypeChoice';
+import InitialInputTypeQuantity from '../InitialInputTypes/InitialInputTypeQuantity';
 
 type InitialOptionProps = {
     item: QuestionnaireItem;
@@ -33,6 +34,7 @@ const InitialOption = (props: InitialOptionProps): React.JSX.Element => {
             case IQuestionnaireItemType.integer:
                 return <InitialInputTypeInteger initial={initial} dispatchAction={dispatchUpdateItem} />;
             case IQuestionnaireItemType.quantity:
+                return <InitialInputTypeQuantity item={props.item} initial={initial} dispatchAction={dispatchUpdateItem} />;
             case IQuestionnaireItemType.decimal:
                 return <InitialInputTypeDecimal initial={initial} dispatchAction={dispatchUpdateItem} />;
             case IQuestionnaireItemType.boolean:

@@ -1,6 +1,6 @@
 import { updateItemAction, updateQuestionnaireMetadataAction } from '../store/treeStore/treeActions';
 import { ActionType } from '../store/treeStore/treeStore';
-import { Element, Extension, QuestionnaireItem } from 'fhir/r4';
+import { Element, Extension, Quantity, QuestionnaireItem } from 'fhir/r4';
 import { HyperlinkTarget } from '../types/hyperlinkTargetType';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQuestionnaireMetadataType';
 import { IExtensionType, IValueSetSystem, IItemProperty, ICodeSystem } from '../types/IQuestionnareItemType';
@@ -158,13 +158,25 @@ export const getHyperlinkTargetvalue = (extensions: Extension[]): HyperlinkTarge
     return undefined;
 };
 
-export const getQuantityUnit = (extensions: Extension[]): string | undefined => {
-    const unit = extensions.filter((f: Extension) => f.url === IExtensionType.questionnaireUnit);
-    return unit.length > 0 ? unit[0].valueCoding?.code : undefined;
+export const getQuantityExtension = (extensions: Extension[]): Quantity | undefined => {
+    const extension = extensions.filter((f: Extension) => f.url === IExtensionType.questionnaireUnit);
+    return extension.length > 0 ? 
+    {
+        unit: extension[0].valueCoding?.display,
+        code: extension[0].valueCoding?.code,
+        system: extension[0].valueCoding?.system,
+    } : undefined;
 };
+
+export const getQuantityCode = (extensions: Extension[]): string | undefined => {
+    const extension = getQuantityExtension(extensions);
+    return extension?.code;
+};
+
 export const getExtentionsFromElement = (element: Element) => {
     return element.extension;
 };
+
 export const getExtentionByType = (extentions: Extension[], type: IExtensionType) => {
     return extentions.find(x => x.url === type);
 }

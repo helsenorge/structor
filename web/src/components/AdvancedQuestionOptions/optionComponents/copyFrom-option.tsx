@@ -24,7 +24,7 @@ import {
   setItemExtension,
   removeItemExtension,
   getExtensionStringValue,
-  getQuantityUnit,
+  getQuantityCode,
 } from '../../../helpers/extensionHelper';
 import { updateItemAction } from '../../../store/treeStore/treeActions';
 
@@ -56,7 +56,7 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
       const hasTypeAndRepeats = item.type === props.item.type && item.repeats === props.item.repeats;
       if (props.item.type === IQuestionnaireItemType.quantity) {
           if (item.extension && props.item.extension) {
-              return hasTypeAndRepeats && getQuantityUnit(item.extension) === getQuantityUnit(props.item.extension);
+            return hasTypeAndRepeats && getQuantityCode(item.extension) === getQuantityCode(props.item.extension);
           }
       }
       return hasTypeAndRepeats;

@@ -8,12 +8,13 @@ import {
     quantityUnitTypes,
 } from '../../../helpers/QuestionHelper';
 import { removeItemExtension, setItemExtension } from '../../../helpers/extensionHelper';
-import { IExtensionType } from '../../../types/IQuestionnareItemType';
-import { Coding, Extension, QuestionnaireItem } from 'fhir/r4';
+import { IExtensionType, IItemProperty } from '../../../types/IQuestionnareItemType';
+import { Coding, Extension, Quantity, QuestionnaireItem, QuestionnaireItemInitial } from 'fhir/r4';
 import UriField from '../../FormField/UriField';
 import { createUriUUID } from '../../../helpers/uriHelper';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import InputField from '../../InputField/inputField';
+import { updateItemAction } from '../../../store/treeStore/treeActions';
 
 type UnitTypeSelectorProps = {
     item: QuestionnaireItem;
@@ -23,7 +24,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
     const { t } = useTranslation();
     const { dispatch } = useContext(TreeContext);
 
-    const getTranslatedQuantityUnitType = (code: string) => {
+    const getTranslatedQuantityUnitType = (code: string): Coding | undefined => {
         const type = quantityUnitTypes.find(({ code: predefinedCode }) => predefinedCode === code);
         if (type) {
             return { code: type.code, display: t(type.display), system: type.system };
@@ -40,13 +41,14 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
         } else {
             const coding =
                 quantityUnitTypeCode === QUANTITY_UNIT_TYPE_CUSTOM
-                    ? { code: '', display: '', system: createUriUUID() }
+                    ? { code: '', display: '', system: createUriUUID() } as Coding
                     : getTranslatedQuantityUnitType(quantityUnitTypeCode);
             const unitExtension: Extension = {
                 url: IExtensionType.questionnaireUnit,
                 valueCoding: coding,
             };
             setItemExtension(props.item, unitExtension, dispatch);
+            updateInitialValue(coding);
         }
     };
 
@@ -72,6 +74,29 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
             valueCoding: newValueCoding,
         };
         setItemExtension(props.item, unitExtension, dispatch);
+    };
+
+    const updateInitialValue = (newValueCoding: Coding | undefined) => {
+        if (props.item.initial && newValueCoding) {
+            const initial = props.item.initial;
+            if (initial) {
+                let newInitial: QuestionnaireItemInitial[] = [];
+                initial.map((m: QuestionnaireItemInitial) => {
+                    let valueQuantity = m.valueQuantity;
+                    if (valueQuantity) {
+                        newInitial.push({
+                            valueQuantity: {
+                                unit: newValueCoding.display,
+                                code: newValueCoding.code,
+                                system: newValueCoding.system,
+                                value: valueQuantity.value
+                            } as Quantity
+                        } as QuestionnaireItemInitial)
+                    }
+                });
+                dispatch(updateItemAction(props.item.linkId, IItemProperty.initial, newInitial));
+            }
+        }
     };
 
     const getQuantityUnitType = (): string => {
