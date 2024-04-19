@@ -48,9 +48,9 @@ const AnswerOption = ({
 
     let ordinalValuePlaceholder;
     if (displayScoringField) {
-        ordinalValuePlaceholder = isSlider ? t('Enter a scoring value as label..') : t('Enter a scoring value..');
+        ordinalValuePlaceholder = isSlider ? t('Enter a scoring value as decimal..') : t('Enter a scoring decimal..');
     } else {
-        ordinalValuePlaceholder = isSlider ? t('Enter a label..') : '';
+        ordinalValuePlaceholder = isSlider ? t('Enter a decimal..') : '';
     }
 
     const getDefaultOrdinalValue = (): string => {

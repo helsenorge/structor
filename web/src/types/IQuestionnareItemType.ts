@@ -93,6 +93,9 @@ export enum ICodeSystem {
     tableOrderingFunctions = 'http://helsenorge.no/fhir/CodeSystem/TableOrderingFunctions',
     tableOrderingColumn = 'http://helsenorge.no/fhir/CodeSystem/TableOrderingColumn',
     tableColumnName = 'http://helsenorge.no/fhir/CodeSystem/TableColumnName',
+    sliderLabels = 'http://helsenorge.no/fhir/CodeSystem/SliderLabels',
+    sliderDisplayType = 'http://helsenorge.no/fhir/CodeSystem/SliderDisplayType'
+
 }
 
 export enum IExtensionType {

@@ -1,19 +1,22 @@
 import React from 'react';
 import './Btn.css';
+import { BTN_ICONS, BTN_TYPES, BTN_VARIANTS } from './types';
+
 
 type BtnProps = {
     title: string;
     onClick?: () => void;
     id?: string;
-    type?: 'button' | 'submit' | 'reset';
-    icon?: 'ion-plus-round' | 'ion-ios-trash';
-    variant?: 'primary' | 'secondary';
+    type?: typeof BTN_TYPES[keyof typeof BTN_TYPES];
+    icon?: typeof BTN_ICONS[keyof typeof BTN_ICONS];
+    variant?: typeof BTN_VARIANTS[keyof typeof BTN_VARIANTS];
 };
 
 const Btn = ({ title, onClick, id, type = 'button', icon, variant }: BtnProps): React.JSX.Element => {
     return (
         <button type={type} className={`regular-btn ${variant}`} id={id} onClick={onClick}>
             {icon && <i className={icon} />} {title}
+        {}
         </button>
     );
 };

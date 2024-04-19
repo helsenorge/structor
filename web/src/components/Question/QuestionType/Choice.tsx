@@ -32,6 +32,8 @@ import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { createUriUUID } from '../../../helpers/uriHelper';
 import DraggableAnswerOptions from '../../AnswerOption/DraggableAnswerOptions';
 import PredefinedValueSets from './PredefinedValueSets';
+import { BTN_TYPES, BTN_VARIANTS } from '../../Btn/types';
+import { SliderLabels } from './SliderLabels';
 
 type Props = {
     item: QuestionnaireItem;
@@ -41,7 +43,6 @@ const Choice = ({ item }: Props): React.JSX.Element => {
     const { t } = useTranslation();
     const { dispatch, state } = useContext(TreeContext);
     const { qContained } = state;
-
     const dispatchExtentionUpdate = (type: ItemControlType) => {
         removeItemExtension(item, IExtensionType.itemControl, dispatch);
         if (type === ItemControlType.checkbox && !isItemControlCheckbox(item)) {
@@ -54,7 +55,6 @@ const Choice = ({ item }: Props): React.JSX.Element => {
             setItemExtension(item, sliderExtension, dispatch);
         }
     };
-
     const dispatchUpdateItem = (
         name: IItemProperty,
         value: string | boolean | QuestionnaireItemAnswerOption[] | Element | undefined,
@@ -78,9 +78,11 @@ const Choice = ({ item }: Props): React.JSX.Element => {
         return '';
     };
 
+    const isSlider = item.extension?.some((ex) => ex.valueCodeableConcept?.coding?.some(cd => cd.code ===  ItemControlType.slider));
     return (
         <>
             <ChoiceTypeSelect item={item} dispatchExtentionUpdate={dispatchExtentionUpdate} />
+            {isSlider && <SliderLabels /> }
             <FormField>
                 <SwitchBtn
                     onChange={() => {
@@ -128,12 +130,12 @@ const Choice = ({ item }: Props): React.JSX.Element => {
                     <div className="center-text">
                         <Btn
                             title={t('+ Add option')}
-                            type="button"
+                            type={BTN_TYPES.Button}
                             onClick={() => {
                                 const newArray = addEmptyOptionToAnswerOptionArray(item.answerOption || []);
                                 dispatchUpdateItem(IItemProperty.answerOption, newArray);
                             }}
-                            variant="secondary"
+                            variant={BTN_VARIANTS.Secondary}
                         />
                     </div>
                 </>
