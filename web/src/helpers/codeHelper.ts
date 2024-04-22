@@ -102,8 +102,8 @@ export const removeItemCode = (
         if(!indexList || !numberOfCodeItems){
             return;
         }
-        for (let i = 0; i < indexList.length; i++) {
-            dispatch(deleteItemCodeAction(item.linkId, indexList[i]));
+        for (const index of indexList) {
+            dispatch(deleteItemCodeAction(item.linkId, index));
         }
     }
 };

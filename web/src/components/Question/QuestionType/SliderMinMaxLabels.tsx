@@ -6,7 +6,6 @@ import { ICodeSystem, ICodingProperty } from "../../../types/IQuestionnareItemTy
 import { updateItemCodePropertyWithCodeAction } from "../../../store/treeStore/treeActions";
 import { TreeContext } from "../../../store/treeStore/treeStore";
 import { useContext } from "react";
-import { updateAnswerOptionSystem } from "../../../helpers/answerOptionHelper";
 import { SliderLabelEnum } from "../../../helpers/codeHelper";
 
 type Props = {
@@ -22,7 +21,6 @@ export const SliderMinMaxLabels = ({item}: Props) => {
 
 
     const handleSetMaxLabel = (event: React.FocusEvent<HTMLInputElement>) => {
-        updateAnswerOptionSystem
         dispatch(updateItemCodePropertyWithCodeAction(item.linkId, ICodingProperty.display, event.target.value, ICodeSystem.sliderLabels, SliderLabelEnum.LabelRight))
     }
     const handleSetMinLabel = (event: React.FocusEvent<HTMLInputElement>) => {
