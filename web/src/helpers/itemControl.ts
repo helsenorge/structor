@@ -101,6 +101,8 @@ export const existItemWithSystem = (item: QuestionnaireItem, system: ICodeSystem
     return exist ? true : false;
 };
 
+export const itemControlExistsInExtensionList = (extension?: Extension[], itemControlType?: ItemControlType) => !extension || !itemControlType ? false : extension?.some((ex) => ex.valueCodeableConcept?.coding?.some(cd => cd.code === itemControlType))
+
 const existItemControlExtension = (item: QuestionnaireItem): boolean => {
     return item.extension?.find((x: Extension) => x.url === IExtensionType.itemControl) !== undefined;
 };

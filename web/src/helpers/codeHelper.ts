@@ -20,6 +20,16 @@ export enum ChoiceRenderOptionCodes {
     Compact = 'Compact',
 }
 
+export enum SliderLabelEnum {
+    LabelRight = 'LabelRight',
+    LabelLeft = 'LabelLeft'
+}
+
+export enum SliderDisplayTypes {
+    Label = 'label',
+    OrdinalValue = 'ordnialValue'
+}
+
 export const renderingOptions = [
     { code: RenderingOptionsEnum.Default, display: 'Display in form filler and PDF', codeDisplay: 'Default' },
     { code: RenderingOptionsEnum.KunPdf, display: 'Display only in PDF', codeDisplay: 'KunPdf' },
@@ -79,8 +89,22 @@ export const removeItemCode = (
     dispatch: (value: ActionType) => void,
 ): void => {
     const index = item.code?.findIndex((code) => code.system === systemUrl);
-    if (index !== undefined && index > -1) {
-        dispatch(deleteItemCodeAction(item.linkId, index));
+    if(index === undefined || index === -1){
+        return;
+    }
+    if (index !== -1) {
+        if(index === 1){
+            dispatch(deleteItemCodeAction(item.linkId, index));
+        }
+
+        const numberOfCodeItems = item.code?.filter((code) => code.system === systemUrl);
+        const indexList = item.code?.map((code, index) => code.system === systemUrl ? index : -1).filter((index) => index !== -1);
+        if(!indexList || !numberOfCodeItems){
+            return;
+        }
+        for (let i = 0; i < indexList.length; i++) {
+            dispatch(deleteItemCodeAction(item.linkId, indexList[i]));
+        }
     }
 };
 

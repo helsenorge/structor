@@ -55,7 +55,6 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
         cursor: 'pointer',
         ...draggableStyle,
     });
-    console.log("item", item)
     return (
         <DragDropContext onDragEnd={handleChange}>
             <Droppable

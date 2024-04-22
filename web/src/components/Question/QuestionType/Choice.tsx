@@ -9,7 +9,7 @@ import {
 
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from 'fhir/r4';
 import Btn from '../../Btn/Btn';
-import { IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { ICodeSystem, IExtensionType, IItemProperty, IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
 import { TreeContext } from '../../../store/treeStore/treeStore';
 import { removeItemAttributeAction, updateItemAction } from '../../../store/treeStore/treeActions';
 
@@ -21,6 +21,7 @@ import {
     isItemControlDropDown,
     isItemControlRadioButton,
     isItemControlSlider,
+    itemControlExistsInExtensionList,
     ItemControlType,
     radiobuttonExtension,
     sliderExtension,
@@ -33,6 +34,8 @@ import { createUriUUID } from '../../../helpers/uriHelper';
 import DraggableAnswerOptions from '../../AnswerOption/DraggableAnswerOptions';
 import PredefinedValueSets from './PredefinedValueSets';
 import { BTN_TYPES, BTN_VARIANTS } from '../../Btn/types';
+import { addItemCode, removeItemCode, SliderLabelEnum } from '../../../helpers/codeHelper';
+import { SliderMinMaxLabels } from './SliderMinMaxLabels';
 import { SliderLabels } from './SliderLabels';
 
 type Props = {
@@ -43,8 +46,12 @@ const Choice = ({ item }: Props): React.JSX.Element => {
     const { t } = useTranslation();
     const { dispatch, state } = useContext(TreeContext);
     const { qContained } = state;
+    const isSlider = itemControlExistsInExtensionList(item.extension, ItemControlType.slider);
+
     const dispatchExtentionUpdate = (type: ItemControlType) => {
         removeItemExtension(item, IExtensionType.itemControl, dispatch);
+        removeItemCode(item, ICodeSystem.sliderDisplayType, dispatch);
+        removeItemCode(item, ICodeSystem.sliderLabels, dispatch);
         if (type === ItemControlType.checkbox && !isItemControlCheckbox(item)) {
             setItemExtension(item, checkboxExtension, dispatch);
         } else if (type === ItemControlType.dropdown && !isItemControlDropDown(item)) {
@@ -53,6 +60,21 @@ const Choice = ({ item }: Props): React.JSX.Element => {
             setItemExtension(item, radiobuttonExtension, dispatch);
         } else if (type === ItemControlType.slider && !isItemControlSlider(item)) {
             setItemExtension(item, sliderExtension, dispatch);
+            addItemCode(item, {
+                code: 'label',
+                display: t('Display value'),
+                system: ICodeSystem.sliderDisplayType
+            }, dispatch)
+            addItemCode(item, {
+                code: SliderLabelEnum.LabelLeft,
+                display: '',
+                system: ICodeSystem.sliderLabels
+            }, dispatch)
+            addItemCode(item, {
+                code: SliderLabelEnum.LabelRight,
+                display: '',
+                system: ICodeSystem.sliderLabels
+            }, dispatch)
         }
     };
     const dispatchUpdateItem = (
@@ -78,43 +100,49 @@ const Choice = ({ item }: Props): React.JSX.Element => {
         return '';
     };
 
-    const isSlider = item.extension?.some((ex) => ex.valueCodeableConcept?.coding?.some(cd => cd.code ===  ItemControlType.slider));
     return (
         <>
             <ChoiceTypeSelect item={item} dispatchExtentionUpdate={dispatchExtentionUpdate} />
-            {isSlider && <SliderLabels /> }
-            <FormField>
-                <SwitchBtn
-                    onChange={() => {
-                        const newType =
-                            item.type === IQuestionnaireItemType.openChoice
-                                ? IQuestionnaireItemType.choice
-                                : IQuestionnaireItemType.openChoice;
-                        dispatchUpdateItem(IItemProperty.type, newType);
-                    }}
-                    value={item.type === IQuestionnaireItemType.openChoice}
-                    label={t('Allow free-text answer')}
-                />
-            </FormField>
-            <FormField>
-                <SwitchBtn
-                    onChange={() => {
-                        if (item.answerValueSet) {
-                            const system = createUriUUID();
-                            dispatchRemoveAttribute(IItemProperty.answerValueSet);
-                            dispatchUpdateItem(IItemProperty.answerOption, [
-                                createNewAnswerOption(system),
-                                createNewAnswerOption(system),
-                            ]);
-                        } else {
-                            dispatchRemoveAttribute(IItemProperty.answerOption);
-                            dispatchUpdateItem(IItemProperty.answerValueSet, '#');
-                        }
-                    }}
-                    value={!!item.answerValueSet}
-                    label={t('Use predefined valueset')}
-                />
-            </FormField>
+            {isSlider && <>
+                <SliderLabels item={item} />
+                <SliderMinMaxLabels item={item} />
+            </>
+            }
+            {!isSlider && <>
+                <FormField>
+                    <SwitchBtn
+                        onChange={() => {
+                            const newType =
+                                item.type === IQuestionnaireItemType.openChoice
+                                    ? IQuestionnaireItemType.choice
+                                    : IQuestionnaireItemType.openChoice;
+                            dispatchUpdateItem(IItemProperty.type, newType);
+                        }}
+                        value={item.type === IQuestionnaireItemType.openChoice}
+                        label={t('Allow free-text answer')}
+                    />
+                </FormField>
+
+                <FormField>
+                    <SwitchBtn
+                        onChange={() => {
+                            if (item.answerValueSet) {
+                                const system = createUriUUID();
+                                dispatchRemoveAttribute(IItemProperty.answerValueSet);
+                                dispatchUpdateItem(IItemProperty.answerOption, [
+                                    createNewAnswerOption(system),
+                                    createNewAnswerOption(system),
+                                ]);
+                            } else {
+                                dispatchRemoveAttribute(IItemProperty.answerOption);
+                                dispatchUpdateItem(IItemProperty.answerValueSet, '#');
+                            }
+                        }}
+                        value={!!item.answerValueSet}
+                        label={t('Use predefined valueset')}
+                    />
+                </FormField>
+            </>}
             {item.answerValueSet ? (
                 <PredefinedValueSets item={item} qContained={qContained} dispatchUpdateItem={dispatchUpdateItem} />
             ) : (

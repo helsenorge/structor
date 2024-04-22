@@ -12,7 +12,7 @@ export const createNewAnswerOption = (system?: string): QuestionnaireItemAnswerO
             system: system,
             display: '',
         },
-    } as QuestionnaireItemAnswerOption;
+    };
 };
 
 export const addEmptyOptionToAnswerOptionArray = (
