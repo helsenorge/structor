@@ -32,7 +32,7 @@ export const SliderMinMaxLabels = ({item}: Props) => {
             <FormField label={t('Min label')}>
                 <InputField
                     name="slider-min-label"
-                    onBlur={handleSetMaxLabel}
+                    onBlur={handleSetMinLabel}
                     placeholder={t('Enter a displayvalue for min..')}
                     defaultValue={rightLabel?.display}
                 />
@@ -40,7 +40,7 @@ export const SliderMinMaxLabels = ({item}: Props) => {
                 <FormField label={t('Maks label')}>
                 <InputField
                     name="slider-max-label"
-                    onBlur={handleSetMinLabel}
+                    onBlur={handleSetMaxLabel}
                     placeholder={t('Enter a displayvalue for max..')}
                     defaultValue={leftLabel?.display}
                 />
