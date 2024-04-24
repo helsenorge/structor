@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Quantity, QuestionnaireItem, QuestionnaireItemInitial } from 'fhir/r4';
 import FormField from '../../FormField/FormField';
 import { getQuantityExtension } from '../../../helpers/extensionHelper';
+import { isNumeric } from '../../../helpers/formatHelper';
 
 type InitialInputTypeQuantityProps = {
     initial?: QuestionnaireItemInitial;
@@ -19,10 +20,6 @@ const InitialInputTypeQuantity = (props: InitialInputTypeQuantityProps): React.J
             return undefined;
         }
         return initial.valueQuantity?.value;
-    }
-
-    function isNumeric(value: string): boolean {
-        return !isNaN(parseFloat(value));
     }
 
     function getValueQuantity(value: number): Quantity | undefined {

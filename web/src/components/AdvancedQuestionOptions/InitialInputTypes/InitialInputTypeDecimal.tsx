@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { QuestionnaireItemInitial } from 'fhir/r4';
 import FormField from '../../FormField/FormField';
+import { isNumeric } from '../../../helpers/formatHelper';
 
 type InitialInputTypeIntegerProps = {
     initial?: QuestionnaireItemInitial;
@@ -17,10 +18,6 @@ const InitialInputTypeDecimal = (props: InitialInputTypeIntegerProps): React.JSX
             return '';
         }
         return initial.valueDecimal?.toString() || '';
-    }
-
-    function isNumeric(value: string): boolean {
-        return !isNaN(parseFloat(value));
     }
 
     return (
