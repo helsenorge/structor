@@ -8,7 +8,7 @@ import {
 import { Languages, TreeState } from '../store/treeStore/treeStore';
 import { isValidId } from './MetadataHelper';
 import { IExtensionType } from '../types/IQuestionnareItemType';
-import { Extension } from 'fhir/r4';
+import { Coding, Extension } from 'fhir/r4';
 
 export const INITIAL_LANGUAGE: Language = { code: 'nb-NO', display: 'Bokmål', localDisplay: 'Bokmål' };
 
@@ -146,4 +146,16 @@ export const getItemPropertyTranslation = (
         return '';
     }
     return languages[languageCode].items[linkId][property] || '';
+};
+
+export const getItemCodeDisplayTranslation = (
+    languageCode: string,
+    languages: Languages,
+    linkId: string,
+    code: Coding
+): string => {
+    if (!languages[languageCode].items[linkId]) {
+        return '';
+    }
+    return languages[languageCode].items[linkId].code?.find(x => x.code === code.code && x.system === code.system )?.display || '';
 };

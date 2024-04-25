@@ -182,9 +182,22 @@ const exportItemTranslations = (
                 const key = `${TranslatableKeyProptey.item}[${linkId}].answerOption[${x.valueCoding?.code}].display`;
                 data.push([
                     key,
-                    x.valueCoding?.display,
-                    ...translatedOptions.map((y) => y && y[x.valueCoding?.code || '']),
-                ] as string[]);
+                    x.valueCoding?.display || '',
+                    ...translatedOptions.map((y) => y && y[x.valueCoding?.code || ''] || ''),
+                ]);
+            });
+        }
+        if (item.code) {
+            const translatedOptions = additionalLanguagesInUse.map((lang) => {
+                return additionalLanguages[lang].items[linkId]?.code
+            });
+            item.code.forEach((x) => {
+                const key = `${TranslatableKeyProptey.item}[${linkId}].code[${x?.code}].display`;
+                data.push([
+                    key,
+                    x?.display || '',
+                    ...translatedOptions.map((y, i) => y && y[i].code  || '') || '' ,
+                ]);
             });
         }
     });

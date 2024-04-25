@@ -1,6 +1,7 @@
 import { CodeStringValue, Items, Languages, OrderItem, Translation, TreeState } from '../store/treeStore/treeStore';
 import {
     Bundle,
+    Coding,
     Extension,
     FhirResource,
     Questionnaire,
@@ -98,7 +99,7 @@ const getTranslatedSidebarItem = (translation: Translation, currentItem: Questio
     return { ...currentItem, _text };
 };
 
-const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: Items, languages: Languages) => {
+const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: Items, languages: Languages): QuestionnaireItem => {
     const currentItem = items[orderItem.linkId];
     if (isItemControlSidebar(currentItem)) {
         return getTranslatedSidebarItem(languages[languageCode], currentItem);
@@ -159,17 +160,33 @@ const getTranslatedItem = (languageCode: string, orderItem: OrderItem, items: It
         };
         extension = updateTranslatedExtension(extension, translatedRepeatsTextExtension);
     }
-
+    // answerOption
     const answerOption = getTranslatedAnswerOptions(currentItem.answerOption, itemTranslation?.answerOptions);
+
+    //prefix
     const prefix = itemTranslation?.prefix || '';
+
+    //initial
     const initial =
         (currentItem.type === IQuestionnaireItemType.text || currentItem.type === IQuestionnaireItemType.string) &&
         itemTranslation?.initial
             ? [{ valueString: itemTranslation?.initial }]
             : currentItem.initial;
 
-    return { ...currentItem, text: translatedText, _text, extension, answerOption, prefix, initial };
+    //Coding
+    const code: Coding[] = mergeCodes(currentItem?.code, itemTranslation?.code)
+    const newItem: QuestionnaireItem = { ...currentItem, text: translatedText, _text, extension, answerOption, prefix, initial, code};
+
+    return newItem;
 };
+function mergeCodes(currentCodes?: Coding[], translationCodes?: Coding[]): Coding[] {
+    return currentCodes?.map(currentCode => {
+      const match = translationCodes?.find(translationCode =>
+        translationCode.system === currentCode.system && translationCode.code === currentCode.code
+      );
+      return match || currentCode;
+    }) || [];
+  }
 
 const getTranslatedMetadata = (qMetadata: IQuestionnaireMetadata, translation: Translation): IQuestionnaireMetadata => {
     const translatedMetadata: IQuestionnaireMetadata = {};

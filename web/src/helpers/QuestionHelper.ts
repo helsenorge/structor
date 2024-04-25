@@ -209,6 +209,10 @@ export const isValidGuidanceParameterName = (name: string): boolean => {
     return regExp.test(name);
 };
 
+export const getItemCodes = (item?: QuestionnaireItem): Coding[] => {
+    return item?.code || [];
+}
+
 export const elementSaveCapability = [
     { code: '0', display: 'Not set' },
     { code: '1', display: 'Save submitted questionnaire and intermediate save (standard setting)' },

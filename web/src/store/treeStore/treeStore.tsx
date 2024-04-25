@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch, useEffect, useReducer } from 'react';
 import produce from 'immer';
 
-import { Extension, QuestionnaireItem, ValueSet } from 'fhir/r4';
+import { Coding, Extension, QuestionnaireItem, ValueSet } from 'fhir/r4';
 import {
     ADD_ITEM_CODE_ACTION,
     ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
@@ -57,6 +57,8 @@ import {
     UpdateValueSetAction,
     UPDATE_SETTING_TRANSLATION_ACTION,
     UpdateSettingTranslationAction,
+    UPDATE_ITEM_CODE_TRANSLATION_ACTION,
+    UpdateItemCodeTranslationAction,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -66,6 +68,7 @@ import { createOptionReferenceExtensions } from '../../helpers/extensionHelper';
 import { saveStateToDb } from './indexedDbHelper';
 import { getInitialState } from './initialState';
 import { findTreeArray } from './findTreeArray';
+import { findCodingBySystemAndCode } from '../../helpers/codeHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -94,7 +97,8 @@ export type ActionType =
     | UpdateValueSetAction
     | RemoveItemAttributeAction
     | SaveAction
-    | UpdateMarkedLinkId;
+    | UpdateMarkedLinkId
+    | UpdateItemCodeTranslationAction
 
 export interface Items {
     [linkId: string]: QuestionnaireItem;
@@ -113,6 +117,7 @@ export interface ItemTranslation {
     sublabel?: string;
     repeatsText?: string;
     prefix?: string;
+    code?: Coding[]
 }
 
 export interface ContainedTranslation {
@@ -399,17 +404,42 @@ function updateItemCodePropertyWithCode(draft: TreeState, action: UpdateItemCode
 function updateItemTranslation(draft: TreeState, action: UpdateItemTranslationAction) {
     if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
         if (!draft.qAdditionalLanguages[action.languageCode].items[action.linkId]) {
-            draft.qAdditionalLanguages[action.languageCode].items[action.linkId] = {};
+            draft.qAdditionalLanguages[action.languageCode].items[action.linkId] = {} ;
         }
-        draft.qAdditionalLanguages[action.languageCode].items[action.linkId][action.propertyName] = action.value;
+        draft.qAdditionalLanguages[action.languageCode].items[action.linkId][action.propertyName] = action.value ;
     }
+}
+
+function updateItemCodeTranslation (draft: TreeState, action: UpdateItemCodeTranslationAction) {
+    if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
+        if (!draft.qAdditionalLanguages[action.languageCode].items[action.linkId]) {
+            draft.qAdditionalLanguages[action.languageCode].items[action.linkId] = {};
+
+        }
+        if(!draft.qAdditionalLanguages[action.languageCode].items[action.linkId].code){
+            draft.qAdditionalLanguages[action.languageCode].items[action.linkId].code = [];
+        }
+        const coding = draft.qAdditionalLanguages[action.languageCode].items[action.linkId].code;
+        const code = findCodingBySystemAndCode(coding, action.code.system, action.code.code);
+        if(code === undefined){
+            draft.qAdditionalLanguages[action.languageCode].items[action.linkId].code?.push({...action.code, display: action.value});
+        }else{
+            draft.qAdditionalLanguages[action.languageCode].items[action.linkId].code?.map((x) => {
+                if(x.code === action.code.code && x.system === action.code.system){
+                    x.display = action.value;
+                }
+            });
+        }
+
+    }
+
 }
 
 function updateItemOptionTranslation(draft: TreeState, action: UpdateItemOptionTranslationAction) {
     if (draft.qAdditionalLanguages && draft.qAdditionalLanguages[action.languageCode]) {
         const item = draft.qAdditionalLanguages[action.languageCode].items[action.linkId] ?? {} as ItemTranslation;
         if (!item.answerOptions) {
-            item.answerOptions = {} as CodeStringValue;
+            item.answerOptions = {} ;
         }
         item.answerOptions[action.optionCode] = action.text;
         draft.qAdditionalLanguages[action.languageCode].items[action.linkId] = item;
@@ -663,9 +693,12 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
         case UPDATE_ITEM_TRANSLATION_ACTION:
             updateItemTranslation(draft, action);
             break;
+        case UPDATE_ITEM_CODE_TRANSLATION_ACTION:
+            updateItemCodeTranslation(draft, action);
+            break;
         case UPDATE_ITEM_OPTION_TRANSLATION_ACTION:
             updateItemOptionTranslation(draft, action);
-            break;
+            break
         case UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION:
             updateContainedValueSetTranslation(draft, action);
             break;

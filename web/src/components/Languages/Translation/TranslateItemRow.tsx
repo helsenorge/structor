@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { QuestionnaireItem, QuestionnaireItemAnswerOption } from 'fhir/r4';
+import { Coding, QuestionnaireItem, QuestionnaireItemAnswerOption } from 'fhir/r4';
 import FormField from '../../FormField/FormField';
 import MarkdownEditor from '../../MarkdownEditor/MarkdownEditor';
-import { updateItemOptionTranslationAction, updateItemTranslationAction } from '../../../store/treeStore/treeActions';
+import { updateItemOptionTranslationAction, updateItemTranslationAction, updateItemCodeTranslation } from '../../../store/treeStore/treeActions';
 import { ItemTranslation, TreeContext } from '../../../store/treeStore/treeStore';
 import TranslateOptionRow from './TranslateOptionRow';
 import {
@@ -14,10 +14,12 @@ import {
     getSublabel,
     getTextExtensionMarkdown,
     getValidationMessage,
+    getItemCodes
 } from '../../../helpers/QuestionHelper';
-import { getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
+import { getItemCodeDisplayTranslation, getItemPropertyTranslation } from '../../../helpers/LanguageHelper';
 import { TranslatableItemProperty } from '../../../types/LanguageTypes';
 import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
+import { systemCodesToTranslate } from './systemCodesToTranslate';
 
 type TranslationRowProps = {
     targetLanguage: string;
@@ -30,7 +32,6 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
     const { state, dispatch } = useContext(TreeContext);
 
     const qAdditionalLanguages = state.qAdditionalLanguages || {};
-
     const itemTranslation: ItemTranslation = qAdditionalLanguages
         ? qAdditionalLanguages[targetLanguage].items[item.linkId] || {}
         : {};
@@ -40,7 +41,9 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
     function dispatchUpdateItemTranslation(text: string, propertyName: TranslatableItemProperty) {
         dispatch(updateItemTranslationAction(targetLanguage, item.linkId, propertyName, text));
     }
-
+    function dispatchUpdateItemCodeTranslation(newDisplayText: string, code: Coding) {
+        dispatch(updateItemCodeTranslation(targetLanguage, item.linkId, newDisplayText, code));
+    }
     function dispatchUpdateOptionTranslation(text: string, optionCode?: string) {
         if (optionCode) {
             dispatch(updateItemOptionTranslationAction(targetLanguage, item.linkId, text, optionCode));
@@ -105,6 +108,13 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
             item.linkId,
             propertyName,
         );
+        const handleOnBlurText = (event: React.FocusEvent<HTMLTextAreaElement, Element>) => {
+
+                dispatchUpdateItemTranslation(event.target.value, propertyName)
+        }
+        const handleOnBlurMarkdown = (newValue: string) => {
+             dispatchUpdateItemTranslation(newValue, propertyName)
+        }
         return (
             <>
                 <div className="translation-group-header">{header}</div>
@@ -121,14 +131,14 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                             <div className={!itemPropertyTranslation?.trim() ?  "validation-error" : "validation-warning"}>
                                 <MarkdownEditor
                                     data={itemPropertyTranslation}
-                                    onBlur={(newValue: string) => dispatchUpdateItemTranslation(newValue, propertyName)}
+                                    onBlur={handleOnBlurMarkdown}
                                 />
                             </div>
                         ) : (
                             <textarea
                                 className={!itemPropertyTranslation?.trim() ?  "validation-error" : ""}
                                 defaultValue={itemPropertyTranslation}
-                                onBlur={(event) => dispatchUpdateItemTranslation(event.target.value, propertyName)}
+                                onBlur={handleOnBlurText}
                             />
                         )}
                     </FormField>
@@ -136,7 +146,40 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
             </>
         );
     }
+    function getTranslatableCodeField(
+        header: string,
+        code: Coding,
+    ): React.JSX.Element {
+        const itemPropertyTranslation = getItemCodeDisplayTranslation(
+            targetLanguage,
+            qAdditionalLanguages,
+            item.linkId,
+            code
+        );
 
+        const handleOnBlurText = (event: React.FocusEvent<HTMLTextAreaElement, Element>) => {
+            dispatchUpdateItemCodeTranslation(event.target.value, code)
+        }
+        return (
+            <React.Fragment key={`${code.system}-${code.code}`}>
+                <div className="translation-group-header">{`System: ${header}`}</div>
+                <div className="translation-group-header">{`Code: ${code.code}`}</div>
+                <div className="translation-row">
+                    <FormField>
+                        <textarea defaultValue={code.display} disabled={true} />
+                    </FormField>
+                    <FormField>
+                        <textarea
+                            className={!itemPropertyTranslation?.trim() ?  "validation-error" : ""}
+                            defaultValue={itemPropertyTranslation}
+                            onBlur={handleOnBlurText}
+                        />
+                    </FormField>
+                </div>
+            </React.Fragment>
+        );
+    }
+    const itemCodes= getItemCodes(item)
     return (
         <>
             <div className="translation-group-header">{itemHeading}</div>
@@ -180,8 +223,13 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                     })}
                 </>
             )}
+            {itemCodes?.filter((code: Coding) => systemCodesToTranslate.includes(code.system || ''))?.map((code) => getTranslatableCodeField(
+                    code.system || 'system',
+                    code,
+                ))}
         </>
     );
 };
 
 export default TranslateItemRow;
+

@@ -150,7 +150,8 @@ function translateItem(translationItem: QuestionnaireItem | undefined): ItemTran
     const sublabel = getSublabel(translationItem);
     const prefix = getPrefix(translationItem);
     const repeatsText = getRepeatsText(translationItem);
-    return { answerOptions, entryFormatText, text, validationText, initial, sublabel, prefix, repeatsText };
+    const code = translationItem?.code
+    return { answerOptions, entryFormatText, text, validationText, initial, sublabel, prefix, repeatsText, code };
 }
 
 function translateItems(
@@ -204,6 +205,7 @@ export function translateQuestionnaire(mainQuestionnaire: Questionnaire, questio
         questionnaire.contained as Array<ValueSet>,
     );
     const { items, sidebarItems } = translateItems(mainQuestionnaire.item, questionnaire.item);
+
     const metaData = translateMetadata(questionnaire);
     const settings = translateSettings(questionnaire);
 
@@ -212,7 +214,7 @@ export function translateQuestionnaire(mainQuestionnaire: Questionnaire, questio
 
 export function languageToIsoString(language: string): string {
     const parts = language.split('-');
-    return `${parts[0]}-${parts[1].toUpperCase()}`;
+    return `${parts[0]}-${parts[1]?.toUpperCase()}`;
 }
 
 function extractTranslations(bundle: Bundle): Languages {

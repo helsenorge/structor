@@ -209,3 +209,11 @@ export const updateChildWithMatchingCode = (
         ));
     })
 };
+
+
+export const findCodingBySystemAndCode = (codeing?: Coding[], system?: string, codeValue?: string): Coding | undefined => {
+    if(system === undefined || codeValue === undefined || codeing === undefined){
+        return;
+    }
+    return codeing?.find((c) => c.system === system && c.code === codeValue);
+};

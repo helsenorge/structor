@@ -51,6 +51,7 @@ export const UPDATE_LINK_ID_ACTION = 'updateLinkId';
 export const UPDATE_MARKED_LINK_ID = 'updateMarkedLinkId';
 export const UPDATE_VALUESET_ACTION = 'UPDATE_VALUESET';
 export const IMPORT_VALUESET_ACTION = 'IMPORT_VALUESET';
+export const UPDATE_ITEM_CODE_TRANSLATION_ACTION = 'UPDATE_ITEM_CODE_TRANSLATION_ACTION'
 export const SAVE_ACTION = 'save';
 
 type ItemValueType =
@@ -119,6 +120,13 @@ export interface UpdateItemTranslationAction {
     value: string;
 }
 
+export interface UpdateItemCodeTranslationAction {
+    type: typeof UPDATE_ITEM_CODE_TRANSLATION_ACTION;
+    languageCode: string;
+    linkId: string;
+    value: string
+    code: Coding
+}
 export interface UpdateItemOptionTranslationAction {
     type: typeof UPDATE_ITEM_OPTION_TRANSLATION_ACTION;
     languageCode: string;
@@ -329,6 +337,18 @@ export const updateItemTranslationAction = (
         value,
     };
 };
+export const updateItemCodeTranslation = (
+    languageCode: string, linkId: string, value: string, code: Coding
+): UpdateItemCodeTranslationAction => {
+    return {
+        type: UPDATE_ITEM_CODE_TRANSLATION_ACTION,
+        languageCode,
+        linkId,
+        value,
+        code
+    }
+}
+
 
 export const updateItemOptionTranslationAction = (
     languageCode: string,
