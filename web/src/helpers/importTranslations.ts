@@ -6,6 +6,7 @@ import {
     updateContainedValueSetTranslationAction,
     updateItemOptionTranslationAction,
     updateSidebarTranslationAction,
+    updateItemCodeTranslation,
 } from '../store/treeStore/treeActions';
 import {
     TranslatableItemProperty,
@@ -38,6 +39,7 @@ const updateQuestionniareWithTranslation = (translatableItems: any[], csvHeaders
 
                 const valuesetUpdated = updateValueSetTranslation(key, languageCode, text, dispatch);
                 if (valuesetUpdated) continue;
+
             }
         }
     }
@@ -87,7 +89,10 @@ const updateItemTranslation = (
             dispatch(updateSidebarTranslationAction(languageCode, itemLinkId, text));
             return true;
         }
-        dispatch(updateItemTranslationAction(languageCode, itemLinkId, TranslatableItemProperty.text, text));
+        if(key.includes(`.${TranslatableItemProperty.code}`)){
+            return updateCodeTranslation(key, languageCode, text, dispatch, qItems);
+        }
+
         return false;
     }
     return false;
@@ -136,6 +141,21 @@ const updateValueSetTranslation = (
         const conceptId = key.split('[')[3].split(']')[0];
 
         dispatch(updateContainedValueSetTranslationAction(languageCode, valueSetId, conceptId, text));
+        return true;
+    }
+    return false;
+}
+
+const updateCodeTranslation = (key: string, languageCode: string, text: string, dispatch: React.Dispatch<ActionType>, qItems: Items): boolean => {
+    if (key.startsWith(TranslatableKeyProptey.item)) {
+        const itemLinkId = key.split('[')?.[1].split(']')?.[0];
+        const system: string | undefined = key?.split('[')?.[2]?.split(']')?.[0];
+        const code: string | undefined = key?.split('[')?.[3]?.split(']')?.[0];
+        const item = qItems[itemLinkId];
+        const currentCode = item?.code?.find((c) => c.system === system && c.code === code);
+
+        if(currentCode )
+        dispatch(updateItemCodeTranslation(languageCode, itemLinkId, text, currentCode));
         return true;
     }
     return false;

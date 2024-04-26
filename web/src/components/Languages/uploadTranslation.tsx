@@ -15,7 +15,8 @@ const UploadTranslation = (): React.JSX.Element => {
         if (event.target?.result) {
             try {
                 importCSV(event.target.result as string, qItems, dispatch);
-            } catch {
+            } catch (error){
+                console.error(error);
                 setFileUploadError('Could not read uploaded file');
             }
 

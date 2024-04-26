@@ -12,10 +12,11 @@ import {
     getTextExtensionMarkdown,
     getValidationMessage,
 } from './QuestionHelper';
-import { ValueSet } from 'fhir/r4';
+import { Coding, ValueSet } from 'fhir/r4';
 import { getValueSetValues } from './valueSetHelper';
 import { TranslatableKeyProptey, TranslatableItemProperty } from '../types/LanguageTypes';
 import Papa, { UnparseConfig } from "papaparse";
+import { systemCodesToTranslate } from '../components/Languages/Translation/systemCodesToTranslate';
 
 export const exportTranslations = (
     qMetadata: IQuestionnaireMetadata,
@@ -191,12 +192,12 @@ const exportItemTranslations = (
             const translatedOptions = additionalLanguagesInUse.map((lang) => {
                 return additionalLanguages[lang].items[linkId]?.code
             });
-            item.code.forEach((x) => {
-                const key = `${TranslatableKeyProptey.item}[${linkId}].code[${x?.code}].display`;
+            item.code.filter((code: Coding) => systemCodesToTranslate.includes(code.system || ''))?.forEach((x) => {
+                const key = `${TranslatableKeyProptey.item}[${linkId}].code[${x?.system}][${x?.code}].display`;
                 data.push([
                     key,
                     x?.display || '',
-                    ...translatedOptions.map((y, i) => y && y[i].code  || '') || '' ,
+                    ...translatedOptions.map((y, i) => y && y[i]?.display  || '') || '' ,
                 ]);
             });
         }
