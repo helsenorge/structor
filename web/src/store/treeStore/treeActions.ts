@@ -116,8 +116,8 @@ export interface UpdateItemTranslationAction {
     type: typeof UPDATE_ITEM_TRANSLATION_ACTION;
     languageCode: string;
     linkId: string;
-    propertyName: TranslatableItemProperty;
-    value: string;
+    propertyName: Exclude<TranslatableItemProperty, 'code'>;
+    value: string
 }
 
 export interface UpdateItemCodeTranslationAction {
@@ -326,7 +326,7 @@ export const removeQuestionnaireLanguageAction = (languageCode: string): RemoveQ
 export const updateItemTranslationAction = (
     languageCode: string,
     linkId: string,
-    propertyName: TranslatableItemProperty,
+    propertyName: Exclude<TranslatableItemProperty, 'code'>,
     value: string,
 ): UpdateItemTranslationAction => {
     return {

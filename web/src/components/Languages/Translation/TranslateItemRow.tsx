@@ -38,7 +38,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
     const [translatedText, setTranslatedText] = useState(itemTranslation.text || '');
     const isMarkdown: boolean = item._text ? true : false;
 
-    function dispatchUpdateItemTranslation(text: string, propertyName: TranslatableItemProperty) {
+    function dispatchUpdateItemTranslation(text: string, propertyName: Exclude<TranslatableItemProperty, 'code'>) {
         dispatch(updateItemTranslationAction(targetLanguage, item.linkId, propertyName, text));
     }
     function dispatchUpdateItemCodeTranslation(newDisplayText: string, code: Coding) {
@@ -99,7 +99,7 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
     function getTranslatableField(
         header: string,
         textValue: string,
-        propertyName: TranslatableItemProperty,
+        propertyName: Exclude<TranslatableItemProperty, 'code'>,
         isMarkdownField: boolean,
     ): React.JSX.Element {
         const itemPropertyTranslation = getItemPropertyTranslation(

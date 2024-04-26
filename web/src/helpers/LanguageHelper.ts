@@ -135,18 +135,18 @@ export const translatableSettings: { [key in IExtensionType]?: SettingsProperty 
         },
     },
 };
-
-export const getItemPropertyTranslation = (
+export function getItemPropertyTranslation(
     languageCode: string,
     languages: Languages,
     linkId: string,
-    property: TranslatableItemProperty,
-): string => {
+    property: Exclude<TranslatableItemProperty, 'code'>,
+){
     if (!languages[languageCode].items[linkId]) {
         return '';
     }
+
     return languages[languageCode].items[linkId][property] || '';
-};
+}
 
 export const getItemCodeDisplayTranslation = (
     languageCode: string,
