@@ -157,5 +157,5 @@ export const getItemCodeDisplayTranslation = (
     if (!languages[languageCode].items[linkId]) {
         return '';
     }
-    return languages[languageCode].items[linkId].code?.find(x => x.code === code.code && x.system === code.system )?.display || '';
+    return languages[languageCode].items[linkId].code?.find(x => x.code === code.code && x.system === code.system)?.display || code.display || '';
 };

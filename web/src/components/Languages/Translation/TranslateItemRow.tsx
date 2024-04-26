@@ -217,11 +217,9 @@ const TranslateItemRow = ({ targetLanguage, item, itemHeading }: TranslationRowP
                 getTranslatableField(t('Initial value'), getInitialText(item), TranslatableItemProperty.initial, false)}
 
             {item.answerOption && (
-                <>
-                    {item.answerOption.map((option) => {
-                        return getOptionRow(option);
-                    })}
-                </>
+                item.answerOption.map((option) => {
+                    return getOptionRow(option);
+                })
             )}
             {itemCodes?.filter((code: Coding) => systemCodesToTranslate.includes(code.system || ''))?.map((code) => getTranslatableCodeField(
                     code.system || 'system',
