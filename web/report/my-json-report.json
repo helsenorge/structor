@@ -1,14 +1,14 @@
 {
-  "numTotalTestSuites": 6,
-  "numPassedTestSuites": 6,
+  "numTotalTestSuites": 27,
+  "numPassedTestSuites": 27,
   "numFailedTestSuites": 0,
   "numPendingTestSuites": 0,
-  "numTotalTests": 7,
-  "numPassedTests": 7,
+  "numTotalTests": 41,
+  "numPassedTests": 41,
   "numFailedTests": 0,
   "numPendingTests": 0,
   "numTodoTests": 0,
-  "startTime": 1707827678732,
+  "startTime": 1714049777483,
   "success": true,
   "testResults": [
     {
@@ -21,7 +21,7 @@
           "fullName": " generateQuestionnaire from initialState removes empty string properties",
           "status": "passed",
           "title": "removes empty string properties",
-          "duration": 2,
+          "duration": 4,
           "failureMessages": []
         },
         {
@@ -32,7 +32,7 @@
           "fullName": " generateQuestionnaire from initialState does not remove string properties",
           "status": "passed",
           "title": "does not remove string properties",
-          "duration": 1,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -54,7 +54,7 @@
           "fullName": " generateQuestionnaire from state with items removes empty objects",
           "status": "passed",
           "title": "removes empty objects",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -65,15 +65,15 @@
           "fullName": " generateQuestionnaire from state with items does not remove populated objects",
           "status": "passed",
           "title": "does not remove populated objects",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         }
       ],
-      "startTime": 1707827896514,
-      "endTime": 1707827896520,
+      "startTime": 1714115256260,
+      "endTime": 1714115256272,
       "status": "passed",
       "message": "",
-      "name": "C:/Code/nhn/Structor/web/src/helpers/__tests__/generateQuestionnaire.test.ts"
+      "name": "C:/Code/nhn/HN-Skjemabygger/web/src/helpers/__tests__/generateQuestionnaire.test.ts"
     },
     {
       "assertionResults": [
@@ -86,7 +86,7 @@
           "fullName": " validationUtils getValueSetToTranslate Returns used valueset in questionnaire",
           "status": "passed",
           "title": "Returns used valueset in questionnaire",
-          "duration": 4,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -102,11 +102,472 @@
           "failureMessages": []
         }
       ],
-      "startTime": 1707827896466,
-      "endTime": 1707827896470,
+      "startTime": 1714115257009,
+      "endTime": 1714115257012,
       "status": "passed",
       "message": "",
-      "name": "C:/Code/nhn/Structor/web/src/utils/__tests__/validationUtils.test.ts"
+      "name": "C:/Code/nhn/HN-Skjemabygger/web/src/utils/__tests__/validationUtils.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "",
+            "QuestionHelper",
+            "isHiddenItem"
+          ],
+          "fullName": " QuestionHelper isHiddenItem Item is hidden, returns true",
+          "status": "passed",
+          "title": "Item is hidden, returns true",
+          "duration": 3,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "QuestionHelper",
+            "isHiddenItem"
+          ],
+          "fullName": " QuestionHelper isHiddenItem Item is shows only in PDF, returns false",
+          "status": "passed",
+          "title": "Item is shows only in PDF, returns false",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "QuestionHelper",
+            "isHiddenItem"
+          ],
+          "fullName": " QuestionHelper isHiddenItem Item is shows only in form, returns false",
+          "status": "passed",
+          "title": "Item is shows only in form, returns false",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "QuestionHelper",
+            "isHiddenItem"
+          ],
+          "fullName": " QuestionHelper isHiddenItem Item with default render option, returns false",
+          "status": "passed",
+          "title": "Item with default render option, returns false",
+          "duration": 0,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1714115256925,
+      "endTime": 1714115256929,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Code/nhn/HN-Skjemabygger/web/src/helpers/__tests__/QuestionHelper.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "",
+            "codeHelper",
+            "removeItemCode"
+          ],
+          "fullName": " codeHelper removeItemCode should not remove code if index is undefined",
+          "status": "passed",
+          "title": "should not remove code if index is undefined",
+          "duration": 4,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "codeHelper",
+            "removeItemCode"
+          ],
+          "fullName": " codeHelper removeItemCode should not remove code if index is -1",
+          "status": "passed",
+          "title": "should not remove code if index is -1",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "codeHelper",
+            "removeItemCode"
+          ],
+          "fullName": " codeHelper removeItemCode should remove code if index is 1",
+          "status": "passed",
+          "title": "should remove code if index is 1",
+          "duration": 3,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "codeHelper",
+            "removeItemCode"
+          ],
+          "fullName": " codeHelper removeItemCode should remove all codes with the same systemUrl",
+          "status": "passed",
+          "title": "should remove all codes with the same systemUrl",
+          "duration": 1,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1714115256198,
+      "endTime": 1714115256208,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Code/nhn/HN-Skjemabygger/web/src/helpers/__tests__/codeHelper.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "findExtensionByUrl"
+          ],
+          "fullName": " extentionHelper findExtensionByUrl should find the correct extension by URL",
+          "status": "passed",
+          "title": "should find the correct extension by URL",
+          "duration": 5,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "findExtensionByUrl"
+          ],
+          "fullName": " extentionHelper findExtensionByUrl should return undefined if the extension is not found",
+          "status": "passed",
+          "title": "should return undefined if the extension is not found",
+          "duration": 6,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "findExtensionByUrl"
+          ],
+          "fullName": " extentionHelper findExtensionByUrl should return undefined if extensions array is undefined",
+          "status": "passed",
+          "title": "should return undefined if extensions array is undefined",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "isExtensionValueTrue"
+          ],
+          "fullName": " extentionHelper isExtensionValueTrue should return true if the extension value is true",
+          "status": "passed",
+          "title": "should return true if the extension value is true",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "isExtensionValueTrue"
+          ],
+          "fullName": " extentionHelper isExtensionValueTrue should return false if the extension value is false",
+          "status": "passed",
+          "title": "should return false if the extension value is false",
+          "duration": 3,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "isExtensionValueTrue"
+          ],
+          "fullName": " extentionHelper isExtensionValueTrue should return undefined if the extension value is not a boolean",
+          "status": "passed",
+          "title": "should return undefined if the extension value is not a boolean",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "isExtensionValueTrue"
+          ],
+          "fullName": " extentionHelper isExtensionValueTrue should return undefined if the extension is not found",
+          "status": "passed",
+          "title": "should return undefined if the extension is not found",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "findExtentionByCode"
+          ],
+          "fullName": " extentionHelper findExtentionByCode should find the correct extension by code",
+          "status": "passed",
+          "title": "should find the correct extension by code",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "findExtentionByCode"
+          ],
+          "fullName": " extentionHelper findExtentionByCode should return undefined if the extension with the given code is not found",
+          "status": "passed",
+          "title": "should return undefined if the extension with the given code is not found",
+          "duration": 6,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "findExtentionByCode"
+          ],
+          "fullName": " extentionHelper findExtentionByCode should return undefined if the extensions array is undefined",
+          "status": "passed",
+          "title": "should return undefined if the extensions array is undefined",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "getExtentionByCodeAndElement"
+          ],
+          "fullName": " extentionHelper getExtentionByCodeAndElement should find the correct extension by code from the given element",
+          "status": "passed",
+          "title": "should find the correct extension by code from the given element",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "getExtentionByCodeAndElement"
+          ],
+          "fullName": " extentionHelper getExtentionByCodeAndElement should return undefined if no extension with the given code is found in the element",
+          "status": "passed",
+          "title": "should return undefined if no extension with the given code is found in the element",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "hasOneOrMoreExtensions"
+          ],
+          "fullName": " extentionHelper hasOneOrMoreExtensions should return true if at least one extension matches an enum type",
+          "status": "passed",
+          "title": "should return true if at least one extension matches an enum type",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "hasOneOrMoreExtensions"
+          ],
+          "fullName": " extentionHelper hasOneOrMoreExtensions should return false if no extensions match any enum types",
+          "status": "passed",
+          "title": "should return false if no extensions match any enum types",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "hasOneOrMoreExtensions"
+          ],
+          "fullName": " extentionHelper hasOneOrMoreExtensions should return false if the extensions array is empty",
+          "status": "passed",
+          "title": "should return false if the extensions array is empty",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "extentionHelper",
+            "hasOneOrMoreExtensions"
+          ],
+          "fullName": " extentionHelper hasOneOrMoreExtensions should return true if multiple types in extensionTypes match the extensions",
+          "status": "passed",
+          "title": "should return true if multiple types in extensionTypes match the extensions",
+          "duration": 0,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1714115256217,
+      "endTime": 1714115256248,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Code/nhn/HN-Skjemabygger/web/src/helpers/extentionHelper.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "",
+            "MetadataHelpere",
+            "addMetaSecurityIfDoesNotExist"
+          ],
+          "fullName": " MetadataHelpere addMetaSecurityIfDoesNotExist Add security according to useContext when form does not have a security from before",
+          "status": "passed",
+          "title": "Add security according to useContext when form does not have a security from before",
+          "duration": 5,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "MetadataHelpere",
+            "addMetaSecurityIfDoesNotExist"
+          ],
+          "fullName": " MetadataHelpere addMetaSecurityIfDoesNotExist Does not add security according to useContext when form does have a security from before",
+          "status": "passed",
+          "title": "Does not add security according to useContext when form does have a security from before",
+          "duration": 3,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1714115256210,
+      "endTime": 1714115256218,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Code/nhn/HN-Skjemabygger/web/src/helpers/__tests__/MetadataHelper.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "",
+            "ItemControl",
+            "itemControlExistsInExtensionList"
+          ],
+          "fullName": " ItemControl itemControlExistsInExtensionList should return false if extension is undefined",
+          "status": "passed",
+          "title": "should return false if extension is undefined",
+          "duration": 3,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "ItemControl",
+            "itemControlExistsInExtensionList"
+          ],
+          "fullName": " ItemControl itemControlExistsInExtensionList should return false if itemControlType is undefined",
+          "status": "passed",
+          "title": "should return false if itemControlType is undefined",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "ItemControl",
+            "itemControlExistsInExtensionList"
+          ],
+          "fullName": " ItemControl itemControlExistsInExtensionList should return false if extension does not contain itemControlType",
+          "status": "passed",
+          "title": "should return false if extension does not contain itemControlType",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "ItemControl",
+            "itemControlExistsInExtensionList"
+          ],
+          "fullName": " ItemControl itemControlExistsInExtensionList should return true if extension contains itemControlType",
+          "status": "passed",
+          "title": "should return true if extension contains itemControlType",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "ItemControl",
+            "itemControlExistsInExtensionList"
+          ],
+          "fullName": " ItemControl itemControlExistsInExtensionList should return false if extension is empty",
+          "status": "passed",
+          "title": "should return false if extension is empty",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "ItemControl",
+            "itemControlExistsInExtensionList"
+          ],
+          "fullName": " ItemControl itemControlExistsInExtensionList should return false if extension does not contain itemControlType",
+          "status": "passed",
+          "title": "should return false if extension does not contain itemControlType",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": [
+            "",
+            "ItemControl",
+            "itemControlExistsInExtensionList"
+          ],
+          "fullName": " ItemControl itemControlExistsInExtensionList should return true if extension contains multiple itemControlTypes",
+          "status": "passed",
+          "title": "should return true if extension contains multiple itemControlTypes",
+          "duration": 0,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1714115256922,
+      "endTime": 1714115256928,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Code/nhn/HN-Skjemabygger/web/src/helpers/__tests__/itemControl.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "",
+            "Translation tests"
+          ],
+          "fullName": " Translation tests norwegian and french should have the same translations",
+          "status": "passed",
+          "title": "norwegian and french should have the same translations",
+          "duration": 7,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1714115256910,
+      "endTime": 1714115256917,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Code/nhn/HN-Skjemabygger/web/src/locales/locales.test.ts"
     }
   ]
 }

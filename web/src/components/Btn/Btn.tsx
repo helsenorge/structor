@@ -16,7 +16,6 @@ const Btn = ({ title, onClick, id, type = 'button', icon, variant }: BtnProps): 
     return (
         <button type={type} className={`regular-btn ${variant}`} id={id} onClick={onClick}>
             {icon && <i className={icon} />} {title}
-        {}
         </button>
     );
 };
