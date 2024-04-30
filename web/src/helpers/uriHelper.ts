@@ -5,7 +5,7 @@ export const createUriUUID = (): string => {
 };
 
 export const isUriValid = (uri: string): boolean => {
-    return uri.substr(0, 4) === 'urn:' || uri.substr(0, 7) === 'http://' || uri.substr(0, 8) === 'https://';
+    return uri.substring(0, 4) === 'urn:' || uri.substring(0, 7) === 'http://' || uri.substring(0, 8) === 'https://';
 };
 
 export enum CodingSystemType {

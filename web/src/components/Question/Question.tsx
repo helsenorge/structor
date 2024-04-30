@@ -120,7 +120,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
             props.item.type === IQuestionnaireItemType.choice ||
             props.item.type === IQuestionnaireItemType.openChoice
         ) {
-            return <Choice item={props.item} />;
+            return <Choice item={props.item} itemValidationErrors={props.itemValidationErrors}/>;
         }
         if (props.item.type === IQuestionnaireItemType.quantity) {
             return <UnitTypeSelector item={props.item} />;
