@@ -33,6 +33,7 @@ import SwitchBtn from '../../SwitchBtn/SwitchBtn';
 import { createUriUUID } from '../../../helpers/uriHelper';
 import DraggableAnswerOptions from '../../AnswerOption/DraggableAnswerOptions';
 import PredefinedValueSets from './PredefinedValueSets';
+import { ValidationErrors } from '../../../utils/validationUtils';
 import { BTN_TYPES, BTN_VARIANTS } from '../../Btn/types';
 import { addItemCode, removeItemCode, SliderLabelEnum } from '../../../helpers/codeHelper';
 import { SliderMinMaxLabels } from './SliderMinMaxLabels';
@@ -40,9 +41,10 @@ import { SliderLabels } from './SliderLabels';
 
 type Props = {
     item: QuestionnaireItem;
+    itemValidationErrors: ValidationErrors[];
 };
 
-const Choice = ({ item }: Props): React.JSX.Element => {
+const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
     const { t } = useTranslation();
     const { dispatch, state } = useContext(TreeContext);
     const { qContained } = state;
@@ -100,6 +102,13 @@ const Choice = ({ item }: Props): React.JSX.Element => {
         return '';
     };
 
+    const hasValidationError = (): boolean => {
+        console.log(itemValidationErrors);
+        return itemValidationErrors.some(
+            (x) => x.errorProperty === 'system' && x.linkId === item.linkId,
+        );
+    };
+
     return (
         <>
             <ChoiceTypeSelect item={item} dispatchExtentionUpdate={dispatchExtentionUpdate} />
@@ -147,9 +156,11 @@ const Choice = ({ item }: Props): React.JSX.Element => {
                 <PredefinedValueSets item={item} qContained={qContained} dispatchUpdateItem={dispatchUpdateItem} />
             ) : (
                 <>
-                    <FormField label={t('System')}>
-                        <UriField value={getSystem()} onBlur={(event) => handleChangeSystem(event.target.value)} />
-                    </FormField>
+                    <div key={`${getSystem()}`}  className={`code-section ${hasValidationError() ? 'validation-error' : ''}`}>
+                        <FormField label={t('System')}>
+                            <UriField value={getSystem()} onBlur={(event) => handleChangeSystem(event.target.value)} />
+                        </FormField>
+                    </div>
                     <FormField>
                         {item.answerOption && item.answerOption?.length > 0 && (
                             <DraggableAnswerOptions item={item} dispatchUpdateItem={dispatchUpdateItem} />
