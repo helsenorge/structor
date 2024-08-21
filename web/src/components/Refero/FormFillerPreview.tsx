@@ -8,16 +8,15 @@ import { emptyPropertyReplacer } from '../../helpers/emptyPropertyReplacer';
 import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionnaire';
 import { getLanguagesInUse, INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { getResources } from '../../locales/referoResources';
-import rootReducer from '@helsenorge/refero/reducers';
 import { TreeState } from '../../store/treeStore/treeStore';
 
-import { ReferoContainer } from '@helsenorge/refero/components';
-import FormFillerSidebar from './FormFillerSidebar';
+import { Refero, rootReducer } from '@helsenorge/refero'
 import Button from '@helsenorge/designsystem-react/components/Button';
 import IconBtn from '../IconBtn/IconBtn';
 import Select from '../Select/Select';
 
 import { QuestionnaireResponse } from 'fhir/r4';
+import FormFillerSidebar from './FormFillerSidebar';
 
 type Props = {
     showFormFiller: () => void;
@@ -116,7 +115,7 @@ const FormFillerPreview = ({ showFormFiller, language, state }: Props): React.JS
                     <div className="referoContainer-div">
                         {!showResponse ? (
                             <div className="page_refero">
-                                <ReferoContainer
+                                <Refero
                                     key={referoKey}
                                     store={store}
                                     questionnaire={questionnaireForPreview}
