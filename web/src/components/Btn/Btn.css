@@ -58,12 +58,12 @@
     margin-right: 10px;
 }
 
-.btn-group button:last-of-type {
-    margin-right: 0px;
-}
-
 button:disabled {
     cursor: not-allowed;
     pointer-events: none;
     background-color: #c0c0c0 !important;
+}
+
+.btn-group button:last-of-type {
+    margin-right: 0px;
 }
