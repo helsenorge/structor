@@ -169,6 +169,7 @@ const LanguageAccordion = (props: LanguageAccordionProps): React.JSX.Element => 
                                 title={t('+ Add new language')}
                                 type="button"
                                 variant="primary"
+                                disabled={!selectedLang}
                                 onClick={() => {
                                     dispatchAddLanguage(selectedLang, buildTranslationBase());
                                     setSelectedLang('');
