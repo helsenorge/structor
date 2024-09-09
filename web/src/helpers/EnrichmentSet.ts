@@ -78,7 +78,7 @@ const EnrichmentSet: Array<EnrichmentExpessionMetadata> = [
         type: 'string',
     },
     {
-        name: 'First name',
+        name: 'First name + middle name',
         expression: "Patient.name.where(use = 'official').given.join(' ')",
         group: 'Patient',
         type: 'string',
@@ -250,7 +250,7 @@ const EnrichmentSet: Array<EnrichmentExpessionMetadata> = [
         type: 'string',
     },
     {
-        name: 'General Practitioner (first name)',
+        name: 'General Practitioner (first name + middle name)',
         expression: "Practitioner.name.where(use = 'official').given.join(' ')",
         group: 'General Practitioner',
         type: 'string',
