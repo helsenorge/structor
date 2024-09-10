@@ -1,5 +1,5 @@
-import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept } from 'fhir/r4';
-import { ICodeSystem, IExtensionType, IOperator, IQuestionnaireItemType } from '../types/IQuestionnareItemType';
+import { Coding, Extension, QuestionnaireItem, ValueSetComposeIncludeConcept, ValueSetExpansionParameter } from 'fhir/r4';
+import { ICodeSystem, IExtensionType, IOperator, IQuestionnaireItemType, ItemExtractionContext } from '../types/IQuestionnareItemType';
 import { CodingSystemType } from './uriHelper';
 import { ScoringFormulaCodes, ScoringFormulaNames } from '../types/scoringFormulas';
 
@@ -237,3 +237,10 @@ export const QSCoding: Coding = {
     code: ScoringFormulaCodes.questionScore,
     display: ScoringFormulaNames.questionScore,
 };
+
+export const itemExtractionOptions = [
+    { valueUri: '', name: 'Not set' },
+    { valueUri: ItemExtractionContext.observation, name: 'Observation' },
+    { valueUri: ItemExtractionContext.serviceRequest, name: 'ServiceRequest' },
+    { valueUri: ItemExtractionContext.condition, name: 'Condition' },
+] as ValueSetExpansionParameter[];
