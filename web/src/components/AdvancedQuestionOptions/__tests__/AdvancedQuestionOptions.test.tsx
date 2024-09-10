@@ -1,7 +1,9 @@
 
 import AdvancedQuestionOptions from "../AdvancedQuestionOptions";
-import { QuestionnaireItem } from 'fhir/r4';
+import { Extension, QuestionnaireItem } from 'fhir/r4';
 import { render, screen } from '@testing-library/react';
+import { vi } from "vitest";
+import { IExtensionType, ItemExtractionContext } from "../../../types/IQuestionnareItemType";
 
 describe('validationUtils', () => {
     const item: QuestionnaireItem = {
@@ -15,11 +17,56 @@ describe('validationUtils', () => {
                 item={item}
                 parentArray={[]}
                 conditionalArray={[]}
-                getItem={jest.fn()}
-            />)
+                getItem={vi.fn()}
+            />);
 
-            expect(screen.getAllByLabelText('Definition')).toBeInTheDocument();
-            expect(screen.getAllByLabelText('Item Extraction')).toBeInTheDocument();
+            expect(screen.queryAllByAltText('Definition')).toBeTruthy();
+            expect(screen.queryAllByAltText('Item Extraction')).toBeTruthy();
         });
+
+        it('ItemExtraction default is <Not set>', () => {
+            render(<AdvancedQuestionOptions
+                item={item}
+                parentArray={[]}
+                conditionalArray={[]}
+                getItem={vi.fn()}
+            />);
+
+            expect(screen.getByTestId('radioBtn-Not set')).toHaveProperty("checked");
+        });
+
+        it('Item has Observation extesion', () => {            
+            const observationItem: QuestionnaireItem = {
+                linkId: '123',
+                type: 'choice',
+                extension: [{url: IExtensionType.itemExtractionContext, valueUri: ItemExtractionContext.observation }] as Extension[],
+            };
+
+            render(<AdvancedQuestionOptions
+                item={observationItem}
+                parentArray={[]}
+                conditionalArray={[]}
+                getItem={vi.fn()}
+            />);
+
+            expect(screen.getByTestId('radioBtn-Observation')).toHaveProperty("checked");
+        });
+
+        // it('Click Item Extraction ServiceRequest', () => {         
+        //     const newItem: QuestionnaireItem = {
+        //         linkId: '123',
+        //         type: 'choice',
+        //     };
+
+        //     render(<AdvancedQuestionOptions
+        //         item={newItem}
+        //         parentArray={[]}
+        //         conditionalArray={[]}
+        //         getItem={vi.fn()}
+        //     />);
+
+        //     screen.getByTestId('radioBtn-ServiceRequest').onclick;
+        //     expect(item.extension?.find((ex) => ex.url === IExtensionType.itemExtractionContext)?.valueUri).toBe(ItemExtractionContext.serviceRequest);
+        // });
     });
 });

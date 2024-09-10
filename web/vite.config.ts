@@ -39,9 +39,9 @@ export default () => {
           json: './report/my-json-report.json',
           'vitest-sonar-reporter': './sonar-report.xml',
         },
-      
+        globals: true,
+        environment: 'jsdom',
       },
-      
       css: {
         preprocessorOptions: {
           scss: {

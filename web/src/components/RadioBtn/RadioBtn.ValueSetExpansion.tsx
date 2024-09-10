@@ -19,6 +19,7 @@ const ValueSetExpansionRadioBtn = ({ checked, onChange, options }: Props): React
                     <div key={x.name}>
                         <label>
                             <input
+                                data-testid={`radioBtn-${x.name}`}
                                 className="radioBtn-input"
                                 type="radio"
                                 checked={x.valueUri === checked}
