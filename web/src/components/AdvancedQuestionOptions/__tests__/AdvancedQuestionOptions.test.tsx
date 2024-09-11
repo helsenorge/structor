@@ -5,13 +5,13 @@ import { render, screen } from '@testing-library/react';
 import { vi } from "vitest";
 import { IExtensionType, ItemExtractionContext } from "../../../types/IQuestionnareItemType";
 
-describe('validationUtils', () => {
+describe('AdvancedQuestionOptions', () => {
     const item: QuestionnaireItem = {
         linkId: '123',
         type: 'choice',
     };
 
-    describe('AdvancedQuestionOptions', () => {
+    describe('ItemExtractionContextView', () => {
         it('ItemExtraction and Definition componenets exists', () => {
             render(<AdvancedQuestionOptions
                 item={item}
