@@ -52,20 +52,26 @@ describe('validationUtils', () => {
             expect(screen.getByTestId('radioBtn-Observation')).toHaveProperty("checked");
         });
 
-        // it('Click Item Extraction ServiceRequest', () => {         
+        // it('Click Item Extraction ServiceRequest', async () => {
         //     const newItem: QuestionnaireItem = {
         //         linkId: '123',
         //         type: 'choice',
         //     };
 
-        //     render(<AdvancedQuestionOptions
-        //         item={newItem}
-        //         parentArray={[]}
-        //         conditionalArray={[]}
-        //         getItem={vi.fn()}
-        //     />);
+        //     render(
+        //         <TreeContextProvider>
+        //             <AdvancedQuestionOptions
+        //                 item={newItem}
+        //                 parentArray={[]}
+        //                 conditionalArray={[]}
+        //                 getItem={vi.fn()}
+        //             />
+        //         </TreeContextProvider>
+        //    );
 
-        //     screen.getByTestId('radioBtn-ServiceRequest').onclick;
+        //     const radioKnapp = screen.getByTestId('radioBtn-ServiceRequest');
+        //     await waitFor(() => userEvent.click(radioKnapp));
+
         //     expect(item.extension?.find((ex) => ex.url === IExtensionType.itemExtractionContext)?.valueUri).toBe(ItemExtractionContext.serviceRequest);
         // });
     });
