@@ -7,7 +7,6 @@
   "maintainers": [
     "VAK"
   ],
-
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -18,20 +17,21 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^3.0.0",
-    "@helsenorge/autosuggest": "^31.9.0",
+    "@helsenorge/autosuggest": "^29.5.2",
     "@helsenorge/ckeditor5-build-markdown": "^24.0.0",
-    "@helsenorge/core-utils": "^31.9.0",
-    "@helsenorge/designsystem-react": "^7.12.0",
-    "@helsenorge/datepicker": "^7.12.0",
-    "@helsenorge/file-upload": "^31.9.0",
-    "@helsenorge/refero": "^16.0.0-beta11",
-    "@helsenorge/toolkit": "^31.9.0",
+    "@helsenorge/core-utils": "^29.5.2",
+    "@helsenorge/date-time": "^29.5.2",
+    "@helsenorge/designsystem-react": "^5.9.2",
+    "@helsenorge/file-upload": "^29.5.2",
+    "@helsenorge/form": "^29.5.2",
+    "@helsenorge/refero": "15.0.10",
+    "@helsenorge/toolkit": "^21.2.0",
     "@nosferatu500/react-sortable-tree": "^3.0.3",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@types/fhir": "^0.0.41",
     "@types/papaparse": "^5.3.11",
     "crypto-js": "^4.1.1",
-    "date-fns": "^3.3.1",
+    "date-fns": "^2.30.0",
     "i18next": "^19.6.3",
     "idb": "^6.0.0",
     "immer": "^8.0.1",
