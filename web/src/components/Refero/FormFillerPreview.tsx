@@ -8,15 +8,16 @@ import { emptyPropertyReplacer } from '../../helpers/emptyPropertyReplacer';
 import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionnaire';
 import { getLanguagesInUse, INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { getResources } from '../../locales/referoResources';
+import rootReducer from '@helsenorge/refero/reducers';
 import { TreeState } from '../../store/treeStore/treeStore';
 
-import { Refero, rootReducer } from '@helsenorge/refero'
+import { ReferoContainer } from '@helsenorge/refero/components';
+import FormFillerSidebar from './FormFillerSidebar';
 import Button from '@helsenorge/designsystem-react/components/Button';
 import IconBtn from '../IconBtn/IconBtn';
 import Select from '../Select/Select';
 
 import { QuestionnaireResponse } from 'fhir/r4';
-import FormFillerSidebar from './FormFillerSidebar';
 
 type Props = {
     showFormFiller: () => void;
@@ -115,7 +116,7 @@ const FormFillerPreview = ({ showFormFiller, language, state }: Props): React.JS
                     <div className="referoContainer-div">
                         {!showResponse ? (
                             <div className="page_refero">
-                                <Refero
+                                <ReferoContainer
                                     key={referoKey}
                                     store={store}
                                     questionnaire={questionnaireForPreview}
@@ -137,7 +138,7 @@ const FormFillerPreview = ({ showFormFiller, language, state }: Props): React.JS
                             </div>
                         ) : (
                             <div>
-                                <p>{JSON.stringify(questionnaireResponse)}</p>
+                                <code className="json">{JSON.stringify(questionnaireResponse, null, 2)}</code>
                                 <Button onClick={() => setShowResponse(false)}>Tilbake til skjemautfyller</Button>
                             </div>
                         )}

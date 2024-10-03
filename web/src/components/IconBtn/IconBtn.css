@@ -33,3 +33,10 @@
 .iconBtn i:hover{
     background: #ffffff36;
 }
+
+.iconBtn.left {
+    float: left;
+}
+.iconBtn.right {
+    float: right;
+}
