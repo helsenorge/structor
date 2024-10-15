@@ -31,3 +31,4 @@
 /web/vite.config.ts.timestamp*
 /web/report
 /web/sonar-report.xml
+/.vs
