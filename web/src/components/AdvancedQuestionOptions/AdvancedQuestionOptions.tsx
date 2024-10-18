@@ -44,7 +44,7 @@ import { PlaceholderOption } from './optionComponents/placeholder-option';
 import { ReadOnlyOption } from './optionComponents/readOnly-option';
 import { TableOption } from './optionComponents/tableOptions/table-option';
 import { ColumnOption } from './optionComponents/tableOptions/column-option';
-import ItemExtractionContextView from './ItemExtractionContext/ItemExtractionView';
+import { ValidateReadOnlyOption } from './optionComponents/validate-readOnly-option';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -88,7 +88,10 @@ const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} 
     return (
         <>
             {canTypeBeReadonly(item) && (
+                <>
                 <ReadOnlyOption item={item} dispatch={dispatch} isDataReceiver={isDataReceiver}/>
+                <ValidateReadOnlyOption item={item} dispatch={dispatch}/>
+                </>
             )}
             {canTypeCopyData(item) && (
                 <CopyFromOption
@@ -121,7 +124,6 @@ const AdvancedQuestionOptions = ({item, parentArray, conditionalArray, getItem} 
                 <PrefixOption item={item} dispatch={dispatch}/>
             )}
             <DefinitionOption item={item} dispatch={dispatch} />
-            <ItemExtractionContextView item={item} />
             {canTypeBeRepeatable(item) && (
                 <RepetitionOption item={item} dispatch={dispatch} />
             )}

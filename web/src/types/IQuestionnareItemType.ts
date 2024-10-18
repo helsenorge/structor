@@ -95,6 +95,7 @@ export enum ICodeSystem {
     tableColumnName = 'http://helsenorge.no/fhir/CodeSystem/TableColumnName',
     sliderLabels = 'http://helsenorge.no/fhir/CodeSystem/SliderLabels',
     sliderDisplayType = 'http://helsenorge.no/fhir/CodeSystem/SliderDisplayType',
+    validationOptions = "http://helsenorge.no/fhir/CodeSystem/ValidationOptions"
 }
 
 export enum IExtensionType {
@@ -136,19 +137,12 @@ export enum IExtensionType {
     globalVisibility = 'http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility',
     copyExpression = 'http://hl7.org/fhir/StructureDefinition/cqf-expression',
     workflow = 'http://hl7.org/fhir/ValueSet/usage-context-type',
-    itemExtractionContext = 'http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-itemExtractionContext',
 }
 
 export enum UseContextSystem {
     helsetjeneste_full = 'urn:oid:2.16.578.1.12.4.1.1.8655',
     journalinnsyn_basispluss = 'urn:oid:2.16.578.1.12.4.1.1.7614',
     registerinnsyn_basis = 'urn:oid:2.16.578.1.12.4.1.1.7615',
-}
-
-export enum ItemExtractionContext {
-    observation = 'http://hl7.org/fhir/StructureDefinition/Observation',
-    serviceRequest = 'http://hl7.org/fhir/StructureDefinition/ServiceRequest',
-    condition = 'http://hl7.org/fhir/StructureDefinition/Condition',
 }
 
 export enum MetaSecuritySystem {

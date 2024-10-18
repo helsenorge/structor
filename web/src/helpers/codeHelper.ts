@@ -30,6 +30,10 @@ export enum SliderDisplayTypes {
     OrdinalValue = 'ordnialValue'
 }
 
+export enum ValidationOptionsCodes {
+    validateReadOnly = 'ValidateReadOnly'
+}
+
 export const renderingOptions = [
     { code: RenderingOptionsEnum.Default, display: 'Display in form filler and PDF', codeDisplay: 'Default' },
     { code: RenderingOptionsEnum.KunPdf, display: 'Display only in PDF', codeDisplay: 'KunPdf' },
@@ -52,12 +56,7 @@ export const getItemCode = (item: QuestionnaireItem, system: ICodeSystem) => {
 };
 
 export const getItemCodeWithMatchingSystemAndCode = (item: QuestionnaireItem, system: ICodeSystem, code: string): Coding | undefined => {
-    let returnValue: Coding = {};
-    item.code?.forEach((coding) => {
-        if (coding.system === system && coding.code === code) {
-            returnValue = coding;
-        }});
-    return returnValue;
+    return item.code?.find((coding) => coding.system === system && coding.code === code)
 }
 
 export const getAllMatchingCodes = (item: QuestionnaireItem, system: ICodeSystem): Coding[] | undefined => {
@@ -135,6 +134,20 @@ export const addRenderOptionItemCode = (
         };
         dispatch(addItemCodeAction(item.linkId, coding));
     }
+};
+
+export const addValidateReadOnlyItemCode = (
+    item: QuestionnaireItem,
+    code: string,
+    dispatch: (value: ActionType) => void,
+): void => {
+        const coding = {
+            code: code,
+            display: 'Valider skrivebeskyttet felt',
+            system: ICodeSystem.validationOptions,
+            id: createUUID(),
+        };
+        dispatch(addItemCodeAction(item.linkId, coding));
 };
 
 export const addChoiceRenderOptionItemCode = (
