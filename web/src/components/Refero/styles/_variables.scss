@@ -1,0 +1,99 @@
+@import '@helsenorge/designsystem-react/scss/palette';
+
+/* ------------------------------------------------------------------------ */
+
+/* COLOR VARIABLES -------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------ */
+
+// Primary colors
+$color-primary-5: $blueberry700;
+$color-primary-5-5: $blueberry900;
+$color-primary-7: $blueberry100;
+$color-primary-8: $blueberry200;
+$color-primary-8-1: $blueberry50;
+
+// Base colours
+$color-base-0: $white;
+$color-base-1: $black;
+$color-base-2: $neutral900;
+$color-base-3: $neutral800;
+$color-base-3-1: $neutral800;
+$color-base-3-5: $neutral700;
+$color-base-4: $neutral600;
+$color-base-4-1: $neutral500;
+$color-base-4-2: $neutral300;
+$color-base-4-2-5: $neutral400;
+$color-base-4-5: $neutral200;
+$color-base-4-6: $neutral100;
+$color-base-5: $neutral100;
+$color-base-5-5: $neutral100;
+$color-base-6: $neutral100;
+$color-base-6-1: $neutral50;
+$color-base-6-2: $neutral50;
+$color-base-6-5: $white;
+$color-base-7: $black;
+
+// Status colours
+$color-functional-1: $kiwi900;
+$color-functional-1-lighter: $kiwi700;
+$color-functional-2: $banana400;
+$color-functional-3: $cherry600;
+$color-functional-3-lighter: $cherry500;
+
+// Helpsystem and presentation colours
+$color-pres-1: $blueberry100;
+$color-pres-2: $blueberry200;
+$color-pres-3: $blueberry50;
+$color-help-inverse: $blueberry600;
+$color-highlight-text: $banana50;
+
+// Message Box Colors
+$color-info-fill: $kiwi50;
+$color-info-border: $kiwi100;
+$color-alert-fill: $banana50;
+$color-alert-border: $banana100;
+$color-alert-background: $banana50;
+$color-error-fill: $cherry100;
+$color-error-border: $cherry200;
+
+// Gamle deprecated tjenesterfarge
+$color-primary-1: #a61e7b;
+$color-primary-2: #c52390;
+$color-primary-3: #7c145c;
+$color-primary-10: #fdebf7;
+$color-help: #e38b21;
+$color-help-transparency: rgb(227 139 33 / 70%);
+$color-help-uu-to-white: #cd7b1c;
+
+/* ------------------------------------------------------------------------ */
+
+/* HOVER/FOCUS VARIABLES -------------------------------------------------- */
+
+/* ------------------------------------------------------------------------ */
+
+// Outline for hover and focus
+$outline-box-shadow-thin: 0 0 0 4px $neutral400;
+$outline-box-shadow: 0 0 0 8px $neutral400;
+
+// Hover
+$hover-box-shadow-underline: 0 4px 0 0 $neutral400;
+$hover-box-shadow-inset: 0 0 0 4px $neutral400 inset;
+
+// Focus
+$focus-background-color: $color-primary-8-1; //same as rgba($color-primary-5, 0.1) but makes sure that it also works when the background is not white
+$focux-box-shadow-left: -4px 0 0 $neutral400;
+$focux-box-shadow-right: 4px 0 0 $neutral400;
+$focus-box-shadow-over: 0 -4px 0 $neutral400;
+$focux-box-shadow-under: 0 4px 0 $neutral400;
+$focus-box-shadow-over-and-under: 0 -4px 0 $neutral400, 0 4px 0 $neutral400;
+$focux-box-shadow-over-and-left: 0 -4px 0 $neutral400, -4px -4px 0 $neutral400, -4px 0 0 0 $neutral400;
+$focux-box-shadow-over-and-right: 0 -4px 0 $neutral400, 4px -4px 0 $neutral400, 4px 0 0 0 $neutral400;
+$focux-box-shadow-under-and-left: 0 4px 0 $neutral400, -4px 4px 0 $neutral400, -4px 0 0 0 $neutral400;
+$focux-box-shadow-under-and-right: 0 4px 0 $neutral400, 4px 4px 0 $neutral400, 4px 0 0 0 $neutral400;
+$focux-box-shadow-left-and-right: -4px 4px 0 $neutral400, 4px 4px 0 $neutral400;
+$focux-box-shadow-left-right-and-under: -4px 0 0 $neutral400, 4px 0 0 $neutral400, 0 4px 0 $neutral400, 4px 4px 0 $neutral400,
+  -4px 4px 0 $neutral400;
+$focus-box-shadow-over-and-under: 0 -4px 0 $neutral400, 0 4px 0 $neutral400;
+$focux-box-shadow-over-under-and-left: 0 -4px 0 $neutral400, -4px -4px 0 $neutral400, -4px 4px 0 $neutral400, 0 4px 0 $neutral400;
+$focux-box-shadow-over-under-and-right: 0 -4px 0 $neutral400, 4px 4px 0 $neutral400, 0 4px 0 $neutral400, 4px -4px 0 $neutral400;

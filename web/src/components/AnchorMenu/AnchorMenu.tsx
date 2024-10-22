@@ -179,7 +179,7 @@ const AnchorMenu = (props: AnchorMenuProps): React.JSX.Element => {
 
   const orderTreeData = mapToTreeData(props.qOrder, "");
   return (
-    <DndProvider debugMode={true} backend={HTML5Backend}>
+    <DndProvider debugMode={true} backend={HTML5Backend} context={window}>
       <div className="questionnaire-overview">
         <div className="questionnaire-overview__toolbox">
           <strong>{t("Components")}</strong>

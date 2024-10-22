@@ -4,19 +4,24 @@ import './App.css';
 import "./init"
 import App from "./App";
 import React from "react";
-import ReactDOM from "react-dom";
+import {createRoot} from "react-dom/client";
 
 import { UserProvider } from "./contexts/UserContext";
 import "./helpers/i18n";
 
-const container = document.getElementById('root');
-container?.classList.add('root');
+const anchor = document.getElementById('root');
+anchor?.classList.add('root');
 
-ReactDOM.render(
+if (!anchor) {
+  throw new Error("No element with id 'main-content-wrapper' found.");
+}
+
+const root = createRoot(anchor);
+root.render(
   <React.StrictMode>
     <UserProvider>
       <App />
     </UserProvider>
   </React.StrictMode>,
-  container
 );
+

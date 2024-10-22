@@ -17,7 +17,7 @@ export default () => {
     return defineConfig({
       base: process.env.NODE_ENV === 'production' ? '/static_skjemabygger/' : '/',
     
-      plugins: [removeCrossOriginAttr(), react(  {include: '**/*.{jsx,tsx}'}), svgr(), reactVirtualized(), legacy({
+      plugins: [removeCrossOriginAttr(), react(  {include: '**/*.{jsx,tsx}'}), svgr(), legacy({
         targets: ['defaults', 'not IE 11'],
       }), ],
       server: {
@@ -39,9 +39,9 @@ export default () => {
           json: './report/my-json-report.json',
           'vitest-sonar-reporter': './sonar-report.xml',
         },
-        globals: true,
-        environment: 'jsdom',
+      
       },
+      
       css: {
         preprocessorOptions: {
           scss: {

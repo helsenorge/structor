@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Provider } from 'react-redux';
-import { Store, createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import { Store, configureStore,  } from '@reduxjs/toolkit';
 
 import { emptyPropertyReplacer } from '../../helpers/emptyPropertyReplacer';
 import { generateQuestionnaireForPreview } from '../../helpers/generateQuestionnaire';
 import { getLanguagesInUse, INITIAL_LANGUAGE } from '../../helpers/LanguageHelper';
 import { getResources } from '../../locales/referoResources';
-import rootReducer from '@helsenorge/refero/reducers';
 import { TreeState } from '../../store/treeStore/treeStore';
 
-import { ReferoContainer } from '@helsenorge/refero/components';
-import FormFillerSidebar from './FormFillerSidebar';
+import { Refero, rootReducer } from '@helsenorge/refero'
 import Button from '@helsenorge/designsystem-react/components/Button';
 import IconBtn from '../IconBtn/IconBtn';
 import Select from '../Select/Select';
 
 import { QuestionnaireResponse } from 'fhir/r4';
+import FormFillerSidebar from './FormFillerSidebar';
 
 type Props = {
     showFormFiller: () => void;
@@ -26,7 +24,7 @@ type Props = {
 };
 
 const FormFillerPreview = ({ showFormFiller, language, state }: Props): React.JSX.Element => {
-    const store: Store = createStore(rootReducer, applyMiddleware(thunk));
+    const store: Store = configureStore({reducer: rootReducer, middleware: getDefaultMiddleware => getDefaultMiddleware() });
     const { t } = useTranslation();
     const languages = getLanguagesInUse(state);
     const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(
@@ -116,7 +114,7 @@ const FormFillerPreview = ({ showFormFiller, language, state }: Props): React.JS
                     <div className="referoContainer-div">
                         {!showResponse ? (
                             <div className="page_refero">
-                                <ReferoContainer
+                                <Refero
                                     key={referoKey}
                                     store={store}
                                     questionnaire={questionnaireForPreview}
@@ -138,7 +136,7 @@ const FormFillerPreview = ({ showFormFiller, language, state }: Props): React.JS
                             </div>
                         ) : (
                             <div>
-                                <code className="json">{JSON.stringify(questionnaireResponse, null, 2)}</code>
+                                <p>{JSON.stringify(questionnaireResponse)}</p>
                                 <Button onClick={() => setShowResponse(false)}>Tilbake til skjemautfyller</Button>
                             </div>
                         )}
