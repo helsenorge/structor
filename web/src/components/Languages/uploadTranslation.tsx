@@ -13,7 +13,9 @@ const UploadTranslation = (): React.JSX.Element => {
   const [fileUploadError, setFileUploadError] = useState<string>("");
   const { qItems } = state;
 
-  const onLoadUploadedTranslationFile = (event: ProgressEvent<FileReader>) => {
+  const onLoadUploadedTranslationFile = (
+    event: ProgressEvent<FileReader>,
+  ): void => {
     if (event.target?.result) {
       try {
         importCSV(event.target.result as string, qItems, dispatch);
@@ -30,10 +32,10 @@ const UploadTranslation = (): React.JSX.Element => {
 
   const uploadTranslationFile = (
     event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  ): void => {
     const reader = new FileReader();
     reader.onload = onLoadUploadedTranslationFile;
-    reader.onerror = () => {
+    reader.onerror = (): void => {
       setFileUploadError("Could not read uploaded file");
     };
     if (event.target.files && event.target.files[0]) {

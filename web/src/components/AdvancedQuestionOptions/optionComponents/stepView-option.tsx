@@ -14,7 +14,10 @@ type StepViewOptionProps = {
   dispatch: React.Dispatch<ActionType>;
 };
 
-export const StepViewOption = ({ item, dispatch }: StepViewOptionProps) => {
+export const StepViewOption = ({
+  item,
+  dispatch,
+}: StepViewOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   return (

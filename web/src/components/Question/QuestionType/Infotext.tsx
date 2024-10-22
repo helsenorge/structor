@@ -55,7 +55,7 @@ const Infotext = ({ item, parentArray }: InfotextProps): React.JSX.Element => {
     dispatch,
   } = useContext(TreeContext);
 
-  const dispatchUpdateMarkdown = (markdown: string) => {
+  const dispatchUpdateMarkdown = (markdown: string): void => {
     const markdownValue = createMarkdownExtension(markdown);
     dispatch(
       updateItemAction(childItemLinkId, IItemProperty._text, markdownValue),
@@ -72,7 +72,7 @@ const Infotext = ({ item, parentArray }: InfotextProps): React.JSX.Element => {
     ? childItem._text?.extension[0].valueMarkdown || ""
     : "";
 
-  const getCheckedOption = () => {
+  const getCheckedOption = (): string => {
     if (isItemControlInline(item)) {
       return INLINE_OPTION;
     } else if (isItemControlHighlight(item)) {

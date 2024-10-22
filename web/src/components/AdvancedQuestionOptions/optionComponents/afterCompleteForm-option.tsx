@@ -11,7 +11,7 @@ type AfterCompleteFormOptionProps = {
 
 export const AfterCompleteFormOption = ({
   item,
-}: AfterCompleteFormOptionProps) => {
+}: AfterCompleteFormOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   return (

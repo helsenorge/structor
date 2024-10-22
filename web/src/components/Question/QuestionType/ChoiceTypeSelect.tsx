@@ -24,7 +24,7 @@ const ChoiceTypeSelect = ({
 }: Props): React.JSX.Element => {
   const { t } = useTranslation();
 
-  const getSelectedItemControlValue = () => {
+  const getSelectedItemControlValue = (): ItemControlType => {
     if (isItemControlCheckbox(item)) {
       return ItemControlType.checkbox;
     } else if (isItemControlDropDown(item)) {

@@ -35,7 +35,7 @@ export const HelpOption = ({
   parentArray,
   qItems,
   qOrder,
-}: HelpOptionProps) => {
+}: HelpOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   const getHelpTextItem = (): QuestionnaireItem | undefined => {
@@ -53,7 +53,7 @@ export const HelpOption = ({
     return helpItem ? getHelpText(helpItem) : "";
   };
 
-  const dispatchHelpText = () => {
+  const dispatchHelpText = (): void => {
     const helpItem = getHelpTextItem();
     if (helpItem) {
       dispatch(
@@ -64,7 +64,7 @@ export const HelpOption = ({
     }
   };
 
-  const dispatchUpdateItemHelpText = (id: string, value: string) => {
+  const dispatchUpdateItemHelpText = (id: string, value: string): void => {
     const newValue = createMarkdownExtension(value);
     dispatch(updateItemAction(id, IItemProperty._text, newValue));
   };

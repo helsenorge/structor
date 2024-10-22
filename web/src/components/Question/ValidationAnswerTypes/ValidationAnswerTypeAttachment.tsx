@@ -22,7 +22,7 @@ const ValidationAnswerTypeAttachment = ({
     item.extension?.find((ext) => ext.url === IExtensionType.maxSize)
       ?.valueDecimal || "";
 
-  function updateMaxSize(size: number) {
+  function updateMaxSize(size: number): void {
     const extension = { url: IExtensionType.maxSize, valueDecimal: size };
     setItemExtension(item, extension, dispatch);
   }

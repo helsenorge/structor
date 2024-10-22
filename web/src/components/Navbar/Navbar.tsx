@@ -1,5 +1,7 @@
 import React, { useContext, useRef, useState } from "react";
 
+import { useTranslation } from "react-i18next";
+
 import { generateQuestionnaire } from "../../helpers/generateQuestionnaire";
 import {
   validateOrphanedElements,
@@ -21,8 +23,6 @@ import ImportValueSet from "../ImportValueSet/ImportValueSet";
 import JSONView from "../JSONView/JSONView";
 import PredefinedValueSetModal from "../PredefinedValueSetModal/PredefinedValueSetModal";
 import { ValidationErrorsModal } from "../ValidationErrorsModal/validationErrorsModal";
-
-import { useTranslation } from "react-i18next";
 
 type Props = {
   showFormFiller: () => void;
@@ -67,13 +67,13 @@ const Navbar = ({
     useState<boolean>(false);
   const navBarRef = useRef<HTMLDivElement>(null);
   const fileExtension = "json";
-  const hideMenu = () => {
+  const hideMenu = (): void => {
     setSelectedMenuItem(MenuItem.none);
   };
 
   useOutsideClick(navBarRef, hideMenu, selectedMenuItem === MenuItem.none);
 
-  const callbackAndHide = (callback: () => void) => {
+  const callbackAndHide = (callback: () => void): void => {
     callback();
     hideMenu();
   };
@@ -96,7 +96,7 @@ const Navbar = ({
     return `${technicalName}${version}`;
   };
 
-  function exportToJsonAndDownload() {
+  function exportToJsonAndDownload(): void {
     const questionnaire = generateQuestionnaire(state);
     const filename = `${getFileName()}.${fileExtension}`;
     const contentType = "application/json;charset=utf-8;";
@@ -120,7 +120,7 @@ const Navbar = ({
     dispatch(saveAction());
   }
 
-  const handleMenuItemClick = (clickedItem: MenuItem) => {
+  const handleMenuItemClick = (clickedItem: MenuItem): void => {
     if (selectedMenuItem !== clickedItem) {
       setSelectedMenuItem(clickedItem);
     } else {

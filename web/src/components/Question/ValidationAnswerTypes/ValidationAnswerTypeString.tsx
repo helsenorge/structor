@@ -74,7 +74,7 @@ const ValidationAnswerTypeString = ({ item }: Props): React.JSX.Element => {
     },
   ];
 
-  const updateMaxLength = (number: number) => {
+  const updateMaxLength = (number: number): void => {
     dispatch(updateItemAction(item.linkId, IItemProperty.maxLength, number));
   };
 

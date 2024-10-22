@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { QuestionnaireItem } from "fhir/r4";
+import { QuestionnaireItem, Coding } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -36,12 +36,11 @@ export const ColumnNameOption = ({
   qItems,
   qOrder,
   dispatch,
-}: ColumnNameOptionProps) => {
+}: ColumnNameOptionProps): JSX.Element => {
   const { t } = useTranslation();
-  let existingColumnCodes = getAllMatchingCodes(
-    item,
-    ICodeSystem.tableColumnName,
-  );
+  const [existingColumnCodes, setExistingColumnCodes] = useState<
+    Coding[] | undefined
+  >(getAllMatchingCodes(item, ICodeSystem.tableColumnName));
   const lastItem =
     existingColumnCodes && existingColumnCodes[existingColumnCodes?.length - 1];
 
@@ -92,10 +91,10 @@ export const ColumnNameOption = ({
   };
 
   useEffect(() => {
-    existingColumnCodes = getAllMatchingCodes(
-      item,
-      ICodeSystem.tableColumnName,
+    setExistingColumnCodes(
+      getAllMatchingCodes(item, ICodeSystem.tableColumnName),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item.code]);
 
   return (

@@ -113,7 +113,7 @@ export const createExtensionWithSystemAndCoding = (
   system: IValueSetSystem,
   code: string,
   dispatch: React.Dispatch<ActionType>,
-) => {
+): void => {
   const newExtension: Extension = {
     url: extensionUrl,
     valueCodeableConcept: {
@@ -258,14 +258,16 @@ export const getQuantityCode = (
   return extension?.code;
 };
 
-export const getExtentionsFromElement = (element: Element) => {
+export const getExtentionsFromElement = (
+  element: Element,
+): Extension[] | undefined => {
   return element.extension;
 };
 
 export const getExtentionByType = (
   extentions: Extension[],
   type: IExtensionType,
-) => {
+): Extension | undefined => {
   return extentions.find((x) => x.url === type);
 };
 

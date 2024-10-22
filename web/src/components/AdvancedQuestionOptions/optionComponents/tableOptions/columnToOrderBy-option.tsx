@@ -39,7 +39,7 @@ export const ColumnToOrderByOption = ({
   tableType,
   allChoiceItems,
   dispatch,
-}: ColumnToOrderByOptionProps) => {
+}: ColumnToOrderByOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   const getOptionsToUse = (): Option[] | undefined => {
@@ -70,7 +70,7 @@ export const ColumnToOrderByOption = ({
   };
   const optionsToUse = getOptionsToUse();
 
-  const onChangeOption = (newValue: string) => {
+  const onChangeOption = (newValue: string): void => {
     removeItemCode(item, ICodeSystem.tableOrderingColumn, dispatch);
     optionsToUse &&
       addItemCode(

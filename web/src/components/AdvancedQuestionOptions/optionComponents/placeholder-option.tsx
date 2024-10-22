@@ -19,7 +19,7 @@ type PlaceholderOptionProps = {
 export const PlaceholderOption = ({
   item,
   dispatch,
-}: PlaceholderOptionProps) => {
+}: PlaceholderOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   const getPlaceholder =

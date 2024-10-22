@@ -1,7 +1,5 @@
 import React, { useContext, useRef } from "react";
 
-import { TreeContext } from "../../store/treeStore/treeStore";
-
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
@@ -12,6 +10,7 @@ import { useItemNavigation } from "../../hooks/useItemNavigation";
 import { useKeyPress } from "../../hooks/useKeyPress";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { updateMarkedLinkIdAction } from "../../store/treeStore/treeActions";
+import { TreeContext } from "../../store/treeStore/treeStore";
 import { ValidationErrors } from "../../utils/validationUtils";
 import { generateItemButtons } from "../AnchorMenu/ItemButtons/ItemButtons";
 import Drawer from "../Drawer/Drawer";
@@ -28,7 +27,7 @@ const QuestionDrawer = ({
   const { t } = useTranslation();
   const { state, dispatch } = useContext(TreeContext);
   const { previous, next, hasNext, hasPrevious } = useItemNavigation();
-  const closeDrawer = () => {
+  const closeDrawer = (): void => {
     setTimeout(() => {
       dispatch(updateMarkedLinkIdAction());
     }, 100);

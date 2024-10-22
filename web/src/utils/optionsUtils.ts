@@ -40,7 +40,7 @@ export const getSelectedValue = (
 export const getDisplayValueInOption = (
   options: Option[],
   codeToSearchIn: string,
-) => {
+): string => {
   let stringToReturn = "";
   options.forEach((option) => {
     if (option.code === codeToSearchIn) {

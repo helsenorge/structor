@@ -23,7 +23,7 @@ type SaveCapabilityOptionProps = {
 export const SaveCapabilityOption = ({
   item,
   dispatch,
-}: SaveCapabilityOptionProps) => {
+}: SaveCapabilityOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   return (

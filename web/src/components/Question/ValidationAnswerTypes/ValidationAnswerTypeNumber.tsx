@@ -46,11 +46,11 @@ const ValidationAnswerTypeNumber = ({
 
   const dispatchUpdateItemType = (
     value: IQuestionnaireItemType.decimal | IQuestionnaireItemType.integer,
-  ) => {
+  ): void => {
     dispatch(updateItemAction(item.linkId, IItemProperty.type, value));
   };
 
-  const changeItemType = () => {
+  const changeItemType = (): void => {
     const newItemType =
       item?.type === IQuestionnaireItemType.decimal
         ? IQuestionnaireItemType.integer

@@ -75,7 +75,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
     }
   };
 
-  const getCurrentQuantityUnitTypeCoding = () => {
+  const getCurrentQuantityUnitTypeCoding = (): Coding | undefined => {
     return props.item.extension?.find((extension) => {
       return extension.url === IExtensionType.questionnaireUnit;
     })?.valueCoding;
@@ -84,7 +84,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
   const updateCustomQuantityUnitType = (
     property: "code" | "display" | "system",
     event: React.FocusEvent<HTMLInputElement>,
-  ) => {
+  ): void => {
     const currentValueCoding = getCurrentQuantityUnitTypeCoding();
     let newValueCoding: Coding;
     if (currentValueCoding) {
@@ -102,7 +102,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
     setItemExtension(props.item, unitExtension, dispatch);
   };
 
-  const updateInitialValue = (newValueCoding: Coding | undefined) => {
+  const updateInitialValue = (newValueCoding: Coding | undefined): void => {
     if (props.item.initial && newValueCoding) {
       const initial = props.item.initial;
       if (initial) {

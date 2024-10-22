@@ -26,14 +26,14 @@ const TranslateSettings = ({
   const { t } = useTranslation();
 
   const translatedSettings = translations[targetLanguage].settings;
-  const getTranslation = (extension: IExtensionType) => {
+  const getTranslation = (extension: IExtensionType): Extension => {
     return translatedSettings[extension];
   };
 
   const dispatchTranslation = (
     extension: IExtensionType,
     value: Extension | null,
-  ) => {
+  ): void => {
     dispatch(updateSettingTranslationAction(targetLanguage, extension, value));
   };
 

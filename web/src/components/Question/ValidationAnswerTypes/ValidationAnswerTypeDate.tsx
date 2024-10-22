@@ -68,7 +68,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): React.JSX.Element => {
   const setAbsoluteValueExtension = (
     updatedValue: string,
     extensionUrl: string,
-  ) => {
+  ): void => {
     if (updatedValue) {
       const newExtention: Extension = {
         url: extensionUrl,
@@ -84,7 +84,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): React.JSX.Element => {
     updatedValue: string,
     extensionUrl: string,
     extensions: Extension[],
-  ) => {
+  ): void => {
     const extensionsToSet = updatedValue
       ? [
           ...extensions,
@@ -104,7 +104,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): React.JSX.Element => {
     operator: string | undefined,
     value: string | undefined,
     unit: string | undefined,
-  ) => {
+  ): void => {
     const newFhirPathMinValue = generateFhirPathValueString(
       operator,
       value,
@@ -126,7 +126,7 @@ const ValidationAnswerTypeDate = ({ item }: Props): React.JSX.Element => {
     operator: string | undefined,
     value: string | undefined,
     unit: string | undefined,
-  ) => {
+  ): void => {
     const newFhirPathMaxValue = generateFhirPathValueString(
       operator,
       value,

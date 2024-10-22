@@ -137,7 +137,7 @@ export const existItemWithSystem = (
 export const itemControlExistsInExtensionList = (
   extension?: Extension[],
   itemControlType?: ItemControlType,
-) =>
+): boolean =>
   !extension || !itemControlType
     ? false
     : extension?.some((ex) =>

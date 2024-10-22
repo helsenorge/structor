@@ -84,7 +84,7 @@ const exportMetadataTranslations = (
   additionalLanguagesInUse: string[],
   additionalLanguages: Languages,
   data: string[][],
-) => {
+): void => {
   translatableMetadata.forEach((prop) => {
     const translatedValues = additionalLanguagesInUse.map((lang) => {
       return additionalLanguages[lang].metaData[prop.propertyName];
@@ -103,7 +103,7 @@ const exportPredefinedValueSets = (
   additionalLanguagesInUse: string[],
   additionalLanguages: Languages,
   data: string[][],
-) => {
+): void => {
   if (valueSetsToTranslate.length > 0) {
     // for each valueset, for each row, add one translation row
     valueSetsToTranslate.forEach((valueSet) => {
@@ -124,7 +124,7 @@ const exportItemTranslations = (
   additionalLanguagesInUse: string[],
   additionalLanguages: Languages,
   data: string[][],
-) => {
+): void => {
   Object.keys(qItems).forEach((linkId) => {
     const item = qItems[linkId];
 

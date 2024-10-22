@@ -51,7 +51,7 @@ const getLinkIdFromValueString = (item: QuestionnaireItem): string => {
 const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
-  const getSelectedValue = () =>
+  const getSelectedValue = (): ValueSetComposeIncludeConcept | undefined =>
     props.conditionalArray.find(
       (f) => f.code === getLinkIdFromValueString(props.item),
     );
@@ -59,7 +59,7 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
     getSelectedValue()?.code ?? undefined,
   );
 
-  const filterWithRepeats = (value: ValueSetComposeIncludeConcept) => {
+  const filterWithRepeats = (value: ValueSetComposeIncludeConcept): boolean => {
     const item = props.getItem(value.code);
     const hasTypeAndRepeats =
       item.type === props.item.type && item.repeats === props.item.repeats;
@@ -75,11 +75,11 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
     return hasTypeAndRepeats;
   };
 
-  const questionsOptions = () => {
+  const questionsOptions = (): ValueSetComposeIncludeConcept[] => {
     return props.conditionalArray.filter((f) => filterWithRepeats(f));
   };
 
-  const updateReadonlyItem = (value: boolean) => {
+  const updateReadonlyItem = (value: boolean): void => {
     if (props.canTypeBeReadonly) {
       dispatch(
         updateItemAction(props.item.linkId, IItemProperty.readOnly, value),
@@ -87,7 +87,7 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
     }
   };
 
-  const updateEnableWhen = (selectedValue: string | undefined) => {
+  const updateEnableWhen = (selectedValue: string | undefined): void => {
     if (selectedValue) {
       const initEnableWhen: QuestionnaireItemEnableWhen[] = [];
       const operator =
@@ -113,7 +113,7 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
     }
   };
 
-  const setCalculationExpression = (code: string | undefined) => {
+  const setCalculationExpression = (code: string | undefined): void => {
     if (code) {
       const calculatedExpression =
         getExtensionStringValue(
@@ -136,7 +136,7 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
     }
   };
 
-  const setDataReceiverExtenssion = (code: string) => {
+  const setDataReceiverExtenssion = (code: string): void => {
     const extension: Extension = {
       url: IExtensionType.copyExpression,
       valueString: `QuestionnaireResponse.descendants().where(linkId='${code}').answer.value`,

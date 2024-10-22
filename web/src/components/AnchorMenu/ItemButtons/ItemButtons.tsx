@@ -3,13 +3,13 @@ import React, { MouseEvent } from "react";
 import { QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
 
-import { ActionType } from "../../../store/treeStore/treeStore";
-
-import "./ItemButtons.css";
 import {
   deleteItemAction,
   duplicateItemAction,
 } from "../../../store/treeStore/treeActions";
+import { ActionType } from "../../../store/treeStore/treeStore";
+
+import "./ItemButtons.css";
 
 export const generateItemButtons = (
   t: TFunction<"translation">,
@@ -33,7 +33,7 @@ export const generateItemButtons = (
     dispatch(duplicateItemAction(item.linkId, parentArray));
   };
 
-  const getClassNames = () => {
+  const getClassNames = (): string => {
     return `item-button ${showLabel ? "item-button--visible" : ""}`;
   };
 

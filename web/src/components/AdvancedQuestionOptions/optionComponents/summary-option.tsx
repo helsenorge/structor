@@ -16,7 +16,10 @@ type SummaryOptionProps = {
   dispatch: React.Dispatch<ActionType>;
 };
 
-export const SummaryOption = ({ item, dispatch }: SummaryOptionProps) => {
+export const SummaryOption = ({
+  item,
+  dispatch,
+}: SummaryOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   const hasSummaryExtension = isItemControlSummary(item);

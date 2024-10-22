@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 
+import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
-import Modal from "../../Modal/Modal";
-
 import "./TranslationModal.css";
-import { QuestionnaireItem } from "fhir/r4";
 
 import { TranslatableItemProperty } from "../../../types/LanguageTypes";
 
@@ -33,6 +31,7 @@ import {
 } from "../../../utils/validationUtils";
 import FormField from "../../FormField/FormField";
 import MarkdownEditor from "../../MarkdownEditor/MarkdownEditor";
+import Modal from "../../Modal/Modal";
 
 type TranslationModalProps = {
   close: () => void;
@@ -131,7 +130,7 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
       items: OrderItem[],
       path: string,
       tempHierarchy: FlattOrderTranslation[],
-    ) => {
+    ): void => {
       let index = 1;
       items
         .filter((x) => !isItemControlSidebar(qItems[x.linkId]))
@@ -163,7 +162,7 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
         });
     };
 
-    const flattenOrder = () => {
+    const flattenOrder = (): void => {
       const temp = [] as FlattOrderTranslation[];
       qOrder
         .filter((x) => !isIgnorableItem(qItems[x.linkId]))
@@ -201,7 +200,7 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
       threshold: [0, 0.5, 1],
     };
 
-    const observed = (elements: IntersectionObserverEntry[]) => {
+    const observed = (elements: IntersectionObserverEntry[]): void => {
       if (elements[0].intersectionRatio === 1) {
         setLimit((prevState) => prevState + 25);
       }
@@ -297,7 +296,7 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
                   <div className="translation-section-header">
                     {t("Elements")}
                   </div>
-                  {renderItems(flattOrder.filter((val, i) => i <= count))}
+                  {renderItems(flattOrder.filter((_val, i) => i <= count))}
                 </div>
                 <div
                   id="bottom-translation-modal"

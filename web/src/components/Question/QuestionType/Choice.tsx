@@ -68,7 +68,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
     ItemControlType.slider,
   );
 
-  const dispatchExtentionUpdate = (type: ItemControlType) => {
+  const dispatchExtentionUpdate = (type: ItemControlType): void => {
     removeItemExtension(item, IExtensionType.itemControl, dispatch);
     removeItemCode(item, ICodeSystem.sliderDisplayType, dispatch);
     removeItemCode(item, ICodeSystem.sliderLabels, dispatch);
@@ -123,7 +123,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
       | QuestionnaireItemAnswerOption[]
       | Element
       | undefined,
-  ) => {
+  ): void => {
     dispatch(updateItemAction(item.linkId, name, value));
   };
 
@@ -131,7 +131,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
     dispatch(removeItemAttributeAction(item.linkId, name));
   };
 
-  const handleChangeSystem = (system: string) => {
+  const handleChangeSystem = (system: string): void => {
     const alteredAnswerOption = updateAnswerOptionSystem(
       item.answerOption || [],
       system,
@@ -147,7 +147,6 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
   };
 
   const hasValidationError = (): boolean => {
-    console.log(itemValidationErrors);
     return itemValidationErrors.some(
       (x) => x.errorProperty === "system" && x.linkId === item.linkId,
     );

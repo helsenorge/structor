@@ -9,7 +9,7 @@ type AccordionProps = {
 const Accordion = (props: AccordionProps): React.JSX.Element => {
   const [open, setOpen] = useState(false);
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault();
     setOpen(!open);
   };

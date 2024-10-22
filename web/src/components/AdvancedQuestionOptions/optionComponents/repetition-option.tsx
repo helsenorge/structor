@@ -21,7 +21,10 @@ type RepetitionOptionProps = {
   dispatch: React.Dispatch<ActionType>;
 };
 
-export const RepetitionOption = ({ item, dispatch }: RepetitionOptionProps) => {
+export const RepetitionOption = ({
+  item,
+  dispatch,
+}: RepetitionOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   const getRepeatsText =

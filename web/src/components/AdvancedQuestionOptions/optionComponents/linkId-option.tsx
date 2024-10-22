@@ -20,7 +20,7 @@ export const LinkIdOption = ({
   dispatch,
   qItems,
   parentArray,
-}: LinkIdOptionProps) => {
+}: LinkIdOptionProps): JSX.Element => {
   const { t } = useTranslation();
   const [linkId, setLinkId] = useState(item.linkId);
   const [isDuplicateLinkId, setDuplicateLinkId] = useState(false);
@@ -64,7 +64,7 @@ export const LinkIdOption = ({
           <div className="msg-error" aria-live="polite">
             {`${t("LinkId is already in use")} `}
             <button onClick={resetLinkId}>
-              <img src={UndoIcon} height={16} />
+              <img alt="undo icon " src={UndoIcon} height={16} />
               {` ${t("Sett tilbake til opprinnelig verdi")}`}
             </button>
           </div>

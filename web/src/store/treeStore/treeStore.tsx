@@ -185,7 +185,10 @@ export interface TreeState {
   qAdditionalLanguages?: Languages;
 }
 
-function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
+function addLanguage(
+  draft: TreeState,
+  action: AddQuestionnaireLanguageAction,
+): void {
   if (!draft.qAdditionalLanguages) {
     draft.qAdditionalLanguages = {};
   }
@@ -204,7 +207,7 @@ function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
 function removeLanguage(
   draft: TreeState,
   action: RemoveQuestionnaireLanguageAction,
-) {
+): void {
   if (!draft.qAdditionalLanguages) {
     draft.qAdditionalLanguages = {};
   }
@@ -923,7 +926,7 @@ export const TreeContextProvider = (props: {
 
   useEffect(() => {
     const startTime = performance.now();
-    const save = async () => {
+    const save = async (): Promise<void> => {
       await saveStateToDb(JSON.parse(JSON.stringify(state)));
     };
     save();

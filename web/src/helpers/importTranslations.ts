@@ -37,7 +37,7 @@ const updateQuestionniareWithTranslation = (
   csvHeaders: string[],
   qItems: Items,
   dispatch: React.Dispatch<ActionType>,
-) => {
+): void => {
   for (
     let languageIndex = 2;
     languageIndex < csvHeaders.length;

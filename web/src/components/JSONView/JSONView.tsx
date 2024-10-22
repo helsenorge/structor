@@ -15,7 +15,7 @@ const JSONView = ({ showJSONView }: Props): React.JSX.Element => {
   const { t } = useTranslation();
   const { state } = useContext(TreeContext);
   const { isCopied, copyToClipboard } = useCopyToClipboard();
-  const handleCopy = async () => {
+  const handleCopy = async (): Promise<void> => {
     const content = JSON.stringify(
       JSON.parse(generateQuestionnaire(state)),
       null,

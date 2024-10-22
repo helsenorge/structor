@@ -13,7 +13,10 @@ type PrefixOptionProps = {
   dispatch: React.Dispatch<ActionType>;
 };
 
-export const PrefixOption = ({ item, dispatch }: PrefixOptionProps) => {
+export const PrefixOption = ({
+  item,
+  dispatch,
+}: PrefixOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   return (

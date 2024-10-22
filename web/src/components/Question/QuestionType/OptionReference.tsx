@@ -1,8 +1,16 @@
 import React, { useContext } from "react";
 
+import { Extension, QuestionnaireItem } from "fhir/r4";
+import {
+  DragDropContext,
+  Draggable,
+  DraggingStyle,
+  Droppable,
+  DropResult,
+  NotDraggingStyle,
+} from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 import "./OptionReference.css";
-import { Extension, QuestionnaireItem } from "fhir/r4";
 
 import {
   IExtensionType,
@@ -13,16 +21,6 @@ import createUUID from "../../../helpers/CreateUUID";
 import { updateItemAction } from "../../../store/treeStore/treeActions";
 import { TreeContext } from "../../../store/treeStore/treeStore";
 import Btn from "../../Btn/Btn";
-
-import {
-  DragDropContext,
-  Draggable,
-  DraggingStyle,
-  Droppable,
-  DropResult,
-  NotDraggingStyle,
-} from "react-beautiful-dnd";
-
 import InputField from "../../InputField/inputField";
 
 type Props = {
@@ -33,7 +31,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
 
-  const dispatchNewItem = () => {
+  const dispatchNewItem = (): void => {
     const newItem = [
       {
         url: IExtensionType.optionReference,
@@ -55,7 +53,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
     }
   };
 
-  const removeItem = (id?: string) => {
+  const removeItem = (id?: string): void => {
     if (id) {
       const newExtension =
         item.extension?.filter((x) => x.valueReference?.id !== id) || [];
@@ -71,7 +69,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
     type: "display" | "reference",
     value: string,
     id?: string,
-  ) => {
+  ): void => {
     const newExtension = item?.extension?.map((x) => {
       return x.valueReference?.id === id
         ? {
@@ -101,7 +99,11 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
     ...draggableStyle,
   });
 
-  const getListStyle = (isDraggingOver: boolean) => ({
+  const getListStyle = (
+    isDraggingOver: boolean,
+  ): {
+    background: string;
+  } => ({
     background: isDraggingOver ? "lightblue" : "transparent",
   });
 
@@ -119,7 +121,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
     return list;
   };
 
-  const handleReorder = (result: DropResult) => {
+  const handleReorder = (result: DropResult): void => {
     if (!result.source || !result.destination || !result.draggableId) {
       return;
     }

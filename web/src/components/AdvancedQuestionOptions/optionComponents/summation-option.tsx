@@ -19,7 +19,10 @@ type SummationOptionProps = {
   dispatch: React.Dispatch<ActionType>;
 };
 
-export const SummationOption = ({ item, dispatch }: SummationOptionProps) => {
+export const SummationOption = ({
+  item,
+  dispatch,
+}: SummationOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   return (

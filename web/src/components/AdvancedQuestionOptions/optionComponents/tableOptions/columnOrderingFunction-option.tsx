@@ -20,7 +20,7 @@ type ColumnOrderingFunctionOptionProps = {
 export const ColumnOrderingFunctionOption = ({
   item,
   dispatch,
-}: ColumnOrderingFunctionOptionProps) => {
+}: ColumnOrderingFunctionOptionProps): JSX.Element => {
   const { t } = useTranslation();
   const columnOrderingOptions = [
     {
@@ -30,7 +30,7 @@ export const ColumnOrderingFunctionOption = ({
     { code: TableColumnOrderingOptionsEnum.Ascending, display: t(`Ascending`) },
   ];
 
-  const addDefaultColumnOrdering = () => {
+  const addDefaultColumnOrdering = (): void => {
     const columnCodeExist = existItemWithSystem(
       item,
       ICodeSystem.tableOrderingFunctions,
@@ -47,9 +47,10 @@ export const ColumnOrderingFunctionOption = ({
 
   useEffect(() => {
     addDefaultColumnOrdering();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onChangeColumnOrderingOption = (newValue: string) => {
+  const onChangeColumnOrderingOption = (newValue: string): void => {
     removeItemCode(item, ICodeSystem.tableOrderingFunctions, dispatch);
     let columnOrderingCoding: Coding = {};
     if (newValue === TableColumnOrderingOptionsEnum.Ascending) {
@@ -68,7 +69,7 @@ export const ColumnOrderingFunctionOption = ({
     addItemCode(item, columnOrderingCoding, dispatch);
   };
 
-  const checkedColumnOrderingOption = () => {
+  const checkedColumnOrderingOption = (): TableColumnOrderingOptionsEnum => {
     const itemWithColumnOrderingSystem = item.code?.find(
       (code) => code.system === ICodeSystem.tableOrderingFunctions,
     );

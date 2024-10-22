@@ -34,14 +34,14 @@ const TranslateSidebar = ({
   }
 
   const translatedSidebarItems = translations[targetLanguage].sidebarItems;
-  const getTranslation = (linkId: string) => {
+  const getTranslation = (linkId: string): string => {
     if (translatedSidebarItems[linkId]) {
       return translatedSidebarItems[linkId].markdown || "";
     }
     return "";
   };
 
-  const dispatchTranslation = (linkId: string, value: string) => {
+  const dispatchTranslation = (linkId: string, value: string): void => {
     dispatch(updateSidebarTranslationAction(targetLanguage, linkId, value));
   };
 
@@ -62,7 +62,7 @@ const TranslateSidebar = ({
             className="translation-group"
           >
             <div className="translation-group-header">
-              {display} ({code})
+              {`${display} (${code})`}
             </div>
             <div className="translation-row">
               <FormField>

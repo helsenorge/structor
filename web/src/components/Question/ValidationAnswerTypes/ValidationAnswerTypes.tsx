@@ -15,7 +15,7 @@ interface ValidationTypeProp {
 const ValidationAnswerTypes = ({
   item,
 }: ValidationTypeProp): React.JSX.Element => {
-  const respondType = (itemType: string) => {
+  const respondType = (itemType: string): JSX.Element | undefined => {
     switch (itemType) {
       case IQuestionnaireItemType.attachment:
         return <ValidationAnswerTypeAttachment item={item} />;
@@ -29,6 +29,8 @@ const ValidationAnswerTypes = ({
       case IQuestionnaireItemType.decimal:
       case IQuestionnaireItemType.quantity:
         return <ValidationAnswerTypeNumber item={item} />;
+      default:
+        return undefined;
     }
   };
 

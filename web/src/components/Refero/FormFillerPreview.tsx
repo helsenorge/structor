@@ -140,13 +140,13 @@ const FormFillerPreview = ({
                     setQuestionnaireResponse(questionnaireResponse);
                     setShowResponse(true);
                   }}
-                  onPause={() => {}}
                   onSubmit={() => {}}
                   authorized={true}
+                  //@ts-expect-error works with any
                   resources={getResources(language || "")}
                   sticky={true}
                   saveButtonDisabled={false}
-                  loginButton={<Button>Login</Button>}
+                  loginButton={<Button>{"Login"}</Button>}
                   syncQuestionnaireResponse
                   validateScriptInjection
                 />
@@ -157,7 +157,7 @@ const FormFillerPreview = ({
                   {JSON.stringify(questionnaireResponse, null, 2)}
                 </code>
                 <Button onClick={() => setShowResponse(false)}>
-                  Tilbake til skjemautfyller
+                  {"Tilbake til skjemautfyller"}
                 </Button>
               </div>
             )}

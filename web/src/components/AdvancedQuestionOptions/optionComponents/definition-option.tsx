@@ -13,7 +13,10 @@ type DefinitionOptionProps = {
   dispatch: React.Dispatch<ActionType>;
 };
 
-export const DefinitionOption = ({ item, dispatch }: DefinitionOptionProps) => {
+export const DefinitionOption = ({
+  item,
+  dispatch,
+}: DefinitionOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   return (

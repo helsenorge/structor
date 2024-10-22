@@ -14,29 +14,31 @@ export const CreateOptionSetForType = (questionnaireType: string): Options => {
   let filter = null;
   switch (questionnaireType) {
     case IQuestionnaireItemType.boolean:
-      filter = (it: EnrichmentExpessionMetadata) => it.type === "boolean";
+      filter = (it: EnrichmentExpessionMetadata): boolean =>
+        it.type === "boolean";
       break;
     case IQuestionnaireItemType.decimal:
     case IQuestionnaireItemType.integer:
     case IQuestionnaireItemType.quantity:
-      filter = (it: EnrichmentExpessionMetadata) => it.type === "number";
+      filter = (it: EnrichmentExpessionMetadata): boolean =>
+        it.type === "number";
       break;
     case IQuestionnaireItemType.date:
-      filter = (it: EnrichmentExpessionMetadata) => it.type === "date";
+      filter = (it: EnrichmentExpessionMetadata): boolean => it.type === "date";
       break;
     case IQuestionnaireItemType.dateTime:
-      filter = (it: EnrichmentExpessionMetadata) =>
+      filter = (it: EnrichmentExpessionMetadata): boolean =>
         it.type === "date" || it.type === "dateTime";
       break;
     case IQuestionnaireItemType.time:
-      filter = (it: EnrichmentExpessionMetadata) => it.type === "time";
+      filter = (it: EnrichmentExpessionMetadata): boolean => it.type === "time";
       break;
     case IQuestionnaireItemType.string:
     case IQuestionnaireItemType.text:
-      filter = () => true;
+      filter = (): boolean => true;
       break;
     default:
-      filter = () => false;
+      filter = (): boolean => false;
       break;
   }
 

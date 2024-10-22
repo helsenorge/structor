@@ -19,7 +19,10 @@ type ScoringOptionProps = {
   dispatch: React.Dispatch<ActionType>;
 };
 
-export const ScoringOption = ({ item, dispatch }: ScoringOptionProps) => {
+export const ScoringOption = ({
+  item,
+  dispatch,
+}: ScoringOptionProps): JSX.Element => {
   const { t } = useTranslation();
   const [hasQuestionScoreCode, setHasQuestionScoreCode] = useState(
     existItemWithCode(item, ScoringFormulaCodes.questionScore),

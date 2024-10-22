@@ -84,6 +84,7 @@ export const updateAnswerOptionCode = (
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getExtension = (url: string, scoreValue: string) => {
   if (url === IExtensionType.ordinalValue) {
     return { url: url, valueDecimal: Number(scoreValue) };

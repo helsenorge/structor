@@ -5,7 +5,7 @@ const useOutsideClick = (
   onClickOutside: () => void,
   disabled?: boolean,
 ): void => {
-  const handleClick = (e: MouseEvent) => {
+  const handleClick = (e: MouseEvent): void => {
     if ((e.target as HTMLElement).closest(".ck-body-wrapper")) {
       return;
     }

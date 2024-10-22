@@ -17,7 +17,7 @@ const SwitchBtn = ({
   return (
     <div className="switch-btn">
       <label>{label}</label>
-      <label className="switch">
+      <label className="switch" aria-label={label}>
         <input
           type="checkbox"
           checked={value}

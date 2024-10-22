@@ -35,7 +35,7 @@ const FormFillerSidebar = ({ questionnaire }: Props): React.JSX.Element => {
         className="formFillerSidebar-button"
         onClick={() => setIsSidebarViewEnabled(!isSidebarViewEnabled)}
       >
-        ?
+        {"?"}
       </button>
       {isSidebarViewEnabled && (
         <div className="formFillerSidebar-content">

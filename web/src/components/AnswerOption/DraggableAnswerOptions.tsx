@@ -42,7 +42,7 @@ const DraggableAnswerOptions = ({
   item,
   dispatchUpdateItem,
 }: DraggableAnswerOptionsProps): React.JSX.Element => {
-  const handleChange = (result: DropResult) => {
+  const handleChange = (result: DropResult): void => {
     if (!result.source || !result.destination || !result.draggableId) {
       return;
     }
@@ -59,7 +59,11 @@ const DraggableAnswerOptions = ({
     }
   };
 
-  const getListStyle = (isDraggingOver: boolean) => ({
+  const getListStyle = (
+    isDraggingOver: boolean,
+  ): {
+    background: string;
+  } => ({
     background: isDraggingOver ? "lightblue" : "transparent",
   });
 

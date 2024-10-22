@@ -96,7 +96,7 @@ const Typeahead = ({
     };
   }, [suggestions]);
 
-  const renderSuggestions = () => {
+  const renderSuggestions = (): JSX.Element => {
     return (
       <ul>
         {suggestions?.map((suggestion, index) => (

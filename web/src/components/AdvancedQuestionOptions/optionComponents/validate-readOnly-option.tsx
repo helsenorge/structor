@@ -21,7 +21,7 @@ type ValidateReadOnlyOptionProps = {
 export const ValidateReadOnlyOption = ({
   item,
   dispatch,
-}: ValidateReadOnlyOptionProps) => {
+}: ValidateReadOnlyOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   const validateReadOnlyCode = getItemCodeWithMatchingSystemAndCode(

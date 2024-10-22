@@ -45,7 +45,7 @@ export const DateType = ({ item, dispatch }: Props): React.JSX.Element => {
     }
   };
 
-  const setItemControlExtension = (code: string) => {
+  const setItemControlExtension = (code: string): void => {
     const newExtension = createItemControlExtension(code as ItemControlType);
     setItemExtension(item, newExtension, dispatch);
   };

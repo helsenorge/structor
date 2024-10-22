@@ -30,7 +30,7 @@ const Languages = (props: LanguagesProps): React.JSX.Element => {
           className="language-button"
           onClick={() => props.showTranslationEditor()}
         >
-          <img src={PlusIcon} height="25" width="25" />
+          <img alt="Add language" src={PlusIcon} height="25" width="25" />
         </button>
       </div>
     );

@@ -2,10 +2,10 @@ import React, { forwardRef, ReactNode, useRef, Ref } from "react";
 
 import { useTranslation } from "react-i18next";
 
+import useOutsideClick from "../../hooks/useOutsideClick";
 import IconBtn from "../IconBtn/IconBtn";
 
 import "./Drawer.css";
-import useOutsideClick from "../../hooks/useOutsideClick";
 
 type DrawerProps = {
   position: "left" | "right";

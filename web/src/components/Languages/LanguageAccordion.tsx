@@ -50,7 +50,7 @@ const LanguageAccordion = (
   const updateMeta = (
     propName: IQuestionnaireMetadataType,
     value: string | Meta,
-  ) => {
+  ): void => {
     dispatch(updateQuestionnaireMetadataAction(propName, value));
   };
 
@@ -67,7 +67,7 @@ const LanguageAccordion = (
   const dispatchAddLanguage = (
     selectedLanguage: string,
     translation: Translation,
-  ) => {
+  ): void => {
     const isoLanguage = languageToIsoString(selectedLanguage);
     if (
       isoLanguage &&
@@ -78,7 +78,7 @@ const LanguageAccordion = (
     }
   };
 
-  const removeAdditionalLanguage = (language: string) => {
+  const removeAdditionalLanguage = (language: string): void => {
     const isoLanguage = languageToIsoString(language);
     if (
       qAdditionalLanguages !== undefined &&
@@ -117,7 +117,7 @@ const LanguageAccordion = (
     return "";
   };
 
-  const onLoadUploadedFile = (event: ProgressEvent<FileReader>) => {
+  const onLoadUploadedFile = (event: ProgressEvent<FileReader>): void => {
     if (event.target?.result) {
       try {
         const translatedQuestionnaire = JSON.parse(
@@ -152,10 +152,12 @@ const LanguageAccordion = (
     }
   };
 
-  const uploadLangaugeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadLangaugeFile = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     const reader = new FileReader();
     reader.onload = onLoadUploadedFile;
-    reader.onerror = () => {
+    reader.onerror = (): void => {
       setFileUploadError("Could not read uploaded file");
     };
     if (event.target.files && event.target.files[0]) {

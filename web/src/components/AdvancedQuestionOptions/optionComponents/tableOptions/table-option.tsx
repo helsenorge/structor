@@ -43,7 +43,7 @@ export const TableOption = ({
   qOrder,
   qContained,
   dispatch,
-}: TableOptionProps) => {
+}: TableOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   const getCheckedTableOption = (): string => {
@@ -51,7 +51,7 @@ export const TableOption = ({
       getTableCode(itemControlExtension) || TableOptionsEnum.None;
     return tableCode;
   };
-  const onChangeTableOption = (newValue: string) => {
+  const onChangeTableOption = (newValue: string): void => {
     let newExtension: Extension;
     switch (newValue) {
       case TableOptionsEnum.GTable:

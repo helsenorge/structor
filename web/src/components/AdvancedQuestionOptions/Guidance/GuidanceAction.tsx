@@ -1,4 +1,4 @@
-import React, { FocusEvent, useContext } from "react";
+import { FocusEvent, useContext } from "react";
 
 import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
@@ -21,7 +21,7 @@ type GuidanceActionProps = {
   item: QuestionnaireItem;
 };
 
-const GuidanceAction = (props: GuidanceActionProps): React.JSX.Element => {
+const GuidanceAction = (props: GuidanceActionProps): JSX.Element => {
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
   const hasGuidanceAction = hasExtension(
@@ -38,7 +38,7 @@ const GuidanceAction = (props: GuidanceActionProps): React.JSX.Element => {
     }
   };
 
-  const updateGuidanceAction = (event: FocusEvent<HTMLInputElement>) => {
+  const updateGuidanceAction = (event: FocusEvent<HTMLInputElement>): void => {
     setItemExtension(
       props.item,
       createGuidanceActionExtension(event.target.value),

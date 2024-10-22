@@ -50,15 +50,15 @@ const FhirPathSelect = (props: FhirPathSelectProps): React.JSX.Element => {
     setPredifinedOptionIds(flattened);
   }, [props.item.type]);
 
-  const dispatchUpdateItem = (name: IItemProperty, value: boolean) => {
+  const dispatchUpdateItem = (name: IItemProperty, value: boolean): void => {
     dispatch(updateItemAction(props.item.linkId, name, value));
   };
 
-  const dispatchRemoveFhirPath = () => {
+  const dispatchRemoveFhirPath = (): void => {
     removeItemExtension(props.item, IExtensionType.fhirPath, dispatch);
   };
 
-  const dispatchUpdateFhirPath = (value: string) => {
+  const dispatchUpdateFhirPath = (value: string): void => {
     const extension = {
       url: IExtensionType.fhirPath,
       valueString: value,
@@ -66,7 +66,7 @@ const FhirPathSelect = (props: FhirPathSelectProps): React.JSX.Element => {
     setItemExtension(props.item, extension, dispatch);
   };
 
-  const handleSelect = (selectedValue: string) => {
+  const handleSelect = (selectedValue: string): void => {
     if (selectedValue === FhirPathOptionEnum.NONE) {
       setIsBlankButCustom(false);
       dispatchRemoveFhirPath();

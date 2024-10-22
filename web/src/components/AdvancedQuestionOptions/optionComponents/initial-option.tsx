@@ -23,7 +23,9 @@ type InitialOptionProps = {
 const InitialOption = (props: InitialOptionProps): React.JSX.Element => {
   const { dispatch } = useContext(TreeContext);
 
-  const dispatchUpdateItem = (value: QuestionnaireItemInitial | undefined) => {
+  const dispatchUpdateItem = (
+    value: QuestionnaireItemInitial | undefined,
+  ): void => {
     // TODO Support multiple QuestionnaireItemInitial
     const newInitial: QuestionnaireItemInitial[] | undefined = value
       ? [value]
@@ -33,7 +35,7 @@ const InitialOption = (props: InitialOptionProps): React.JSX.Element => {
     );
   };
 
-  function getInitialInput() {
+  function getInitialInput(): JSX.Element | undefined {
     // TODO Support multiple QuestionnaireItemInitial
     const initial: QuestionnaireItemInitial | undefined = props.item.initial
       ? props.item.initial[0]

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
-export const useCopyToClipboard = () => {
+export const useCopyToClipboard = (): {
+  isCopied: boolean;
+  copyToClipboard: (content: string) => Promise<void>;
+} => {
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
@@ -8,11 +11,11 @@ export const useCopyToClipboard = () => {
       const id = setTimeout(() => {
         setIsCopied(false);
       }, 2000);
-      return () => clearTimeout(id);
+      return (): void => clearTimeout(id);
     }
   }, [isCopied]);
 
-  const copyToClipboard = async (content: string) => {
+  const copyToClipboard = async (content: string): Promise<void> => {
     try {
       await navigator.clipboard.writeText(content);
       setIsCopied(true);

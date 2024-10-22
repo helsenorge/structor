@@ -18,7 +18,7 @@ const CalculatedExpressionOption = (
   props: CalculatedExpressionOptionProps,
 ): React.JSX.Element => {
   const { t } = useTranslation();
-  const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>) => {
+  const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>): void => {
     if (!event.target.value) {
       props.removeExtension(IExtensionType.calculatedExpression);
     } else {

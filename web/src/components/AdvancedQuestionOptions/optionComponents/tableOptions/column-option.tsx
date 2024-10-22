@@ -23,7 +23,7 @@ export const ColumnOption = ({
   item,
   parentItem,
   dispatch,
-}: ColumnOptionProps) => {
+}: ColumnOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   const options = createOptionsFromQItemCode(
@@ -31,7 +31,7 @@ export const ColumnOption = ({
     ICodeSystem.tableColumnName,
   );
 
-  const onChangeOption = (newValue: string) => {
+  const onChangeOption = (newValue: string): void => {
     removeItemCode(item, ICodeSystem.tableColumn, dispatch);
     addItemCode(
       item,

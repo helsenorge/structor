@@ -36,7 +36,7 @@ const TranslateMetaDataRow = ({
     ? t(validate(translatedValue, state, targetLanguage))
     : "";
 
-  const dispatchPropertyUpdate = (text: string) => {
+  const dispatchPropertyUpdate = (text: string): void => {
     if (!validationMessage) {
       dispatch(
         updateMetadataTranslationAction(targetLanguage, propertyName, text),
@@ -44,7 +44,7 @@ const TranslateMetaDataRow = ({
     }
   };
 
-  const renderBaseValue = () => (
+  const renderBaseValue = (): JSX.Element => (
     <>
       {markdown && <MarkdownEditor data={baseValue || ""} disabled={true} />}
       {!markdown && <textarea defaultValue={baseValue} disabled={true} />}
@@ -60,7 +60,7 @@ const TranslateMetaDataRow = ({
     return "";
   };
 
-  const renderTranslation = () => (
+  const renderTranslation = (): JSX.Element => (
     <>
       {markdown ? (
         <div className={getClassName()}>

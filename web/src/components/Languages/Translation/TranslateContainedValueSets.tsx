@@ -28,7 +28,6 @@ const TranslateContainedValueSets = ({
     const codings = getValueSetValues(valueSet);
     const { id } = valueSet;
     if (!codings || !id) {
-      console.error(`ValueSet ${valueSet.title} doesn't contain concepts`);
       return <></>;
     }
     return (

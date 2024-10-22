@@ -1,8 +1,8 @@
 import React from "react";
 
+import { ValueSetComposeIncludeConcept } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import "./Select.css";
-import { ValueSetComposeIncludeConcept } from "fhir/r4";
 
 type Props = {
   options: ValueSetComposeIncludeConcept[];

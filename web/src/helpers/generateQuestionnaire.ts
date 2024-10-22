@@ -82,6 +82,7 @@ const getTranslatedAnswerOptions = (
 const getTranslatedContained = (
   qContained: Array<ValueSet> | undefined,
   translation: Translation,
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 ) => {
   if (!qContained || qContained.length < 1) {
     return [];
@@ -115,6 +116,7 @@ const getTranslatedContained = (
 const getTranslatedSidebarItem = (
   translation: Translation,
   currentItem: QuestionnaireItem,
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 ) => {
   const sidebarItemTranslation = translation?.sidebarItems[currentItem.linkId];
   let _text = undefined;
@@ -326,6 +328,7 @@ const getTranslatedExtensions = (
   return extensions;
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getLanguageData(
   qMetadata: IQuestionnaireMetadata,
   languageCode: string,
@@ -492,7 +495,7 @@ const setEnrichmentValues = (
     expression: string;
     initialValue: QuestionnaireItemInitial;
   }[],
-) => {
+): void => {
   items.forEach((qItem) => {
     (qItem.extension || []).forEach((extension) => {
       replacementValues.forEach((replacementValue) => {

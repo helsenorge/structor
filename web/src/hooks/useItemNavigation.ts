@@ -24,7 +24,7 @@ export const useItemNavigation = (): ItemNavigation => {
     orderItems: Array<OrderItem>,
     ancestors: Array<string> = [],
     items: Array<FlatOrderItem> = [],
-  ) => {
+  ): FlatOrderItem[] => {
     const parentItem = ancestors
       ? qItems[ancestors[ancestors.length - 1]]
       : undefined;
@@ -42,11 +42,11 @@ export const useItemNavigation = (): ItemNavigation => {
 
   const flattened = flatMap(qOrder);
 
-  function getCurrentIndex() {
+  function getCurrentIndex(): number {
     return flattened.findIndex((item) => item.linkId === qCurrentItem?.linkId);
   }
 
-  const previous = () => {
+  const previous = (): void => {
     const currentIndex = getCurrentIndex();
     if (currentIndex > 0) {
       const previousItem = flattened[currentIndex - 1];
@@ -56,7 +56,7 @@ export const useItemNavigation = (): ItemNavigation => {
     }
   };
 
-  const next = () => {
+  const next = (): void => {
     const currentIndex = getCurrentIndex();
     if (currentIndex < flattened.length - 1) {
       const nextItem = flattened[currentIndex + 1];

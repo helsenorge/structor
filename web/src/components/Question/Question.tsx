@@ -1,8 +1,5 @@
 import React from "react";
 
-import { useTranslation } from "react-i18next";
-import "./Question.css";
-
 import {
   Element,
   Extension,
@@ -11,6 +8,8 @@ import {
   ValueSet,
   ValueSetComposeIncludeConcept,
 } from "fhir/r4";
+import { useTranslation } from "react-i18next";
+import "./Question.css";
 import removeMd from "remove-markdown";
 
 import {
@@ -103,7 +102,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
     );
   };
 
-  const convertToPlaintext = (stringToBeConverted: string) => {
+  const convertToPlaintext = (stringToBeConverted: string): string => {
     let plainText = removeMd(stringToBeConverted);
     plainText = plainText.replaceAll("\\", "");
     plainText = plainText.replaceAll(/([ \n])+/g, " ");

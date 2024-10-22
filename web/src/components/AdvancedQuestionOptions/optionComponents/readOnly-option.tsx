@@ -18,7 +18,7 @@ export const ReadOnlyOption = ({
   item,
   dispatch,
   isDataReceiver,
-}: ReadOnlyOptionProps) => {
+}: ReadOnlyOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   return (

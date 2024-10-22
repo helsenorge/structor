@@ -8,7 +8,7 @@ export const useKeyPress = (
   callback: () => void,
   disabled?: boolean,
 ): void => {
-  const keyPressHandler = ({ key, target }: KeyboardEvent) => {
+  const keyPressHandler = ({ key, target }: KeyboardEvent): void => {
     const { tagName, classList } = target as Element;
     const ignoreClassName = unhandledKeyPressClassNames.some(
       (unhandledClassName) =>

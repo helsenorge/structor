@@ -74,7 +74,10 @@ export const choiceRenderOptions = (
   { code: ChoiceRenderOptionCodes.Compact, display: t("Compact display") },
 ];
 
-export const getItemCode = (item: QuestionnaireItem, system: ICodeSystem) => {
+export const getItemCode = (
+  item: QuestionnaireItem,
+  system: ICodeSystem,
+): Coding | undefined => {
   return item.code?.find((code: Coding) => code.system === system);
 };
 
@@ -271,7 +274,7 @@ export const updateChildWithMatchingCode = (
   systemValue: ICodeSystem,
   codeValue: string,
   dispatch: (value: ActionType) => void,
-) => {
+): void => {
   const parentOrderItem = getOrderItemByLinkId(qOrder, item.linkId);
   parentOrderItem?.items.forEach((childOrderItem) => {
     const childItem = qItems[childOrderItem.linkId];

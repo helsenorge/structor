@@ -64,7 +64,7 @@ const TranslateItemRow = ({
   function dispatchUpdateItemTranslation(
     text: string,
     propertyName: Exclude<TranslatableItemProperty, "code">,
-  ) {
+  ): void {
     dispatch(
       updateItemTranslationAction(
         targetLanguage,
@@ -77,7 +77,7 @@ const TranslateItemRow = ({
   function dispatchUpdateItemCodeTranslation(
     newDisplayText: string,
     code: Coding,
-  ) {
+  ): void {
     dispatch(
       updateItemCodeTranslation(
         targetLanguage,
@@ -87,7 +87,10 @@ const TranslateItemRow = ({
       ),
     );
   }
-  function dispatchUpdateOptionTranslation(text: string, optionCode?: string) {
+  function dispatchUpdateOptionTranslation(
+    text: string,
+    optionCode?: string,
+  ): void {
     if (optionCode) {
       dispatch(
         updateItemOptionTranslationAction(
@@ -182,10 +185,10 @@ const TranslateItemRow = ({
     );
     const handleOnBlurText = (
       event: React.FocusEvent<HTMLTextAreaElement, Element>,
-    ) => {
+    ): void => {
       dispatchUpdateItemTranslation(event.target.value, propertyName);
     };
-    const handleOnBlurMarkdown = (newValue: string) => {
+    const handleOnBlurMarkdown = (newValue: string): void => {
       dispatchUpdateItemTranslation(newValue, propertyName);
     };
     return (
@@ -240,7 +243,7 @@ const TranslateItemRow = ({
 
     const handleOnBlurText = (
       event: React.FocusEvent<HTMLTextAreaElement, Element>,
-    ) => {
+    ): void => {
       dispatchUpdateItemCodeTranslation(event.target.value, code);
     };
     return (

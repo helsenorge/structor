@@ -36,7 +36,7 @@ const GuidanceParam = (props: GuidanceParamProps): React.JSX.Element => {
   );
   const [validationMessage, setValidationMessage] = useState("");
 
-  const toggleGuidanceParam = () => {
+  const toggleGuidanceParam = (): void => {
     if (hasGuidanceParam) {
       removeItemExtension(props.item, IExtensionType.guidanceParam, dispatch);
     } else {
@@ -48,7 +48,7 @@ const GuidanceParam = (props: GuidanceParamProps): React.JSX.Element => {
     }
   };
 
-  const updateParameterName = (event: FocusEvent<HTMLInputElement>) => {
+  const updateParameterName = (event: FocusEvent<HTMLInputElement>): void => {
     validateParameterName(event.target.value);
     if (isValidGuidanceParameterName(event.target.value)) {
       setItemExtension(
@@ -59,7 +59,7 @@ const GuidanceParam = (props: GuidanceParamProps): React.JSX.Element => {
     }
   };
 
-  const validateParameterName = (value: string) => {
+  const validateParameterName = (value: string): void => {
     if (!isValidGuidanceParameterName(value)) {
       setValidationMessage(
         t(

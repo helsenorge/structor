@@ -20,7 +20,7 @@ const removeUnsupportedChildren = (
   itemOrder: OrderItem[],
   qItems: Items,
   parentLinkId?: string,
-) => {
+): OrderItem[] => {
   const parentItem = parentLinkId ? qItems[parentLinkId] : undefined;
   return itemOrder.filter(
     (x) => !isIgnorableItem(qItems[x.linkId], parentItem),

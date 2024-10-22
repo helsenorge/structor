@@ -34,7 +34,7 @@ const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
 
-  const checkedRenderOptions = () => {
+  const checkedRenderOptions = (): string => {
     return item.extension?.find((ex) => ex.url === IExtensionType.hidden)
       ?.valueBoolean
       ? RenderingOptionsEnum.Hidden
@@ -42,7 +42,7 @@ const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
           (code) => code.system === ICodeSystem.renderOptionsCodeSystem,
         )?.code ?? RenderingOptionsEnum.None);
   };
-  const onChangeRenderOptions = (newValue: string) => {
+  const onChangeRenderOptions = (newValue: string): void => {
     removeItemExtension(item, IExtensionType.hidden, dispatch);
     removeItemCode(item, ICodeSystem.renderOptionsCodeSystem, dispatch);
     switch (newValue) {
@@ -62,7 +62,7 @@ const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
     }
   };
 
-  const checkedChoiceRenderOptions = () => {
+  const checkedChoiceRenderOptions = (): string | undefined => {
     const choiceRendering = item.code?.find(
       (code) => code.system === ICodeSystem.choiceRenderOptions,
     );
@@ -70,7 +70,7 @@ const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
       ? ChoiceRenderOptionCodes.Default
       : choiceRendering.code;
   };
-  const onChangeChoiceRenderOptions = (newValue: string) => {
+  const onChangeChoiceRenderOptions = (newValue: string): void => {
     removeItemCode(item, ICodeSystem.choiceRenderOptions, dispatch);
     addChoiceRenderOptionItemCode(item, newValue, t, dispatch);
   };

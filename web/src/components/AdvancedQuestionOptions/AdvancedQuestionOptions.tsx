@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react";
 
-import { TreeContext } from "../../store/treeStore/treeStore";
-
 import {
   Extension,
   QuestionnaireItem,
@@ -56,6 +54,7 @@ import {
   canTypeHaveSummary,
   canTypeCopyData,
 } from "../../helpers/questionTypeFeatures";
+import { TreeContext } from "../../store/treeStore/treeStore";
 
 type AdvancedQuestionOptionsProps = {
   item: QuestionnaireItem;
@@ -77,7 +76,7 @@ const AdvancedQuestionOptions = ({
   );
 
   const parentItem = getItem(parentArray[parentArray.length - 1]) || [];
-  const showTableColumnOption = () => {
+  const showTableColumnOption = (): boolean => {
     let returnValue: boolean = false;
     if (
       parentItem &&
@@ -89,11 +88,11 @@ const AdvancedQuestionOptions = ({
     return returnValue;
   };
 
-  const handleExtension = (extension: Extension) => {
+  const handleExtension = (extension: Extension): void => {
     setItemExtension(item, extension, dispatch);
   };
 
-  const removeExtension = (extensionUrl: IExtensionType) => {
+  const removeExtension = (extensionUrl: IExtensionType): void => {
     removeItemExtension(item, extensionUrl, dispatch);
   };
 

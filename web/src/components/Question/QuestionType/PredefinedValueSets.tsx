@@ -44,14 +44,14 @@ const PredefinedValueSets = ({
       } as ValueSetComposeIncludeConcept;
     }) || [];
 
-  const handleDisplaySelected = () => {
+  const handleDisplaySelected = (): string => {
     if (item.answerValueSet && item.answerValueSet.indexOf("#") >= 0) {
       return item.answerValueSet.substring(1);
     }
     return "";
   };
 
-  const renderPreDefinedValueSet = () => {
+  const renderPreDefinedValueSet = (): JSX.Element[] | undefined => {
     const selectedPredefinedValueSet = handleDisplaySelected();
     if (selectedPredefinedValueSet !== "") {
       return getContainedValueSetValues(selectedPredefinedValueSet).map((x) => {
@@ -66,7 +66,7 @@ const PredefinedValueSets = ({
     return undefined;
   };
 
-  const handleDisplaySelectedTitle = () => {
+  const handleDisplaySelectedTitle = (): string => {
     if (item.answerValueSet && item.answerValueSet.indexOf("#") >= 0) {
       const id = item.answerValueSet.substring(1);
       return qContained?.find((x) => x.id === id)?.title || "";
@@ -74,7 +74,7 @@ const PredefinedValueSets = ({
     return "";
   };
 
-  const handleSelectedValueSet = (id: string) => {
+  const handleSelectedValueSet = (id: string): void => {
     const valueSet = qContained?.find((x) => x.id === id);
     if (valueSet) {
       dispatchUpdateItem(IItemProperty.answerValueSet, `#${id}`);

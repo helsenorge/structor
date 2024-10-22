@@ -8,7 +8,7 @@ type LinksOptionProps = {
   item: QuestionnaireItem;
 };
 
-export const LinksOption = ({ item }: LinksOptionProps) => {
+export const LinksOption = ({ item }: LinksOptionProps): JSX.Element => {
   const { t } = useTranslation();
 
   return (

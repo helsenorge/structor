@@ -75,11 +75,19 @@ const externalNodeSpec = {
   // This needs to return an object with a property `node` in it.
   // Object rest spread is recommended to avoid side effects of
   // referencing the same object in different trees.
-  beginDrag: (componentProps: { node: Node }) => ({
+  beginDrag: (componentProps: {
+    node: Node;
+  }): {
+    node: Node;
+  } => ({
     node: { ...componentProps.node },
   }),
 };
-const externalNodeCollect = (connect: DragSourceConnector) => ({
+const externalNodeCollect = (
+  connect: DragSourceConnector,
+): {
+  connectDragSource: ConnectDragSource;
+} => ({
   connectDragSource: connect.dragSource(),
   // Add props via react-dnd APIs to enable more visual
   // customization of your component
@@ -152,7 +160,7 @@ const AnchorMenu = (props: AnchorMenuProps): React.JSX.Element => {
     return props.qCurrentItem?.linkId === linkId;
   };
 
-  const getRelevantIcon = (type?: string) => {
+  const getRelevantIcon = (type?: string): string => {
     switch (type) {
       case IQuestionnaireItemType.group:
         return "folder-icon";
@@ -295,6 +303,8 @@ const AnchorMenu = (props: AnchorMenuProps): React.JSX.Element => {
             title: (
               <span
                 className="anchor-menu__inneritem"
+                role="button"
+                tabIndex={0}
                 onClick={() => {
                   props.dispatch(
                     updateMarkedLinkIdAction(
@@ -302,6 +312,16 @@ const AnchorMenu = (props: AnchorMenuProps): React.JSX.Element => {
                       treePathToOrderArray(extendedNode.path),
                     ),
                   );
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    props.dispatch(
+                      updateMarkedLinkIdAction(
+                        extendedNode.node.title,
+                        treePathToOrderArray(extendedNode.path),
+                      ),
+                    );
+                  }
                 }}
               >
                 <span

@@ -168,7 +168,7 @@ export function getItemPropertyTranslation(
   languages: Languages,
   linkId: string,
   property: Exclude<TranslatableItemProperty, "code">,
-) {
+): string {
   if (!languages[languageCode].items[linkId]) {
     return "";
   }

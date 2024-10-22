@@ -18,7 +18,7 @@ type Props = {
   item: QuestionnaireItem;
 };
 
-export const SliderMinMaxLabels = ({ item }: Props) => {
+export const SliderMinMaxLabels = ({ item }: Props): JSX.Element => {
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
   const leftLabel = item.code?.find(
@@ -32,7 +32,9 @@ export const SliderMinMaxLabels = ({ item }: Props) => {
       cd.code === SliderLabelEnum.LabelRight,
   );
 
-  const handleSetMaxLabel = (event: React.FocusEvent<HTMLInputElement>) => {
+  const handleSetMaxLabel = (
+    event: React.FocusEvent<HTMLInputElement>,
+  ): void => {
     dispatch(
       updateItemCodePropertyWithCodeAction(
         item.linkId,
@@ -43,7 +45,9 @@ export const SliderMinMaxLabels = ({ item }: Props) => {
       ),
     );
   };
-  const handleSetMinLabel = (event: React.FocusEvent<HTMLInputElement>) => {
+  const handleSetMinLabel = (
+    event: React.FocusEvent<HTMLInputElement>,
+  ): void => {
     dispatch(
       updateItemCodePropertyWithCodeAction(
         item.linkId,

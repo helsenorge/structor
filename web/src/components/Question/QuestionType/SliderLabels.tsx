@@ -18,7 +18,7 @@ type Props = {
   item: QuestionnaireItem;
 };
 
-export const SliderLabels = ({ item }: Props) => {
+export const SliderLabels = ({ item }: Props): JSX.Element => {
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
   const sliderDisplayTypeCoding = item.code?.find(
