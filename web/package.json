@@ -13,12 +13,12 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test:run": "vitest",
-    "test": "vitest --coverage --reporter=junit"
+    "test": "vitest"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^6.0.0",
     "@helsenorge/autosuggest": "^32.0.0",
-    "@helsenorge/ckeditor5-build-markdown": "^24.0.0",
+    "@helsenorge/core-build": "^32.5.0",
     "@helsenorge/core-utils": "^32.0.0",
     "@helsenorge/datepicker": "^8.0.0",
     "@helsenorge/designsystem-react": "^8.0.0",
@@ -33,7 +33,7 @@
     "crypto-js": "^4.1.1",
     "date-fns": "^3.3.1",
     "i18next": "^19.6.3",
-    "idb": "^6.0.0",
+    "idb": "^8.0.0",
     "immer": "^9.0.0",
     "jose": "^3.11.3",
     "openid-client": "^4.7.2",
@@ -55,7 +55,6 @@
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.0.0",
     "@types/fhir": "^0.0.41",
-    "@types/jest": "^26.0.24",
     "@types/node": "^20.0.0",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-datepicker": "^4.0.0",
@@ -64,14 +63,12 @@
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-legacy": "^4.1.1",
     "@vitejs/plugin-react": "^4.0.3",
-    "@vitest/coverage-v8": "^0.34.6",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "sass": "^1.69.0",
     "terser": "^5.22.0",
     "typescript": "^5.0.0",
-    "vitest": "^0.34.6",
-    "vitest-sonar-reporter": "^0.4.0"
+    "vitest-sonar-reporter": "^2.0.0"
   }
 }
