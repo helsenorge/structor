@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export const useCopyToClipboard = () => {
   const [isCopied, setIsCopied] = useState(false);
@@ -16,10 +16,12 @@ export const useCopyToClipboard = () => {
     try {
       await navigator.clipboard.writeText(content);
       setIsCopied(true);
-      console.log('Copied to clipboard:', content);
+      // eslint-disable-next-line no-console
+      console.log("Copied to clipboard:", content);
     } catch (error) {
       setIsCopied(false);
-      console.error('Unable to copy to clipboard:', error);
+      // eslint-disable-next-line no-console
+      console.error("Unable to copy to clipboard:", error);
     }
   };
 

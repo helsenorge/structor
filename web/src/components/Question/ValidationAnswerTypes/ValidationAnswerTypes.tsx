@@ -1,33 +1,38 @@
-import React from 'react';
-import { IQuestionnaireItemType } from '../../../types/IQuestionnareItemType';
-import ValidationAnswerTypeNumber from './ValidationAnswerTypeNumber';
-import ValidationAnswerTypeString from './ValidationAnswerTypeString';
-import ValidationAnswerTypeDate from './ValidationAnswerTypeDate';
-import { QuestionnaireItem } from 'fhir/r4';
-import ValidationAnswerTypeAttachment from './ValidationAnswerTypeAttachment';
+import React from "react";
+
+import { QuestionnaireItem } from "fhir/r4";
+
+import { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
+
+import ValidationAnswerTypeAttachment from "./ValidationAnswerTypeAttachment";
+import ValidationAnswerTypeDate from "./ValidationAnswerTypeDate";
+import ValidationAnswerTypeNumber from "./ValidationAnswerTypeNumber";
+import ValidationAnswerTypeString from "./ValidationAnswerTypeString";
 interface ValidationTypeProp {
-    item: QuestionnaireItem;
+  item: QuestionnaireItem;
 }
 
-const ValidationAnswerTypes = ({ item }: ValidationTypeProp): React.JSX.Element => {
-    const respondType = (itemType: string) => {
-        switch (itemType) {
-            case IQuestionnaireItemType.attachment:
-                return <ValidationAnswerTypeAttachment item={item} />;
-            case IQuestionnaireItemType.date:
-            case IQuestionnaireItemType.dateTime:
-                return <ValidationAnswerTypeDate item={item} />;
-            case IQuestionnaireItemType.string:
-            case IQuestionnaireItemType.text:
-                return <ValidationAnswerTypeString item={item} />;
-            case IQuestionnaireItemType.integer:
-            case IQuestionnaireItemType.decimal:
-            case IQuestionnaireItemType.quantity:
-                return <ValidationAnswerTypeNumber item={item} />;
-        }
-    };
+const ValidationAnswerTypes = ({
+  item,
+}: ValidationTypeProp): React.JSX.Element => {
+  const respondType = (itemType: string) => {
+    switch (itemType) {
+      case IQuestionnaireItemType.attachment:
+        return <ValidationAnswerTypeAttachment item={item} />;
+      case IQuestionnaireItemType.date:
+      case IQuestionnaireItemType.dateTime:
+        return <ValidationAnswerTypeDate item={item} />;
+      case IQuestionnaireItemType.string:
+      case IQuestionnaireItemType.text:
+        return <ValidationAnswerTypeString item={item} />;
+      case IQuestionnaireItemType.integer:
+      case IQuestionnaireItemType.decimal:
+      case IQuestionnaireItemType.quantity:
+        return <ValidationAnswerTypeNumber item={item} />;
+    }
+  };
 
-    return <>{respondType(item.type)}</>;
+  return <>{respondType(item.type)}</>;
 };
 
 export default ValidationAnswerTypes;

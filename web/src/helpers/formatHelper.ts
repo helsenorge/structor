@@ -1,7 +1,7 @@
 export const removeSpace = (value: string): string => {
-    return value.replace(/\s/g, '-').toLocaleLowerCase();
+  return value.replace(/\s/g, "-").toLocaleLowerCase();
 };
 
 export const isNumeric = (value: string): boolean => {
-    return !isNaN(parseFloat(value));
+  return !isNaN(parseFloat(value));
 };

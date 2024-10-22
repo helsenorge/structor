@@ -1,97 +1,140 @@
+import { useEffect } from "react";
+
 import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { ActionType, Items, OrderItem } from "../../../../store/treeStore/treeStore";
-import { ICodeSystem, ICodingProperty } from "../../../../types/IQuestionnareItemType";
+
+import {
+  ICodeSystem,
+  ICodingProperty,
+} from "../../../../types/IQuestionnareItemType";
+
+import {
+  removeItemCodeWithCode,
+  addItemCode,
+  getAllMatchingCodes,
+  updateChildWithMatchingCode,
+} from "../../../../helpers/codeHelper";
+import { updateItemCodePropertyWithCodeAction } from "../../../../store/treeStore/treeActions";
+import {
+  ActionType,
+  Items,
+  OrderItem,
+} from "../../../../store/treeStore/treeStore";
+import Btn from "../../../Btn/Btn";
 import FormField from "../../../FormField/FormField";
 import InputField from "../../../InputField/inputField";
-import {
-    removeItemCodeWithCode,
-    addItemCode,
-    getAllMatchingCodes,
-    updateChildWithMatchingCode,
-} from "../../../../helpers/codeHelper";
-import { useEffect } from "react";
-import Btn from "../../../Btn/Btn";
-import { updateItemCodePropertyWithCodeAction } from "../../../../store/treeStore/treeActions";
 
 type ColumnNameOptionProps = {
-    item: QuestionnaireItem;
-    qItems: Items;
-    qOrder: OrderItem[];
-    dispatch: React.Dispatch<ActionType>;
+  item: QuestionnaireItem;
+  qItems: Items;
+  qOrder: OrderItem[];
+  dispatch: React.Dispatch<ActionType>;
 };
 
-export const ColumnNameOption = ({item, qItems, qOrder, dispatch}: ColumnNameOptionProps) => {
-    const { t } = useTranslation();
-    let existingColumnCodes = getAllMatchingCodes(item, ICodeSystem.tableColumnName);
-    const lastItem = existingColumnCodes && existingColumnCodes[existingColumnCodes?.length -1];
+export const ColumnNameOption = ({
+  item,
+  qItems,
+  qOrder,
+  dispatch,
+}: ColumnNameOptionProps) => {
+  const { t } = useTranslation();
+  let existingColumnCodes = getAllMatchingCodes(
+    item,
+    ICodeSystem.tableColumnName,
+  );
+  const lastItem =
+    existingColumnCodes && existingColumnCodes[existingColumnCodes?.length - 1];
 
-    const onBlurNameInput = (oldCodeValue: string, newDisplayValue: string): void => {
-        if (newDisplayValue === '') {
-            return;
-        }
-        dispatch(updateItemCodePropertyWithCodeAction(
-            item.linkId,
-            ICodingProperty.display,
-            newDisplayValue,
-            ICodeSystem.tableColumnName,
-            oldCodeValue
-        ));
-        updateChildWithMatchingCode(item, qItems, qOrder, newDisplayValue, ICodeSystem.tableColumn, oldCodeValue, dispatch);
-    };
-
-    const onAddButtonClicked = (): void => {
-        const previousCode = lastItem?.code;
-        const newCode = previousCode ? parseInt(previousCode) + 1 : 1;
-
-        addItemCode(
-            item,
-            {
-              system: ICodeSystem.tableColumnName,
-              code: newCode.toString(),
-              display: '',
-            },
-            dispatch
-          );
+  const onBlurNameInput = (
+    oldCodeValue: string,
+    newDisplayValue: string,
+  ): void => {
+    if (newDisplayValue === "") {
+      return;
     }
+    dispatch(
+      updateItemCodePropertyWithCodeAction(
+        item.linkId,
+        ICodingProperty.display,
+        newDisplayValue,
+        ICodeSystem.tableColumnName,
+        oldCodeValue,
+      ),
+    );
+    updateChildWithMatchingCode(
+      item,
+      qItems,
+      qOrder,
+      newDisplayValue,
+      ICodeSystem.tableColumn,
+      oldCodeValue,
+      dispatch,
+    );
+  };
 
-    const onDeleteButtonClicked = (code: string): void => {
-        removeItemCodeWithCode(item, ICodeSystem.tableColumnName, code, dispatch);
-    };
+  const onAddButtonClicked = (): void => {
+    const previousCode = lastItem?.code;
+    const newCode = previousCode ? parseInt(previousCode) + 1 : 1;
 
-    useEffect(() => {
-        existingColumnCodes = getAllMatchingCodes(item, ICodeSystem.tableColumnName);
-    }, [item.code]);
+    addItemCode(
+      item,
+      {
+        system: ICodeSystem.tableColumnName,
+        code: newCode.toString(),
+        display: "",
+      },
+      dispatch,
+    );
+  };
 
-    return (
-        <div className="horizontal full">
-            <FormField label={t('Table columns')} sublabel={t('Add columns to the table')}>
-                {existingColumnCodes?.map((coding, index) => (
-                    <div key={coding.display + index.toString()} className="columnNames-fieldWrapper">
-                        <InputField
-                            defaultValue={coding.display}
-                            placeholder={t('Enter column name..')}
-                            onBlur={(e) => {onBlurNameInput(coding.code || '', e.target.value)}}
-                        />
-                        {
-                            <button
-                                className="columnNames-deleteButton"
-                                type="button"
-                                name={t('Remove element')}
-                                onClick={() => onDeleteButtonClicked(coding.code || '')}
-                            />
-                        }
-                    </div>
-                ))}
-                <div className="columnNames-addButton">
-                    <Btn
-                        title={t('+ Add column')}
-                        type="button"
-                        onClick={() => onAddButtonClicked()}
-                        variant={"secondary"}
-                    />
-                </div>
-            </FormField>
+  const onDeleteButtonClicked = (code: string): void => {
+    removeItemCodeWithCode(item, ICodeSystem.tableColumnName, code, dispatch);
+  };
+
+  useEffect(() => {
+    existingColumnCodes = getAllMatchingCodes(
+      item,
+      ICodeSystem.tableColumnName,
+    );
+  }, [item.code]);
+
+  return (
+    <div className="horizontal full">
+      <FormField
+        label={t("Table columns")}
+        sublabel={t("Add columns to the table")}
+      >
+        {existingColumnCodes?.map((coding, index) => (
+          <div
+            key={coding.display + index.toString()}
+            className="columnNames-fieldWrapper"
+          >
+            <InputField
+              defaultValue={coding.display}
+              placeholder={t("Enter column name..")}
+              onBlur={(e) => {
+                onBlurNameInput(coding.code || "", e.target.value);
+              }}
+            />
+            {
+              <button
+                className="columnNames-deleteButton"
+                type="button"
+                name={t("Remove element")}
+                onClick={() => onDeleteButtonClicked(coding.code || "")}
+              />
+            }
+          </div>
+        ))}
+        <div className="columnNames-addButton">
+          <Btn
+            title={t("+ Add column")}
+            type="button"
+            onClick={() => onAddButtonClicked()}
+            variant={"secondary"}
+          />
         </div>
-    )
-}
+      </FormField>
+    </div>
+  );
+};

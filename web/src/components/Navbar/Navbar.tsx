@@ -1,20 +1,28 @@
 import React, { useContext, useRef, useState } from "react";
+
 import { generateQuestionnaire } from "../../helpers/generateQuestionnaire";
-import { TreeContext } from "../../store/treeStore/treeStore";
-import Btn from "../Btn/Btn";
-import MoreIcon from "../../images/icons/ellipsis-horizontal-outline.svg";
+import {
+  validateOrphanedElements,
+  validateSidebar,
+} from "../../helpers/validation/orphanValidation";
+import { infoSecurity } from "../../helpers/validation/securityValidation";
+import {
+  validateTranslations,
+  warnMarkdownInTranslations,
+} from "../../helpers/validation/translationValidation";
 import useOutsideClick from "../../hooks/useOutsideClick";
+import MoreIcon from "../../images/icons/ellipsis-horizontal-outline.svg";
+import { saveAction } from "../../store/treeStore/treeActions";
+import { TreeContext } from "../../store/treeStore/treeStore";
+import { ValidationErrors } from "../../utils/validationUtils";
+import Btn from "../Btn/Btn";
 import "./Navbar.css";
+import ImportValueSet from "../ImportValueSet/ImportValueSet";
 import JSONView from "../JSONView/JSONView";
 import PredefinedValueSetModal from "../PredefinedValueSetModal/PredefinedValueSetModal";
-import ImportValueSet from "../ImportValueSet/ImportValueSet";
-import { saveAction } from "../../store/treeStore/treeActions";
-import { validateOrphanedElements, validateSidebar } from "../../helpers/validation/orphanValidation";
 import { ValidationErrorsModal } from "../ValidationErrorsModal/validationErrorsModal";
+
 import { useTranslation } from "react-i18next";
-import { validateTranslations, warnMarkdownInTranslations } from "../../helpers/validation/translationValidation";
-import { ValidationErrors } from "../../utils/validationUtils";
-import { infoSecurity } from "../../helpers/validation/securityValidation";
 
 type Props = {
   showFormFiller: () => void;
@@ -174,18 +182,15 @@ const Navbar = ({
                     t,
                     state.qOrder,
                     state.qItems,
-                    state.qContained || []
-                  )
+                    state.qContained || [],
+                  ),
                 );
-                setTranslationErrors(
-                  validateTranslations(
-                    t,
-                    state,
-                  )
+                setTranslationErrors(validateTranslations(t, state));
+                setSidebarErrors(
+                  validateSidebar(t, state.qItems, state.qMetadata),
                 );
-                setSidebarErrors(validateSidebar(t, state.qItems, state.qMetadata));
                 setMarkdownWarning(warnMarkdownInTranslations(t, state));
-                setSecurityInformation(infoSecurity(t, state.qMetadata))
+                setSecurityInformation(infoSecurity(t, state.qMetadata));
                 setShowValidationErrors(true);
               }}
             />
@@ -199,7 +204,7 @@ const Navbar = ({
               title={t("Import choices")}
               onClick={() =>
                 callbackAndHide(() =>
-                  setShowImportValueSet(!showImportValueSet)
+                  setShowImportValueSet(!showImportValueSet),
                 )
               }
             />

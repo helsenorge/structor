@@ -37,8 +37,9 @@ export const getStateFromDb = async (): Promise<TreeState | undefined> => {
   try {
     const database = await initializeDb();
     const result = await database.get(STORE_NAME, 1);
-    return result; // Will be undefined if not found
+    return result;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Failed to retrieve state from IndexedDB:", error);
     return undefined;
   }

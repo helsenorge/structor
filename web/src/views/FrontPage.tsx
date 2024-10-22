@@ -31,6 +31,7 @@ const FrontPage = (): React.JSX.Element => {
           setStateFromStorage(indexedDbState);
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Failed to retrieve state from IndexedDB:", error);
       }
     };
@@ -51,6 +52,7 @@ const FrontPage = (): React.JSX.Element => {
         dispatch(resetQuestionnaireAction(importedState));
         setIsFormBuilderShown(true);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Error parsing the questionnaire file:", error);
       } finally {
         setIsLoading(false);
@@ -72,6 +74,7 @@ const FrontPage = (): React.JSX.Element => {
       const reader = new FileReader();
       reader.onload = onReaderLoad;
       reader.onerror = (): void => {
+        // eslint-disable-next-line no-console
         console.error("Failed to read file");
         setIsLoading(false);
       };

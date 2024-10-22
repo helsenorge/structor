@@ -10,20 +10,26 @@ will give:
 }
  */
 const isEmptyObject = (value: unknown): boolean => {
-    return typeof value === 'object' && Object.keys(<Record<string, unknown>>value).length === 0;
+  return (
+    typeof value === "object" &&
+    Object.keys(<Record<string, unknown>>value).length === 0
+  );
 };
 
-export const emptyPropertyReplacer = (_key: string, value: unknown): unknown => {
-    if (value === undefined || value === null || value === '') {
-        return undefined;
-    }
-    if (Array.isArray(value)) {
-        // remove empty objects from array (to avoid null values in arrays)
-        const filteredValue = value.filter((x) => !isEmptyObject(x));
-        return filteredValue.length === 0 ? undefined : filteredValue;
-    }
-    if (isEmptyObject(value)) {
-        return undefined;
-    }
-    return value;
+export const emptyPropertyReplacer = (
+  _key: string,
+  value: unknown,
+): unknown => {
+  if (value === undefined || value === null || value === "") {
+    return undefined;
+  }
+  if (Array.isArray(value)) {
+    // remove empty objects from array (to avoid null values in arrays)
+    const filteredValue = value.filter((x) => !isEmptyObject(x));
+    return filteredValue.length === 0 ? undefined : filteredValue;
+  }
+  if (isEmptyObject(value)) {
+    return undefined;
+  }
+  return value;
 };

@@ -1,20 +1,26 @@
-import React, { ReactNode, createContext, useState } from 'react';
+import React, { ReactNode, createContext, useState } from "react";
 
-const defaultLocale = 'en_US';
+const defaultLocale = "en_US";
 
 type UserContextType = {
-    locale: string;
-    setLocale: (value: string) => void;
+  locale: string;
+  setLocale: (value: string) => void;
 };
 
 type Props = {
-    children: ReactNode;
+  children: ReactNode;
 };
 
-export const UserContext = createContext<UserContextType | undefined>(undefined);
+export const UserContext = createContext<UserContextType | undefined>(
+  undefined,
+);
 
 export const UserProvider = ({ children }: Props): React.JSX.Element => {
-    const [locale, setLocale] = useState(defaultLocale);
+  const [locale, setLocale] = useState(defaultLocale);
 
-    return <UserContext.Provider value={{ locale, setLocale }}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ locale, setLocale }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
