@@ -19,8 +19,6 @@ export const useCopyToClipboard = (): {
     try {
       await navigator.clipboard.writeText(content);
       setIsCopied(true);
-      // eslint-disable-next-line no-console
-      console.log("Copied to clipboard:", content);
     } catch (error) {
       setIsCopied(false);
       // eslint-disable-next-line no-console

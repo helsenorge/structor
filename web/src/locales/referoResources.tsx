@@ -1,6 +1,10 @@
-export const getResources = (language: string): { [id: string]: string } => {
+import { Resources } from "@helsenorge/refero";
+
+export const getResources = (language: string): Resources => {
   if (language === "en-GB") {
     return {
+      oppgiDatoTid: "Enter date and time",
+      openChoiceOption: "Other",
       deleteButtonText: "Delete",
       validationSummaryHeader:
         "Check that the following are filled in correctly:",
@@ -50,7 +54,7 @@ export const getResources = (language: string): { [id: string]: string } => {
         'No results found for "{0}". Try another word or check for spelling errors.',
       stringOverMaxLengthError:
         "You have typed too many characters. Make the text shorter.",
-      maxLengthText: "Maximum {0} characters",
+      maxLengthText: "characters",
       chooseFilesText: "Select files",
       skipLinkText: "Go to navigator",
       clearDate: "Remove date",
@@ -105,11 +109,12 @@ export const getResources = (language: string): { [id: string]: string } => {
       linkOpensInNewTab: "Opens in new tab",
       nextStep: "Next",
       previousStep: "Previous",
-      openChoiceOption: "Other",
     };
   }
   if (language === "fr-FR") {
     return {
+      oppgiDatoTid: "Entrez la date et l’heure",
+      openChoiceOption: "Autre",
       deleteButtonText: "Supprimer",
       validationSummaryHeader:
         "Vérifiez que les éléments suivants sont bien remplis:",
@@ -162,7 +167,7 @@ export const getResources = (language: string): { [id: string]: string } => {
         'Pas de résultat pour "{0}". Essayez un autre mot ou vérifiez son orthographe.',
       stringOverMaxLengthError:
         "Vous avez entré trop de caractères. Réduisez le texte.",
-      maxLengthText: "Maximum {0} caractères",
+      maxLengthText: "caractères",
       chooseFilesText: "Selectionnez les fichiers",
       skipLinkText: "Allez au navigateur",
       clearDate: "Supprimer la date",
@@ -219,7 +224,6 @@ export const getResources = (language: string): { [id: string]: string } => {
       linkOpensInNewTab: `S'ouvre dans un nouvel onglet`,
       nextStep: "Suivant",
       previousStep: "Précédent",
-      openChoiceOption: "Autre",
     };
   }
   return {
@@ -243,7 +247,7 @@ export const getResources = (language: string): { [id: string]: string } => {
     formSend: "Fullfør",
     formSave: "Vis QuestionnaireResponse",
     formError: "Sjekk at alt er riktig utfylt.",
-    formOptional: "(valgfritt)",
+    formOptional: "(Valgfritt)",
     formRequired: "(må fylles ut)",
     repeatButtonText: "Legg til",
     avsluttSkjema: "Avslutt skjema",
@@ -270,7 +274,7 @@ export const getResources = (language: string): { [id: string]: string } => {
       'Ingen treff på "{0}". Prøv med et annet ord eller sjekk for skrivefeil.',
     stringOverMaxLengthError:
       "Du har skrevet for mange tegn. Gjør teksten kortere.",
-    maxLengthText: "Maksimum {0} tegn",
+    maxLengthText: "tegn",
     chooseFilesText: "Velg filer",
     skipLinkText: "Hopp til navigator",
     clearDate: "Fjern dato",
@@ -326,5 +330,25 @@ export const getResources = (language: string): { [id: string]: string } => {
     nextStep: "Neste",
     previousStep: "Forrige",
     openChoiceOption: "Annet",
+    attachmentError_required: "Last opp fil",
+    attachmentError_minFiles: "Legg til minst {0} fil(er)",
+    attachmentError_maxFiles: "Maks {0} fil(er) er tillatt",
+    attachmentError_fileSize: "Filstørrelse må være mindre enn {0}MB",
+    attachmentError_fileType: "Tillatte filtyper er:",
+    dateError_invalid: "Ugyldig dato",
+    dateError_time_invalid: "Ugyldig klokkeslett",
+    dateFormat_ddmmyyyy: "(dd.mm.åååå)",
+    dateLabel_january: "Januar",
+    dateLabel_february: "Februar",
+    dateLabel_march: "Mars",
+    dateLabel_april: "April",
+    dateLabel_may: "Mai",
+    dateLabel_june: "Juni",
+    dateLabel_july: "Juli",
+    dateLabel_august: "August",
+    dateLabel_september: "September",
+    dateLabel_october: "Oktober",
+    dateLabel_november: "November",
+    dateLabel_december: "Desember",
   };
 };

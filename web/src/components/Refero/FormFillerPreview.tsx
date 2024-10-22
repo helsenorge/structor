@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 
-import { Refero, rootReducer } from "@helsenorge/refero";
+import { Refero, rootReducer, Resources } from "@helsenorge/refero";
 
 import FormFillerSidebar from "./FormFillerSidebar";
 import { emptyPropertyReplacer } from "../../helpers/emptyPropertyReplacer";
@@ -142,7 +142,6 @@ const FormFillerPreview = ({
                   }}
                   onSubmit={() => {}}
                   authorized={true}
-                  //@ts-expect-error works with any
                   resources={getResources(language || "")}
                   sticky={true}
                   saveButtonDisabled={false}
