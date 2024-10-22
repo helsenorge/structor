@@ -136,7 +136,7 @@ const FormFillerPreview = ({ showFormFiller, language, state }: Props): React.JS
                             </div>
                         ) : (
                             <div>
-                                <p>{JSON.stringify(questionnaireResponse)}</p>
+                                <code className="json">{JSON.stringify(questionnaireResponse, null, 2)}</code>
                                 <Button onClick={() => setShowResponse(false)}>Tilbake til skjemautfyller</Button>
                             </div>
                         )}
