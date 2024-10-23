@@ -9,10 +9,9 @@
   ],
   "scripts": {
     "start": "npx vite dev --port 3000",
-    "build": "tsc && npx vite build",
+    "build": "tsc && npx vite build ",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --fix",
-
     "preview": "vite preview",
     "test:run": "vitest",
     "test": "vitest"
@@ -49,8 +48,9 @@
     "react-i18next": "^11.7.0",
     "react-redux": "^9.0.0",
     "react-router-dom": "^6.0.0",
+    "react-virtualized": "^9.22.5",
     "remove-markdown": "^0.5.0",
-    "vite-plugin-svgr": "^4.1.0"
+    "vite-plugin-svgr": "^4.2.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.2",

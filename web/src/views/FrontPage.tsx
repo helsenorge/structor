@@ -27,7 +27,7 @@ const FrontPage = (): React.JSX.Element => {
     const getStoredQuestionnaire = async (): Promise<void> => {
       try {
         const indexedDbState = await getStateFromDb();
-        if (!isMounted) {
+        if (isMounted) {
           setStateFromStorage(indexedDbState);
         }
       } catch (error) {
