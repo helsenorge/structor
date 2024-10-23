@@ -129,6 +129,7 @@ const FormFillerPreview = ({
           <FormFillerSidebar questionnaire={questionnaireForPreview} />
 
           <div className="referoContainer-div">
+          <div className="referoInnerContent">
             {!showResponse ? (
               <div className="page_refero">
                 <Refero
@@ -160,6 +161,7 @@ const FormFillerPreview = ({
                 </Button>
               </div>
             )}
+          </div>
           </div>
         </div>
       </div>

@@ -4,11 +4,14 @@
     font-family: Source Sans Pro, Arial, Verdana, sans-serif;
     background-color: #f5f3f3;
     position: fixed;
-    top: 20px;
+    top: 10%;
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
+    height: 80vh; /* Set height to 80% of the viewport height */
     overflow: hidden;
+    border-radius: 8px; /* Optional: Add rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visualization */
 }
 
 .preview-window h2 {
@@ -22,7 +25,13 @@
 
 .referoContainer-div {
     padding: 20px;
-    max-height: calc(100vh - 10rem);
-    overflow: scroll;
+    height: calc(100% - 90px);
+    overflow-y: auto;
     text-align: initial;
+    position: relative;
+
+}
+.referoInnerContent {
+    height: 100%;
+    padding-right: 16px; /* Adjust padding to prevent scrollbar overlap */
 }
