@@ -1,5 +1,4 @@
 import "./AnchorMenu.css";
-import React from "react";
 
 import { SortableTreeWithoutDndContext as SortableTree } from "@nosferatu500/react-sortable-tree";
 import {
@@ -33,13 +32,14 @@ import {
   OrderItem,
 } from "../../store/treeStore/treeStore";
 import { ValidationErrors } from "../../utils/validationUtils";
+import { Dispatch, useState } from "react";
 
 interface AnchorMenuProps {
   qOrder: OrderItem[];
   qItems: Items;
   qCurrentItem: MarkedItem | undefined;
   validationErrors: ValidationErrors[];
-  dispatch: React.Dispatch<ActionType>;
+  dispatch: Dispatch<ActionType>;
 }
 
 interface Node {
@@ -98,7 +98,7 @@ const externalNodeCollect = (
 const ExternalNodeBaseComponent = (props: {
   connectDragSource: ConnectDragSource;
   node: Node;
-}): React.JSX.Element | null => {
+}): JSX.Element | null => {
   return props.connectDragSource(
     <div className="anchor-menu__dragcomponent">
       {props.node.nodeReadableType}
@@ -115,9 +115,9 @@ const YourExternalNodeComponent = DragSource(
   externalNodeCollect,
 )(ExternalNodeBaseComponent);
 
-const AnchorMenu = (props: AnchorMenuProps): React.JSX.Element => {
+const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
   const { t } = useTranslation();
-  const [collapsedNodes, setCollapsedNodes] = React.useState<string[]>([]);
+  const [collapsedNodes, setCollapsedNodes] = useState<string[]>([]);
 
   const mapToTreeData = (
     item: OrderItem[],
@@ -174,7 +174,7 @@ const AnchorMenu = (props: AnchorMenuProps): React.JSX.Element => {
   const createTypeComponent = (
     type: IQuestionnaireItemType,
     text: string,
-  ): React.JSX.Element => {
+  ): JSX.Element => {
     return (
       <YourExternalNodeComponent
         node={{
@@ -189,7 +189,8 @@ const AnchorMenu = (props: AnchorMenuProps): React.JSX.Element => {
 
   const orderTreeData = mapToTreeData(props.qOrder, "");
   return (
-    <DndProvider debugMode={true} backend={HTML5Backend} context={window}>
+    // @ts-expect-error context is not defined
+    <DndProvider backend={HTML5Backend} context={window} >
       <div className="questionnaire-overview">
         <div className="questionnaire-overview__toolbox">
           <strong>{t("Components")}</strong>

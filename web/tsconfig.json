@@ -1,11 +1,11 @@
 {
-  "extends": "./node_modules/@helsenorge/core-build/config/tsconfig.vite.json",
   "compilerOptions": {
     "target": "es2020",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "baseUrl": "./",
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -18,7 +18,7 @@
     "paths": {
       "src/*": ["./src/*"]
     },
-    "typeRoots": ["node_modules/@types", "src/types"],
+    "typeRoots": ["node_modules/@types", "src/types"]
   },
-  "include": ["src", "decs.d.ts"]
+  "include": ["src", "decs.d.ts", "./setupTests.ts"]
 }
