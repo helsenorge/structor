@@ -1,77 +1,68 @@
 import { PluginOption } from "vite";
-
-import { defineConfig } from 'vitest/config';
-
-import react from "@vitejs/plugin-react";
-import svgr from "vite-plugin-svgr";
-import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs';
-import legacy from '@vitejs/plugin-legacy';
+import { defineConfig } from "vitest/config";
 // https://vitejs.dev/config/
 
-import dns from 'dns';
+import dns from "dns";
 // localhost part
-dns.setDefaultResultOrder('verbatim');
+dns.setDefaultResultOrder("verbatim");
 
 export default () => {
+  return defineConfig({
+    base: process.env.NODE_ENV === "production" ? "/static_skjemabygger/" : "/",
 
-    return defineConfig({
-      base: process.env.NODE_ENV === 'production' ? '/static_skjemabygger/' : '/',
-    
-      plugins: [removeCrossOriginAttr(), react(), svgr(), reactVirtualized()],
-      server: {
-        port: 3000,
+    plugins: [removeCrossOriginAttr(), react(), svgr(), reactVirtualized()],
+    server: {
+      port: 3000,
+    },
+    build: {
+      outDir: "dist",
+      manifest: true,
+      commonjsOptions: {
+        transformMixedEsModules: true,
       },
-      build: {
-        outDir: 'dist',
-        manifest: true,
-        commonjsOptions: {
-          transformMixedEsModules: true,
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          includePaths: ["node_modules"],
         },
       },
-      css: {
-        preprocessorOptions: {
-          scss: {
-            includePaths: ['node_modules']
-          }
-        }
+    },
+    resolve: {
+      alias: [
+        {
+          // this is required for the SCSS modules
+          find: /^~(.*)$/,
+          replacement: "$1",
+        },
+        { find: "src", replacement: path.resolve(__dirname, "src") },
+      ],
+    },
+    optimizeDeps: {
+      esbuildOptions: {
+        plugins: [esbuildCommonjs(["react-router-dom", "react-s3"])],
       },
-      resolve: {
-        alias: [
-            {
-                // this is required for the SCSS modules
-                find: /^~(.*)$/,
-                replacement: '$1',
-            },
-            { find: "src", replacement: path.resolve(__dirname, "src") }
-        ],
-      },
-      optimizeDeps:{
-        esbuildOptions:{
-          plugins:[
-            esbuildCommonjs(['react-router-dom', 'react-s3'],)
-          ]
-        }
-      }
-    });
-}
-
-
+    },
+  });
+};
 
 const removeCrossOriginAttr = () => {
   return {
     name: "no-attribute",
     transformIndexHtml(html) {
       return html.replace(`type="module" crossorigin`, `type="module"`);
-    }
-}
-}
-
-
+    },
+  };
+};
 
 import fs from "node:fs/promises";
+import { createRequire } from "node:module";
 import path from "node:path";
 import url from "node:url";
-import { createRequire } from "node:module";
+
+import { esbuildCommonjs } from "@originjs/vite-plugin-commonjs";
+import react from "@vitejs/plugin-react";
+import svgr from "vite-plugin-svgr";
 
 const WRONG_CODE = `import { bpfrpt_proptype_WindowScroller } from "../WindowScroller.js";`;
 
@@ -88,11 +79,11 @@ function reactVirtualized(): PluginOption {
       const reactVirtualizedPath = require.resolve("react-virtualized");
       const { pathname: reactVirtualizedFilePath } = new url.URL(
         reactVirtualizedPath,
-        import.meta.url
+        import.meta.url,
       );
       const file = reactVirtualizedFilePath.replace(
         path.join("dist", "commonjs", "index.js"),
-        path.join("dist", "es", "WindowScroller", "utils", "onScroll.js")
+        path.join("dist", "es", "WindowScroller", "utils", "onScroll.js"),
       );
       const code = await fs.readFile(file, "utf-8");
       const modified = code.replace(WRONG_CODE, "");

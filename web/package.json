@@ -24,7 +24,7 @@
     "@helsenorge/datepicker": "^8.0.0",
     "@helsenorge/designsystem-react": "^8.0.0",
     "@helsenorge/file-upload": "^32.0.0",
-    "@helsenorge/refero": "16.0.0-beta.45",
+    "@helsenorge/refero": "16.0.0-beta.47",
     "@nosferatu500/react-sortable-tree": "^4.0.0",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@reduxjs/toolkit": "^2.0.0",
