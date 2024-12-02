@@ -68,30 +68,18 @@ const HyperlinkTargetElementToggle = ({ item }: Props): React.JSX.Element => {
     itemHyperValue: HyperlinkTarget | undefined,
     formHyperValue: HyperlinkTarget | undefined
   ): void => {
-    if (!itemHyperValue && !formHyperValue) {
-      setItemExtension(
-        questionnaireItem,
-        createHyperlinkTargetExtension(),
-        dispatch
-      );
-    } else if (
-      itemHyperValue === HyperlinkTarget.DEFAULT &&
-      formHyperValue === HyperlinkTarget.SAME_WINDOW
-    ) {
-      removeItemExtension(
-        questionnaireItem,
-        IExtensionType.hyperlinkTarget,
-        dispatch
-      );
-    } else if (itemHyperValue === HyperlinkTarget.DEFAULT && !formHyperValue) {
-      setItemExtension(
-        questionnaireItem,
-        createHyperlinkTargetExtension(),
-        dispatch
-      );
-    } else if (
-      itemHyperValue === HyperlinkTarget.SAME_WINDOW &&
+    if (
+      (!itemHyperValue || itemHyperValue === HyperlinkTarget.DEFAULT) && 
       !formHyperValue
+    ) {
+      setItemExtension(
+        questionnaireItem,
+        createHyperlinkTargetExtension(),
+        dispatch
+      );
+    } else if (
+      (!formHyperValue || itemHyperValue === HyperlinkTarget.DEFAULT) &&
+      formHyperValue === HyperlinkTarget.SAME_WINDOW
     ) {
       removeItemExtension(
         questionnaireItem,

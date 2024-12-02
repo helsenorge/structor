@@ -256,7 +256,7 @@ export const getGuidanceParameterName = (item?: QuestionnaireItem): string => {
 };
 
 export const isValidGuidanceParameterName = (name: string): boolean => {
-  const regExp = /^[A-Za-z0-9_]{1,254}$/;
+  const regExp = /^\w{1,254}$/;
   return regExp.test(name);
 };
 
