@@ -64,7 +64,7 @@ export const renderingOptions = [
 ];
 
 export const choiceRenderOptions = (
-  t: TFunction<"translation">,
+  t: TFunction<"translation">
 ): ValueSetComposeIncludeConcept[] => [
   {
     code: ChoiceRenderOptionCodes.Default,
@@ -76,7 +76,7 @@ export const choiceRenderOptions = (
 
 export const getItemCode = (
   item: QuestionnaireItem,
-  system: ICodeSystem,
+  system: ICodeSystem
 ): Coding | undefined => {
   return item.code?.find((code: Coding) => code.system === system);
 };
@@ -84,26 +84,26 @@ export const getItemCode = (
 export const getItemCodeWithMatchingSystemAndCode = (
   item: QuestionnaireItem,
   system: ICodeSystem,
-  code: string,
+  code: string
 ): Coding | undefined => {
   return item.code?.find(
-    (coding) => coding.system === system && coding.code === code,
+    (coding) => coding.system === system && coding.code === code
   );
 };
 
 export const getAllMatchingCodes = (
   item: QuestionnaireItem,
-  system: ICodeSystem,
+  system: ICodeSystem
 ): Coding[] | undefined => {
   const matchingCodes = item.code?.filter(
-    (code: Coding) => code.system === system,
+    (code: Coding) => code.system === system
   );
   return matchingCodes;
 };
 
 export const getDisplayAndCodeValuesFromAllMatchingCodes = (
   item: QuestionnaireItem,
-  system: ICodeSystem,
+  system: ICodeSystem
 ): Option[] => {
   const stringArrayToReturn: Option[] = [];
   item.code?.forEach((code: Coding) => {
@@ -121,7 +121,7 @@ export const erRenderingOption = (code: Coding): boolean => {
 export const addItemCode = (
   item: QuestionnaireItem,
   code: Coding,
-  dispatch: (value: ActionType) => void,
+  dispatch: (value: ActionType) => void
 ): void => {
   dispatch(addItemCodeAction(item.linkId, code));
 };
@@ -129,7 +129,7 @@ export const addItemCode = (
 export const removeItemCode = (
   item: QuestionnaireItem,
   systemUrl: string,
-  dispatch: (value: ActionType) => void,
+  dispatch: (value: ActionType) => void
 ): void => {
   const index = item.code?.findIndex((code) => code.system === systemUrl);
   if (index === undefined || index === -1) {
@@ -141,7 +141,7 @@ export const removeItemCode = (
     }
 
     const numberOfCodeItems = item.code?.filter(
-      (code) => code.system === systemUrl,
+      (code) => code.system === systemUrl
     );
     const indexList = item.code
       ?.map((code, index) => (code.system === systemUrl ? index : -1))
@@ -159,10 +159,10 @@ export const removeItemCodeWithCode = (
   item: QuestionnaireItem,
   systemUrl: string,
   code: string,
-  dispatch: (value: ActionType) => void,
+  dispatch: (value: ActionType) => void
 ): void => {
   const index = item.code?.findIndex(
-    (coding) => coding.system === systemUrl && coding.code === code,
+    (coding) => coding.system === systemUrl && coding.code === code
   );
   if (index !== undefined && index > -1) {
     dispatch(deleteItemCodeAction(item.linkId, index));
@@ -172,7 +172,7 @@ export const removeItemCodeWithCode = (
 export const addRenderOptionItemCode = (
   item: QuestionnaireItem,
   code: string,
-  dispatch: (value: ActionType) => void,
+  dispatch: (value: ActionType) => void
 ): void => {
   const renderOption = renderingOptions.find((c) => c.code === code);
   if (renderOption) {
@@ -189,7 +189,7 @@ export const addRenderOptionItemCode = (
 export const addValidateReadOnlyItemCode = (
   item: QuestionnaireItem,
   code: string,
-  dispatch: (value: ActionType) => void,
+  dispatch: (value: ActionType) => void
 ): void => {
   const coding = {
     code: code,
@@ -204,10 +204,10 @@ export const addChoiceRenderOptionItemCode = (
   item: QuestionnaireItem,
   code: string,
   t: TFunction<"translation">,
-  dispatch: (value: ActionType) => void,
+  dispatch: (value: ActionType) => void
 ): void => {
   const choiceRenderOption = choiceRenderOptions(t).find(
-    (c) => c.code === code,
+    (c) => c.code === code
   );
   if (choiceRenderOption) {
     const coding = {
@@ -222,7 +222,7 @@ export const addChoiceRenderOptionItemCode = (
 
 export const getOrderItemByLinkId = (
   qOrder: OrderItem[],
-  linkIdToSearch: string,
+  linkIdToSearch: string
 ): OrderItem | undefined => {
   for (const orderItem of qOrder) {
     if (orderItem.linkId === linkIdToSearch) {
@@ -232,7 +232,7 @@ export const getOrderItemByLinkId = (
     if (orderItem.items) {
       const nestedResult = getOrderItemByLinkId(
         orderItem.items,
-        linkIdToSearch,
+        linkIdToSearch
       );
       if (nestedResult) {
         return nestedResult;
@@ -245,7 +245,7 @@ export const getOrderItemByLinkId = (
 
 export const getAllOrderItemChildrenOfItem = (
   qOrder: OrderItem[],
-  parentLinkId: string,
+  parentLinkId: string
 ): OrderItem[] => {
   const result: OrderItem[] = [];
 
@@ -257,7 +257,7 @@ export const getAllOrderItemChildrenOfItem = (
     if (orderItem.items) {
       const nestedResults = getAllOrderItemChildrenOfItem(
         orderItem.items,
-        parentLinkId,
+        parentLinkId
       );
       result.push(...nestedResults);
     }
@@ -273,7 +273,7 @@ export const updateChildWithMatchingCode = (
   displayValue: string,
   systemValue: ICodeSystem,
   codeValue: string,
-  dispatch: (value: ActionType) => void,
+  dispatch: (value: ActionType) => void
 ): void => {
   const parentOrderItem = getOrderItemByLinkId(qOrder, item.linkId);
   parentOrderItem?.items.forEach((childOrderItem) => {
@@ -284,8 +284,8 @@ export const updateChildWithMatchingCode = (
         ICodingProperty.display,
         displayValue,
         systemValue,
-        codeValue,
-      ),
+        codeValue
+      )
     );
   });
 };
@@ -293,7 +293,7 @@ export const updateChildWithMatchingCode = (
 export const findCodingBySystemAndCode = (
   codeing?: Coding[],
   system?: string,
-  codeValue?: string,
+  codeValue?: string
 ): Coding | undefined => {
   if (
     system === undefined ||

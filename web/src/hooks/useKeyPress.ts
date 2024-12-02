@@ -6,13 +6,13 @@ const unhandledKeyPressClassNames = ["ck-content"];
 export const useKeyPress = (
   targetKey: string,
   callback: () => void,
-  disabled?: boolean,
+  disabled?: boolean
 ): void => {
   const keyPressHandler = ({ key, target }: KeyboardEvent): void => {
     const { tagName, classList } = target as Element;
     const ignoreClassName = unhandledKeyPressClassNames.some(
       (unhandledClassName) =>
-        classList && classList.contains(unhandledClassName),
+        classList && classList.contains(unhandledClassName)
     );
     const ignoreTargetType = unhandledKeyPressTargets.includes(tagName);
 

@@ -23,7 +23,9 @@ const FormField = ({
         <label>
           <span>{label}</span>
           {isOptional && (
-            <span className="form-field__optional">{` (${t("Optional")})`}</span>
+            <span className="form-field__optional">{` (${t(
+              "Optional"
+            )})`}</span>
           )}
         </label>
       )}

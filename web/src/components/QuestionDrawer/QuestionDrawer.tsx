@@ -46,7 +46,7 @@ const QuestionDrawer = ({
 
   const getConditional = (
     ancestors: string[],
-    linkId: string,
+    linkId: string
   ): ValueSetComposeIncludeConcept[] => {
     return getEnableWhenConditionals(state, ancestors, linkId);
   };
@@ -64,7 +64,7 @@ const QuestionDrawer = ({
     : undefined;
   const title = elementNumber ? `Element ${elementNumber}` : "";
   const itemValidationErrors = validationErrors.filter(
-    (error) => error.linkId === item?.linkId,
+    (error) => error.linkId === item?.linkId
   );
 
   return (

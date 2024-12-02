@@ -30,7 +30,7 @@ const TranslateMetaDataRow = ({
       ? state.qAdditionalLanguages[targetLanguage]?.metaData
       : {};
   const [translatedValue, setTranslatedValue] = useState(
-    translatedMetadata[propertyName],
+    translatedMetadata[propertyName]
   );
   const validationMessage = validate
     ? t(validate(translatedValue, state, targetLanguage))
@@ -39,7 +39,7 @@ const TranslateMetaDataRow = ({
   const dispatchPropertyUpdate = (text: string): void => {
     if (!validationMessage) {
       dispatch(
-        updateMetadataTranslationAction(targetLanguage, propertyName, text),
+        updateMetadataTranslationAction(targetLanguage, propertyName, text)
       );
     }
   };

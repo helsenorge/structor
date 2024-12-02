@@ -36,8 +36,8 @@ export const StepViewOption = ({
           value={
             item.extension?.find((ex) =>
               ex.valueCodeableConcept?.coding?.find(
-                (coding) => coding.code === ItemControlType.step,
-              ),
+                (coding) => coding.code === ItemControlType.step
+              )
             )
               ? true
               : false

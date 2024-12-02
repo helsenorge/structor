@@ -3,7 +3,7 @@ import { Extension } from "fhir/r4";
 import { TableOptionsEnum } from "../types/tableOptions";
 
 export const getTableCode = (
-  extension: Extension | undefined,
+  extension: Extension | undefined
 ): string | undefined => {
   let stringToReturn: string | undefined = undefined;
   extension?.valueCodeableConcept?.coding?.find((coding) => {

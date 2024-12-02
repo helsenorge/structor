@@ -31,10 +31,10 @@ export const RepetitionOption = ({
     item?.extension?.find((x) => x.url === IExtensionType.repeatstext)
       ?.valueString ?? "";
   const minOccurs = item?.extension?.find(
-    (x) => x.url === IExtensionType.minOccurs,
+    (x) => x.url === IExtensionType.minOccurs
   )?.valueInteger;
   const maxOccurs = item?.extension?.find(
-    (x) => x.url === IExtensionType.maxOccurs,
+    (x) => x.url === IExtensionType.maxOccurs
   )?.valueInteger;
 
   return (
@@ -56,15 +56,15 @@ export const RepetitionOption = ({
                   IExtensionType.minOccurs,
                   IExtensionType.maxOccurs,
                 ],
-                dispatch,
+                dispatch
               );
             }
             dispatch(
               updateItemAction(
                 item.linkId,
                 IItemProperty.repeats,
-                !item.repeats,
-              ),
+                !item.repeats
+              )
             );
           }}
           value={item.repeats || false}
@@ -89,7 +89,7 @@ export const RepetitionOption = ({
                     removeItemExtension(
                       item,
                       IExtensionType.repeatstext,
-                      dispatch,
+                      dispatch
                     );
                   }
                 }}
@@ -99,7 +99,7 @@ export const RepetitionOption = ({
               <FormField
                 label={t("Min answers")}
                 sublabel={t(
-                  "Enter the minimum number of times the question group can be repeated",
+                  "Enter the minimum number of times the question group can be repeated"
                 )}
               >
                 <input
@@ -110,7 +110,7 @@ export const RepetitionOption = ({
                       removeItemExtension(
                         item,
                         IExtensionType.minOccurs,
-                        dispatch,
+                        dispatch
                       );
                     } else {
                       const extension = {
@@ -125,7 +125,7 @@ export const RepetitionOption = ({
               <FormField
                 label={t("Max answers")}
                 sublabel={t(
-                  "Enter the maximum number of times the question group can be repeated",
+                  "Enter the maximum number of times the question group can be repeated"
                 )}
               >
                 <input
@@ -136,7 +136,7 @@ export const RepetitionOption = ({
                       removeItemExtension(
                         item,
                         IExtensionType.maxOccurs,
-                        dispatch,
+                        dispatch
                       );
                     } else {
                       const extension = {

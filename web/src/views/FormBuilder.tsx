@@ -25,7 +25,7 @@ const FormBuilder = (): React.JSX.Element => {
     Array<ValidationErrors>
   >([]);
   const [sidebarErrors, setSidebarErrors] = useState<Array<ValidationErrors>>(
-    [],
+    []
   );
   const [markdownWarning, setMarkdownWarning] = useState<
     ValidationErrors | undefined

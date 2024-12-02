@@ -3,7 +3,7 @@ import { Items, OrderItem } from "../store/treeStore/treeStore";
 
 export const findElementInTreeArray = (
   searchPath: Array<string>,
-  searchItems: Array<OrderItem>,
+  searchItems: Array<OrderItem>
 ): Array<OrderItem> => {
   if (searchPath.length === 0) {
     return searchItems;
@@ -12,18 +12,18 @@ export const findElementInTreeArray = (
   const searchIndex = searchItems.findIndex((x) => x.linkId === searchPath[0]);
   return findElementInTreeArray(
     searchPath.slice(1),
-    searchItems[searchIndex].items,
+    searchItems[searchIndex].items
   );
 };
 
 const removeUnsupportedChildren = (
   itemOrder: OrderItem[],
   qItems: Items,
-  parentLinkId?: string,
+  parentLinkId?: string
 ): OrderItem[] => {
   const parentItem = parentLinkId ? qItems[parentLinkId] : undefined;
   return itemOrder.filter(
-    (x) => !isIgnorableItem(qItems[x.linkId], parentItem),
+    (x) => !isIgnorableItem(qItems[x.linkId], parentItem)
   );
 };
 
@@ -32,11 +32,11 @@ const getItemIndexAsString = (
   itemOrder: Array<OrderItem>,
   qItems: Items,
   parentNumber = "",
-  parentLinkId?: string,
+  parentLinkId?: string
 ): string => {
   const itemIndex =
     removeUnsupportedChildren(itemOrder, qItems, parentLinkId).findIndex(
-      (item) => item.linkId === linkId,
+      (item) => item.linkId === linkId
     ) + 1;
 
   return parentNumber ? `${parentNumber}.${itemIndex}` : `${itemIndex}`;
@@ -46,7 +46,7 @@ export const calculateItemNumber = (
   linkId: string,
   searchPath: Array<string>,
   itemOrder: Array<OrderItem>,
-  qItems: Items,
+  qItems: Items
 ): string => {
   if (!searchPath || searchPath.length === 0) {
     return getItemIndexAsString(linkId, itemOrder, qItems);
@@ -61,7 +61,7 @@ export const calculateItemNumber = (
       currentArray,
       qItems,
       parentNumber,
-      parentLinkId,
+      parentLinkId
     );
     currentArray =
       currentArray.find((orderItem) => orderItem.linkId === currentLinkId)
@@ -74,6 +74,6 @@ export const calculateItemNumber = (
     currentArray,
     qItems,
     parentNumber,
-    parentLinkId,
+    parentLinkId
   );
 };

@@ -12,7 +12,7 @@ type InitialInputTypeStringProps = {
 };
 
 const InitialInputTypeString = (
-  props: InitialInputTypeStringProps,
+  props: InitialInputTypeStringProps
 ): React.JSX.Element => {
   const { t } = useTranslation();
   const [initialValue, setInitialValue] = useState(getValue(props.initial));

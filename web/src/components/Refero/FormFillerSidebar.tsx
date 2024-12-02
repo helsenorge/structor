@@ -41,15 +41,15 @@ const FormFillerSidebar = ({ questionnaire }: Props): React.JSX.Element => {
         <div className="formFillerSidebar-content">
           {generateSectionContent(
             "Alternativer for utfylling",
-            sidebarData["SOT-1"],
+            sidebarData["SOT-1"]
           )}
           {generateSectionContent(
             "Veiledning og ansvarlig",
-            sidebarData["SOT-2"],
+            sidebarData["SOT-2"]
           )}
           {generateSectionContent(
             "Behandling hos mottaker",
-            sidebarData["SOT-3"],
+            sidebarData["SOT-3"]
           )}
         </div>
       )}

@@ -36,7 +36,7 @@ export const createInlineItem = (): QuestionnaireItem => {
 
 export const getInitialItemConfig = (
   questionType: IQuestionnaireItemType,
-  recipientComponentText: string,
+  recipientComponentText: string
 ): QuestionnaireItem => {
   const newQuestionnaireItem = {
     linkId: CreateUUID(),
@@ -64,7 +64,7 @@ export const getInitialItemConfig = (
     newQuestionnaireItem.type = IQuestionnaireItemType.choice;
     newQuestionnaireItem.code?.push(valueSetTqqcCoding);
     const receiverComponentExtension = createItemControlExtension(
-      ItemControlType.receiverComponent,
+      ItemControlType.receiverComponent
     );
     newQuestionnaireItem.extension?.push(receiverComponentExtension);
     newQuestionnaireItem.text = recipientComponentText;
@@ -230,7 +230,7 @@ export const canTypeBeRepeatable = (item: QuestionnaireItem): boolean => {
 };
 
 export const canTypeHaveCalculatedExpressionExtension = (
-  item: QuestionnaireItem,
+  item: QuestionnaireItem
 ): boolean => {
   return (
     item.type === IQuestionnaireItemType.integer ||
@@ -240,7 +240,7 @@ export const canTypeHaveCalculatedExpressionExtension = (
 };
 
 export const canTypeHavePlaceholderText = (
-  item: QuestionnaireItem,
+  item: QuestionnaireItem
 ): boolean => {
   return (
     (item.type === IQuestionnaireItemType.string ||

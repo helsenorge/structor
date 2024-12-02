@@ -29,10 +29,10 @@ const GuidanceParam = (props: GuidanceParamProps): React.JSX.Element => {
   const { dispatch } = useContext(TreeContext);
   const hasGuidanceParam = hasExtension(
     props.item,
-    IExtensionType.guidanceParam,
+    IExtensionType.guidanceParam
   );
   const [parameterName, setParameterName] = useState(
-    getGuidanceParameterName(props.item),
+    getGuidanceParameterName(props.item)
   );
   const [validationMessage, setValidationMessage] = useState("");
 
@@ -43,7 +43,7 @@ const GuidanceParam = (props: GuidanceParamProps): React.JSX.Element => {
       setItemExtension(
         props.item,
         createGuidanceParameterExtension(),
-        dispatch,
+        dispatch
       );
     }
   };
@@ -54,7 +54,7 @@ const GuidanceParam = (props: GuidanceParamProps): React.JSX.Element => {
       setItemExtension(
         props.item,
         createGuidanceParameterExtension(event.target.value),
-        dispatch,
+        dispatch
       );
     }
   };
@@ -63,8 +63,8 @@ const GuidanceParam = (props: GuidanceParamProps): React.JSX.Element => {
     if (!isValidGuidanceParameterName(value)) {
       setValidationMessage(
         t(
-          "Parameter name must be 1-255 characters and can only contain numbers, _ and normal and capital letters a-z",
-        ),
+          "Parameter name must be 1-255 characters and can only contain numbers, _ and normal and capital letters a-z"
+        )
       );
     } else {
       setValidationMessage("");

@@ -262,7 +262,7 @@ export interface SaveAction {
 
 export const updateMarkedLinkIdAction = (
   markedLinkId?: string,
-  parentArray?: Array<string>,
+  parentArray?: Array<string>
 ): UpdateMarkedLinkId => {
   return {
     type: UPDATE_MARKED_LINK_ID,
@@ -273,7 +273,7 @@ export const updateMarkedLinkIdAction = (
 
 export const addItemCodeAction = (
   linkId: string,
-  code: Coding,
+  code: Coding
 ): AddItemCodeAction => {
   return {
     type: ADD_ITEM_CODE_ACTION,
@@ -284,7 +284,7 @@ export const addItemCodeAction = (
 
 export const deleteItemCodeAction = (
   linkId: string,
-  index: number,
+  index: number
 ): DeleteItemCodeAction => {
   return {
     type: DELETE_ITEM_CODE_ACTION,
@@ -297,7 +297,7 @@ export const updateItemCodePropertyAction = (
   linkId: string,
   index: number,
   property: ICodingProperty,
-  value: string,
+  value: string
 ): UpdateItemCodePropertyAction => {
   return {
     type: UPDATE_ITEM_CODE_PROPERTY_ACTION,
@@ -313,7 +313,7 @@ export const updateItemCodePropertyWithCodeAction = (
   property: ICodingProperty,
   value: string,
   system: string,
-  code: string,
+  code: string
 ): UpdateItemCodePropertyWithCodeAction => {
   return {
     type: UPDATE_ITEM_CODE_PROPERTY_WITH_CODE_ACTION,
@@ -327,7 +327,7 @@ export const updateItemCodePropertyWithCodeAction = (
 
 export const addQuestionnaireLanguageAction = (
   additionalLanguageCode: string,
-  translation: Translation,
+  translation: Translation
 ): AddQuestionnaireLanguageAction => {
   return {
     type: ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
@@ -337,7 +337,7 @@ export const addQuestionnaireLanguageAction = (
 };
 
 export const removeQuestionnaireLanguageAction = (
-  languageCode: string,
+  languageCode: string
 ): RemoveQuestionnaireLanguageAction => {
   return {
     type: REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION,
@@ -349,7 +349,7 @@ export const updateItemTranslationAction = (
   languageCode: string,
   linkId: string,
   propertyName: Exclude<TranslatableItemProperty, "code">,
-  value: string,
+  value: string
 ): UpdateItemTranslationAction => {
   return {
     type: UPDATE_ITEM_TRANSLATION_ACTION,
@@ -363,7 +363,7 @@ export const updateItemCodeTranslation = (
   languageCode: string,
   linkId: string,
   value: string,
-  code: Coding,
+  code: Coding
 ): UpdateItemCodeTranslationAction => {
   return {
     type: UPDATE_ITEM_CODE_TRANSLATION_ACTION,
@@ -378,7 +378,7 @@ export const updateItemOptionTranslationAction = (
   languageCode: string,
   linkId: string,
   text: string,
-  optionCode: string,
+  optionCode: string
 ): UpdateItemOptionTranslationAction => {
   return {
     type: UPDATE_ITEM_OPTION_TRANSLATION_ACTION,
@@ -392,7 +392,7 @@ export const updateItemOptionTranslationAction = (
 export const updateMetadataTranslationAction = (
   languageCode: string,
   propertyName: string,
-  translation: string,
+  translation: string
 ): UpdateMetadataTranslationAction => {
   return {
     type: UPDATE_METADATA_TRANSLATION_ACTION,
@@ -405,7 +405,7 @@ export const updateMetadataTranslationAction = (
 export const updateSettingTranslationAction = (
   languageCode: string,
   extension: IExtensionType,
-  translatedValue: Extension | null,
+  translatedValue: Extension | null
 ): UpdateSettingTranslationAction => {
   return {
     type: UPDATE_SETTING_TRANSLATION_ACTION,
@@ -419,7 +419,7 @@ export const updateContainedValueSetTranslationAction = (
   languageCode: string,
   valueSetId: string,
   conceptId: string,
-  translation: string,
+  translation: string
 ): UpdateContainedValueSetTranslationAction => {
   return {
     type: UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION,
@@ -433,7 +433,7 @@ export const updateContainedValueSetTranslationAction = (
 export const updateSidebarTranslationAction = (
   languageCode: string,
   linkId: string,
-  value: string,
+  value: string
 ): UpdateSidebarTranslationAction => {
   return {
     type: UPDATE_SIDEBAR_TRANSLATION_ACTION,
@@ -446,7 +446,7 @@ export const updateSidebarTranslationAction = (
 export const updateLinkIdAction = (
   oldLinkId: string,
   newLinkId: string,
-  parentArray: Array<string>,
+  parentArray: Array<string>
 ): UpdateLinkIdAction => {
   return {
     type: UPDATE_LINK_ID_ACTION,
@@ -458,7 +458,7 @@ export const updateLinkIdAction = (
 
 export const updateQuestionnaireMetadataAction = (
   propName: IQuestionnaireMetadataType,
-  value: string | Meta | Extension[] | ContactDetail[],
+  value: string | Meta | Extension[] | ContactDetail[]
 ): UpdateQuestionnaireMetadataAction => {
   return {
     type: UPDATE_QUESTIONNAIRE_METADATA_ACTION,
@@ -470,7 +470,7 @@ export const updateQuestionnaireMetadataAction = (
 export const newItemAction = (
   newQuestionnaireItem: QuestionnaireItem,
   order: Array<string>,
-  index?: number,
+  index?: number
 ): NewItemAction => {
   return {
     type: NEW_ITEM_ACTION,
@@ -524,7 +524,7 @@ export const newItemHelpIconAction = (order: Array<string>): NewItemAction => {
 
 export const deleteItemAction = (
   linkId: string,
-  order: Array<string>,
+  order: Array<string>
 ): DeleteItemAction => {
   return {
     type: DELETE_ITEM_ACTION,
@@ -535,7 +535,7 @@ export const deleteItemAction = (
 
 export const deleteChildItemsAction = (
   linkId: string,
-  order: Array<string>,
+  order: Array<string>
 ): DeleteChildItemsAction => {
   return {
     type: DELETE_CHILD_ITEMS_ACTION,
@@ -547,7 +547,7 @@ export const deleteChildItemsAction = (
 export const updateItemAction = (
   linkId: string,
   itemProperty: IItemProperty,
-  itemValue: ItemValueType,
+  itemValue: ItemValueType
 ): UpdateItemAction => {
   return {
     type: UPDATE_ITEM_ACTION,
@@ -559,7 +559,7 @@ export const updateItemAction = (
 
 export const removeItemAttributeAction = (
   linkId: string,
-  itemProperty: IItemProperty,
+  itemProperty: IItemProperty
 ): RemoveItemAttributeAction => {
   return {
     type: REMOVE_ITEM_ATTRIBUTE_ACTION,
@@ -570,7 +570,7 @@ export const removeItemAttributeAction = (
 
 export const duplicateItemAction = (
   linkId: string,
-  order: Array<string>,
+  order: Array<string>
 ): DuplicateItemAction => {
   return {
     type: DUPLICATE_ITEM_ACTION,
@@ -580,7 +580,7 @@ export const duplicateItemAction = (
 };
 
 export const resetQuestionnaireAction = (
-  newState?: TreeState | undefined,
+  newState?: TreeState | undefined
 ): ResetQuestionnaireAction => {
   return {
     type: RESET_QUESTIONNAIRE_ACTION,
@@ -591,7 +591,7 @@ export const resetQuestionnaireAction = (
 export const reorderItemAction = (
   linkId: string,
   order: Array<string>,
-  newIndex: number,
+  newIndex: number
 ): ReorderItemAction => {
   return {
     type: REORDER_ITEM_ACTION,
@@ -605,7 +605,7 @@ export const moveItemAction = (
   linkId: string,
   newOrder: string[],
   oldOrder: string[],
-  index?: number,
+  index?: number
 ): MoveItemAction => {
   return {
     type: MOVE_ITEM_ACTION,
@@ -624,7 +624,7 @@ export const updateValueSetAction = (item: ValueSet): UpdateValueSetAction => {
 };
 
 export const importValueSetAction = (
-  items: ValueSet[],
+  items: ValueSet[]
 ): ImportValueSetAction => {
   return {
     type: IMPORT_VALUESET_ACTION,

@@ -33,7 +33,7 @@ const Typeahead = ({
         .filter(
           (item) =>
             item.display &&
-            item.display.toLowerCase().includes(target.toLowerCase()),
+            item.display.toLowerCase().includes(target.toLowerCase())
         );
       setSuggestions(matching.slice(0, 5));
     } else {
@@ -58,7 +58,7 @@ const Typeahead = ({
             <strong key={part + index.toString()}>{part}</strong>
           ) : (
             part
-          ),
+          )
         )}
       </span>
     );

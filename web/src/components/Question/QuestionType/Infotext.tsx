@@ -58,7 +58,7 @@ const Infotext = ({ item, parentArray }: InfotextProps): React.JSX.Element => {
   const dispatchUpdateMarkdown = (markdown: string): void => {
     const markdownValue = createMarkdownExtension(markdown);
     dispatch(
-      updateItemAction(childItemLinkId, IItemProperty._text, markdownValue),
+      updateItemAction(childItemLinkId, IItemProperty._text, markdownValue)
     );
     dispatch(updateItemAction(childItemLinkId, IItemProperty.text, markdown));
   };
@@ -91,12 +91,12 @@ const Infotext = ({ item, parentArray }: InfotextProps): React.JSX.Element => {
       updateItemAction(
         item.linkId,
         IItemProperty.type,
-        IQuestionnaireItemType.display,
-      ),
+        IQuestionnaireItemType.display
+      )
     );
     if (childItemLinkId) {
       dispatch(
-        deleteItemAction(childItemLinkId, [...parentArray, item.linkId]),
+        deleteItemAction(childItemLinkId, [...parentArray, item.linkId])
       );
     }
   };
@@ -108,7 +108,7 @@ const Infotext = ({ item, parentArray }: InfotextProps): React.JSX.Element => {
           onChange={(newValue: string) => {
             if (newValue === INLINE_OPTION) {
               const newExtension = createItemControlExtension(
-                ItemControlType.inline,
+                ItemControlType.inline
               );
               const newInlineItem = createInlineItem();
               setItemExtension(item, newExtension, dispatch);
@@ -116,25 +116,25 @@ const Infotext = ({ item, parentArray }: InfotextProps): React.JSX.Element => {
                 updateItemAction(
                   item.linkId,
                   IItemProperty.type,
-                  IQuestionnaireItemType.text,
-                ),
+                  IQuestionnaireItemType.text
+                )
               );
               dispatch(
-                newItemAction(newInlineItem, [...parentArray, item.linkId], 0),
+                newItemAction(newInlineItem, [...parentArray, item.linkId], 0)
               );
 
               if (item.extension && getHyperlinkTargetvalue(item.extension)) {
                 setItemExtension(
                   newInlineItem,
                   createHyperlinkTargetExtension(
-                    getHyperlinkTargetvalue(item.extension),
+                    getHyperlinkTargetvalue(item.extension)
                   ),
-                  dispatch,
+                  dispatch
                 );
               }
             } else if (newValue === HIGHLIGHT_OPTION) {
               const newExtension = createItemControlExtension(
-                ItemControlType.highlight,
+                ItemControlType.highlight
               );
               changeItemToTypeDisplay(newExtension);
             } else {

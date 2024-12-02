@@ -17,7 +17,7 @@ type DrawerProps = {
 
 const Drawer = (
   props: DrawerProps,
-  ref?: Ref<HTMLDivElement>,
+  ref?: Ref<HTMLDivElement>
 ): React.JSX.Element => {
   const { t } = useTranslation();
   const drawerRef = useRef<HTMLDivElement | null>(null);

@@ -59,7 +59,7 @@ const initValueSet = (): ValueSet =>
         },
       ],
     },
-  }) as ValueSet;
+  } as ValueSet);
 
 const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
   const { t } = useTranslation();
@@ -93,7 +93,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
   const handleConceptItem = (
     value: string,
     updateField: "code" | "display",
-    id?: string,
+    id?: string
   ): void => {
     const compose = { ...newValueSet.compose };
     const item =
@@ -122,7 +122,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
 
   const getItemStyle = (
     isDragging: boolean,
-    draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
+    draggableStyle: DraggingStyle | NotDraggingStyle | undefined
   ): React.CSSProperties => ({
     userSelect: "none",
     background: isDragging ? "lightgreen" : "transparent",
@@ -247,7 +247,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
                                     {...providedDrag.draggableProps}
                                     style={getItemStyle(
                                       snapshotDrag.isDragging,
-                                      providedDrag.draggableProps.style,
+                                      providedDrag.draggableProps.style
                                     )}
                                     className="answer-option-item align-everything"
                                   >
@@ -265,7 +265,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
                                           handleConceptItem(
                                             event.target.value,
                                             "display",
-                                            item.id,
+                                            item.id
                                           )
                                         }
                                       />
@@ -277,7 +277,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
                                           handleConceptItem(
                                             event.target.value,
                                             "code",
-                                            item.id,
+                                            item.id
                                           )
                                         }
                                       />

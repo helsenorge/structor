@@ -25,7 +25,7 @@ interface PredefinedValueSetsProps {
       | boolean
       | QuestionnaireItemAnswerOption[]
       | Element
-      | undefined,
+      | undefined
   ) => void;
 }
 
@@ -82,7 +82,7 @@ const PredefinedValueSets = ({
   };
 
   const getContainedValueSetValues = (
-    valueSetId: string,
+    valueSetId: string
   ): Array<{ code?: string; system?: string; display?: string }> => {
     const valueSet = qContained?.find((x) => x.id === valueSetId);
     return getValueSetValues(valueSet);

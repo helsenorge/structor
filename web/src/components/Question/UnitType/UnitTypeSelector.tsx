@@ -41,7 +41,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
 
   const getTranslatedQuantityUnitType = (code: string): Coding | undefined => {
     const type = quantityUnitTypes.find(
-      ({ code: predefinedCode }) => predefinedCode === code,
+      ({ code: predefinedCode }) => predefinedCode === code
     );
     if (type) {
       return { code: type.code, display: t(type.display), system: type.system };
@@ -50,7 +50,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
   };
 
   const updateQuantityUnitType = (
-    event: ChangeEvent<HTMLSelectElement>,
+    event: ChangeEvent<HTMLSelectElement>
   ): void => {
     const {
       target: { value: quantityUnitTypeCode },
@@ -59,7 +59,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
       removeItemExtension(
         props.item,
         IExtensionType.questionnaireUnit,
-        dispatch,
+        dispatch
       );
     } else {
       const coding =
@@ -83,7 +83,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
 
   const updateCustomQuantityUnitType = (
     property: "code" | "display" | "system",
-    event: React.FocusEvent<HTMLInputElement>,
+    event: React.FocusEvent<HTMLInputElement>
   ): void => {
     const currentValueCoding = getCurrentQuantityUnitTypeCoding();
     let newValueCoding: Coding;
@@ -121,11 +121,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
           }
         });
         dispatch(
-          updateItemAction(
-            props.item.linkId,
-            IItemProperty.initial,
-            newInitial,
-          ),
+          updateItemAction(props.item.linkId, IItemProperty.initial, newInitial)
         );
       }
     }
@@ -149,7 +145,7 @@ const UnitTypeSelector = (props: UnitTypeSelectorProps): React.JSX.Element => {
         type.code !== QUANTITY_UNIT_TYPE_CUSTOM &&
         type.code === currentCode &&
         t(type.display) === currentDisplay &&
-        type.system === currentSystem,
+        type.system === currentSystem
     );
 
     if (isPredefined) {

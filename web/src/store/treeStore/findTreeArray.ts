@@ -2,7 +2,7 @@ import { OrderItem } from "./treeStore";
 
 export function findTreeArray(
   searchPath: Array<string>,
-  searchItems: Array<OrderItem>,
+  searchItems: Array<OrderItem>
 ): Array<OrderItem> {
   if (searchPath.length === 0) {
     return searchItems;

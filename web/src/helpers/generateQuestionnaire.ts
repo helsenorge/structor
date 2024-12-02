@@ -39,21 +39,21 @@ import {
 
 const getExtension = (
   extensions: Extension[] | undefined,
-  extensionType: IExtensionType,
+  extensionType: IExtensionType
 ): Extension | undefined => {
   return extensions?.find((ext) => ext.url === extensionType);
 };
 
 const updateTranslatedExtension = (
   extensions: Extension[] | undefined,
-  translatedExtension: Extension,
+  translatedExtension: Extension
 ): Extension[] => {
   if (!extensions) {
     return [translatedExtension];
   }
   const translatedExtensions = [...extensions];
   const replaceIndex = translatedExtensions.findIndex(
-    (ext) => ext.url === translatedExtension.url,
+    (ext) => ext.url === translatedExtension.url
   );
   if (replaceIndex > -1) {
     translatedExtensions.splice(replaceIndex, 1, translatedExtension);
@@ -63,7 +63,7 @@ const updateTranslatedExtension = (
 
 const getTranslatedAnswerOptions = (
   answerOptions: QuestionnaireItemAnswerOption[] | undefined,
-  optionTranslations: CodeStringValue | undefined,
+  optionTranslations: CodeStringValue | undefined
 ): QuestionnaireItemAnswerOption[] | undefined => {
   if (!answerOptions) {
     return undefined;
@@ -81,7 +81,7 @@ const getTranslatedAnswerOptions = (
 
 const getTranslatedContained = (
   qContained: Array<ValueSet> | undefined,
-  translation: Translation,
+  translation: Translation
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 ) => {
   if (!qContained || qContained.length < 1) {
@@ -115,7 +115,7 @@ const getTranslatedContained = (
 
 const getTranslatedSidebarItem = (
   translation: Translation,
-  currentItem: QuestionnaireItem,
+  currentItem: QuestionnaireItem
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 ) => {
   const sidebarItemTranslation = translation?.sidebarItems[currentItem.linkId];
@@ -128,7 +128,7 @@ const getTranslatedSidebarItem = (
       : "";
   const markdownExtension = getExtension(
     currentItem._text?.extension,
-    IExtensionType.markdown,
+    IExtensionType.markdown
   );
   if (markdownExtension) {
     const translatedMarkdownExtension = {
@@ -138,7 +138,7 @@ const getTranslatedSidebarItem = (
     _text = {
       extension: updateTranslatedExtension(
         currentItem._text?.extension,
-        translatedMarkdownExtension,
+        translatedMarkdownExtension
       ),
     };
   }
@@ -149,7 +149,7 @@ const getTranslatedItem = (
   languageCode: string,
   orderItem: OrderItem,
   items: Items,
-  languages: Languages,
+  languages: Languages
 ): QuestionnaireItem => {
   const currentItem = items[orderItem.linkId];
   if (isItemControlSidebar(currentItem)) {
@@ -163,7 +163,7 @@ const getTranslatedItem = (
   const translatedText = itemTranslation?.text;
   const markdownExtension = getExtension(
     currentItem._text?.extension,
-    IExtensionType.markdown,
+    IExtensionType.markdown
   );
   if (markdownExtension) {
     const translatedMarkdownExtension = {
@@ -173,7 +173,7 @@ const getTranslatedItem = (
     _text = {
       extension: updateTranslatedExtension(
         currentItem._text?.extension,
-        translatedMarkdownExtension,
+        translatedMarkdownExtension
       ),
     };
   }
@@ -186,7 +186,7 @@ const getTranslatedItem = (
   // ValidationMessage
   const validationTextExtension = getExtension(
     extension,
-    IExtensionType.validationtext,
+    IExtensionType.validationtext
   );
   if (validationTextExtension) {
     const translatedValidationTextExtension = {
@@ -195,14 +195,14 @@ const getTranslatedItem = (
     };
     extension = updateTranslatedExtension(
       extension,
-      translatedValidationTextExtension,
+      translatedValidationTextExtension
     );
   }
 
   // Placeholder
   const entryFormatExtension = getExtension(
     extension,
-    IExtensionType.entryFormat,
+    IExtensionType.entryFormat
   );
   if (entryFormatExtension) {
     const translatedEntryFormatExtension = {
@@ -211,7 +211,7 @@ const getTranslatedItem = (
     };
     extension = updateTranslatedExtension(
       extension,
-      translatedEntryFormatExtension,
+      translatedEntryFormatExtension
     );
   }
 
@@ -224,14 +224,14 @@ const getTranslatedItem = (
     };
     extension = updateTranslatedExtension(
       extension,
-      translatedSublabelExtension,
+      translatedSublabelExtension
     );
   }
 
   // Repeatstext
   const repeatsTextExtension = getExtension(
     extension,
-    IExtensionType.repeatstext,
+    IExtensionType.repeatstext
   );
   if (repeatsTextExtension) {
     const translatedRepeatsTextExtension = {
@@ -240,13 +240,13 @@ const getTranslatedItem = (
     };
     extension = updateTranslatedExtension(
       extension,
-      translatedRepeatsTextExtension,
+      translatedRepeatsTextExtension
     );
   }
   // answerOption
   const answerOption = getTranslatedAnswerOptions(
     currentItem.answerOption,
-    itemTranslation?.answerOptions,
+    itemTranslation?.answerOptions
   );
 
   //prefix
@@ -277,14 +277,14 @@ const getTranslatedItem = (
 };
 function mergeCodes(
   currentCodes?: Coding[],
-  translationCodes?: Coding[],
+  translationCodes?: Coding[]
 ): Coding[] {
   return (
     currentCodes?.map((currentCode) => {
       const match = translationCodes?.find(
         (translationCode) =>
           translationCode.system === currentCode.system &&
-          translationCode.code === currentCode.code,
+          translationCode.code === currentCode.code
       );
       return match || currentCode;
     }) || []
@@ -293,7 +293,7 @@ function mergeCodes(
 
 const getTranslatedMetadata = (
   qMetadata: IQuestionnaireMetadata,
-  translation: Translation,
+  translation: Translation
 ): IQuestionnaireMetadata => {
   const translatedMetadata: IQuestionnaireMetadata = {};
   translatableMetadata.forEach((metadataProperty) => {
@@ -309,7 +309,7 @@ const getTranslatedMetadata = (
 
 const getTranslatedExtensions = (
   qMetadata: IQuestionnaireMetadata,
-  translation: Translation,
+  translation: Translation
 ): Array<Extension> => {
   const translatedSettings = translation.settings;
   const extensions = [];
@@ -331,7 +331,7 @@ const getTranslatedExtensions = (
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getLanguageData(
   qMetadata: IQuestionnaireMetadata,
-  languageCode: string,
+  languageCode: string
 ) {
   const tag = qMetadata.meta?.tag;
   if (!tag || !tag[0]) {
@@ -354,7 +354,7 @@ function getLanguageData(
 
 const generateTree = (
   order: Array<OrderItem>,
-  items: Items,
+  items: Items
 ): Array<QuestionnaireItem> => {
   return order.map((x) => {
     return {
@@ -368,7 +368,7 @@ const generateTreeWithTranslations = (
   order: Array<OrderItem>,
   items: Items,
   languageCode: string,
-  languages: Languages,
+  languages: Languages
 ): Array<QuestionnaireItem> => {
   return order.map((x) => {
     return {
@@ -378,7 +378,7 @@ const generateTreeWithTranslations = (
         x.items,
         items,
         languageCode,
-        languages,
+        languages
       ),
     };
   });
@@ -389,7 +389,7 @@ export const generateMainQuestionnaire = (state: TreeState): Questionnaire => {
   return {
     ...state.qMetadata,
     contained: state.qContained?.filter(
-      (x) => x.id && usedValueSet?.includes(x.id) && x,
+      (x) => x.id && usedValueSet?.includes(x.id) && x
     ) as ValueSet[],
     resourceType: "Questionnaire",
     status: (state.qMetadata.status as Questionnaire["status"]) || "draft",
@@ -400,7 +400,7 @@ export const generateMainQuestionnaire = (state: TreeState): Questionnaire => {
 const generateTranslatedQuestionnaire = (
   state: TreeState,
   languageCode: string,
-  languages: Languages,
+  languages: Languages
 ): Questionnaire => {
   const usedValueSet = getUsedValueSet(state);
   return {
@@ -408,7 +408,7 @@ const generateTranslatedQuestionnaire = (
     ...getLanguageData(state.qMetadata, languageCode),
     contained: getTranslatedContained(
       state.qContained,
-      languages[languageCode],
+      languages[languageCode]
     ).filter((x) => x.id && usedValueSet?.includes(x.id)) as FhirResource[],
     resourceType: "Questionnaire",
     status: state.qMetadata.status as Questionnaire["status"],
@@ -416,17 +416,17 @@ const generateTranslatedQuestionnaire = (
       state.qOrder,
       state.qItems,
       languageCode,
-      languages,
+      languages
     ),
   };
 };
 
 export function getUsedValueSetToTranslate(
-  state: TreeState,
+  state: TreeState
 ): ValueSet[] | undefined {
   const usedValueSet = getUsedValueSet(state);
   const valueSetsToTranslate = state.qContained?.filter(
-    (x) => x.id && usedValueSet?.includes(x.id) && x,
+    (x) => x.id && usedValueSet?.includes(x.id) && x
   );
 
   return valueSetsToTranslate;
@@ -455,9 +455,9 @@ export const generateQuestionnaire = (state: TreeState): string => {
           generateTranslatedQuestionnaire(
             state,
             languageCode,
-            qAdditionalLanguages,
-          ),
-        ),
+            qAdditionalLanguages
+          )
+        )
       );
     }
     return questionnaires;
@@ -485,7 +485,7 @@ export const generateQuestionnaire = (state: TreeState): string => {
 
   return JSON.stringify(
     generateMainQuestionnaire(state),
-    emptyPropertyReplacer,
+    emptyPropertyReplacer
   );
 };
 
@@ -494,7 +494,7 @@ const setEnrichmentValues = (
   replacementValues: {
     expression: string;
     initialValue: QuestionnaireItemInitial;
-  }[],
+  }[]
 ): void => {
   items.forEach((qItem) => {
     (qItem.extension || []).forEach((extension) => {
@@ -516,7 +516,7 @@ export const generateQuestionnaireForPreview = (
   state: TreeState,
   language?: string,
   selectedGender?: string,
-  selectedAge?: string,
+  selectedAge?: string
 ): Questionnaire => {
   const { qAdditionalLanguages } = state;
   const questionnaire =

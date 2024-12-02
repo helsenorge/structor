@@ -182,12 +182,12 @@ const Navbar = ({
                     t,
                     state.qOrder,
                     state.qItems,
-                    state.qContained || [],
-                  ),
+                    state.qContained || []
+                  )
                 );
                 setTranslationErrors(validateTranslations(t, state));
                 setSidebarErrors(
-                  validateSidebar(t, state.qItems, state.qMetadata),
+                  validateSidebar(t, state.qItems, state.qMetadata)
                 );
                 setMarkdownWarning(warnMarkdownInTranslations(t, state));
                 setSecurityInformation(infoSecurity(t, state.qMetadata));
@@ -204,7 +204,7 @@ const Navbar = ({
               title={t("Import choices")}
               onClick={() =>
                 callbackAndHide(() =>
-                  setShowImportValueSet(!showImportValueSet),
+                  setShowImportValueSet(!showImportValueSet)
                 )
               }
             />

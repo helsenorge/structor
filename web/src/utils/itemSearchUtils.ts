@@ -9,7 +9,7 @@ import { Items, OrderItem } from "../store/treeStore/treeStore";
 
 export const doesItemHaveCode = (
   item: QuestionnaireItem,
-  code: string,
+  code: string
 ): boolean => {
   let itemHasCode = false;
   item.code?.forEach((x) => {
@@ -23,7 +23,7 @@ export const doesItemHaveCode = (
 export const isItemInArray = (
   qOrder: OrderItem[],
   qItem: QuestionnaireItem,
-  valueToReturn = false,
+  valueToReturn = false
 ): boolean => {
   qOrder.forEach((item) => {
     if (item.linkId === qItem.linkId) {
@@ -41,7 +41,7 @@ export const doesItemWithCodeExistInArray = (
   qOrder: OrderItem[],
   qItems: Items,
   codeToSearchFor: string,
-  valueToReturn = false,
+  valueToReturn = false
 ): boolean => {
   qOrder.forEach((orderItem) => {
     const qItem = qItems[orderItem.linkId];
@@ -60,7 +60,7 @@ export const doesItemWithCodeExistInArray = (
         orderItem.items,
         qItems,
         codeToSearchFor,
-        valueToReturn,
+        valueToReturn
       );
     }
   });
@@ -70,7 +70,7 @@ export const doesItemWithCodeExistInArray = (
 
 export const doesAllAnswerOptionsInItemHaveExtenison = (
   qItem: QuestionnaireItem,
-  extensionToSearchFor: IExtensionType,
+  extensionToSearchFor: IExtensionType
 ): boolean => {
   let foundExtension = false;
   let valueToReturn = true;
@@ -94,7 +94,7 @@ export const getAllItemTypes = (
   qOrder: OrderItem[],
   qItems: Items,
   itemType: IQuestionnaireItemType,
-  newArray: OrderItem[] = [],
+  newArray: OrderItem[] = []
 ): OrderItem[] => {
   qOrder.forEach((orderItem) => {
     const qItem = qItems[orderItem.linkId];

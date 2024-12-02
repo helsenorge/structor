@@ -66,8 +66,8 @@ function extractMetadata(questionnaireObj: Questionnaire) {
     copyright,
     date,
     url,
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  }: IQuestionnaireMetadata) => ({
+  }: // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  IQuestionnaireMetadata) => ({
     resourceType,
     language,
     id,
@@ -96,7 +96,7 @@ function extractItemsAndOrder(item?: Array<QuestionnaireItem>): {
 } {
   function mapToOrderItem(
     qItem: QuestionnaireItem,
-    questionnaireItems: Items,
+    questionnaireItems: Items
   ): OrderItem {
     let children: Array<OrderItem>;
     if (qItem.item !== undefined && qItem.item.length > 0) {
@@ -128,7 +128,7 @@ function extractItemsAndOrder(item?: Array<QuestionnaireItem>): {
 }
 
 function translateAnswerOptions(
-  answerOptions?: QuestionnaireItemAnswerOption[],
+  answerOptions?: QuestionnaireItemAnswerOption[]
 ): CodeStringValue {
   const translatedAnswerOptions: CodeStringValue = {};
   answerOptions?.forEach((baseOption) => {
@@ -142,7 +142,7 @@ function translateAnswerOptions(
 
 function translateContained(
   base: Array<ValueSet>,
-  translation: Array<ValueSet>,
+  translation: Array<ValueSet>
 ): ContainedTranslations {
   if (!base || !translation) {
     return {};
@@ -150,7 +150,7 @@ function translateContained(
   const contained: ContainedTranslations = {};
   base.forEach((baseValueSet) => {
     const translatedValueSet = translation.find(
-      (x) => x.id === baseValueSet.id,
+      (x) => x.id === baseValueSet.id
     );
     if (baseValueSet.id && translatedValueSet) {
       const baseCodings = getValueSetValues(baseValueSet);
@@ -158,7 +158,7 @@ function translateContained(
       const concepts: CodeStringValue = {};
       baseCodings?.forEach((bConcept) => {
         const tConcept = translationCodings?.find(
-          (t) => t.code === bConcept.code && t.system === bConcept.system,
+          (t) => t.code === bConcept.code && t.system === bConcept.system
         );
         if (tConcept) {
           concepts[tConcept.code || ""] = tConcept.display || "";
@@ -171,7 +171,7 @@ function translateContained(
 }
 
 function translateItem(
-  translationItem: QuestionnaireItem | undefined,
+  translationItem: QuestionnaireItem | undefined
 ): ItemTranslation {
   const answerOptions = translateAnswerOptions(translationItem?.answerOption);
   const entryFormatText = getPlaceHolderText(translationItem);
@@ -200,11 +200,11 @@ function translateItems(
   baseItems: QuestionnaireItem[] | undefined,
   translationItems: QuestionnaireItem[] | undefined,
   items: ItemTranslations = {},
-  sidebarItems: SidebarItemTranslations = {},
+  sidebarItems: SidebarItemTranslations = {}
 ): { items: ItemTranslations; sidebarItems: SidebarItemTranslations } {
   baseItems?.forEach((baseItem) => {
     const translationItem = translationItems?.find(
-      (tItem) => tItem.linkId === baseItem.linkId,
+      (tItem) => tItem.linkId === baseItem.linkId
     );
     if (isItemControlSidebar(baseItem)) {
       sidebarItems[baseItem.linkId] = translateSidebarItem(translationItem);
@@ -226,7 +226,7 @@ function translateMetadata(to: Questionnaire): MetadataTranslations {
 }
 
 function translateSidebarItem(
-  translationItem: QuestionnaireItem | undefined,
+  translationItem: QuestionnaireItem | undefined
 ): SidebarItemTranslation {
   const markdown = getTextExtensionMarkdown(translationItem) ?? "";
   return { markdown };
@@ -247,15 +247,15 @@ function translateSettings(q: Questionnaire): SettingTranslations {
 
 export function translateQuestionnaire(
   mainQuestionnaire: Questionnaire,
-  questionnaire: Questionnaire,
+  questionnaire: Questionnaire
 ): Translation {
   const contained = translateContained(
     mainQuestionnaire.contained as Array<ValueSet>,
-    questionnaire.contained as Array<ValueSet>,
+    questionnaire.contained as Array<ValueSet>
   );
   const { items, sidebarItems } = translateItems(
     mainQuestionnaire.item,
-    questionnaire.item,
+    questionnaire.item
   );
 
   const metaData = translateMetadata(questionnaire);
@@ -287,7 +287,7 @@ function extractTranslations(bundle: Bundle): Languages {
       if (index !== 0) {
         // eslint-disable-next-line no-console
         console.error(
-          `Skipping questionnaire with index ${index} and language '${questionnaire.language}' due to missing or unsupported language`,
+          `Skipping questionnaire with index ${index} and language '${questionnaire.language}' due to missing or unsupported language`
         );
       }
       return;

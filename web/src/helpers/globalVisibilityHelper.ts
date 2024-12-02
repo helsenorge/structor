@@ -24,7 +24,7 @@ export enum VisibilityType {
 }
 
 const createItemControlExtensionWithTypes = (
-  types: VisibilityType[],
+  types: VisibilityType[]
 ): Extension => {
   const initCodingArray: Coding[] = [];
   const extension = {
@@ -62,27 +62,27 @@ export const createItemControlExtension = (type: VisibilityType): Extension => {
 const existItemControlExtension = (item: IQuestionnaireMetadata): boolean => {
   return (
     item.extension?.find(
-      (x: Extension) => x.url === IExtensionType.globalVisibility,
+      (x: Extension) => x.url === IExtensionType.globalVisibility
     ) !== undefined
   );
 };
 
 const existItemControlWithCode = (
   item: IQuestionnaireMetadata,
-  code: string,
+  code: string
 ): boolean => {
   const exist =
     item.extension
       ?.filter((x: Extension) => x.url === IExtensionType.globalVisibility)
       ?.find((x: Extension) =>
-        x.valueCodeableConcept?.coding?.some((s: Coding) => s.code === code),
+        x.valueCodeableConcept?.coding?.some((s: Coding) => s.code === code)
       ) !== undefined;
   return exist;
 };
 
 const handleTypeInItemControlExtension = (
   item: IQuestionnaireMetadata,
-  code: VisibilityType,
+  code: VisibilityType
 ): Extension | null => {
   if (!existItemControlExtension(item)) {
     return createItemControlExtension(code);
@@ -101,7 +101,7 @@ const handleTypeInItemControlExtension = (
 };
 
 export const isVisibilityHideSidebar = (
-  item: IQuestionnaireMetadata,
+  item: IQuestionnaireMetadata
 ): boolean => {
   return existItemControlWithCode(item, VisibilityType.hideSidebar);
 };
@@ -111,13 +111,13 @@ export const isVisibilityHideHelp = (item: IQuestionnaireMetadata): boolean => {
 };
 
 export const isVisibilityHideSublabel = (
-  item: IQuestionnaireMetadata,
+  item: IQuestionnaireMetadata
 ): boolean => {
   return existItemControlWithCode(item, VisibilityType.hideSublabel);
 };
 
 export const isVisibilityHideProgress = (
-  item: IQuestionnaireMetadata,
+  item: IQuestionnaireMetadata
 ): boolean => {
   return existItemControlWithCode(item, VisibilityType.hideProgress);
 };
@@ -125,10 +125,10 @@ export const isVisibilityHideProgress = (
 export const setItemControlExtension = (
   item: IQuestionnaireMetadata,
   code: VisibilityType,
-  dispatch: (value: ActionType) => void,
+  dispatch: (value: ActionType) => void
 ): void => {
   const extensionsToSet = (item.extension || []).filter(
-    (x: Extension) => x.url !== IExtensionType.globalVisibility,
+    (x: Extension) => x.url !== IExtensionType.globalVisibility
   );
   const extension = handleTypeInItemControlExtension(item, code);
   if (extension) {
@@ -137,13 +137,13 @@ export const setItemControlExtension = (
   dispatch(
     updateQuestionnaireMetadataAction(
       IQuestionnaireMetadataType.extension,
-      extensionsToSet,
-    ),
+      extensionsToSet
+    )
   );
 };
 
 export const getVisibilityCodeDisplay = (
-  code: VisibilityType,
+  code: VisibilityType
 ): string | undefined => {
   return globalVisibility.find((c) => c.code === code)?.display;
 };

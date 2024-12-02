@@ -12,10 +12,10 @@ export interface ValidationErrors {
 }
 
 export const getValueSetToTranslate = (
-  state: TreeState,
+  state: TreeState
 ): ValueSet[] | undefined => {
   const usedValueSet = getUsedValueSet(state);
   return state.qContained?.filter(
-    (x) => x.id && usedValueSet?.includes(x.id) && x,
+    (x) => x.id && usedValueSet?.includes(x.id) && x
   );
 };

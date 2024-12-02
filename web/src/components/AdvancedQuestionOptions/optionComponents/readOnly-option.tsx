@@ -31,8 +31,8 @@ export const ReadOnlyOption = ({
                 updateItemAction(
                   item.linkId,
                   IItemProperty.readOnly,
-                  !item.readOnly,
-                ),
+                  !item.readOnly
+                )
               )
             }
             value={item.readOnly || false}

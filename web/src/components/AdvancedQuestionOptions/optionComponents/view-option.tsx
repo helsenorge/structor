@@ -38,9 +38,9 @@ const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
     return item.extension?.find((ex) => ex.url === IExtensionType.hidden)
       ?.valueBoolean
       ? RenderingOptionsEnum.Hidden
-      : (item.code?.find(
-          (code) => code.system === ICodeSystem.renderOptionsCodeSystem,
-        )?.code ?? RenderingOptionsEnum.None);
+      : item.code?.find(
+          (code) => code.system === ICodeSystem.renderOptionsCodeSystem
+        )?.code ?? RenderingOptionsEnum.None;
   };
   const onChangeRenderOptions = (newValue: string): void => {
     removeItemExtension(item, IExtensionType.hidden, dispatch);
@@ -53,7 +53,7 @@ const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
             url: IExtensionType.hidden,
             valueBoolean: true,
           },
-          dispatch,
+          dispatch
         );
         break;
       default:
@@ -64,7 +64,7 @@ const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
 
   const checkedChoiceRenderOptions = (): string | undefined => {
     const choiceRendering = item.code?.find(
-      (code) => code.system === ICodeSystem.choiceRenderOptions,
+      (code) => code.system === ICodeSystem.choiceRenderOptions
     );
     return choiceRendering === undefined
       ? ChoiceRenderOptionCodes.Default
@@ -90,7 +90,7 @@ const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
       {canTypeHaveChoiceRender(item) && (
         <FormField
           sublabel={t(
-            "Choose whether all answer options should be displayed in PDF",
+            "Choose whether all answer options should be displayed in PDF"
           )}
         >
           <RadioBtn

@@ -23,7 +23,7 @@ export const addPredefinedValueSet = (valueSets?: ValueSet[]): ValueSet[] => {
   const avalibleValueSets = valueSets?.map((x) => x.id) || ([] as string[]);
 
   const predefinedValueSetsToAdd = initPredefinedValueSet.filter(
-    (x) => !avalibleValueSets?.includes(x.id),
+    (x) => !avalibleValueSets?.includes(x.id)
   );
 
   const importedValueSets = [...(valueSets || [])].map((x) => {
@@ -53,7 +53,7 @@ export const getValueSetValues = (valueSet: ValueSet | undefined): Coding[] => {
 
 export const getFirstAnswerValueSetFromOrderItem = (
   orderItem: OrderItem[],
-  qItems: Items,
+  qItems: Items
 ): string => {
   let newString: string = "";
   orderItem.forEach((item) => {
@@ -67,7 +67,7 @@ export const getFirstAnswerValueSetFromOrderItem = (
 
 export const getAllAnswerValueSetFromOrderItem = (
   orderItem: OrderItem[],
-  qItems: Items,
+  qItems: Items
 ): string[] => {
   const newArray: string[] = [];
   orderItem.forEach((item) => {
@@ -81,14 +81,14 @@ export const getAllAnswerValueSetFromOrderItem = (
 
 export const doesAllItemsHaveSameAnswerValueSet = (
   orderItem: OrderItem[],
-  qItems: Items,
+  qItems: Items
 ): boolean => {
   const allAnswerValueSet = getAllAnswerValueSetFromOrderItem(
     orderItem,
-    qItems,
+    qItems
   );
   const allAnswerValueSetHasSameValue = allAnswerValueSet.every(
-    (answerValueSet) => answerValueSet === allAnswerValueSet[0],
+    (answerValueSet) => answerValueSet === allAnswerValueSet[0]
   );
   if (allAnswerValueSet.length && allAnswerValueSetHasSameValue) {
     return true;

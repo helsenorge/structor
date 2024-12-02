@@ -33,7 +33,7 @@ const FhirPathSelect = (props: FhirPathSelectProps): React.JSX.Element => {
   const { dispatch } = useContext(TreeContext);
   const [isBlankButCustom, setIsBlankButCustom] = useState(false);
   const [predefinedOptionIds, setPredifinedOptionIds] = useState<Array<string>>(
-    [],
+    []
   );
 
   useEffect(() => {
@@ -41,11 +41,11 @@ const FhirPathSelect = (props: FhirPathSelectProps): React.JSX.Element => {
       (element) => {
         if (isOptionGroup(element)) {
           return (element as OptionGroup).options.map(
-            (childElement) => childElement.code,
+            (childElement) => childElement.code
           );
         }
         return (element as Option).code;
-      },
+      }
     );
     setPredifinedOptionIds(flattened);
   }, [props.item.type]);

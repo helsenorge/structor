@@ -53,10 +53,10 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
   const { dispatch } = useContext(TreeContext);
   const getSelectedValue = (): ValueSetComposeIncludeConcept | undefined =>
     props.conditionalArray.find(
-      (f) => f.code === getLinkIdFromValueString(props.item),
+      (f) => f.code === getLinkIdFromValueString(props.item)
     );
   const [selectedValue, setSelectedvalue] = useState(
-    getSelectedValue()?.code ?? undefined,
+    getSelectedValue()?.code ?? undefined
   );
 
   const filterWithRepeats = (value: ValueSetComposeIncludeConcept): boolean => {
@@ -82,7 +82,7 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
   const updateReadonlyItem = (value: boolean): void => {
     if (props.canTypeBeReadonly) {
       dispatch(
-        updateItemAction(props.item.linkId, IItemProperty.readOnly, value),
+        updateItemAction(props.item.linkId, IItemProperty.readOnly, value)
       );
     }
   };
@@ -96,7 +96,7 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
           : IOperator.exists;
       const enableWhen =
         props.item.enableWhen?.filter(
-          (ew: QuestionnaireItemEnableWhen) => ew.operator !== operator,
+          (ew: QuestionnaireItemEnableWhen) => ew.operator !== operator
         ) || initEnableWhen;
       enableWhen.push({
         answerBoolean: true,
@@ -107,8 +107,8 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
         updateItemAction(
           props.item.linkId,
           IItemProperty.enableWhen,
-          enableWhen,
-        ),
+          enableWhen
+        )
       );
     }
   };
@@ -118,7 +118,7 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
       const calculatedExpression =
         getExtensionStringValue(
           props.getItem(code),
-          IExtensionType.calculatedExpression,
+          IExtensionType.calculatedExpression
         ) ?? "";
       if (calculatedExpression) {
         const ceExtension: Extension = {
@@ -130,7 +130,7 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
         removeItemExtension(
           props.item,
           IExtensionType.calculatedExpression,
-          dispatch,
+          dispatch
         );
       }
     }
@@ -166,7 +166,7 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
   };
 
   const onChangeSelect = async (
-    event: React.ChangeEvent<HTMLSelectElement>,
+    event: React.ChangeEvent<HTMLSelectElement>
   ): Promise<void> => {
     const code = event.target.value;
     setSelectedvalue(code);

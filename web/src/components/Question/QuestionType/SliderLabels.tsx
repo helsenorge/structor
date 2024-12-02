@@ -22,7 +22,7 @@ export const SliderLabels = ({ item }: Props): JSX.Element => {
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
   const sliderDisplayTypeCoding = item.code?.find(
-    (cd) => cd.system === ICodeSystem.sliderDisplayType,
+    (cd) => cd.system === ICodeSystem.sliderDisplayType
   );
 
   return (
@@ -36,8 +36,8 @@ export const SliderLabels = ({ item }: Props): JSX.Element => {
                 ICodingProperty.code,
                 newValue,
                 ICodeSystem.sliderDisplayType,
-                sliderDisplayTypeCoding.code,
-              ),
+                sliderDisplayTypeCoding.code
+              )
             );
           }
         }}

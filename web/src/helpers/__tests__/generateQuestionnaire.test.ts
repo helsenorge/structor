@@ -18,7 +18,7 @@ describe(`generateQuestionnaire from initialState`, () => {
   it("does not remove string properties", () => {
     expect(generatedQuestionnaire).toHaveProperty(
       "resourceType",
-      "Questionnaire",
+      "Questionnaire"
     );
   });
 

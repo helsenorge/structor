@@ -14,7 +14,7 @@ type InitialInputTypeChoiceProps = {
 };
 
 const InitialInputTypeChoice = (
-  props: InitialInputTypeChoiceProps,
+  props: InitialInputTypeChoiceProps
 ): React.JSX.Element => {
   const { t } = useTranslation();
   const { state } = useContext(TreeContext);
@@ -43,8 +43,9 @@ const InitialInputTypeChoice = (
   };
 
   const [initialValue, setInitialValue] = useState(getInitialValue());
-  const [initialValueEnabled, setInitialValueEnabled] =
-    useState(hasInitialValue());
+  const [initialValueEnabled, setInitialValueEnabled] = useState(
+    hasInitialValue()
+  );
 
   // TODO Support multiple initial values (for checkboxes)?
 
@@ -82,7 +83,7 @@ const InitialInputTypeChoice = (
   const getContainedValueSetValues = (): Coding[] => {
     const valueSetId = props.item.answerValueSet;
     const containedValueSet = qContained?.find(
-      (valueSet) => `#${valueSet.id}` === valueSetId,
+      (valueSet) => `#${valueSet.id}` === valueSetId
     );
     return getValueSetValues(containedValueSet);
   };

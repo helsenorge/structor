@@ -7,7 +7,7 @@ import { removeSpace } from "./formatHelper";
 import { createUriUUID } from "./uriHelper";
 
 export const createNewAnswerOption = (
-  system?: string,
+  system?: string
 ): QuestionnaireItemAnswerOption => {
   return {
     valueCoding: {
@@ -20,7 +20,7 @@ export const createNewAnswerOption = (
 };
 
 export const addEmptyOptionToAnswerOptionArray = (
-  values: QuestionnaireItemAnswerOption[],
+  values: QuestionnaireItemAnswerOption[]
 ): QuestionnaireItemAnswerOption[] => {
   // find existing system, if any. Otherwise generate new system
   const system =
@@ -33,7 +33,7 @@ export const addEmptyOptionToAnswerOptionArray = (
 
 export const addOrdinalValueExtensionToAllAnswerOptions = (
   values: QuestionnaireItemAnswerOption[],
-  scoreValue: string,
+  scoreValue: string
 ): QuestionnaireItemAnswerOption[] => {
   const extensionToAdd = {
     url: IExtensionType.ordinalValue,
@@ -52,7 +52,7 @@ export const addOrdinalValueExtensionToAllAnswerOptions = (
 export const updateAnswerOption = (
   values: QuestionnaireItemAnswerOption[],
   targetId: string,
-  displayValue: string,
+  displayValue: string
 ): QuestionnaireItemAnswerOption[] => {
   return values.map((x) => {
     return x.valueCoding?.id === targetId
@@ -70,7 +70,7 @@ export const updateAnswerOption = (
 export const updateAnswerOptionCode = (
   values: QuestionnaireItemAnswerOption[],
   targetId: string,
-  codeValue: string,
+  codeValue: string
 ): QuestionnaireItemAnswerOption[] => {
   return values.map((x) => {
     return x.valueCoding?.id === targetId
@@ -99,7 +99,7 @@ export const updateAnswerOptionExtension = (
   values: QuestionnaireItemAnswerOption[],
   targetId: string,
   scoreValue: string,
-  url: string,
+  url: string
 ): QuestionnaireItemAnswerOption[] => {
   return values.map((x) => {
     if (x.valueCoding?.id === targetId) {
@@ -132,7 +132,7 @@ export const updateAnswerOptionExtension = (
 
 export const updateAnswerOptionSystem = (
   values: QuestionnaireItemAnswerOption[],
-  system: string,
+  system: string
 ): QuestionnaireItemAnswerOption[] => {
   return values.map((x) => {
     return {
@@ -146,21 +146,21 @@ export const updateAnswerOptionSystem = (
 
 export const removeOptionFromAnswerOptionArray = (
   values: QuestionnaireItemAnswerOption[],
-  targetId: string,
+  targetId: string
 ): QuestionnaireItemAnswerOption[] => {
   return values.filter((x) => x.valueCoding?.id !== targetId);
 };
 
 export const removeExtensionFromAnswerOptions = (
   values: QuestionnaireItemAnswerOption[],
-  extensionUrl: IExtensionType,
+  extensionUrl: IExtensionType
 ): QuestionnaireItemAnswerOption[] => {
   return values.map((x) => {
     return {
       valueCoding: {
         ...x.valueCoding,
         extension: x.valueCoding?.extension?.filter(
-          (y) => y.url !== extensionUrl,
+          (y) => y.url !== extensionUrl
         ),
       } as QuestionnaireItemAnswerOption,
     };
@@ -170,7 +170,7 @@ export const removeExtensionFromAnswerOptions = (
 export const removeExtensionFromSingleAnswerOption = (
   values: QuestionnaireItemAnswerOption[],
   valueCodingId: string,
-  extensionUrl: IExtensionType,
+  extensionUrl: IExtensionType
 ): QuestionnaireItemAnswerOption[] => {
   return values.map((x) => {
     return x.valueCoding?.id === valueCodingId
@@ -178,7 +178,7 @@ export const removeExtensionFromSingleAnswerOption = (
           valueCoding: {
             ...x.valueCoding,
             extension: x.valueCoding?.extension?.filter(
-              (y) => y.url !== extensionUrl,
+              (y) => y.url !== extensionUrl
             ),
           } as QuestionnaireItemAnswerOption,
         }
@@ -189,7 +189,7 @@ export const removeExtensionFromSingleAnswerOption = (
 export const reorderPositions = (
   list: QuestionnaireItemAnswerOption[],
   to: number,
-  from: number,
+  from: number
 ): QuestionnaireItemAnswerOption[] => {
   const itemToMove = list.splice(from, 1);
   list.splice(to, 0, itemToMove[0]);

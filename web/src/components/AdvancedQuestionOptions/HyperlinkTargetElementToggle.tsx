@@ -43,10 +43,10 @@ const HyperlinkTargetElementToggle = ({ item }: Props): React.JSX.Element => {
 
   useLayoutEffect(() => {
     setItemHyperlinkValue(
-      getHyperlinkTargetvalue(item.extension ? item.extension : []),
+      getHyperlinkTargetvalue(item.extension ? item.extension : [])
     );
     setFormHyperlinkValue(
-      getHyperlinkTargetvalue(qMetadata.extension ? qMetadata.extension : []),
+      getHyperlinkTargetvalue(qMetadata.extension ? qMetadata.extension : [])
     );
   }, [item.extension, qMetadata.extension]);
 
@@ -66,13 +66,13 @@ const HyperlinkTargetElementToggle = ({ item }: Props): React.JSX.Element => {
   const handleHyperlinkTargetExtension = (
     questionnaireItem: QuestionnaireItem,
     itemHyperValue: HyperlinkTarget | undefined,
-    formHyperValue: HyperlinkTarget | undefined,
+    formHyperValue: HyperlinkTarget | undefined
   ): void => {
     if (!itemHyperValue && !formHyperValue) {
       setItemExtension(
         questionnaireItem,
         createHyperlinkTargetExtension(),
-        dispatch,
+        dispatch
       );
     } else if (
       itemHyperValue === HyperlinkTarget.DEFAULT &&
@@ -81,13 +81,13 @@ const HyperlinkTargetElementToggle = ({ item }: Props): React.JSX.Element => {
       removeItemExtension(
         questionnaireItem,
         IExtensionType.hyperlinkTarget,
-        dispatch,
+        dispatch
       );
     } else if (itemHyperValue === HyperlinkTarget.DEFAULT && !formHyperValue) {
       setItemExtension(
         questionnaireItem,
         createHyperlinkTargetExtension(),
-        dispatch,
+        dispatch
       );
     } else if (
       itemHyperValue === HyperlinkTarget.SAME_WINDOW &&
@@ -96,7 +96,7 @@ const HyperlinkTargetElementToggle = ({ item }: Props): React.JSX.Element => {
       removeItemExtension(
         questionnaireItem,
         IExtensionType.hyperlinkTarget,
-        dispatch,
+        dispatch
       );
     } else if (
       !itemHyperValue &&
@@ -105,14 +105,14 @@ const HyperlinkTargetElementToggle = ({ item }: Props): React.JSX.Element => {
       setItemExtension(
         questionnaireItem,
         createHyperlinkTargetExtension(HyperlinkTarget.DEFAULT),
-        dispatch,
+        dispatch
       );
     }
   };
 
   const getInlineItemId = (
     currentItemId: string,
-    orderList: OrderItem[],
+    orderList: OrderItem[]
   ): string | undefined => {
     const orderListItem = orderList.find((x) => x.linkId === currentItemId);
     return orderListItem?.items[0].linkId;
@@ -122,7 +122,7 @@ const HyperlinkTargetElementToggle = ({ item }: Props): React.JSX.Element => {
     handleHyperlinkTargetExtension(
       item,
       itemHyperlinkValue,
-      formHyperlinkValue,
+      formHyperlinkValue
     );
 
     // If item is an inline item, set same extension on related item
@@ -132,7 +132,7 @@ const HyperlinkTargetElementToggle = ({ item }: Props): React.JSX.Element => {
         handleHyperlinkTargetExtension(
           qItems[inlineId],
           itemHyperlinkValue,
-          formHyperlinkValue,
+          formHyperlinkValue
         );
     }
   };

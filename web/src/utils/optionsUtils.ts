@@ -9,7 +9,7 @@ import { OrderItem, Items } from "../store/treeStore/treeStore";
 
 export const createOptionsFromQItemCode = (
   item: QuestionnaireItem,
-  system: ICodeSystem,
+  system: ICodeSystem
 ): Option[] => {
   const newArray: Option[] = [];
   item.code?.forEach((code) => {
@@ -26,7 +26,7 @@ export const createOptionsFromQItemCode = (
 
 export const getSelectedValue = (
   item: QuestionnaireItem,
-  system: ICodeSystem,
+  system: ICodeSystem
 ): string | undefined => {
   let stringToReturn = "";
   item.code?.forEach((code) => {
@@ -39,7 +39,7 @@ export const getSelectedValue = (
 
 export const getDisplayValueInOption = (
   options: Option[],
-  codeToSearchIn: string,
+  codeToSearchIn: string
 ): string => {
   let stringToReturn = "";
   options.forEach((option) => {
@@ -53,12 +53,12 @@ export const getDisplayValueInOption = (
 export const getContainedOptions = (
   orderItem: OrderItem[],
   qItems: Items,
-  qContained: ValueSet[] | undefined,
+  qContained: ValueSet[] | undefined
 ): Option[] => {
   const optionArray: Option[] = [];
   const firstChoiceAnswerValueSet = getFirstAnswerValueSetFromOrderItem(
     orderItem,
-    qItems,
+    qItems
   );
 
   if (firstChoiceAnswerValueSet) {
@@ -84,7 +84,7 @@ export const getContainedOptions = (
 export const getGTableOptions = (
   item: QuestionnaireItem,
   qOrder: OrderItem[],
-  qItems: Items,
+  qItems: Items
 ): Option[] => {
   const newArray: Option[] = [];
   const orderItem = getOrderItemByLinkId(qOrder, item.linkId);

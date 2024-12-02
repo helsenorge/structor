@@ -55,6 +55,7 @@ import {
   canTypeCopyData,
 } from "../../helpers/questionTypeFeatures";
 import { TreeContext } from "../../store/treeStore/treeStore";
+import ItemExtractionContextView from "./ItemExtractionContext/ItemExtractionView";
 
 type AdvancedQuestionOptionsProps = {
   item: QuestionnaireItem;
@@ -72,7 +73,7 @@ const AdvancedQuestionOptions = ({
   const { state, dispatch } = useContext(TreeContext);
   const { qItems, qOrder } = state;
   const [isDataReceiver, setDataReceiverState] = useState(
-    isItemControlDataReceiver(item),
+    isItemControlDataReceiver(item)
   );
 
   const parentItem = getItem(parentArray[parentArray.length - 1]) || [];
@@ -103,14 +104,11 @@ const AdvancedQuestionOptions = ({
   return (
     <>
       {canTypeBeReadonly(item) && (
-        <>
-          <ReadOnlyOption
-            item={item}
-            dispatch={dispatch}
-            isDataReceiver={isDataReceiver}
-          />
-          <ValidateReadOnlyOption item={item} dispatch={dispatch} />
-        </>
+        <ReadOnlyOption
+          item={item}
+          dispatch={dispatch}
+          isDataReceiver={isDataReceiver}
+        />
       )}
       {canTypeCopyData(item) && (
         <CopyFromOption
@@ -146,6 +144,7 @@ const AdvancedQuestionOptions = ({
         <PrefixOption item={item} dispatch={dispatch} />
       )}
       <DefinitionOption item={item} dispatch={dispatch} />
+      <ItemExtractionContextView item={item} />
       {canTypeBeRepeatable(item) && (
         <RepetitionOption item={item} dispatch={dispatch} />
       )}

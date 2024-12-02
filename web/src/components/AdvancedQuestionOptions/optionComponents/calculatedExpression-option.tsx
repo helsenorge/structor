@@ -15,7 +15,7 @@ type CalculatedExpressionOptionProps = {
 };
 
 const CalculatedExpressionOption = (
-  props: CalculatedExpressionOptionProps,
+  props: CalculatedExpressionOptionProps
 ): React.JSX.Element => {
   const { t } = useTranslation();
   const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>): void => {
@@ -32,7 +32,7 @@ const CalculatedExpressionOption = (
 
   const calculatedExpression =
     props.item.extension?.find(
-      (ext) => ext.url === IExtensionType.calculatedExpression,
+      (ext) => ext.url === IExtensionType.calculatedExpression
     )?.valueString || "";
   return (
     <FormField label={t("Calculation formula")}>

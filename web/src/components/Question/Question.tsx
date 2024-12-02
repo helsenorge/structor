@@ -68,7 +68,7 @@ interface QuestionProps {
 const Question = (props: QuestionProps): React.JSX.Element => {
   const { t } = useTranslation();
   const [isMarkdownActivated, setIsMarkdownActivated] = React.useState<boolean>(
-    !!props.item._text,
+    !!props.item._text
   );
   const codeElements = props.item.code
     ? `(${props.item.code.filter((value) => !erRenderingOption(value)).length})`
@@ -82,7 +82,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
       | QuestionnaireItemAnswerOption[]
       | Element
       | Extension[]
-      | undefined,
+      | undefined
   ): void => {
     props.dispatch(updateItemAction(props.item.linkId, name, value));
   };
@@ -166,12 +166,12 @@ const Question = (props: QuestionProps): React.JSX.Element => {
               if (props.item.type === IQuestionnaireItemType.text) {
                 dispatchUpdateItem(
                   IItemProperty.type,
-                  IQuestionnaireItemType.string,
+                  IQuestionnaireItemType.string
                 );
               } else {
                 dispatchUpdateItem(
                   IItemProperty.type,
-                  IQuestionnaireItemType.text,
+                  IQuestionnaireItemType.text
                 );
               }
             }}
@@ -219,7 +219,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
                 onChange={() =>
                   dispatchUpdateItem(
                     IItemProperty.required,
-                    !props.item.required,
+                    !props.item.required
                   )
                 }
               />
@@ -256,7 +256,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
                   removeItemExtension(
                     props.item,
                     IExtensionType.sublabel,
-                    props.dispatch,
+                    props.dispatch
                   );
                 }
               }}

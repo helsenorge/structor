@@ -32,7 +32,7 @@ const TranslateSettings = ({
 
   const dispatchTranslation = (
     extension: IExtensionType,
-    value: Extension | null,
+    value: Extension | null
   ): void => {
     dispatch(updateSettingTranslationAction(targetLanguage, extension, value));
   };
@@ -46,7 +46,7 @@ const TranslateSettings = ({
         if (!extensionToTranslate) return;
 
         const mainExtension = (extensions || []).find(
-          (e) => e.url === extensionToTranslate.extension,
+          (e) => e.url === extensionToTranslate.extension
         );
         let baseValue;
         if (mainExtension) {
@@ -54,7 +54,7 @@ const TranslateSettings = ({
         }
 
         const translatedExtension = getTranslation(
-          extensionToTranslate.extension,
+          extensionToTranslate.extension
         );
         let translatedValue;
         if (translatedExtension) {
@@ -78,11 +78,11 @@ const TranslateSettings = ({
                   defaultValue={translatedValue}
                   onBlur={(event) => {
                     const extension = extensionToTranslate.generate(
-                      event.target.value,
+                      event.target.value
                     );
                     dispatchTranslation(
                       extensionToTranslate.extension,
-                      event.target.value ? extension : null,
+                      event.target.value ? extension : null
                     );
                   }}
                   placeholder={t("Enter translation..")}

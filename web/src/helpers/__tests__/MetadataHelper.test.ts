@@ -46,7 +46,7 @@ describe(`MetadataHelpere`, () => {
     it(`Add security according to useContext when form does not have a security from before`, () => {
       questionnaire = addMetaSecurityIfDoesNotExist(questionnaire);
       expect(questionnaire.meta?.security?.[0]).toBe(
-        getTjenesteomraadeCoding(tjenesteomraadeCode.helseregister),
+        getTjenesteomraadeCoding(tjenesteomraadeCode.helseregister)
       );
     });
 
@@ -59,7 +59,7 @@ describe(`MetadataHelpere`, () => {
 
       questionnaire = addMetaSecurityIfDoesNotExist(questionnaire);
       expect(questionnaire.meta?.security?.[0]).not.toBe(
-        getTjenesteomraadeCoding(tjenesteomraadeCode.helseregister),
+        getTjenesteomraadeCoding(tjenesteomraadeCode.helseregister)
       );
     });
   });

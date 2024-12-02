@@ -39,7 +39,7 @@ const FormFillerPreview = ({
   const { t } = useTranslation();
   const languages = getLanguagesInUse(state);
   const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(
-    language || state.qMetadata.language || INITIAL_LANGUAGE.code,
+    language || state.qMetadata.language || INITIAL_LANGUAGE.code
   );
   const [selectedGender, setSelectedGender] = useState<string>("");
   const [selectedAge, setSelectedAge] = useState<string>("");
@@ -49,10 +49,10 @@ const FormFillerPreview = ({
         state,
         selectedLanguage,
         selectedGender,
-        selectedAge,
+        selectedAge
       ),
-      emptyPropertyReplacer,
-    ),
+      emptyPropertyReplacer
+    )
   );
   const [questionnaireResponse, setQuestionnaireResponse] =
     useState<QuestionnaireResponse>();
@@ -129,39 +129,39 @@ const FormFillerPreview = ({
           <FormFillerSidebar questionnaire={questionnaireForPreview} />
 
           <div className="referoContainer-div">
-          <div className="referoInnerContent">
-            {!showResponse ? (
-              <div className="page_refero">
-                <Refero
-                  key={referoKey}
-                  store={store}
-                  questionnaire={questionnaireForPreview}
-                  onCancel={showFormFiller}
-                  onSave={(questionnaireResponse: QuestionnaireResponse) => {
-                    setQuestionnaireResponse(questionnaireResponse);
-                    setShowResponse(true);
-                  }}
-                  onSubmit={() => {}}
-                  authorized={true}
-                  resources={getResources(language || "")}
-                  sticky={true}
-                  saveButtonDisabled={false}
-                  loginButton={<Button>{"Login"}</Button>}
-                  syncQuestionnaireResponse
-                  validateScriptInjection
-                />
-              </div>
-            ) : (
-              <div>
-                <code className="json">
-                  {JSON.stringify(questionnaireResponse, null, 2)}
-                </code>
-                <Button onClick={() => setShowResponse(false)}>
-                  {"Tilbake til skjemautfyller"}
-                </Button>
-              </div>
-            )}
-          </div>
+            <div className="referoInnerContent">
+              {!showResponse ? (
+                <div className="page_refero">
+                  <Refero
+                    key={referoKey}
+                    store={store}
+                    questionnaire={questionnaireForPreview}
+                    onCancel={showFormFiller}
+                    onSave={(questionnaireResponse: QuestionnaireResponse) => {
+                      setQuestionnaireResponse(questionnaireResponse);
+                      setShowResponse(true);
+                    }}
+                    onSubmit={() => {}}
+                    authorized={true}
+                    resources={getResources(language || "")}
+                    sticky={true}
+                    saveButtonDisabled={false}
+                    loginButton={<Button>{"Login"}</Button>}
+                    syncQuestionnaireResponse
+                    validateScriptInjection
+                  />
+                </div>
+              ) : (
+                <div>
+                  <code className="json">
+                    {JSON.stringify(questionnaireResponse, null, 2)}
+                  </code>
+                  <Button onClick={() => setShowResponse(false)}>
+                    {"Tilbake til skjemautfyller"}
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

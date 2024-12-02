@@ -43,7 +43,7 @@ export const HelpOption = ({
     const selfOrder =
       selfArray.find((node) => node.linkId === item.linkId)?.items || [];
     const helpItem = selfOrder.find((child) =>
-      isItemControlHelp(qItems[child.linkId]),
+      isItemControlHelp(qItems[child.linkId])
     );
     return helpItem ? qItems[helpItem.linkId] : undefined;
   };
@@ -57,7 +57,7 @@ export const HelpOption = ({
     const helpItem = getHelpTextItem();
     if (helpItem) {
       dispatch(
-        deleteItemAction(helpItem.linkId, [...parentArray, item.linkId]),
+        deleteItemAction(helpItem.linkId, [...parentArray, item.linkId])
       );
     } else {
       dispatch(newItemHelpIconAction([...parentArray, item.linkId]));
@@ -86,7 +86,7 @@ export const HelpOption = ({
             <FormField
               label={t("Help")}
               sublabel={t(
-                "Select whether you want to give the user a help text",
+                "Select whether you want to give the user a help text"
               )}
             ></FormField>
           </div>

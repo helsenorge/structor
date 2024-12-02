@@ -178,7 +178,7 @@ export const isValidId = (value: string): boolean => {
 
 export const isValidTechnicalName = (
   value: string,
-  stateValue?: string,
+  stateValue?: string
 ): boolean => {
   // Allow name not matching regex if imported and unchanged
   if (stateValue && value === stateValue) {
@@ -189,7 +189,7 @@ export const isValidTechnicalName = (
 };
 
 export const mapUseContextToTjenesteomraadeMetaSecurity = (
-  useContext: string,
+  useContext: string
 ): Coding => {
   switch (useContext) {
     case UseContextSystem.journalinnsyn_basispluss:
@@ -214,21 +214,21 @@ export const getUseContextSystem = (questionnaire: Questionnaire): string => {
 };
 
 export const getTilgangsstyringCodes = (
-  qMetadata: IQuestionnaireMetadata,
+  qMetadata: IQuestionnaireMetadata
 ): (string | undefined)[] => {
   const kanUtforesAv =
     qMetadata.meta &&
     qMetadata.meta.security &&
     qMetadata.meta.security.length &&
     filterMetaSecurity(qMetadata, MetaSecuritySystem.kanUtforesAv)?.map(
-      (m) => m.code,
+      (m) => m.code
     );
 
   return kanUtforesAv || [];
 };
 
 export const addMetaSecurityIfDoesNotExist = (
-  questionnaire: Questionnaire,
+  questionnaire: Questionnaire
 ): Questionnaire => {
   if (!questionnaire.meta?.security) {
     const useContextCode = getUseContextSystem(questionnaire);
@@ -242,18 +242,18 @@ export const addMetaSecurityIfDoesNotExist = (
 };
 
 export const addMetaSecurityIfCanBePerformedByExist = (
-  questionnaire: Questionnaire,
+  questionnaire: Questionnaire
 ): Questionnaire => {
   const canBePerformedBy = questionnaire?.extension?.find(
-    (ex) => ex.url === IExtensionType.canBePerformedBy,
+    (ex) => ex.url === IExtensionType.canBePerformedBy
   )?.valueCoding?.code;
   const kanUtforesAv = questionnaire?.meta?.security?.find(
-    (ex) => ex.system === MetaSecuritySystem.kanUtforesAv,
+    (ex) => ex.system === MetaSecuritySystem.kanUtforesAv
   );
   const kunInnbyggerExtensionCode = "2";
   if (canBePerformedBy) {
     const extentionToUpdate = questionnaire?.extension?.filter(
-      (ex) => ex.url !== IExtensionType.canBePerformedBy,
+      (ex) => ex.url !== IExtensionType.canBePerformedBy
     );
     if (!kanUtforesAv) {
       if (canBePerformedBy === kunInnbyggerExtensionCode) {
@@ -278,7 +278,7 @@ export const addMetaSecurityIfCanBePerformedByExist = (
 export const updateMetaSecurity = (
   qMetadata: IQuestionnaireMetadata,
   securityToSet: Coding[],
-  dispatch: React.Dispatch<ActionType>,
+  dispatch: React.Dispatch<ActionType>
 ): void => {
   const newMeta = {
     ...qMetadata.meta,
@@ -286,20 +286,20 @@ export const updateMetaSecurity = (
   } as Meta;
 
   dispatch(
-    updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.meta, newMeta),
+    updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.meta, newMeta)
   );
 };
 
 export const filterMetaSecurity = (
   qMetadata: IQuestionnaireMetadata,
-  systemCode: MetaSecuritySystem,
+  systemCode: MetaSecuritySystem
 ): undefined | Coding[] => {
   return qMetadata.meta?.security?.filter((f) => f.system === systemCode);
 };
 
 export const filterOutMetaSecurity = (
   qMetadata: IQuestionnaireMetadata,
-  systemCode: MetaSecuritySystem,
+  systemCode: MetaSecuritySystem
 ): undefined | Coding[] => {
   return qMetadata.meta?.security?.filter((f) => f.system !== systemCode);
 };

@@ -24,14 +24,14 @@ const InitialOption = (props: InitialOptionProps): React.JSX.Element => {
   const { dispatch } = useContext(TreeContext);
 
   const dispatchUpdateItem = (
-    value: QuestionnaireItemInitial | undefined,
+    value: QuestionnaireItemInitial | undefined
   ): void => {
     // TODO Support multiple QuestionnaireItemInitial
     const newInitial: QuestionnaireItemInitial[] | undefined = value
       ? [value]
       : undefined;
     dispatch(
-      updateItemAction(props.item.linkId, IItemProperty.initial, newInitial),
+      updateItemAction(props.item.linkId, IItemProperty.initial, newInitial)
     );
   };
 

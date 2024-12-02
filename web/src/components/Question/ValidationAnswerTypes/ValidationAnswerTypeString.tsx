@@ -46,13 +46,13 @@ const ValidationAnswerTypeString = ({ item }: Props): React.JSX.Element => {
     },
     {
       display: t(
-        "Characters approved in the norwegian national register (used for names)",
+        "Characters approved in the norwegian national register (used for names)"
       ),
       code: "^[a-zA-Z-æøåÆØÅÁÀÄÉÈÊÎÏÑÓÒÔÖÙÜáàäçéèêîïñóòôöùüÇČĐŊŠŦŽčđŋšŧž'’* ]*$",
     },
     {
       display: t(
-        "Characters approved in the norwegian national register includes numbers (used for address)",
+        "Characters approved in the norwegian national register includes numbers (used for address)"
       ),
       code: "^[a-zA-Z-æøåÆØÅÁÀÄÉÈÊÎÏÑÓÒÔÖÙÜáàäçéèêîïñóòôöùüÇČĐŊŠŦŽčđŋšŧž'’*0-9 ]*$",
     },
@@ -93,14 +93,14 @@ const ValidationAnswerTypeString = ({ item }: Props): React.JSX.Element => {
     item?.extension?.find((x) => x.url === IExtensionType.regEx)?.valueString ||
     "";
   const minLength = item?.extension?.find(
-    (x) => x.url === IExtensionType.minLength,
+    (x) => x.url === IExtensionType.minLength
   )?.valueInteger;
   const isSelectedRegexCustomRegex = selectedRegEx
     ? !regexOptions.find((x) => x.code === selectedRegEx)
     : false;
 
   const [isCustomRegex, setIsCustomRegex] = React.useState<boolean>(
-    isSelectedRegexCustomRegex,
+    isSelectedRegexCustomRegex
   );
 
   return (
@@ -151,7 +151,7 @@ const ValidationAnswerTypeString = ({ item }: Props): React.JSX.Element => {
               removeItemExtension(
                 item,
                 IExtensionType.validationtext,
-                dispatch,
+                dispatch
               );
             } else {
               const newExtention: Extension = {

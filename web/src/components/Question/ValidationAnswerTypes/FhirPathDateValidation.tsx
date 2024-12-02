@@ -20,7 +20,7 @@ interface FhirPathDateValidationProps {
 }
 
 export const FhirPathDateValidation = (
-  props: FhirPathDateValidationProps,
+  props: FhirPathDateValidationProps
 ): React.JSX.Element => {
   const { t } = useTranslation();
   return (

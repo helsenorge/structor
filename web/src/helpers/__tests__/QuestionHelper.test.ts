@@ -14,21 +14,21 @@ describe("QuestionHelper", () => {
 
     it("Item is shows only in PDF, returns false", () => {
       const result = isHiddenItem(
-        itemWithRenderOption(RenderingOptionsEnum.KunPdf),
+        itemWithRenderOption(RenderingOptionsEnum.KunPdf)
       );
       expect(result).toBeFalsy();
     });
 
     it("Item is shows only in form, returns false", () => {
       const result = isHiddenItem(
-        itemWithRenderOption(RenderingOptionsEnum.KunSkjemautfyller),
+        itemWithRenderOption(RenderingOptionsEnum.KunSkjemautfyller)
       );
       expect(result).toBeFalsy();
     });
 
     it("Item with default render option, returns false", () => {
       const result = isHiddenItem(
-        itemWithRenderOption(RenderingOptionsEnum.Default),
+        itemWithRenderOption(RenderingOptionsEnum.Default)
       );
       expect(result).toBeFalsy();
     });

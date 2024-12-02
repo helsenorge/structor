@@ -18,7 +18,7 @@ describe("ItemControl", () => {
     it("should return false if extension does not contain itemControlType", () => {
       const result = itemControlExistsInExtensionList(
         [{ url: "http://example.com" }],
-        ItemControlType.slider,
+        ItemControlType.slider
       );
       expect(result).toBe(false);
     });
@@ -32,14 +32,14 @@ describe("ItemControl", () => {
             },
           },
         ],
-        ItemControlType.slider,
+        ItemControlType.slider
       );
       expect(result).toBe(true);
     });
     it("should return false if extension is empty", () => {
       const result = itemControlExistsInExtensionList(
         [],
-        ItemControlType.slider,
+        ItemControlType.slider
       );
       expect(result).toBe(false);
     });
@@ -54,7 +54,7 @@ describe("ItemControl", () => {
             },
           },
         ],
-        ItemControlType.slider,
+        ItemControlType.slider
       );
       expect(result).toBe(false);
     });
@@ -71,7 +71,7 @@ describe("ItemControl", () => {
             },
           },
         ],
-        ItemControlType.slider,
+        ItemControlType.slider
       );
       expect(result).toBe(true);
     });

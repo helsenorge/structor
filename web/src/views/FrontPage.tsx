@@ -67,7 +67,7 @@ const FrontPage = (): React.JSX.Element => {
   };
 
   const uploadQuestionnaire = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     if (event.target.files && event.target.files[0]) {
       setIsLoading(true);
@@ -103,7 +103,7 @@ const FrontPage = (): React.JSX.Element => {
           <div>
             <p>
               {t(
-                "It looks like you have previously worked with a questionnaire:",
+                "It looks like you have previously worked with a questionnaire:"
               )}
             </p>
             <div className="key-value">
@@ -159,7 +159,7 @@ const FrontPage = (): React.JSX.Element => {
             <h2>{t("What would you like to do?")}</h2>
             <div className="frontpage__infotext">
               {t(
-                "You can start a new questionnaire, or upload an existing one.",
+                "You can start a new questionnaire, or upload an existing one."
               )}
             </div>
             <input

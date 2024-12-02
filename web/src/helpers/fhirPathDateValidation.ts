@@ -2,7 +2,7 @@ import { FhirPathDateOperator } from "../components/Question/ValidationAnswerTyp
 
 export const getDateOperator = (
   extensionString: string | undefined,
-  absExtensionDate: string | undefined,
+  absExtensionDate: string | undefined
 ): string => {
   let operator = "";
   if (extensionString) {
@@ -28,7 +28,7 @@ export const getDateUnit = (extensionString: string | undefined): string => {
 export const generateFhirPathValueString = (
   operator: string | undefined,
   value: string | undefined,
-  unit: string | undefined,
+  unit: string | undefined
 ): string => {
   if (
     operator === FhirPathDateOperator.NOVALIDATION ||

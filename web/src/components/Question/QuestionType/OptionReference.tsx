@@ -48,7 +48,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
         updateItemAction(item.linkId, IItemProperty.extension, [
           ...(item.extension || []),
           ...newItem,
-        ]),
+        ])
       );
     }
   };
@@ -60,7 +60,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
       dispatch(
         updateItemAction(item.linkId, IItemProperty.extension, [
           ...newExtension,
-        ]),
+        ])
       );
     }
   };
@@ -68,7 +68,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
   const updateReference = (
     type: "display" | "reference",
     value: string,
-    id?: string,
+    id?: string
   ): void => {
     const newExtension = item?.extension?.map((x) => {
       return x.valueReference?.id === id
@@ -84,14 +84,14 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
 
     if (newExtension) {
       dispatch(
-        updateItemAction(item.linkId, IItemProperty.extension, newExtension),
+        updateItemAction(item.linkId, IItemProperty.extension, newExtension)
       );
     }
   };
 
   const getItemStyle = (
     isDragging: boolean,
-    draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
+    draggableStyle: DraggingStyle | NotDraggingStyle | undefined
   ): React.CSSProperties => ({
     userSelect: "none",
     background: isDragging ? "lightgreen" : "transparent",
@@ -100,7 +100,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
   });
 
   const getListStyle = (
-    isDraggingOver: boolean,
+    isDraggingOver: boolean
   ): {
     background: string;
   } => ({
@@ -108,13 +108,13 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
   });
 
   const optionReferences = item.extension?.filter(
-    (x) => x.url === IExtensionType.optionReference,
+    (x) => x.url === IExtensionType.optionReference
   );
 
   const reorderExtension = (
     list: Extension[],
     to: number,
-    from: number,
+    from: number
   ): Extension[] => {
     const itemToMove = list.splice(from, 1);
     list.splice(to, 0, itemToMove[0]);
@@ -132,21 +132,21 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
     if (fromIndex !== toIndex) {
       const tempList = item.extension ? [...item.extension] : [];
       const nonOptionReferences = tempList.filter(
-        (x) => x.url !== IExtensionType.optionReference,
+        (x) => x.url !== IExtensionType.optionReference
       );
       const currentOptionReferences = tempList.filter(
-        (x) => x.url === IExtensionType.optionReference,
+        (x) => x.url === IExtensionType.optionReference
       );
       const reordered = reorderExtension(
         currentOptionReferences,
         toIndex,
-        fromIndex,
+        fromIndex
       );
       dispatch(
         updateItemAction(item.linkId, IItemProperty.extension, [
           ...nonOptionReferences,
           ...reordered,
-        ]),
+        ])
       );
     }
   };
@@ -176,7 +176,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
                         {...providedDrag.draggableProps}
                         style={getItemStyle(
                           snapshotDrag.isDragging,
-                          providedDrag.draggableProps.style,
+                          providedDrag.draggableProps.style
                         )}
                         key={reference.valueReference?.id}
                       >
@@ -194,7 +194,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
                               updateReference(
                                 "display",
                                 event.target.value,
-                                reference.valueReference?.id,
+                                reference.valueReference?.id
                               )
                             }
                           />
@@ -206,7 +206,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
                               updateReference(
                                 "reference",
                                 event.target.value,
-                                reference.valueReference?.id,
+                                reference.valueReference?.id
                               )
                             }
                           />

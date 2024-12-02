@@ -14,13 +14,13 @@ type InitialInputTypeQuantityProps = {
 };
 
 const InitialInputTypeQuantity = (
-  props: InitialInputTypeQuantityProps,
+  props: InitialInputTypeQuantityProps
 ): React.JSX.Element => {
   const { t } = useTranslation();
   const [initialValue, setInitialValue] = useState(getValue(props.initial));
 
   function getValue(
-    initial: QuestionnaireItemInitial | undefined,
+    initial: QuestionnaireItemInitial | undefined
   ): number | undefined {
     if (!initial) {
       return undefined;
