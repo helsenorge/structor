@@ -47,7 +47,6 @@ export const ColumnOrderingFunctionOption = ({
 
   useEffect(() => {
     addDefaultColumnOrdering();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onChangeColumnOrderingOption = (newValue: string): void => {

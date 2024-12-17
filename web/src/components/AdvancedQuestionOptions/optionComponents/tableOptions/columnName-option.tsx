@@ -94,7 +94,6 @@ export const ColumnNameOption = ({
     setExistingColumnCodes(
       getAllMatchingCodes(item, ICodeSystem.tableColumnName)
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item.code]);
 
   return (

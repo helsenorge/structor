@@ -73,6 +73,9 @@ export const getResources = (language: string): Resources => {
         "The field for minutes only allows 2 characters",
       dateLabel_year: "Year",
       dateLabel_month: "Month",
+      microwebstep_navigasjon_avbryt_button: "Cancel",
+      microwebstep_navigasjon_neste_button: "Next",
+      microwebstep_navigasjon_tilbake_button: "Back",
     };
   }
   if (language === "fr-FR") {
@@ -81,14 +84,14 @@ export const getResources = (language: string): Resources => {
       deleteButtonText: "Supprimer",
       validationSummaryHeader:
         "Vérifiez que les éléments suivants sont bien remplis:",
-      validationFileType: "Le type de fichier doit être jpeg, png, or pdf",
+      validationFileType: "Le type de fichier doit être jpeg, png, ou pdf",
       supportedFileFormats:
-        "Les formats de fichier valides sont jpeg, png and pdf",
+        "Les formats de fichier valides sont jpeg, png et pdf",
       selectDefaultPlaceholder: "Sélectionnez une des options.",
       errorAfterMaxDate: "La date ne peut pas être après la date maximum",
       errorBeforeMinDate: "La date ne peut pas être avant la date minimum",
       oppgiVerdi: "Sélectionnez une des options.",
-      oppgiGyldigVerdi: "Merci de entrer une valeur valide",
+      oppgiGyldigVerdi: "Merci d'entrer une valeur valide",
       formCancel: "Annuler",
       formSend: "Valider",
       formSave: "Afficher QuestionnaireResponse",
@@ -99,7 +102,7 @@ export const getResources = (language: string): Resources => {
       confirmDeleteCancelButtonText: "Annuler les modifications",
       confirmDeleteHeading: "Il y a des modifications non sauvegardées",
       confirmDeleteDescription:
-        "Si vous supprimez la ligne, vos modifications seront annuéles.",
+        "Si vous supprimez la ligne, vos modifications seront annulées.",
       ikkeBesvart: "Non répondu",
       uploadButtonText: "Charger un fichier",
       validationNotAllowed: "n'est pas permis",
@@ -110,7 +113,7 @@ export const getResources = (language: string): Resources => {
         'Pas de résultat pour "{0}". Essayez un autre mot ou vérifiez son orthographe.',
       stringOverMaxLengthError:
         "Vous avez entré trop de caractères. Réduisez le texte.",
-      chooseFilesText: "Selectionnez les fichiers",
+      chooseFilesText: "Sélectionnez les fichiers",
       skipLinkText: "Allez au navigateur",
       year_field_invalid: "Entrez une valeur valide pour l'année",
       year_field_maxdate: "Le dernier choix d'année possible est",
@@ -122,7 +125,7 @@ export const getResources = (language: string): Resources => {
       yearmonth_field_mindate: "La première heure que vous pouvez choisir est",
       yearmonth_field_month_placeholder: "Choisissez le mois",
       yearmonth_field_required: "L'année et le mois sont requis",
-      yearmonth_field_year_placeholder: "Choisissez l'année'",
+      yearmonth_field_year_placeholder: "Choisissez l'année",
       adresseKomponent_header: "Qui est le destinataire ?",
       adresseKomponent_skjemaSendesTil: "Le Questionnaire sera envoyé à :",
       adresseKomponent_sublabel:
@@ -130,7 +133,7 @@ export const getResources = (language: string): Resources => {
       adresseKomponent_velgAvdeling: "Sélectionnez le département",
       adresseKomponent_velgHelseforetak: "Sélectionnez l'entreprise",
       adresseKomponent_velgHelseregion: "Sélectionnez la région",
-      adresseKomponent_velgSykehus: "Sélectionnez l'hopital",
+      adresseKomponent_velgSykehus: "Sélectionnez l'hôpital",
       adresseKomponent_velgKlinikk: "Sélectionnez la clinique",
       adresseKomponent_velgSeksjon: "Sélectionnez la section",
       adresseKomponent_velgSengepost: "Sélectionnez le lit",
@@ -139,15 +142,20 @@ export const getResources = (language: string): Resources => {
       adresseKomponent_feilmelding: "Vous devez sélectionner un destinataire.",
       adresseKomponent_loadError:
         "Erreur technique. Impossible de charger les destinataires.",
-      linkOpensInNewTab: `S'ouvre dans un nouvel onglet`,
+      linkOpensInNewTab: "S'ouvre dans un nouvel onglet",
       nextStep: "Suivant",
       previousStep: "Précédent",
 
-      maxCharactersText: "tegn",
-      dateLabel_year: "År",
-      dateLabel_month: "Måned",
-      timeError_hours_digits: "Felt for timer tillater kun 2 tegn",
-      timeError_minutes_digits: "Felt for minutter tillater kun 2 tegn",
+      maxCharactersText: "caractères",
+      dateLabel_year: "Année",
+      dateLabel_month: "Mois",
+      timeError_hours_digits:
+        "Le champ pour les heures permet seulement 2 caractères",
+      timeError_minutes_digits:
+        "Le champ pour les minutes permet seulement 2 caractères",
+      microwebstep_navigasjon_avbryt_button: "Annuler",
+      microwebstep_navigasjon_neste_button: "Suivant",
+      microwebstep_navigasjon_tilbake_button: "Retour",
     };
   }
   return {
@@ -238,5 +246,8 @@ export const getResources = (language: string): Resources => {
     dateLabel_october: "Oktober",
     dateLabel_november: "November",
     dateLabel_december: "Desember",
+    microwebstep_navigasjon_avbryt_button: "Avbryt",
+    microwebstep_navigasjon_neste_button: "Neste",
+    microwebstep_navigasjon_tilbake_button: "Tilbake",
   };
 };

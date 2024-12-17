@@ -1,3 +1,4 @@
+import { Dispatch, useState } from "react";
 import "./AnchorMenu.css";
 
 import { SortableTreeWithoutDndContext as SortableTree } from "@nosferatu500/react-sortable-tree";
@@ -32,8 +33,6 @@ import {
   OrderItem,
 } from "../../store/treeStore/treeStore";
 import { ValidationErrors } from "../../utils/validationUtils";
-
-import { Dispatch, useState } from "react";
 
 interface AnchorMenuProps {
   qOrder: OrderItem[];

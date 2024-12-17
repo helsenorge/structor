@@ -16,7 +16,10 @@ type Props = {
   item: QuestionnaireItem;
   answerOption?: QuestionnaireItemAnswerOption;
   handleDrag?: DraggableProvidedDragHandleProps;
-  changeDisplay: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  changeDisplay: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    codeValue?: string,
+  ) => void;
   changeCode: (event: React.ChangeEvent<HTMLInputElement>) => void;
   changeOrdinalValueExtension: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -109,7 +112,9 @@ const AnswerOption = ({
         <InputField
           name="beskrivelse"
           className={inputFieldClassName}
-          onBlur={(event) => changeDisplay(event)}
+          onBlur={(event) =>
+            changeDisplay(event, answerOption?.valueCoding?.display)
+          }
           defaultValue={answerOption?.valueCoding?.display}
           disabled={disabled}
           placeholder={t("Enter a title..")}

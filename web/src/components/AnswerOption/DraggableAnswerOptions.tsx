@@ -106,16 +106,18 @@ const DraggableAnswerOptions = ({
                     >
                       <AnswerOption
                         item={item}
-                        changeDisplay={(event) => {
-                          const newArray = updateAnswerOption(
-                            item.answerOption ?? [],
-                            answerOption.valueCoding?.id ?? "",
-                            event.target.value
-                          );
-                          dispatchUpdateItem(
-                            IItemProperty.answerOption,
-                            newArray
-                          );
+                        changeDisplay={(event, codeValue) => {
+                          if (codeValue === undefined || codeValue === "") {
+                            const newArray = updateAnswerOption(
+                              item.answerOption ?? [],
+                              answerOption.valueCoding?.id ?? "",
+                              event.target.value,
+                            );
+                            dispatchUpdateItem(
+                              IItemProperty.answerOption,
+                              newArray,
+                            );
+                          }
                         }}
                         changeCode={(event) => {
                           const newArray = updateAnswerOptionCode(

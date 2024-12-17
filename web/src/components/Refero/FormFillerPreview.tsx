@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 
-import { Refero, rootReducer, Resources } from "@helsenorge/refero";
+import { Refero, rootReducer } from "@helsenorge/refero";
 
 import FormFillerSidebar from "./FormFillerSidebar";
 import { emptyPropertyReplacer } from "../../helpers/emptyPropertyReplacer";
