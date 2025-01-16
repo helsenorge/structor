@@ -134,6 +134,7 @@ export enum tilgangsstyringsCode {
   representantTildeltFullmakt = "4",
   representantOrdinaerFullmakt = "5",
   sperretAdresse = "6",
+  innbyggerMellom13Og16 = "7",
 }
 
 export enum tilgangsstyringsDisplay {

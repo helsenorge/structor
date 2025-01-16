@@ -467,6 +467,7 @@
     "Select a table column to link the item to": "Velg en tabell kolonne å knytte elementet til",
     "All answerValueSet values within a group with coding \"table\" must be equal": "Alle answerValueSet verdier inni en gruppe med coding \"table\" må være like",
     "There is a security code with blocked address access": "Skjemaet innholder sperret adresse tilgangsstyring",
+    "There is a security code with access for citizens with age between 13 - 16": "Skjemadefinisjonen er tilgjengelig for innbygger selv mellom 13 og 16 år",
     "Upload translation": "Importer oversettelser",
     "Title values": "Tittel verdier",
     "Decimal values": "Desimal verdier",
