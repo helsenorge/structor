@@ -13,6 +13,7 @@ import {
 } from "../../types/IQuestionnareItemType";
 
 import FhirPathSelect from "./FhirPathSelect/FhirPathSelect";
+import ItemExtractionContextView from "./ItemExtractionContext/ItemExtractionView";
 import { AfterCompleteFormOption } from "./optionComponents/afterCompleteForm-option";
 import CalculatedExpressionOption from "./optionComponents/calculatedExpression-option";
 import CopyFromOption from "./optionComponents/copyFrom-option";
@@ -32,7 +33,6 @@ import { SummaryOption } from "./optionComponents/summary-option";
 import { SummationOption } from "./optionComponents/summation-option";
 import { ColumnOption } from "./optionComponents/tableOptions/column-option";
 import { TableOption } from "./optionComponents/tableOptions/table-option";
-import { ValidateReadOnlyOption } from "./optionComponents/validate-readOnly-option";
 import ViewOption from "./optionComponents/view-option";
 import {
   removeItemExtension,
@@ -55,7 +55,6 @@ import {
   canTypeCopyData,
 } from "../../helpers/questionTypeFeatures";
 import { TreeContext } from "../../store/treeStore/treeStore";
-import ItemExtractionContextView from "./ItemExtractionContext/ItemExtractionView";
 
 type AdvancedQuestionOptionsProps = {
   item: QuestionnaireItem;
@@ -73,7 +72,7 @@ const AdvancedQuestionOptions = ({
   const { state, dispatch } = useContext(TreeContext);
   const { qItems, qOrder } = state;
   const [isDataReceiver, setDataReceiverState] = useState(
-    isItemControlDataReceiver(item)
+    isItemControlDataReceiver(item),
   );
 
   const parentItem = getItem(parentArray[parentArray.length - 1]) || [];

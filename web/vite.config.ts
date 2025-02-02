@@ -1,8 +1,16 @@
+import dns from "dns";
+import fs from "node:fs/promises";
+import { createRequire } from "node:module";
+import path from "node:path";
+import url from "node:url";
+
+import { esbuildCommonjs } from "@originjs/vite-plugin-commonjs";
+import react from "@vitejs/plugin-react";
 import { PluginOption } from "vite";
+import svgr from "vite-plugin-svgr";
 import { defineConfig } from "vitest/config";
 // https://vitejs.dev/config/
 
-import dns from "dns";
 // localhost part
 dns.setDefaultResultOrder("verbatim");
 
@@ -55,15 +63,6 @@ const removeCrossOriginAttr = () => {
   };
 };
 
-import fs from "node:fs/promises";
-import { createRequire } from "node:module";
-import path from "node:path";
-import url from "node:url";
-
-import { esbuildCommonjs } from "@originjs/vite-plugin-commonjs";
-import react from "@vitejs/plugin-react";
-import svgr from "vite-plugin-svgr";
-
 const WRONG_CODE = `import { bpfrpt_proptype_WindowScroller } from "../WindowScroller.js";`;
 
 function reactVirtualized(): PluginOption {
@@ -79,11 +78,11 @@ function reactVirtualized(): PluginOption {
       const reactVirtualizedPath = require.resolve("react-virtualized");
       const { pathname: reactVirtualizedFilePath } = new url.URL(
         reactVirtualizedPath,
-        import.meta.url
+        import.meta.url,
       );
       const file = reactVirtualizedFilePath.replace(
         path.join("dist", "commonjs", "index.js"),
-        path.join("dist", "es", "WindowScroller", "utils", "onScroll.js")
+        path.join("dist", "es", "WindowScroller", "utils", "onScroll.js"),
       );
       const code = await fs.readFile(file, "utf-8");
       const modified = code.replace(WRONG_CODE, "");
