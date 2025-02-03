@@ -59,7 +59,7 @@ const initValueSet = (): ValueSet =>
         },
       ],
     },
-  } as ValueSet);
+  }) as ValueSet;
 
 const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
   const { t } = useTranslation();
@@ -68,7 +68,6 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
     ...initValueSet(),
   });
   const { qContained } = state;
-
   const addNewElement = (): void => {
     newValueSet?.compose?.include[0].concept?.push({
       id: createUUID(),
@@ -93,7 +92,8 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
   const handleConceptItem = (
     value: string,
     updateField: "code" | "display",
-    id?: string
+    id?: string,
+    eventType: "blur" | "change" = "change"
   ): void => {
     const compose = { ...newValueSet.compose };
     const item =
@@ -105,7 +105,12 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
     }
 
     if (updateField === "display" && item) {
-      item.code = removeSpace(value);
+      if (
+        item.code === undefined ||
+        (item.code === "" && eventType === "blur")
+      ) {
+        item.code = removeSpace(value);
+      }
     }
 
     setNewValueSet({ ...newValueSet });
@@ -261,11 +266,20 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
                                         disabled={includeIndex > 0}
                                         value={item.display}
                                         placeholder={t("Enter a title..")}
+                                        onBlur={(event) =>
+                                          handleConceptItem(
+                                            event.target.value,
+                                            "display",
+                                            item.id,
+                                            "blur"
+                                          )
+                                        }
                                         onChange={(event) =>
                                           handleConceptItem(
                                             event.target.value,
                                             "display",
-                                            item.id
+                                            item.id,
+                                            "change"
                                           )
                                         }
                                       />
