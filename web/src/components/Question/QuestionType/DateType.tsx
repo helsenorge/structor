@@ -36,7 +36,7 @@ export const DateType = ({ item, dispatch }: Props): React.JSX.Element => {
       return DAYTIME_CHOICE;
     } else {
       const itemControl = item?.extension?.find(
-        (x) => x.url === IExtensionType.itemControl
+        (x) => x.url === IExtensionType.itemControl,
       );
       return (
         itemControl?.valueCodeableConcept?.coding?.find((x) => !!x.code)
@@ -60,16 +60,16 @@ export const DateType = ({ item, dispatch }: Props): React.JSX.Element => {
               updateItemAction(
                 item.linkId,
                 IItemProperty.type,
-                IQuestionnaireItemType.dateTime
-              )
+                IQuestionnaireItemType.dateTime,
+              ),
             );
           } else {
             dispatch(
               updateItemAction(
                 item.linkId,
                 IItemProperty.type,
-                IQuestionnaireItemType.date
-              )
+                IQuestionnaireItemType.date,
+              ),
             );
             if (newValue) {
               setItemControlExtension(newValue);

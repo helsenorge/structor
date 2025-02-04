@@ -53,8 +53,8 @@ const TranslateContainedValueSets = ({
                         targetLanguage,
                         id,
                         code,
-                        event.target.value
-                      )
+                        event.target.value,
+                      ),
                     );
                   }}
                 />

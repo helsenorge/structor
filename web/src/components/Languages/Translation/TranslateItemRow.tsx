@@ -57,39 +57,39 @@ const TranslateItemRow = ({
     ? qAdditionalLanguages[targetLanguage].items[item.linkId] || {}
     : {};
   const [translatedText, setTranslatedText] = useState(
-    itemTranslation.text || ""
+    itemTranslation.text || "",
   );
   const isMarkdown: boolean = item._text ? true : false;
 
   function dispatchUpdateItemTranslation(
     text: string,
-    propertyName: Exclude<TranslatableItemProperty, "code">
+    propertyName: Exclude<TranslatableItemProperty, "code">,
   ): void {
     dispatch(
       updateItemTranslationAction(
         targetLanguage,
         item.linkId,
         propertyName,
-        text
-      )
+        text,
+      ),
     );
   }
   function dispatchUpdateItemCodeTranslation(
     newDisplayText: string,
-    code: Coding
+    code: Coding,
   ): void {
     dispatch(
       updateItemCodeTranslation(
         targetLanguage,
         item.linkId,
         newDisplayText,
-        code
-      )
+        code,
+      ),
     );
   }
   function dispatchUpdateOptionTranslation(
     text: string,
-    optionCode?: string
+    optionCode?: string,
   ): void {
     if (optionCode) {
       dispatch(
@@ -97,8 +97,8 @@ const TranslateItemRow = ({
           targetLanguage,
           item.linkId,
           text,
-          optionCode
-        )
+          optionCode,
+        ),
       );
     }
   }
@@ -130,7 +130,7 @@ const TranslateItemRow = ({
         onBlur={(e) =>
           dispatchUpdateItemTranslation(
             e.target.value,
-            TranslatableItemProperty.text
+            TranslatableItemProperty.text,
           )
         }
       />
@@ -151,7 +151,7 @@ const TranslateItemRow = ({
   }
 
   function getOptionRow(
-    option: QuestionnaireItemAnswerOption
+    option: QuestionnaireItemAnswerOption,
   ): React.JSX.Element | null {
     if (option.valueCoding?.code) {
       const translation = itemTranslation.answerOptions
@@ -175,16 +175,16 @@ const TranslateItemRow = ({
     header: string,
     textValue: string,
     propertyName: Exclude<TranslatableItemProperty, "code">,
-    isMarkdownField: boolean
+    isMarkdownField: boolean,
   ): React.JSX.Element {
     const itemPropertyTranslation = getItemPropertyTranslation(
       targetLanguage,
       qAdditionalLanguages,
       item.linkId,
-      propertyName
+      propertyName,
     );
     const handleOnBlurText = (
-      event: React.FocusEvent<HTMLTextAreaElement, Element>
+      event: React.FocusEvent<HTMLTextAreaElement, Element>,
     ): void => {
       dispatchUpdateItemTranslation(event.target.value, propertyName);
     };
@@ -232,17 +232,17 @@ const TranslateItemRow = ({
   }
   function getTranslatableCodeField(
     header: string,
-    code: Coding
+    code: Coding,
   ): React.JSX.Element {
     const itemPropertyTranslation = getItemCodeDisplayTranslation(
       targetLanguage,
       qAdditionalLanguages,
       item.linkId,
-      code
+      code,
     );
 
     const handleOnBlurText = (
-      event: React.FocusEvent<HTMLTextAreaElement, Element>
+      event: React.FocusEvent<HTMLTextAreaElement, Element>,
     ): void => {
       dispatchUpdateItemCodeTranslation(event.target.value, code);
     };
@@ -280,35 +280,35 @@ const TranslateItemRow = ({
           t("Sublabel"),
           getSublabel(item),
           TranslatableItemProperty.sublabel,
-          true
+          true,
         )}
       {getRepeatsText(item) &&
         getTranslatableField(
           t("Repeat button text"),
           getRepeatsText(item),
           TranslatableItemProperty.repeatsText,
-          false
+          false,
         )}
       {getValidationMessage(item) &&
         getTranslatableField(
           t("Error message for validation error"),
           getValidationMessage(item),
           TranslatableItemProperty.validationText,
-          false
+          false,
         )}
       {getPlaceHolderText(item) &&
         getTranslatableField(
           t("Placeholder text"),
           getPlaceHolderText(item),
           TranslatableItemProperty.entryFormatText,
-          false
+          false,
         )}
       {getPrefix(item) &&
         getTranslatableField(
           t("Prefix"),
           getPrefix(item),
           TranslatableItemProperty.prefix,
-          false
+          false,
         )}
       {(item.type === IQuestionnaireItemType.text ||
         item.type === IQuestionnaireItemType.string) &&
@@ -317,7 +317,7 @@ const TranslateItemRow = ({
           t("Initial value"),
           getInitialText(item),
           TranslatableItemProperty.initial,
-          false
+          false,
         )}
 
       {item.answerOption &&
@@ -326,10 +326,10 @@ const TranslateItemRow = ({
         })}
       {itemCodes
         ?.filter((code: Coding) =>
-          systemCodesToTranslate.includes(code.system || "")
+          systemCodesToTranslate.includes(code.system || ""),
         )
         ?.map((code) =>
-          getTranslatableCodeField(code.system || "system", code)
+          getTranslatableCodeField(code.system || "system", code),
         )}
     </>
   );

@@ -19,7 +19,7 @@ const JSONView = ({ showJSONView }: Props): React.JSX.Element => {
     const content = JSON.stringify(
       JSON.parse(generateQuestionnaire(state)),
       null,
-      2
+      2,
     );
     await copyToClipboard(content);
   };
@@ -45,7 +45,7 @@ const JSONView = ({ showJSONView }: Props): React.JSX.Element => {
           {JSON.stringify(
             JSON.parse(generateQuestionnaire(state)),
             undefined,
-            2
+            2,
           )}
         </code>
       </div>

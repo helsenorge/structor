@@ -18,7 +18,7 @@ const isEmptyObject = (value: unknown): boolean => {
 
 export const emptyPropertyReplacer = (
   _key: string,
-  value: unknown
+  value: unknown,
 ): unknown => {
   if (value === undefined || value === null || value === "") {
     return undefined;

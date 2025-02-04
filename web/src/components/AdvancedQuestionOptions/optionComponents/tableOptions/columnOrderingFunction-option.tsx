@@ -33,7 +33,7 @@ export const ColumnOrderingFunctionOption = ({
   const addDefaultColumnOrdering = (): void => {
     const columnCodeExist = existItemWithSystem(
       item,
-      ICodeSystem.tableOrderingFunctions
+      ICodeSystem.tableOrderingFunctions,
     );
     if (!columnCodeExist) {
       const defaultColumnOrdering: Coding = {
@@ -70,7 +70,7 @@ export const ColumnOrderingFunctionOption = ({
 
   const checkedColumnOrderingOption = (): TableColumnOrderingOptionsEnum => {
     const itemWithColumnOrderingSystem = item.code?.find(
-      (code) => code.system === ICodeSystem.tableOrderingFunctions
+      (code) => code.system === ICodeSystem.tableOrderingFunctions,
     );
     if (
       itemWithColumnOrderingSystem &&
@@ -88,7 +88,7 @@ export const ColumnOrderingFunctionOption = ({
       <FormField
         label={t("Ordering function")}
         sublabel={t(
-          `Select the default ordering function when ordering by a table column`
+          `Select the default ordering function when ordering by a table column`,
         )}
       >
         <RadioBtn

@@ -29,8 +29,8 @@ export const PrefixOption = ({
               updateItemAction(
                 item.linkId,
                 IItemProperty.prefix,
-                e.target.value
-              )
+                e.target.value,
+              ),
             );
           }}
         />

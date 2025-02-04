@@ -21,14 +21,14 @@ import { ActionType, Items } from "../store/treeStore/treeStore";
 export const importCSV = (
   csvData: string,
   qItems: Items,
-  dispatch: React.Dispatch<ActionType>
+  dispatch: React.Dispatch<ActionType>,
 ): void => {
   const parsedCsv = Papa.parse(csvData, { skipEmptyLines: true });
   updateQuestionniareWithTranslation(
     parsedCsv.data as string[][],
     parsedCsv.data[0] as string[],
     qItems,
-    dispatch
+    dispatch,
   );
 };
 
@@ -36,7 +36,7 @@ const updateQuestionniareWithTranslation = (
   translatableItems: string[][],
   csvHeaders: string[],
   qItems: Items,
-  dispatch: React.Dispatch<ActionType>
+  dispatch: React.Dispatch<ActionType>,
 ): void => {
   for (
     let languageIndex = 2;
@@ -54,7 +54,7 @@ const updateQuestionniareWithTranslation = (
           languageCode,
           qItems,
           text,
-          dispatch
+          dispatch,
         );
         if (itemUpdated) continue;
 
@@ -62,7 +62,7 @@ const updateQuestionniareWithTranslation = (
           key,
           languageCode,
           text,
-          dispatch
+          dispatch,
         );
         if (metadataUpdated) continue;
 
@@ -70,7 +70,7 @@ const updateQuestionniareWithTranslation = (
           key,
           languageCode,
           text,
-          dispatch
+          dispatch,
         );
         if (valuesetUpdated) continue;
       }
@@ -83,7 +83,7 @@ const updateItemTranslation = (
   languageCode: string,
   qItems: Items,
   text: string,
-  dispatch: React.Dispatch<ActionType>
+  dispatch: React.Dispatch<ActionType>,
 ): boolean => {
   let returnValue = false;
   if (key.startsWith(TranslatableKeyProptey.item)) {
@@ -94,8 +94,8 @@ const updateItemTranslation = (
           languageCode,
           itemLinkId,
           TranslatableItemProperty.prefix,
-          text
-        )
+          text,
+        ),
       );
       returnValue = true;
     }
@@ -105,8 +105,8 @@ const updateItemTranslation = (
           languageCode,
           itemLinkId,
           TranslatableItemProperty.validationText,
-          text
-        )
+          text,
+        ),
       );
       returnValue = true;
     }
@@ -116,8 +116,8 @@ const updateItemTranslation = (
           languageCode,
           itemLinkId,
           TranslatableItemProperty.sublabel,
-          text
-        )
+          text,
+        ),
       );
       returnValue = true;
     }
@@ -127,8 +127,8 @@ const updateItemTranslation = (
           languageCode,
           itemLinkId,
           TranslatableItemProperty.repeatsText,
-          text
-        )
+          text,
+        ),
       );
       returnValue = true;
     }
@@ -138,8 +138,8 @@ const updateItemTranslation = (
           languageCode,
           itemLinkId,
           TranslatableItemProperty.initial,
-          text
-        )
+          text,
+        ),
       );
       returnValue = true;
     }
@@ -149,8 +149,8 @@ const updateItemTranslation = (
           languageCode,
           itemLinkId,
           TranslatableItemProperty.entryFormatText,
-          text
-        )
+          text,
+        ),
       );
       returnValue = true;
     }
@@ -160,8 +160,8 @@ const updateItemTranslation = (
           languageCode,
           itemLinkId,
           TranslatableItemProperty.text,
-          text
-        )
+          text,
+        ),
       );
       returnValue = true;
     }
@@ -172,8 +172,8 @@ const updateItemTranslation = (
           languageCode,
           itemLinkId,
           text,
-          optionCode
-        )
+          optionCode,
+        ),
       );
       returnValue = true;
     }
@@ -187,7 +187,7 @@ const updateItemTranslation = (
         languageCode,
         text,
         dispatch,
-        qItems
+        qItems,
       );
     }
   }
@@ -198,7 +198,7 @@ const updateMetadataTranslation = (
   key: string,
   languageCode: string,
   text: string,
-  dispatch: React.Dispatch<ActionType>
+  dispatch: React.Dispatch<ActionType>,
 ): boolean => {
   let returnValue = false;
   if (key.startsWith(TranslatableKeyProptey.metadata)) {
@@ -207,8 +207,8 @@ const updateMetadataTranslation = (
         updateMetadataTranslationAction(
           languageCode,
           TranslatableMetadataProperty.publisher,
-          text
-        )
+          text,
+        ),
       );
       returnValue = true;
     }
@@ -217,8 +217,8 @@ const updateMetadataTranslation = (
         updateMetadataTranslationAction(
           languageCode,
           TranslatableMetadataProperty.description,
-          text
-        )
+          text,
+        ),
       );
       returnValue = true;
     }
@@ -227,8 +227,8 @@ const updateMetadataTranslation = (
         updateMetadataTranslationAction(
           languageCode,
           TranslatableMetadataProperty.title,
-          text
-        )
+          text,
+        ),
       );
       returnValue = true;
     }
@@ -237,8 +237,8 @@ const updateMetadataTranslation = (
         updateMetadataTranslationAction(
           languageCode,
           TranslatableMetadataProperty.purpose,
-          text
-        )
+          text,
+        ),
       );
       returnValue = true;
     }
@@ -247,8 +247,8 @@ const updateMetadataTranslation = (
         updateMetadataTranslationAction(
           languageCode,
           TranslatableMetadataProperty.copyright,
-          text
-        )
+          text,
+        ),
       );
       returnValue = true;
     }
@@ -260,7 +260,7 @@ const updateValueSetTranslation = (
   key: string,
   languageCode: string,
   text: string,
-  dispatch: React.Dispatch<ActionType>
+  dispatch: React.Dispatch<ActionType>,
 ): boolean => {
   let returnValue = false;
   if (key.startsWith(TranslatableKeyProptey.valueSet)) {
@@ -272,8 +272,8 @@ const updateValueSetTranslation = (
         languageCode,
         valueSetId,
         conceptId,
-        text
-      )
+        text,
+      ),
     );
     returnValue = true;
   }
@@ -285,7 +285,7 @@ const updateCodeTranslation = (
   languageCode: string,
   text: string,
   dispatch: React.Dispatch<ActionType>,
-  qItems: Items
+  qItems: Items,
 ): boolean => {
   let returnValue = false;
 
@@ -294,12 +294,12 @@ const updateCodeTranslation = (
   const code: string | undefined = key?.split("[")?.[3]?.split("]")?.[0];
   const item = qItems[itemLinkId];
   const currentCode = item?.code?.find(
-    (c) => c.system === system && c.code === code
+    (c) => c.system === system && c.code === code,
   );
 
   if (currentCode) {
     dispatch(
-      updateItemCodeTranslation(languageCode, itemLinkId, text, currentCode)
+      updateItemCodeTranslation(languageCode, itemLinkId, text, currentCode),
     );
     returnValue = true;
   }

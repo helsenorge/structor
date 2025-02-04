@@ -31,16 +31,16 @@ export const supportedLanguages: Language[] = [
 ];
 
 export const getLanguageFromCode = (
-  languageCode: string
+  languageCode: string,
 ): Language | undefined => {
   return supportedLanguages.find(
-    (x) => x.code.toLowerCase() === languageCode.toLowerCase()
+    (x) => x.code.toLowerCase() === languageCode.toLowerCase(),
   );
 };
 
 export const isSupportedLanguage = (languageCode: string): boolean => {
   return supportedLanguages.some(
-    (lang) => lang.code.toLowerCase() === languageCode.toLowerCase()
+    (lang) => lang.code.toLowerCase() === languageCode.toLowerCase(),
   );
 };
 
@@ -51,14 +51,14 @@ export const getLanguagesInUse = ({
   return supportedLanguages.filter(
     (x) =>
       qMetadata.language?.toLowerCase() === x.code.toLowerCase() ||
-      (qAdditionalLanguages && qAdditionalLanguages[x.code])
+      (qAdditionalLanguages && qAdditionalLanguages[x.code]),
   );
 };
 
 export const getAdditionalLanguages = (state: TreeState): string[] => {
   const languageInUse = getLanguagesInUse(state).map((x) => x.code);
   return languageInUse.filter(
-    (x) => x.toLowerCase() !== state.qMetadata.language?.toLowerCase()
+    (x) => x.toLowerCase() !== state.qMetadata.language?.toLowerCase(),
   );
 };
 
@@ -66,7 +66,7 @@ export const isUniqueAcrossLanguages = (
   propertyName: TranslatableMetadataProperty,
   value: string,
   { qAdditionalLanguages, qMetadata }: TreeState,
-  targetLanguage: string
+  targetLanguage: string,
 ): boolean => {
   if (!qAdditionalLanguages || Object.keys(qAdditionalLanguages).length < 1) {
     return false;
@@ -98,7 +98,7 @@ export const translatableMetadata: MetadataProperty[] = [
     validate: (
       value: string,
       state?: TreeState,
-      targetLanguage?: string
+      targetLanguage?: string,
     ): string => {
       if (!isValidId(value)) {
         return "Id must be 1-64 characters and only letters a-z, numbers, - and .";
@@ -110,7 +110,7 @@ export const translatableMetadata: MetadataProperty[] = [
           TranslatableMetadataProperty.id,
           value,
           state,
-          targetLanguage
+          targetLanguage,
         )
       ) {
         return "Id must be unique across languages";
@@ -167,7 +167,7 @@ export function getItemPropertyTranslation(
   languageCode: string,
   languages: Languages,
   linkId: string,
-  property: Exclude<TranslatableItemProperty, "code">
+  property: Exclude<TranslatableItemProperty, "code">,
 ): string {
   if (!languages[languageCode].items[linkId]) {
     return "";
@@ -180,14 +180,14 @@ export const getItemCodeDisplayTranslation = (
   languageCode: string,
   languages: Languages,
   linkId: string,
-  code: Coding
+  code: Coding,
 ): string => {
   if (!languages[languageCode].items[linkId]) {
     return "";
   }
   return (
     languages[languageCode].items[linkId].code?.find(
-      (x) => x.code === code.code && x.system === code.system
+      (x) => x.code === code.code && x.system === code.system,
     )?.display ||
     code.display ||
     ""

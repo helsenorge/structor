@@ -42,7 +42,7 @@ export const SummaryOption = ({
             setItemControlExtension(
               item,
               ItemControlType.summaryContainer,
-              dispatch
+              dispatch,
             );
           }}
           value={hasSummaryContainerExtension}

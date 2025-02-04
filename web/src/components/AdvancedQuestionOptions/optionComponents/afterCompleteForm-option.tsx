@@ -20,7 +20,7 @@ export const AfterCompleteFormOption = ({
         <FormField
           label={t("After completing the form")}
           sublabel={t(
-            "Choose what should happen after the user has completed the form"
+            "Choose what should happen after the user has completed the form",
           )}
         ></FormField>
       </div>

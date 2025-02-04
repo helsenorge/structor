@@ -6,7 +6,7 @@ import { getSidebarSections } from "@helsenorge/refero";
 
 export const generateSectionContent = (
   header: string,
-  content: string[]
+  content: string[],
 ): React.JSX.Element | null => {
   return content.length > 0 ? (
     <>
@@ -27,7 +27,7 @@ export const generateSectionContent = (
 };
 
 export const getSidebarElements = (
-  questionnaire: Questionnaire
+  questionnaire: Questionnaire,
 ): { [id: string]: string[] } => {
   const sidebarData = getSidebarSections(questionnaire);
 

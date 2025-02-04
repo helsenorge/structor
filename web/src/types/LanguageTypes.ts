@@ -25,7 +25,7 @@ export type MetadataProperty = {
   validate?: (
     value: string,
     state?: TreeState,
-    targetLanguage?: string
+    targetLanguage?: string,
   ) => string;
 };
 

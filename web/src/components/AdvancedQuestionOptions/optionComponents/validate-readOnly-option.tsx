@@ -27,7 +27,7 @@ export const ValidateReadOnlyOption = ({
   const validateReadOnlyCode = getItemCodeWithMatchingSystemAndCode(
     item,
     ICodeSystem.validationOptions,
-    ValidationOptionsCodes.validateReadOnly
+    ValidationOptionsCodes.validateReadOnly,
   );
 
   return (
@@ -42,7 +42,7 @@ export const ValidateReadOnlyOption = ({
                 addValidateReadOnlyItemCode(
                   item,
                   ValidationOptionsCodes.validateReadOnly,
-                  dispatch
+                  dispatch,
                 );
               }
             }}

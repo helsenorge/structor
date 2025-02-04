@@ -12,7 +12,7 @@ type InitialInputTypeBooleanProps = {
 };
 
 const InitialInputTypeBoolean = (
-  props: InitialInputTypeBooleanProps
+  props: InitialInputTypeBooleanProps,
 ): React.JSX.Element => {
   const { t } = useTranslation();
   const [initialValue, setInitialValue] = useState(getValue(props.initial));

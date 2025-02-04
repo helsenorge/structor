@@ -42,7 +42,7 @@ export const SaveCapabilityOption = ({
                   code: newValue,
                 },
               },
-              dispatch
+              dispatch,
             );
           }
         }}

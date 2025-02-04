@@ -46,7 +46,7 @@ export const ColumnNameOption = ({
 
   const onBlurNameInput = (
     oldCodeValue: string,
-    newDisplayValue: string
+    newDisplayValue: string,
   ): void => {
     if (newDisplayValue === "") {
       return;
@@ -57,8 +57,8 @@ export const ColumnNameOption = ({
         ICodingProperty.display,
         newDisplayValue,
         ICodeSystem.tableColumnName,
-        oldCodeValue
-      )
+        oldCodeValue,
+      ),
     );
     updateChildWithMatchingCode(
       item,
@@ -67,7 +67,7 @@ export const ColumnNameOption = ({
       newDisplayValue,
       ICodeSystem.tableColumn,
       oldCodeValue,
-      dispatch
+      dispatch,
     );
   };
 
@@ -82,7 +82,7 @@ export const ColumnNameOption = ({
         code: newCode.toString(),
         display: "",
       },
-      dispatch
+      dispatch,
     );
   };
 
@@ -92,7 +92,7 @@ export const ColumnNameOption = ({
 
   useEffect(() => {
     setExistingColumnCodes(
-      getAllMatchingCodes(item, ICodeSystem.tableColumnName)
+      getAllMatchingCodes(item, ICodeSystem.tableColumnName),
     );
   }, [item.code]);
 

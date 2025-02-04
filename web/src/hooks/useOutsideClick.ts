@@ -3,7 +3,7 @@ import { MutableRefObject, useEffect } from "react";
 const useOutsideClick = (
   ref: MutableRefObject<HTMLDivElement | null>,
   onClickOutside: () => void,
-  disabled?: boolean
+  disabled?: boolean,
 ): void => {
   const handleClick = (e: MouseEvent): void => {
     if ((e.target as HTMLElement).closest(".ck-body-wrapper")) {

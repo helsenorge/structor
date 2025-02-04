@@ -13,12 +13,12 @@ import { OrderItem, TreeState } from "../store/treeStore/treeStore";
 export const getEnableWhenConditionals = (
   state: TreeState,
   parentArray: string[],
-  itemLinkId: string
+  itemLinkId: string,
 ): ValueSetComposeIncludeConcept[] => {
   const createValueSetComposeIncludeConcept = (
     linkId: string,
     idArray: Array<number>,
-    index: number
+    index: number,
   ): ValueSetComposeIncludeConcept[] => {
     const qItem = state.qItems[linkId];
 
@@ -49,32 +49,32 @@ export const getEnableWhenConditionals = (
 
   const expandSubTree = (
     order: OrderItem,
-    idArray: Array<number>
+    idArray: Array<number>,
   ): ValueSetComposeIncludeConcept[] => {
     return order.items.reduce(
       (
         acc: ValueSetComposeIncludeConcept[],
         current: OrderItem,
-        index: number
+        index: number,
       ) => {
         return [
           ...acc,
           ...createValueSetComposeIncludeConcept(
             current.linkId,
             idArray,
-            index
+            index,
           ),
           ...expandSubTree(current, [...idArray, index + 1]),
         ];
       },
-      []
+      [],
     );
   };
 
   const search = (
     order: OrderItem[],
     searchArray: string[],
-    idArray: Array<number>
+    idArray: Array<number>,
   ): ValueSetComposeIncludeConcept[] => {
     if (searchArray.length === 0) {
       return [];
@@ -89,7 +89,7 @@ export const getEnableWhenConditionals = (
         (
           acc: ValueSetComposeIncludeConcept[],
           current: OrderItem,
-          index: number
+          index: number,
         ) => {
           const expandedPart =
             current.linkId === currentLinkId
@@ -100,18 +100,18 @@ export const getEnableWhenConditionals = (
             ...createValueSetComposeIncludeConcept(
               current.linkId,
               idArray,
-              index
+              index,
             ),
             ...expandedPart,
           ];
         },
-        []
+        [],
       )
       .concat(
         search(order[stopIndex].items, searchArray.slice(1), [
           ...idArray,
           stopIndex + 1,
-        ])
+        ]),
       );
   };
 

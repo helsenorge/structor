@@ -29,8 +29,8 @@ export const DefinitionOption = ({
               updateItemAction(
                 item.linkId,
                 IItemProperty.definition,
-                e.target.value
-              )
+                e.target.value,
+              ),
             );
           }}
         />

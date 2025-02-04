@@ -11,30 +11,30 @@ import { ActionType } from "../store/treeStore/treeStore";
 
 export const addDefaultOrdinalValueExtensionToAllAnswerOptions = (
   item: QuestionnaireItem,
-  dispatch: React.Dispatch<ActionType>
+  dispatch: React.Dispatch<ActionType>,
 ): void => {
   if (item.answerOption) {
     const newArray = addOrdinalValueExtensionToAllAnswerOptions(
       item.answerOption || [],
-      "0"
+      "0",
     );
     dispatch(
-      updateItemAction(item.linkId, IItemProperty.answerOption, newArray)
+      updateItemAction(item.linkId, IItemProperty.answerOption, newArray),
     );
   }
 };
 
 export const removeOrdinalValueExtensionfromAnswerOptions = (
   item: QuestionnaireItem,
-  dispatch: React.Dispatch<ActionType>
+  dispatch: React.Dispatch<ActionType>,
 ): void => {
   if (item.answerOption) {
     const newArray = removeExtensionFromAnswerOptions(
       item.answerOption || [],
-      IExtensionType.ordinalValue
+      IExtensionType.ordinalValue,
     );
     dispatch(
-      updateItemAction(item.linkId, IItemProperty.answerOption, newArray)
+      updateItemAction(item.linkId, IItemProperty.answerOption, newArray),
     );
   }
 };

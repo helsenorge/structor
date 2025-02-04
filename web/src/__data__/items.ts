@@ -20,7 +20,7 @@ export const hiddenItem = {
 };
 
 export const itemWithRenderOption = (
-  renderOptions: RenderingOptionsEnum
+  renderOptions: RenderingOptionsEnum,
 ): QuestionnaireItem => {
   return {
     linkId: "renderOption_item",

@@ -32,20 +32,20 @@ const ValidationAnswerTypeNumber = ({
     item?.extension?.find((x) => x.url === IExtensionType.validationtext)
       ?.valueString || "";
   const minValue = item?.extension?.find(
-    (x) => x.url === IExtensionType.minValue
+    (x) => x.url === IExtensionType.minValue,
   )?.valueInteger;
   const maxValue = item?.extension?.find(
-    (x) => x.url === IExtensionType.maxValue
+    (x) => x.url === IExtensionType.maxValue,
   )?.valueInteger;
   const maxDecimalPlaces = item?.extension?.find(
-    (x) => x.url === IExtensionType.maxDecimalPlaces
+    (x) => x.url === IExtensionType.maxDecimalPlaces,
   )?.valueInteger;
   const isDecimal =
     item?.type === IQuestionnaireItemType.decimal ||
     item?.type === IQuestionnaireItemType.quantity;
 
   const dispatchUpdateItemType = (
-    value: IQuestionnaireItemType.decimal | IQuestionnaireItemType.integer
+    value: IQuestionnaireItemType.decimal | IQuestionnaireItemType.integer,
   ): void => {
     dispatch(updateItemAction(item.linkId, IItemProperty.type, value));
   };
@@ -85,7 +85,7 @@ const ValidationAnswerTypeNumber = ({
                   removeItemExtension(
                     item,
                     IExtensionType.maxDecimalPlaces,
-                    dispatch
+                    dispatch,
                   );
                 } else {
                   const extension = {
@@ -146,7 +146,7 @@ const ValidationAnswerTypeNumber = ({
               removeItemExtension(
                 item,
                 IExtensionType.validationtext,
-                dispatch
+                dispatch,
               );
             } else {
               const extension = {

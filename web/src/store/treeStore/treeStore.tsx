@@ -187,7 +187,7 @@ export interface TreeState {
 
 function addLanguage(
   draft: TreeState,
-  action: AddQuestionnaireLanguageAction
+  action: AddQuestionnaireLanguageAction,
 ): void {
   if (!draft.qAdditionalLanguages) {
     draft.qAdditionalLanguages = {};
@@ -206,7 +206,7 @@ function addLanguage(
 
 function removeLanguage(
   draft: TreeState,
-  action: RemoveQuestionnaireLanguageAction
+  action: RemoveQuestionnaireLanguageAction,
 ): void {
   if (!draft.qAdditionalLanguages) {
     draft.qAdditionalLanguages = {};
@@ -216,7 +216,7 @@ function removeLanguage(
 
 function getLinkIdOfAllSubItems(
   items: Array<OrderItem>,
-  linkIds: Array<string>
+  linkIds: Array<string>,
 ): Array<string> {
   items.forEach((x) => {
     linkIds.push(x.linkId);
@@ -227,7 +227,7 @@ function getLinkIdOfAllSubItems(
 
 function updateMarkedItemId(
   draft: TreeState,
-  action: UpdateMarkedLinkId
+  action: UpdateMarkedLinkId,
 ): void {
   if (action.linkId) {
     draft.qCurrentItem = {
@@ -259,12 +259,12 @@ function createNewItem(draft: TreeState, action: NewItemAction): void {
   } else {
     const ignorableItemsBeforeIndex = arrayToAddItemTo.filter(
       (x, index) =>
-        isIgnorableItem(draft.qItems[x.linkId]) && index <= (action.index || 0)
+        isIgnorableItem(draft.qItems[x.linkId]) && index <= (action.index || 0),
     );
     arrayToAddItemTo.splice(
       action.index + ignorableItemsBeforeIndex.length,
       0,
-      newOrderNode
+      newOrderNode,
     );
   }
 
@@ -280,7 +280,7 @@ function createNewItem(draft: TreeState, action: NewItemAction): void {
 function moveItem(draft: TreeState, action: MoveItemAction): void {
   const arrayToDeleteItemFrom = findTreeArray(action.oldOrder, draft.qOrder);
   const indexToDelete = arrayToDeleteItemFrom.findIndex(
-    (x) => x.linkId === action.linkId
+    (x) => x.linkId === action.linkId,
   );
   const subTree = arrayToDeleteItemFrom[indexToDelete].items;
 
@@ -291,7 +291,7 @@ function moveItem(draft: TreeState, action: MoveItemAction): void {
   } else {
     const ignorableItemsBeforeIndex = arrayToAddItemTo.filter(
       (x, index) =>
-        isIgnorableItem(draft.qItems[x.linkId]) && index <= (action.index || 0)
+        isIgnorableItem(draft.qItems[x.linkId]) && index <= (action.index || 0),
     );
     arrayToAddItemTo.splice(
       action.index + ignorableItemsBeforeIndex.length,
@@ -299,7 +299,7 @@ function moveItem(draft: TreeState, action: MoveItemAction): void {
       {
         linkId: action.linkId,
         items: subTree,
-      }
+      },
     );
   }
 
@@ -317,7 +317,7 @@ function moveItem(draft: TreeState, action: MoveItemAction): void {
 
 function deleteItemTranslations(
   linkIdToDelete: string,
-  languages?: Languages
+  languages?: Languages,
 ): void {
   if (!languages) {
     return;
@@ -329,18 +329,18 @@ function deleteItemTranslations(
 
 function deleteChildItems(
   draft: TreeState,
-  action: DeleteChildItemsAction
+  action: DeleteChildItemsAction,
 ): void {
   const itemToDeleteChildrenFrom = findTreeArray(
     action.order,
-    draft.qOrder
+    draft.qOrder,
   ).find((item) => item.linkId === action.linkId);
   if (!itemToDeleteChildrenFrom) {
     return;
   }
   const itemsToDelete = getLinkIdOfAllSubItems(
     itemToDeleteChildrenFrom.items,
-    []
+    [],
   );
   itemsToDelete.forEach((linkIdToDelete: string) => {
     delete draft.qItems[linkIdToDelete];
@@ -353,7 +353,7 @@ function deleteChildItems(
 function deleteItem(draft: TreeState, action: DeleteItemAction): void {
   const arrayToDeleteItemFrom = findTreeArray(action.order, draft.qOrder);
   const indexToDelete = arrayToDeleteItemFrom.findIndex(
-    (x) => x.linkId === action.linkId
+    (x) => x.linkId === action.linkId,
   );
 
   // find all child items in the tree below this node and delete from qItems
@@ -437,7 +437,7 @@ function deleteItemCode(draft: TreeState, action: DeleteItemCodeAction): void {
 
 function updateItemCodeProperty(
   draft: TreeState,
-  action: UpdateItemCodePropertyAction
+  action: UpdateItemCodePropertyAction,
 ): void {
   const code = draft.qItems[action.linkId].code;
   if (!code) {
@@ -453,7 +453,7 @@ function updateItemCodeProperty(
 
 function updateItemCodePropertyWithCode(
   draft: TreeState,
-  action: UpdateItemCodePropertyWithCodeAction
+  action: UpdateItemCodePropertyWithCodeAction,
 ): void {
   const code = draft.qItems[action.linkId]?.code;
 
@@ -464,7 +464,7 @@ function updateItemCodePropertyWithCode(
   }
 
   const targetCodingIndex = code.findIndex(
-    (item) => item.system === action.system && item.code === action.code
+    (item) => item.system === action.system && item.code === action.code,
   );
 
   if (targetCodingIndex !== -1) {
@@ -474,7 +474,7 @@ function updateItemCodePropertyWithCode(
 
 function updateItemTranslation(
   draft: TreeState,
-  action: UpdateItemTranslationAction
+  action: UpdateItemTranslationAction,
 ): void {
   if (
     draft.qAdditionalLanguages &&
@@ -491,7 +491,7 @@ function updateItemTranslation(
 
 function updateItemCodeTranslation(
   draft: TreeState,
-  action: UpdateItemCodeTranslationAction
+  action: UpdateItemCodeTranslationAction,
 ): void {
   if (
     draft.qAdditionalLanguages &&
@@ -512,7 +512,7 @@ function updateItemCodeTranslation(
     const code = findCodingBySystemAndCode(
       coding,
       action.code.system,
-      action.code.code
+      action.code.code,
     );
     if (code === undefined) {
       draft.qAdditionalLanguages[action.languageCode].items[
@@ -532,7 +532,7 @@ function updateItemCodeTranslation(
 
 function updateItemOptionTranslation(
   draft: TreeState,
-  action: UpdateItemOptionTranslationAction
+  action: UpdateItemOptionTranslationAction,
 ): void {
   if (
     draft.qAdditionalLanguages &&
@@ -551,7 +551,7 @@ function updateItemOptionTranslation(
 
 function updateMetadataTranslation(
   draft: TreeState,
-  action: UpdateMetadataTranslationAction
+  action: UpdateMetadataTranslationAction,
 ): void {
   if (
     draft.qAdditionalLanguages &&
@@ -565,7 +565,7 @@ function updateMetadataTranslation(
 
 function updateSettingTranslationAction(
   draft: TreeState,
-  action: UpdateSettingTranslationAction
+  action: UpdateSettingTranslationAction,
 ): void {
   if (
     draft.qAdditionalLanguages &&
@@ -583,7 +583,7 @@ function updateSettingTranslationAction(
 
 function updateContainedValueSetTranslation(
   draft: TreeState,
-  action: UpdateContainedValueSetTranslationAction
+  action: UpdateContainedValueSetTranslationAction,
 ): void {
   if (
     draft.qAdditionalLanguages &&
@@ -600,7 +600,7 @@ function updateContainedValueSetTranslation(
 
 function updateSidebarTranslation(
   draft: TreeState,
-  action: UpdateSidebarTranslationAction
+  action: UpdateSidebarTranslationAction,
 ): void {
   if (
     draft.qAdditionalLanguages &&
@@ -617,7 +617,7 @@ function updateSidebarTranslation(
 
 function updateQuestionnaireMetadataProperty(
   draft: TreeState,
-  { propName, value }: UpdateQuestionnaireMetadataAction
+  { propName, value }: UpdateQuestionnaireMetadataAction,
 ): void {
   draft.qMetadata = {
     ...draft.qMetadata,
@@ -637,7 +637,7 @@ function updateQuestionnaireMetadataProperty(
 
 function resetQuestionnaire(
   draft: TreeState,
-  action: ResetQuestionnaireAction
+  action: ResetQuestionnaireAction,
 ): void {
   const newState: TreeState = action.newState || getInitialState();
   draft.isDirty = newState.isDirty;
@@ -651,17 +651,17 @@ function resetQuestionnaire(
 
 function duplicateItemAction(
   draft: TreeState,
-  action: DuplicateItemAction
+  action: DuplicateItemAction,
 ): void {
   // find index of item to duplicate
   const arrayToDuplicateInto = findTreeArray(action.order, draft.qOrder);
   const indexToDuplicate = arrayToDuplicateInto.findIndex(
-    (x) => x.linkId === action.linkId
+    (x) => x.linkId === action.linkId,
   );
 
   const copyItemTranslations = (
     linkIdToCopyFrom: string,
-    newLinkId: string
+    newLinkId: string,
   ): void => {
     if (draft.qAdditionalLanguages) {
       Object.values(draft.qAdditionalLanguages).forEach((translation) => {
@@ -675,10 +675,10 @@ function duplicateItemAction(
 
   const copyItemWithSubtrees = (
     itemToCopyFrom: OrderItem,
-    parentMap: { [key: string]: string }
+    parentMap: { [key: string]: string },
   ): OrderItem => {
     const copyItem: QuestionnaireItem = JSON.parse(
-      JSON.stringify(draft.qItems[itemToCopyFrom.linkId])
+      JSON.stringify(draft.qItems[itemToCopyFrom.linkId]),
     );
     const newId = createUUID();
     parentMap[copyItem.linkId] = newId;
@@ -700,14 +700,14 @@ function duplicateItemAction(
     return {
       linkId: copyItem.linkId,
       items: itemToCopyFrom.items.map((item) =>
-        copyItemWithSubtrees(item, parentMap)
+        copyItemWithSubtrees(item, parentMap),
       ),
     };
   };
 
   const duplictedItem = copyItemWithSubtrees(
     arrayToDuplicateInto[indexToDuplicate],
-    {}
+    {},
   );
 
   // insert duplicated item below item that was copied from
@@ -722,20 +722,20 @@ function duplicateItemAction(
 function reorderItem(draft: TreeState, action: ReorderItemAction): void {
   const arrayToReorderFrom = findTreeArray(action.order, draft.qOrder);
   const indexToMove = arrayToReorderFrom.findIndex(
-    (x) => x.linkId === action.linkId
+    (x) => x.linkId === action.linkId,
   );
   if (indexToMove === -1) {
     throw new Error("Could not find item to move");
   }
   const ignorableItemsBeforeIndex = arrayToReorderFrom.filter(
     (x, index) =>
-      isIgnorableItem(draft.qItems[x.linkId]) && index <= action.newIndex
+      isIgnorableItem(draft.qItems[x.linkId]) && index <= action.newIndex,
   );
   const movedOrderItem = arrayToReorderFrom.splice(indexToMove, 1);
   arrayToReorderFrom.splice(
     action.newIndex + ignorableItemsBeforeIndex.length,
     0,
-    movedOrderItem[0]
+    movedOrderItem[0],
   );
 }
 
@@ -769,7 +769,7 @@ function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
   // Replace in qOrder
   const arrayToUpdateIn = findTreeArray(parentArray, qOrder);
   const itemToUpdate = arrayToUpdateIn.find(
-    (item) => item.linkId === oldLinkId
+    (item) => item.linkId === oldLinkId,
   );
   if (!itemToUpdate) {
     throw new Error(`Trying to update linkId that doesn't exist`);
@@ -804,7 +804,7 @@ function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
 
 function removeAttributeFromItem(
   draft: TreeState,
-  action: RemoveItemAttributeAction
+  action: RemoveItemAttributeAction,
 ): void {
   if (
     draft.qItems[action.linkId] &&
@@ -932,7 +932,7 @@ export const TreeContextProvider = (props: {
     save();
     // eslint-disable-next-line no-console
     console.debug(
-      `State saved in ${Math.round(performance.now() - startTime)}ms`
+      `State saved in ${Math.round(performance.now() - startTime)}ms`,
     );
   }, [state]);
 

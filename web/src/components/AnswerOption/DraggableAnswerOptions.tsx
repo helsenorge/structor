@@ -34,7 +34,7 @@ interface DraggableAnswerOptionsProps {
       | boolean
       | QuestionnaireItemAnswerOption[]
       | Element
-      | undefined
+      | undefined,
   ) => void;
 }
 
@@ -54,13 +54,13 @@ const DraggableAnswerOptions = ({
       const tempList = item.answerOption ? [...item.answerOption] : [];
       dispatchUpdateItem(
         IItemProperty.answerOption,
-        reorderPositions(tempList, toIndex, fromIndex)
+        reorderPositions(tempList, toIndex, fromIndex),
       );
     }
   };
 
   const getListStyle = (
-    isDraggingOver: boolean
+    isDraggingOver: boolean,
   ): {
     background: string;
   } => ({
@@ -69,7 +69,7 @@ const DraggableAnswerOptions = ({
 
   const getItemStyle = (
     isDragging: boolean,
-    draggableStyle: DraggingStyle | NotDraggingStyle | undefined
+    draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
   ): React.CSSProperties => ({
     userSelect: "none",
     background: isDragging ? "lightgreen" : "transparent",
@@ -101,7 +101,7 @@ const DraggableAnswerOptions = ({
                       {...providedDrag.draggableProps}
                       style={getItemStyle(
                         snapshotDrag.isDragging,
-                        providedDrag.draggableProps.style
+                        providedDrag.draggableProps.style,
                       )}
                     >
                       <AnswerOption
@@ -110,22 +110,22 @@ const DraggableAnswerOptions = ({
                           const newArray = updateAnswerOption(
                             item.answerOption ?? [],
                             answerOption.valueCoding?.id ?? "",
-                            event.target.value
+                            event.target.value,
                           );
                           dispatchUpdateItem(
                             IItemProperty.answerOption,
-                            newArray
+                            newArray,
                           );
                         }}
                         changeCode={(event) => {
                           const newArray = updateAnswerOptionCode(
                             item.answerOption ?? [],
                             answerOption.valueCoding?.id ?? "",
-                            event.target.value
+                            event.target.value,
                           );
                           dispatchUpdateItem(
                             IItemProperty.answerOption,
-                            newArray
+                            newArray,
                           );
                         }}
                         changeOrdinalValueExtension={(event) => {
@@ -134,22 +134,22 @@ const DraggableAnswerOptions = ({
                               removeExtensionFromSingleAnswerOption(
                                 item.answerOption ?? [],
                                 answerOption.valueCoding?.id ?? "",
-                                IExtensionType.ordinalValue
+                                IExtensionType.ordinalValue,
                               );
                             dispatchUpdateItem(
                               IItemProperty.answerOption,
-                              newArray
+                              newArray,
                             );
                           } else {
                             const newArray = updateAnswerOptionExtension(
                               item.answerOption ?? [],
                               answerOption.valueCoding?.id ?? "",
                               event.target.value,
-                              IExtensionType.ordinalValue
+                              IExtensionType.ordinalValue,
                             );
                             dispatchUpdateItem(
                               IItemProperty.answerOption,
-                              newArray
+                              newArray,
                             );
                           }
                         }}
@@ -159,33 +159,33 @@ const DraggableAnswerOptions = ({
                               removeExtensionFromSingleAnswerOption(
                                 item.answerOption || [],
                                 answerOption.valueCoding?.id || "",
-                                IExtensionType.valueSetLabel
+                                IExtensionType.valueSetLabel,
                               );
                             dispatchUpdateItem(
                               IItemProperty.answerOption,
-                              newArray
+                              newArray,
                             );
                           } else {
                             const newArray = updateAnswerOptionExtension(
                               item.answerOption || [],
                               answerOption.valueCoding?.id || "",
                               event.target.value,
-                              IExtensionType.valueSetLabel
+                              IExtensionType.valueSetLabel,
                             );
                             dispatchUpdateItem(
                               IItemProperty.answerOption,
-                              newArray
+                              newArray,
                             );
                           }
                         }}
                         deleteItem={() => {
                           const newArray = removeOptionFromAnswerOptionArray(
                             item.answerOption ?? [],
-                            answerOption.valueCoding?.id ?? ""
+                            answerOption.valueCoding?.id ?? "",
                           );
                           dispatchUpdateItem(
                             IItemProperty.answerOption,
-                            newArray
+                            newArray,
                           );
                         }}
                         answerOption={answerOption}

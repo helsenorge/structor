@@ -88,7 +88,7 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
       props.targetLanguage,
       qAdditionalLanguages,
       linkId,
-      TranslatableItemProperty.text
+      TranslatableItemProperty.text,
     );
     return (
       <>
@@ -113,8 +113,8 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
                       props.targetLanguage,
                       linkId,
                       TranslatableItemProperty.text,
-                      value
-                    )
+                      value,
+                    ),
                   )
                 }
               />
@@ -129,14 +129,14 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
     const handleChild = (
       items: OrderItem[],
       path: string,
-      tempHierarchy: FlattOrderTranslation[]
+      tempHierarchy: FlattOrderTranslation[],
     ): void => {
       let index = 1;
       items
         .filter((x) => !isItemControlSidebar(qItems[x.linkId]))
         .forEach((item) => {
           const itemHasHelpChild = item.items.find((child) =>
-            isItemControlHelp(qItems[child.linkId])
+            isItemControlHelp(qItems[child.linkId]),
           );
           const inlineItem = isItemControlInline(qItems[item.linkId])
             ? item.items[0]?.linkId
@@ -173,7 +173,7 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
             path: itemPath,
           } as FlattOrderTranslation;
           const helpItem = item.items.find((child) =>
-            isItemControlHelp(qItems[child.linkId])
+            isItemControlHelp(qItems[child.linkId]),
           );
           if (helpItem) {
             tempItem.helpItemLinkId = helpItem.linkId;
@@ -220,12 +220,12 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
   }, [qItems, qOrder]);
 
   const renderItems = (
-    orderItems: FlattOrderTranslation[]
+    orderItems: FlattOrderTranslation[],
   ): Array<React.JSX.Element | null> => {
     if (translatableItems && qAdditionalLanguages) {
       return orderItems.map((orderItem) => {
         const item = translatableItems.find(
-          (i) => i.linkId === orderItem.linkId
+          (i) => i.linkId === orderItem.linkId,
         );
         if (item) {
           return (

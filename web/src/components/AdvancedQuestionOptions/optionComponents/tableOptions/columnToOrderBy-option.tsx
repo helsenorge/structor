@@ -52,7 +52,7 @@ export const ColumnToOrderByOption = ({
       const tableOptions = getContainedOptions(
         allChoiceItems,
         qItems,
-        qContained
+        qContained,
       );
       return tableOptions;
     }
@@ -63,7 +63,7 @@ export const ColumnToOrderByOption = ({
     if (tableType === TableOptionsEnum.TableHN2) {
       const tableHN2Options = createOptionsFromQItemCode(
         item,
-        ICodeSystem.tableColumnName
+        ICodeSystem.tableColumnName,
       );
       return tableHN2Options;
     }
@@ -80,7 +80,7 @@ export const ColumnToOrderByOption = ({
           code: newValue,
           display: getDisplayValueInOption(optionsToUse, newValue),
         },
-        dispatch
+        dispatch,
       );
   };
 

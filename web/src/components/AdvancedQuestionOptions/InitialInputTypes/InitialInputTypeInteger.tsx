@@ -11,7 +11,7 @@ type InitialInputTypeIntegerProps = {
 };
 
 const InitialInputTypeInteger = (
-  props: InitialInputTypeIntegerProps
+  props: InitialInputTypeIntegerProps,
 ): React.JSX.Element => {
   const { t } = useTranslation();
   const [initialValue, setInitialValue] = useState(getValue(props.initial));
@@ -39,7 +39,7 @@ const InitialInputTypeInteger = (
         }}
         onBlur={() => {
           const newInitial: QuestionnaireItemInitial | undefined = isInteger(
-            initialValue
+            initialValue,
           )
             ? { valueInteger: parseInt(initialValue) }
             : undefined;

@@ -17,7 +17,7 @@ export const LinksOption = ({ item }: LinksOptionProps): JSX.Element => {
         <FormField
           label={t("Links")}
           sublabel={t(
-            "Choose whether the links in the components should be opened in an external window"
+            "Choose whether the links in the components should be opened in an external window",
           )}
         ></FormField>
       </div>

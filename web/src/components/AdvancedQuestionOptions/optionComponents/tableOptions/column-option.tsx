@@ -28,7 +28,7 @@ export const ColumnOption = ({
 
   const options = createOptionsFromQItemCode(
     parentItem,
-    ICodeSystem.tableColumnName
+    ICodeSystem.tableColumnName,
   );
 
   const onChangeOption = (newValue: string): void => {
@@ -40,7 +40,7 @@ export const ColumnOption = ({
         code: newValue,
         display: getDisplayValueInOption(options, newValue),
       },
-      dispatch
+      dispatch,
     );
   };
 

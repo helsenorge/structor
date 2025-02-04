@@ -37,7 +37,7 @@ interface LanguageAccordionProps {
 }
 
 const LanguageAccordion = (
-  props: LanguageAccordionProps
+  props: LanguageAccordionProps,
 ): React.JSX.Element => {
   const { t } = useTranslation();
   const { state, dispatch } = useContext(TreeContext);
@@ -49,7 +49,7 @@ const LanguageAccordion = (
 
   const updateMeta = (
     propName: IQuestionnaireMetadataType,
-    value: string | Meta
+    value: string | Meta,
   ): void => {
     dispatch(updateQuestionnaireMetadataAction(propName, value));
   };
@@ -66,7 +66,7 @@ const LanguageAccordion = (
 
   const dispatchAddLanguage = (
     selectedLanguage: string,
-    translation: Translation
+    translation: Translation,
   ): void => {
     const isoLanguage = languageToIsoString(selectedLanguage);
     if (
@@ -90,7 +90,7 @@ const LanguageAccordion = (
 
   const validateUploadedLanguageFile = (
     translatedQuestionnaire: Questionnaire,
-    mainQuestionnaire: Questionnaire
+    mainQuestionnaire: Questionnaire,
   ): string => {
     const isoLanguage = translatedQuestionnaire.language
       ? languageToIsoString(translatedQuestionnaire.language)
@@ -121,7 +121,7 @@ const LanguageAccordion = (
     if (event.target?.result) {
       try {
         const translatedQuestionnaire = JSON.parse(
-          event.target.result as string
+          event.target.result as string,
         );
         const mainQuestionnaire = generateMainQuestionnaire(state);
         const isoLanguage = translatedQuestionnaire.language
@@ -130,14 +130,14 @@ const LanguageAccordion = (
 
         const error = validateUploadedLanguageFile(
           translatedQuestionnaire,
-          mainQuestionnaire
+          mainQuestionnaire,
         );
         if (error) {
           setFileUploadError(error);
         } else {
           const translation = translateQuestionnaire(
             mainQuestionnaire,
-            translatedQuestionnaire
+            translatedQuestionnaire,
           );
           dispatchAddLanguage(isoLanguage || "", translation);
         }
@@ -153,7 +153,7 @@ const LanguageAccordion = (
   };
 
   const uploadLangaugeFile = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ): void => {
     const reader = new FileReader();
     reader.onload = onLoadUploadedFile;
@@ -185,7 +185,7 @@ const LanguageAccordion = (
             options={supportedLanguages}
             onChange={(e) => {
               const display = supportedLanguages.find(
-                (x) => x.code === e.target.value
+                (x) => x.code === e.target.value,
               )?.localDisplay;
               const newMeta = {
                 ...qMetadata.meta,
@@ -196,7 +196,7 @@ const LanguageAccordion = (
                         code: e.target.value,
                         display: display,
                       }
-                    : x
+                    : x,
                 ),
               };
               updateMeta(IQuestionnaireMetadataType.language, e.target.value);
@@ -260,7 +260,7 @@ const LanguageAccordion = (
                   qItems,
                   valueSetsToTranslate || [],
                   additionalLanguagesInUse,
-                  qAdditionalLanguages
+                  qAdditionalLanguages,
                 );
               }}
             />

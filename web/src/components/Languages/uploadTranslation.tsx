@@ -14,7 +14,7 @@ const UploadTranslation = (): React.JSX.Element => {
   const { qItems } = state;
 
   const onLoadUploadedTranslationFile = (
-    event: ProgressEvent<FileReader>
+    event: ProgressEvent<FileReader>,
   ): void => {
     if (event.target?.result) {
       try {
@@ -31,7 +31,7 @@ const UploadTranslation = (): React.JSX.Element => {
   };
 
   const uploadTranslationFile = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ): void => {
     const reader = new FileReader();
     reader.onload = onLoadUploadedTranslationFile;

@@ -19,7 +19,7 @@ type Props = {
   changeDisplay: (event: React.ChangeEvent<HTMLInputElement>) => void;
   changeCode: (event: React.ChangeEvent<HTMLInputElement>) => void;
   changeOrdinalValueExtension: (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
   changeValueSetLabel: (event: React.ChangeEvent<HTMLInputElement>) => void;
   deleteItem?: () => void;
@@ -44,8 +44,8 @@ const AnswerOption = ({
   const [displayScoringField, setDisplayScoringField] = useState(false);
   const isSlider = item.extension?.some((ex) =>
     ex.valueCodeableConcept?.coding?.some(
-      (cd) => cd.code === ItemControlType.slider
-    )
+      (cd) => cd.code === ItemControlType.slider,
+    ),
   );
 
   let inputFieldClassName;
@@ -70,7 +70,7 @@ const AnswerOption = ({
       answerOption?.valueCoding?.extension &&
       findExtensionInExtensionArray(
         answerOption?.valueCoding?.extension,
-        IExtensionType.ordinalValue
+        IExtensionType.ordinalValue,
       );
     if (scoreExtension) {
       stringToReturn = scoreExtension?.valueDecimal?.toString() || "";
@@ -84,7 +84,7 @@ const AnswerOption = ({
       answerOption?.valueCoding?.extension &&
       findExtensionInExtensionArray(
         answerOption?.valueCoding?.extension,
-        IExtensionType.valueSetLabel
+        IExtensionType.valueSetLabel,
       );
     if (scoreExtension) {
       stringToReturn = scoreExtension?.valueString?.toString() || "";

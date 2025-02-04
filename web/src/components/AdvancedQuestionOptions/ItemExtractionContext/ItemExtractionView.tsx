@@ -26,7 +26,7 @@ const ItemExtractionContextView: FunctionComponent<
 
   const itemExtraction =
     item.extension?.find(
-      (ex) => ex.url === IExtensionType.itemExtractionContext
+      (ex) => ex.url === IExtensionType.itemExtractionContext,
     )?.valueUri ?? "";
   const [selectedExtraction, setExtraction] = useState(itemExtraction);
 
@@ -37,7 +37,7 @@ const ItemExtractionContextView: FunctionComponent<
         url: IExtensionType.itemExtractionContext,
         valueUri: newValue,
       },
-      dispatch
+      dispatch,
     );
   };
 

@@ -93,7 +93,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
     value: string,
     updateField: "code" | "display",
     id?: string,
-    eventType: "blur" | "change" = "change"
+    eventType: "blur" | "change" = "change",
   ): void => {
     const compose = { ...newValueSet.compose };
     const item =
@@ -127,7 +127,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
 
   const getItemStyle = (
     isDragging: boolean,
-    draggableStyle: DraggingStyle | NotDraggingStyle | undefined
+    draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
   ): React.CSSProperties => ({
     userSelect: "none",
     background: isDragging ? "lightgreen" : "transparent",
@@ -252,7 +252,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
                                     {...providedDrag.draggableProps}
                                     style={getItemStyle(
                                       snapshotDrag.isDragging,
-                                      providedDrag.draggableProps.style
+                                      providedDrag.draggableProps.style,
                                     )}
                                     className="answer-option-item align-everything"
                                   >
@@ -271,7 +271,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
                                             event.target.value,
                                             "display",
                                             item.id,
-                                            "blur"
+                                            "blur",
                                           )
                                         }
                                         onChange={(event) =>
@@ -279,7 +279,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
                                             event.target.value,
                                             "display",
                                             item.id,
-                                            "change"
+                                            "change",
                                           )
                                         }
                                       />
@@ -291,7 +291,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
                                           handleConceptItem(
                                             event.target.value,
                                             "code",
-                                            item.id
+                                            item.id,
                                           )
                                         }
                                       />

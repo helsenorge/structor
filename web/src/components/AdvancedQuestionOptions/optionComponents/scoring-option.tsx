@@ -25,7 +25,7 @@ export const ScoringOption = ({
 }: ScoringOptionProps): JSX.Element => {
   const { t } = useTranslation();
   const [hasQuestionScoreCode, setHasQuestionScoreCode] = useState(
-    existItemWithCode(item, ScoringFormulaCodes.questionScore)
+    existItemWithCode(item, ScoringFormulaCodes.questionScore),
   );
 
   return (

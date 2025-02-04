@@ -14,7 +14,7 @@ const UriField = ({ value, disabled, onBlur }: Props): React.JSX.Element => {
   const { t } = useTranslation();
   const ref = React.useRef<HTMLInputElement>(null);
   const [hasValidUri, setHasValidUri] = React.useState<boolean>(
-    isUriValid(value || "")
+    isUriValid(value || ""),
   );
 
   React.useEffect(() => {

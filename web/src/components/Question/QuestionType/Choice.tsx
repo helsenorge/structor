@@ -65,7 +65,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
   const { qContained } = state;
   const isSlider = itemControlExistsInExtensionList(
     item.extension,
-    ItemControlType.slider
+    ItemControlType.slider,
   );
 
   const dispatchExtentionUpdate = (type: ItemControlType): void => {
@@ -93,7 +93,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
           display: t("Display value"),
           system: ICodeSystem.sliderDisplayType,
         },
-        dispatch
+        dispatch,
       );
       addItemCode(
         item,
@@ -102,7 +102,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
           display: "",
           system: ICodeSystem.sliderLabels,
         },
-        dispatch
+        dispatch,
       );
       addItemCode(
         item,
@@ -111,7 +111,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
           display: "",
           system: ICodeSystem.sliderLabels,
         },
-        dispatch
+        dispatch,
       );
     }
   };
@@ -122,7 +122,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
       | boolean
       | QuestionnaireItemAnswerOption[]
       | Element
-      | undefined
+      | undefined,
   ): void => {
     dispatch(updateItemAction(item.linkId, name, value));
   };
@@ -134,7 +134,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
   const handleChangeSystem = (system: string): void => {
     const alteredAnswerOption = updateAnswerOptionSystem(
       item.answerOption || [],
-      system
+      system,
     );
     dispatchUpdateItem(IItemProperty.answerOption, alteredAnswerOption);
   };
@@ -148,7 +148,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
 
   const hasValidationError = (): boolean => {
     return itemValidationErrors.some(
-      (x) => x.errorProperty === "system" && x.linkId === item.linkId
+      (x) => x.errorProperty === "system" && x.linkId === item.linkId,
     );
   };
 
@@ -236,7 +236,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
               type={BTN_TYPES.Button}
               onClick={() => {
                 const newArray = addEmptyOptionToAnswerOptionArray(
-                  item.answerOption || []
+                  item.answerOption || [],
                 );
                 dispatchUpdateItem(IItemProperty.answerOption, newArray);
               }}

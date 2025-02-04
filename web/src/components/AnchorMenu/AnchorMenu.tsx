@@ -84,7 +84,7 @@ const externalNodeSpec = {
   }),
 };
 const externalNodeCollect = (
-  connect: DragSourceConnector
+  connect: DragSourceConnector,
 ): {
   connectDragSource: ConnectDragSource;
 } => ({
@@ -105,14 +105,14 @@ const ExternalNodeBaseComponent = (props: {
     </div>,
     {
       dropEffect: "copy",
-    }
+    },
   );
 };
 
 const YourExternalNodeComponent = DragSource(
   externalNodeType,
   externalNodeSpec,
-  externalNodeCollect
+  externalNodeCollect,
 )(ExternalNodeBaseComponent);
 
 const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
@@ -122,7 +122,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
   const mapToTreeData = (
     item: OrderItem[],
     hierarchy: string,
-    parentLinkId?: string
+    parentLinkId?: string,
   ): Node[] => {
     return item
       .filter((x) => {
@@ -173,7 +173,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
   const createTypeComponent = (
     type: IQuestionnaireItemType,
-    text: string
+    text: string,
   ): JSX.Element => {
     return (
       <YourExternalNodeComponent
@@ -198,23 +198,23 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
           {createTypeComponent(IQuestionnaireItemType.string, t("Text answer"))}
           {createTypeComponent(
             IQuestionnaireItemType.display,
-            t("Information text")
+            t("Information text"),
           )}
           {createTypeComponent(
             IQuestionnaireItemType.attachment,
-            t("Attachment")
+            t("Attachment"),
           )}
           {createTypeComponent(
             IQuestionnaireItemType.receiver,
-            t("Recipient list")
+            t("Recipient list"),
           )}
           {createTypeComponent(
             IQuestionnaireItemType.receiverComponent,
-            t("Recipient component")
+            t("Recipient component"),
           )}
           {createTypeComponent(
             IQuestionnaireItemType.boolean,
-            t("Confirmation")
+            t("Confirmation"),
           )}
           {createTypeComponent(IQuestionnaireItemType.choice, t("Choice"))}
           {createTypeComponent(IQuestionnaireItemType.date, t("Date"))}
@@ -241,7 +241,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
             // find parent node:
             const moveIndex = nextParentNode
               ? nextParentNode.children.findIndex(
-                  (x: Node) => x.title === node.title
+                  (x: Node) => x.title === node.title,
                 )
               : treeData.findIndex((x: Node) => x.title === node.title);
 
@@ -250,19 +250,19 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                 newItemAction(
                   getInitialItemConfig(node.nodeType, t("Recipient component")),
                   newPath,
-                  moveIndex
-                )
+                  moveIndex,
+                ),
               );
             } else {
               const oldPath = treePathToOrderArray(prevPath);
               // reorder within same parent
               if (JSON.stringify(newPath) === JSON.stringify(oldPath)) {
                 props.dispatch(
-                  reorderItemAction(node.title, newPath, moveIndex)
+                  reorderItemAction(node.title, newPath, moveIndex),
                 );
               } else {
                 props.dispatch(
-                  moveItemAction(node.title, newPath, oldPath, moveIndex)
+                  moveItemAction(node.title, newPath, oldPath, moveIndex),
                 );
               }
             }
@@ -272,7 +272,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
             expanded,
           }: NodeVisibilityToggleEvent) => {
             const filteredNodes = collapsedNodes.filter(
-              (x) => x !== node.title
+              (x) => x !== node.title,
             );
             if (!expanded) {
               filteredNodes.push(node.title);
@@ -310,8 +310,8 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                   props.dispatch(
                     updateMarkedLinkIdAction(
                       extendedNode.node.title,
-                      treePathToOrderArray(extendedNode.path)
-                    )
+                      treePathToOrderArray(extendedNode.path),
+                    ),
                   );
                 }}
                 onKeyDown={(event) => {
@@ -319,15 +319,15 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                     props.dispatch(
                       updateMarkedLinkIdAction(
                         extendedNode.node.title,
-                        treePathToOrderArray(extendedNode.path)
-                      )
+                        treePathToOrderArray(extendedNode.path),
+                      ),
                     );
                   }
                 }}
               >
                 <span
                   className={getRelevantIcon(
-                    props.qItems[extendedNode.node.title]?.type
+                    props.qItems[extendedNode.node.title]?.type,
                   )}
                 />
                 <span className="anchor-menu__title">
@@ -342,14 +342,14 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
               props.qItems[extendedNode.node.title],
               treePathToOrderArray(extendedNode.path),
               false,
-              props.dispatch
+              props.dispatch,
             ),
           })}
         />
         {props.qOrder.length === 0 && (
           <p className="anchor-menu__placeholder">
             {t(
-              "Here you will find a summary of questionnaire elements. Drag a component here to start building this Questionnaire"
+              "Here you will find a summary of questionnaire elements. Drag a component here to start building this Questionnaire",
             )}
           </p>
         )}

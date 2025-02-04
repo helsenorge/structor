@@ -75,11 +75,11 @@ export const TableOption = ({
     }
   };
   const itemControlExtension = item.extension?.find(
-    (extension) => extension.url === IExtensionType.itemControl
+    (extension) => extension.url === IExtensionType.itemControl,
   );
   const hasTableCode = existItemControlWithCode(
     item,
-    getTableCode(itemControlExtension) || ""
+    getTableCode(itemControlExtension) || "",
   );
   const tableOptions = [
     { code: TableOptionsEnum.None, display: t(`Don't display as a table`) },
@@ -107,7 +107,7 @@ export const TableOption = ({
   const allChoiceItems: OrderItem[] = getAllItemTypes(
     qOrder,
     qItems,
-    IQuestionnaireItemType.choice
+    IQuestionnaireItemType.choice,
   );
 
   return (
@@ -115,7 +115,7 @@ export const TableOption = ({
       <FormField
         label={t("Table")}
         sublabel={t(
-          "Choose whether the group should be displayed as a summary table"
+          "Choose whether the group should be displayed as a summary table",
         )}
       >
         <RadioBtn

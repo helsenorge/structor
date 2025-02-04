@@ -26,7 +26,7 @@ const GuidanceAction = (props: GuidanceActionProps): JSX.Element => {
   const { dispatch } = useContext(TreeContext);
   const hasGuidanceAction = hasExtension(
     props.item,
-    IExtensionType.guidanceAction
+    IExtensionType.guidanceAction,
   );
   const action = getGuidanceAction(props.item);
 
@@ -42,7 +42,7 @@ const GuidanceAction = (props: GuidanceActionProps): JSX.Element => {
     setItemExtension(
       props.item,
       createGuidanceActionExtension(event.target.value),
-      dispatch
+      dispatch,
     );
   };
 

@@ -24,16 +24,16 @@ export const SliderMinMaxLabels = ({ item }: Props): JSX.Element => {
   const leftLabel = item.code?.find(
     (cd) =>
       cd.system === ICodeSystem.sliderLabels &&
-      cd.code === SliderLabelEnum.LabelLeft
+      cd.code === SliderLabelEnum.LabelLeft,
   );
   const rightLabel = item.code?.find(
     (cd) =>
       cd.system === ICodeSystem.sliderLabels &&
-      cd.code === SliderLabelEnum.LabelRight
+      cd.code === SliderLabelEnum.LabelRight,
   );
 
   const handleSetMaxLabel = (
-    event: React.FocusEvent<HTMLInputElement>
+    event: React.FocusEvent<HTMLInputElement>,
   ): void => {
     dispatch(
       updateItemCodePropertyWithCodeAction(
@@ -41,12 +41,12 @@ export const SliderMinMaxLabels = ({ item }: Props): JSX.Element => {
         ICodingProperty.display,
         event.target.value,
         ICodeSystem.sliderLabels,
-        SliderLabelEnum.LabelRight
-      )
+        SliderLabelEnum.LabelRight,
+      ),
     );
   };
   const handleSetMinLabel = (
-    event: React.FocusEvent<HTMLInputElement>
+    event: React.FocusEvent<HTMLInputElement>,
   ): void => {
     dispatch(
       updateItemCodePropertyWithCodeAction(
@@ -54,8 +54,8 @@ export const SliderMinMaxLabels = ({ item }: Props): JSX.Element => {
         ICodingProperty.display,
         event.target.value,
         ICodeSystem.sliderLabels,
-        SliderLabelEnum.LabelLeft
-      )
+        SliderLabelEnum.LabelLeft,
+      ),
     );
   };
 

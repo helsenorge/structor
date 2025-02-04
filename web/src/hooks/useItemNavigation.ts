@@ -23,7 +23,7 @@ export const useItemNavigation = (): ItemNavigation => {
   const flatMap = (
     orderItems: Array<OrderItem>,
     ancestors: Array<string> = [],
-    items: Array<FlatOrderItem> = []
+    items: Array<FlatOrderItem> = [],
   ): FlatOrderItem[] => {
     const parentItem = ancestors
       ? qItems[ancestors[ancestors.length - 1]]
@@ -51,7 +51,7 @@ export const useItemNavigation = (): ItemNavigation => {
     if (currentIndex > 0) {
       const previousItem = flattened[currentIndex - 1];
       dispatch(
-        updateMarkedLinkIdAction(previousItem.linkId, previousItem.path)
+        updateMarkedLinkIdAction(previousItem.linkId, previousItem.path),
       );
     }
   };

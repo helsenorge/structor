@@ -39,7 +39,7 @@ const FormFillerPreview = ({
   const { t } = useTranslation();
   const languages = getLanguagesInUse(state);
   const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(
-    language || state.qMetadata.language || INITIAL_LANGUAGE.code
+    language || state.qMetadata.language || INITIAL_LANGUAGE.code,
   );
   const [selectedGender, setSelectedGender] = useState<string>("");
   const [selectedAge, setSelectedAge] = useState<string>("");
@@ -49,10 +49,10 @@ const FormFillerPreview = ({
         state,
         selectedLanguage,
         selectedGender,
-        selectedAge
+        selectedAge,
       ),
-      emptyPropertyReplacer
-    )
+      emptyPropertyReplacer,
+    ),
   );
   const [questionnaireResponse, setQuestionnaireResponse] =
     useState<QuestionnaireResponse>();

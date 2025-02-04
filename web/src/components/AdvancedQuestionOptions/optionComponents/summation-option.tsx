@@ -31,7 +31,7 @@ export const SummationOption = ({
         <FormField
           label={t("Summation field")}
           sublabel={t(
-            "Select whether the field should be a summation field for section score or total score"
+            "Select whether the field should be a summation field for section score or total score",
           )}
         ></FormField>
       </div>
@@ -52,7 +52,7 @@ export const SummationOption = ({
                   code: newValue,
                   display: getScoringFormulaName(newValue),
                 },
-                dispatch
+                dispatch,
               );
             }
           }}

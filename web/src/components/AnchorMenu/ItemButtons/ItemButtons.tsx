@@ -16,7 +16,7 @@ export const generateItemButtons = (
   item: QuestionnaireItem | undefined,
   parentArray: Array<string>,
   showLabel: boolean,
-  dispatch: React.Dispatch<ActionType>
+  dispatch: React.Dispatch<ActionType>,
 ): React.JSX.Element[] => {
   if (!item) {
     return [];
@@ -27,7 +27,7 @@ export const generateItemButtons = (
   };
 
   const dispatchDuplicateItem = (
-    event: MouseEvent<HTMLButtonElement>
+    event: MouseEvent<HTMLButtonElement>,
   ): void => {
     event.stopPropagation();
     dispatch(duplicateItemAction(item.linkId, parentArray));

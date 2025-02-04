@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { Extension, QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
@@ -15,7 +15,7 @@ type CalculatedExpressionOptionProps = {
 };
 
 const CalculatedExpressionOption = (
-  props: CalculatedExpressionOptionProps
+  props: CalculatedExpressionOptionProps,
 ): React.JSX.Element => {
   const { t } = useTranslation();
   const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>): void => {
@@ -32,7 +32,7 @@ const CalculatedExpressionOption = (
 
   const calculatedExpression =
     props.item.extension?.find(
-      (ext) => ext.url === IExtensionType.calculatedExpression
+      (ext) => ext.url === IExtensionType.calculatedExpression,
     )?.valueString || "";
 
   return (

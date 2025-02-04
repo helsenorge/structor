@@ -12,7 +12,7 @@ type InitialInputTypeIntegerProps = {
 };
 
 const InitialInputTypeDecimal = (
-  props: InitialInputTypeIntegerProps
+  props: InitialInputTypeIntegerProps,
 ): React.JSX.Element => {
   const { t } = useTranslation();
   const [initialValue, setInitialValue] = useState(getValue(props.initial));
@@ -37,7 +37,7 @@ const InitialInputTypeDecimal = (
         }}
         onBlur={() => {
           const newInitial: QuestionnaireItemInitial | undefined = isNumeric(
-            initialValue
+            initialValue,
           )
             ? { valueDecimal: parseFloat(initialValue) }
             : undefined;

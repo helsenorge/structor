@@ -28,7 +28,7 @@ export const exportTranslations = (
   qItems: Items,
   valueSetsToTranslate: ValueSet[],
   additionalLanguagesInUse: string[],
-  qAdditionalLanguages: Languages | undefined
+  qAdditionalLanguages: Languages | undefined,
 ): void => {
   const additionalLanguages = qAdditionalLanguages || {};
   const header = [
@@ -49,7 +49,7 @@ export const exportTranslations = (
     qMetadata,
     additionalLanguagesInUse,
     additionalLanguages,
-    data
+    data,
   );
 
   // add predefined valueset translations
@@ -57,7 +57,7 @@ export const exportTranslations = (
     valueSetsToTranslate,
     additionalLanguagesInUse,
     additionalLanguages,
-    data
+    data,
   );
 
   // add item translations: text/_text, sublabel, repeatsText, validationMessage, placeholderText, initial, answerOption.display
@@ -65,7 +65,7 @@ export const exportTranslations = (
     qItems,
     additionalLanguagesInUse,
     additionalLanguages,
-    data
+    data,
   );
 
   const csv = Papa.unparse({ fields: header, data }, papaparseConfig);
@@ -83,7 +83,7 @@ const exportMetadataTranslations = (
   qMetadata: IQuestionnaireMetadata,
   additionalLanguagesInUse: string[],
   additionalLanguages: Languages,
-  data: string[][]
+  data: string[][],
 ): void => {
   translatableMetadata.forEach((prop) => {
     const translatedValues = additionalLanguagesInUse.map((lang) => {
@@ -102,7 +102,7 @@ const exportPredefinedValueSets = (
   valueSetsToTranslate: ValueSet[],
   additionalLanguagesInUse: string[],
   additionalLanguages: Languages,
-  data: string[][]
+  data: string[][],
 ): void => {
   if (valueSetsToTranslate.length > 0) {
     // for each valueset, for each row, add one translation row
@@ -123,7 +123,7 @@ const exportItemTranslations = (
   qItems: Items,
   additionalLanguagesInUse: string[],
   additionalLanguages: Languages,
-  data: string[][]
+  data: string[][],
 ): void => {
   Object.keys(qItems).forEach((linkId) => {
     const item = qItems[linkId];
@@ -134,13 +134,13 @@ const exportItemTranslations = (
         translatedValues.push(
           ...additionalLanguagesInUse.map((lang) => {
             return additionalLanguages[lang].sidebarItems[linkId]?.markdown;
-          })
+          }),
         );
       } else {
         translatedValues.push(
           ...additionalLanguagesInUse.map((lang) => {
             return additionalLanguages[lang].items[linkId]?.text;
-          })
+          }),
         );
       }
 
@@ -221,7 +221,7 @@ const exportItemTranslations = (
           key,
           x.valueCoding?.display || "",
           ...translatedOptions.map(
-            (y) => (y && y[x.valueCoding?.code || ""]) || ""
+            (y) => (y && y[x.valueCoding?.code || ""]) || "",
           ),
         ]);
       });
@@ -232,7 +232,7 @@ const exportItemTranslations = (
       });
       item.code
         .filter((code: Coding) =>
-          systemCodesToTranslate.includes(code.system || "")
+          systemCodesToTranslate.includes(code.system || ""),
         )
         ?.forEach((x) => {
           const key = `${TranslatableKeyProptey.item}[${linkId}].code[${x?.system}][${x?.code}].display`;
