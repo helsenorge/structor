@@ -33,6 +33,7 @@ import { SummaryOption } from "./optionComponents/summary-option";
 import { SummationOption } from "./optionComponents/summation-option";
 import { ColumnOption } from "./optionComponents/tableOptions/column-option";
 import { TableOption } from "./optionComponents/tableOptions/table-option";
+import { ValidateReadOnlyOption } from "./optionComponents/validate-readOnly-option";
 import ViewOption from "./optionComponents/view-option";
 import {
   removeItemExtension,
@@ -72,7 +73,7 @@ const AdvancedQuestionOptions = ({
   const { state, dispatch } = useContext(TreeContext);
   const { qItems, qOrder } = state;
   const [isDataReceiver, setDataReceiverState] = useState(
-    isItemControlDataReceiver(item),
+    isItemControlDataReceiver(item)
   );
 
   const parentItem = getItem(parentArray[parentArray.length - 1]) || [];

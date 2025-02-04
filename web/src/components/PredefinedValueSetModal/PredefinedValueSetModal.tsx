@@ -325,7 +325,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
           {qContained?.map((x) => (
             <div key={x.id}>
               <p>
-                <strong>{`${x.title}`}</strong> {`(${x.name})`}
+                <strong>{`${x.title}`}</strong> {`(${x.name || x.id})`}
                 {canEdit(x.url) && (
                   <Btn
                     title={t("Change")}

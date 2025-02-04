@@ -60,7 +60,9 @@ export const updateAnswerOption = (
           valueCoding: {
             ...x.valueCoding,
             display: displayValue,
-            code: removeSpace(displayValue),
+            code: !x.valueCoding.code
+              ? removeSpace(displayValue)
+              : x.valueCoding.code,
           },
         } as QuestionnaireItemAnswerOption)
       : x;

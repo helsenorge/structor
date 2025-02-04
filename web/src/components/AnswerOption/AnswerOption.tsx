@@ -16,10 +16,7 @@ type Props = {
   item: QuestionnaireItem;
   answerOption?: QuestionnaireItemAnswerOption;
   handleDrag?: DraggableProvidedDragHandleProps;
-  changeDisplay: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    codeValue?: string,
-  ) => void;
+  changeDisplay: (event: React.ChangeEvent<HTMLInputElement>) => void;
   changeCode: (event: React.ChangeEvent<HTMLInputElement>) => void;
   changeOrdinalValueExtension: (
     event: React.ChangeEvent<HTMLInputElement>
