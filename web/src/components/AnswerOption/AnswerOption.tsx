@@ -109,9 +109,7 @@ const AnswerOption = ({
         <InputField
           name="beskrivelse"
           className={inputFieldClassName}
-          onBlur={(event) =>
-            changeDisplay(event, answerOption?.valueCoding?.display)
-          }
+          onBlur={(event) => changeDisplay(event)}
           defaultValue={answerOption?.valueCoding?.display}
           disabled={disabled}
           placeholder={t("Enter a title..")}
