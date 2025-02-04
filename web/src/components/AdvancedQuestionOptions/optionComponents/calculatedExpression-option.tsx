@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Extension, QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
@@ -34,11 +34,12 @@ const CalculatedExpressionOption = (
     props.item.extension?.find(
       (ext) => ext.url === IExtensionType.calculatedExpression
     )?.valueString || "";
+
   return (
     <FormField label={t("Calculation formula")}>
       <textarea
-        defaultValue={calculatedExpression}
-        onBlur={handleBlur}
+        value={calculatedExpression}
+        onChange={handleBlur}
         disabled={props.disabled}
       />
     </FormField>
