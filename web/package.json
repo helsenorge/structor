@@ -10,8 +10,13 @@
   "scripts": {
     "start": "npx vite dev --port 3000",
     "build": "tsc && npx vite build ",
-    "eslint": "eslint src/**/*.{js,jsx,ts,tsx} --fix",
+    "stylelint": "stylelint src/**/*.{scss,module.scss}",
+    "stylelint:fix": "npm run stylelint -- --fix",
+    "prepare": "cd .. && husky web/.husky",
+    "eslint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "eslint:fix": "npm run eslint -- --fix",
+    "prettier": "prettier --check src/**/*.{js,jsx,ts,tsx,css,scss,md,json}",
+    "prettier:fix": "npm run prettier -- --write",
     "preview": "vite preview",
     "test:run": "vitest",
     "test": "vitest"
@@ -19,13 +24,13 @@
   "dependencies": {
     "dompurify": "^3.1.7",
     "@ckeditor/ckeditor5-react": "^9.0.0",
-    "@helsenorge/autosuggest": "^33.0.0",
-    "@helsenorge/core-build": "^33.0.0",
-    "@helsenorge/core-utils": "^33.0.0",
-    "@helsenorge/datepicker": "^9.0.0",
-    "@helsenorge/designsystem-react": "^9.0.0",
-    "@helsenorge/file-upload": "^33.0.0",
-    "@helsenorge/refero": "16.2.0",
+    "@helsenorge/autosuggest": "^34.0.0",
+    "@helsenorge/core-build": "^34.0.0",
+    "@helsenorge/core-utils": "^34.0.0",
+    "@helsenorge/datepicker": "^10.0.0",
+    "@helsenorge/designsystem-react": "^10.0.0",
+    "@helsenorge/file-upload": "^34.0.0",
+    "@helsenorge/refero": "17.0.0",
     "@nosferatu500/react-sortable-tree": "^4.0.0",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@reduxjs/toolkit": "^2.0.0",
@@ -33,7 +38,6 @@
     "@types/papaparse": "^5.3.11",
     "ckeditor5": "^43.2.0",
     "crypto-js": "^4.1.1",
-    "date-fns": "^3.3.1",
     "i18next": "^19.6.3",
     "idb": "^8.0.0",
     "immer": "^9.0.0",
@@ -74,5 +78,10 @@
     "terser": "^5.22.0",
     "typescript": "^5.0.0",
     "vitest-sonar-reporter": "^2.0.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --fix",
+    "*.{css,scss}": "stylelint --fix",
+    "*.{js,jsx,ts,tsx,css,scss,md,json}": "prettier --write"
   }
 }
