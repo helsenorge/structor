@@ -9,7 +9,7 @@ import GetRoutes from "./router/index";
 function App(): JSX.Element {
   return (
     <Router>
-      <GetRoutes></GetRoutes>
+      <GetRoutes />
     </Router>
   );
 }
