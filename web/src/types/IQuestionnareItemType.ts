@@ -151,6 +151,9 @@ export enum ItemExtractionContext {
   observation = "http://hl7.org/fhir/StructureDefinition/Observation",
   serviceRequest = "http://hl7.org/fhir/StructureDefinition/ServiceRequest",
   condition = "http://hl7.org/fhir/StructureDefinition/Condition",
+  organization = "http://hl7.org/fhir/StructureDefinition/Organization",
+  practitioner = "http://hl7.org/fhir/StructureDefinition/Practitioner",
+  medicationStatement = "http://hl7.org/fhir/StructureDefinition/MedicationStatement",
 }
 
 export enum MetaSecuritySystem {

@@ -23,7 +23,7 @@ describe("AdvancedQuestionOptions", () => {
           parentArray={[]}
           conditionalArray={[]}
           getItem={vi.fn()}
-        />
+        />,
       );
 
       expect(screen.queryAllByAltText("Definition")).toBeTruthy();
@@ -37,7 +37,7 @@ describe("AdvancedQuestionOptions", () => {
           parentArray={[]}
           conditionalArray={[]}
           getItem={vi.fn()}
-        />
+        />,
       );
 
       expect(screen.getByTestId("radioBtn-Not set")).toHaveProperty("checked");
@@ -61,35 +61,64 @@ describe("AdvancedQuestionOptions", () => {
           parentArray={[]}
           conditionalArray={[]}
           getItem={vi.fn()}
-        />
+        />,
       );
 
       expect(screen.getByTestId("radioBtn-Observation")).toHaveProperty(
-        "checked"
+        "checked",
       );
     });
 
-    // it('Click Item Extraction ServiceRequest', async () => {
-    //     const newItem: QuestionnaireItem = {
-    //         linkId: '123',
-    //         type: 'choice',
-    //     };
+    it("Click Item Extraction ServiceRequest", async () => {
+      const newItem: QuestionnaireItem = {
+        linkId: "123",
+        type: "choice",
+        extension: [
+          {
+            url: IExtensionType.itemExtractionContext,
+            valueUri: ItemExtractionContext.serviceRequest,
+          },
+        ] as Extension[],
+      };
 
-    //     render(
-    //         <TreeContextProvider>
-    //             <AdvancedQuestionOptions
-    //                 item={newItem}
-    //                 parentArray={[]}
-    //                 conditionalArray={[]}
-    //                 getItem={vi.fn()}
-    //             />
-    //         </TreeContextProvider>
-    //    );
+      render(
+        <AdvancedQuestionOptions
+          item={newItem}
+          parentArray={[]}
+          conditionalArray={[]}
+          getItem={vi.fn()}
+        />,
+      );
 
-    //     const radioKnapp = screen.getByTestId('radioBtn-ServiceRequest');
-    //     await waitFor(() => userEvent.click(radioKnapp));
+      expect(screen.getByTestId("radioBtn-ServiceRequest")).toHaveProperty(
+        "checked",
+      );
+    });
 
-    //     expect(item.extension?.find((ex) => ex.url === IExtensionType.itemExtractionContext)?.valueUri).toBe(ItemExtractionContext.serviceRequest);
-    // });
+    it("Click Item Extraction Organizaiton", async () => {
+      const newItem: QuestionnaireItem = {
+        linkId: "123",
+        type: "choice",
+        extension: [
+          {
+            url: IExtensionType.itemExtractionContext,
+            valueUri: ItemExtractionContext.organization,
+          },
+        ] as Extension[],
+      };
+
+      render(
+        <AdvancedQuestionOptions
+          item={newItem}
+          parentArray={[]}
+          conditionalArray={[]}
+          getItem={vi.fn()}
+        />,
+      );
+
+      expect(screen.getByTestId("radioBtn-Organization")).toHaveProperty(
+        "checked",
+      );
+    });
   });
 });
