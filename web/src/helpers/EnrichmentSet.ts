@@ -67,7 +67,8 @@ type EnrichmentExpessionMetadata = {
     | "On behalf of citizen"
     | "Representative relation"
     | "General Practitioner"
-    | "Miscellaneous";
+    | "Miscellaneous"
+    | "Samtykke";
   type: "string" | "number" | "date" | "dateTime" | "time" | "boolean";
 };
 
@@ -371,5 +372,12 @@ const EnrichmentSet: Array<EnrichmentExpessionMetadata> = [
     expression: "today()",
     group: "Miscellaneous",
     type: "date",
+  },
+  {
+    name: "Innbygger har elektronisk helsekort for gravid samtykket? (true/flase)",
+    expression:
+      "iif(Consent.where(identifier.value = '50061158-09ab-43b8-af00-a878944e37f4').status = 'active', true, false)",
+    group: "Samtykke",
+    type: "boolean",
   },
 ];
