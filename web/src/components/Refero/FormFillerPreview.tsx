@@ -143,7 +143,7 @@ const FormFillerPreview = ({
                     }}
                     onSubmit={() => {}}
                     authorized={true}
-                    resources={getResources(language || "")}
+                    resources={getResources(selectedLanguage || language || "")}
                     sticky={true}
                     saveButtonDisabled={false}
                     loginButton={<Button>{"Login"}</Button>}
