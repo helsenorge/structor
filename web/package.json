@@ -19,7 +19,7 @@
     "prettier:fix": "npm run prettier -- --write",
     "preview": "vite preview",
     "test:run": "vitest",
-    "test": "vitest"
+    "test": "vitest --watchAll=false --coverage"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^9.0.0",
@@ -79,5 +79,14 @@
     "*.{js,jsx,ts,tsx}": "eslint --fix",
     "*.{css,scss}": "stylelint --fix",
     "*.{js,jsx,ts,tsx,css,scss,md,json}": "prettier --write"
+  },
+  "jest": {
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "clover",
+      "cobertura"
+    ]
   }
 }
