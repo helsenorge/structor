@@ -178,7 +178,7 @@ export const isValidId = (value: string): boolean => {
 };
 
 export const isValidTitel = (titel: string): boolean => {
-  const specialCharacterRegExp = new RegExp("[\"|'*:;/<>\\][%$£#¤`´@{}\\\\]");
+  const specialCharacterRegExp = /[\\"|'*:;/<>\][%$£#¤`´@{}]/;
   return !specialCharacterRegExp.test(titel);
 };
 

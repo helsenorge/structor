@@ -66,8 +66,28 @@ describe(`MetadataHelpere`, () => {
   });
 
   describe("isValidTitel", () => {
-    it("Titel has special character", () => {
+    it("Titel has special character @", () => {
       const result = isValidTitel("@Test".trim());
+      expect(result).toBeFalsy();
+    });
+
+    it("Titel has special character /", () => {
+      const result = isValidTitel("/Test/".trim());
+      expect(result).toBeFalsy();
+    });
+
+    it("Titel has special character ]", () => {
+      const result = isValidTitel("Test]".trim());
+      expect(result).toBeFalsy();
+    });
+
+    it("Titel has special character [", () => {
+      const result = isValidTitel("[Test".trim());
+      expect(result).toBeFalsy();
+    });
+
+    it("Titel has special character \\", () => {
+      const result = isValidTitel("\\Test\\".trim());
       expect(result).toBeFalsy();
     });
 
