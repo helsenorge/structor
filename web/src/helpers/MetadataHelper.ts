@@ -177,6 +177,11 @@ export const isValidId = (value: string): boolean => {
   return regExp.test(value);
 };
 
+export const isValidTitel = (titel: string): boolean => {
+  const specialCharacterRegExp = new RegExp("[\"|'*:;/<>\\][%$£#¤`´@{}\\\\]");
+  return !specialCharacterRegExp.test(titel);
+};
+
 export const isValidTechnicalName = (
   value: string,
   stateValue?: string,

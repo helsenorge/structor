@@ -4,6 +4,7 @@ import { describe, beforeAll, it, expect } from "vitest";
 import {
   addMetaSecurityIfDoesNotExist,
   getTjenesteomraadeCoding,
+  isValidTitel,
   tjenesteomraadeCode,
 } from "../MetadataHelper";
 
@@ -46,7 +47,7 @@ describe(`MetadataHelpere`, () => {
     it(`Add security according to useContext when form does not have a security from before`, () => {
       questionnaire = addMetaSecurityIfDoesNotExist(questionnaire);
       expect(questionnaire.meta?.security?.[0]).toBe(
-        getTjenesteomraadeCoding(tjenesteomraadeCode.helseregister)
+        getTjenesteomraadeCoding(tjenesteomraadeCode.helseregister),
       );
     });
 
@@ -59,8 +60,27 @@ describe(`MetadataHelpere`, () => {
 
       questionnaire = addMetaSecurityIfDoesNotExist(questionnaire);
       expect(questionnaire.meta?.security?.[0]).not.toBe(
-        getTjenesteomraadeCoding(tjenesteomraadeCode.helseregister)
+        getTjenesteomraadeCoding(tjenesteomraadeCode.helseregister),
       );
+    });
+  });
+
+  describe("isValidTitel", () => {
+    it("Titel has special character", () => {
+      const result = isValidTitel("@Test".trim());
+      expect(result).toBeFalsy();
+    });
+
+    it("Titel has html tag", () => {
+      const result = isValidTitel("<br>Test</br>".trim());
+      expect(result).toBeFalsy();
+    });
+
+    it("Acceptable titel", () => {
+      const result = isValidTitel(
+        "Titel must not have special character".trim(),
+      );
+      expect(result).toBeTruthy();
     });
   });
 });
