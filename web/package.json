@@ -19,7 +19,7 @@
     "prettier:fix": "npm run prettier -- --write",
     "preview": "vite preview",
     "test:run": "vitest",
-    "test": "vitest"
+    "test": "vitest --coverage"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^9.0.0",
