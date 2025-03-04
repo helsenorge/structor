@@ -70,7 +70,7 @@ const ValidationAnswerTypeString = ({ item }: Props): React.JSX.Element => {
     },
     {
       display: t("Zip code"),
-      code: "^(000[1-9]|0[1-9][0-9][0-9]|[1-9][0-9][0-9][0-8])$",
+      code: "^(?!0000|9999)[0-9]{4}$",
     },
   ];
 
