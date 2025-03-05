@@ -442,7 +442,7 @@
   "Readonly fields should not have validation": "Skrivebeskyttetede felter kan ikke ha validering",
   "There are elements marked in translation that need attention.": "Det er elementer med markering i oversettelse som trenger oppmerksomhet.",
   "Form does not have a title": "Skjema har ikke en tittel",
-  "Titel cannot have any special characters": "Tittel kan ikke ha noen spesieltegn",
+  "Title cannot have any special characters []{}/\\<>`´;:|\"'$£#@%*¤": "Tittel kan ikke ha noen spesieltegn []{}/\\<>`´;:|\"'$£#@%*¤",
   "SOT does not have a text": "SOT har ikke en tekst",
   "{0}: Found {1} missing translation(s).": "{0}: Fant {1} manglende oversettelse(r).",
   "Form does not have a technical name": "Skjema har ikke et teknisk navn",

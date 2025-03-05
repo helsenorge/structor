@@ -177,9 +177,9 @@ export const isValidId = (value: string): boolean => {
   return regExp.test(value);
 };
 
-export const isValidTitel = (titel: string): boolean => {
+export const isValidTitle = (title: string): boolean => {
   const specialCharacterRegExp = /[\\"|'*:;/<>\][%$£#¤`´@{}]/;
-  return !specialCharacterRegExp.test(titel);
+  return !specialCharacterRegExp.test(title);
 };
 
 export const isValidTechnicalName = (

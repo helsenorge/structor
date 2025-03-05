@@ -4,7 +4,7 @@ import { describe, beforeAll, it, expect } from "vitest";
 import {
   addMetaSecurityIfDoesNotExist,
   getTjenesteomraadeCoding,
-  isValidTitel,
+  isValidTitle,
   tjenesteomraadeCode,
 } from "../MetadataHelper";
 
@@ -65,39 +65,39 @@ describe(`MetadataHelpere`, () => {
     });
   });
 
-  describe("isValidTitel", () => {
+  describe("isValidTitle", () => {
     it("Titel has special character @", () => {
-      const result = isValidTitel("@Test".trim());
+      const result = isValidTitle("@Test".trim());
       expect(result).toBeFalsy();
     });
 
     it("Titel has special character /", () => {
-      const result = isValidTitel("/Test/".trim());
+      const result = isValidTitle("/Test/".trim());
       expect(result).toBeFalsy();
     });
 
     it("Titel has special character ]", () => {
-      const result = isValidTitel("Test]".trim());
+      const result = isValidTitle("Test]".trim());
       expect(result).toBeFalsy();
     });
 
     it("Titel has special character [", () => {
-      const result = isValidTitel("[Test".trim());
+      const result = isValidTitle("[Test".trim());
       expect(result).toBeFalsy();
     });
 
     it("Titel has special character \\", () => {
-      const result = isValidTitel("\\Test\\".trim());
+      const result = isValidTitle("\\Test\\".trim());
       expect(result).toBeFalsy();
     });
 
     it("Titel has html tag", () => {
-      const result = isValidTitel("<br>Test</br>".trim());
+      const result = isValidTitle("<br>Test</br>".trim());
       expect(result).toBeFalsy();
     });
 
     it("Acceptable titel", () => {
-      const result = isValidTitel(
+      const result = isValidTitle(
         "Titel must not have special character".trim(),
       );
       expect(result).toBeTruthy();
