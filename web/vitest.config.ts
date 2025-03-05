@@ -18,7 +18,7 @@ export default defineConfig(async (env) => {
       globals: true,
       include: ["**/*.test.tsx", "**/*.test.ts"],
       coverage: {
-        reporter: ["cobertura", "json"],
+        reporter: ["cobertura", "json", "lcov"],
       },
     },
   };
