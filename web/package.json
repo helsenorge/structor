@@ -79,14 +79,5 @@
     "*.{js,jsx,ts,tsx}": "eslint --fix",
     "*.{css,scss}": "stylelint --fix",
     "*.{js,jsx,ts,tsx,css,scss,md,json}": "prettier --write"
-  },
-  "jest": {
-    "coverageReporters": [
-      "json",
-      "lcov",
-      "text",
-      "clover",
-      "cobertura"
-    ]
   }
 }

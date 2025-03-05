@@ -18,6 +18,13 @@ export default () => {
   return defineConfig({
     base: process.env.NODE_ENV === "production" ? "/static_skjemabygger/" : "/",
 
+    test: {
+      coverage: {
+        reporter: ["text", "lcov"], // Generates lcov.info and prints text summary
+        reportsDirectory: "./web/coverage", // Ensure this matches your SonarQube configuration
+        exclude: ["**/__tests__/**", "**/public/**", "**/mocks/**"], // Optional
+      },
+    },
     plugins: [removeCrossOriginAttr(), react(), svgr(), reactVirtualized()],
     server: {
       port: 3000,
