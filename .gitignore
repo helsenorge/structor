@@ -32,3 +32,10 @@
 /web/report
 /web/sonar-report.xml
 /.vs
+
+# Devspace
+.devspace
+
+# Helm Chart
+Chart.lock
+*.tgz
