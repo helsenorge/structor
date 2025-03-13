@@ -302,6 +302,6 @@ export const itemExtractionOptions = [
   { valueUri: ItemExtractionContext.practitioner, name: "Practitioner" },
   {
     valueUri: ItemExtractionContext.medicationStatement,
-    name: "MedicalStatement",
+    name: "MedicationStatement",
   },
 ] as ValueSetExpansionParameter[];
