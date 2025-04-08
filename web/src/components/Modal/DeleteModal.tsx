@@ -64,11 +64,11 @@ export const DeleteButton = ({
           buttonSecondaryText={t("Cancel")}
           buttonPrimaryText={t("Delete")}
         >
-          <p className="msg">
+          <div className="modal-delete-msg">
             {t("Are you that you want to delete item {0} with LinkId {1}?")
               .replace("{0}", item.type)
               .replace("{1}", item.linkId)}
-          </p>
+          </div>
         </Modal>
       )}
     </>
