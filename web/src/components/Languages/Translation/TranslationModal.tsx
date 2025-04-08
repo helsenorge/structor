@@ -256,7 +256,7 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
         close={props.close}
         title={t("Translate questionnaire")}
         id="translation-modal"
-        bottomCloseText={t("Close")}
+        buttonSecondaryText={t("Close")}
       >
         <ModalHeader
           qMetadata={qMetadata}

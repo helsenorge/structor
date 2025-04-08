@@ -1,69 +1,70 @@
 .regular-btn {
-    box-sizing: border-box;
-    line-height: 20px;
-    position: relative;
-    display: inline-block;
-    font-weight: 600;
-    white-space: nowrap;
-    text-align: center;
-    -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
-    cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 24px;
-    color: white;
-    background: none;
-    border: 1px solid transparent;
+  box-sizing: border-box;
+  line-height: 20px;
+  position: relative;
+  display: inline-block;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: center;
+  box-shadow: 0 2px 0 rgb(0 0 0 / 1.5%);
+  box-shadow: 0 2px 0 rgb(0 0 0 / 1.5%);
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 24px;
+  color: white;
+  background: none;
+  border: 1px solid transparent;
+  margin: 5px;
 }
 
 .regular-btn:hover {
-    border: 1px solid white;
+  border: 1px solid white;
 }
 
 #btn-blue {
-    font-weight: 600;
-    background-color: #2a69ac;
-    border-radius: 25px;
-    height: 45px;
-    width: 130px;
-    margin-left: auto;
-    margin-right: auto;
+  font-weight: 600;
+  background-color: #2a69ac;
+  border-radius: 25px;
+  height: 45px;
+  width: 130px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #btn-grey {
-    font-weight: 600;
-    background-color: #2a69ac;
-    border-radius: 25px;
-    height: 45px;
-    width: 130px;
-    margin-left: auto;
-    margin-right: auto;
+  font-weight: 600;
+  background-color: #2a69ac;
+  border-radius: 25px;
+  height: 45px;
+  width: 130px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .regular-btn.primary {
-    background: #2a69ac;
-    color: white;
+  background: #2a69ac;
+  color: white;
 }
 
 .regular-btn.primary i {
-    padding-right: 10px;
+  padding-right: 10px;
 }
 
 .regular-btn.secondary {
-    border: 3px solid #2a69ac;
-    color: #2a69ac;
+  border: 3px solid #2a69ac;
+  color: #2a69ac;
 }
 
 .btn-group button {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 button:disabled {
-    cursor: not-allowed;
-    pointer-events: none;
-    background-color: #c0c0c0 !important;
+  cursor: not-allowed;
+  pointer-events: none;
+  background-color: #c0c0c0 !important;
 }
 
 .btn-group button:last-of-type {
-    margin-right: 0px;
+  margin-right: 0;
 }

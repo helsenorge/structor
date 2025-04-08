@@ -174,7 +174,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
       close={props.close}
       title={t("Predefined values")}
       size="large"
-      bottomCloseText={t("Close")}
+      buttonSecondaryText={t("Close")}
     >
       <div className="predefined-container">
         <div>

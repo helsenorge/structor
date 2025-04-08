@@ -3,13 +3,11 @@ import React, { MouseEvent } from "react";
 import { QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
 
-import {
-  deleteItemAction,
-  duplicateItemAction,
-} from "../../../store/treeStore/treeActions";
+import { duplicateItemAction } from "../../../store/treeStore/treeActions";
 import { ActionType } from "../../../store/treeStore/treeStore";
 
 import "./ItemButtons.css";
+import { DeleteButton } from "src/components/Modal/DeleteModal";
 
 export const generateItemButtons = (
   t: TFunction<"translation">,
@@ -21,10 +19,6 @@ export const generateItemButtons = (
   if (!item) {
     return [];
   }
-  const dispatchDeleteItem = (event: MouseEvent<HTMLButtonElement>): void => {
-    event.stopPropagation();
-    dispatch(deleteItemAction(item.linkId, parentArray));
-  };
 
   const dispatchDuplicateItem = (
     event: MouseEvent<HTMLButtonElement>,
@@ -48,15 +42,12 @@ export const generateItemButtons = (
       <i className="duplicate-icon" />
       {showLabel && <label>{t("Duplicate")}</label>}
     </button>,
-    <button
-      key="delete-item-button"
-      className={getClassNames()}
-      onClick={dispatchDeleteItem}
-      aria-label="Delete element"
-      title={t("Delete")}
-    >
-      <i className="trash-icon" />
-      {showLabel && <label>{t("Delete")}</label>}
-    </button>,
+    <DeleteButton
+      dispatch={dispatch}
+      item={item}
+      parentArray={parentArray}
+      showLabel={showLabel}
+      key={"delete-item-button"}
+    />,
   ];
 };

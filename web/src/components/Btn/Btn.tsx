@@ -1,11 +1,11 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 
 import "./Btn.css";
 import { BTN_ICONS, BTN_TYPES, BTN_VARIANTS } from "./types";
 
 type BtnProps = {
   title: string;
-  onClick?: () => void;
+  onClick?: (event?: MouseEvent<HTMLButtonElement>) => void;
   id?: string;
   type?: (typeof BTN_TYPES)[keyof typeof BTN_TYPES];
   icon?: (typeof BTN_ICONS)[keyof typeof BTN_ICONS];
