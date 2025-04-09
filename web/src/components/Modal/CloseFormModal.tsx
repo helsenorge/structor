@@ -34,7 +34,7 @@ const CloseFormModal = ({
               type="button"
               variant="primary"
               onClick={() => setCloseForm(true)}
-            />{" "}
+            />
             <Btn
               title={t("No")}
               type="button"

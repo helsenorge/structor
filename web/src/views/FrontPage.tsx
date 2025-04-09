@@ -93,7 +93,7 @@ const FrontPage = (): React.JSX.Element => {
         </Modal>
       )}
       {isFormBuilderShown ? (
-        <FormPage />
+        <FormPage setStateFromStorage={setStateFromStorage} />
       ) : (
         <>
           <header>
