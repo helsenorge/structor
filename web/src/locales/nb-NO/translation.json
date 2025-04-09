@@ -475,6 +475,8 @@
   "Enter a displayvalue for min..": "Legg inn en visningsverdi for min..",
   "Enter a displayvalue for max..": "Legg inn en visningsverdi for max..",
   "Valuetype to display": "Verditype å vise",
+  "Close form": "Lukk skjema",
+  "Do you want to close the form without saving?": "Ønsker du å avslutte uten å lagre?",
   "Are you that you want to delete item {0} with LinkId {1}?": "Er du sikker på at du vil slette item {0} med LinkId {1}?",
   "Cancel": "Avbryt"
 }
