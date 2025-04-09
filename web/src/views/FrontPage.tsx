@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import FormBuilder from "./FormBuilder";
+import FormPage from "./FormPage";
 import Btn from "../components/Btn/Btn";
 import Modal from "../components/Modal/Modal";
 import SpinnerBox from "../components/Spinner/SpinnerBox";
@@ -81,63 +81,9 @@ const FrontPage = (): React.JSX.Element => {
       reader.readAsText(event.target.files[0]);
     }
   };
-  const suggestRestore: boolean = !!(
-    stateFromStorage?.qItems && Object.keys(stateFromStorage.qItems).length > 0
-  );
-
-  const onDenyRestoreModal = (): void => {
-    dispatch(resetQuestionnaireAction());
-    setStateFromStorage(undefined);
-  };
-
-  const onConfirmRestoreModal = (): void => {
-    dispatch(resetQuestionnaireAction(stateFromStorage));
-    setStateFromStorage(undefined);
-    setIsFormBuilderShown(true);
-  };
 
   return (
     <>
-      {suggestRestore && (
-        <Modal title={t("Restore questionnaire...")} close={onDenyRestoreModal}>
-          <div>
-            <p>
-              {t(
-                "It looks like you have previously worked with a questionnaire:",
-              )}
-            </p>
-            <div className="key-value">
-              <div>{t("Title")}</div>
-              <div>{stateFromStorage?.qMetadata?.title}</div>
-            </div>
-            <div className="key-value">
-              <div>{t("Technical name")}</div>
-              <div>{stateFromStorage?.qMetadata?.name}</div>
-            </div>
-            <div className="key-value">
-              <div>{t("Version")}</div>
-              <div>{stateFromStorage?.qMetadata?.version}</div>
-            </div>
-            <p>{t("Do you wish to open this questionnaire?")}</p>
-            <div className="modal-btn-bottom">
-              <div className="center-text">
-                <Btn
-                  title={t("Yes")}
-                  type="button"
-                  variant="primary"
-                  onClick={onConfirmRestoreModal}
-                />{" "}
-                <Btn
-                  title={t("No")}
-                  type="button"
-                  variant="secondary"
-                  onClick={onDenyRestoreModal}
-                />
-              </div>
-            </div>
-          </div>
-        </Modal>
-      )}
       {isLoading && (
         <Modal>
           <div className="align-everything">
@@ -147,7 +93,7 @@ const FrontPage = (): React.JSX.Element => {
         </Modal>
       )}
       {isFormBuilderShown ? (
-        <FormBuilder />
+        <FormPage />
       ) : (
         <>
           <header>

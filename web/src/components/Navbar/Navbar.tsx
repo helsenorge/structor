@@ -21,6 +21,7 @@ import Btn from "../Btn/Btn";
 import "./Navbar.css";
 import ImportValueSet from "../ImportValueSet/ImportValueSet";
 import JSONView from "../JSONView/JSONView";
+import CloseFormModal from "../Modal/CloseFormModal";
 import PredefinedValueSetModal from "../PredefinedValueSetModal/PredefinedValueSetModal";
 import { ValidationErrorsModal } from "../ValidationErrorsModal/validationErrorsModal";
 
@@ -31,6 +32,7 @@ type Props = {
   setSidebarErrors: (errors: ValidationErrors[]) => void;
   setMarkdownWarning: (warning: ValidationErrors | undefined) => void;
   setSecurityInformation: (info: ValidationErrors | undefined) => void;
+  setCloseForm: React.Dispatch<React.SetStateAction<boolean>>;
   validationErrors: ValidationErrors[];
   translationErrors: ValidationErrors[];
   sidebarErrors: ValidationErrors[];
@@ -51,6 +53,7 @@ const Navbar = ({
   setSidebarErrors,
   setMarkdownWarning,
   setSecurityInformation,
+  setCloseForm,
   validationErrors,
   translationErrors,
   sidebarErrors,
@@ -63,6 +66,7 @@ const Navbar = ({
   const [showContained, setShowContained] = useState(false);
   const [showImportValueSet, setShowImportValueSet] = useState(false);
   const [showJSONView, setShowJSONView] = useState(false);
+  const [showCloseFormModal, setShowCloseFormModal] = useState(false);
   const [showValidationErrors, setShowValidationErrors] =
     useState<boolean>(false);
   const navBarRef = useRef<HTMLDivElement>(null);
@@ -134,6 +138,14 @@ const Navbar = ({
   function getProfileName(): string {
     return `${profile.given_name} ${profile.family_name}`;
   }
+
+  const closeForm = (): void => {
+    if (!state.isDirty) {
+      setCloseForm(true);
+    } else {
+      setShowCloseFormModal(true);
+    }
+  };
 
   return (
     <>
@@ -247,6 +259,7 @@ const Navbar = ({
                 }
               />
             )}
+            <Btn title={t("Close form")} onClick={closeForm} />
           </div>
         )}
       </header>
@@ -273,6 +286,13 @@ const Navbar = ({
       )}
       {showJSONView && (
         <JSONView showJSONView={() => setShowJSONView(!showJSONView)} />
+      )}
+      {showCloseFormModal && (
+        <CloseFormModal
+          setShowCloseFormModal={setShowCloseFormModal}
+          setCloseForm={setCloseForm}
+          hideMenu={hideMenu}
+        />
       )}
     </>
   );

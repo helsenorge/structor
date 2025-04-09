@@ -13,7 +13,11 @@ import { TreeContext } from "../store/treeStore/treeStore";
 import "./FormBuilder.css";
 import { ValidationErrors } from "../utils/validationUtils";
 
-const FormBuilder = (): React.JSX.Element => {
+interface FormBuilderProps {
+  setCloseForm: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const FormBuilder = ({ setCloseForm }: FormBuilderProps): React.JSX.Element => {
   const { state, dispatch } = useContext(TreeContext);
   const { t } = useTranslation();
   const [showFormDetails, setShowFormDetails] = useState(false);
@@ -48,6 +52,7 @@ const FormBuilder = (): React.JSX.Element => {
         setSidebarErrors={setSidebarErrors}
         setMarkdownWarning={setMarkdownWarning}
         setSecurityInformation={setSecurityInformation}
+        setCloseForm={setCloseForm}
         translationErrors={translationErrors}
         validationErrors={validationErrors}
         sidebarErrors={sidebarErrors}
