@@ -33,6 +33,7 @@ import { SummaryOption } from "./optionComponents/summary-option";
 import { SummationOption } from "./optionComponents/summation-option";
 import { ColumnOption } from "./optionComponents/tableOptions/column-option";
 import { TableOption } from "./optionComponents/tableOptions/table-option";
+import { ValidateReadOnlyOption } from "./optionComponents/validate-readOnly-option";
 import ViewOption from "./optionComponents/view-option";
 import {
   removeItemExtension,
@@ -103,11 +104,14 @@ const AdvancedQuestionOptions = ({
   return (
     <>
       {canTypeBeReadonly(item) && (
-        <ReadOnlyOption
-          item={item}
-          dispatch={dispatch}
-          isDataReceiver={isDataReceiver}
-        />
+        <>
+          <ReadOnlyOption
+            item={item}
+            dispatch={dispatch}
+            isDataReceiver={isDataReceiver}
+          />
+          <ValidateReadOnlyOption item={item} dispatch={dispatch} />
+        </>
       )}
       {canTypeCopyData(item) && (
         <CopyFromOption
