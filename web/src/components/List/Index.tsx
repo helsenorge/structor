@@ -5,7 +5,7 @@ import React, {
   HTMLAttributes,
   LiHTMLAttributes,
 } from "react";
-import "./List.css";
+import "./list-style.css";
 
 type Variant = "lightest" | "light" | "medium" | "dark";
 

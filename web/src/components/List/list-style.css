@@ -1,0 +1,224 @@
+/* src/components/List/List.css */
+
+/* 1) Declare your palette variables at the top */
+:root {
+  /* list background & hover */
+  --mui-list-bg: #fff;
+  --mui-list-hover-bg: rgb(0 0 0 / 4%);
+
+  /* text */
+  --mui-text-primary: #000;
+  --mui-text-secondary: rgb(0 0 0 / 60%);
+
+  /* avatar fallback */
+  --mui-avatar-bg: #bbb;
+  --mui-avatar-color: #fff;
+
+  /* spacing */
+  --mui-list-item-padding-y: 8px;
+  --mui-list-item-padding-x: 16px;
+  --mui-list-item-padding-y-dense: 4px;
+  --mui-list-divider-color: var(--mui-list-hover-bg);
+}
+
+/* 2) Base List */
+.mui-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--mui-list-bg);
+  border-radius: 0.5rem;
+}
+
+/* 3) Reset the LI container */
+.mui-list-item {
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* 4) Interactive button owns all spacing, hover, focus, dividers */
+.mui-list-item-button {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: var(--mui-list-item-padding-y) var(--mui-list-item-padding-x);
+  transition: background 120ms ease;
+  color: inherit;
+}
+
+.mui-list-item-button:first-of-type {
+  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+}
+
+.mui-list-item-button:last-of-type {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+/* Dense variant: tighter padding */
+.mui-list--dense .mui-list-item-button {
+  padding: var(--mui-list-item-padding-y-dense) var(--mui-list-item-padding-x);
+}
+
+/* Hover & focus states on button */
+.mui-list-item-button:hover,
+.mui-list-item-button:focus-visible {
+  background: var(--mui-list-hover-bg);
+
+  /* outline: var(--mui-icon-focus-outline);
+  outline-offset: 2px; */
+}
+
+/* Dividers on button */
+.mui-list--dividers .mui-list-item-button {
+  border-bottom: 1px solid var(--mui-list-divider-color);
+}
+
+.mui-list--dividers .mui-list-item:last-child .mui-list-item-button {
+  border-bottom: none;
+}
+
+/* 5) Avatar */
+.mui-list-item-avatar {
+  margin-right: var(--mui-list-item-padding-x);
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.avatar-img,
+.avatar-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--mui-avatar-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mui-avatar-color);
+  font-weight: bold;
+  overflow: hidden;
+}
+
+.avatar-fallback svg {
+  width: 60%;
+  height: 60%;
+  fill: currentcolor;
+}
+
+/* 6) Content + text */
+.mui-list-item-content {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.mui-list-item-content * {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.mui-list-item-text .primary {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.mui-list-item-text .secondary {
+  font-size: 0.875rem;
+  line-height: 1.43;
+  color: var(--mui-text-secondary);
+}
+
+/* 7) Actions */
+.mui-list-item-secondary-action {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+/* 8) Theme variants */
+
+/* Extra‑pale “lightest” */
+.mui-list--lightest {
+  --mui-list-bg: #fcfcfc;
+  --mui-list-hover-bg: rgb(0 0 0 / 2%);
+  --mui-text-primary: #111;
+  --mui-text-secondary: rgb(0 0 0 / 50%);
+  --mui-avatar-bg: #ddd;
+  --mui-icon-color: var(--mui-text-secondary);
+  --mui-icon-hover-bg: rgb(0 0 0 / 4%);
+  --mui-icon-hover-color: var(--mui-text-primary);
+  --mui-icon-active-bg: rgb(0 0 0 / 8%);
+}
+
+/* Default “light” */
+.mui-list--light {
+  --mui-list-bg: #fff;
+  --mui-list-hover-bg: rgb(0 0 0 / 4%);
+  --mui-text-primary: #000;
+  --mui-text-secondary: rgb(0 0 0 / 60%);
+  --mui-avatar-bg: #bbb;
+  --mui-avatar-color: #fff;
+  --mui-icon-color: rgb(0 0 0 / 60%);
+  --mui-icon-hover-bg: rgb(0 0 0 / 8%);
+  --mui-icon-hover-color: rgb(0 0 0 / 87%);
+  --mui-icon-active-bg: rgb(0 0 0 / 16%);
+}
+
+/* “Medium” neutral gray */
+.mui-list--medium {
+  --mui-list-bg: #f5f5f5;
+  --mui-list-hover-bg: rgb(0 0 0 / 6%);
+  --mui-text-primary: #222;
+  --mui-text-secondary: rgb(0 0 0 / 54%);
+  --mui-avatar-bg: #999;
+  --mui-avatar-color: #fff;
+  --mui-list-divider-color: rgb(0 0 0 / 12%);
+  --mui-icon-color: rgb(0 0 0 / 54%);
+  --mui-icon-hover-bg: rgb(0 0 0 / 10%);
+  --mui-icon-hover-color: rgb(0 0 0 / 87%);
+  --mui-icon-active-bg: rgb(0 0 0 / 20%);
+}
+
+/* “Dark” theme */
+.mui-list--dark {
+  --mui-list-bg: #424242;
+  --mui-list-hover-bg: rgb(255 255 255 / 8%);
+  --mui-text-primary: #fff;
+  --mui-text-secondary: rgb(255 255 255 / 70%);
+  --mui-avatar-bg: #616161;
+  --mui-avatar-color: #eee;
+  --mui-icon-color: rgb(255 255 255 / 70%);
+  --mui-icon-hover-bg: rgb(255 255 255 / 12%);
+  --mui-icon-hover-color: #fff;
+  --mui-icon-active-bg: rgb(255 255 255 / 24%);
+}
+
+.mui-list-divider {
+  color: var(--mui-list-divider-color);
+  background-color: var(--mui-list-bg);
+}
+
+.mui-list-divider::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: var(--mui-list-divider-color);
+  color: var(--mui-list-divider-color);
+  margin: 0 auto;
+}
+
+/* Responsive dense fallback (optional) */
+@media (width <= 600px) {
+  .mui-list--dense .mui-list-item-button {
+    padding: var(--mui-list-item-padding-y-dense) var(--mui-list-item-padding-x);
+  }
+}
