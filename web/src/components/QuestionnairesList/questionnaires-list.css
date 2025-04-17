@@ -1,0 +1,53 @@
+.questionnaires-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 30%;
+  border-radius: 0.5rem;
+}
+
+.questionnaire-list-items:first-of-type {
+  border: 2px solid red;
+}
+
+.show-more-container {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.show-more-btn {
+  background: none;
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.show-more-btn:hover {
+  background: #f0f0f0;
+}
+
+@media (width <= 1800px) {
+  .questionnaires-list {
+    width: 40%;
+  }
+}
+
+@media (width <= 1400px) {
+  .questionnaires-list {
+    width: 50%;
+  }
+}
+
+@media (width <= 1200px) {
+  .questionnaires-list {
+    width: 60%;
+  }
+}
+
+@media (width <= 800px) {
+  .questionnaires-list {
+    width: 100%;
+  }
+}

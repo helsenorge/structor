@@ -2,6 +2,7 @@ import React, { useState, MouseEvent } from "react";
 
 import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { useNavigation } from "react-router-dom";
 import { deleteItemAction } from "src/store/treeStore/treeActions";
 import { ActionType } from "src/store/treeStore/treeStore";
 
@@ -12,7 +13,6 @@ interface DeleteButtonProps {
   item: QuestionnaireItem;
   parentArray: Array<string>;
   showLabel: boolean;
-  key: string;
 }
 
 export const DeleteButton = ({
@@ -20,7 +20,6 @@ export const DeleteButton = ({
   item,
   parentArray,
   showLabel,
-  key,
 }: DeleteButtonProps): React.JSX.Element => {
   const { t } = useTranslation();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -47,7 +46,6 @@ export const DeleteButton = ({
   return (
     <>
       <button
-        key={key}
         className={getClassNames()}
         onClick={onClickButton}
         aria-label="Delete element"

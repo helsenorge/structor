@@ -1,85 +1,64 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useUploadFile } from "src/hooks/useUploadFile";
+import { getInitialState } from "src/store/treeStore/initialState";
 
-import FormPage from "./FormPage";
+import EmptyState from "@helsenorge/designsystem-react/components/EmptyState";
+
 import Btn from "../components/Btn/Btn";
 import Modal from "../components/Modal/Modal";
+import QuestionnairesList from "../components/QuestionnairesList/Index";
 import SpinnerBox from "../components/Spinner/SpinnerBox";
-import { mapToTreeState } from "../helpers/FhirToTreeStateMapper";
-import { getStateFromDb } from "../store/treeStore/indexedDbHelper";
+import {
+  getAllQuestionnaires,
+  deleteQuestionnaire,
+  saveQuestionnaire,
+} from "../store/treeStore/indexedDbHelper";
 import { resetQuestionnaireAction } from "../store/treeStore/treeActions";
 import { TreeContext, TreeState } from "../store/treeStore/treeStore";
 import "./FrontPage.css";
 
 const FrontPage = (): React.JSX.Element => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { dispatch } = useContext(TreeContext);
-  const [stateFromStorage, setStateFromStorage] = useState<
-    TreeState | undefined
-  >(undefined);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isFormBuilderShown, setIsFormBuilderShown] = useState<boolean>(false);
-  const uploadRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    let isMounted = true;
 
-    const getStoredQuestionnaire = async (): Promise<void> => {
-      try {
-        const indexedDbState = await getStateFromDb();
-        if (isMounted) {
-          setStateFromStorage(indexedDbState);
-        }
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error("Failed to retrieve state from IndexedDB:", error);
-      }
-    };
+  const { uploadQuestionnaire, isLoading, uploadRef } = useUploadFile({
+    onUploadComplete: (id) => navigate(`/formbuilder/${id}`),
+  });
 
-    getStoredQuestionnaire();
+  const [questionnaires, setQuestionnaires] = useState<TreeState[]>([]);
 
-    return () => {
-      isMounted = false;
-    };
+  const fetchQuestionnaires = useCallback(async () => {
+    try {
+      setQuestionnaires(await getAllQuestionnaires(true));
+    } catch {
+      setQuestionnaires([]);
+    }
   }, []);
+  useEffect(() => {
+    fetchQuestionnaires();
+  }, [fetchQuestionnaires]);
 
-  const onReaderLoad = (event: ProgressEvent<FileReader>): void => {
-    if (event.target?.result) {
-      try {
-        const content = event.target.result as string;
-        const questionnaireObj = JSON.parse(content);
-        const importedState = mapToTreeState(questionnaireObj);
-        dispatch(resetQuestionnaireAction(importedState));
-        setIsFormBuilderShown(true);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error("Error parsing the questionnaire file:", error);
-      } finally {
-        setIsLoading(false);
-        // Reset file input
-        if (uploadRef.current) {
-          uploadRef.current.value = "";
-        }
+  const handleDelete = useCallback(
+    async (id: string) => {
+      if (confirm(t("Are you sure you want to delete this questionnaire?"))) {
+        await deleteQuestionnaire(id);
+        fetchQuestionnaires();
       }
-    } else {
-      setIsLoading(false);
-    }
+    },
+    [fetchQuestionnaires, t],
+  );
+  const handleOpen = async (id: string): Promise<void> => {
+    navigate(`/formbuilder/${id}`);
   };
-
-  const uploadQuestionnaire = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    if (event.target.files && event.target.files[0]) {
-      setIsLoading(true);
-      const reader = new FileReader();
-      reader.onload = onReaderLoad;
-      reader.onerror = (): void => {
-        // eslint-disable-next-line no-console
-        console.error("Failed to read file");
-        setIsLoading(false);
-      };
-      reader.readAsText(event.target.files[0]);
-    }
+  const handleSetNewQuestionnaire = async (): Promise<void> => {
+    const state = getInitialState(true);
+    dispatch(resetQuestionnaireAction(state));
+    await saveQuestionnaire(state);
+    navigate(`/formbuilder/${state.qMetadata.id}`);
   };
 
   return (
@@ -92,47 +71,56 @@ const FrontPage = (): React.JSX.Element => {
           <p className="center-text">{t("Loading questionnaire...")}</p>
         </Modal>
       )}
-      {isFormBuilderShown ? (
-        <FormPage setStateFromStorage={setStateFromStorage} />
-      ) : (
-        <>
-          <header>
-            <div className="form-title">
-              <h1>{t("Form builder")}</h1>
-            </div>
-          </header>
-          <div className="frontpage">
-            <h2>{t("What would you like to do?")}</h2>
-            <div className="frontpage__infotext">
-              {t(
-                "You can start a new questionnaire, or upload an existing one.",
+
+      <header>
+        <div className="form-title">
+          <h1>{t("Form builder")}</h1>
+        </div>
+      </header>
+      <div className="frontpage">
+        <h2>{t("What would you like to do?")}</h2>
+        <div className="frontpage__infotext">
+          {t("You can start a new questionnaire, or upload an existing one.")}
+        </div>
+        <input
+          type="file"
+          ref={uploadRef}
+          onChange={uploadQuestionnaire}
+          accept="application/json"
+          style={{ display: "none" }}
+        />
+        <Btn
+          onClick={handleSetNewQuestionnaire}
+          title={t("New questionnaire")}
+          variant="primary"
+        />
+        {` `}
+        <Btn
+          onClick={() => {
+            uploadRef.current?.click();
+          }}
+          title={t("Upload questionnaire")}
+          variant="secondary"
+        />
+
+        <div className="frontpage__questionnaires-list">
+          {questionnaires.length === 0 ? (
+            <EmptyState
+              type="dashed"
+              size="compact"
+              title={t(
+                "You have no saved questionnaires. Create a new one to get started!",
               )}
-            </div>
-            <input
-              type="file"
-              ref={uploadRef}
-              onChange={uploadQuestionnaire}
-              accept="application/json"
-              style={{ display: "none" }}
             />
-            <Btn
-              onClick={() => {
-                setIsFormBuilderShown(true);
-              }}
-              title={t("New questionnaire")}
-              variant="primary"
+          ) : (
+            <QuestionnairesList
+              data={questionnaires}
+              onDelete={handleDelete}
+              onOpen={handleOpen}
             />
-            {` `}
-            <Btn
-              onClick={() => {
-                uploadRef.current?.click();
-              }}
-              title={t("Upload questionnaire")}
-              variant="secondary"
-            />
-          </div>
-        </>
-      )}
+          )}
+        </div>
+      </div>
     </>
   );
 };

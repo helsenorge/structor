@@ -1,52 +1,69 @@
 header p {
-    margin: 0;
-    padding-right: 5px;
-    color: #d2d0d0;
-    line-height: 32px;
+  margin: 0;
+  padding-right: 5px;
+  color: #d2d0d0;
+  line-height: 32px;
 }
 
 .more-menu {
-    height: 32px;
-    width: 32px;
-    border-radius: 32px;
-    background-color: transparent;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
+  height: 32px;
+  width: 32px;
+  border-radius: 32px;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
 }
 
 .more-menu:focus {
-    outline: none;
-    background-color: #ffffff36;
+  outline: none;
+  background-color: #ffffff36;
 }
 
 .more-menu:hover {
-    background-color: #ffffff36;
+  background-color: #ffffff36;
 }
 
 .more-menu > img {
-    filter: invert(100%);
+  filter: invert(100%);
 }
 
 .menu {
-    position: absolute;
-    top: 54px;
-    width: 200px;
-    right: 10px;
-    background-color: #006d84;
-    padding: 15px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  position: absolute;
+  top: 54px;
+  width: 200px;
+  right: 10px;
+  background-color: #006d84;
+  padding: 15px;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
 }
 
 .menu > button {
-    width: 100%;
+  width: 100%;
 }
+
+.form-logo {
+  margin-left: 1rem;
+  text-decoration: none;
+}
+
 .form-title {
-    width: 100%;
+  width: 100%;
 }
+
+.form-title--link {
+  font-size: 24px;
+  color: #fff;
+  margin: 0;
+}
+
+.form-title--link:hover {
+  text-decoration: underline;
+}
+
 .form-title h1 {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 .profile-name {
-    max-width: 160px;
+  max-width: 160px;
 }

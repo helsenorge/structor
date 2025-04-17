@@ -14,6 +14,7 @@ import {
 } from "../../helpers/MetadataHelper";
 
 const initialState: TreeState = {
+  isEdited: false,
   isDirty: false,
   qItems: {},
   qOrder: [],
@@ -74,7 +75,7 @@ const initialState: TreeState = {
   qAdditionalLanguages: {},
 };
 
-export const getInitialState = (): TreeState => {
+export const getInitialState = (resetState: boolean = false): TreeState => {
   // Autocreates a random questionnaire id for the user which will be the default value
   if (
     initialState.qMetadata.id === undefined ||
@@ -82,5 +83,23 @@ export const getInitialState = (): TreeState => {
   ) {
     initialState.qMetadata.id = createUUID();
   }
+  if (resetState) {
+    return {
+      ...initialState,
+      qMetadata: {
+        ...initialState.qMetadata,
+        id: createUUID(),
+      },
+    };
+  }
   return initialState;
+};
+export const getMinimalInitialState = (): TreeState => {
+  return {
+    isEdited: getInitialState().isEdited,
+    isDirty: getInitialState().isDirty,
+    qItems: getInitialState().qItems,
+    qOrder: getInitialState().qOrder,
+    qMetadata: {},
+  };
 };

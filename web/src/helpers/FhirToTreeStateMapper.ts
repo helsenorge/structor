@@ -321,6 +321,7 @@ export function mapToTreeState(resource: Bundle | Questionnaire): TreeState {
   });
 
   const newState: TreeState = {
+    isEdited: false,
     isDirty: false,
     qItems,
     qOrder,

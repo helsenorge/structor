@@ -10,8 +10,8 @@ import {
 import { IItemProperty } from "../../types/IQuestionnareItemType";
 
 import { findTreeArray } from "./findTreeArray";
-import { saveStateToDb } from "./indexedDbHelper";
-import { getInitialState } from "./initialState";
+import { getQuestionnaire, saveQuestionnaire } from "./indexedDbHelper";
+import { getInitialState, getMinimalInitialState } from "./initialState";
 import {
   ADD_ITEM_CODE_ACTION,
   ADD_QUESTIONNAIRE_LANGUAGE_ACTION,
@@ -69,6 +69,7 @@ import {
   UpdateSettingTranslationAction,
   UPDATE_ITEM_CODE_TRANSLATION_ACTION,
   UpdateItemCodeTranslationAction,
+  resetQuestionnaireAction,
 } from "./treeActions";
 import { findCodingBySystemAndCode } from "../../helpers/codeHelper";
 import createUUID from "../../helpers/CreateUUID";
@@ -176,6 +177,7 @@ export interface MarkedItem {
 }
 
 export interface TreeState {
+  isEdited: boolean;
   isDirty: boolean;
   qItems: Items;
   qOrder: OrderItem[];
@@ -640,6 +642,7 @@ function resetQuestionnaire(
   action: ResetQuestionnaireAction,
 ): void {
   const newState: TreeState = action.newState || getInitialState();
+  draft.isEdited = newState.isEdited;
   draft.isDirty = newState.isDirty;
   draft.qOrder = newState.qOrder;
   draft.qItems = newState.qItems;
@@ -822,6 +825,7 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
     action.type !== UPDATE_MARKED_LINK_ID
   ) {
     draft.isDirty = true;
+    draft.isEdited = true;
   }
   switch (action.type) {
     case ADD_ITEM_CODE_ACTION:
@@ -915,30 +919,36 @@ export const TreeContext = createContext<{
   state: TreeState;
   dispatch: Dispatch<ActionType>;
 }>({
-  state: getInitialState(),
+  state: getMinimalInitialState(),
   dispatch: () => null,
 });
 
 export const TreeContextProvider = (props: {
   children: React.JSX.Element;
 }): React.JSX.Element => {
-  const [state, dispatch] = useReducer(reducer, getInitialState());
+  const [state, dispatch] = useReducer(reducer, getMinimalInitialState());
 
   useEffect(() => {
     const startTime = performance.now();
+
     const save = async (): Promise<void> => {
-      await saveStateToDb(JSON.parse(JSON.stringify(state)));
+      await saveQuestionnaire(JSON.parse(JSON.stringify(state)));
     };
-    save();
-    // eslint-disable-next-line no-console
-    console.debug(
-      `State saved in ${Math.round(performance.now() - startTime)}ms`,
-    );
+    if (state.qMetadata.id) {
+      save().then(() => {
+        const endTime = performance.now();
+        const timeTaken = endTime - startTime;
+        // eslint-disable-next-line no-console
+        console.log(
+          `[IndexedDB] Save took ${timeTaken.toFixed(2)} milliseconds`,
+        );
+      });
+    }
   }, [state]);
 
   return (
     // eslint-disable-next-line
-        // @ts-ignore
+    // @ts-ignore
     <TreeContext.Provider value={{ state, dispatch }}>
       {props.children}
     </TreeContext.Provider>

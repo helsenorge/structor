@@ -478,5 +478,13 @@
   "Close form": "Lukk skjema",
   "Do you want to close the form without saving?": "Ønsker du å avslutte uten å lagre?",
   "Are you that you want to delete item {0} with LinkId {1}?": "Er du sikker på at du vil slette item {0} med LinkId {1}?",
-  "Cancel": "Avbryt"
+  "Cancel": "Avbryt",
+  "Open": "Åpne",
+  "Frontpage": "Forside",
+  "You have no saved questionnaires. Create a new one to get started!": "Du har ingen lagrede skjemaer. Lag et nytt skjema for å komme i gang!",
+  "Untitled questionnaire": "Questionnaire uten tittel",
+  "Unnamed": "Uten navn",
+  "N/A": "Ikke tilgjengelig",
+  "Last modified": "Sist endret",
+  "Previous Questionnaires": "Tidligere skjemaer"
 }

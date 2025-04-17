@@ -1,18 +1,24 @@
 .frontpage {
-    padding-top: 80px;
+  padding-top: 80px;
 }
 
 .frontpage__infotext {
-    max-width: 400px;
-    margin: 2rem auto;
+  max-width: 400px;
+  margin: 2rem auto;
 }
 
 .key-value {
-    display: flex;
+  display: flex;
 }
 
 .key-value div:first-of-type {
-    font-weight: 600;
-    width: 120px;
+  font-weight: 600;
+  width: 120px;
 }
 
+.frontpage__questionnaires-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 2rem;
+}

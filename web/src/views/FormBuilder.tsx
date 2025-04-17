@@ -1,6 +1,13 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  getAllQuestionnaires,
+  getQuestionnaire,
+} from "src/store/treeStore/indexedDbHelper";
+import { getInitialState } from "src/store/treeStore/initialState";
+import { resetQuestionnaireAction } from "src/store/treeStore/treeActions";
 
 import AnchorMenu from "../components/AnchorMenu/AnchorMenu";
 import FormDetailsDrawer from "../components/Drawer/FormDetailsDrawer/FormDetailsDrawer";
@@ -13,12 +20,11 @@ import { TreeContext } from "../store/treeStore/treeStore";
 import "./FormBuilder.css";
 import { ValidationErrors } from "../utils/validationUtils";
 
-interface FormBuilderProps {
-  setCloseForm: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const FormBuilder = ({ setCloseForm }: FormBuilderProps): React.JSX.Element => {
+const FormBuilder = (): React.JSX.Element => {
   const { state, dispatch } = useContext(TreeContext);
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const { t } = useTranslation();
   const [showFormDetails, setShowFormDetails] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -42,7 +48,30 @@ const FormBuilder = ({ setCloseForm }: FormBuilderProps): React.JSX.Element => {
   const toggleFormDetails = useCallback(() => {
     setShowFormDetails(!showFormDetails);
   }, [showFormDetails]);
+  useEffect(() => {
+    const initialize = async (): Promise<void> => {
+      let targetState = id
+        ? await getQuestionnaire(id).then(
+            (q) =>
+              q ??
+              getAllQuestionnaires().then((list) =>
+                list.find((x) => x.qMetadata.id === id),
+              ),
+          )
+        : null;
 
+      if (!targetState) {
+        targetState = getInitialState();
+      }
+      const realId = targetState.qMetadata.id!;
+      if (id !== realId) {
+        navigate(`/formbuilder/${realId}`, { replace: true });
+      }
+      dispatch(resetQuestionnaireAction(targetState));
+    };
+
+    initialize();
+  }, [id, dispatch, navigate]);
   return (
     <>
       <Navbar
@@ -52,7 +81,9 @@ const FormBuilder = ({ setCloseForm }: FormBuilderProps): React.JSX.Element => {
         setSidebarErrors={setSidebarErrors}
         setMarkdownWarning={setMarkdownWarning}
         setSecurityInformation={setSecurityInformation}
-        setCloseForm={setCloseForm}
+        setCloseForm={() => {
+          navigate("/");
+        }}
         translationErrors={translationErrors}
         validationErrors={validationErrors}
         sidebarErrors={sidebarErrors}

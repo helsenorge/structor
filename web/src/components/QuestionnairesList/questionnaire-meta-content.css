@@ -1,0 +1,23 @@
+/* src/components/QuestionnaireMetaContent.css */
+.meta-fallback {
+  font-style: italic;
+  color: rgb(0 0 0 / 60%);
+}
+
+.meta-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-line {
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta-line strong {
+  font-weight: 500;
+  margin-right: 4px;
+}

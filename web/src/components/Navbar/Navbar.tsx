@@ -1,6 +1,11 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useUploadFile } from "src/hooks/useUploadFile";
+import { saveQuestionnaire } from "src/store/treeStore/indexedDbHelper";
+import { getInitialState } from "src/store/treeStore/initialState";
 
 import { generateQuestionnaire } from "../../helpers/generateQuestionnaire";
 import {
@@ -14,7 +19,10 @@ import {
 } from "../../helpers/validation/translationValidation";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import MoreIcon from "../../images/icons/ellipsis-horizontal-outline.svg";
-import { saveAction } from "../../store/treeStore/treeActions";
+import {
+  resetQuestionnaireAction,
+  saveAction,
+} from "../../store/treeStore/treeActions";
 import { TreeContext } from "../../store/treeStore/treeStore";
 import { ValidationErrors } from "../../utils/validationUtils";
 import Btn from "../Btn/Btn";
@@ -61,6 +69,13 @@ const Navbar = ({
   securityInformation,
 }: Props): React.JSX.Element => {
   const { i18n, t } = useTranslation();
+  const navigate = useNavigate();
+  const { uploadQuestionnaire, uploadRef } = useUploadFile({
+    onUploadComplete: (formId: string) => {
+      navigate(`/formbuilder/${formId}`);
+      hideMenu();
+    },
+  });
   const { state, dispatch } = useContext(TreeContext);
   const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
   const [showContained, setShowContained] = useState(false);
@@ -147,9 +162,19 @@ const Navbar = ({
     }
   };
 
+  const handleSetNewQuestionnaire = async (): Promise<void> => {
+    const state = getInitialState(true);
+    dispatch(resetQuestionnaireAction(state));
+    await saveQuestionnaire(state);
+    navigate(`/formbuilder/${state.qMetadata.id}`);
+    hideMenu();
+  };
   return (
     <>
       <header ref={navBarRef}>
+        <NavLink to="/" className="form-logo">
+          <h2 className="form-title--link">{t("Frontpage")}</h2>
+        </NavLink>
         <div className="form-title">
           <h1>{getFileName()}</h1>
         </div>
@@ -260,6 +285,23 @@ const Navbar = ({
               />
             )}
             <Btn title={t("Close form")} onClick={closeForm} />
+            <Btn
+              title={t("Upload questionnaire")}
+              onClick={() => {
+                uploadRef.current?.click();
+              }}
+            />
+            <input
+              type="file"
+              ref={uploadRef}
+              onChange={uploadQuestionnaire}
+              accept="application/json"
+              style={{ display: "none" }}
+            />
+            <Btn
+              title={t("New questionnaire")}
+              onClick={handleSetNewQuestionnaire}
+            />
           </div>
         )}
       </header>

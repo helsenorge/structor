@@ -1,0 +1,37 @@
+/* src/components/IconButton.css */
+
+.mui-icon-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition:
+    background 120ms ease-in-out,
+    color 120ms ease-in-out,
+    outline 120ms ease-in-out;
+  color: var(--mui-icon-color); /* from List variant */
+}
+
+/* Hover uses bg + color from vars */
+.mui-icon-button:hover {
+  background: var(--mui-icon-hover-bg);
+  color: var(--mui-icon-hover-color);
+}
+
+/* Focus shows a visible outline */
+.mui-icon-button:focus {
+  outline: var(--mui-icon-focus-outline);
+  outline-offset: 2px;
+}
+
+/* Active (pressed) state */
+.mui-icon-button:active {
+  background: var(--mui-icon-active-bg);
+}
+
+.mui-icon-button svg {
+  width: 24px;
+  height: 24px;
+  fill: currentcolor;
+}
