@@ -1,7 +1,11 @@
-// src/testUtils.tsx
 import React, { ReactNode } from "react";
 
-import { render, RenderOptions, RenderResult } from "@testing-library/react";
+import {
+  Queries,
+  render,
+  RenderOptions,
+  RenderResult,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { I18nextProvider } from "react-i18next";
 import { MemoryRouter, MemoryRouterProps } from "react-router-dom";
@@ -60,11 +64,7 @@ type CustomRenderOptions = Omit<RenderOptions, "wrapper"> & {
 export function renderWithProviders(
   ui: ReactNode,
   { dispatch, initialEntries, ...renderOptions }: CustomRenderOptions = {},
-): RenderResult<
-  typeof import("c:/code/nhn/HN-Skjemabygger/web/node_modules/@testing-library/dom/types/queries"),
-  HTMLElement,
-  HTMLElement
-> {
+): RenderResult<Queries, HTMLElement, HTMLElement> {
   return render(ui, {
     wrapper: ({ children }) => (
       <Providers dispatch={dispatch} initialEntries={initialEntries}>
@@ -72,7 +72,7 @@ export function renderWithProviders(
       </Providers>
     ),
     ...renderOptions,
-  });
+  }) as unknown as RenderResult<Queries, HTMLElement, HTMLElement>;
 }
 
 export * from "@testing-library/react";
