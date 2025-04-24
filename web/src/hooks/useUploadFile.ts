@@ -1,6 +1,5 @@
 import { useCallback, useContext, useRef, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
 import { mapToTreeState } from "src/helpers/FhirToTreeStateMapper";
 import { saveQuestionnaire } from "src/store/treeStore/indexedDbHelper";
 import { resetQuestionnaireAction } from "src/store/treeStore/treeActions";

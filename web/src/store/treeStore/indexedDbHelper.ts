@@ -1,4 +1,4 @@
-import { IDBPDatabase, openDB, DBSchema, IDBPTransaction } from "idb";
+import { IDBPDatabase, openDB, DBSchema } from "idb";
 
 import { TreeState } from "./treeStore";
 

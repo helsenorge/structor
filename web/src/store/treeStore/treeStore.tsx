@@ -10,7 +10,7 @@ import {
 import { IItemProperty } from "../../types/IQuestionnareItemType";
 
 import { findTreeArray } from "./findTreeArray";
-import { getQuestionnaire, saveQuestionnaire } from "./indexedDbHelper";
+import { saveQuestionnaire } from "./indexedDbHelper";
 import { getInitialState, getMinimalInitialState } from "./initialState";
 import {
   ADD_ITEM_CODE_ACTION,
@@ -69,7 +69,6 @@ import {
   UpdateSettingTranslationAction,
   UPDATE_ITEM_CODE_TRANSLATION_ACTION,
   UpdateItemCodeTranslationAction,
-  resetQuestionnaireAction,
 } from "./treeActions";
 import { findCodingBySystemAndCode } from "../../helpers/codeHelper";
 import createUUID from "../../helpers/CreateUUID";

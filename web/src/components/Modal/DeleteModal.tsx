@@ -2,7 +2,6 @@ import React, { useState, MouseEvent } from "react";
 
 import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { useNavigation } from "react-router-dom";
 import { deleteItemAction } from "src/store/treeStore/treeActions";
 import { ActionType } from "src/store/treeStore/treeStore";
 
