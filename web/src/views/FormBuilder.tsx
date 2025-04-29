@@ -63,14 +63,10 @@ const FormBuilder = (): React.JSX.Element => {
       if (!targetState) {
         targetState = getInitialState();
       }
-      // eslint-disable-next-line no-console
-      console.log("id", id);
       const realId = targetState.qMetadata.id!;
       if (id !== realId) {
         navigate(`/formbuilder/${realId}`, { replace: true });
       }
-      // eslint-disable-next-line no-console
-      console.log("targetState", targetState);
       dispatch(resetQuestionnaireAction(targetState));
     };
 
@@ -86,7 +82,7 @@ const FormBuilder = (): React.JSX.Element => {
         setMarkdownWarning={setMarkdownWarning}
         setSecurityInformation={setSecurityInformation}
         setCloseForm={() => {
-          navigate("/static_skjemabygger");
+          navigate("/");
         }}
         translationErrors={translationErrors}
         validationErrors={validationErrors}
