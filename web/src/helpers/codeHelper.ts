@@ -5,7 +5,11 @@ import {
 } from "fhir/r4";
 import { TFunction } from "react-i18next";
 
-import { ICodeSystem, ICodingProperty } from "../types/IQuestionnareItemType";
+import {
+  ICodeSystem,
+  ICodingProperty,
+  IItemProperty,
+} from "../types/IQuestionnareItemType";
 import { Option } from "../types/OptionTypes";
 
 import createUUID from "./CreateUUID";
@@ -13,6 +17,7 @@ import {
   deleteItemCodeAction,
   addItemCodeAction,
   updateItemCodePropertyWithCodeAction,
+  updateItemAction,
 } from "../store/treeStore/treeActions";
 import { ActionType, Items, OrderItem } from "../store/treeStore/treeStore";
 
@@ -131,28 +136,25 @@ export const removeItemCode = (
   systemUrl: string,
   dispatch: (value: ActionType) => void,
 ): void => {
-  const index = item.code?.findIndex((code) => code.system === systemUrl);
-  if (index === undefined || index === -1) {
-    return;
-  }
-  if (index !== -1) {
-    if (index === 1) {
-      dispatch(deleteItemCodeAction(item.linkId, index));
-    }
+  const codeIndex = item.code?.findIndex((code) => systemUrl === code.system);
 
-    const numberOfCodeItems = item.code?.filter(
-      (code) => code.system === systemUrl,
-    );
-    const indexList = item.code
-      ?.map((code, index) => (code.system === systemUrl ? index : -1))
-      .filter((index) => index !== -1);
-    if (!indexList || !numberOfCodeItems) {
-      return;
-    }
-    for (const index of indexList) {
-      dispatch(deleteItemCodeAction(item.linkId, index));
-    }
+  if (codeIndex !== undefined && codeIndex > -1) {
+    const newCodes =
+      item.code?.filter((code) => systemUrl !== code.system) ?? [];
+    dispatch(updateItemAction(item.linkId, IItemProperty.code, newCodes));
   }
+};
+
+export const removeItemCodes = (
+  item: QuestionnaireItem,
+  systemUrls: string[],
+  dispatch: (value: ActionType) => void,
+): void => {
+  let newCodes: Coding[] = item.code ?? [];
+  systemUrls.forEach((system) => {
+    newCodes = newCodes?.filter((code) => system !== code.system) ?? [];
+  });
+  dispatch(updateItemAction(item.linkId, IItemProperty.code, newCodes));
 };
 
 export const removeItemCodeWithCode = (

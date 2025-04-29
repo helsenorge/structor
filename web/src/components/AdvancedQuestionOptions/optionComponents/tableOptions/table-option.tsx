@@ -1,7 +1,9 @@
 import { Extension, QuestionnaireItem, ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { removeItemCodes } from "src/helpers/codeHelper";
 
 import {
+  ICodeSystem,
   IExtensionType,
   IQuestionnaireItemType,
 } from "../../../../types/IQuestionnareItemType";
@@ -51,7 +53,14 @@ export const TableOption = ({
       getTableCode(itemControlExtension) || TableOptionsEnum.None;
     return tableCode;
   };
-  const onChangeTableOption = (newValue: string): void => {
+
+  const onChangeTableOption = async (newValue: string): Promise<void> => {
+    removeItemCodes(
+      item,
+      [ICodeSystem.tableOrderingFunctions, ICodeSystem.tableOrderingColumn],
+      dispatch,
+    );
+
     let newExtension: Extension;
     switch (newValue) {
       case TableOptionsEnum.GTable:
@@ -74,13 +83,16 @@ export const TableOption = ({
         removeItemExtension(item, IExtensionType.itemControl, dispatch);
     }
   };
+
   const itemControlExtension = item.extension?.find(
     (extension) => extension.url === IExtensionType.itemControl,
   );
+
   const hasTableCode = existItemControlWithCode(
     item,
     getTableCode(itemControlExtension) || "",
   );
+
   const tableOptions = [
     { code: TableOptionsEnum.None, display: t(`Don't display as a table`) },
     {

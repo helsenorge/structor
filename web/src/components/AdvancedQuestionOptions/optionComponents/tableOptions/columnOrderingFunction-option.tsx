@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { Coding, QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
@@ -7,7 +5,6 @@ import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
 import { TableColumnOrderingOptionsEnum } from "../../../../types/tableOptions";
 
 import { removeItemCode, addItemCode } from "../../../../helpers/codeHelper";
-import { existItemWithSystem } from "../../../../helpers/itemControl";
 import { ActionType } from "../../../../store/treeStore/treeStore";
 import FormField from "../../../FormField/FormField";
 import RadioBtn from "../../../RadioBtn/RadioBtn";
@@ -27,27 +24,8 @@ export const ColumnOrderingFunctionOption = ({
       code: TableColumnOrderingOptionsEnum.Descending,
       display: t("Descending"),
     },
-    { code: TableColumnOrderingOptionsEnum.Ascending, display: t(`Ascending`) },
+    { code: TableColumnOrderingOptionsEnum.Ascending, display: t("Ascending") },
   ];
-
-  const addDefaultColumnOrdering = (): void => {
-    const columnCodeExist = existItemWithSystem(
-      item,
-      ICodeSystem.tableOrderingFunctions,
-    );
-    if (!columnCodeExist) {
-      const defaultColumnOrdering: Coding = {
-        system: ICodeSystem.tableOrderingFunctions,
-        code: TableColumnOrderingOptionsEnum.Descending,
-        display: "Descending",
-      };
-      addItemCode(item, defaultColumnOrdering, dispatch);
-    }
-  };
-
-  useEffect(() => {
-    addDefaultColumnOrdering();
-  }, []);
 
   const onChangeColumnOrderingOption = (newValue: string): void => {
     removeItemCode(item, ICodeSystem.tableOrderingFunctions, dispatch);
@@ -68,18 +46,12 @@ export const ColumnOrderingFunctionOption = ({
     addItemCode(item, columnOrderingCoding, dispatch);
   };
 
-  const checkedColumnOrderingOption = (): TableColumnOrderingOptionsEnum => {
+  const checkedColumnOrderingOption = (): string | undefined => {
     const itemWithColumnOrderingSystem = item.code?.find(
       (code) => code.system === ICodeSystem.tableOrderingFunctions,
     );
-    if (
-      itemWithColumnOrderingSystem &&
-      itemWithColumnOrderingSystem.code ===
-        TableColumnOrderingOptionsEnum.Ascending
-    ) {
-      return TableColumnOrderingOptionsEnum.Ascending;
-    } else {
-      return TableColumnOrderingOptionsEnum.Descending;
+    if (itemWithColumnOrderingSystem) {
+      return itemWithColumnOrderingSystem.code;
     }
   };
 
@@ -88,7 +60,7 @@ export const ColumnOrderingFunctionOption = ({
       <FormField
         label={t("Ordering function")}
         sublabel={t(
-          `Select the default ordering function when ordering by a table column`,
+          "Select the default ordering function when ordering by a table column",
         )}
       >
         <RadioBtn
