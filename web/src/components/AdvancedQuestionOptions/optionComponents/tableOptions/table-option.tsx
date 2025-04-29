@@ -54,7 +54,7 @@ export const TableOption = ({
     return tableCode;
   };
 
-  const onChangeTableOption = async (newValue: string): Promise<void> => {
+  const onChangeTableOption = (newValue: string): void => {
     removeItemCodes(
       item,
       [ICodeSystem.tableOrderingFunctions, ICodeSystem.tableOrderingColumn],
