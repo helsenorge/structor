@@ -10,7 +10,7 @@ import { TreeContextProvider } from "./store/treeStore/treeStore";
 function App(): JSX.Element {
   return (
     <TreeContextProvider>
-      <Router basename="/static_skjemabygger">
+      <Router>
         <GetRoutes />
       </Router>
     </TreeContextProvider>
