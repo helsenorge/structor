@@ -2,16 +2,13 @@ import React, { useContext, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { useNavigate, NavLink } from "react-router-dom";
-import { validateTableElements } from "src/helpers/validation/tableValidation";
+import { setItemValidationErrors } from "src/helpers/validation/validationHelper";
 import { useUploadFile } from "src/hooks/useUploadFile";
 import { saveQuestionnaire } from "src/store/treeStore/indexedDbHelper";
 import { getInitialState } from "src/store/treeStore/initialState";
 
 import { generateQuestionnaire } from "../../helpers/generateQuestionnaire";
-import {
-  validateOrphanedElements,
-  validateSidebar,
-} from "../../helpers/validation/orphanValidation";
+import { validateSidebar } from "../../helpers/validation/orphanValidation";
 import { infoSecurity } from "../../helpers/validation/securityValidation";
 import {
   validateTranslations,
@@ -170,17 +167,6 @@ const Navbar = ({
     hideMenu();
   };
 
-  const setItemValidationErrors = (): ValidationErrors[] => {
-    const orphanValidation = validateOrphanedElements(
-      t,
-      state.qOrder,
-      state.qItems,
-      state.qContained || [],
-    );
-    const tableValidation = validateTableElements(t, state);
-    return orphanValidation.concat(tableValidation);
-  };
-
   return (
     <>
       <header ref={navBarRef}>
@@ -226,7 +212,7 @@ const Navbar = ({
             <Btn
               title={t("Validate")}
               onClick={() => {
-                setValidationErrors(setItemValidationErrors());
+                setValidationErrors(setItemValidationErrors(t, state));
                 setTranslationErrors(validateTranslations(t, state));
                 setSidebarErrors(
                   validateSidebar(t, state.qItems, state.qMetadata),

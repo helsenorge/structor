@@ -7,6 +7,7 @@ import {
 } from "fhir/r4";
 
 import "./AdvancedQuestionOptions.css";
+import { ValidationType } from "src/helpers/validation/validationTypes";
 import { ValidationErrors } from "src/utils/validationUtils";
 
 import {
@@ -107,7 +108,13 @@ const AdvancedQuestionOptions = ({
 
   const hasDataReceiverValidationError = itemValidationErrors.some(
     (error) =>
-      error.errorProperty === ItemControlType.dataReceiver &&
+      error.errorProperty === ValidationType.dataReceiver &&
+      item.linkId === error.linkId,
+  );
+
+  const hasTableValidationError = itemValidationErrors.some(
+    (error) =>
+      error.errorProperty === ValidationType.table &&
       item.linkId === error.linkId,
   );
 
@@ -178,13 +185,19 @@ const AdvancedQuestionOptions = ({
         <SummaryOption item={item} dispatch={dispatch}></SummaryOption>
       )}
       {item.type === IQuestionnaireItemType.group && (
-        <TableOption
-          item={item}
-          qItems={qItems}
-          qOrder={qOrder}
-          qContained={state.qContained}
-          dispatch={dispatch}
-        />
+        <>
+          <div
+            className={hasTableValidationError ? "validation-error-box" : ""}
+          >
+            <TableOption
+              item={item}
+              qItems={qItems}
+              qOrder={qOrder}
+              qContained={state.qContained}
+              dispatch={dispatch}
+            />
+          </div>
+        </>
       )}
       {showTableColumnOption() && (
         <ColumnOption item={item} parentItem={parentItem} dispatch={dispatch} />
