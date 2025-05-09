@@ -7,15 +7,9 @@ import FrontPage from "src/views/FrontPage";
 export default function GetRoutes(): React.JSX.Element {
   return (
     <Routes>
-      <Route path="/static_skjemabygger/" element={<FrontPage />} />
-      <Route
-        path="/static_skjemabygger/formbuilder"
-        element={<FormBuilder />}
-      />
-      <Route
-        path="/static_skjemabygger/formbuilder/:id"
-        element={<FormBuilder />}
-      />
+      <Route path="/" element={<FrontPage />} />
+      <Route path="/formbuilder" element={<FormBuilder />} />
+      <Route path="/formbuilder/:id" element={<FormBuilder />} />
     </Routes>
   );
 }
