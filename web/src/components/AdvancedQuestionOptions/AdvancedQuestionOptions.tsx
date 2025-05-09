@@ -7,6 +7,8 @@ import {
 } from "fhir/r4";
 
 import "./AdvancedQuestionOptions.css";
+import { ValidationErrors } from "src/utils/validationUtils";
+
 import {
   IExtensionType,
   IQuestionnaireItemType,
@@ -61,6 +63,7 @@ type AdvancedQuestionOptionsProps = {
   item: QuestionnaireItem;
   parentArray: Array<string>;
   conditionalArray: ValueSetComposeIncludeConcept[];
+  itemValidationErrors: ValidationErrors[];
   getItem: (linkId: string) => QuestionnaireItem;
 };
 
@@ -68,6 +71,7 @@ const AdvancedQuestionOptions = ({
   item,
   parentArray,
   conditionalArray,
+  itemValidationErrors,
   getItem,
 }: AdvancedQuestionOptionsProps): React.JSX.Element => {
   const { state, dispatch } = useContext(TreeContext);
@@ -101,6 +105,12 @@ const AdvancedQuestionOptions = ({
     return qOrder.find((i) => i.linkId === groupId) ? true : false;
   };
 
+  const hasDataReceiverValidationError = itemValidationErrors.some(
+    (error) =>
+      error.errorProperty === ItemControlType.dataReceiver &&
+      item.linkId === error.linkId,
+  );
+
   return (
     <>
       {canTypeBeReadonly(item) && (
@@ -114,14 +124,22 @@ const AdvancedQuestionOptions = ({
         </>
       )}
       {canTypeCopyData(item) && (
-        <CopyFromOption
-          item={item}
-          conditionalArray={conditionalArray}
-          isDataReceiver={isDataReceiver}
-          canTypeBeReadonly={canTypeBeReadonly(item)}
-          dataReceiverStateChanger={setDataReceiverState}
-          getItem={getItem}
-        />
+        <>
+          <div
+            className={
+              hasDataReceiverValidationError ? "validation-error-box" : ""
+            }
+          >
+            <CopyFromOption
+              item={item}
+              conditionalArray={conditionalArray}
+              isDataReceiver={isDataReceiver}
+              canTypeBeReadonly={canTypeBeReadonly(item)}
+              dataReceiverStateChanger={setDataReceiverState}
+              getItem={getItem}
+            />
+          </div>
+        </>
       )}
       {canTypeHaveCalculatedExpressionExtension(item) && (
         <CalculatedExpressionOption

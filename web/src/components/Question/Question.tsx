@@ -292,6 +292,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
             item={props.item}
             parentArray={props.parentArray}
             conditionalArray={props.conditionalArray}
+            itemValidationErrors={props.itemValidationErrors}
             getItem={props.getItem}
           />
         </Accordion>

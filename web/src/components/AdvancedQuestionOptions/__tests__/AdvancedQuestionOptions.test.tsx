@@ -8,6 +8,7 @@ import {
 } from "../../../types/IQuestionnareItemType";
 
 import AdvancedQuestionOptions from "../AdvancedQuestionOptions";
+import { ItemControlType } from "src/helpers/itemControl";
 
 describe("AdvancedQuestionOptions", () => {
   const item: QuestionnaireItem = {
@@ -22,6 +23,7 @@ describe("AdvancedQuestionOptions", () => {
           item={item}
           parentArray={[]}
           conditionalArray={[]}
+          itemValidationErrors={[]}
           getItem={vi.fn()}
         />,
       );
@@ -36,6 +38,7 @@ describe("AdvancedQuestionOptions", () => {
           item={item}
           parentArray={[]}
           conditionalArray={[]}
+          itemValidationErrors={[]}
           getItem={vi.fn()}
         />,
       );
@@ -60,6 +63,7 @@ describe("AdvancedQuestionOptions", () => {
           item={observationItem}
           parentArray={[]}
           conditionalArray={[]}
+          itemValidationErrors={[]}
           getItem={vi.fn()}
         />,
       );
@@ -86,6 +90,7 @@ describe("AdvancedQuestionOptions", () => {
           item={newItem}
           parentArray={[]}
           conditionalArray={[]}
+          itemValidationErrors={[]}
           getItem={vi.fn()}
         />,
       );
@@ -112,6 +117,7 @@ describe("AdvancedQuestionOptions", () => {
           item={newItem}
           parentArray={[]}
           conditionalArray={[]}
+          itemValidationErrors={[]}
           getItem={vi.fn()}
         />,
       );
@@ -119,6 +125,52 @@ describe("AdvancedQuestionOptions", () => {
       expect(screen.getByTestId("radioBtn-Organization")).toHaveProperty(
         "checked",
       );
+    });
+
+    it("Show red frame around data-receiver when it has validation error", () => {
+      const newItem: QuestionnaireItem = {
+        linkId: "123",
+        type: "string",
+        extension: [
+          {
+            url: IExtensionType.itemControl,
+            valueCodeableConcept: {
+              coding: [
+                {
+                  system: IExtensionType.copyExpression,
+                  code: ItemControlType.dataReceiver,
+                },
+              ],
+            },
+          },
+          {
+            url: IExtensionType.copyExpression,
+            valueString:
+              "QuestionnaireResponse.descendants().where(linkId='text-1').answer.value",
+          },
+        ] as Extension[],
+      };
+
+      const { container } = render(
+        <AdvancedQuestionOptions
+          item={newItem}
+          parentArray={[]}
+          conditionalArray={[]}
+          itemValidationErrors={[
+            {
+              linkId: "123",
+              errorProperty: ItemControlType.dataReceiver,
+              errorReadableText:
+                "data receiver does not have an earlier question",
+            },
+          ]}
+          getItem={vi.fn()}
+        />,
+      );
+
+      expect(
+        container.getElementsByClassName("validation-error-box"),
+      ).exist.toBeTruthy();
     });
   });
 });

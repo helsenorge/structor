@@ -15,6 +15,7 @@ import {
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
 
+import { getLinkIdFromValueString } from "./dataReceiverHelper";
 import {
   setItemExtension,
   removeItemExtension,
@@ -38,14 +39,6 @@ type CopyFromOptionProps = {
   canTypeBeReadonly: boolean;
   dataReceiverStateChanger: React.Dispatch<React.SetStateAction<boolean>>;
   getItem: (linkId: string) => QuestionnaireItem;
-};
-
-const getLinkIdFromValueString = (item: QuestionnaireItem): string => {
-  const extensionValueString =
-    getExtensionStringValue(item, IExtensionType.copyExpression) ?? "";
-  const startIndex = extensionValueString.indexOf("'") + 1;
-  const endIndex = extensionValueString.indexOf("')");
-  return extensionValueString.substring(startIndex, endIndex);
 };
 
 const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
