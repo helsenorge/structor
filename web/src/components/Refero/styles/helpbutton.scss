@@ -1,4 +1,4 @@
-$featureColor1: #5b22a6;
+@use "./_variables.scss" as variables;
 
 .page_refero__helpComponent {
   background-color: #efe4fd;
@@ -27,16 +27,16 @@ $featureColor1: #5b22a6;
     vertical-align: middle;
     padding: 0;
 
-    &[aria-expanded='true'] {
-      background-color: $featureColor1;
+    &[aria-expanded="true"] {
+      background-color: variables.$color-plumb-700;
     }
   }
 
   .atom_inline-functionbutton:before {
-    content: '?';
+    content: "?";
     display: block;
     line-height: 1.5rem;
-    background-color: $featureColor1;
+    background-color: variables.$color-plumb-700;
     color: white;
     border-radius: 50%;
     font-family: Arial;

@@ -1,65 +1,65 @@
-@import '@helsenorge/designsystem-react/scss/_spacers';
-@import '@helsenorge/designsystem-react/scss/_breakpoints';
+@use "@helsenorge/designsystem-react/scss/_spacers" as spacers;
+@use "@helsenorge/designsystem-react/scss/_breakpoints" as breakpoints;
 
 #navigator_blindzone {
-    height: 1px;
+  height: 1px;
 }
 
 .page_refero__navigator {
-    position: fixed;
-    top: -1px;
-    left: 0;
+  position: fixed;
+  top: -1px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 100;
+
+  .page_refero__navigatorheader {
+    background-color: #afdae3;
+    padding: 1rem 1.5rem;
+    display: flex;
+    width: 100%;
+    text-align: left;
+    border: none;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      box-shadow: 0 0 0 4px #aaa8a6 inset;
+    }
+
+    &:focus {
+      text-decoration: underline;
+      outline: 0;
+    }
+  }
+
+  .page_refero__navigatorheader-text {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+
+  .page_refero__navigatormenu {
+    background-color: #e4f7f9;
+    padding: 0.25rem 1.5rem 2em;
+    max-height: 16rem;
+    overflow: auto;
+    position: absolute;
     right: 0;
-    margin: 0 auto;
-    z-index: 100;
+    left: 0;
+    margin: 0 0.75rem;
+    box-shadow: rgb(0 0 0 / 16%) 0 0.3rem 0.6rem -0.1rem;
+  }
 
-    .page_refero__navigatorheader {
-        background-color: #afdae3;
-        padding: 1rem 1.5rem;
-        display: flex;
-        width: 100%;
-        text-align: left;
-        border: none;
-        cursor: pointer;
-
-        &:hover,
-        &:focus {
-            box-shadow: 0 0 0 4px #aaa8a6 inset;
-        }
-
-        &:focus {
-            text-decoration: underline;
-            outline: 0;
-        }
-    }
-
-    .page_refero__navigatorheader-text {
-        flex: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-weight: 600;
-        font-size: 1.5rem;
-    }
-
-    .page_refero__navigatormenu {
-        background-color: #e4f7f9;
-        padding: 0.25rem 1.5rem 2em;
-        max-height: 16rem;
-        overflow: auto;
-        position: absolute;
-        right: 0;
-        left: 0;
-        margin: 0 0.75rem;
-        box-shadow: rgb(0 0 0 / 16%) 0 0.3rem 0.6rem -0.1rem;
-    }
-
-    .page_refero__navmenubutton {
-        min-height: auto;
-        text-align: left;
-    }
+  .page_refero__navmenubutton {
+    min-height: auto;
+    text-align: left;
+  }
 }
 
 .page_refero__navigator-scroll-offset {
-    scroll-padding-top: 62px; // navigator er 62px høy på desktop
+  scroll-padding-top: 62px; // navigator er 62px høy på desktop
 }

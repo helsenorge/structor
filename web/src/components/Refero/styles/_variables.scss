@@ -1,4 +1,4 @@
-@import '@helsenorge/designsystem-react/scss/palette';
+@use "@helsenorge/designsystem-react/scss/palette" as *;
 
 /* ------------------------------------------------------------------------ */
 
@@ -40,7 +40,7 @@ $color-functional-1-lighter: $kiwi700;
 $color-functional-2: $banana400;
 $color-functional-3: $cherry600;
 $color-functional-3-lighter: $cherry500;
-
+$color-plumb-700: $plum700;
 // Helpsystem and presentation colours
 $color-pres-1: $blueberry100;
 $color-pres-2: $blueberry200;
@@ -86,14 +86,44 @@ $focux-box-shadow-left: -4px 0 0 $neutral400;
 $focux-box-shadow-right: 4px 0 0 $neutral400;
 $focus-box-shadow-over: 0 -4px 0 $neutral400;
 $focux-box-shadow-under: 0 4px 0 $neutral400;
-$focus-box-shadow-over-and-under: 0 -4px 0 $neutral400, 0 4px 0 $neutral400;
-$focux-box-shadow-over-and-left: 0 -4px 0 $neutral400, -4px -4px 0 $neutral400, -4px 0 0 0 $neutral400;
-$focux-box-shadow-over-and-right: 0 -4px 0 $neutral400, 4px -4px 0 $neutral400, 4px 0 0 0 $neutral400;
-$focux-box-shadow-under-and-left: 0 4px 0 $neutral400, -4px 4px 0 $neutral400, -4px 0 0 0 $neutral400;
-$focux-box-shadow-under-and-right: 0 4px 0 $neutral400, 4px 4px 0 $neutral400, 4px 0 0 0 $neutral400;
-$focux-box-shadow-left-and-right: -4px 4px 0 $neutral400, 4px 4px 0 $neutral400;
-$focux-box-shadow-left-right-and-under: -4px 0 0 $neutral400, 4px 0 0 $neutral400, 0 4px 0 $neutral400, 4px 4px 0 $neutral400,
+$focus-box-shadow-over-and-under:
+  0 -4px 0 $neutral400,
+  0 4px 0 $neutral400;
+$focux-box-shadow-over-and-left:
+  0 -4px 0 $neutral400,
+  -4px -4px 0 $neutral400,
+  -4px 0 0 0 $neutral400;
+$focux-box-shadow-over-and-right:
+  0 -4px 0 $neutral400,
+  4px -4px 0 $neutral400,
+  4px 0 0 0 $neutral400;
+$focux-box-shadow-under-and-left:
+  0 4px 0 $neutral400,
+  -4px 4px 0 $neutral400,
+  -4px 0 0 0 $neutral400;
+$focux-box-shadow-under-and-right:
+  0 4px 0 $neutral400,
+  4px 4px 0 $neutral400,
+  4px 0 0 0 $neutral400;
+$focux-box-shadow-left-and-right:
+  -4px 4px 0 $neutral400,
+  4px 4px 0 $neutral400;
+$focux-box-shadow-left-right-and-under:
+  -4px 0 0 $neutral400,
+  4px 0 0 $neutral400,
+  0 4px 0 $neutral400,
+  4px 4px 0 $neutral400,
   -4px 4px 0 $neutral400;
-$focus-box-shadow-over-and-under: 0 -4px 0 $neutral400, 0 4px 0 $neutral400;
-$focux-box-shadow-over-under-and-left: 0 -4px 0 $neutral400, -4px -4px 0 $neutral400, -4px 4px 0 $neutral400, 0 4px 0 $neutral400;
-$focux-box-shadow-over-under-and-right: 0 -4px 0 $neutral400, 4px 4px 0 $neutral400, 0 4px 0 $neutral400, 4px -4px 0 $neutral400;
+$focus-box-shadow-over-and-under:
+  0 -4px 0 $neutral400,
+  0 4px 0 $neutral400;
+$focux-box-shadow-over-under-and-left:
+  0 -4px 0 $neutral400,
+  -4px -4px 0 $neutral400,
+  -4px 4px 0 $neutral400,
+  0 4px 0 $neutral400;
+$focux-box-shadow-over-under-and-right:
+  0 -4px 0 $neutral400,
+  4px 4px 0 $neutral400,
+  0 4px 0 $neutral400,
+  4px -4px 0 $neutral400;
