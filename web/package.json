@@ -77,7 +77,8 @@
     "sass": "^1.83.4"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.0.0"
+    "@rollup/rollup-linux-x64-gnu": "^4.0.0",
+    "sass-embedded-linux-x64": "^1.88.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --fix",
