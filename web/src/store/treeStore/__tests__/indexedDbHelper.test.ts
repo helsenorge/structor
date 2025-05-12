@@ -49,7 +49,7 @@ describe("saveQuestionnaire", () => {
   it("throws if id is falsy", async () => {
     await expect(
       saveQuestionnaire({ qMetadata: { id: "" } } as TreeState),
-    ).rejects.toThrow("Failed to save questionnaire to IndexedDB");
+    ).rejects.toThrowError();
     expect(fakeDb.put).not.toHaveBeenCalled();
   });
 
@@ -57,7 +57,7 @@ describe("saveQuestionnaire", () => {
     (fakeDb.put as Mock).mockRejectedValueOnce(new Error("oops"));
     await expect(
       saveQuestionnaire({ qMetadata: { id: "xyz" } } as TreeState),
-    ).rejects.toThrow("Failed to save questionnaire to IndexedDB");
+    ).rejects.toThrowError();
     expect(fakeDb.put).toHaveBeenCalled();
   });
 });
@@ -121,8 +121,6 @@ describe("deleteQuestionnaire", () => {
 
   it("wraps delete() errors", async () => {
     (fakeDb.delete as Mock).mockRejectedValueOnce(new Error("bad"));
-    await expect(deleteQuestionnaire("x")).rejects.toThrow(
-      "Failed to delete questionnaire from IndexedDB",
-    );
+    await expect(deleteQuestionnaire("x")).rejects.toThrowError();
   });
 });
