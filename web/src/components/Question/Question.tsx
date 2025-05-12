@@ -45,7 +45,7 @@ import {
 } from "../../helpers/questionTypeFeatures";
 import { updateItemAction } from "../../store/treeStore/treeActions";
 import { ActionType } from "../../store/treeStore/treeStore";
-import { ValidationErrors } from "../../utils/validationUtils";
+import { ValidationError } from "../../utils/validationUtils";
 import Accordion from "../Accordion/Accordion";
 import AdvancedQuestionOptions from "../AdvancedQuestionOptions/AdvancedQuestionOptions";
 import Codes from "../AdvancedQuestionOptions/Code/Codes";
@@ -60,7 +60,7 @@ interface QuestionProps {
   parentArray: Array<string>;
   containedResources?: Array<ValueSet>;
   conditionalArray: ValueSetComposeIncludeConcept[];
-  itemValidationErrors: ValidationErrors[];
+  itemValidationErrors: ValidationError[];
   getItem: (linkId: string) => QuestionnaireItem;
   dispatch: React.Dispatch<ActionType>;
 }

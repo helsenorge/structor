@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { useKeyPress } from "../../../hooks/useKeyPress";
-import { ValidationErrors } from "../../../utils/validationUtils";
+import { ValidationError } from "../../../utils/validationUtils";
 import LanguageAccordion from "../../Languages/LanguageAccordion";
 import MetadataEditor from "../../Metadata/MetadataEditor";
 import QuestionnaireSettings from "../../Metadata/QuestionnaireSettings";
@@ -13,7 +13,7 @@ import Drawer from "../Drawer";
 type FormDetailsDrawerProps = {
   setTranslateLang: (language: string) => void;
   closeDrawer: () => void;
-  sidebarErrors: ValidationErrors[];
+  sidebarErrors: ValidationError[];
   isOpen?: boolean;
 };
 

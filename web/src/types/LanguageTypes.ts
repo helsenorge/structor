@@ -11,6 +11,7 @@ export type Language = {
 
 export enum TranslatableMetadataProperty {
   id = "id",
+  url = "url",
   title = "title",
   description = "description",
   publisher = "publisher",

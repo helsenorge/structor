@@ -11,14 +11,14 @@ import { useKeyPress } from "../../hooks/useKeyPress";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { updateMarkedLinkIdAction } from "../../store/treeStore/treeActions";
 import { TreeContext } from "../../store/treeStore/treeStore";
-import { ValidationErrors } from "../../utils/validationUtils";
+import { ValidationError } from "../../utils/validationUtils";
 import { generateItemButtons } from "../AnchorMenu/ItemButtons/ItemButtons";
 import Drawer from "../Drawer/Drawer";
 import IconBtn from "../IconBtn/IconBtn";
 import Question from "../Question/Question";
 
 interface Props {
-  validationErrors: ValidationErrors[];
+  validationErrors: ValidationError[];
 }
 
 const QuestionDrawer = ({

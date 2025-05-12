@@ -77,29 +77,33 @@ const initialState: TreeState = {
 
 export const getInitialState = (resetState: boolean = false): TreeState => {
   // Autocreates a random questionnaire id for the user which will be the default value
-  if (
-    initialState.qMetadata.id === undefined ||
-    initialState.qMetadata.id === ""
-  ) {
+  if (!initialState.qMetadata.id) {
     initialState.qMetadata.id = createUUID();
   }
+  if (!initialState.qMetadata.url) {
+    initialState.qMetadata.url = `Questionnaire/${initialState.qMetadata.id}`;
+  }
+
   if (resetState) {
+    const id = createUUID();
     return {
       ...initialState,
       qMetadata: {
         ...initialState.qMetadata,
-        id: createUUID(),
+        id: id,
+        url: `Questionnaire/${id}`,
       },
     };
   }
   return initialState;
 };
+
 export const getMinimalInitialState = (): TreeState => {
   return {
     isEdited: getInitialState().isEdited,
     isDirty: getInitialState().isDirty,
     qItems: getInitialState().qItems,
     qOrder: getInitialState().qOrder,
-    qMetadata: {},
+    qMetadata: getInitialState().qMetadata,
   };
 };

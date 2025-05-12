@@ -32,13 +32,13 @@ import {
   MarkedItem,
   OrderItem,
 } from "../../store/treeStore/treeStore";
-import { ValidationErrors } from "../../utils/validationUtils";
+import { ValidationError } from "../../utils/validationUtils";
 
 interface AnchorMenuProps {
   qOrder: OrderItem[];
   qItems: Items;
   qCurrentItem: MarkedItem | undefined;
-  validationErrors: ValidationErrors[];
+  validationErrors: ValidationError[];
   dispatch: Dispatch<ActionType>;
 }
 

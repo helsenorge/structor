@@ -1,9 +1,9 @@
 import React from "react";
 
-import { ValidationErrors } from "../../../utils/validationUtils";
+import { ValidationError } from "../../../utils/validationUtils";
 
 interface WarningMessagesProps {
-  markdownWarning: ValidationErrors | undefined;
+  markdownWarning: ValidationError | undefined;
 }
 
 const WarningMessages = (props: WarningMessagesProps): React.JSX.Element => {

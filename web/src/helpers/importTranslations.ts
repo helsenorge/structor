@@ -222,6 +222,16 @@ const updateMetadataTranslation = (
       );
       returnValue = true;
     }
+    if (key.includes(`.${TranslatableMetadataProperty.url}`)) {
+      dispatch(
+        updateMetadataTranslationAction(
+          languageCode,
+          TranslatableMetadataProperty.url,
+          text,
+        ),
+      );
+      returnValue = true;
+    }
     if (key.includes(`.${TranslatableMetadataProperty.title}`)) {
       dispatch(
         updateMetadataTranslationAction(

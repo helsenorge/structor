@@ -1,12 +1,14 @@
 import { ValueSet } from "fhir/r4";
+import { ErrorLevel } from "src/helpers/validation/validationTypes";
 
 import { getUsedValueSet } from "../helpers/generateQuestionnaire";
 import { TreeState } from "../store/treeStore/treeStore";
 
-export interface ValidationErrors {
+export interface ValidationError {
   linkId: string;
   index?: number;
   errorProperty: string;
+  errorLevel: ErrorLevel;
   errorReadableText: string;
   languagecode?: string;
 }

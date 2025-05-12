@@ -18,7 +18,7 @@ import QuestionDrawer from "../components/QuestionDrawer/QuestionDrawer";
 import FormFillerPreview from "../components/Refero/FormFillerPreview";
 import { TreeContext } from "../store/treeStore/treeStore";
 import "./FormBuilder.css";
-import { ValidationErrors } from "../utils/validationUtils";
+import { ValidationError } from "../utils/validationUtils";
 
 const FormBuilder = (): React.JSX.Element => {
   const { state, dispatch } = useContext(TreeContext);
@@ -29,19 +29,19 @@ const FormBuilder = (): React.JSX.Element => {
   const [showFormDetails, setShowFormDetails] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [validationErrors, setValidationErrors] = useState<
-    Array<ValidationErrors>
+    Array<ValidationError>
   >([]);
   const [translationErrors, setTranslationErrors] = useState<
-    Array<ValidationErrors>
+    Array<ValidationError>
   >([]);
-  const [sidebarErrors, setSidebarErrors] = useState<Array<ValidationErrors>>(
+  const [sidebarErrors, setSidebarErrors] = useState<Array<ValidationError>>(
     [],
   );
   const [markdownWarning, setMarkdownWarning] = useState<
-    ValidationErrors | undefined
+    ValidationError | undefined
   >(undefined);
   const [securityInformation, setSecurityInformation] = useState<
-    ValidationErrors | undefined
+    ValidationError | undefined
   >(undefined);
   const [translateLang, setTranslateLang] = useState("");
 
@@ -111,6 +111,7 @@ const FormBuilder = (): React.JSX.Element => {
             markdownWarning={markdownWarning}
             close={() => setTranslateLang("")}
             targetLanguage={translateLang}
+            validationErrors={translationErrors}
           />
         )}
       </div>

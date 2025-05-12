@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
+import { getValidationError } from "src/helpers/validation/validationHelper";
+import {
+  getTextValidationErrorClassName,
+  getValidationClassName,
+} from "src/helpers/validationClassHelper";
+import { ValidationError } from "src/utils/validationUtils";
 
-import { MetadataProperty } from "../../../types/LanguageTypes";
+import {
+  MetadataProperty,
+  TranslatableMetadataProperty,
+} from "../../../types/LanguageTypes";
 
 import { updateMetadataTranslationAction } from "../../../store/treeStore/treeActions";
 import { ActionType, TreeState } from "../../../store/treeStore/treeStore";
@@ -14,6 +23,7 @@ type TranslateMetaDataRowProps = {
   metadataProperty: MetadataProperty;
   state: TreeState;
   targetLanguage: string;
+  validationErrors: ValidationError[];
 };
 
 const TranslateMetaDataRow = ({
@@ -21,6 +31,7 @@ const TranslateMetaDataRow = ({
   metadataProperty,
   state,
   targetLanguage,
+  validationErrors,
 }: TranslateMetaDataRowProps): React.JSX.Element => {
   const { t } = useTranslation();
   const { propertyName, label, markdown, validate } = metadataProperty;
@@ -51,11 +62,19 @@ const TranslateMetaDataRow = ({
     </>
   );
 
+  const validationError = getValidationError(propertyName, validationErrors);
+
   const getClassName = (): string => {
-    if (propertyName === "title") {
+    if (propertyName === TranslatableMetadataProperty.title) {
       if (!translatedValue?.trim()) {
         return "validation-error";
       }
+    }
+    if (
+      propertyName === TranslatableMetadataProperty.url &&
+      !!validationError
+    ) {
+      return getValidationClassName(validationError);
     }
     return "";
   };
@@ -71,19 +90,37 @@ const TranslateMetaDataRow = ({
             }}
             placeholder={t("Enter translation..")}
           />
+          {validationError?.errorReadableText && (
+            <div
+              className={getTextValidationErrorClassName(validationError)}
+              aria-live="polite"
+            >
+              {validationError.errorReadableText}
+            </div>
+          )}
         </div>
       ) : (
-        <textarea
-          defaultValue={translatedValue}
-          onBlur={(event) => {
-            dispatchPropertyUpdate(event.target.value);
-          }}
-          className={getClassName()}
-          onChange={(event) => {
-            setTranslatedValue(event.target.value);
-          }}
-          placeholder={t("Enter translation..")}
-        />
+        <>
+          <textarea
+            defaultValue={translatedValue}
+            onBlur={(event) => {
+              dispatchPropertyUpdate(event.target.value);
+            }}
+            className={getClassName()}
+            onChange={(event) => {
+              setTranslatedValue(event.target.value);
+            }}
+            placeholder={t("Enter translation..")}
+          />
+          {validationError?.errorReadableText && (
+            <div
+              className={getTextValidationErrorClassName(validationError)}
+              aria-live="polite"
+            >
+              {validationError.errorReadableText}
+            </div>
+          )}
+        </>
       )}
     </>
   );

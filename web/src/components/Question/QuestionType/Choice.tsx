@@ -46,7 +46,7 @@ import {
   updateItemAction,
 } from "../../../store/treeStore/treeActions";
 import { TreeContext } from "../../../store/treeStore/treeStore";
-import { ValidationErrors } from "../../../utils/validationUtils";
+import { ValidationError } from "../../../utils/validationUtils";
 import DraggableAnswerOptions from "../../AnswerOption/DraggableAnswerOptions";
 import Btn from "../../Btn/Btn";
 import { BTN_TYPES, BTN_VARIANTS } from "../../Btn/types";
@@ -56,7 +56,7 @@ import SwitchBtn from "../../SwitchBtn/SwitchBtn";
 
 type Props = {
   item: QuestionnaireItem;
-  itemValidationErrors: ValidationErrors[];
+  itemValidationErrors: ValidationError[];
 };
 
 const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {

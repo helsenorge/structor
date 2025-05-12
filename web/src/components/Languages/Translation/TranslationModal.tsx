@@ -27,7 +27,7 @@ import { updateItemTranslationAction } from "../../../store/treeStore/treeAction
 import { OrderItem, TreeContext } from "../../../store/treeStore/treeStore";
 import {
   getValueSetToTranslate,
-  ValidationErrors,
+  ValidationError,
 } from "../../../utils/validationUtils";
 import FormField from "../../FormField/FormField";
 import MarkdownEditor from "../../MarkdownEditor/MarkdownEditor";
@@ -35,8 +35,9 @@ import Modal from "../../Modal/Modal";
 
 type TranslationModalProps = {
   close: () => void;
-  markdownWarning: ValidationErrors | undefined;
+  markdownWarning: ValidationError | undefined;
   targetLanguage: string;
+  validationErrors: ValidationError[];
 };
 
 interface FlattOrderTranslation {
@@ -270,6 +271,7 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
                 <TranslateMetaData
                   state={state}
                   targetLanguage={props.targetLanguage}
+                  validationErrors={props.validationErrors}
                   dispatch={dispatch}
                 />
                 <TranslateSettings

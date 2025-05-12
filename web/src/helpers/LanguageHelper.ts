@@ -119,6 +119,12 @@ export const translatableMetadata: MetadataProperty[] = [
     },
   },
   {
+    propertyName: TranslatableMetadataProperty.url,
+    label: "Url",
+    markdown: false,
+    validate: undefined,
+  },
+  {
     propertyName: TranslatableMetadataProperty.description,
     label: "Description",
     markdown: false,

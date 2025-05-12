@@ -194,11 +194,11 @@ function addLanguage(
     draft.qAdditionalLanguages = {};
   }
   // Autocreates a random questionnaire id for the translated version for the user which will be the default value
-  if (
-    action.translation.metaData.id === undefined ||
-    action.translation.metaData.id === ""
-  ) {
+  if (!action.translation.metaData.id) {
     action.translation.metaData.id = createUUID();
+  }
+  if (!action.translation.metaData.url) {
+    action.translation.metaData.url = `Questionnaire/${action.translation.metaData.id}`;
   }
 
   draft.qAdditionalLanguages[action.additionalLanguageCode] =
