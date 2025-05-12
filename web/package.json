@@ -62,7 +62,7 @@
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.0.0",
     "@types/fhir": "^0.0.41",
-    "@types/node": "^20.0.0",
+    "@types/node": "^22.0.0",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-datepicker": "^4.0.0",
     "@types/react-router-dom": "^5.3.3",
