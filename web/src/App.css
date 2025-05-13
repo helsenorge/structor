@@ -122,10 +122,6 @@ p {
   box-shadow: 0 0 0 4px orange;
 }
 
-.validation-info {
-  box-shadow: 0 0 0 4px yellow;
-}
-
 .validation-error-box {
   box-shadow: 0 0 0 4px red;
   padding: 1rem;

@@ -8,7 +8,7 @@ import {
 
 import "./AdvancedQuestionOptions.css";
 import { ValidationType } from "src/helpers/validation/validationTypes";
-import { ValidationError } from "src/utils/validationUtils";
+import { ValidationErrors } from "src/utils/validationUtils";
 
 import {
   IExtensionType,
@@ -64,7 +64,7 @@ type AdvancedQuestionOptionsProps = {
   item: QuestionnaireItem;
   parentArray: Array<string>;
   conditionalArray: ValueSetComposeIncludeConcept[];
-  itemValidationErrors: ValidationError[];
+  itemValidationErrors: ValidationErrors[];
   getItem: (linkId: string) => QuestionnaireItem;
 };
 

@@ -2,18 +2,18 @@ import React, { useContext, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { useNavigate, NavLink } from "react-router-dom";
-import { validateSidebar } from "src/helpers/validation/sidebarValidation";
 import { setItemValidationErrors } from "src/helpers/validation/validationHelper";
 import { useUploadFile } from "src/hooks/useUploadFile";
 import { saveQuestionnaire } from "src/store/treeStore/indexedDbHelper";
 import { getInitialState } from "src/store/treeStore/initialState";
 
 import { generateQuestionnaire } from "../../helpers/generateQuestionnaire";
+import { validateSidebar } from "../../helpers/validation/orphanValidation";
 import { infoSecurity } from "../../helpers/validation/securityValidation";
 import {
   validateTranslations,
   warnMarkdownInTranslations,
-} from "../../helpers/validation/translationValidation/translationValidation";
+} from "../../helpers/validation/translationValidation";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import MoreIcon from "../../images/icons/ellipsis-horizontal-outline.svg";
 import {
@@ -21,7 +21,7 @@ import {
   saveAction,
 } from "../../store/treeStore/treeActions";
 import { TreeContext } from "../../store/treeStore/treeStore";
-import { ValidationError } from "../../utils/validationUtils";
+import { ValidationErrors } from "../../utils/validationUtils";
 import Btn from "../Btn/Btn";
 import "./Navbar.css";
 import ImportValueSet from "../ImportValueSet/ImportValueSet";
@@ -32,17 +32,17 @@ import { ValidationErrorsModal } from "../ValidationErrorsModal/validationErrors
 
 type Props = {
   showFormFiller: () => void;
-  setValidationErrors: (errors: ValidationError[]) => void;
-  setTranslationErrors: (errors: ValidationError[]) => void;
-  setSidebarErrors: (errors: ValidationError[]) => void;
-  setMarkdownWarning: (warning: ValidationError | undefined) => void;
-  setSecurityInformation: (info: ValidationError | undefined) => void;
+  setValidationErrors: (errors: ValidationErrors[]) => void;
+  setTranslationErrors: (errors: ValidationErrors[]) => void;
+  setSidebarErrors: (errors: ValidationErrors[]) => void;
+  setMarkdownWarning: (warning: ValidationErrors | undefined) => void;
+  setSecurityInformation: (info: ValidationErrors | undefined) => void;
   setCloseForm: React.Dispatch<React.SetStateAction<boolean>>;
-  validationErrors: ValidationError[];
-  translationErrors: ValidationError[];
-  sidebarErrors: ValidationError[];
-  markdownWarning: ValidationError | undefined;
-  securityInformation: ValidationError | undefined;
+  validationErrors: ValidationErrors[];
+  translationErrors: ValidationErrors[];
+  sidebarErrors: ValidationErrors[];
+  markdownWarning: ValidationErrors | undefined;
+  securityInformation: ValidationErrors | undefined;
 };
 
 enum MenuItem {
@@ -214,7 +214,9 @@ const Navbar = ({
               onClick={() => {
                 setValidationErrors(setItemValidationErrors(t, state));
                 setTranslationErrors(validateTranslations(t, state));
-                setSidebarErrors(validateSidebar(t, state));
+                setSidebarErrors(
+                  validateSidebar(t, state.qItems, state.qMetadata),
+                );
                 setMarkdownWarning(warnMarkdownInTranslations(t, state));
                 setSecurityInformation(infoSecurity(t, state.qMetadata));
                 setShowValidationErrors(true);
