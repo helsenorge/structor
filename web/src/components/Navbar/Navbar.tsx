@@ -13,7 +13,7 @@ import { infoSecurity } from "../../helpers/validation/securityValidation";
 import {
   validateTranslations,
   warnMarkdownInTranslations,
-} from "../../helpers/validation/translationValidation";
+} from "../../helpers/validation/translationValidation/translationValidation";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import MoreIcon from "../../images/icons/ellipsis-horizontal-outline.svg";
 import {
