@@ -64,7 +64,7 @@ const TranslateMetaDataRow = ({
 
   const validationError = getValidationError(propertyName, validationErrors);
 
-  const getClassName = (): string => {
+  const getClassName = (): string | undefined => {
     if (propertyName === TranslatableMetadataProperty.title) {
       if (!translatedValue?.trim()) {
         return "validation-error";
@@ -76,7 +76,6 @@ const TranslateMetaDataRow = ({
     ) {
       return getValidationClassName(validationError);
     }
-    return "";
   };
 
   const renderTranslation = (): JSX.Element => (

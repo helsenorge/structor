@@ -9,6 +9,7 @@ import {
 } from "src/types/IQuestionnaireMetadataType";
 import { ValidationError } from "src/utils/validationUtils";
 import { ErrorLevel } from "src/helpers/validation/validationTypes";
+import userEvent from "@testing-library/user-event";
 
 describe("TranslateMetaDataRow", () => {
   vi.mock("react-i18next", () => ({
@@ -110,6 +111,51 @@ describe("TranslateMetaDataRow", () => {
       expect(
         screen.getByText("Url must be 'Questionnaire/<Id>'"),
       ).toBeInTheDocument();
+    });
+
+    it("calls Update on blur with the new input and related propertyname", async () => {
+      const dispatchMock = vi.fn();
+      const url = translatableMetadata.filter(
+        (f) => f.propertyName === TranslatableMetadataProperty.url,
+      )[0];
+      const metadata = {} as IQuestionnaireMetadata;
+
+      render(
+        <TranslateMetaDataRow
+          dispatch={dispatchMock}
+          metadataProperty={url}
+          state={{ qMetadata: metadata } as TreeState}
+          targetLanguage="en-GB"
+          validationErrors={[]}
+        />,
+      );
+
+      const input = screen.getAllByPlaceholderText("Enter translation..");
+      await userEvent.type(input[0], "Testing");
+      await userEvent.tab(); // blur
+
+      expect(dispatchMock.mock.calls[0]).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ type: "updateMetadataTranslation" }),
+        ]),
+      );
+      expect(dispatchMock.mock.calls[0]).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ languageCode: "en-GB" }),
+        ]),
+      );
+      expect(dispatchMock.mock.calls[0]).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ translation: "Testing" }),
+        ]),
+      );
+      expect(dispatchMock.mock.calls[0]).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            propertyName: TranslatableMetadataProperty.url,
+          }),
+        ]),
+      );
     });
   });
 
