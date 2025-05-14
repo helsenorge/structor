@@ -488,5 +488,8 @@
   "N/A": "Ikke tilgjengelig",
   "Last modified": "Sist endret",
   "Previous Questionnaires": "Tidligere skjemaer",
-  "Table with answer options has no children": "tabell med svaralternativer har ingen barn"
+  "Table with answer options has no children": "tabell med svaralternativer har ingen barn",
+  "Form does not have an Url, In case of Helsenorge this field must be 'Questionnaire/<Id>'": "Skjema har ikke Url. Når gjelder Helsenorge, må Url-en være 'Questionnaire/<Id>'",
+  "In case of Helsenorge this field must be 'Questionnaire/<Id>'": "Når gjelder Helsenorge, må Url-en være 'Questionnaire/<Id>'",
+  "Url must be 'Questionnaire/<Id>'": "Url må være 'Questionnaire/<Id>'"
 }
