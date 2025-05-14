@@ -13,14 +13,14 @@ import Drawer from "../Drawer";
 type FormDetailsDrawerProps = {
   setTranslateLang: (language: string) => void;
   closeDrawer: () => void;
-  sidebarErrors: ValidationError[];
+  questionnaireDetailsErrors: ValidationError[];
   isOpen?: boolean;
 };
 
 const FormDetailsDrawer = ({
   setTranslateLang,
   closeDrawer,
-  sidebarErrors,
+  questionnaireDetailsErrors,
   isOpen = false,
 }: FormDetailsDrawerProps): React.JSX.Element => {
   const { t } = useTranslation();
@@ -34,9 +34,11 @@ const FormDetailsDrawer = ({
       visible={isOpen}
       hide={closeDrawer}
     >
-      <MetadataEditor sidebarErrors={sidebarErrors} />
-      <QuestionnaireSettings />
-      <Sidebar sidebarErrors={sidebarErrors} />
+      <MetadataEditor questionnaireDetailsErrors={questionnaireDetailsErrors} />
+      <QuestionnaireSettings
+        questionnaireDetailsErrors={questionnaireDetailsErrors}
+      />
+      <Sidebar questionnaireDetailsErrors={questionnaireDetailsErrors} />
       <LanguageAccordion setTranslateLang={setTranslateLang} />
     </Drawer>
   );
