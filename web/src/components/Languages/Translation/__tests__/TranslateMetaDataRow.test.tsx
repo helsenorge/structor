@@ -2,7 +2,12 @@ import { render, screen } from "@testing-library/react";
 import TranslateMetaDataRow from "../TranslateMetaDataRow";
 import { TranslatableMetadataProperty } from "src/types/LanguageTypes";
 import { translatableMetadata } from "src/helpers/LanguageHelper";
-import { TreeState } from "src/store/treeStore/treeStore";
+import {
+  Languages,
+  MetadataTranslations,
+  Translation,
+  TreeState,
+} from "src/store/treeStore/treeStore";
 import {
   IQuestionnaireMetadata,
   IQuestionnaireMetadataType,
@@ -32,19 +37,33 @@ describe("TranslateMetaDataRow", () => {
       const url = translatableMetadata.filter(
         (f) => f.propertyName === TranslatableMetadataProperty.url,
       )[0];
-      const metadata = { url: "Test", id: "1" } as IQuestionnaireMetadata;
-
+      const metadata = {
+        url: "Original Test",
+        id: "1",
+      } as IQuestionnaireMetadata;
+      const languages = {
+        "en-GB": {
+          metaData: { url: "Test English" } as MetadataTranslations,
+        } as Translation,
+      } as Languages;
       render(
         <TranslateMetaDataRow
           dispatch={vi.fn()}
           metadataProperty={url}
-          state={{ qMetadata: metadata } as TreeState}
+          state={
+            {
+              qMetadata: metadata,
+              qAdditionalLanguages: languages,
+            } as TreeState
+          }
           targetLanguage="en-GB"
           validationErrors={[]}
         />,
       );
 
       expect(screen.getByText("Url")).toBeInTheDocument();
+      expect(screen.getByText("Original Test")).toBeInTheDocument();
+      expect(screen.getByText("Test English")).toBeInTheDocument();
     });
 
     it("shows warning validation feil", () => {
