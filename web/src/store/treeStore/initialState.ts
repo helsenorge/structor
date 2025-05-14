@@ -1,3 +1,5 @@
+import { HelsenorgeUrlStartText } from "src/helpers/validation/validationHelper";
+
 import { IExtensionType } from "../../types/IQuestionnareItemType";
 
 import { TreeState } from "./treeStore";
@@ -81,7 +83,7 @@ export const getInitialState = (resetState: boolean = false): TreeState => {
     initialState.qMetadata.id = createUUID();
   }
   if (!initialState.qMetadata.url) {
-    initialState.qMetadata.url = `Questionnaire/${initialState.qMetadata.id}`;
+    initialState.qMetadata.url = `${HelsenorgeUrlStartText}${initialState.qMetadata.id}`;
   }
 
   if (resetState) {
@@ -91,7 +93,7 @@ export const getInitialState = (resetState: boolean = false): TreeState => {
       qMetadata: {
         ...initialState.qMetadata,
         id: id,
-        url: `Questionnaire/${id}`,
+        url: `${HelsenorgeUrlStartText}${id}`,
       },
     };
   }

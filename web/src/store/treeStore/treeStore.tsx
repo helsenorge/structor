@@ -2,6 +2,7 @@ import React, { createContext, Dispatch, useEffect, useReducer } from "react";
 
 import { Coding, Extension, QuestionnaireItem, ValueSet } from "fhir/r4";
 import produce from "immer";
+import { HelsenorgeUrlStartText } from "src/helpers/validation/validationHelper";
 
 import {
   IQuestionnaireMetadata,
@@ -198,7 +199,7 @@ function addLanguage(
     action.translation.metaData.id = createUUID();
   }
   if (!action.translation.metaData.url) {
-    action.translation.metaData.url = `Questionnaire/${action.translation.metaData.id}`;
+    action.translation.metaData.url = `${HelsenorgeUrlStartText}${action.translation.metaData.id}`;
   }
 
   draft.qAdditionalLanguages[action.additionalLanguageCode] =
