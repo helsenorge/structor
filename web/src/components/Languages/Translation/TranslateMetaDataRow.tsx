@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import { getValidationError } from "src/helpers/validation/validationHelper";
+import { getValidationError } from "src/components/Validation/validationHelper";
 import {
   getTextValidationErrorClassName,
   getValidationClassName,

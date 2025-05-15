@@ -1,5 +1,5 @@
 import { ValueSet } from "fhir/r4";
-import { ErrorLevel } from "src/helpers/validation/validationTypes";
+import { ErrorLevel } from "src/components/Validation/validationTypes";
 
 import { getUsedValueSet } from "../helpers/generateQuestionnaire";
 import { TreeState } from "../store/treeStore/treeStore";

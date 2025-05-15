@@ -2,16 +2,14 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { ValidationErrorsModal } from "src/components/ValidationErrorsModal/validationErrorsModal";
-import { infoSecurity } from "src/helpers/validation/securityValidation";
+import { validateElements } from "src/components/Validation/ElementValidation/elementValidation";
+import { validateQuestionnaireDetails } from "src/components/Validation/QuestionnaireDetailsValidation/questionnaireDetailsValidation";
+import { metaSecurityValidation } from "src/components/Validation/QuestionnaireDetailsValidation/securityValidation";
 import {
   validateTranslations,
   warnMarkdownInTranslations,
-} from "src/helpers/validation/translationValidation/translationValidation";
-import {
-  validateElements,
-  validateQuestionnaireDetails,
-} from "src/helpers/validation/validationHelper";
+} from "src/components/Validation/TranslationValidation/translationValidation";
+import { ValidationErrorsModal } from "src/components/Validation/validationErrorsModal";
 import {
   getAllQuestionnaires,
   getQuestionnaire,
@@ -50,9 +48,6 @@ const FormBuilder = (): React.JSX.Element => {
   const [markdownWarning, setMarkdownWarning] = useState<
     ValidationError | undefined
   >(undefined);
-  const [securityInformation, setSecurityInformation] = useState<
-    ValidationError | undefined
-  >(undefined);
   const [translateLang, setTranslateLang] = useState("");
 
   const onClickValidation = () => {
@@ -60,7 +55,6 @@ const FormBuilder = (): React.JSX.Element => {
     setTranslationErrors(validateTranslations(t, state));
     setQuestionnaireDetailsErrors(validateQuestionnaireDetails(t, state));
     setMarkdownWarning(warnMarkdownInTranslations(t, state));
-    setSecurityInformation(infoSecurity(t, state.qMetadata));
     setShowValidationModal(true);
   };
 
@@ -150,9 +144,8 @@ const FormBuilder = (): React.JSX.Element => {
         <ValidationErrorsModal
           validationErrors={itemsErrors}
           translationErrors={translationErrors}
-          sidebarErrors={questionnaireDetailsErrors}
+          questionnaireDetailsErrors={questionnaireDetailsErrors}
           markdownWarning={markdownWarning}
-          securityInformation={securityInformation}
           qAdditionalLanguages={state.qAdditionalLanguages}
           onClose={() => setShowValidationModal(false)}
         />
