@@ -223,17 +223,6 @@ const Navbar = ({
                 }
               />
             )}
-            {i18n.language !== "fr-FR" && (
-              <Btn
-                title={t("Change to French")}
-                onClick={() =>
-                  callbackAndHide(() => {
-                    i18n.changeLanguage("fr-FR");
-                    localStorage.setItem("editor_language", "fr-FR");
-                  })
-                }
-              />
-            )}
             <Btn title={t("Close form")} onClick={closeForm} />
             <Btn
               title={t("Upload questionnaire")}

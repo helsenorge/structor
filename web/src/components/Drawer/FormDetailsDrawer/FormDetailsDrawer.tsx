@@ -1,13 +1,13 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
+import QuestionnaireSettings from "src/components/QuestionnaireDetails/QuestionnaireSettings/QuestionnaireSettings";
 
 import { useKeyPress } from "../../../hooks/useKeyPress";
 import { ValidationError } from "../../../utils/validationUtils";
 import LanguageAccordion from "../../Languages/LanguageAccordion";
-import MetadataEditor from "../../Metadata/MetadataEditor";
-import QuestionnaireSettings from "../../Metadata/QuestionnaireSettings";
-import Sidebar from "../../Sidebar/Sidebar";
+import MetadataEditor from "../../QuestionnaireDetails/MetadataEditor";
+import Sidebar from "../../QuestionnaireDetails/Sidebar";
 import Drawer from "../Drawer";
 
 type FormDetailsDrawerProps = {

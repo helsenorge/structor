@@ -47,7 +47,7 @@ const validateEndpoint = (
         createError(
           "",
           ValidationType.endpoint,
-          t("Cannot find a reference til Endpoint"),
+          t("Cannot find the Endpoint's reference"),
           ErrorLevel.error,
         ),
       );
@@ -62,7 +62,7 @@ const validateEndpoint = (
             "",
             ValidationType.endpoint,
             t(
-              "In case of Helsenorge endpoint must start with 'Endpoint/<Id to Endpoint>'",
+              "In case of Helsenorge, endpoint must start with 'Endpoint/<Endpoint's Id>'",
             ),
             ErrorLevel.warning,
           ),
@@ -74,9 +74,9 @@ const validateEndpoint = (
               "",
               ValidationType.endpoint,
               t(
-                "Endpoint does not have an valid id 'Endpoint/<Id to Endpoint>'",
+                "Endpoint does not have an valid id 'Endpoint/<Endpoint's Id>'",
               ),
-              ErrorLevel.warning,
+              ErrorLevel.error,
             ),
           );
         }
@@ -101,7 +101,7 @@ const validateBinary = (
         createError(
           "",
           ValidationType.binary,
-          t("Cannot find a reference til Binary"),
+          t("Cannot find the print version's reference"),
           ErrorLevel.error,
         ),
       );
@@ -114,7 +114,7 @@ const validateBinary = (
             "",
             ValidationType.binary,
             t(
-              "In case of Helsenorge endpoint must start with 'Binary/<Id to print version>'",
+              "In case of Helsenorge, reference to print version must start with 'Binary/<print version's Id>'",
             ),
             ErrorLevel.warning,
           ),
@@ -126,9 +126,9 @@ const validateBinary = (
               "",
               ValidationType.binary,
               t(
-                "Binary does not have an valid id 'Binary/<Id to print version>'",
+                "Print version does not have an valid id 'Binary/<print version's Id>'",
               ),
-              ErrorLevel.warning,
+              ErrorLevel.error,
             ),
           );
         }
