@@ -2,9 +2,13 @@ import React, { useContext } from "react";
 
 import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { getValidationError } from "src/components/Validation/validationHelper";
 import { ValidationType } from "src/components/Validation/validationTypes";
 import { translatableSettings } from "src/helpers/LanguageHelper";
-import { getValidaitonClassNameWithPropsName } from "src/helpers/validationClassHelper";
+import {
+  getTextValidationErrorClassName,
+  getValidaitonClassNameWithPropsName,
+} from "src/helpers/validationClassHelper";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { IExtensionType } from "../../../types/IQuestionnareItemType";
@@ -27,6 +31,8 @@ const PrintVersionView = ({
   const { t } = useTranslation();
   const { state } = useContext(TreeContext);
   const { qMetadata } = state;
+
+  const validationError = getValidationError(ValidationType.binary, errors);
 
   return (
     <FormField label={t("Connect to print version (binary)")}>
@@ -53,6 +59,14 @@ const PrintVersionView = ({
           }
         }}
       />
+      {validationError?.errorReadableText && (
+        <div
+          className={getTextValidationErrorClassName(validationError)}
+          aria-live="polite"
+        >
+          {validationError.errorReadableText}
+        </div>
+      )}
     </FormField>
   );
 };
