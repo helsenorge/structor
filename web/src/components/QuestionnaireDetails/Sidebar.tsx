@@ -84,7 +84,7 @@ const Sidebar = (props: SidebarProps): React.JSX.Element => {
     <Accordion title={t("Sidebar")}>
       {sidebarItems.map((x, index) => {
         return (
-          <div key={index}>
+          <div key={x.linkId}>
             <FormField label={t("Sidebar heading")}>
               <Select
                 placeholder={t("select sidebar heading:")}

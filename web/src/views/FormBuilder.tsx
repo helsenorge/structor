@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { validateElements } from "src/components/Validation/ElementValidation/elementValidation";
 import { validateQuestionnaireDetails } from "src/components/Validation/QuestionnaireDetailsValidation/questionnaireDetailsValidation";
-import { metaSecurityValidation } from "src/components/Validation/QuestionnaireDetailsValidation/securityValidation";
 import {
   validateTranslations,
   warnMarkdownInTranslations,
