@@ -13,7 +13,7 @@ import {
   IQuestionnaireMetadataType,
 } from "src/types/IQuestionnaireMetadataType";
 import { ValidationError } from "src/utils/validationUtils";
-import { ErrorLevel } from "src/components/Validation/validationTypes";
+import { ErrorLevel } from "src/helpers/validation/validationTypes";
 import userEvent from "@testing-library/user-event";
 
 describe("TranslateMetaDataRow", () => {

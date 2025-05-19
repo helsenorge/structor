@@ -1,26 +1,26 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
-import QuestionnaireSettings from "src/components/QuestionnaireDetails/QuestionnaireSettings";
 
 import { useKeyPress } from "../../../hooks/useKeyPress";
 import { ValidationError } from "../../../utils/validationUtils";
 import LanguageAccordion from "../../Languages/LanguageAccordion";
-import MetadataEditor from "../../QuestionnaireDetails/MetadataEditor";
-import Sidebar from "../../QuestionnaireDetails/Sidebar";
+import MetadataEditor from "../../Metadata/MetadataEditor";
+import QuestionnaireSettings from "../../Metadata/QuestionnaireSettings";
+import Sidebar from "../../Sidebar/Sidebar";
 import Drawer from "../Drawer";
 
 type FormDetailsDrawerProps = {
   setTranslateLang: (language: string) => void;
   closeDrawer: () => void;
-  questionnaireDetailsErrors: ValidationError[];
+  sidebarErrors: ValidationError[];
   isOpen?: boolean;
 };
 
 const FormDetailsDrawer = ({
   setTranslateLang,
   closeDrawer,
-  questionnaireDetailsErrors,
+  sidebarErrors,
   isOpen = false,
 }: FormDetailsDrawerProps): React.JSX.Element => {
   const { t } = useTranslation();
@@ -34,11 +34,9 @@ const FormDetailsDrawer = ({
       visible={isOpen}
       hide={closeDrawer}
     >
-      <MetadataEditor questionnaireDetailsErrors={questionnaireDetailsErrors} />
-      <QuestionnaireSettings
-        questionnaireDetailsErrors={questionnaireDetailsErrors}
-      />
-      <Sidebar questionnaireDetailsErrors={questionnaireDetailsErrors} />
+      <MetadataEditor sidebarErrors={sidebarErrors} />
+      <QuestionnaireSettings />
+      <Sidebar sidebarErrors={sidebarErrors} />
       <LanguageAccordion setTranslateLang={setTranslateLang} />
     </Drawer>
   );

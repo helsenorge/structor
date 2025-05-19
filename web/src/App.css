@@ -115,19 +115,19 @@ p {
 }
 
 .validation-error {
-  box-shadow: 0 0 0 4px #b62e1c;
+  box-shadow: 0 0 0 4px red;
 }
 
 .validation-warning {
-  box-shadow: 0 0 0 4px #ab7c00;
+  box-shadow: 0 0 0 4px orange;
 }
 
 .validation-info {
-  box-shadow: 0 0 0 4px #08667c;
+  box-shadow: 0 0 0 4px yellow;
 }
 
 .validation-error-box {
-  box-shadow: 0 0 0 4px #b62e1c;
+  box-shadow: 0 0 0 4px red;
   padding: 1rem;
   margin: 1.5rem 0;
 }

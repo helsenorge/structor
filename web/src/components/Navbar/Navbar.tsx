@@ -2,11 +2,18 @@ import React, { useContext, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { useNavigate, NavLink } from "react-router-dom";
+import { validateSidebar } from "src/helpers/validation/sidebarValidation";
+import { setItemValidationErrors } from "src/helpers/validation/validationHelper";
 import { useUploadFile } from "src/hooks/useUploadFile";
 import { saveQuestionnaire } from "src/store/treeStore/indexedDbHelper";
 import { getInitialState } from "src/store/treeStore/initialState";
 
 import { generateQuestionnaire } from "../../helpers/generateQuestionnaire";
+import { infoSecurity } from "../../helpers/validation/securityValidation";
+import {
+  validateTranslations,
+  warnMarkdownInTranslations,
+} from "../../helpers/validation/translationValidation/translationValidation";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import MoreIcon from "../../images/icons/ellipsis-horizontal-outline.svg";
 import {
@@ -14,17 +21,28 @@ import {
   saveAction,
 } from "../../store/treeStore/treeActions";
 import { TreeContext } from "../../store/treeStore/treeStore";
+import { ValidationError } from "../../utils/validationUtils";
 import Btn from "../Btn/Btn";
 import "./Navbar.css";
 import ImportValueSet from "../ImportValueSet/ImportValueSet";
 import JSONView from "../JSONView/JSONView";
 import CloseFormModal from "../Modal/CloseFormModal";
 import PredefinedValueSetModal from "../PredefinedValueSetModal/PredefinedValueSetModal";
+import { ValidationErrorsModal } from "../ValidationErrorsModal/validationErrorsModal";
 
 type Props = {
   showFormFiller: () => void;
+  setValidationErrors: (errors: ValidationError[]) => void;
+  setTranslationErrors: (errors: ValidationError[]) => void;
+  setSidebarErrors: (errors: ValidationError[]) => void;
+  setMarkdownWarning: (warning: ValidationError | undefined) => void;
+  setSecurityInformation: (info: ValidationError | undefined) => void;
   setCloseForm: React.Dispatch<React.SetStateAction<boolean>>;
-  onValidationClick: () => void;
+  validationErrors: ValidationError[];
+  translationErrors: ValidationError[];
+  sidebarErrors: ValidationError[];
+  markdownWarning: ValidationError | undefined;
+  securityInformation: ValidationError | undefined;
 };
 
 enum MenuItem {
@@ -35,8 +53,17 @@ enum MenuItem {
 
 const Navbar = ({
   showFormFiller,
+  setValidationErrors,
+  setTranslationErrors,
+  setSidebarErrors,
+  setMarkdownWarning,
+  setSecurityInformation,
   setCloseForm,
-  onValidationClick,
+  validationErrors,
+  translationErrors,
+  sidebarErrors,
+  markdownWarning,
+  securityInformation,
 }: Props): React.JSX.Element => {
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
@@ -52,6 +79,8 @@ const Navbar = ({
   const [showImportValueSet, setShowImportValueSet] = useState(false);
   const [showJSONView, setShowJSONView] = useState(false);
   const [showCloseFormModal, setShowCloseFormModal] = useState(false);
+  const [showValidationErrors, setShowValidationErrors] =
+    useState<boolean>(false);
   const navBarRef = useRef<HTMLDivElement>(null);
   const fileExtension = "json";
   const hideMenu = (): void => {
@@ -180,7 +209,17 @@ const Navbar = ({
         </div>
         {selectedMenuItem === MenuItem.more && (
           <div className="menu">
-            <Btn title={t("Validate")} onClick={onValidationClick} />
+            <Btn
+              title={t("Validate")}
+              onClick={() => {
+                setValidationErrors(setItemValidationErrors(t, state));
+                setTranslationErrors(validateTranslations(t, state));
+                setSidebarErrors(validateSidebar(t, state));
+                setMarkdownWarning(warnMarkdownInTranslations(t, state));
+                setSecurityInformation(infoSecurity(t, state.qMetadata));
+                setShowValidationErrors(true);
+              }}
+            />
             <Btn
               title={t("JSON")}
               onClick={() =>
@@ -223,6 +262,17 @@ const Navbar = ({
                 }
               />
             )}
+            {i18n.language !== "fr-FR" && (
+              <Btn
+                title={t("Change to French")}
+                onClick={() =>
+                  callbackAndHide(() => {
+                    i18n.changeLanguage("fr-FR");
+                    localStorage.setItem("editor_language", "fr-FR");
+                  })
+                }
+              />
+            )}
             <Btn title={t("Close form")} onClick={closeForm} />
             <Btn
               title={t("Upload questionnaire")}
@@ -244,6 +294,17 @@ const Navbar = ({
           </div>
         )}
       </header>
+      {showValidationErrors && (
+        <ValidationErrorsModal
+          validationErrors={validationErrors}
+          translationErrors={translationErrors}
+          sidebarErrors={sidebarErrors}
+          markdownWarning={markdownWarning}
+          securityInformation={securityInformation}
+          qAdditionalLanguages={state.qAdditionalLanguages}
+          onClose={() => setShowValidationErrors(false)}
+        />
+      )}
       {showContained && (
         <PredefinedValueSetModal
           close={() => setShowContained(!showContained)}

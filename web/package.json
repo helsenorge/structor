@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "start": "npx vite dev --port 3000",
-    "build": "tsc && npx vite build ",
+    "build": "tsc && npx vite build --base=/static_skjemabygger",
     "stylelint": "stylelint src/**/*.{scss,module.scss}",
     "stylelint:fix": "npm run stylelint -- --fix",
     "prepare": "cd .. && husky web/.husky",

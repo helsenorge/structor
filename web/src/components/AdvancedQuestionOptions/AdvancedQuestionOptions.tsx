@@ -7,7 +7,7 @@ import {
 } from "fhir/r4";
 
 import "./AdvancedQuestionOptions.css";
-import { ValidationType } from "src/components/Validation/validationTypes";
+import { ValidationType } from "src/helpers/validation/validationTypes";
 import { ValidationError } from "src/utils/validationUtils";
 
 import {

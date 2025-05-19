@@ -2,7 +2,7 @@ import React, { createContext, Dispatch, useEffect, useReducer } from "react";
 
 import { Coding, Extension, QuestionnaireItem, ValueSet } from "fhir/r4";
 import produce from "immer";
-import { HelsenorgeUrlStartText } from "src/components/Validation/validationHelper";
+import { HelsenorgeUrlStartText } from "src/helpers/validation/validationHelper";
 
 import {
   IQuestionnaireMetadata,

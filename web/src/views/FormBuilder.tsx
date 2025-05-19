@@ -2,13 +2,6 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { validateElements } from "src/components/Validation/ElementValidation/elementValidation";
-import { validateQuestionnaireDetails } from "src/components/Validation/QuestionnaireDetailsValidation/questionnaireDetailsValidation";
-import {
-  validateTranslations,
-  warnMarkdownInTranslations,
-} from "src/components/Validation/TranslationValidation/translationValidation";
-import { ValidationErrorsModal } from "src/components/Validation/validationErrorsModal";
 import {
   getAllQuestionnaires,
   getQuestionnaire,
@@ -35,27 +28,22 @@ const FormBuilder = (): React.JSX.Element => {
   const { t } = useTranslation();
   const [showFormDetails, setShowFormDetails] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [showValidationModal, setShowValidationModal] =
-    useState<boolean>(false);
-  const [itemsErrors, setItemsErrors] = useState<Array<ValidationError>>([]);
+  const [validationErrors, setValidationErrors] = useState<
+    Array<ValidationError>
+  >([]);
   const [translationErrors, setTranslationErrors] = useState<
     Array<ValidationError>
   >([]);
-  const [questionnaireDetailsErrors, setQuestionnaireDetailsErrors] = useState<
-    Array<ValidationError>
-  >([]);
+  const [sidebarErrors, setSidebarErrors] = useState<Array<ValidationError>>(
+    [],
+  );
   const [markdownWarning, setMarkdownWarning] = useState<
     ValidationError | undefined
   >(undefined);
+  const [securityInformation, setSecurityInformation] = useState<
+    ValidationError | undefined
+  >(undefined);
   const [translateLang, setTranslateLang] = useState("");
-
-  const onClickValidation = () => {
-    setItemsErrors(validateElements(t, state));
-    setTranslationErrors(validateTranslations(t, state));
-    setQuestionnaireDetailsErrors(validateQuestionnaireDetails(t, state));
-    setMarkdownWarning(warnMarkdownInTranslations(t, state));
-    setShowValidationModal(true);
-  };
 
   const toggleFormDetails = useCallback(() => {
     setShowFormDetails(!showFormDetails);
@@ -87,11 +75,20 @@ const FormBuilder = (): React.JSX.Element => {
   return (
     <>
       <Navbar
-        onValidationClick={onClickValidation}
         showFormFiller={() => setShowPreview(!showPreview)}
+        setValidationErrors={setValidationErrors}
+        setTranslationErrors={setTranslationErrors}
+        setSidebarErrors={setSidebarErrors}
+        setMarkdownWarning={setMarkdownWarning}
+        setSecurityInformation={setSecurityInformation}
         setCloseForm={() => {
           navigate("/");
         }}
+        translationErrors={translationErrors}
+        validationErrors={validationErrors}
+        sidebarErrors={sidebarErrors}
+        markdownWarning={markdownWarning}
+        securityInformation={securityInformation}
       />
 
       <div className="editor">
@@ -100,7 +97,7 @@ const FormBuilder = (): React.JSX.Element => {
           qOrder={state.qOrder}
           qItems={state.qItems}
           qCurrentItem={state.qCurrentItem}
-          validationErrors={itemsErrors}
+          validationErrors={validationErrors}
         />
         {showPreview && (
           <FormFillerPreview
@@ -133,22 +130,12 @@ const FormBuilder = (): React.JSX.Element => {
             setTranslateLang(language);
             toggleFormDetails();
           }}
-          questionnaireDetailsErrors={questionnaireDetailsErrors}
+          sidebarErrors={sidebarErrors}
           closeDrawer={toggleFormDetails}
           isOpen={showFormDetails}
         />
-        <QuestionDrawer validationErrors={itemsErrors} />
+        <QuestionDrawer validationErrors={validationErrors} />
       </div>
-      {showValidationModal && (
-        <ValidationErrorsModal
-          validationErrors={itemsErrors}
-          translationErrors={translationErrors}
-          questionnaireDetailsErrors={questionnaireDetailsErrors}
-          markdownWarning={markdownWarning}
-          qAdditionalLanguages={state.qAdditionalLanguages}
-          onClose={() => setShowValidationModal(false)}
-        />
-      )}
     </>
   );
 };
