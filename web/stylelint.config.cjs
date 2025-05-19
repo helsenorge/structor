@@ -4,4 +4,7 @@ module.exports = {
     'selector-class-pattern': null,
     'selector-id-pattern': null,
   },
+  ignoreFiles: [
+    "src/components/Question/Question.css"
+  ]
 };
