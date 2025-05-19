@@ -14,39 +14,38 @@ import { TreeContext } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 
 interface ButtonsPresentationProps {
-  removeExtension: (extensionUrl: string) => void;
   updateExtension: (extension: Extension) => void;
 }
 
 const ButtonsPresentationView = ({
-  removeExtension,
   updateExtension,
 }: ButtonsPresentationProps): React.JSX.Element => {
   const { t } = useTranslation();
   const { state } = useContext(TreeContext);
   const { qMetadata } = state;
 
+  const selected =
+    qMetadata?.extension?.find(
+      (ex) => ex.url === IExtensionType.presentationbuttons,
+    )?.valueCoding?.code ?? "sticky";
+
+  const getExtension = (code: string): Extension => {
+    return {
+      url: IExtensionType.presentationbuttons,
+      valueCoding: {
+        system: IValueSetSystem.presentationbuttonsValueSet,
+        code: code,
+      },
+    };
+  };
+
   return (
     <FormField label={t("Button bar display")}>
       <RadioBtn
         onChange={(newValue: string) => {
-          if (newValue) {
-            updateExtension({
-              url: IExtensionType.presentationbuttons,
-              valueCoding: {
-                system: IValueSetSystem.presentationbuttonsValueSet,
-                code: newValue,
-              },
-            });
-          } else {
-            removeExtension(IExtensionType.presentationbuttons);
-          }
+          updateExtension(getExtension(newValue));
         }}
-        checked={
-          qMetadata?.extension?.find(
-            (ex) => ex.url === IExtensionType.presentationbuttons,
-          )?.valueCoding?.code ?? "sticky"
-        }
+        checked={selected}
         options={presentationButtons}
         name={"presentationbuttons-radio"}
       />

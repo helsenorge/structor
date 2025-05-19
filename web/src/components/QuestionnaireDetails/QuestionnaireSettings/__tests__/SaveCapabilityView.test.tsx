@@ -1,4 +1,3 @@
-import AuthenticationRequirementView from "../AuthenticationRequirementView";
 import { TreeContext, TreeState } from "src/store/treeStore/treeStore";
 import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 import {
@@ -7,8 +6,9 @@ import {
 } from "src/types/IQuestionnareItemType";
 import { Extension } from "fhir/r4";
 import { fireEvent, render, screen } from "@testing-library/react";
+import SaveCapabilityView from "../SaveCapabilityView";
 
-describe("AuthenticationRequirementView", () => {
+describe("SaveCapabilityView", () => {
   const updateExtensionMock = vi.fn();
 
   vi.mock("react-i18next", () => ({
@@ -35,68 +35,43 @@ describe("AuthenticationRequirementView", () => {
 
     render(
       <TreeContext.Provider value={{ state: treeState, dispatch: vi.fn() }}>
-        <AuthenticationRequirementView updateExtension={updateExtensionMock} />
+        <SaveCapabilityView updateExtension={updateExtensionMock} />
       </TreeContext.Provider>,
     );
 
-    expect(screen.getByText("Required (standard setting)")).toBeInTheDocument();
-    expect(screen.getByText("Anonymous")).toBeInTheDocument();
-    expect(screen.getByText("Optional")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Save submitted questionnaire and intermediate save (standard setting)",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Only submitted questionnaire is saved"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("No saving")).toBeInTheDocument();
   });
 
-  it("If no extension, default value is Required", () => {
+  it("If no extension, default value is save and intermediate save", () => {
     const treeState = { qMetadata: {} as IQuestionnaireMetadata } as TreeState;
 
     render(
       <TreeContext.Provider value={{ state: treeState, dispatch: vi.fn() }}>
-        <AuthenticationRequirementView updateExtension={updateExtensionMock} />
+        <SaveCapabilityView updateExtension={updateExtensionMock} />
       </TreeContext.Provider>,
     );
 
-    const requiredElement = screen.getByLabelText(
-      "Required (standard setting)",
+    const saveAndIntermediateElement = screen.getByLabelText(
+      "Save submitted questionnaire and intermediate save (standard setting)",
       { selector: "input" },
     );
-    expect(requiredElement.getAttribute("checked")).toBeDefined();
-    expect(requiredElement.getAttribute("value")).toBe("3");
+    expect(saveAndIntermediateElement.getAttribute("checked")).toBeDefined();
+    expect(saveAndIntermediateElement.getAttribute("value")).toBe("1");
   });
 
-  it("Has Ananymous, correct value is selected", () => {
+  it("Has only submitted code in extension, correct value is selected", () => {
     const extension = {
-      url: IExtensionType.authenticationRequirement,
+      url: IExtensionType.saveCapability,
       valueCoding: {
-        url: IValueSetSystem.authenticationRequirementValueSet,
-        code: "1",
-      },
-    } as Extension;
-    const treeState = {
-      qMetadata: { extension: [extension] } as IQuestionnaireMetadata,
-    } as TreeState;
-
-    render(
-      <TreeContext.Provider value={{ state: treeState, dispatch: vi.fn() }}>
-        <AuthenticationRequirementView updateExtension={updateExtensionMock} />
-      </TreeContext.Provider>,
-    );
-
-    const anonymousElement = screen.getByLabelText("Anonymous", {
-      selector: "input",
-    });
-    expect(anonymousElement.getAttribute("checked")).toBeDefined();
-    expect(anonymousElement.getAttribute("value")).toBe("1");
-
-    const defaultElement = screen.getByLabelText(
-      "Required (standard setting)",
-      { selector: "input" },
-    );
-    expect(defaultElement.getAttribute("checked")).toBeFalsy();
-  });
-
-  it("Has Optional, correct value is selected", () => {
-    const extension = {
-      url: IExtensionType.authenticationRequirement,
-      valueCoding: {
-        url: IValueSetSystem.authenticationRequirementValueSet,
+        url: IValueSetSystem.saveCapabilityValueSet,
         code: "2",
       },
     } as Extension;
@@ -106,48 +81,82 @@ describe("AuthenticationRequirementView", () => {
 
     render(
       <TreeContext.Provider value={{ state: treeState, dispatch: vi.fn() }}>
-        <AuthenticationRequirementView updateExtension={updateExtensionMock} />
+        <SaveCapabilityView updateExtension={updateExtensionMock} />
       </TreeContext.Provider>,
     );
 
-    const optionalElement = screen.getByLabelText("Optional", {
-      selector: "input",
-    });
-    expect(optionalElement.getAttribute("checked")).toBeDefined();
-    expect(optionalElement.getAttribute("value")).toBe("2");
+    const onlySaveElement = screen.getByLabelText(
+      "Only submitted questionnaire is saved",
+      {
+        selector: "input",
+      },
+    );
+    expect(onlySaveElement.getAttribute("checked")).toBeDefined();
+    expect(onlySaveElement.getAttribute("value")).toBe("2");
 
     const defaultElement = screen.getByLabelText(
-      "Required (standard setting)",
+      "Save submitted questionnaire and intermediate save (standard setting)",
       { selector: "input" },
     );
     expect(defaultElement.getAttribute("checked")).toBeFalsy();
   });
 
-  it("Default, select Optional", () => {
+  it("Has no saving code in extension, correct value is selected", () => {
+    const extension = {
+      url: IExtensionType.saveCapability,
+      valueCoding: {
+        url: IValueSetSystem.saveCapabilityValueSet,
+        code: "3",
+      },
+    } as Extension;
+    const treeState = {
+      qMetadata: { extension: [extension] } as IQuestionnaireMetadata,
+    } as TreeState;
+
+    render(
+      <TreeContext.Provider value={{ state: treeState, dispatch: vi.fn() }}>
+        <SaveCapabilityView updateExtension={updateExtensionMock} />
+      </TreeContext.Provider>,
+    );
+
+    const noSavingElement = screen.getByLabelText("No saving", {
+      selector: "input",
+    });
+    expect(noSavingElement.getAttribute("checked")).toBeDefined();
+    expect(noSavingElement.getAttribute("value")).toBe("3");
+
+    const defaultElement = screen.getByLabelText(
+      "Save submitted questionnaire and intermediate save (standard setting)",
+      { selector: "input" },
+    );
+    expect(defaultElement.getAttribute("checked")).toBeFalsy();
+  });
+
+  it("Default then change to no saving", () => {
     const treeState = { qMetadata: {} as IQuestionnaireMetadata } as TreeState;
 
     render(
       <TreeContext.Provider value={{ state: treeState, dispatch: vi.fn() }}>
-        <AuthenticationRequirementView updateExtension={updateExtensionMock} />
+        <SaveCapabilityView updateExtension={updateExtensionMock} />
       </TreeContext.Provider>,
     );
 
     const defaultElement = screen.getByLabelText(
-      "Required (standard setting)",
+      "Save submitted questionnaire and intermediate save (standard setting)",
       { selector: "input" },
     );
     expect(defaultElement.getAttribute("checked")).toBeDefined();
-    expect(defaultElement.getAttribute("value")).toBe("3");
+    expect(defaultElement.getAttribute("value")).toBe("1");
 
-    const optionalElement = screen.getByLabelText("Optional", {
+    const noSavingElement = screen.getByLabelText("No saving", {
       selector: "input",
     });
-    fireEvent.click(optionalElement);
+    fireEvent.click(noSavingElement);
 
     expect(updateExtensionMock.mock.calls[0]).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          url: IExtensionType.authenticationRequirement,
+          url: IExtensionType.saveCapability,
         }),
       ]),
     );
@@ -155,14 +164,14 @@ describe("AuthenticationRequirementView", () => {
       expect.arrayContaining([
         expect.objectContaining({
           valueCoding: {
-            system: IValueSetSystem.authenticationRequirementValueSet,
-            code: "2",
+            system: IValueSetSystem.saveCapabilityValueSet,
+            code: "3",
           },
         }),
       ]),
     );
-    expect(optionalElement.getAttribute("checked")).toBeDefined();
-    expect(optionalElement.getAttribute("value")).toBe("2");
+    expect(noSavingElement.getAttribute("checked")).toBeDefined();
+    expect(noSavingElement.getAttribute("value")).toBe("3");
 
     expect(defaultElement.getAttribute("checked")).toBeFalsy();
   });

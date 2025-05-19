@@ -1,4 +1,3 @@
-import AuthenticationRequirementView from "../AuthenticationRequirementView";
 import { TreeContext, TreeState } from "src/store/treeStore/treeStore";
 import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 import {
@@ -7,8 +6,9 @@ import {
 } from "src/types/IQuestionnareItemType";
 import { Extension } from "fhir/r4";
 import { fireEvent, render, screen } from "@testing-library/react";
+import ButtonsPresentationView from "../ButtonsPresentationView";
 
-describe("AuthenticationRequirementView", () => {
+describe("ButtonsPresentationView", () => {
   const updateExtensionMock = vi.fn();
 
   vi.mock("react-i18next", () => ({
@@ -35,38 +35,44 @@ describe("AuthenticationRequirementView", () => {
 
     render(
       <TreeContext.Provider value={{ state: treeState, dispatch: vi.fn() }}>
-        <AuthenticationRequirementView updateExtension={updateExtensionMock} />
+        <ButtonsPresentationView updateExtension={updateExtensionMock} />
       </TreeContext.Provider>,
     );
 
-    expect(screen.getByText("Required (standard setting)")).toBeInTheDocument();
-    expect(screen.getByText("Anonymous")).toBeInTheDocument();
-    expect(screen.getByText("Optional")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Floating at the bottom of the screen (standard setting)",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByText("No button bar")).toBeInTheDocument();
+    expect(
+      screen.getByText("Static (at the bottom of the questionnaire)"),
+    ).toBeInTheDocument();
   });
 
-  it("If no extension, default value is Required", () => {
+  it("If no extension, default value is sticky", () => {
     const treeState = { qMetadata: {} as IQuestionnaireMetadata } as TreeState;
 
     render(
       <TreeContext.Provider value={{ state: treeState, dispatch: vi.fn() }}>
-        <AuthenticationRequirementView updateExtension={updateExtensionMock} />
+        <ButtonsPresentationView updateExtension={updateExtensionMock} />
       </TreeContext.Provider>,
     );
 
-    const requiredElement = screen.getByLabelText(
-      "Required (standard setting)",
+    const stickyElement = screen.getByLabelText(
+      "Floating at the bottom of the screen (standard setting)",
       { selector: "input" },
     );
-    expect(requiredElement.getAttribute("checked")).toBeDefined();
-    expect(requiredElement.getAttribute("value")).toBe("3");
+    expect(stickyElement.getAttribute("checked")).toBeDefined();
+    expect(stickyElement.getAttribute("value")).toBe("sticky");
   });
 
-  it("Has Ananymous, correct value is selected", () => {
+  it("Has none code in extension, correct value is selected", () => {
     const extension = {
-      url: IExtensionType.authenticationRequirement,
+      url: IExtensionType.presentationbuttons,
       valueCoding: {
-        url: IValueSetSystem.authenticationRequirementValueSet,
-        code: "1",
+        url: IValueSetSystem.presentationbuttonsValueSet,
+        code: "none",
       },
     } as Extension;
     const treeState = {
@@ -75,29 +81,29 @@ describe("AuthenticationRequirementView", () => {
 
     render(
       <TreeContext.Provider value={{ state: treeState, dispatch: vi.fn() }}>
-        <AuthenticationRequirementView updateExtension={updateExtensionMock} />
+        <ButtonsPresentationView updateExtension={updateExtensionMock} />
       </TreeContext.Provider>,
     );
 
-    const anonymousElement = screen.getByLabelText("Anonymous", {
+    const noneElement = screen.getByLabelText("No button bar", {
       selector: "input",
     });
-    expect(anonymousElement.getAttribute("checked")).toBeDefined();
-    expect(anonymousElement.getAttribute("value")).toBe("1");
+    expect(noneElement.getAttribute("checked")).toBeDefined();
+    expect(noneElement.getAttribute("value")).toBe("none");
 
     const defaultElement = screen.getByLabelText(
-      "Required (standard setting)",
+      "Floating at the bottom of the screen (standard setting)",
       { selector: "input" },
     );
     expect(defaultElement.getAttribute("checked")).toBeFalsy();
   });
 
-  it("Has Optional, correct value is selected", () => {
+  it("Has static code in extension, correct value is selected", () => {
     const extension = {
-      url: IExtensionType.authenticationRequirement,
+      url: IExtensionType.presentationbuttons,
       valueCoding: {
-        url: IValueSetSystem.authenticationRequirementValueSet,
-        code: "2",
+        url: IValueSetSystem.presentationbuttonsValueSet,
+        code: "static",
       },
     } as Extension;
     const treeState = {
@@ -106,18 +112,21 @@ describe("AuthenticationRequirementView", () => {
 
     render(
       <TreeContext.Provider value={{ state: treeState, dispatch: vi.fn() }}>
-        <AuthenticationRequirementView updateExtension={updateExtensionMock} />
+        <ButtonsPresentationView updateExtension={updateExtensionMock} />
       </TreeContext.Provider>,
     );
 
-    const optionalElement = screen.getByLabelText("Optional", {
-      selector: "input",
-    });
-    expect(optionalElement.getAttribute("checked")).toBeDefined();
-    expect(optionalElement.getAttribute("value")).toBe("2");
+    const staticElement = screen.getByLabelText(
+      "Static (at the bottom of the questionnaire)",
+      {
+        selector: "input",
+      },
+    );
+    expect(staticElement.getAttribute("checked")).toBeDefined();
+    expect(staticElement.getAttribute("value")).toBe("static");
 
     const defaultElement = screen.getByLabelText(
-      "Required (standard setting)",
+      "Floating at the bottom of the screen (standard setting)",
       { selector: "input" },
     );
     expect(defaultElement.getAttribute("checked")).toBeFalsy();
@@ -128,26 +137,29 @@ describe("AuthenticationRequirementView", () => {
 
     render(
       <TreeContext.Provider value={{ state: treeState, dispatch: vi.fn() }}>
-        <AuthenticationRequirementView updateExtension={updateExtensionMock} />
+        <ButtonsPresentationView updateExtension={updateExtensionMock} />
       </TreeContext.Provider>,
     );
 
     const defaultElement = screen.getByLabelText(
-      "Required (standard setting)",
+      "Floating at the bottom of the screen (standard setting)",
       { selector: "input" },
     );
     expect(defaultElement.getAttribute("checked")).toBeDefined();
-    expect(defaultElement.getAttribute("value")).toBe("3");
+    expect(defaultElement.getAttribute("value")).toBe("sticky");
 
-    const optionalElement = screen.getByLabelText("Optional", {
-      selector: "input",
-    });
-    fireEvent.click(optionalElement);
+    const staticElement = screen.getByLabelText(
+      "Static (at the bottom of the questionnaire)",
+      {
+        selector: "input",
+      },
+    );
+    fireEvent.click(staticElement);
 
     expect(updateExtensionMock.mock.calls[0]).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          url: IExtensionType.authenticationRequirement,
+          url: IExtensionType.presentationbuttons,
         }),
       ]),
     );
@@ -155,14 +167,14 @@ describe("AuthenticationRequirementView", () => {
       expect.arrayContaining([
         expect.objectContaining({
           valueCoding: {
-            system: IValueSetSystem.authenticationRequirementValueSet,
-            code: "2",
+            system: IValueSetSystem.presentationbuttonsValueSet,
+            code: "static",
           },
         }),
       ]),
     );
-    expect(optionalElement.getAttribute("checked")).toBeDefined();
-    expect(optionalElement.getAttribute("value")).toBe("2");
+    expect(staticElement.getAttribute("checked")).toBeDefined();
+    expect(staticElement.getAttribute("value")).toBe("static");
 
     expect(defaultElement.getAttribute("checked")).toBeFalsy();
   });

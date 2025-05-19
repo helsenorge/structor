@@ -14,12 +14,10 @@ import { TreeContext } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 
 interface SaveCapabilityProps {
-  removeExtension: (extensionUrl: string) => void;
   updateExtension: (extension: Extension) => void;
 }
 
 const SaveCapabilityView = ({
-  removeExtension,
   updateExtension,
 }: SaveCapabilityProps): React.JSX.Element => {
   const { t } = useTranslation();
@@ -44,11 +42,7 @@ const SaveCapabilityView = ({
     <FormField label={t("Save capabilities")}>
       <RadioBtn
         onChange={(newValue: string) => {
-          if (newValue) {
-            updateExtension(getExtension(newValue));
-          } else {
-            removeExtension(IExtensionType.saveCapability);
-          }
+          updateExtension(getExtension(newValue));
         }}
         checked={selected}
         options={saveCapability}

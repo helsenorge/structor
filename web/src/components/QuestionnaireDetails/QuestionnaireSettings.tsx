@@ -54,19 +54,10 @@ const QuestionnaireSettings = (
         updateExtension={updateMetaExtension}
       />
       <MetaSecurityEditor />
-      <ButtonsPresentationView
-        removeExtension={removeMetaExtension}
-        updateExtension={updateMetaExtension}
-      />
-      <AuthenticationRequirementView
-        removeExtension={removeMetaExtension}
-        updateExtension={updateMetaExtension}
-      />
+      <ButtonsPresentationView updateExtension={updateMetaExtension} />
+      <AuthenticationRequirementView updateExtension={updateMetaExtension} />
       <MetaItemExtractionContextView />
-      <SaveCapabilityView
-        removeExtension={removeMetaExtension}
-        updateExtension={updateMetaExtension}
-      />
+      <SaveCapabilityView updateExtension={updateMetaExtension} />
       <PdfSectionView updateExtension={updateMetaExtension} />
       <ProgressIndicatorView />
       <NavigationView

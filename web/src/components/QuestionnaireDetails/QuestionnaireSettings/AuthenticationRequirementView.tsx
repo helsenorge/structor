@@ -14,12 +14,10 @@ import { TreeContext } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 
 interface AuthenticationRequirementProps {
-  removeExtension: (extensionUrl: string) => void;
   updateExtension: (extension: Extension) => void;
 }
 
 const AuthenticationRequirementView = ({
-  removeExtension,
   updateExtension,
 }: AuthenticationRequirementProps): React.JSX.Element => {
   const { t } = useTranslation();
@@ -47,11 +45,7 @@ const AuthenticationRequirementView = ({
     >
       <RadioBtn
         onChange={(newValue: string) => {
-          if (newValue) {
-            updateExtension(getExtension(newValue));
-          } else {
-            removeExtension(IExtensionType.authenticationRequirement);
-          }
+          updateExtension(getExtension(newValue));
         }}
         checked={selected}
         options={authenticationRequirement}
