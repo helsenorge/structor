@@ -1,5 +1,5 @@
 import { render, screen } from "src/tests/testUtils";
-import QuestionnaireSettings from "../QuestionnaireSettings";
+import QuestionnaireSettings from "../../QuestionnaireSettings";
 import MetaItemExtractionContextView from "../MetaItemExtractionView";
 
 describe("QuestionnaireSettings", () => {

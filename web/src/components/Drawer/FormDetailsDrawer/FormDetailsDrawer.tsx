@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
-import QuestionnaireSettings from "src/components/QuestionnaireDetails/QuestionnaireSettings/QuestionnaireSettings";
+import QuestionnaireSettings from "src/components/QuestionnaireDetails/QuestionnaireSettings";
 
 import { useKeyPress } from "../../../hooks/useKeyPress";
 import { ValidationError } from "../../../utils/validationUtils";

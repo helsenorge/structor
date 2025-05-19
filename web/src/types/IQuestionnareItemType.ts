@@ -80,7 +80,6 @@ export enum IValueSetSystem {
   presentationbuttonsValueSet = "http://helsenorge.no/fhir/ValueSet/presentationbuttons",
   sotHeader = "http://ehelse.no/fhir/ValueSet/SOTHeaders",
   hyperlinkTargetValueset = "http://helsenorge.no/fhir/ValueSet/sdf-hyperlink-target",
-  workflow = "http://helsenorge.no/fhir/CodeSystem/workflow",
 }
 
 export enum ICodeSystem {
@@ -97,6 +96,7 @@ export enum ICodeSystem {
   sliderLabels = "http://helsenorge.no/fhir/CodeSystem/SliderLabels",
   sliderDisplayType = "http://helsenorge.no/fhir/CodeSystem/SliderDisplayType",
   validationOptions = "http://helsenorge.no/fhir/CodeSystem/ValidationOptions",
+  workflow = "http://helsenorge.no/fhir/CodeSystem/workflow",
 }
 
 export enum IExtensionType {
@@ -159,4 +159,9 @@ export enum ItemExtractionContext {
 export enum MetaSecuritySystem {
   tjenesteomraade = "urn:oid:2.16.578.1.12.4.1.1.7618",
   kanUtforesAv = "http://helsenorge.no/fhir/KanUtforesAv",
+}
+
+export enum WorkflowCode {
+  workflow = "workflow",
+  request = "request",
 }
