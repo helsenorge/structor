@@ -1,143 +1,146 @@
 .question {
-    background: white;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
-    margin-bottom: 24px;
+  background: white;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+  border-radius: 8px;
+  margin-bottom: 24px;
 }
 
 .question-type-header {
-    text-align: left;
-    margin-bottom: 2rem;
+  text-align: left;
+  margin-bottom: 2rem;
 }
 
 .question-form,
 .accordion,
 .content {
-    padding: 20px 70px;
+  padding: 20px 70px;
 }
 
 .form-field {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 12px;
 }
 
 .form-field__optional {
-    color: #aaa;
+  color: #aaa;
 }
 
 .form-field-label-wrapper,
 .form-field > label {
-    font-weight: bold;
-    text-align: left;
+  font-weight: bold;
+  text-align: left;
 }
 
 .form-field__sublabel {
-    text-align: left;
-    color: #a0aec0;
-    font-style: italic;
-    margin-top: 10px;
+  text-align: left;
+  color: #a0aec0;
+  font-style: italic;
+  margin-top: 10px;
 }
 
 .form-field-label-wrapper {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .msg-error {
-    color: #A31F0E;
+  color: #b62e1c;
 }
+
 .msg-warning {
-    color: #F15A3C;
+  color: #ab7c00;
 }
+
 .msg-info {
-    color: #ffaa00;
+  color: #08667c;
 }
+
 .form-field.field-error input,
 .form-field.field-error input:focus,
 .form-field.field-error select,
 .form-field.field-error select:focus {
-    border: 1px solid #ff0000;
-    outline-color: #ff0000;
+  border: 1px solid #b62e1c;
+  outline-color: #b62e1c;
 }
 
 .form-field input,
 .form-field textarea,
 .form-field select {
-    margin: 0;
-    font-size: 16px;
-    margin-top: 5px;
-    border: 1px solid #a0aec0;
-    box-sizing: border-box;
-    border-radius: 4px;
-    margin-bottom: 12px;
+  margin: 0;
+  font-size: 16px;
+  margin-top: 5px;
+  border: 1px solid #a0aec0;
+  box-sizing: border-box;
+  border-radius: 4px;
+  margin-bottom: 12px;
 }
 
 .form-field > div {
-    padding-bottom: 12px;
+  padding-bottom: 12px;
 }
 
 .form-field input:disabled {
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid #e2e8f0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .question-form {
-    position: relative;
+  position: relative;
 }
 
 .horizontal {
-    display: flex;
-    align-items: center;
-    padding-top: 3px;
+  display: flex;
+  align-items: center;
+  padding-top: 3px;
 }
 
 .horizontal > *:first-of-type {
-    padding-left: 0px;
+  padding-left: 0;
 }
 
 .horizontal > * {
-    padding-left: 25px;
+  padding-left: 25px;
 }
 
 .horizontal > input {
-    margin-right: 15px;
+  margin-right: 15px;
 }
 
-.horizontal > input[type='text'] {
-    width: 100%;
+.horizontal > input[type="text"] {
+  width: 100%;
 }
 
 .horizontal > input:last-of-type {
-    margin-right: 0px;
+  margin-right: 0;
 }
 
 .horizontal.equal {
-    min-height: 50px;
+  min-height: 50px;
 }
 
 .horizontal.equal > div {
-    width: 50%;
+  width: 50%;
 }
 
 .horizontal.full > div {
-    width: 100%;
+  width: 100%;
 }
 
 .sectionTitle {
-    font-weight: bold;
-    padding-bottom: 12px;
+  font-weight: bold;
+  padding-bottom: 12px;
 }
 
 .form-field .date-validation-input {
-    width: 70px;
-    margin-left: 25px;
-    padding-left: 10px;
+  width: 70px;
+  margin-left: 25px;
+  padding-left: 10px;
 }
 
 .predefined-value {
-    border-bottom: 1px solid #e2e8f0;
-    padding: 12px;
-    text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px;
+  text-align: left;
 }
