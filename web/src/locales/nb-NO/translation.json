@@ -497,5 +497,7 @@
   "Endpoint does not have an valid id 'Endpoint/<Endpoint's Id>'": "Endpoint-en har ikke en gjeldig Id 'Endpoint/<Id til Endpoint>'",
   "Cannot find the print version's reference": "Har ikke gått referensen til oppskriftsversjonen",
   "In case of Helsenorge, reference to print version must start with 'Binary/<print version's Id>'": "Når gjelder Helsenorge, må oppskriftsversjon være 'Binary/<Id til oppskriftsversjon>'",
-  "Print version does not have an valid id 'Binary/<print version's Id>'": "oppskriftsversjonen har ikke en gjeldig Id 'Binary/<Id til oppskriftsversjon>'"
+  "Print version does not have an valid id 'Binary/<print version's Id>'": "oppskriftsversjonen har ikke en gjeldig Id 'Binary/<Id til oppskriftsversjon>'",
+  "data receiver must be readonly": "data-receiver må være et skrivebeskyttet felt",
+  "data receiver cannot be mandatory": "data-receiver kan ikke være obligatorisk"
 }
