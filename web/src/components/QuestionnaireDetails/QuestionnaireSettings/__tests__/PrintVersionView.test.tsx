@@ -1,7 +1,7 @@
 import { TreeContext, TreeState } from "src/store/treeStore/treeStore";
 import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 import { IExtensionType } from "src/types/IQuestionnareItemType";
-import { Extension } from "fhir/r4";
+import { Extension, Reference } from "fhir/r4";
 import { render, screen } from "@testing-library/react";
 import PrintVersionView from "../PrintVersionView";
 import {
@@ -10,6 +10,19 @@ import {
 } from "src/components/Validation/validationTypes";
 import { ValidationError } from "src/utils/validationUtils";
 import userEvent from "@testing-library/user-event";
+
+const printVersionValueReference = (value: string): Reference => {
+  return {
+    reference: value,
+  } as Reference;
+};
+
+const printVersionExtension = (value: string): Extension => {
+  return {
+    url: IExtensionType.printVersion,
+    valueReference: printVersionValueReference(value),
+  } as Extension;
+};
 
 describe("PrintVersionView", () => {
   const updateExtensionMock = vi.fn();
@@ -53,12 +66,7 @@ describe("PrintVersionView", () => {
   });
 
   it("Print version has value, and has validation error", () => {
-    const extension = {
-      url: IExtensionType.printVersion,
-      valueReference: {
-        reference: "test",
-      },
-    } as Extension;
+    const extension = printVersionExtension("test");
     const treeState = {
       qMetadata: { extension: [extension] } as IQuestionnaireMetadata,
     } as TreeState;
@@ -118,21 +126,14 @@ describe("PrintVersionView", () => {
     expect(updateExtensionMock.mock.calls[0]).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          valueReference: {
-            reference: "Testing",
-          },
+          valueReference: printVersionValueReference("Testing"),
         }),
       ]),
     );
   });
 
   it("User removes the print version", async () => {
-    const extension = {
-      url: IExtensionType.printVersion,
-      valueReference: {
-        reference: "Testing",
-      },
-    } as Extension;
+    const extension = printVersionExtension("Testing");
     const treeState = {
       qMetadata: { extension: [extension] } as IQuestionnaireMetadata,
     } as TreeState;

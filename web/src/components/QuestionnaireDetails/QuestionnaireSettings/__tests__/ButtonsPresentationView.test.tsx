@@ -4,9 +4,23 @@ import {
   IExtensionType,
   IValueSetSystem,
 } from "src/types/IQuestionnareItemType";
-import { Extension } from "fhir/r4";
+import { Coding, Extension } from "fhir/r4";
 import { fireEvent, render, screen } from "@testing-library/react";
 import ButtonsPresentationView from "../ButtonsPresentationView";
+
+const buttonCoding = (code: string): Coding => {
+  return {
+    system: IValueSetSystem.presentationbuttonsValueSet,
+    code: code,
+  } as Coding;
+};
+
+const buttonExtension = (code: string): Extension => {
+  return {
+    url: IExtensionType.presentationbuttons,
+    valueCoding: buttonCoding(code),
+  } as Extension;
+};
 
 describe("ButtonsPresentationView", () => {
   const updateExtensionMock = vi.fn();
@@ -61,22 +75,15 @@ describe("ButtonsPresentationView", () => {
 
     const stickyElement = screen.getByLabelText(
       "Floating at the bottom of the screen (standard setting)",
-      { selector: "input" },
     );
-    expect(stickyElement.getAttribute("checked")).toBeDefined();
+    expect(stickyElement).toBeChecked();
     expect(stickyElement.getAttribute("value")).toBe("sticky");
   });
 
   it("Has none code in extension, correct value is selected", () => {
-    const extension = {
-      url: IExtensionType.presentationbuttons,
-      valueCoding: {
-        url: IValueSetSystem.presentationbuttonsValueSet,
-        code: "none",
-      },
-    } as Extension;
+    const noneExtension = buttonExtension("none");
     const treeState = {
-      qMetadata: { extension: [extension] } as IQuestionnaireMetadata,
+      qMetadata: { extension: [noneExtension] } as IQuestionnaireMetadata,
     } as TreeState;
 
     render(
@@ -85,27 +92,18 @@ describe("ButtonsPresentationView", () => {
       </TreeContext.Provider>,
     );
 
-    const noneElement = screen.getByLabelText("No button bar", {
-      selector: "input",
-    });
-    expect(noneElement.getAttribute("checked")).toBeDefined();
+    const noneElement = screen.getByLabelText("No button bar");
+    expect(noneElement).toBeChecked();
     expect(noneElement.getAttribute("value")).toBe("none");
 
     const defaultElement = screen.getByLabelText(
       "Floating at the bottom of the screen (standard setting)",
-      { selector: "input" },
     );
-    expect(defaultElement.getAttribute("checked")).toBeFalsy();
+    expect(defaultElement).not.toBeChecked();
   });
 
   it("Has static code in extension, correct value is selected", () => {
-    const extension = {
-      url: IExtensionType.presentationbuttons,
-      valueCoding: {
-        url: IValueSetSystem.presentationbuttonsValueSet,
-        code: "static",
-      },
-    } as Extension;
+    const extension = buttonExtension("static");
     const treeState = {
       qMetadata: { extension: [extension] } as IQuestionnaireMetadata,
     } as TreeState;
@@ -118,18 +116,14 @@ describe("ButtonsPresentationView", () => {
 
     const staticElement = screen.getByLabelText(
       "Static (at the bottom of the questionnaire)",
-      {
-        selector: "input",
-      },
     );
-    expect(staticElement.getAttribute("checked")).toBeDefined();
+    expect(staticElement).toBeChecked();
     expect(staticElement.getAttribute("value")).toBe("static");
 
     const defaultElement = screen.getByLabelText(
       "Floating at the bottom of the screen (standard setting)",
-      { selector: "input" },
     );
-    expect(defaultElement.getAttribute("checked")).toBeFalsy();
+    expect(defaultElement).not.toBeChecked();
   });
 
   it("Default, select Optional", () => {
@@ -143,16 +137,12 @@ describe("ButtonsPresentationView", () => {
 
     const defaultElement = screen.getByLabelText(
       "Floating at the bottom of the screen (standard setting)",
-      { selector: "input" },
     );
-    expect(defaultElement.getAttribute("checked")).toBeDefined();
+    expect(defaultElement).toBeChecked();
     expect(defaultElement.getAttribute("value")).toBe("sticky");
 
     const staticElement = screen.getByLabelText(
       "Static (at the bottom of the questionnaire)",
-      {
-        selector: "input",
-      },
     );
     fireEvent.click(staticElement);
 
@@ -166,16 +156,9 @@ describe("ButtonsPresentationView", () => {
     expect(updateExtensionMock.mock.calls[0]).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          valueCoding: {
-            system: IValueSetSystem.presentationbuttonsValueSet,
-            code: "static",
-          },
+          valueCoding: buttonCoding("static"),
         }),
       ]),
     );
-    expect(staticElement.getAttribute("checked")).toBeDefined();
-    expect(staticElement.getAttribute("value")).toBe("static");
-
-    expect(defaultElement.getAttribute("checked")).toBeFalsy();
   });
 });

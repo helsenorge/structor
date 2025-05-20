@@ -32,6 +32,7 @@ describe("data-receiver Validation", () => {
       linkId: "2",
       type: "string",
       text: "Copy",
+      readOnly: true,
       enableWhen: [
         { answerBoolean: true, operator: "exists", question: "1" },
       ] as QuestionnaireItemEnableWhen[],
@@ -118,6 +119,46 @@ describe("data-receiver Validation", () => {
     expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
     expect(translatationMock.mock.calls[0]).toEqual([
       "data receiver does not have an earlier question",
+    ]);
+  });
+
+  it("data-receiver item is not readonly", () => {
+    copyItem.readOnly = false;
+    const treeState = {
+      qOrder: qOrder,
+      qItems: { "1": mainItem, "2": copyItem } as Items,
+    } as TreeState;
+
+    const validationErrors = validateDataReceiverElements(
+      translatationMock,
+      treeState,
+    );
+
+    expect(validationErrors.length).toBe(1);
+    expect(validationErrors[0].errorProperty).toBe(ValidationType.readonly);
+    expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+    expect(translatationMock.mock.calls[0]).toEqual([
+      "data receiver must be readonly",
+    ]);
+  });
+
+  it("data-receiver cannot be mandatory", () => {
+    copyItem.required = true;
+    const treeState = {
+      qOrder: qOrder,
+      qItems: { "1": mainItem, "2": copyItem } as Items,
+    } as TreeState;
+
+    const validationErrors = validateDataReceiverElements(
+      translatationMock,
+      treeState,
+    );
+
+    expect(validationErrors.length).toBe(1);
+    expect(validationErrors[0].errorProperty).toBe(ValidationType.mandatory);
+    expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+    expect(translatationMock.mock.calls[0]).toEqual([
+      "data receiver cannot be mandatory",
     ]);
   });
 });

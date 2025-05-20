@@ -43,6 +43,7 @@ const PdfSectionView = ({
       )}
     >
       <SwitchBtn
+        testId="generatePdf"
         onChange={() =>
           updateExtension({
             url: IExtensionType.generatePDF,
@@ -53,6 +54,7 @@ const PdfSectionView = ({
         label={t("Generate PDF on submit")}
       />
       <CheckboxBtn
+        testId="hide-helptext-pdf"
         onChange={() =>
           setItemControlExtension(qMetadata, VisibilityType.hideHelp, dispatch)
         }
@@ -61,6 +63,7 @@ const PdfSectionView = ({
         label={t("Hide help texts in PDF")}
       />
       <CheckboxBtn
+        testId="hide-sublabel"
         onChange={() =>
           setItemControlExtension(
             qMetadata,
@@ -73,6 +76,7 @@ const PdfSectionView = ({
         label={t("Hide sublabels in PDF")}
       />
       <CheckboxBtn
+        testId="hide-sidebar"
         onChange={() =>
           setItemControlExtension(
             qMetadata,

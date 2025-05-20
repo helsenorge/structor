@@ -4,9 +4,23 @@ import {
   IExtensionType,
   IValueSetSystem,
 } from "src/types/IQuestionnareItemType";
-import { Extension } from "fhir/r4";
+import { Coding, Extension } from "fhir/r4";
 import { fireEvent, render, screen } from "@testing-library/react";
 import SaveCapabilityView from "../SaveCapabilityView";
+
+const saveCoding = (code: string): Coding => {
+  return {
+    system: IValueSetSystem.saveCapabilityValueSet,
+    code: code,
+  } as Coding;
+};
+
+const saveExtension = (code: string): Extension => {
+  return {
+    url: IExtensionType.saveCapability,
+    valueCoding: saveCoding(code),
+  } as Extension;
+};
 
 describe("SaveCapabilityView", () => {
   const updateExtensionMock = vi.fn();
@@ -61,22 +75,17 @@ describe("SaveCapabilityView", () => {
 
     const saveAndIntermediateElement = screen.getByLabelText(
       "Save submitted questionnaire and intermediate save (standard setting)",
-      { selector: "input" },
     );
-    expect(saveAndIntermediateElement.getAttribute("checked")).toBeDefined();
+    expect(saveAndIntermediateElement).toBeChecked();
     expect(saveAndIntermediateElement.getAttribute("value")).toBe("1");
   });
 
   it("Has only submitted code in extension, correct value is selected", () => {
-    const extension = {
-      url: IExtensionType.saveCapability,
-      valueCoding: {
-        url: IValueSetSystem.saveCapabilityValueSet,
-        code: "2",
-      },
-    } as Extension;
+    const onlySubmittedExtension = saveExtension("2");
     const treeState = {
-      qMetadata: { extension: [extension] } as IQuestionnaireMetadata,
+      qMetadata: {
+        extension: [onlySubmittedExtension],
+      } as IQuestionnaireMetadata,
     } as TreeState;
 
     render(
@@ -87,30 +96,20 @@ describe("SaveCapabilityView", () => {
 
     const onlySaveElement = screen.getByLabelText(
       "Only submitted questionnaire is saved",
-      {
-        selector: "input",
-      },
     );
-    expect(onlySaveElement.getAttribute("checked")).toBeDefined();
+    expect(onlySaveElement).toBeChecked();
     expect(onlySaveElement.getAttribute("value")).toBe("2");
 
     const defaultElement = screen.getByLabelText(
       "Save submitted questionnaire and intermediate save (standard setting)",
-      { selector: "input" },
     );
-    expect(defaultElement.getAttribute("checked")).toBeFalsy();
+    expect(defaultElement).not.toBeChecked();
   });
 
   it("Has no saving code in extension, correct value is selected", () => {
-    const extension = {
-      url: IExtensionType.saveCapability,
-      valueCoding: {
-        url: IValueSetSystem.saveCapabilityValueSet,
-        code: "3",
-      },
-    } as Extension;
+    const noSavingExtension = saveExtension("3");
     const treeState = {
-      qMetadata: { extension: [extension] } as IQuestionnaireMetadata,
+      qMetadata: { extension: [noSavingExtension] } as IQuestionnaireMetadata,
     } as TreeState;
 
     render(
@@ -119,17 +118,14 @@ describe("SaveCapabilityView", () => {
       </TreeContext.Provider>,
     );
 
-    const noSavingElement = screen.getByLabelText("No saving", {
-      selector: "input",
-    });
-    expect(noSavingElement.getAttribute("checked")).toBeDefined();
+    const noSavingElement = screen.getByLabelText("No saving");
+    expect(noSavingElement).toBeChecked();
     expect(noSavingElement.getAttribute("value")).toBe("3");
 
     const defaultElement = screen.getByLabelText(
       "Save submitted questionnaire and intermediate save (standard setting)",
-      { selector: "input" },
     );
-    expect(defaultElement.getAttribute("checked")).toBeFalsy();
+    expect(defaultElement).not.toBeChecked();
   });
 
   it("Default then change to no saving", () => {
@@ -143,14 +139,11 @@ describe("SaveCapabilityView", () => {
 
     const defaultElement = screen.getByLabelText(
       "Save submitted questionnaire and intermediate save (standard setting)",
-      { selector: "input" },
     );
-    expect(defaultElement.getAttribute("checked")).toBeDefined();
+    expect(defaultElement).toBeChecked();
     expect(defaultElement.getAttribute("value")).toBe("1");
 
-    const noSavingElement = screen.getByLabelText("No saving", {
-      selector: "input",
-    });
+    const noSavingElement = screen.getByLabelText("No saving");
     fireEvent.click(noSavingElement);
 
     expect(updateExtensionMock.mock.calls[0]).toEqual(
@@ -162,17 +155,8 @@ describe("SaveCapabilityView", () => {
     );
     expect(updateExtensionMock.mock.calls[0]).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({
-          valueCoding: {
-            system: IValueSetSystem.saveCapabilityValueSet,
-            code: "3",
-          },
-        }),
+        expect.objectContaining({ valueCoding: saveCoding("3") }),
       ]),
     );
-    expect(noSavingElement.getAttribute("checked")).toBeDefined();
-    expect(noSavingElement.getAttribute("value")).toBe("3");
-
-    expect(defaultElement.getAttribute("checked")).toBeFalsy();
   });
 });

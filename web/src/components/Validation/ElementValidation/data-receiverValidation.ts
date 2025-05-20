@@ -32,6 +32,8 @@ const validate = (
 
   if (isItemControlDataReceiver(qItem)) {
     errors.push(...validateDataReceiverExtension(t, qItem, qOrder));
+    errors.push(...validateDataReceiverReadonly(t, qItem));
+    errors.push(...validateDataReceiverMandatory(t, qItem));
 
     currentItem.items.forEach((item) =>
       validate(t, item, qItems, qOrder, errors),
@@ -55,6 +57,44 @@ const validateDataReceiverExtension = (
         qItem.linkId,
         ValidationType.dataReceiver,
         t("data receiver does not have an earlier question"),
+      ),
+    );
+  }
+
+  return returnErrors;
+};
+
+const validateDataReceiverReadonly = (
+  t: TFunction<"translation">,
+  qItem: QuestionnaireItem,
+): ValidationError[] => {
+  const returnErrors: ValidationError[] = [];
+
+  if (!qItem.readOnly) {
+    returnErrors.push(
+      createError(
+        qItem.linkId,
+        ValidationType.readonly,
+        t("data receiver must be readonly"),
+      ),
+    );
+  }
+
+  return returnErrors;
+};
+
+const validateDataReceiverMandatory = (
+  t: TFunction<"translation">,
+  qItem: QuestionnaireItem,
+): ValidationError[] => {
+  const returnErrors: ValidationError[] = [];
+
+  if (qItem.required) {
+    returnErrors.push(
+      createError(
+        qItem.linkId,
+        ValidationType.mandatory,
+        t("data receiver cannot be mandatory"),
       ),
     );
   }

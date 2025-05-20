@@ -6,6 +6,7 @@ type SwitchBtnProps = {
   value: boolean;
   label: string;
   disabled?: boolean;
+  testId?: string;
 };
 
 const SwitchBtn = ({
@@ -13,6 +14,7 @@ const SwitchBtn = ({
   value,
   label,
   disabled,
+  testId,
 }: SwitchBtnProps): React.JSX.Element => {
   return (
     <div className="switch-btn">
@@ -23,6 +25,7 @@ const SwitchBtn = ({
           checked={value}
           onChange={onChange}
           disabled={disabled}
+          data-testid={testId}
         />
         <span className="slider"></span>
       </label>

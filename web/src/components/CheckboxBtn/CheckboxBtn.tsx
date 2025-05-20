@@ -7,6 +7,7 @@ type CheckboxBtnProps = {
   label: string;
   value: string;
   disabled?: boolean;
+  testId?: string;
 };
 
 const CheckboxBtn = ({
@@ -15,6 +16,7 @@ const CheckboxBtn = ({
   label,
   value,
   disabled,
+  testId,
 }: CheckboxBtnProps): React.JSX.Element => {
   return (
     <div className="switch-btn">
@@ -26,6 +28,7 @@ const CheckboxBtn = ({
           checked={checked}
           onChange={onChange}
           disabled={disabled}
+          data-testid={testId}
         />
         <span className="checkmark"></span>
       </label>

@@ -5,6 +5,8 @@ export enum ValidationType {
   sidebar = "sidebar",
   endpoint = "endpoint",
   binary = "binary",
+  readonly = "readonly",
+  mandatory = "mandatory",
 }
 
 export enum ErrorLevel {

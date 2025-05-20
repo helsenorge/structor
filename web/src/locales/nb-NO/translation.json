@@ -160,7 +160,6 @@
   "Log in": "Logg inn",
   "Log out": "Logg ut",
   "Change to English": "Bytt til engelsk",
-  "Change to French": "Bytt til fransk",
   "Change to norwegian": "Bytt til norsk",
   "Predefined values": "Predefinerte verdier",
   "+ New option": "+ Nytt valg",
@@ -491,5 +490,13 @@
   "Table with answer options has no children": "tabell med svaralternativer har ingen barn",
   "Form does not have an Url, In case of Helsenorge this field must be 'Questionnaire/<Id>'": "Skjema har ikke Url. Når gjelder Helsenorge, må Url-en være 'Questionnaire/<Id>'",
   "In case of Helsenorge this field must be 'Questionnaire/<Id>'": "Når gjelder Helsenorge, må Url-en være 'Questionnaire/<Id>'",
-  "Url must be 'Questionnaire/<Id>'": "Url må være 'Questionnaire/<Id>'"
+  "Url must be 'Questionnaire/<Id>'": "Url må være 'Questionnaire/<Id>'",
+  "Cannot find the Endpoint's reference": "Har ikke gått referensen til Endpoint-en",
+  "In case of Helsenorge, endpoint must start with 'Endpoint/<Endpoint's Id>'": "Når gjelder Helsenorge, må Endpoint være 'Endpoint/<Id til Endpoint>'",
+  "Endpoint does not have an valid id 'Endpoint/<Endpoint's Id>'": "Endpoint-en har ikke en gjeldig Id 'Endpoint/<Id til Endpoint>'",
+  "Cannot find the print version's reference": "Har ikke gått referensen til oppskriftsversjonen",
+  "In case of Helsenorge, reference to print version must start with 'Binary/<print version's Id>'": "Når gjelder Helsenorge, må oppskriftsversjon være 'Binary/<Id til oppskriftsversjon>'",
+  "Print version does not have an valid id 'Binary/<print version's Id>'": "oppskriftsversjonen har ikke en gjeldig Id 'Binary/<Id til oppskriftsversjon>'",
+  "data receiver must be readonly": "data-receiver må være et skrivebeskyttet felt",
+  "data receiver cannot be mandatory": "data-receiver kan ikke være obligatorisk"
 }
