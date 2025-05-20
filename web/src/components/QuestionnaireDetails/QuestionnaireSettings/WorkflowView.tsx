@@ -71,8 +71,8 @@ const WorkflowView = (): React.JSX.Element => {
           };
 
           if (hasUseContextWorkflowRequest()) {
-            // Removes extension by creating a new array without the spesific value and overwrite meta
-            const extensionsToSet = (qMetadata.useContext || []).filter(
+            // Removes useContext by creating a new array without the spesific value and overwrite meta
+            const useContextToSet = (qMetadata.useContext || []).filter(
               (x: UsageContext) => {
                 return x.valueCodeableConcept?.coding?.find((obj) => {
                   return (
@@ -83,10 +83,10 @@ const WorkflowView = (): React.JSX.Element => {
                 });
               },
             );
-            updateMeta(IQuestionnaireMetadataType.useContext, extensionsToSet);
+            updateMeta(IQuestionnaireMetadataType.useContext, useContextToSet);
           } else {
-            // Adds extension by pushing value on the existing ones
-            const existingExtensions = (qMetadata.useContext || []).filter(
+            // Adds useContext by pushing value on the existing ones
+            const existingUseContexts = (qMetadata.useContext || []).filter(
               (x: UsageContext) => {
                 return x.valueCodeableConcept?.coding?.find((obj) => {
                   return (
@@ -97,10 +97,10 @@ const WorkflowView = (): React.JSX.Element => {
                 });
               },
             );
-            existingExtensions.push(updateValue);
+            existingUseContexts.push(updateValue);
             updateMeta(
               IQuestionnaireMetadataType.useContext,
-              existingExtensions,
+              existingUseContexts,
             );
           }
         }}

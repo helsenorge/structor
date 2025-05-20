@@ -174,8 +174,8 @@ describe("PdfSectionView", () => {
           </TreeContext.Provider>,
         );
 
-        const generatePDF = screen.getByTestId("hide-helptext-pdf");
-        expect(generatePDF).not.toBeChecked();
+        const hideHelpText = screen.getByTestId("hide-helptext-pdf");
+        expect(hideHelpText).not.toBeChecked();
       });
 
       it("metadata has Hide help texts in PDF extension", () => {
@@ -191,8 +191,8 @@ describe("PdfSectionView", () => {
           </TreeContext.Provider>,
         );
 
-        const generatePDF = screen.getByTestId("hide-helptext-pdf");
-        expect(generatePDF).toBeChecked();
+        const hideHelpText = screen.getByTestId("hide-helptext-pdf");
+        expect(hideHelpText).toBeChecked();
       });
 
       it("User selects Hide help texts in PDF", () => {
@@ -206,8 +206,8 @@ describe("PdfSectionView", () => {
           </TreeContext.Provider>,
         );
 
-        const generatePDF = screen.getByTestId("hide-helptext-pdf");
-        fireEvent.click(generatePDF);
+        const hideHelpText = screen.getByTestId("hide-helptext-pdf");
+        fireEvent.click(hideHelpText);
 
         expect(updateMetadataActionMock.mock.calls[0]).toEqual(
           expect.arrayContaining([IQuestionnaireMetadataType.extension]),
@@ -248,8 +248,8 @@ describe("PdfSectionView", () => {
           </TreeContext.Provider>,
         );
 
-        const generatePDF = screen.getByTestId("hide-helptext-pdf");
-        fireEvent.click(generatePDF);
+        const hideHelpText = screen.getByTestId("hide-helptext-pdf");
+        fireEvent.click(hideHelpText);
 
         expect(updateMetadataActionMock.mock.calls[0]).toEqual(
           expect.arrayContaining([IQuestionnaireMetadataType.extension]),
@@ -277,8 +277,8 @@ describe("PdfSectionView", () => {
           </TreeContext.Provider>,
         );
 
-        const generatePDF = screen.getByTestId("hide-sublabel");
-        expect(generatePDF).not.toBeChecked();
+        const hideSublable = screen.getByTestId("hide-sublabel");
+        expect(hideSublable).not.toBeChecked();
       });
 
       it("metadata has Hide sublabels in PDF extension", () => {
@@ -294,8 +294,8 @@ describe("PdfSectionView", () => {
           </TreeContext.Provider>,
         );
 
-        const generatePDF = screen.getByTestId("hide-sublabel");
-        expect(generatePDF).toBeChecked();
+        const hideSublable = screen.getByTestId("hide-sublabel");
+        expect(hideSublable).toBeChecked();
       });
 
       it("User selects Hide sublabels in PDF", () => {
@@ -309,8 +309,8 @@ describe("PdfSectionView", () => {
           </TreeContext.Provider>,
         );
 
-        const generatePDF = screen.getByTestId("hide-sublabel");
-        fireEvent.click(generatePDF);
+        const hideSublable = screen.getByTestId("hide-sublabel");
+        fireEvent.click(hideSublable);
 
         expect(updateMetadataActionMock.mock.calls[0]).toEqual(
           expect.arrayContaining([IQuestionnaireMetadataType.extension]),
@@ -351,8 +351,8 @@ describe("PdfSectionView", () => {
           </TreeContext.Provider>,
         );
 
-        const generatePDF = screen.getByTestId("hide-sublabel");
-        fireEvent.click(generatePDF);
+        const hideSublable = screen.getByTestId("hide-sublabel");
+        fireEvent.click(hideSublable);
 
         expect(updateMetadataActionMock.mock.calls[0]).toEqual(
           expect.arrayContaining([IQuestionnaireMetadataType.extension]),
@@ -380,8 +380,8 @@ describe("PdfSectionView", () => {
           </TreeContext.Provider>,
         );
 
-        const generatePDF = screen.getByTestId("hide-sidebar");
-        expect(generatePDF).not.toBeChecked();
+        const hideSidebar = screen.getByTestId("hide-sidebar");
+        expect(hideSidebar).not.toBeChecked();
       });
 
       it("metadata has Hide sidebar texts in PDF extension", () => {
@@ -397,8 +397,8 @@ describe("PdfSectionView", () => {
           </TreeContext.Provider>,
         );
 
-        const generatePDF = screen.getByTestId("hide-sidebar");
-        expect(generatePDF).toBeChecked();
+        const hideSidebar = screen.getByTestId("hide-sidebar");
+        expect(hideSidebar).toBeChecked();
       });
 
       it("User selects Hide sidebar texts in PDF", () => {
@@ -412,8 +412,8 @@ describe("PdfSectionView", () => {
           </TreeContext.Provider>,
         );
 
-        const generatePDF = screen.getByTestId("hide-sidebar");
-        fireEvent.click(generatePDF);
+        const hideSidebar = screen.getByTestId("hide-sidebar");
+        fireEvent.click(hideSidebar);
 
         expect(updateMetadataActionMock.mock.calls[0]).toEqual(
           expect.arrayContaining([IQuestionnaireMetadataType.extension]),
@@ -454,8 +454,8 @@ describe("PdfSectionView", () => {
           </TreeContext.Provider>,
         );
 
-        const generatePDF = screen.getByTestId("hide-sidebar");
-        fireEvent.click(generatePDF);
+        const hideSidebar = screen.getByTestId("hide-sidebar");
+        fireEvent.click(hideSidebar);
 
         expect(updateMetadataActionMock.mock.calls[0]).toEqual(
           expect.arrayContaining([IQuestionnaireMetadataType.extension]),
