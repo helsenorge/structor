@@ -1,8 +1,68 @@
 import { QuestionnaireItem } from "fhir/r4";
 import { ErrorLevel } from "../../validationTypes";
-import { validateQuantityInitialValue } from "../quantityValidation";
+import {
+  validateQuantityInitialValue,
+  validateQuantitySystemAndCode,
+} from "../quantityValidation";
 
-const quantityInitialValueQuantity: QuestionnaireItem = {
+describe("quantity validation", () => {
+  const translatationMock = vi.fn();
+  beforeEach(() => {
+    translatationMock.mockClear();
+  });
+
+  describe("quantity initial value", () => {
+    it("Should get error if initial value is not valueQuantity", () => {
+      const validationErrors = validateQuantityInitialValue(
+        translatationMock,
+        initialValueNotQuantity,
+      );
+
+      expect(validationErrors.length).toBe(1);
+      expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+      expect(translatationMock.mock.calls[0]).toEqual([
+        "quantity initial value is not valueQuantity",
+      ]);
+    });
+    it("Should NOT get error if initial value is valueQuantity", () => {
+      const validationErrors = validateQuantityInitialValue(
+        translatationMock,
+        initialValueQuantity,
+      );
+
+      expect(validationErrors.length).toBe(0);
+    });
+  });
+
+  describe("quantity system and code", () => {
+    it("Should get errors if item extension has no system and no code", () => {
+      const validationErrors = validateQuantitySystemAndCode(
+        translatationMock,
+        extensionWithNoSystemAndCode,
+      );
+
+      expect(validationErrors.length).toBe(2);
+      expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+      expect(validationErrors[1].errorLevel).toBe(ErrorLevel.error);
+      expect(translatationMock.mock.calls[0]).toEqual([
+        "quantity extension does not have a system",
+      ]);
+      expect(translatationMock.mock.calls[1]).toEqual([
+        "quantity extension does not have code",
+      ]);
+    });
+    it("Should NOT get error if item extension has a system and a code", () => {
+      const validationErrors = validateQuantitySystemAndCode(
+        translatationMock,
+        extensionWithSystemAndCode,
+      );
+
+      expect(validationErrors.length).toBe(0);
+    });
+  });
+});
+
+const initialValueQuantity: QuestionnaireItem = {
   linkId: "dab2891c-9443-4995-8bde-13479baeb371",
   type: "quantity",
   text: "kvantitet",
@@ -29,7 +89,7 @@ const quantityInitialValueQuantity: QuestionnaireItem = {
   ],
 };
 
-const quantityInitialValueNotQuantity: QuestionnaireItem = {
+const initialValueNotQuantity: QuestionnaireItem = {
   linkId: "dab2891c-9443-4995-8bde-13479baeb371",
   type: "quantity",
   text: "kvantitet",
@@ -51,32 +111,56 @@ const quantityInitialValueNotQuantity: QuestionnaireItem = {
   ],
 };
 
-describe("quantity validation", () => {
-  const translatationMock = vi.fn();
-  beforeEach(() => {
-    translatationMock.mockClear();
-  });
+const extensionWithSystemAndCode: QuestionnaireItem = {
+  linkId: "dab2891c-9443-4995-8bde-13479baeb371",
+  type: "quantity",
+  text: "kvantitet",
+  required: false,
+  initial: [
+    {
+      valueQuantity: {
+        unit: "centimeter",
+        code: "cm",
+        system: "http://unitsofmeasure.org",
+        value: 47,
+      },
+    },
+  ],
+  extension: [
+    {
+      url: "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+      valueCoding: {
+        code: "cm",
+        display: "centimeter",
+        system: "http://unitsofmeasure.org",
+      },
+    },
+  ],
+};
 
-  describe("quantity initial value", () => {
-    it("Should get error if initial value is not valueQuantity", () => {
-      const validationErrors = validateQuantityInitialValue(
-        translatationMock,
-        quantityInitialValueNotQuantity,
-      );
-
-      expect(validationErrors.length).toBe(1);
-      expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
-      expect(translatationMock.mock.calls[0]).toEqual([
-        "quantity initial value is not valueQuantity",
-      ]);
-    });
-    it("Should NOT get error if initial value is valueQuantity", () => {
-      const validationErrors = validateQuantityInitialValue(
-        translatationMock,
-        quantityInitialValueQuantity,
-      );
-
-      expect(validationErrors.length).toBe(0);
-    });
-  });
-});
+const extensionWithNoSystemAndCode: QuestionnaireItem = {
+  linkId: "dab2891c-9443-4995-8bde-13479baeb371",
+  type: "quantity",
+  text: "kvantitet",
+  required: false,
+  initial: [
+    {
+      valueQuantity: {
+        unit: "centimeter",
+        code: "cm",
+        system: "http://unitsofmeasure.org",
+        value: 47,
+      },
+    },
+  ],
+  extension: [
+    {
+      url: "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+      valueCoding: {
+        code: "",
+        display: "centimeter",
+        system: "",
+      },
+    },
+  ],
+};
