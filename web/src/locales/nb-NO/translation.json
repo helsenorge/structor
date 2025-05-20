@@ -254,7 +254,6 @@
   "Code does not have \"system\" property": "Code har ikke \"system\" property",
   "Code does not have a valid system": "Code har ikke gyldig system",
   "answerOption system cannot be empty or have not a valid format": "answerOption system er tom eller har ikke en gyldig format",
-  "quantity initial value is not valueQuantity": "quantity initiell verdi er ikke valueQuantity",
   "quantity extension does not have a system": "quantity extension har ikke et system",
   "quantity extension does not have a valid system": "quantity extension har ikke gyldig system",
   "quantity extension does not have code": "quantity extension har ikke code",

@@ -1,4 +1,4 @@
-import { HelsenorgeUrlStartText } from "src/helpers/validation/validationHelper";
+import { HelsenorgeUrlStartText } from "src/components/Validation/validationHelper";
 
 import { IExtensionType } from "../../types/IQuestionnareItemType";
 

@@ -9,7 +9,7 @@ import {
 
 import AdvancedQuestionOptions from "../AdvancedQuestionOptions";
 import { ItemControlType } from "src/helpers/itemControl";
-import { ErrorLevel } from "src/helpers/validation/validationTypes";
+import { ErrorLevel } from "src/components/Validation/validationTypes";
 
 describe("AdvancedQuestionOptions", () => {
   const item: QuestionnaireItem = {

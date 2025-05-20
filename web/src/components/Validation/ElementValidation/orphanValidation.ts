@@ -40,10 +40,6 @@ import {
 import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";
-import {
-  validateQuantityInitialValue,
-  validateQuantitySystemAndCode,
-} from "./quantityValidation";
 
 const validEnableWhenChoiceOperators = [IOperator.equal, IOperator.notEqual];
 
@@ -414,6 +410,50 @@ const validateAnswerOptionSystem = (
   return returnErrors;
 };
 
+const validateQuantitySystemAndCode = (
+  t: TFunction<"translation">,
+  qItem: QuestionnaireItem,
+): ValidationError[] => {
+  const returnErrors: ValidationError[] = [];
+  if (qItem.type === IQuestionnaireItemType.quantity) {
+    const unitExtension = (qItem.extension ?? []).find(
+      (x) => x.url === IExtensionType.questionnaireUnit,
+    );
+    if (unitExtension && !unitExtension.valueCoding?.system) {
+      returnErrors.push(
+        createError(
+          qItem.linkId,
+          "system",
+          t("quantity extension does not have a system"),
+        ),
+      );
+    }
+    if (
+      unitExtension &&
+      unitExtension.valueCoding?.system &&
+      !isUriValid(unitExtension.valueCoding?.system)
+    ) {
+      returnErrors.push(
+        createError(
+          qItem.linkId,
+          "system",
+          t("quantity extension does not have a valid system"),
+        ),
+      );
+    }
+    if (unitExtension && !unitExtension.valueCoding?.code) {
+      returnErrors.push(
+        createError(
+          qItem.linkId,
+          "code",
+          t("quantity extension does not have code"),
+        ),
+      );
+    }
+  }
+  return returnErrors;
+};
+
 const validateExtensions = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
@@ -742,9 +782,6 @@ const validate = (
 
   // validate system in answerOptions
   errors.push(...validateAnswerOptionSystem(t, qItem));
-
-  // validate system+code in quantity
-  errors.push(...validateQuantityInitialValue(t, qItem));
 
   // validate system+code in quantity
   errors.push(...validateQuantitySystemAndCode(t, qItem));
