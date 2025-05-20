@@ -40,6 +40,10 @@ import {
 import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";
+import {
+  validateQuantityInitialValue,
+  validateQuantitySystemAndCode,
+} from "./quantityValidation";
 
 const validEnableWhenChoiceOperators = [IOperator.equal, IOperator.notEqual];
 
@@ -403,72 +407,6 @@ const validateAnswerOptionSystem = (
           t("answerOption system cannot be empty or have not a valid format"),
           ErrorLevel.error,
           0,
-        ),
-      );
-    }
-  }
-  return returnErrors;
-};
-
-export const validateQuantityInitialValue = (
-  t: TFunction<"translation">,
-  qItem: QuestionnaireItem,
-): ValidationError[] => {
-  const returnErrors: ValidationError[] = [];
-  if (qItem.type === IQuestionnaireItemType.quantity) {
-    if (qItem.initial) {
-      const initialValueQuantity = qItem.initial[0].valueQuantity;
-      if (!initialValueQuantity) {
-        returnErrors.push(
-          createError(
-            qItem.linkId,
-            "system",
-            t("quantity initial value is not valueQuantity"),
-          ),
-        );
-      }
-    }
-  }
-  return returnErrors;
-};
-
-const validateQuantitySystemAndCode = (
-  t: TFunction<"translation">,
-  qItem: QuestionnaireItem,
-): ValidationError[] => {
-  const returnErrors: ValidationError[] = [];
-  if (qItem.type === IQuestionnaireItemType.quantity) {
-    const unitExtension = (qItem.extension ?? []).find(
-      (x) => x.url === IExtensionType.questionnaireUnit,
-    );
-    if (unitExtension && !unitExtension.valueCoding?.system) {
-      returnErrors.push(
-        createError(
-          qItem.linkId,
-          "system",
-          t("quantity extension does not have a system"),
-        ),
-      );
-    }
-    if (
-      unitExtension &&
-      unitExtension.valueCoding?.system &&
-      !isUriValid(unitExtension.valueCoding?.system)
-    ) {
-      returnErrors.push(
-        createError(
-          qItem.linkId,
-          "system",
-          t("quantity extension does not have a valid system"),
-        ),
-      );
-    }
-    if (unitExtension && !unitExtension.valueCoding?.code) {
-      returnErrors.push(
-        createError(
-          qItem.linkId,
-          "code",
-          t("quantity extension does not have code"),
         ),
       );
     }

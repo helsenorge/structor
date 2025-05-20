@@ -1,6 +1,6 @@
 import { QuestionnaireItem } from "fhir/r4";
 import { ErrorLevel } from "../../validationTypes";
-import { validateQuantityInitialValue } from "../orphanValidation";
+import { validateQuantityInitialValue } from "../quantityValidation";
 
 const quantityInitialValueQuantity: QuestionnaireItem = {
   linkId: "dab2891c-9443-4995-8bde-13479baeb371",
