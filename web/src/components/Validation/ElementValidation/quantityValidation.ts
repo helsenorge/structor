@@ -1,4 +1,4 @@
-import { QuestionnaireItem } from "fhir/r4";
+import { QuestionnaireItem, ValueSet } from "fhir/r4";
 import { TFunction } from "react-i18next";
 import { isUriValid } from "src/helpers/uriHelper";
 
