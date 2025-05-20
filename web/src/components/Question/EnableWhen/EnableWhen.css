@@ -1,0 +1,33 @@
+.infobox {
+  background: #ebf8ff;
+  color: #4a5568;
+  margin-top: 1rem;
+  padding: 1rem 2.5rem;
+  white-space: normal;
+}
+
+.enablewhen-box {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin: 1.5rem 0;
+}
+
+.enablewhen-condition {
+  display: flex;
+}
+
+.enableWhen-condition__answer {
+  flex: 1;
+  padding-left: 1rem;
+}
+
+.enableWhen-condition__answer > input {
+  width: 100%;
+}
+
+.enablebehavior {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+}
