@@ -410,6 +410,28 @@ const validateAnswerOptionSystem = (
   return returnErrors;
 };
 
+export const validateQuantityInitialValue = (
+  t: TFunction<"translation">,
+  qItem: QuestionnaireItem,
+): ValidationError[] => {
+  const returnErrors: ValidationError[] = [];
+  if (qItem.type === IQuestionnaireItemType.quantity) {
+    if (qItem.initial) {
+      const initialValueQuantity = qItem.initial[0].valueQuantity;
+      if (!initialValueQuantity) {
+        returnErrors.push(
+          createError(
+            qItem.linkId,
+            "system",
+            t("quantity initial value is not valueQuantity"),
+          ),
+        );
+      }
+    }
+  }
+  return returnErrors;
+};
+
 const validateQuantitySystemAndCode = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
@@ -782,6 +804,9 @@ const validate = (
 
   // validate system in answerOptions
   errors.push(...validateAnswerOptionSystem(t, qItem));
+
+  // validate system+code in quantity
+  errors.push(...validateQuantityInitialValue(t, qItem));
 
   // validate system+code in quantity
   errors.push(...validateQuantitySystemAndCode(t, qItem));
