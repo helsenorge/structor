@@ -443,7 +443,6 @@
   "Regular expressions can not be set on enrichment fields": "Regulære uttrykk kan ikke settes på berikede felter",
   "Readonly fields should not have validation": "Skrivebeskyttetede felter kan ikke ha validering",
   "There are elements marked in translation that need attention.": "Det er elementer med markering i oversettelse som trenger oppmerksomhet.",
-  "Form does not have an id": "Skjema har ikke en id",
   "Form does not have a title": "Skjema har ikke en tittel",
   "Title cannot have any special characters []{}/\\<>`´;:|\"'$£#@%*¤": "Tittel kan ikke ha noen spesieltegn []{}/\\<>`´;:|\"'$£#@%*¤",
   "SOT does not have a text": "SOT har ikke en tekst",
