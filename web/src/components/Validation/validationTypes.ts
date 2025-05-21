@@ -7,6 +7,8 @@ export enum ValidationType {
   binary = "binary",
   readonly = "readonly",
   mandatory = "mandatory",
+  scoring = "scoring",
+  calculation = "calculation",
 }
 
 export enum ErrorLevel {

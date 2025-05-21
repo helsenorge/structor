@@ -1,9 +1,16 @@
 import { QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
-import { hasExtension } from "src/helpers/extensionHelper";
-import { isItemControlDataReceiver } from "src/helpers/itemControl";
+import { getLinkIdFromValueString } from "src/components/AdvancedQuestionOptions/optionComponents/dataReceiverHelper";
+import {
+  getExtensionStringValue,
+  hasExtension,
+} from "src/helpers/extensionHelper";
+import {
+  existItemWithSystem,
+  isItemControlDataReceiver,
+} from "src/helpers/itemControl";
 import { Items, OrderItem, TreeState } from "src/store/treeStore/treeStore";
-import { IExtensionType } from "src/types/IQuestionnareItemType";
+import { ICodeSystem, IExtensionType } from "src/types/IQuestionnareItemType";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { createError, existDataReceiverLinkId } from "../validationHelper";
@@ -34,6 +41,8 @@ const validate = (
     errors.push(...validateDataReceiverExtension(t, qItem, qOrder));
     errors.push(...validateDataReceiverReadonly(t, qItem));
     errors.push(...validateDataReceiverMandatory(t, qItem));
+    errors.push(...validateDataReceiverScoring(t, qItem));
+    errors.push(...validateDataReceiverCalculatedExpression(t, qItem, qItems));
 
     currentItem.items.forEach((item) =>
       validate(t, item, qItems, qOrder, errors),
@@ -95,6 +104,60 @@ const validateDataReceiverMandatory = (
         qItem.linkId,
         ValidationType.mandatory,
         t("data receiver cannot be mandatory"),
+      ),
+    );
+  }
+
+  return returnErrors;
+};
+
+const validateDataReceiverScoring = (
+  t: TFunction<"translation">,
+  qItem: QuestionnaireItem,
+): ValidationError[] => {
+  const returnErrors: ValidationError[] = [];
+
+  if (
+    existItemWithSystem(qItem, ICodeSystem.score) ||
+    existItemWithSystem(qItem, ICodeSystem.scoringFormulas)
+  ) {
+    returnErrors.push(
+      createError(
+        qItem.linkId,
+        ValidationType.scoring,
+        t("data receiver cannot be a summation field"),
+      ),
+    );
+  }
+
+  return returnErrors;
+};
+
+const validateDataReceiverCalculatedExpression = (
+  t: TFunction<"translation">,
+  qItem: QuestionnaireItem,
+  qItems: Items,
+): ValidationError[] => {
+  const returnErrors: ValidationError[] = [];
+
+  const linkId = getLinkIdFromValueString(qItem);
+  const mainItem = qItems[linkId];
+
+  const mainExpression = getExtensionStringValue(
+    mainItem,
+    IExtensionType.calculatedExpression,
+  );
+  const copyExpression = getExtensionStringValue(
+    qItem,
+    IExtensionType.calculatedExpression,
+  );
+
+  if (mainExpression !== copyExpression) {
+    returnErrors.push(
+      createError(
+        qItem.linkId,
+        ValidationType.calculation,
+        t("data receiver does not have a correct calculated expression"),
       ),
     );
   }

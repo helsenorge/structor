@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
@@ -6,24 +6,26 @@ import { useTranslation } from "react-i18next";
 import { ICodeSystem } from "../../../types/IQuestionnareItemType";
 import { ScoringFormulaCodes } from "../../../types/scoringFormulas";
 
-import { removeItemCode, addItemCode } from "../../../helpers/codeHelper";
+import {
+  removeItemCode,
+  addItemCode,
+  removeItemCodes,
+} from "../../../helpers/codeHelper";
 import { existItemWithCode, scoreCoding } from "../../../helpers/itemControl";
 import { QSCoding } from "../../../helpers/QuestionHelper";
-import { ActionType } from "../../../store/treeStore/treeStore";
+import { ActionType, TreeContext } from "../../../store/treeStore/treeStore";
 import { removeOrdinalValueExtensionfromAnswerOptions } from "../../../utils/answerOptionExtensionUtils";
 import FormField from "../../FormField/FormField";
 import SwitchBtn from "../../SwitchBtn/SwitchBtn";
 
 type ScoringOptionProps = {
   item: QuestionnaireItem;
-  dispatch: React.Dispatch<ActionType>;
 };
 
-export const ScoringOption = ({
-  item,
-  dispatch,
-}: ScoringOptionProps): JSX.Element => {
+export const ScoringOption = ({ item }: ScoringOptionProps): JSX.Element => {
   const { t } = useTranslation();
+  const { dispatch } = useContext(TreeContext);
+
   const [hasQuestionScoreCode, setHasQuestionScoreCode] = useState(
     existItemWithCode(item, ScoringFormulaCodes.questionScore),
   );
@@ -39,9 +41,12 @@ export const ScoringOption = ({
       <FormField>
         <SwitchBtn
           onChange={() => {
+            removeItemCodes(
+              item,
+              [ICodeSystem.scoringFormulas, ICodeSystem.score],
+              dispatch,
+            );
             if (hasQuestionScoreCode) {
-              removeItemCode(item, ICodeSystem.score, dispatch);
-              removeItemCode(item, ICodeSystem.scoringFormulas, dispatch);
               removeOrdinalValueExtensionfromAnswerOptions(item, dispatch);
               setHasQuestionScoreCode(false);
             } else {

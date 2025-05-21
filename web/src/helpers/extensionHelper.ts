@@ -200,7 +200,7 @@ export const getExtensionStringValue = (
   item: QuestionnaireItem,
   extensionType: IExtensionType,
 ): string | undefined => {
-  return findExtensionByUrl(item.extension, extensionType)?.valueString;
+  return findExtensionByUrl(item?.extension, extensionType)?.valueString;
 };
 
 export const createGuidanceActionExtension = (valueString = ""): Extension => ({

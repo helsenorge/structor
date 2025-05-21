@@ -93,7 +93,7 @@ const AnswerOption = ({
   };
 
   useEffect(() => {
-    setDisplayScoringField(doesItemHaveCode(item, "score"));
+    setDisplayScoringField(doesItemHaveCode(item, ItemControlType.score));
   }, [item]);
 
   return (

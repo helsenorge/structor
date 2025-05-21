@@ -1,3 +1,5 @@
+import { useContext } from "react";
+
 import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
@@ -11,20 +13,19 @@ import {
   setItemExtension,
 } from "../../../helpers/extensionHelper";
 import { elementSaveCapability } from "../../../helpers/QuestionHelper";
-import { ActionType } from "../../../store/treeStore/treeStore";
+import { ActionType, TreeContext } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 import RadioBtn from "../../RadioBtn/RadioBtn";
 
 type SaveCapabilityOptionProps = {
   item: QuestionnaireItem;
-  dispatch: React.Dispatch<ActionType>;
 };
 
 export const SaveCapabilityOption = ({
   item,
-  dispatch,
 }: SaveCapabilityOptionProps): JSX.Element => {
   const { t } = useTranslation();
+  const { dispatch } = useContext(TreeContext);
 
   return (
     <FormField label={t("Save capabilities")}>

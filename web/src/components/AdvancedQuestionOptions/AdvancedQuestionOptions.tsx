@@ -210,14 +210,14 @@ const AdvancedQuestionOptions = ({
         qOrder={qOrder}
       />
       <ViewOption item={item} />
-      <SaveCapabilityOption item={item} dispatch={dispatch} />
+      <SaveCapabilityOption item={item} />
       {(item.type === IQuestionnaireItemType.integer ||
         item.type === IQuestionnaireItemType.decimal ||
         item.type === IQuestionnaireItemType.quantity) && (
-        <SummationOption item={item} dispatch={dispatch} />
+        <SummationOption item={item} />
       )}
       {item.type === IQuestionnaireItemType.choice && (
-        <ScoringOption item={item} dispatch={dispatch} />
+        <ScoringOption item={item} />
       )}
     </>
   );

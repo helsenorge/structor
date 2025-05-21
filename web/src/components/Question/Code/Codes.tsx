@@ -76,7 +76,7 @@ const Codes = ({
     }
   };
 
-  const renderCode = (code: Coding, index: number): JSX.Element => {
+  const renderCode = (code: Coding, index: number): React.JSX.Element => {
     const hasValidationError = itemValidationErrors.some(
       (x) => x.errorProperty.substring(0, 4) === "code" && index === x.index,
     );

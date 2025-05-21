@@ -59,7 +59,6 @@ const EnableWhen = ({
     dispatch(updateItemAction(linkId, IItemProperty.enableBehavior, value));
   };
 
-  // TODO: support most of these item types
   const isSupportedType = (conditionItemType: string): boolean => {
     return !(
       conditionItemType === IQuestionnaireItemType.group ||
@@ -80,13 +79,12 @@ const EnableWhen = ({
         const conditionItem = getItem(x.question);
         const hasValidationError = itemValidationErrors.some(
           (error) =>
-            error.errorProperty.substr(0, 10) === "enableWhen" &&
+            error.errorProperty.substring(0, 10) === "enableWhen" &&
             index === error.index,
         );
         return (
-          // we cannot use index as key, since we can also delete elements. Try to find a better index...
           <div
-            key={`${linkId}-${x.question}-${x.operator}-${index}`}
+            key={`${linkId}-${index}-${Math.random()}`}
             className={`enablewhen-box ${
               hasValidationError ? "validation-error" : ""
             }`}

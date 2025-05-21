@@ -75,7 +75,6 @@ const EnableWhenInfoBox = ({
   };
 
   const getQuantityDisplay = (answerQuantity: Quantity): string => {
-    // TODO: vis riktig unit dersom den kommer fra extension
     let display: string | undefined = "";
     if (answerQuantity) {
       const unit = answerQuantity.unit;

@@ -1,12 +1,15 @@
+import { useContext } from "react";
+
 import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { ScoringFormulaCodes } from "src/types/scoringFormulas";
 
 import { ICodeSystem } from "../../../types/IQuestionnareItemType";
 
-import { removeItemCode, addItemCode } from "../../../helpers/codeHelper";
+import { addItemCode, removeItemCodes } from "../../../helpers/codeHelper";
 import { scoreCoding } from "../../../helpers/itemControl";
 import { scoreSumOptions } from "../../../helpers/QuestionHelper";
-import { ActionType } from "../../../store/treeStore/treeStore";
+import { TreeContext } from "../../../store/treeStore/treeStore";
 import {
   getScoringFormulaName,
   getSelectedScoringCode,
@@ -16,14 +19,13 @@ import RadioBtn from "../../RadioBtn/RadioBtn";
 
 type SummationOptionProps = {
   item: QuestionnaireItem;
-  dispatch: React.Dispatch<ActionType>;
 };
 
 export const SummationOption = ({
   item,
-  dispatch,
 }: SummationOptionProps): JSX.Element => {
   const { t } = useTranslation();
+  const { dispatch } = useContext(TreeContext);
 
   return (
     <>
@@ -38,12 +40,15 @@ export const SummationOption = ({
       <FormField>
         <RadioBtn
           onChange={(newValue: string) => {
-            if (newValue === "0") {
-              removeItemCode(item, ICodeSystem.scoringFormulas, dispatch);
-              removeItemCode(item, ICodeSystem.score, dispatch);
-            } else {
-              removeItemCode(item, ICodeSystem.scoringFormulas, dispatch);
-              removeItemCode(item, ICodeSystem.score, dispatch);
+            removeItemCodes(
+              item,
+              [ICodeSystem.scoringFormulas, ICodeSystem.score],
+              dispatch,
+            );
+            if (
+              newValue === ScoringFormulaCodes.sectionScore ||
+              newValue === ScoringFormulaCodes.totalScore
+            ) {
               addItemCode(item, scoreCoding, dispatch);
               addItemCode(
                 item,

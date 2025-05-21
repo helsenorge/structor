@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
 import CheckboxBtn from "src/components/CheckboxBtn/CheckboxBtn";
@@ -25,7 +25,7 @@ import { CheckboxOption } from "src/types/OptionTypes";
 
 const MetaSecurityEditor = (): React.JSX.Element => {
   const { t } = useTranslation();
-  const { state, dispatch } = React.useContext(TreeContext);
+  const { state, dispatch } = useContext(TreeContext);
   const { qMetadata } = state;
   const [displayTilgangsstyring, setDisplayTilgangsstyring] = React.useState(
     getTilgangsstyringCodes(qMetadata)?.length > 0,

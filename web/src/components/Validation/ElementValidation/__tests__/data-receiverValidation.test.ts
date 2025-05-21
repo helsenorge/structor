@@ -3,20 +3,18 @@ import {
   QuestionnaireItem,
   QuestionnaireItemEnableWhen,
 } from "fhir/r4";
-import { ItemControlType } from "src/helpers/itemControl";
 import { Items, OrderItem, TreeState } from "src/store/treeStore/treeStore";
 import {
+  ICodeSystem,
   IExtensionType,
   IValueSetSystem,
 } from "src/types/IQuestionnareItemType";
 import { validateDataReceiverElements } from "../data-receiverValidation";
 import { ErrorLevel, ValidationType } from "../../validationTypes";
+import { ItemControlType } from "src/helpers/itemControl";
+import { ScoringFormulaCodes } from "src/types/scoringFormulas";
 
-const mainItem = {
-  linkId: "1",
-  type: "string",
-  text: "Text",
-} as QuestionnaireItem;
+let mainItem = {} as QuestionnaireItem;
 let copyItem = {} as QuestionnaireItem;
 
 const qOrder = [
@@ -28,6 +26,11 @@ describe("data-receiver Validation", () => {
   const translatationMock = vi.fn();
   beforeEach(() => {
     translatationMock.mockClear();
+    mainItem = {
+      linkId: "1",
+      type: "string",
+      text: "Text",
+    } as QuestionnaireItem;
     copyItem = {
       linkId: "2",
       type: "string",
@@ -159,6 +162,118 @@ describe("data-receiver Validation", () => {
     expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
     expect(translatationMock.mock.calls[0]).toEqual([
       "data receiver cannot be mandatory",
+    ]);
+  });
+
+  it("data-receiver cannot be a summation field", () => {
+    copyItem.code = [
+      {
+        system: ICodeSystem.score,
+        code: ItemControlType.score,
+        display: "score",
+      },
+      {
+        system: ICodeSystem.scoringFormulas,
+        code: ScoringFormulaCodes.sectionScore,
+        display: "Section score",
+      },
+    ];
+    const treeState = {
+      qOrder: qOrder,
+      qItems: { "1": mainItem, "2": copyItem } as Items,
+    } as TreeState;
+
+    const validationErrors = validateDataReceiverElements(
+      translatationMock,
+      treeState,
+    );
+
+    expect(validationErrors.length).toBe(1);
+    expect(validationErrors[0].errorProperty).toBe(ValidationType.scoring);
+    expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+    expect(translatationMock.mock.calls[0]).toEqual([
+      "data receiver cannot be a summation field",
+    ]);
+  });
+
+  it("data-receiver does not have a copy of main calculated expression", () => {
+    mainItem.extension = [
+      {
+        url: IExtensionType.calculatedExpression,
+        valueString:
+          "QuestionnaireResponse.descendants().where(linkId='8.1').answer.value.value/10000",
+      },
+    ];
+    const treeState = {
+      qOrder: qOrder,
+      qItems: { "1": mainItem, "2": copyItem } as Items,
+    } as TreeState;
+
+    const validationErrors = validateDataReceiverElements(
+      translatationMock,
+      treeState,
+    );
+
+    expect(validationErrors.length).toBe(1);
+    expect(validationErrors[0].errorProperty).toBe(ValidationType.calculation);
+    expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+    expect(translatationMock.mock.calls[0]).toEqual([
+      "data receiver does not have a correct calculated expression",
+    ]);
+  });
+
+  it("data-receiver has a calculated expression while main item does not have any", () => {
+    copyItem.extension?.push({
+      url: IExtensionType.calculatedExpression,
+      valueString:
+        "QuestionnaireResponse.descendants().where(linkId='8.1').answer.value.value/10000",
+    });
+    const treeState = {
+      qOrder: qOrder,
+      qItems: { "1": mainItem, "2": copyItem } as Items,
+    } as TreeState;
+
+    const validationErrors = validateDataReceiverElements(
+      translatationMock,
+      treeState,
+    );
+
+    expect(validationErrors.length).toBe(1);
+    expect(validationErrors[0].errorProperty).toBe(ValidationType.calculation);
+    expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+    expect(translatationMock.mock.calls[0]).toEqual([
+      "data receiver does not have a correct calculated expression",
+    ]);
+  });
+
+  it("data-receiver has a correct copy of main calculated expression", () => {
+    mainItem.extension = [
+      {
+        url: IExtensionType.calculatedExpression,
+        valueString:
+          "QuestionnaireResponse.descendants().where(linkId='8.1').answer.value.value/10000",
+      },
+    ];
+    copyItem.extension?.push({
+      url: IExtensionType.calculatedExpression,
+      valueString:
+        "QuestionnaireResponse.descendants().where(linkId='8.1').answer.value.value/1000",
+    });
+    const treeState = {
+      qOrder: qOrder,
+      qItems: { "1": mainItem, "2": copyItem } as Items,
+    } as TreeState;
+
+    const validationErrors = validateDataReceiverElements(
+      translatationMock,
+      treeState,
+    );
+
+    expect(validationErrors.length).toBe(1);
+    expect(validationErrors[0].errorProperty).toBe(ValidationType.calculation);
+    expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+    expect(translatationMock.mock.calls[0]).toEqual([
+      "data receiver does not have a correct calculated expression",
     ]);
   });
 });
