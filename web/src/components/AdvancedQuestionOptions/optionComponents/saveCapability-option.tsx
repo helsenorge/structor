@@ -13,7 +13,7 @@ import {
   setItemExtension,
 } from "../../../helpers/extensionHelper";
 import { elementSaveCapability } from "../../../helpers/QuestionHelper";
-import { ActionType, TreeContext } from "../../../store/treeStore/treeStore";
+import { TreeContext } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 import RadioBtn from "../../RadioBtn/RadioBtn";
 
