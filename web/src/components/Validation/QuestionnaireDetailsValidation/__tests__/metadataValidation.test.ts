@@ -17,14 +17,18 @@ describe("metadataValidation", () => {
 
     const validationErrors = validateMetadata(translatationMock, treeState);
 
-    expect(validationErrors.length).toBe(3);
+    expect(validationErrors.length).toBe(4);
+
     expect(translatationMock.mock.calls[0]).toEqual(
-      expect.arrayContaining(["Form does not have a title"]),
+      expect.arrayContaining(["Form does not have an id"]),
     );
     expect(translatationMock.mock.calls[1]).toEqual(
-      expect.arrayContaining(["Form does not have a technical name"]),
+      expect.arrayContaining(["Form does not have a title"]),
     );
     expect(translatationMock.mock.calls[2]).toEqual(
+      expect.arrayContaining(["Form does not have a technical name"]),
+    );
+    expect(translatationMock.mock.calls[3]).toEqual(
       expect.arrayContaining([
         "Form does not have an Url, In case of Helsenorge this field must be 'Questionnaire/<Id>'",
       ]),

@@ -75,9 +75,7 @@ const MetadataEditor = (props: MetadataEditorProps): React.JSX.Element => {
               setDisplayIdValidationError(!isValidId(e.target.value));
             }}
             onBlur={(e) => {
-              if (isValidId(e.target.value)) {
-                updateMeta(IQuestionnaireMetadataType.id, e.target.value);
-              }
+              updateMeta(IQuestionnaireMetadataType.id, e.target.value);
             }}
           />
           {displayIdValidationError && (

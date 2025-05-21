@@ -23,11 +23,30 @@ const validate = (
 ): ValidationError[] => {
   const errors: ValidationError[] = [];
 
+  errors.push(...validateId(t, qMetadata));
   errors.push(...validateTitle(t, qMetadata));
   errors.push(...validateTechnicalName(t, qMetadata));
   errors.push(...validateUrl(t, qMetadata));
 
   return errors;
+};
+
+const validateId = (
+  t: TFunction<"translation">,
+  qMetadata: IQuestionnaireMetadata,
+): ValidationError[] => {
+  const returnErrors: ValidationError[] = [];
+  if (!qMetadata.id?.trim()) {
+    returnErrors.push(
+      createError(
+        "",
+        IQuestionnaireMetadataType.id,
+        t("Form does not have an id"),
+        ErrorLevel.error,
+      ),
+    );
+  }
+  return returnErrors;
 };
 
 const validateTitle = (
