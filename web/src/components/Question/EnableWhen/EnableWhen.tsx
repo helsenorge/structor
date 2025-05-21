@@ -84,7 +84,7 @@ const EnableWhen = ({
         );
         return (
           <div
-            key={`${linkId}-${index}-${Math.random()}`}
+            key={`${linkId}-${x.question}-${x.operator}-${index}`}
             className={`enablewhen-box ${
               hasValidationError ? "validation-error" : ""
             }`}

@@ -6,14 +6,10 @@ import { useTranslation } from "react-i18next";
 import { ICodeSystem } from "../../../types/IQuestionnareItemType";
 import { ScoringFormulaCodes } from "../../../types/scoringFormulas";
 
-import {
-  removeItemCode,
-  addItemCode,
-  removeItemCodes,
-} from "../../../helpers/codeHelper";
+import { addItemCode, removeItemCodes } from "../../../helpers/codeHelper";
 import { existItemWithCode, scoreCoding } from "../../../helpers/itemControl";
 import { QSCoding } from "../../../helpers/QuestionHelper";
-import { ActionType, TreeContext } from "../../../store/treeStore/treeStore";
+import { TreeContext } from "../../../store/treeStore/treeStore";
 import { removeOrdinalValueExtensionfromAnswerOptions } from "../../../utils/answerOptionExtensionUtils";
 import FormField from "../../FormField/FormField";
 import SwitchBtn from "../../SwitchBtn/SwitchBtn";
@@ -22,7 +18,9 @@ type ScoringOptionProps = {
   item: QuestionnaireItem;
 };
 
-export const ScoringOption = ({ item }: ScoringOptionProps): JSX.Element => {
+export const ScoringOption = ({
+  item,
+}: ScoringOptionProps): React.JSX.Element => {
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
 
