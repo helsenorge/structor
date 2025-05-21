@@ -1,4 +1,4 @@
-import { QuestionnaireItem, ValueSet } from "fhir/r4";
+import { QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
 import { isUriValid } from "src/helpers/uriHelper";
 
@@ -24,6 +24,34 @@ export const validateQuantityInitialValue = (
             qItem.linkId,
             "system",
             t("quantity initial value is not valueQuantity"),
+          ),
+        );
+      }
+    }
+  }
+  return returnErrors;
+};
+
+export const validateQuantityUnit = (
+  t: TFunction<"translation">,
+  qItem: QuestionnaireItem,
+): ValidationError[] => {
+  const returnErrors: ValidationError[] = [];
+  if (qItem.type === IQuestionnaireItemType.quantity) {
+    if (qItem.initial) {
+      const initialValue = qItem.initial[0].valueQuantity;
+      const initialValueUnit = initialValue?.unit;
+      const unitExtension = qItem.extension?.find(
+        (extension) => extension.url === IExtensionType.questionnaireUnit,
+      );
+      const unitExtensionDisplay = unitExtension?.valueCoding?.display;
+
+      if (initialValueUnit !== unitExtensionDisplay) {
+        returnErrors.push(
+          createError(
+            qItem.linkId,
+            "system",
+            t("Unit in initial value does not match display in unit extension"),
           ),
         );
       }
