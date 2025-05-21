@@ -129,6 +129,7 @@ describe("SummationOption", () => {
 
     expect(updateItemActionMock.mock.calls[0][1]).toEqual(IItemProperty.code);
     expect(updateItemActionMock.mock.calls[0][2]).toEqual([]);
+
     expect(addItemCodeActionMock.mock.calls[0][0]).toEqual("1");
     expect(addItemCodeActionMock.mock.calls[0][1]).toEqual(scoreCode);
     expect(addItemCodeActionMock.mock.calls[1][0]).toEqual("1");
@@ -149,6 +150,7 @@ describe("SummationOption", () => {
 
     expect(updateItemActionMock.mock.calls[0][1]).toEqual(IItemProperty.code);
     expect(updateItemActionMock.mock.calls[0][2]).toEqual([]);
+
     expect(addItemCodeActionMock.mock.calls[0][0]).toEqual("1");
     expect(addItemCodeActionMock.mock.calls[0][1]).toEqual(scoreCode);
     expect(addItemCodeActionMock.mock.calls[1][0]).toEqual("1");
@@ -173,6 +175,7 @@ describe("SummationOption", () => {
     fireEvent.click(notSet);
 
     expect(addItemCodeActionMock).not.toBeCalled();
+
     expect(updateItemActionMock.mock.calls[0][1]).toEqual(IItemProperty.code);
     expect(updateItemActionMock.mock.calls[0][2]).toEqual([]);
   });

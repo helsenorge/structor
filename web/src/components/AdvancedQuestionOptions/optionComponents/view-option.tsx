@@ -40,7 +40,7 @@ const ViewOption = ({ item }: ViewOptionProps): React.JSX.Element => {
       ? RenderingOptionsEnum.Hidden
       : (item.code?.find(
           (code) => code.system === ICodeSystem.renderOptionsCodeSystem,
-        )?.code ?? RenderingOptionsEnum.None);
+        )?.code ?? RenderingOptionsEnum.Default);
   };
   const onChangeRenderOptions = (newValue: string): void => {
     removeItemExtension(item, IExtensionType.hidden, dispatch);
