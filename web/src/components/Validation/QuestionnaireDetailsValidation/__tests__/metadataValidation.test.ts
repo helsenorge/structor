@@ -50,6 +50,46 @@ describe("metadataValidation", () => {
     expect(validationErrors.length).toBe(0);
   });
 
+  describe("Id Validation", () => {
+    it("Should get error if form has no id", () => {
+      const metadata = {
+        id: "",
+        name: "Test",
+        title: "Test",
+        url: "",
+      } as IQuestionnaireMetadata;
+      const treeState = { qMetadata: metadata } as TreeState;
+
+      const validationErrors = validateMetadata(translatationMock, treeState);
+
+      expect(validationErrors.length).toBe(2);
+      expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+      expect(translatationMock.mock.calls[0]).toEqual(
+        expect.arrayContaining(["Form does not have an id"]),
+      );
+    });
+
+    it("Should get error if form id is invalid", () => {
+      const metadata = {
+        id: "ÆÆÆ",
+        name: "Test",
+        title: "Test",
+        url: "",
+      } as IQuestionnaireMetadata;
+      const treeState = { qMetadata: metadata } as TreeState;
+
+      const validationErrors = validateMetadata(translatationMock, treeState);
+
+      expect(validationErrors.length).toBe(2);
+      expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+      expect(translatationMock.mock.calls[0]).toEqual(
+        expect.arrayContaining([
+          "Id must be 1-64 characters and only letters a-z, numbers, - and .",
+        ]),
+      );
+    });
+  });
+
   describe("Title Validation", () => {
     it("when does not given", () => {
       const metadata = {

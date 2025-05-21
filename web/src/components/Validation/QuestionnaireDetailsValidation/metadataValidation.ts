@@ -1,5 +1,5 @@
 import { TFunction } from "react-i18next";
-import { isValidTitle } from "src/helpers/MetadataHelper";
+import { isValidId, isValidTitle } from "src/helpers/MetadataHelper";
 import { TreeState } from "src/store/treeStore/treeStore";
 import {
   IQuestionnaireMetadata,
@@ -42,6 +42,16 @@ const validateId = (
         "",
         IQuestionnaireMetadataType.id,
         t("Form does not have an id"),
+        ErrorLevel.error,
+      ),
+    );
+  }
+  if (!!qMetadata.id && !isValidId(qMetadata.id.trim())) {
+    returnErrors.push(
+      createError(
+        "",
+        IQuestionnaireMetadataType.id,
+        t("Id must be 1-64 characters and only letters a-z, numbers, - and ."),
         ErrorLevel.error,
       ),
     );
