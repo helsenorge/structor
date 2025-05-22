@@ -488,6 +488,9 @@ export const generateQuestionnaire = (state: TreeState): string => {
     emptyPropertyReplacer,
   );
 };
+export const generarteQuestionnaireOrBundle = (
+  state: TreeState,
+): Questionnaire | Bundle => JSON.parse(generateQuestionnaire(state));
 
 const setEnrichmentValues = (
   items: QuestionnaireItem[],

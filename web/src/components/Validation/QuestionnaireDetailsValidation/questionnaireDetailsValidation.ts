@@ -2,6 +2,7 @@ import { TFunction } from "react-i18next";
 import { TreeState } from "src/store/treeStore/treeStore";
 import { ValidationError } from "src/utils/validationUtils";
 
+import { validateBundle } from "./bundleValidation";
 import { validateMetadata } from "./metadataValidation";
 import { metaSecurityValidation } from "./securityValidation";
 import { validateQuestionnaireSettings } from "./settingsValidation";
@@ -15,8 +16,10 @@ export const validateQuestionnaireDetails = (
   const sidebarValidation = validateSidebar(t, state);
   const settingValidation = validateQuestionnaireSettings(t, state);
   const securityValidation = metaSecurityValidation(t, state.qMetadata);
+  const bundleValidation = validateBundle(t, state);
   return metadataValidation
     .concat(sidebarValidation)
     .concat(settingValidation)
-    .concat(securityValidation);
+    .concat(securityValidation)
+    .concat(bundleValidation);
 };

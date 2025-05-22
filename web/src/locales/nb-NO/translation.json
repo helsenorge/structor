@@ -122,6 +122,7 @@
   "Id": "Id",
   "Id must be unique across languages": "Id må være unik på tvers av språk",
   "Id must be 1-64 characters and only letters a-z, numbers, - and .": "Id må være fra 1-64 tegn og kan kun inneholde bokstaver fra a-z, tall, - og .",
+  "One or more questionnaires in bundle has the same id": "En eller flere skjemaer i bundle har samme id",
   "Technical name": "Teknisk navn:",
   "Technical name must start with a captital letter, 1-255 characters and can only contain numbers and characters a-z": "Teknisk navn må ha stor forbokstav, fra 1-255 tegn og kan kun inneholde tall og bokstaver fra a-z",
   "Version": "Versjon:",
