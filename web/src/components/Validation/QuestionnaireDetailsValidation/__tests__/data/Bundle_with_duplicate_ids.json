@@ -1,0 +1,138 @@
+{
+  "resourceType": "Bundle",
+  "type": "searchset",
+  "total": 2,
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Questionnaire",
+        "language": "nb-NO",
+        "id": "123",
+        "name": "Bundle_with_duplicate_ids",
+        "title": "Bundle with duplicate ids",
+        "status": "draft",
+        "publisher": "NHN",
+        "meta": {
+          "profile": [
+            "http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire"
+          ],
+          "tag": [
+            {
+              "system": "urn:ietf:bcp:47",
+              "code": "nb-NO",
+              "display": "Bokmål"
+            }
+          ],
+          "security": [
+            {
+              "code": "3",
+              "display": "Helsehjelp (Full)",
+              "system": "urn:oid:2.16.578.1.12.4.1.1.7618"
+            }
+          ]
+        },
+        "contact": [{ "name": "http://www.nhn.no" }],
+        "subjectType": ["Patient"],
+        "extension": [
+          {
+            "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar",
+            "valueCoding": {
+              "system": "http://helsenorge.no/fhir/ValueSet/sdf-sidebar",
+              "code": "1"
+            }
+          },
+          {
+            "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-information-message",
+            "valueCoding": {
+              "system": "http://helsenorge.no/fhir/ValueSet/sdf-information-message",
+              "code": "1"
+            }
+          },
+          {
+            "url": "http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+                  "code": "hide-help",
+                  "display": "Hide help texts"
+                },
+                {
+                  "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+                  "code": "hide-sublabel",
+                  "display": "Hide sublabel texts"
+                }
+              ]
+            }
+          }
+        ],
+        "url": "Questionnaire/123"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Questionnaire",
+        "language": "en-GB",
+        "id": "123",
+        "name": "Bundle_with_duplicate_ids",
+        "title": "Kind form",
+        "status": "draft",
+        "meta": {
+          "profile": [
+            "http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire"
+          ],
+          "tag": [
+            {
+              "system": "urn:ietf:bcp:47",
+              "code": "en-GB",
+              "display": "English"
+            }
+          ],
+          "security": [
+            {
+              "code": "3",
+              "display": "Helsehjelp (Full)",
+              "system": "urn:oid:2.16.578.1.12.4.1.1.7618"
+            }
+          ]
+        },
+        "contact": [{ "name": "http://www.nhn.no" }],
+        "subjectType": ["Patient"],
+        "extension": [
+          {
+            "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar",
+            "valueCoding": {
+              "system": "http://helsenorge.no/fhir/ValueSet/sdf-sidebar",
+              "code": "1"
+            }
+          },
+          {
+            "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-information-message",
+            "valueCoding": {
+              "system": "http://helsenorge.no/fhir/ValueSet/sdf-information-message",
+              "code": "1"
+            }
+          },
+          {
+            "url": "http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+                  "code": "hide-help",
+                  "display": "Hide help texts"
+                },
+                {
+                  "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+                  "code": "hide-sublabel",
+                  "display": "Hide sublabel texts"
+                }
+              ]
+            }
+          }
+        ],
+        "url": "Questionnaire/123"
+      }
+    }
+  ]
+}

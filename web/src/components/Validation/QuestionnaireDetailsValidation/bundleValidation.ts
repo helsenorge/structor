@@ -10,10 +10,9 @@ import { ErrorLevel } from "../validationTypes";
 
 export const validateBundle = (
   t: TFunction<"translation">,
-  state: TreeState,
+  questionnaires: Questionnaire | Bundle,
 ): ValidationError[] => {
   const errors: ValidationError[] = [];
-  const questionnaires = generarteQuestionnaireOrBundle(state);
 
   errors.push(...validateQuestionnaireIds(t, questionnaires));
   return errors;
