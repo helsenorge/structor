@@ -4,6 +4,7 @@ import {
   ValueSetComposeIncludeConcept,
 } from "fhir/r4";
 import { TFunction } from "react-i18next";
+import { isSystemTableConfigSystem } from "src/utils/tableutils";
 
 import {
   ICodeSystem,
@@ -305,4 +306,12 @@ export const findCodingBySystemAndCode = (
     return;
   }
   return codeing?.find((c) => c.system === system && c.code === codeValue);
+};
+
+export const canEditCode = (system: string, codingProp: ICodingProperty) => {
+  if (codingProp === ICodingProperty.display) {
+    return system !== ICodeSystem.tableColumn;
+  } else {
+    return !isSystemTableConfigSystem(system);
+  }
 };

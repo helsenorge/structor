@@ -400,6 +400,9 @@ describe("ViewOption", () => {
       expect(addItemCodeActionMock.mock.calls[0][1]).toEqual(
         expect.objectContaining({ system: displayChoiceCompact.system }),
       );
+      expect(addItemCodeActionMock.mock.calls[0][1]).toEqual(
+        expect.objectContaining({ id: expect.any(String) }),
+      );
     });
   });
 });

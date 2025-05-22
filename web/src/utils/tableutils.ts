@@ -1,4 +1,5 @@
 import { Extension } from "fhir/r4";
+import { ICodeSystem } from "src/types/IQuestionnareItemType";
 
 import { TableOptionsEnum } from "../types/tableOptions";
 
@@ -17,4 +18,13 @@ export const getTableCode = (
     }
   });
   return stringToReturn;
+};
+
+export const isSystemTableConfigSystem = (system: string) => {
+  return (
+    system === ICodeSystem.tableColumnName ||
+    system === ICodeSystem.tableOrderingColumn ||
+    system === ICodeSystem.tableOrderingFunctions ||
+    system === ICodeSystem.tableColumn
+  );
 };

@@ -7,10 +7,16 @@ import { isUriValid } from "../../helpers/uriHelper";
 type Props = {
   value: string | undefined;
   disabled?: boolean;
+  testId?: string;
   onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
 };
 
-const UriField = ({ value, disabled, onBlur }: Props): React.JSX.Element => {
+const UriField = ({
+  value,
+  disabled,
+  testId,
+  onBlur,
+}: Props): React.JSX.Element => {
   const { t } = useTranslation();
   const ref = React.useRef<HTMLInputElement>(null);
   const [hasValidUri, setHasValidUri] = React.useState<boolean>(
@@ -28,6 +34,7 @@ const UriField = ({ value, disabled, onBlur }: Props): React.JSX.Element => {
   return (
     <>
       <input
+        data-testid={testId}
         disabled={disabled}
         ref={ref}
         placeholder={t("Enter uri..")}

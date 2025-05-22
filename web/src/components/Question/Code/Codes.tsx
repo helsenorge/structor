@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Coding } from "fhir/r4";
 import { useTranslation } from "react-i18next";
@@ -8,7 +8,10 @@ import {
   ICodingProperty,
 } from "../../../types/IQuestionnareItemType";
 
-import { updateChildWithMatchingCode } from "../../../helpers/codeHelper";
+import {
+  canEditCode,
+  updateChildWithMatchingCode,
+} from "../../../helpers/codeHelper";
 import createUUID from "../../../helpers/CreateUUID";
 import { createUriUUID } from "../../../helpers/uriHelper";
 import {
@@ -35,28 +38,24 @@ const Codes = ({
   const { t } = useTranslation();
   const { state, dispatch } = useContext(TreeContext);
 
-  const codes = state.qItems[linkId].code?.map((code) => {
-    // Add id (for internal usage) if not already set
-    return { ...code, id: code.id || createUUID() };
-  });
+  const [rollback, setRollback] = useState(false);
+
+  useEffect(() => {
+    setRollback(false);
+    setCodes(getCodes());
+  }, [rollback, state.qItems[linkId].code]);
+
+  const getCodes = (): Coding[] | undefined => {
+    return state.qItems[linkId].code?.map((code) => {
+      // Add id (for internal usage) if not already set
+      return { ...code, id: code.id || createUUID() };
+    });
+  };
+
+  const [codes, setCodes] = useState(getCodes);
 
   const createEmptyCode = (): Coding => {
     return { code: "", display: "", system: createUriUUID(), id: createUUID() };
-  };
-
-  const updateChildWithTableColumnCode = (
-    value: string,
-    code: string,
-  ): void => {
-    updateChildWithMatchingCode(
-      state.qItems[linkId],
-      state.qItems,
-      state.qOrder,
-      value,
-      ICodeSystem.tableColumn,
-      code,
-      dispatch,
-    );
   };
 
   const updateCode = (
@@ -64,15 +63,11 @@ const Codes = ({
     prop: ICodingProperty,
     value: string,
     system?: string,
-    code?: string,
   ): void => {
-    dispatch(updateItemCodePropertyAction(linkId, index, prop, value));
-
-    if (
-      prop === ICodingProperty.display &&
-      system === ICodeSystem.tableColumnName
-    ) {
-      updateChildWithTableColumnCode(value, code || "");
+    if (!system || canEditCode(system, prop)) {
+      dispatch(updateItemCodePropertyAction(linkId, index, prop, value));
+    } else {
+      setRollback(true);
     }
   };
 
@@ -90,6 +85,7 @@ const Codes = ({
         <div className="horizontal equal">
           <FormField label={t("Display")}>
             <InputField
+              testId={`code-display-${index}`}
               defaultValue={code.display}
               onBlur={(event) =>
                 updateCode(
@@ -97,16 +93,21 @@ const Codes = ({
                   ICodingProperty.display,
                   event.target.value,
                   code.system,
-                  code.code,
                 )
               }
             />
           </FormField>
           <FormField label={t("Code")}>
             <InputField
+              testId={`code-code-${index}`}
               defaultValue={code.code}
               onBlur={(event) =>
-                updateCode(index, ICodingProperty.code, event.target.value)
+                updateCode(
+                  index,
+                  ICodingProperty.code,
+                  event.target.value,
+                  code.system,
+                )
               }
             />
           </FormField>
@@ -114,15 +115,22 @@ const Codes = ({
         <div className="horizontal full">
           <FormField label={t("System")}>
             <UriField
+              testId={`code-system-${index}`}
               value={code.system}
               onBlur={(event) =>
-                updateCode(index, ICodingProperty.system, event.target.value)
+                updateCode(
+                  index,
+                  ICodingProperty.system,
+                  event.target.value,
+                  code.system,
+                )
               }
             />
           </FormField>
         </div>
         <div className="center-text">
           <Btn
+            testId={`code-remove-${index}`}
             title={`- ${t("Remove Code")}`}
             type="button"
             onClick={() => dispatch(deleteItemCodeAction(linkId, index))}
@@ -139,6 +147,7 @@ const Codes = ({
       {codes && codes.map((code, index) => renderCode(code, index))}
       <div className="center-text">
         <Btn
+          testId="code-add"
           title={`+ ${t("Add Code")}`}
           type="button"
           onClick={() => {

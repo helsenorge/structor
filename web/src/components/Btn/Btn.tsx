@@ -11,6 +11,7 @@ type BtnProps = {
   icon?: (typeof BTN_ICONS)[keyof typeof BTN_ICONS];
   variant?: (typeof BTN_VARIANTS)[keyof typeof BTN_VARIANTS];
   disabled?: boolean;
+  testId?: string;
 };
 
 const Btn = ({
@@ -21,9 +22,11 @@ const Btn = ({
   icon,
   variant,
   disabled,
+  testId,
 }: BtnProps): React.JSX.Element => {
   return (
     <button
+      data-testid={testId}
       type={type}
       className={`regular-btn ${variant}`}
       id={id}

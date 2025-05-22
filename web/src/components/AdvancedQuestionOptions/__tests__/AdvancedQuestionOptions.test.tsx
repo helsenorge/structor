@@ -11,6 +11,21 @@ import AdvancedQuestionOptions from "../AdvancedQuestionOptions";
 import { ItemControlType } from "src/helpers/itemControl";
 import { ErrorLevel } from "src/components/Validation/validationTypes";
 
+vi.mock("react-i18next", () => ({
+  useTranslation: () => {
+    return {
+      t: (i18nKey: any) => i18nKey,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    };
+  },
+  initReactI18next: {
+    type: "3rdParty",
+    init: () => {},
+  },
+}));
+
 describe("AdvancedQuestionOptions", () => {
   const item: QuestionnaireItem = {
     linkId: "123",

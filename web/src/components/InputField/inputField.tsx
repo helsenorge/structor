@@ -10,6 +10,7 @@ type InputFieldProps = {
   disabled?: boolean;
   name?: string;
   className?: string;
+  testId?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 };
@@ -24,11 +25,13 @@ const InputField = ({
   disabled,
   name,
   className,
+  testId,
   onChange,
   onBlur,
 }: InputFieldProps): React.JSX.Element => {
   return (
     <input
+      data-testid={testId}
       className={className ? className : ""}
       type="text"
       autoComplete="off"
