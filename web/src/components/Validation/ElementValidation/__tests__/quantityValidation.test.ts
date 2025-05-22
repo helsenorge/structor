@@ -3,7 +3,7 @@ import { ErrorLevel } from "../../validationTypes";
 import {
   validateQuantityInitialValue,
   validateQuantitySystemAndCode,
-  validateQuantityUnit,
+  validateQuantityDisplay,
 } from "../quantityValidation";
 
 describe("quantity validation", () => {
@@ -35,29 +35,6 @@ describe("quantity validation", () => {
     });
   });
 
-  describe("quantity unit", () => {
-    it("Should get error if unit in initial value does not match display in unit extension", () => {
-      const validationErrors = validateQuantityUnit(
-        translatationMock,
-        unitDismatch,
-      );
-
-      expect(validationErrors.length).toBe(1);
-      expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
-      expect(translatationMock.mock.calls[0]).toEqual([
-        "Unit in initial value does not match display in unit extension",
-      ]);
-    });
-    it("Should NOT get error if unit in initial value matches display in unit extension", () => {
-      const validationErrors = validateQuantityUnit(
-        translatationMock,
-        unitMatch,
-      );
-
-      expect(validationErrors.length).toBe(0);
-    });
-  });
-
   describe("quantity system and code", () => {
     it("Should get errors if item extension has no system and no code", () => {
       const validationErrors = validateQuantitySystemAndCode(
@@ -82,6 +59,41 @@ describe("quantity validation", () => {
       );
 
       expect(validationErrors.length).toBe(0);
+    });
+  });
+
+  describe("quantity display", () => {
+    it("Should get error if unit in initial value does not match display in unit extension", () => {
+      const validationErrors = validateQuantityDisplay(
+        translatationMock,
+        unitDismatch,
+      );
+
+      expect(validationErrors.length).toBe(1);
+      expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+      expect(translatationMock.mock.calls[0]).toEqual([
+        "Unit in initial value does not match display in unit extension",
+      ]);
+    });
+    it("Should NOT get error if unit in initial value matches display in unit extension", () => {
+      const validationErrors = validateQuantityDisplay(
+        translatationMock,
+        unitMatch,
+      );
+
+      expect(validationErrors.length).toBe(0);
+    });
+    it("Should get error if unit extension has no display value", () => {
+      const validationErrors = validateQuantityDisplay(
+        translatationMock,
+        extensionWithNoDisplay,
+      );
+
+      expect(validationErrors.length).toBe(1);
+      expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+      expect(translatationMock.mock.calls[0]).toEqual([
+        "quantity unit extension has no display value",
+      ]);
     });
   });
 });
@@ -238,6 +250,23 @@ const extensionWithNoSystemAndCode: QuestionnaireItem = {
         code: "",
         display: "centimeter",
         system: "",
+      },
+    },
+  ],
+};
+
+const extensionWithNoDisplay: QuestionnaireItem = {
+  linkId: "dab2891c-9443-4995-8bde-13479baeb371",
+  type: "quantity",
+  text: "kvantitet",
+  required: false,
+  extension: [
+    {
+      url: "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+      valueCoding: {
+        code: "cm",
+        display: "",
+        system: "http://unitsofmeasure.org",
       },
     },
   ],

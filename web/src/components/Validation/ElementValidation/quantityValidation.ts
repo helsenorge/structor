@@ -32,19 +32,20 @@ export const validateQuantityInitialValue = (
   return returnErrors;
 };
 
-export const validateQuantityUnit = (
+export const validateQuantityDisplay = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
 ): ValidationError[] => {
   const returnErrors: ValidationError[] = [];
+  const unitExtension = qItem.extension?.find(
+    (extension) => extension.url === IExtensionType.questionnaireUnit,
+  );
+  const unitExtensionDisplay = unitExtension?.valueCoding?.display;
+
   if (qItem.type === IQuestionnaireItemType.quantity) {
     if (qItem.initial) {
       const initialValue = qItem.initial[0].valueQuantity;
       const initialValueUnit = initialValue?.unit;
-      const unitExtension = qItem.extension?.find(
-        (extension) => extension.url === IExtensionType.questionnaireUnit,
-      );
-      const unitExtensionDisplay = unitExtension?.valueCoding?.display;
 
       if (initialValueUnit !== unitExtensionDisplay) {
         returnErrors.push(
@@ -55,6 +56,15 @@ export const validateQuantityUnit = (
           ),
         );
       }
+    }
+    if (unitExtension && !unitExtensionDisplay) {
+      returnErrors.push(
+        createError(
+          qItem.linkId,
+          "system",
+          t("quantity unit extension has no display value"),
+        ),
+      );
     }
   }
   return returnErrors;

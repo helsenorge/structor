@@ -260,6 +260,7 @@
   "quantity extension does not have a system": "quantity extension har ikke et system",
   "quantity extension does not have a valid system": "quantity extension har ikke gyldig system",
   "quantity extension does not have code": "quantity extension har ikke code",
+  "quantity unit extension has no display value": "quantity unit extension har ingen display verdi",
   "Extension has no \"url\" property": "Extension har ikke \"url\" property",
   "Extension does not have value[x], or has more than one value[x]": "Extension mangler value[x], eller har mer enn en value[x]",
   "Initial value is not a possible value": "Initiell verdi er ikke en mulig verdi",
