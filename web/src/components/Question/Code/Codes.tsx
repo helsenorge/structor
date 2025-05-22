@@ -3,15 +3,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { Coding } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
-import {
-  ICodeSystem,
-  ICodingProperty,
-} from "../../../types/IQuestionnareItemType";
+import { ICodingProperty } from "../../../types/IQuestionnareItemType";
 
-import {
-  canEditCode,
-  updateChildWithMatchingCode,
-} from "../../../helpers/codeHelper";
+import { canEditCode } from "../../../helpers/codeHelper";
 import createUUID from "../../../helpers/CreateUUID";
 import { createUriUUID } from "../../../helpers/uriHelper";
 import {
