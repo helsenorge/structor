@@ -698,6 +698,35 @@ const validateEnableWhen = (
   return returnErrors;
 };
 
+export const validateChoice = (
+  t: TFunction<"translation">,
+  qItem: QuestionnaireItem,
+): ValidationError[] => {
+  const returnErrors: ValidationError[] = [];
+  if (
+    qItem.type === IQuestionnaireItemType.choice ||
+    qItem.type === IQuestionnaireItemType.openChoice
+  ) {
+    qItem.answerOption?.forEach((answerOption) => {
+      if (!answerOption.valueCoding?.code) {
+        returnErrors.push(
+          createError(qItem.linkId, "system", t("Answer option has no code")),
+        );
+      }
+      if (!answerOption.valueCoding?.display) {
+        returnErrors.push(
+          createError(
+            qItem.linkId,
+            "system",
+            t("Answer option has no display value"),
+          ),
+        );
+      }
+    });
+  }
+  return returnErrors;
+};
+
 export const validateOrphanedElements = (
   t: TFunction<"translation">,
   state: TreeState,
@@ -761,6 +790,9 @@ const validate = (
 
   // validate enableWhen
   errors.push(...validateEnableWhen(t, qItems, qItem, qContained));
+
+  // validate choice
+  errors.push(...validateChoice(t, qItem));
 
   currentItem.items.forEach((item) =>
     validate(t, errors, item, qItems, qOrder, qContained),
