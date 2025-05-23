@@ -274,6 +274,7 @@
   "The ValueSet referenced in this enableWhen does not exist": "Verdisettet denne enableWhen refererer til finnes ikke",
   "Answer option has no code": "Svaralternativ mangler kode",
   "Answer option has no display value": "Svaralternativ mangler display verdi",
+  "System must have the same value in all answer options": "System må ha samme verdi i alle svaralternativer",
   "Items with code \"SS\" (section score) must be inside a group": "Elementer med kode \"SS\" (seksjon skåring) må være inni en gruppe",
   "Active": "Aktiv",
   "Draft": "Skisse",

@@ -40,6 +40,7 @@ import {
 import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";
+import { validateChoice } from "./choiceValidation";
 import {
   validateQuantityInitialValue,
   validateQuantitySystemAndCode,
@@ -695,35 +696,6 @@ const validateEnableWhen = (
       }
     }
   });
-  return returnErrors;
-};
-
-export const validateChoice = (
-  t: TFunction<"translation">,
-  qItem: QuestionnaireItem,
-): ValidationError[] => {
-  const returnErrors: ValidationError[] = [];
-  if (
-    qItem.type === IQuestionnaireItemType.choice ||
-    qItem.type === IQuestionnaireItemType.openChoice
-  ) {
-    qItem.answerOption?.forEach((answerOption) => {
-      if (!answerOption.valueCoding?.code) {
-        returnErrors.push(
-          createError(qItem.linkId, "system", t("Answer option has no code")),
-        );
-      }
-      if (!answerOption.valueCoding?.display) {
-        returnErrors.push(
-          createError(
-            qItem.linkId,
-            "system",
-            t("Answer option has no display value"),
-          ),
-        );
-      }
-    });
-  }
   return returnErrors;
 };
 
