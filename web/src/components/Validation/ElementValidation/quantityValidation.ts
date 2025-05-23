@@ -10,6 +10,22 @@ import {
 import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 
+export const validateQuantity = (
+  t: TFunction<"translation">,
+  qItem: QuestionnaireItem,
+): ValidationError[] => {
+  const quantityInitialValidation = validateQuantityInitialValue(t, qItem);
+  const quantityDisplayValidation = validateQuantityDisplay(t, qItem);
+  const quantitySystemAndCodeValidation = validateQuantitySystemAndCode(
+    t,
+    qItem,
+  );
+
+  return quantityInitialValidation
+    .concat(quantityDisplayValidation)
+    .concat(quantitySystemAndCodeValidation);
+};
+
 export const validateQuantityInitialValue = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,

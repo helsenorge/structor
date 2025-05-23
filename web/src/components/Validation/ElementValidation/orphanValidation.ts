@@ -45,6 +45,7 @@ import {
   validateQuantityInitialValue,
   validateQuantitySystemAndCode,
   validateQuantityDisplay,
+  validateQuantity,
 } from "./quantityValidation";
 
 const validEnableWhenChoiceOperators = [IOperator.equal, IOperator.notEqual];
@@ -745,14 +746,8 @@ const validate = (
   // validate system in answerOptions
   errors.push(...validateAnswerOptionSystem(t, qItem));
 
-  // validate initial value in quantity
-  errors.push(...validateQuantityInitialValue(t, qItem));
-
-  // validate system+code in quantity
-  errors.push(...validateQuantitySystemAndCode(t, qItem));
-
-  // validate display value in quantity
-  errors.push(...validateQuantityDisplay(t, qItem));
+  // validate quantity
+  errors.push(...validateQuantity(t, qItem));
 
   // validate dead extensions
   errors.push(...validateExtensions(t, qItem));
