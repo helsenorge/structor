@@ -412,13 +412,14 @@
   "Display only in form filler": "Vises kun i skjemautfyller",
   "Hide in form filler and PDF": "Skjules i skjemautfyller og PDF",
   "Retrieve input data from field": "Hent inputdata fra felt",
-  "data receiver does not have an earlier question": "data-receiver har ikke et tidligere spørsmål",
+  "data receiver does not have an earlier question": "datamottaker har ikke et tidligere spørsmål",
   "Progress indicator": "Fremdriftsindikator",
   "Choose whether you want to hide the progress indicator. The progress indicator is only available if the form is using a step-view": "Velg om du vil skjule fremdriftsindikatoren. Fremdriftsindikatoren er bare tilgjengelig dersom skjemaet benytter stegvisning.",
   "Hide progress indicator": "Skjul fremdriftsindikator",
   "Step-view": "Stegvisning",
   "Select whether the group should be a step in step-view": "Velg om denne gruppen skal være et steg i stegvising",
   "Step in step-view": "Steg i stegvisning",
+  "Repeatable group cannot be displayed as a step in stepview": "Gjentakende grupp kan ikke vises som et steg i stegvisning",
   "Change": "Endre",
   "Workflow request": "Arbeidsflyt forespørsel",
   "Should the form be included in a workflow at Helsenorge? This field is only used by Norsk helsenett.": "Skal skjema inngå i en arbeidsflyt på Helsenorge? Dette feltet brukes kun av Norsk helsenett.",
@@ -506,8 +507,5 @@
   "In case of Helsenorge, reference to print version must start with 'Binary/<print version's Id>'": "Når gjelder Helsenorge, må oppskriftsversjon være 'Binary/<Id til oppskriftsversjon>'",
   "Print version does not have an valid id 'Binary/<print version's Id>'": "oppskriftsversjonen har ikke en gjeldig Id 'Binary/<Id til oppskriftsversjon>'",
   "data receiver must be readonly": "data-receiver må være et skrivebeskyttet felt",
-  "data receiver cannot be mandatory": "data-receiver kan ikke være obligatorisk",
-  "data receiver cannot be a summation field": "data-receiver kan ikke være et skåring felt",
-  "Calculation expression does not have an earlier question with LinkId '{0}'": "Kalkuleringsfeltet har et tidligere spørsmål med LinkId '{0}'",
-  "Calculated expression can only be in quantity or number items": "Kalkuleringsfeltet kan være kun nummer eller antall men enhet"
+  "data receiver cannot be mandatory": "data-receiver kan ikke være obligatorisk"
 }
