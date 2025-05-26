@@ -130,3 +130,40 @@ export const getAllItemTypes = (
   });
   return newArray;
 };
+
+export const isItemChildOfType = (
+  childItemId: string,
+  type: IQuestionnaireItemType,
+  qItems: Items,
+  qOrder: OrderItem[],
+): boolean => {
+  const isChildOfType = (
+    orderItems: OrderItem[],
+    parentIsEqualToType: boolean,
+  ): boolean => {
+    for (const orderItem of orderItems) {
+      const currentItem = qItems[orderItem.linkId];
+
+      if (orderItem.linkId === childItemId) {
+        // Hvis vi finner childItemId
+        return parentIsEqualToType;
+      }
+
+      if (currentItem?.type === type) {
+        // Sjekk rekursivt for children med parentIsEqualToType=true
+        if (isChildOfType(orderItem.items, true)) {
+          return true;
+        }
+      } else {
+        // Sjekk rekursivt for children med parentIsEqualToType=false
+        if (isChildOfType(orderItem.items, parentIsEqualToType)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  // Start søket på root nivå, hvor ingen parent items finnes
+  return isChildOfType(qOrder, false);
+};
