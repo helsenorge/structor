@@ -31,7 +31,7 @@ export const validateRepeatableGroup = (
       returnErrors.push(
         createError(
           qItem.linkId,
-          "system",
+          "group",
           t("Repeatable group cannot be displayed as a step in stepview"),
         ),
       );

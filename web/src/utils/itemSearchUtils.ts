@@ -4,6 +4,7 @@ import { ItemControlType } from "src/helpers/itemControl";
 import {
   IExtensionType,
   IQuestionnaireItemType,
+  IValueSetSystem,
 } from "../types/IQuestionnareItemType";
 
 import { Items, OrderItem } from "../store/treeStore/treeStore";
@@ -92,17 +93,23 @@ export const doesAllAnswerOptionsInItemHaveExtenison = (
 };
 
 export const doesItemHaveStepCoding = (qItem: QuestionnaireItem): boolean => {
-  qItem.extension?.forEach((extension) => {
+  if (!qItem.extension) return false;
+
+  for (const extension of qItem.extension) {
     const coding = extension.valueCodeableConcept?.coding;
-    coding?.forEach((x) => {
-      if (
-        x.system === IExtensionType.itemControl &&
-        x.code === ItemControlType.step
-      ) {
-        return true;
+
+    if (coding) {
+      for (const x of coding) {
+        if (
+          x.system === IValueSetSystem.itemControlValueSet &&
+          x.code === ItemControlType.step
+        ) {
+          return true;
+        }
       }
-    });
-  });
+    }
+  }
+
   return false;
 };
 
