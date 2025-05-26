@@ -1,4 +1,5 @@
 import { QuestionnaireItem } from "fhir/r4";
+import { ItemControlType } from "src/helpers/itemControl";
 
 import {
   IExtensionType,
@@ -88,6 +89,21 @@ export const doesAllAnswerOptionsInItemHaveExtenison = (
     }
   });
   return valueToReturn;
+};
+
+export const doesItemHaveStepCoding = (qItem: QuestionnaireItem): boolean => {
+  qItem.extension?.forEach((extension) => {
+    const coding = extension.valueCodeableConcept?.coding;
+    coding?.forEach((x) => {
+      if (
+        x.system === IExtensionType.itemControl &&
+        x.code === ItemControlType.step
+      ) {
+        return true;
+      }
+    });
+  });
+  return false;
 };
 
 export const getAllItemTypes = (

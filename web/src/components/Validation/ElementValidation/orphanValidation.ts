@@ -41,7 +41,13 @@ import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";
 import { validateChoice } from "./choiceValidation";
-import { validateQuantity } from "./quantityValidation";
+import { validateGroup } from "./groupValidation";
+import {
+  validateQuantityInitialValue,
+  validateQuantitySystemAndCode,
+  validateQuantityDisplay,
+  validateQuantity,
+} from "./quantityValidation";
 
 const validEnableWhenChoiceOperators = [IOperator.equal, IOperator.notEqual];
 
@@ -70,7 +76,7 @@ const validateReadonlyFields = (
   return errors;
 };
 
-const validateMaxMinOnScore = (
+const validateMaxMinOnScoreAndCalculatedField = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
 ): ValidationError[] => {
@@ -82,13 +88,25 @@ const validateMaxMinOnScore = (
     qItem.extension,
     IExtensionType.maxValue,
   );
+  const isCalculatedExpresson = !!findExtensionByUrl(
+    qItem.extension,
+    IExtensionType.calculatedExpression,
+  );
   const isScoringField = !!getExtensionByCodeAndElement(
     qItem,
     ICodeSystem.score,
   );
   const errors: ValidationError[] = [];
 
-  if (isScoringField && (hasMaxValue || hasMinValue)) {
+  if (isCalculatedExpresson && (hasMaxValue || hasMinValue)) {
+    errors.push(
+      createError(
+        qItem.linkId,
+        "minValue",
+        t("MinValue and/or maxValue can not be set on calculated expressions"),
+      ),
+    );
+  } else if (isScoringField && (hasMaxValue || hasMinValue)) {
     errors.push(
       createError(
         qItem.linkId,
@@ -372,7 +390,7 @@ const validateScoring = (
       }
     }
   });
-  returnErrors.push(...validateMaxMinOnScore(t, qItem));
+  returnErrors.push(...validateMaxMinOnScoreAndCalculatedField(t, qItem));
   return returnErrors;
 };
 
@@ -704,6 +722,9 @@ const validate = (
   qContained: ValueSet[] = [],
 ): void => {
   const qItem = qItems[currentItem.linkId];
+
+  //validate group item
+  errors.push(...validateGroup(t, qItem));
 
   //validate that readonly fields
   errors.push(...validateReadonlyFields(t, qItem));
