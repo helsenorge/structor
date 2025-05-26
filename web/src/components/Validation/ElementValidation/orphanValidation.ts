@@ -41,12 +41,7 @@ import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";
 import { validateChoice } from "./choiceValidation";
-import {
-  validateQuantityInitialValue,
-  validateQuantitySystemAndCode,
-  validateQuantityDisplay,
-  validateQuantity,
-} from "./quantityValidation";
+import { validateQuantity } from "./quantityValidation";
 
 const validEnableWhenChoiceOperators = [IOperator.equal, IOperator.notEqual];
 
@@ -75,7 +70,7 @@ const validateReadonlyFields = (
   return errors;
 };
 
-const validateMaxMinOnScoreAndCalculatedField = (
+const validateMaxMinOnScore = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
 ): ValidationError[] => {
@@ -87,25 +82,13 @@ const validateMaxMinOnScoreAndCalculatedField = (
     qItem.extension,
     IExtensionType.maxValue,
   );
-  const isCalculatedExpresson = !!findExtensionByUrl(
-    qItem.extension,
-    IExtensionType.calculatedExpression,
-  );
   const isScoringField = !!getExtensionByCodeAndElement(
     qItem,
     ICodeSystem.score,
   );
   const errors: ValidationError[] = [];
 
-  if (isCalculatedExpresson && (hasMaxValue || hasMinValue)) {
-    errors.push(
-      createError(
-        qItem.linkId,
-        "minValue",
-        t("MinValue and/or maxValue can not be set on calculated expressions"),
-      ),
-    );
-  } else if (isScoringField && (hasMaxValue || hasMinValue)) {
+  if (isScoringField && (hasMaxValue || hasMinValue)) {
     errors.push(
       createError(
         qItem.linkId,
@@ -389,7 +372,7 @@ const validateScoring = (
       }
     }
   });
-  returnErrors.push(...validateMaxMinOnScoreAndCalculatedField(t, qItem));
+  returnErrors.push(...validateMaxMinOnScore(t, qItem));
   return returnErrors;
 };
 

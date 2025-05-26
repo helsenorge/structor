@@ -9,6 +9,7 @@ export enum ValidationType {
   mandatory = "mandatory",
   scoring = "scoring",
   calculation = "calculation",
+  validationValue = "validationValue",
 }
 
 export enum ErrorLevel {

@@ -15,7 +15,7 @@ import {
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
 
-import { getLinkIdFromValueString } from "./dataReceiverHelper";
+import { getLinkIdFromValueString } from "../../../helpers/dataReceiverHelper";
 import {
   setItemExtension,
   removeItemExtension,

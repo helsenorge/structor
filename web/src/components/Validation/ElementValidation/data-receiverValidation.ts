@@ -1,6 +1,6 @@
 import { QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
-import { getLinkIdFromValueString } from "src/components/AdvancedQuestionOptions/optionComponents/dataReceiverHelper";
+import { getLinkIdFromValueString } from "src/helpers/dataReceiverHelper";
 import {
   getExtensionStringValue,
   hasExtension,
