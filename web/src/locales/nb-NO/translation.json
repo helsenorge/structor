@@ -421,6 +421,7 @@
   "Step in step-view": "Steg i stegvisning",
   "Repeatable group cannot be displayed as a step in stepview": "Gjentakende gruppe kan ikke vises som et steg i stegvisning",
   "Repeatable group cannot be child of a group": "Gjentakende gruppe kan ikke være child av en gruppe",
+  "Repeatable items that are not of type group cannot have children": "Gjentakende elementer som ikke er av typen gruppe kan ikke ha children",
   "Change": "Endre",
   "Workflow request": "Arbeidsflyt forespørsel",
   "Should the form be included in a workflow at Helsenorge? This field is only used by Norsk helsenett.": "Skal skjema inngå i en arbeidsflyt på Helsenorge? Dette feltet brukes kun av Norsk helsenett.",

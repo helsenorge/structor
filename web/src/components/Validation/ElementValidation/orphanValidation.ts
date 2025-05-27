@@ -43,6 +43,7 @@ import { ErrorLevel } from "../validationTypes";
 import { validateChoice } from "./choiceValidation";
 import { validateGroup } from "./groupValidation";
 import { validateQuantity } from "./quantityValidation";
+import { validateRepeatableItems } from "./repeatableValidation";
 
 const validEnableWhenChoiceOperators = [IOperator.equal, IOperator.notEqual];
 
@@ -747,6 +748,9 @@ const validate = (
 
   // validate choice
   errors.push(...validateChoice(t, qItem));
+
+  // validate repeatable items
+  errors.push(...validateRepeatableItems(t, qItem, qOrder));
 
   currentItem.items.forEach((item) =>
     validate(t, errors, item, qItems, qOrder, qContained),

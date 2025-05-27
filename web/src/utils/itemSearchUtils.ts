@@ -131,6 +131,27 @@ export const getAllItemTypes = (
   return newArray;
 };
 
+export const doesItemHaveChildren = (
+  targetLinkId: string,
+  qOrder: OrderItem[],
+): boolean => {
+  // Funksjon som søker rekursivt i qOrder etter targetLinkId
+  const findChildren = (orderItems: OrderItem[]): boolean => {
+    for (const orderItem of orderItems) {
+      if (orderItem.linkId === targetLinkId) {
+        return orderItem.items.length > 0;
+      }
+      if (findChildren(orderItem.items)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  // Start søk på root nivå
+  return findChildren(qOrder);
+};
+
 export const isItemChildOfType = (
   childItemId: string,
   type: IQuestionnaireItemType,

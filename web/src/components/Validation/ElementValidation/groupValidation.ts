@@ -6,10 +6,7 @@ import {
   isItemChildOfType,
 } from "src/utils/itemSearchUtils";
 
-import {
-  IExtensionType,
-  IQuestionnaireItemType,
-} from "../../../types/IQuestionnareItemType";
+import { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
 
 import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
