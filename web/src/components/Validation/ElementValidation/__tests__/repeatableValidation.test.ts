@@ -1,7 +1,10 @@
 import { QuestionnaireItem } from "fhir/r4";
 import { ErrorLevel } from "../../validationTypes";
 import { OrderItem } from "src/store/treeStore/treeStore";
-import { validateRepeatableChildren } from "../repeatableValidation";
+import {
+  validateRepeatableItemChildren,
+  validateRepeatableItemMaxOccurs,
+} from "../repeatableValidation";
 
 describe("repeatable validation", () => {
   const translatationMock = vi.fn();
@@ -10,7 +13,7 @@ describe("repeatable validation", () => {
   });
 
   it("Should get error if repeatable item that is not of type group, has children", () => {
-    const validationErrors = validateRepeatableChildren(
+    const validationErrors = validateRepeatableItemChildren(
       translatationMock,
       repeatableItemWithChildren,
       qOrder,
@@ -20,6 +23,18 @@ describe("repeatable validation", () => {
     expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
     expect(translatationMock.mock.calls[0]).toEqual([
       "Repeatable items that are not of type group cannot have children",
+    ]);
+  });
+  it("Should get error if repeatable item has no maxOccurs extension", () => {
+    const validationErrors = validateRepeatableItemMaxOccurs(
+      translatationMock,
+      repeatableItemNoMaxOccurs,
+    );
+
+    expect(validationErrors.length).toBe(1);
+    expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
+    expect(translatationMock.mock.calls[0]).toEqual([
+      "Repeatable items must have a maxOccurs extension",
     ]);
   });
 });
@@ -36,6 +51,16 @@ const repeatableItemWithChildren: QuestionnaireItem = {
       required: false,
     },
   ],
+  required: false,
+  repeats: true,
+};
+
+const repeatableItemNoMaxOccurs: QuestionnaireItem = {
+  linkId: "865d1663-91ed-4e85-8662-258e4aa54ae0",
+  type: "string",
+  text: "Item som ikke er gruppe og er repeatable",
+  item: [],
+  extension: [],
   required: false,
   repeats: true,
 };
