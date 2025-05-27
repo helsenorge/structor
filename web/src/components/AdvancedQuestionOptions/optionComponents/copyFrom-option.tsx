@@ -46,7 +46,7 @@ type CopyFromOptionProps = {
 
 const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
   const { t } = useTranslation();
-  const { dispatch, state } = useContext(TreeContext);
+  const { dispatch } = useContext(TreeContext);
 
   const hasDataReceiverValidationError = props.errors.some(
     (error) =>
