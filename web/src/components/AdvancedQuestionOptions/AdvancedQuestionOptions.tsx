@@ -131,7 +131,7 @@ const AdvancedQuestionOptions = ({
       {canTypeHavePrefix(item) && (
         <PrefixOption item={item} dispatch={dispatch} />
       )}
-      <DefinitionOption item={item} />
+      <DefinitionOption item={item} dispatch={dispatch} />
       <ItemExtractionContextView item={item} />
       {canTypeBeRepeatable(item) && (
         <RepetitionOption item={item} dispatch={dispatch} />
