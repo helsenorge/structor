@@ -1,6 +1,10 @@
+import React, { useContext } from "react";
+
 import { Extension, QuestionnaireItem, ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { ValidationType } from "src/components/Validation/validationTypes";
 import { removeItemCodes } from "src/helpers/codeHelper";
+import { ValidationError } from "src/utils/validationUtils";
 
 import {
   ICodeSystem,
@@ -22,9 +26,9 @@ import {
   existItemControlWithCode,
 } from "../../../../helpers/itemControl";
 import {
-  ActionType,
   Items,
   OrderItem,
+  TreeContext,
 } from "../../../../store/treeStore/treeStore";
 import { getAllItemTypes } from "../../../../utils/itemSearchUtils";
 import { getTableCode } from "../../../../utils/tableutils";
@@ -36,7 +40,7 @@ type TableOptionProps = {
   qItems: Items;
   qOrder: OrderItem[];
   qContained: ValueSet[] | undefined;
-  dispatch: React.Dispatch<ActionType>;
+  errors: ValidationError[];
 };
 
 export const TableOption = ({
@@ -44,15 +48,22 @@ export const TableOption = ({
   qItems,
   qOrder,
   qContained,
-  dispatch,
-}: TableOptionProps): JSX.Element => {
+  errors,
+}: TableOptionProps): React.JSX.Element => {
   const { t } = useTranslation();
+  const { dispatch } = useContext(TreeContext);
 
   const getCheckedTableOption = (): string => {
     const tableCode =
       getTableCode(itemControlExtension) || TableOptionsEnum.None;
     return tableCode;
   };
+
+  const hasError = errors.some(
+    (error) =>
+      error.errorProperty === ValidationType.table &&
+      item.linkId === error.linkId,
+  );
 
   const onChangeTableOption = (newValue: string): void => {
     removeItemCodes(
@@ -124,61 +135,63 @@ export const TableOption = ({
 
   return (
     <>
-      <FormField
-        label={t("Table")}
-        sublabel={t(
-          "Choose whether the group should be displayed as a summary table",
-        )}
-      >
-        <RadioBtn
-          onChange={onChangeTableOption}
-          checked={checkedTableOption}
-          options={tableOptions}
-          name={"tableOption-radio"}
-        />
-      </FormField>
-      {showColumnOptions && (
-        <div className="table-column-options-wrapper">
-          <div className="indentation-element" />
-          <div className="table-column-options">
-            {checkedTableOption === TableOptionsEnum.TableHN2 && (
-              <>
-                <ColumnNameOption
+      <div className={hasError ? "validation-error-box" : ""}>
+        <FormField
+          label={t("Table")}
+          sublabel={t(
+            "Choose whether the group should be displayed as a summary table",
+          )}
+        >
+          <RadioBtn
+            onChange={onChangeTableOption}
+            checked={checkedTableOption}
+            options={tableOptions}
+            name={"tableOption-radio"}
+          />
+        </FormField>
+        {showColumnOptions && (
+          <div className="table-column-options-wrapper">
+            <div className="indentation-element" />
+            <div className="table-column-options">
+              {checkedTableOption === TableOptionsEnum.TableHN2 && (
+                <>
+                  <ColumnNameOption
+                    item={item}
+                    qItems={qItems}
+                    qOrder={qOrder}
+                    dispatch={dispatch}
+                  />
+                  <ColumnToOrderByOption
+                    item={item}
+                    tableType={TableOptionsEnum.TableHN2}
+                    dispatch={dispatch}
+                  />
+                </>
+              )}
+              {checkedTableOption === TableOptionsEnum.Table && (
+                <ColumnToOrderByOption
                   item={item}
+                  tableType={TableOptionsEnum.Table}
+                  qItems={qItems}
+                  qContained={qContained}
+                  allChoiceItems={allChoiceItems}
+                  dispatch={dispatch}
+                />
+              )}
+              {checkedTableOption === TableOptionsEnum.GTable && (
+                <ColumnToOrderByOption
+                  item={item}
+                  tableType={TableOptionsEnum.GTable}
                   qItems={qItems}
                   qOrder={qOrder}
                   dispatch={dispatch}
                 />
-                <ColumnToOrderByOption
-                  item={item}
-                  tableType={TableOptionsEnum.TableHN2}
-                  dispatch={dispatch}
-                />
-              </>
-            )}
-            {checkedTableOption === TableOptionsEnum.Table && (
-              <ColumnToOrderByOption
-                item={item}
-                tableType={TableOptionsEnum.Table}
-                qItems={qItems}
-                qContained={qContained}
-                allChoiceItems={allChoiceItems}
-                dispatch={dispatch}
-              />
-            )}
-            {checkedTableOption === TableOptionsEnum.GTable && (
-              <ColumnToOrderByOption
-                item={item}
-                tableType={TableOptionsEnum.GTable}
-                qItems={qItems}
-                qOrder={qOrder}
-                dispatch={dispatch}
-              />
-            )}
-            <ColumnOrderingFunctionOption item={item} dispatch={dispatch} />
+              )}
+              <ColumnOrderingFunctionOption item={item} dispatch={dispatch} />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };

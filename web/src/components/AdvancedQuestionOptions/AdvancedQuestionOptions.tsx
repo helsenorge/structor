@@ -1,19 +1,12 @@
 import React, { useContext, useState } from "react";
 
-import {
-  Extension,
-  QuestionnaireItem,
-  ValueSetComposeIncludeConcept,
-} from "fhir/r4";
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
 
 import "./AdvancedQuestionOptions.css";
 import { ValidationType } from "src/components/Validation/validationTypes";
 import { ValidationError } from "src/utils/validationUtils";
 
-import {
-  IExtensionType,
-  IQuestionnaireItemType,
-} from "../../types/IQuestionnareItemType";
+import { IQuestionnaireItemType } from "../../types/IQuestionnareItemType";
 
 import FhirPathSelect from "./FhirPathSelect/FhirPathSelect";
 import ItemExtractionContextView from "./ItemExtractionContext/ItemExtractionView";
@@ -38,10 +31,6 @@ import { ColumnOption } from "./optionComponents/tableOptions/column-option";
 import { TableOption } from "./optionComponents/tableOptions/table-option";
 import { ValidateReadOnlyOption } from "./optionComponents/validate-readOnly-option";
 import ViewOption from "./optionComponents/view-option";
-import {
-  removeItemExtension,
-  setItemExtension,
-} from "../../helpers/extensionHelper";
 import {
   ItemControlType,
   existItemControlWithCode,
@@ -94,29 +83,9 @@ const AdvancedQuestionOptions = ({
     return returnValue;
   };
 
-  const handleExtension = (extension: Extension): void => {
-    setItemExtension(item, extension, dispatch);
-  };
-
-  const removeExtension = (extensionUrl: IExtensionType): void => {
-    removeItemExtension(item, extensionUrl, dispatch);
-  };
-
   const isGroupItemOnGlobalLevel = (groupId: string): boolean => {
     return qOrder.find((i) => i.linkId === groupId) ? true : false;
   };
-
-  const hasDataReceiverValidationError = itemValidationErrors.some(
-    (error) =>
-      error.errorProperty === ValidationType.dataReceiver &&
-      item.linkId === error.linkId,
-  );
-
-  const hasTableValidationError = itemValidationErrors.some(
-    (error) =>
-      error.errorProperty === ValidationType.table &&
-      item.linkId === error.linkId,
-  );
 
   return (
     <>
@@ -131,29 +100,21 @@ const AdvancedQuestionOptions = ({
         </>
       )}
       {canTypeCopyData(item) && (
-        <>
-          <div
-            className={
-              hasDataReceiverValidationError ? "validation-error-box" : ""
-            }
-          >
-            <CopyFromOption
-              item={item}
-              conditionalArray={conditionalArray}
-              isDataReceiver={isDataReceiver}
-              canTypeBeReadonly={canTypeBeReadonly(item)}
-              dataReceiverStateChanger={setDataReceiverState}
-              getItem={getItem}
-            />
-          </div>
-        </>
+        <CopyFromOption
+          item={item}
+          conditionalArray={conditionalArray}
+          isDataReceiver={isDataReceiver}
+          canTypeBeReadonly={canTypeBeReadonly(item)}
+          errors={itemValidationErrors}
+          dataReceiverStateChanger={setDataReceiverState}
+          getItem={getItem}
+        />
       )}
       {canTypeHaveCalculatedExpressionExtension(item) && (
         <CalculatedExpressionOption
           item={item}
           disabled={isDataReceiver}
-          updateExtension={handleExtension}
-          removeExtension={removeExtension}
+          errors={itemValidationErrors}
         />
       )}
       {canTypeBeBeriket(item) && <FhirPathSelect item={item} />}
@@ -185,19 +146,13 @@ const AdvancedQuestionOptions = ({
         <SummaryOption item={item} dispatch={dispatch}></SummaryOption>
       )}
       {item.type === IQuestionnaireItemType.group && (
-        <>
-          <div
-            className={hasTableValidationError ? "validation-error-box" : ""}
-          >
-            <TableOption
-              item={item}
-              qItems={qItems}
-              qOrder={qOrder}
-              qContained={state.qContained}
-              dispatch={dispatch}
-            />
-          </div>
-        </>
+        <TableOption
+          item={item}
+          qItems={qItems}
+          qOrder={qOrder}
+          qContained={state.qContained}
+          errors={itemValidationErrors}
+        />
       )}
       {showTableColumnOption() && (
         <ColumnOption item={item} parentItem={parentItem} dispatch={dispatch} />

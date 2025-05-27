@@ -7,6 +7,8 @@ import {
   QuestionnaireItemEnableWhen,
 } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { ValidationType } from "src/components/Validation/validationTypes";
+import { ValidationError } from "src/utils/validationUtils";
 
 import {
   IItemProperty,
@@ -37,13 +39,21 @@ type CopyFromOptionProps = {
   conditionalArray: ValueSetComposeIncludeConcept[];
   isDataReceiver: boolean;
   canTypeBeReadonly: boolean;
+  errors: ValidationError[];
   dataReceiverStateChanger: React.Dispatch<React.SetStateAction<boolean>>;
   getItem: (linkId: string) => QuestionnaireItem;
 };
 
 const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
   const { t } = useTranslation();
-  const { dispatch } = useContext(TreeContext);
+  const { dispatch, state } = useContext(TreeContext);
+
+  const hasDataReceiverValidationError = props.errors.some(
+    (error) =>
+      error.errorProperty === ValidationType.dataReceiver &&
+      props.item.linkId === error.linkId,
+  );
+
   const getSelectedValue = (): ValueSetComposeIncludeConcept | undefined =>
     props.conditionalArray.find(
       (f) => f.code === getLinkIdFromValueString(props.item),
@@ -165,25 +175,31 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
   };
 
   return (
-    <div className="horizontal equal">
-      <FormField>
-        <SwitchBtn
-          onChange={onChangeSwitchBtn}
-          value={props.isDataReceiver}
-          label={t("Retrieve input data from field")}
-        />
-      </FormField>
-      {props.isDataReceiver && (
-        <FormField label={t("Select earlier question:")}>
-          <Select
-            placeholder={t("Choose question:")}
-            options={questionsOptions()}
-            value={selectedValue}
-            onChange={(event) => onChangeSelect(event)}
-          />
-        </FormField>
-      )}
-    </div>
+    <>
+      <div
+        className={hasDataReceiverValidationError ? "validation-error-box" : ""}
+      >
+        <div className="horizontal equal">
+          <FormField>
+            <SwitchBtn
+              onChange={onChangeSwitchBtn}
+              value={props.isDataReceiver}
+              label={t("Retrieve input data from field")}
+            />
+          </FormField>
+          {props.isDataReceiver && (
+            <FormField label={t("Select earlier question:")}>
+              <Select
+                placeholder={t("Choose question:")}
+                options={questionsOptions()}
+                value={selectedValue}
+                onChange={(event) => onChangeSelect(event)}
+              />
+            </FormField>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 
