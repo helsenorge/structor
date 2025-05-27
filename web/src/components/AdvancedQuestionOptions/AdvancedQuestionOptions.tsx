@@ -3,7 +3,6 @@ import React, { useContext, useState } from "react";
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
 
 import "./AdvancedQuestionOptions.css";
-import { ValidationType } from "src/components/Validation/validationTypes";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { IQuestionnaireItemType } from "../../types/IQuestionnareItemType";
