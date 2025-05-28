@@ -4,6 +4,7 @@ import { TreeState } from "src/store/treeStore/treeStore";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { validateBundle } from "./bundleValidation";
+import { validateLanguage } from "./languageValidation";
 import { validateMetadata } from "./metadataValidation";
 import { metaSecurityValidation } from "./securityValidation";
 import { validateQuestionnaireSettings } from "./settingsValidation";
@@ -20,9 +21,11 @@ export const validateQuestionnaireDetails = (
   const settingValidation = validateQuestionnaireSettings(t, state);
   const securityValidation = metaSecurityValidation(t, state.qMetadata);
   const bundleValidation = validateBundle(t, questionnaires);
+  const languageValidation = validateLanguage(t, questionnaires);
   return metadataValidation
     .concat(sidebarValidation)
     .concat(settingValidation)
     .concat(securityValidation)
-    .concat(bundleValidation);
+    .concat(bundleValidation)
+    .concat(languageValidation);
 };

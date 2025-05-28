@@ -1,0 +1,173 @@
+{
+  "resourceType": "Bundle",
+  "type": "searchset",
+  "total": 3,
+  "entry": [
+    {
+      "resource": {
+        "title": "Norsk ",
+        "description": "Norsk ",
+        "resourceType": "Questionnaire",
+        "language": "nb-NO",
+        "name": "Norsk_123",
+        "status": "draft",
+        "publisher": "NHN",
+        "meta": {
+          "profile": [
+            "http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire"
+          ],
+          "tag": [
+            {
+              "system": "urn:ietf:bcp:47",
+              "code": "nb-NO",
+              "display": "Bokmål"
+            }
+          ],
+          "security": [
+            {
+              "code": "3",
+              "display": "Helsehjelp (Full)",
+              "system": "urn:oid:2.16.578.1.12.4.1.1.7618"
+            }
+          ]
+        },
+        "contact": [{ "name": "http://www.nhn.no" }],
+        "subjectType": ["Patient"],
+        "extension": [
+          {
+            "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar",
+            "valueCoding": {
+              "system": "http://helsenorge.no/fhir/ValueSet/sdf-sidebar",
+              "code": "1"
+            }
+          },
+          {
+            "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-information-message",
+            "valueCoding": {
+              "system": "http://helsenorge.no/fhir/ValueSet/sdf-information-message",
+              "code": "1"
+            }
+          },
+          {
+            "url": "http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+                  "code": "hide-help",
+                  "display": "Hide help texts"
+                },
+                {
+                  "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+                  "code": "hide-sublabel",
+                  "display": "Hide sublabel texts"
+                }
+              ]
+            }
+          }
+        ],
+        "id": "f01d0d70-c8cd-4771-8d59-805a3559b482",
+        "url": "abc-123-def-eds",
+        "item": [
+          {
+            "linkId": "ea16cb11-f10e-4b84-bbe6-91b35198ad6a",
+            "type": "group",
+            "text": "Test",
+            "item": [
+              {
+                "linkId": "e5041f93-a8a7-4b7f-86ac-dbbaa009b6e3",
+                "type": "string",
+                "text": "en tekst",
+                "required": false
+              }
+            ],
+            "required": false
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "title": "Engelsk",
+        "description": "Engelsk",
+        "resourceType": "Questionnaire",
+        "language": "en-GB",
+        "name": "Norsk_123",
+        "status": "draft",
+        "publisher": "Engelsk",
+        "meta": {
+          "profile": [
+            "http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire"
+          ],
+          "tag": [
+            {
+              "system": "urn:ietf:bcp:47",
+              "code": "en-GB",
+              "display": "English"
+            }
+          ],
+          "security": [
+            {
+              "code": "3",
+              "display": "Helsehjelp (Full)",
+              "system": "urn:oid:2.16.578.1.12.4.1.1.7618"
+            }
+          ]
+        },
+        "contact": [{ "name": "http://www.nhn.no" }],
+        "subjectType": ["Patient"],
+        "extension": [
+          {
+            "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar",
+            "valueCoding": {
+              "system": "http://helsenorge.no/fhir/ValueSet/sdf-sidebar",
+              "code": "1"
+            }
+          },
+          {
+            "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-information-message",
+            "valueCoding": {
+              "system": "http://helsenorge.no/fhir/ValueSet/sdf-information-message",
+              "code": "1"
+            }
+          },
+          {
+            "url": "http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+                  "code": "hide-help",
+                  "display": "Hide help texts"
+                },
+                {
+                  "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+                  "code": "hide-sublabel",
+                  "display": "Hide sublabel texts"
+                }
+              ]
+            }
+          }
+        ],
+        "id": "92fdc1f5-1b3a-44a3-8884-a49cdd3004b8",
+        "url": "abc-123-def-eds",
+        "item": [
+          {
+            "linkId": "ea16cb11-f10e-4b84-bbe6-91b35198ad6a",
+            "type": "group",
+            "text": "Test - Engelsk",
+            "item": [
+              {
+                "linkId": "e5041f93-a8a7-4b7f-86ac-dbbaa009b6e3",
+                "type": "string",
+                "text": "en tekst - Engelsk",
+                "required": false
+              }
+            ],
+            "required": false
+          }
+        ]
+      }
+    }
+  ]
+}
