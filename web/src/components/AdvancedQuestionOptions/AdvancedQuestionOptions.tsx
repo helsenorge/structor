@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
 
-import { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
-
 import "./AdvancedQuestionOptions.css";
+import { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { IQuestionnaireItemType } from "../../types/IQuestionnareItemType";
