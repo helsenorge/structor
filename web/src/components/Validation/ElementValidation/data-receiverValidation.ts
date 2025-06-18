@@ -43,11 +43,10 @@ const validate = (
     errors.push(...validateDataReceiverMandatory(t, qItem));
     errors.push(...validateDataReceiverScoring(t, qItem));
     errors.push(...validateDataReceiverCalculatedExpression(t, qItem, qItems));
-
-    currentItem.items.forEach((item) =>
-      validate(t, item, qItems, qOrder, errors),
-    );
   }
+  currentItem.items.forEach((item) =>
+    validate(t, item, qItems, qOrder, errors),
+  );
 };
 
 const validateDataReceiverExtension = (
