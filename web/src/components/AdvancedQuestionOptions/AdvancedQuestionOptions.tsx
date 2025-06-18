@@ -132,8 +132,7 @@ const AdvancedQuestionOptions = ({
       )}
       <DefinitionOption item={item} />
       {item.type !== IQuestionnaireItemType.group &&
-        item.type !== IQuestionnaireItemType.display &&
-        item.type !== IQuestionnaireItemType.quantity && (
+        item.type !== IQuestionnaireItemType.display && (
           <ContextCodeOption item={item} />
         )}
       <ItemExtractionContextView item={item} />
