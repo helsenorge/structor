@@ -97,6 +97,7 @@ export enum ICodeSystem {
   sliderDisplayType = "http://helsenorge.no/fhir/CodeSystem/SliderDisplayType",
   validationOptions = "http://helsenorge.no/fhir/CodeSystem/ValidationOptions",
   workflow = "http://helsenorge.no/fhir/CodeSystem/workflow",
+  contextParameter = "https://helsenorge.no/fhir/ContextParameter",
 }
 
 export enum IExtensionType {

@@ -10,6 +10,7 @@ import FhirPathSelect from "./FhirPathSelect/FhirPathSelect";
 import ItemExtractionContextView from "./ItemExtractionContext/ItemExtractionView";
 import { AfterCompleteFormOption } from "./optionComponents/afterCompleteForm-option";
 import CalculatedExpressionOption from "./optionComponents/calculatedExpression-option";
+import { ContextCodeOption } from "./optionComponents/ContextCodeOption";
 import CopyFromOption from "./optionComponents/copyFrom-option";
 import { DefinitionOption } from "./optionComponents/definition-option";
 import { HelpOption } from "./optionComponents/help-option";
@@ -73,8 +74,7 @@ const AdvancedQuestionOptions = ({
     let returnValue: boolean = false;
     if (
       parentItem &&
-      (existItemControlWithCode(parentItem, ItemControlType.tableHN2) ||
-        existItemControlWithCode(parentItem, ItemControlType.gTable))
+      existItemControlWithCode(parentItem, ItemControlType.tableHN2)
     ) {
       returnValue = true;
     }
@@ -131,6 +131,11 @@ const AdvancedQuestionOptions = ({
         <PrefixOption item={item} dispatch={dispatch} />
       )}
       <DefinitionOption item={item} />
+      {item.type !== IQuestionnaireItemType.group &&
+        item.type !== IQuestionnaireItemType.display &&
+        item.type !== IQuestionnaireItemType.quantity && (
+          <ContextCodeOption item={item} />
+        )}
       <ItemExtractionContextView item={item} />
       {canTypeBeRepeatable(item) && (
         <RepetitionOption item={item} dispatch={dispatch} />
