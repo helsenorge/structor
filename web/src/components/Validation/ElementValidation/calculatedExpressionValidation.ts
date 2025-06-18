@@ -40,11 +40,10 @@ const validate = (
     errors.push(...validateMaxMin(t, qItem));
     errors.push(...validateLinkIds(t, qItem, qOrder));
     errors.push(...validateItemType(t, qItem));
-
-    currentItem.items.forEach((item) =>
-      validate(t, item, qItems, qOrder, errors),
-    );
   }
+  currentItem.items.forEach((item) =>
+    validate(t, item, qItems, qOrder, errors),
+  );
 };
 
 const validateMaxMin = (
