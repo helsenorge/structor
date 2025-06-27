@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
-import Btn from "src/components/Btn/Btn";
-import FormField from "src/components/FormField/FormField";
-import InputField from "src/components/InputField/inputField";
+
+import Button from "@helsenorge/designsystem-react/components/Button";
+import Input from "@helsenorge/designsystem-react/components/Input";
+import Label from "@helsenorge/designsystem-react/components/Label";
 
 import { useValueSetContext } from "./context/useValueSetContext";
 import ExistingValueSets from "./existinValueSets/ExistingValueSets";
@@ -38,53 +39,38 @@ const ValueSets = (): React.JSX.Element => {
       <div className="predefined-container">
         <div>
           <h2>{"New Value Set"}</h2>
+          <Input
+            value={newValueSet.title}
+            onChange={(event) =>
+              setNewValueSet({ ...newValueSet, title: event.target.value })
+            }
+            label={<Label labelTexts={[{ text: t("Title") }]} />}
+          />
+          <Input
+            value={newValueSet.name}
+            onChange={(event) =>
+              setNewValueSet({ ...newValueSet, name: event.target.value })
+            }
+            label={<Label labelTexts={[{ text: t("Teknisk-navn") }]} />}
+          />
+          <Input
+            value={newValueSet.publisher}
+            onChange={(event) =>
+              setNewValueSet({ ...newValueSet, publisher: event.target.value })
+            }
+            label={<Label labelTexts={[{ text: t("Publisher") }]} />}
+          />
 
-          <FormField label={t("Title")}>
-            <InputField
-              value={newValueSet.title}
-              onChange={(event) =>
-                setNewValueSet({ ...newValueSet, title: event.target.value })
-              }
-            />
-          </FormField>
-          <FormField label={t("Teknisk-navn")}>
-            <InputField
-              value={newValueSet.name}
-              onChange={(event) =>
-                setNewValueSet({ ...newValueSet, name: event.target.value })
-              }
-            />
-          </FormField>
-          <FormField label={t("Publisher")}>
-            <InputField
-              value={newValueSet.publisher}
-              onChange={(event) =>
-                setNewValueSet({
-                  ...newValueSet,
-                  publisher: event.target.value,
-                })
-              }
-            />
-          </FormField>
           <ValuseSetCompose />
           <div className="btn-group center-text">
-            <Btn
-              onClick={addNewElement}
-              title={t("+ New option")}
-              variant="secondary"
-            />
-            <Btn
-              onClick={dispatchValueSet}
-              title={t("Save >")}
-              variant="primary"
-            />
+            <Button onClick={addNewElement}>{t("+ New option")}</Button>
+            <Button variant="outline" onClick={dispatchValueSet}>
+              {t("Save Value Set")}
+            </Button>
           </div>
         </div>
         <ExistingValueSets />
       </div>
-      <pre className="json-container">
-        {JSON.stringify(newValueSet, null, 2)}
-      </pre>
     </section>
   );
 };

@@ -21,13 +21,6 @@ export const initValueSet = (): ValueSet => ({
             id: createUUID(),
             code: "",
             display: "",
-            extension: [],
-          },
-          {
-            id: createUUID(),
-            code: "",
-            display: "",
-            extension: [],
           },
         ],
       },
