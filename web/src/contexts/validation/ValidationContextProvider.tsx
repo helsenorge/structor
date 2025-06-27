@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { ValidationError } from "src/utils/validationUtils";
 
@@ -16,17 +16,18 @@ export const ValidationProvider = ({
   const [questionnaireDetailsErrors, setQuestionnaireDetailsErrors] = useState<
     Array<ValidationError>
   >([]);
+  const values = useMemo(() => {
+    return {
+      translateLang,
+      setTranslateLang,
+      itemsErrors,
+      setItemsErrors,
+      questionnaireDetailsErrors,
+      setQuestionnaireDetailsErrors,
+    };
+  }, [translateLang, itemsErrors, questionnaireDetailsErrors]);
   return (
-    <ValidationContext.Provider
-      value={{
-        translateLang,
-        setTranslateLang,
-        itemsErrors,
-        setItemsErrors,
-        questionnaireDetailsErrors,
-        setQuestionnaireDetailsErrors,
-      }}
-    >
+    <ValidationContext.Provider value={values}>
       {children}
     </ValidationContext.Provider>
   );
