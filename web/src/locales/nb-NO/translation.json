@@ -514,5 +514,5 @@
   "data receiver cannot be a summation field": "data-receiver kan ikke være et skåring felt",
   "Calculation expression does not have an earlier question with LinkId '{0}'": "Kalkuleringsfeltet har et tidligere spørsmål med LinkId '{0}'",
   "Calculated expression can only be in quantity or number items": "Kalkuleringsfeltet kan være kun nummer eller antall men enhet",
-  "Context parameter": "Kontekstparameter"
+  "Extensions": "Utvidelser"
 }

@@ -57,7 +57,6 @@ const Navbar = ({
   const hideMenu = (): void => {
     setSelectedMenuItem(MenuItem.none);
   };
-
   useOutsideClick(navBarRef, hideMenu, selectedMenuItem === MenuItem.none);
 
   const callbackAndHide = (callback: () => void): void => {
@@ -140,12 +139,17 @@ const Navbar = ({
 
   return (
     <>
-      <header ref={navBarRef}>
+      <header className="nav-header" ref={navBarRef}>
         <NavLink to="/" className="form-logo">
           <h2 className="form-title--link">{t("Frontpage")}</h2>
         </NavLink>
         <div className="form-title">
-          <h1>{getFileName()}</h1>
+          <NavLink
+            className="form-logo"
+            to={`/formbuilder/${state.qMetadata.id}`}
+          >
+            <h1 className="form-title--link">{getFileName()}</h1>
+          </NavLink>
         </div>
 
         <div className="pull-right">
@@ -166,7 +170,7 @@ const Navbar = ({
             aria-label="menu list"
             aria-pressed="false"
             onClick={() => handleMenuItemClick(MenuItem.more)}
-            onKeyPress={(e) =>
+            onKeyDown={(e) =>
               e.code === "Enter" && handleMenuItemClick(MenuItem.more)
             }
           >
@@ -197,9 +201,9 @@ const Navbar = ({
             />
             <Btn
               title={t("Choices")}
-              onClick={() =>
-                callbackAndHide(() => setShowContained(!showContained))
-              }
+              onClick={() => {
+                navigate(`/formbuilder/${state.qMetadata.id}/valuesets`);
+              }}
             />
             {i18n.language !== "nb-NO" && (
               <Btn

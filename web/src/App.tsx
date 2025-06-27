@@ -4,13 +4,16 @@ import "./App.css";
 
 import { RouterProvider } from "react-router-dom";
 
+import { ValidationProvider } from "./contexts/validation/ValidationContextProvider";
 import routes from "./router/index";
 import { TreeContextProvider } from "./store/treeStore/treeStore";
 
 function App(): JSX.Element {
   return (
     <TreeContextProvider>
-      <RouterProvider router={routes} />
+      <ValidationProvider>
+        <RouterProvider router={routes} />
+      </ValidationProvider>
     </TreeContextProvider>
   );
 }

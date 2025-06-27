@@ -1,3 +1,13 @@
+.nav-header {
+  background-color: var(--primary-2);
+  display: flex;
+  padding: 10px 0;
+  position: fixed;
+  width: 100%;
+  z-index: 3;
+  top: 0;
+}
+
 .frontpage {
   padding-top: 80px;
 }

@@ -1,5 +1,7 @@
 import React from "react";
 
+import createUUID from "src/helpers/CreateUUID";
+
 type InputFieldProps = {
   defaultValue?: string;
   value?: string;
@@ -13,6 +15,7 @@ type InputFieldProps = {
   testId?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  id?: string;
 };
 
 const InputField = ({
@@ -28,9 +31,11 @@ const InputField = ({
   testId,
   onChange,
   onBlur,
+  id,
 }: InputFieldProps): React.JSX.Element => {
   return (
     <input
+      id={id || name || createUUID()}
       data-testid={testId}
       className={className ? className : ""}
       type="text"

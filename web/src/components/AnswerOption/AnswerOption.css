@@ -1,39 +1,41 @@
 .answer-option-item {
-    display: flex;
+  display: flex;
 }
 
 .answer-option-item .answer-option-content {
-    display: flex;
-    flex-wrap: wrap;
-    flex: 1;
-    margin: 10px 15px;
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  margin: 10px 15px;
 }
 
 .answer-option-content .two-columns {
-    width: 46%;
-    margin-right: 4%;
+  width: 46%;
+  margin-right: 4%;
 }
+
 .answer-option-content .three-columns {
-    width: 29.2%;
-    margin-right: 4%;
+  width: 29.2%;
+  margin-right: 4%;
 }
 
 .answer-option-content input:last-of-type {
-    margin-right: 0%;
+  margin-right: 0%;
 }
 
-.answer-option-item button {
-    border: 0;
-    cursor: pointer;
-    padding: 0;
-    background: url('../../images/icons/close-outline.svg') no-repeat center;
-    height: 25px;
-    width: 25px;
+.answer-option-item-remove {
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  background: url("../../images/icons/close-outline.svg") no-repeat center;
+  height: 25px;
+  width: 25px;
 }
 
 .reorder-icon {
-    height: 25px;
-    width: 25px;
-    min-width: 25px;
-    background: url('../../images/icons/reorder-three-outline.svg') no-repeat center;
+  height: 25px;
+  width: 25px;
+  min-width: 25px;
+  background: url("../../images/icons/reorder-three-outline.svg") no-repeat
+    center;
 }

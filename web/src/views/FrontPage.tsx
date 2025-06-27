@@ -72,7 +72,7 @@ const FrontPage = (): React.JSX.Element => {
         </Modal>
       )}
 
-      <header>
+      <header className="nav-header">
         <div className="form-title">
           <h1>{t("Form builder")}</h1>
         </div>
@@ -94,7 +94,6 @@ const FrontPage = (): React.JSX.Element => {
           title={t("New questionnaire")}
           variant="primary"
         />
-        {` `}
         <Btn
           onClick={() => {
             uploadRef.current?.click();

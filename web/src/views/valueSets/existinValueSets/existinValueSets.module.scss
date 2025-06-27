@@ -1,0 +1,17 @@
+.existingValueSets {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .existingValueSetsList {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+
+    .existingValueSetsListItems {
+      list-style: none;
+    }
+  }
+}

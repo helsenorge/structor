@@ -164,43 +164,41 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
           <SliderMinMaxLabels item={item} />
         </>
       )}
-      {!isSlider && (
-        <>
-          <FormField>
-            <SwitchBtn
-              onChange={() => {
-                const newType =
-                  item.type === IQuestionnaireItemType.openChoice
-                    ? IQuestionnaireItemType.choice
-                    : IQuestionnaireItemType.openChoice;
-                dispatchUpdateItem(IItemProperty.type, newType);
-              }}
-              value={item.type === IQuestionnaireItemType.openChoice}
-              label={t("Allow free-text answer")}
-            />
-          </FormField>
+      <>
+        <FormField>
+          <SwitchBtn
+            onChange={() => {
+              const newType =
+                item.type === IQuestionnaireItemType.openChoice
+                  ? IQuestionnaireItemType.choice
+                  : IQuestionnaireItemType.openChoice;
+              dispatchUpdateItem(IItemProperty.type, newType);
+            }}
+            value={item.type === IQuestionnaireItemType.openChoice}
+            label={t("Allow free-text answer")}
+          />
+        </FormField>
 
-          <FormField>
-            <SwitchBtn
-              onChange={() => {
-                if (item.answerValueSet) {
-                  const system = createUriUUID();
-                  dispatchRemoveAttribute(IItemProperty.answerValueSet);
-                  dispatchUpdateItem(IItemProperty.answerOption, [
-                    createNewAnswerOption(system),
-                    createNewAnswerOption(system),
-                  ]);
-                } else {
-                  dispatchRemoveAttribute(IItemProperty.answerOption);
-                  dispatchUpdateItem(IItemProperty.answerValueSet, "#");
-                }
-              }}
-              value={!!item.answerValueSet}
-              label={t("Use predefined valueset")}
-            />
-          </FormField>
-        </>
-      )}
+        <FormField>
+          <SwitchBtn
+            onChange={() => {
+              if (item.answerValueSet) {
+                const system = createUriUUID();
+                dispatchRemoveAttribute(IItemProperty.answerValueSet);
+                dispatchUpdateItem(IItemProperty.answerOption, [
+                  createNewAnswerOption(system),
+                  createNewAnswerOption(system),
+                ]);
+              } else {
+                dispatchRemoveAttribute(IItemProperty.answerOption);
+                dispatchUpdateItem(IItemProperty.answerValueSet, "#");
+              }
+            }}
+            value={!!item.answerValueSet}
+            label={t("Use predefined valueset")}
+          />
+        </FormField>
+      </>
       {item.answerValueSet ? (
         <PredefinedValueSets
           item={item}

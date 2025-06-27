@@ -1,4 +1,14 @@
-header p {
+.nav-header {
+  background-color: var(--primary-2);
+  display: flex;
+  padding: 10px 0;
+  position: fixed;
+  width: 100%;
+  z-index: 3;
+  top: 0;
+}
+
+.nav-header p {
   margin: 0;
   padding-right: 5px;
   color: #d2d0d0;
@@ -48,6 +58,9 @@ header p {
 
 .form-title {
   width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
 }
 
 .form-title--link {
@@ -56,11 +69,19 @@ header p {
   margin: 0;
 }
 
+.form-title--link .active {
+  background-color: initial;
+}
+
+.form-title--link .active:hover {
+  background-color: initial;
+}
+
 .form-title--link:hover {
   text-decoration: underline;
 }
 
-.form-title h1 {
+.form-title .form-title--link {
   font-size: 24px;
 }
 
