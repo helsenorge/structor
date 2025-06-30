@@ -6,6 +6,8 @@ import { TreeContext } from "src/store/treeStore/treeStore";
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
 import Change from "@helsenorge/designsystem-react/components/Icons/Change";
+import Down from "@helsenorge/designsystem-react/components/Icons/ChevronDown";
+import Up from "@helsenorge/designsystem-react/components/Icons/ChevronUp";
 
 import { getValueSetValues } from "../../../helpers/valueSetHelper";
 import { useValueSetContext } from "../context/useValueSetContext";
@@ -13,7 +15,8 @@ import { useValueSetContext } from "../context/useValueSetContext";
 import styles from "./existinValueSets.module.scss";
 
 const ExistingValueSets = (): React.JSX.Element => {
-  const { canEdit, handleEdit } = useValueSetContext();
+  const { canEdit, handleEdit, newValueSet } = useValueSetContext();
+  const [showRawJson, setShowRawJson] = React.useState(false);
   const { t } = useTranslation();
   const {
     state: { qContained },
@@ -21,7 +24,22 @@ const ExistingValueSets = (): React.JSX.Element => {
 
   return (
     <div className={styles.existingValueSets}>
-      <h2>{"Predefined Value Sets"}</h2>
+      <header>
+        <h2>{"Predefined Value Sets"}</h2>
+        <Button
+          variant="borderless"
+          size="large"
+          onClick={() => setShowRawJson(!showRawJson)}
+          ariaLabel={t("Show raw JSON")}
+        >
+          {showRawJson ? <Icon svgIcon={Up} /> : <Icon svgIcon={Down} />}
+        </Button>
+        {showRawJson && (
+          <pre className={styles.jsonContainer}>
+            {JSON.stringify(newValueSet, null, 2)}
+          </pre>
+        )}
+      </header>
 
       {qContained?.map((x) => (
         <div key={x.id}>
@@ -72,9 +90,6 @@ const ExistingValueSets = (): React.JSX.Element => {
           </ul>
         </div>
       ))}
-      {/* <pre className="json-container">
-        {JSON.stringify(qContained, null, 2)}
-      </pre> */}
     </div>
   );
 };

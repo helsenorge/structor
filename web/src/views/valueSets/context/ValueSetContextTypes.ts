@@ -5,6 +5,7 @@ export type ValueSetContextInputTypes = {
 };
 export type ValueSetContextValueTypes = {
   setNewValueSet: React.Dispatch<React.SetStateAction<ValueSet>>;
+  copyComposeIncludeConcept: (id?: string, includeIndex?: number) => void;
   newValueSet: ValueSet;
   reset: () => void;
   handleEdit: (valueSet: ValueSet) => void;

@@ -36,3 +36,12 @@
   word-break: break-all;
   padding: 0 0.5rem;
 }
+
+.jsonContainer {
+  display: block;
+  white-space: pre-wrap;
+  text-align: left;
+  padding: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}

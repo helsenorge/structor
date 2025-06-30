@@ -1,0 +1,42 @@
+.valueSets {
+  flex-direction: column;
+  padding: 80px 20px;
+}
+
+.valueSetsHeadline {
+  color: black;
+  margin-bottom: 1rem;
+}
+
+.predefinedContainer {
+  display: grid;
+  grid-template-columns: 48% 48%;
+  padding-bottom: 50px;
+}
+
+.predefinedContainer > div {
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.predefinedContainer > div:first-child {
+  margin-right: 20px;
+  border: 1px dotted black;
+}
+
+.predefinedContainer .valueSet {
+  padding-top: 10px;
+}
+
+.jsonContainer {
+  display: block;
+  white-space: pre-wrap;
+  text-align: left;
+  padding: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.devider {
+  margin: 20px 0;
+}

@@ -1,6 +1,14 @@
 import React, { useCallback, useMemo, useState } from "react";
 
-import { ValueSet } from "fhir/r4";
+import {
+  Extension,
+  ValueSet,
+  ValueSetCompose,
+  ValueSetComposeInclude,
+  ValueSetComposeIncludeConcept,
+} from "fhir/r4";
+import createUUID from "src/helpers/CreateUUID";
+import { createUriUUID } from "src/helpers/uriHelper";
 import { predefinedValueSetUri } from "src/types/IQuestionnareItemType";
 
 import { ValueSetContextInputTypes } from "./ValueSetContextTypes";
@@ -28,6 +36,65 @@ export const ValueSetProvider = ({
     const o = JSON.stringify(valueSet);
     setNewValueSet(JSON.parse(o));
   }, []);
+
+  const copyComposeIncludeConcept = useCallback(
+    (id?: string, includeIndex = 0): void => {
+      const elementToCopy = newValueSet?.compose?.include?.[
+        includeIndex
+      ]?.concept?.find((x) => x && x.id === id);
+      if (!elementToCopy) {
+        return;
+      }
+      const newElement: ValueSetComposeIncludeConcept = {
+        ...elementToCopy,
+        id: createUUID(),
+        extension: (elementToCopy.extension || []).map((ext: Extension) => ({
+          ...ext,
+          ...(ext.valueCoding && {
+            valueCoding: { ...ext.valueCoding, system: createUriUUID() },
+          }),
+          ...(ext.valueCodeableConcept && {
+            valueCodeableConcept: {
+              ...ext.valueCodeableConcept,
+              ...(ext.valueCodeableConcept.coding && {
+                coding: (ext.valueCodeableConcept.coding || []).map(
+                  (coding) => ({
+                    ...coding,
+                    system: createUriUUID(),
+                  }),
+                ),
+              }),
+            },
+          }),
+          ...(ext.valueReference && {
+            valueReference: { ...ext.valueReference, id: createUUID() },
+          }),
+
+          id: createUUID(),
+        })),
+      };
+      setNewValueSet((prevState) => {
+        const updatedCompose: ValueSetCompose = {
+          ...prevState?.compose,
+          include: [
+            {
+              ...prevState?.compose?.include[includeIndex],
+              concept: [
+                ...(prevState?.compose?.include[includeIndex]?.concept || []),
+                newElement,
+              ],
+            } as ValueSetComposeInclude,
+          ],
+        };
+        return {
+          ...prevState,
+          compose: updatedCompose,
+        };
+      });
+    },
+    [newValueSet?.compose?.include],
+  );
+
   const value = useMemo(() => {
     return {
       newValueSet,
@@ -35,8 +102,9 @@ export const ValueSetProvider = ({
       reset,
       canEdit,
       handleEdit,
+      copyComposeIncludeConcept,
     };
-  }, [newValueSet, reset, canEdit, handleEdit]);
+  }, [newValueSet, reset, canEdit, handleEdit, copyComposeIncludeConcept]);
   return (
     <ValueSetContext.Provider value={value}>
       {children}

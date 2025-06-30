@@ -4,16 +4,19 @@ import { useTranslation } from "react-i18next";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
-import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
+import PlusLarge from "@helsenorge/designsystem-react/components/Icons/PlusLarge";
+import TrashCan from "@helsenorge/designsystem-react/components/Icons/TrashCan";
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
+import Select from "@helsenorge/designsystem-react/components/Select";
 
 import { useValueSetContext } from "./context/useValueSetContext";
 import ExistingValueSets from "./existinValueSets/ExistingValueSets";
 import ValuseSetCompose from "./valueSetCompose/ValuseSetCompose";
 import { updateValueSetAction } from "../../store/treeStore/treeActions";
 import { TreeContext } from "../../store/treeStore/treeStore";
-import "./valueSets.css";
+
+import styles from "./valueSets.module.scss";
 
 const ValueSets = (): React.JSX.Element => {
   const { t } = useTranslation();
@@ -26,11 +29,11 @@ const ValueSets = (): React.JSX.Element => {
   };
 
   return (
-    <section className="value-sets">
-      <h1 className="value-sets--headline">{t("ValueSets")}</h1>
-      <div className="predefined-container">
+    <section className={styles.valueSets}>
+      <h1 className={styles.valueSetsHeadline}>{t("ValueSets")}</h1>
+      <div className={styles.predefinedContainer}>
         <div>
-          <h2>{"New Value Set"}</h2>
+          <h2>{t("New Value Set")}</h2>
           <Input
             value={newValueSet.title}
             onChange={(event) =>
@@ -52,13 +55,45 @@ const ValueSets = (): React.JSX.Element => {
             }
             label={<Label labelTexts={[{ text: t("Publisher") }]} />}
           />
-
+          <Input
+            value={newValueSet.version}
+            onChange={(event) =>
+              setNewValueSet({ ...newValueSet, version: event.target.value })
+            }
+            label={<Label labelTexts={[{ text: t("Version") }]} />}
+          />
+          <Select
+            label={t("Type")}
+            value={newValueSet.status || "draft"}
+            onChange={(event) =>
+              setNewValueSet({
+                ...newValueSet,
+                status: event.target.value as
+                  | "draft"
+                  | "active"
+                  | "retired"
+                  | "unknown",
+              })
+            }
+          >
+            <option value="draft">{"Draft"}</option>
+            <option value="active">{"Active"}</option>
+            <option value="retired">{"Retired"}</option>
+            <option value="unknown">{"Unknown"}</option>
+          </Select>
+          <br />
           <ValuseSetCompose />
+          <hr className={styles.devider} />
           <div className="btn-group center-text">
             <Button variant="outline" onClick={dispatchValueSet}>
-              <Icon svgIcon={PlussIcon} />
+              <Icon svgIcon={PlusLarge} />
 
               {t("Save")}
+            </Button>
+            <Button variant="outline" onClick={reset}>
+              <Icon svgIcon={TrashCan} />
+
+              {t("Clear")}
             </Button>
           </div>
         </div>
