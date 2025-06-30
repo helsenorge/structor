@@ -21,6 +21,7 @@ const SwitchBtn = ({
       <label>{label}</label>
       <label className="switch" aria-label={label}>
         <input
+          title={label}
           type="checkbox"
           checked={value}
           onChange={onChange}

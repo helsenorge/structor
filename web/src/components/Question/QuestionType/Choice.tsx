@@ -167,6 +167,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
       <>
         <FormField>
           <SwitchBtn
+            disabled={isSlider}
             onChange={() => {
               const newType =
                 item.type === IQuestionnaireItemType.openChoice
@@ -178,7 +179,6 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
             label={t("Allow free-text answer")}
           />
         </FormField>
-
         <FormField>
           <SwitchBtn
             onChange={() => {

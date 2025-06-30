@@ -3,13 +3,14 @@ import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
 
 import { useValueSetContext } from "./context/useValueSetContext";
 import ExistingValueSets from "./existinValueSets/ExistingValueSets";
 import ValuseSetCompose from "./valueSetCompose/ValuseSetCompose";
-import createUUID from "../../helpers/CreateUUID";
 import { updateValueSetAction } from "../../store/treeStore/treeActions";
 import { TreeContext } from "../../store/treeStore/treeStore";
 import "./valueSets.css";
@@ -18,15 +19,6 @@ const ValueSets = (): React.JSX.Element => {
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
   const { newValueSet, setNewValueSet, reset } = useValueSetContext();
-
-  const addNewElement = (): void => {
-    newValueSet?.compose?.include[0].concept?.push({
-      id: createUUID(),
-      code: "",
-      display: "",
-    });
-    setNewValueSet({ ...newValueSet });
-  };
 
   const dispatchValueSet = (): void => {
     dispatch(updateValueSetAction(newValueSet));
@@ -63,9 +55,10 @@ const ValueSets = (): React.JSX.Element => {
 
           <ValuseSetCompose />
           <div className="btn-group center-text">
-            <Button onClick={addNewElement}>{t("+ New option")}</Button>
             <Button variant="outline" onClick={dispatchValueSet}>
-              {t("Save Value Set")}
+              <Icon svgIcon={PlussIcon} />
+
+              {t("Save")}
             </Button>
           </div>
         </div>

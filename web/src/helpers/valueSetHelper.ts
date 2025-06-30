@@ -44,6 +44,8 @@ export const getValueSetValues = (valueSet: ValueSet | undefined): Coding[] => {
         code: concept.code,
         system: include.system,
         display: concept.display,
+        extension: concept.extension || [],
+        id: concept.id || createUUID(),
       });
     });
   });

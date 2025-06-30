@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
-import Btn from "src/components/Btn/Btn";
 import { TreeContext } from "src/store/treeStore/treeStore";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
@@ -14,9 +13,8 @@ import { useValueSetContext } from "../context/useValueSetContext";
 import styles from "./existinValueSets.module.scss";
 
 const ExistingValueSets = (): React.JSX.Element => {
-  const { t } = useTranslation();
   const { canEdit, handleEdit } = useValueSetContext();
-
+  const { t } = useTranslation();
   const {
     state: { qContained },
   } = useContext(TreeContext);
@@ -28,7 +26,9 @@ const ExistingValueSets = (): React.JSX.Element => {
       {qContained?.map((x) => (
         <div key={x.id}>
           <div className={styles.existingValueSetsHeader}>
-            <strong>{`${x.title}`}</strong> {`(${x.name || x.id})`}
+            <h3>
+              <strong>{`${x.title}`}</strong> {`(${x.name || x.id})`}
+            </h3>
             {canEdit(x.url) && (
               <Button
                 ariaLabel="change value set"
@@ -48,6 +48,25 @@ const ExistingValueSets = (): React.JSX.Element => {
                 <br />
                 <span>{"code"}</span>
                 {`: ${y.code}`}
+                <br />
+                {y.extension !== undefined && y.extension?.length > 0 && (
+                  <>
+                    <br />
+                    <h4>{t("Extensions ")}</h4>
+                    {y.extension.map((ext, extIndex) => (
+                      <span key={extIndex}>
+                        {Object.entries(ext).map(([key, value]) => (
+                          <p
+                            className={styles.extensionItem}
+                            key={key}
+                          >{`${key}: ${value}`}</p>
+                        ))}
+                      </span>
+                    ))}
+
+                    <br />
+                  </>
+                )}
               </li>
             ))}
           </ul>

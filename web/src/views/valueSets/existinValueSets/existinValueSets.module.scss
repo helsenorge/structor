@@ -1,12 +1,7 @@
 .existingValueSets {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
   .existingValueSetsList {
-    width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     list-style: none;
     text-align: left;
 
@@ -35,4 +30,9 @@
       margin-left: auto;
     }
   }
+}
+
+.extensionItem {
+  word-break: break-all;
+  padding: 0 0.5rem;
 }
