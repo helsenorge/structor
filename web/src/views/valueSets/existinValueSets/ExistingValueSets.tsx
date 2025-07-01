@@ -71,8 +71,8 @@ const ExistingValueSets = (): React.JSX.Element => {
                   <>
                     <br />
                     <h4>{t("Extensions ")}</h4>
-                    {y.extension.map((ext, extIndex) => (
-                      <span key={extIndex}>
+                    {y.extension.map((ext) => (
+                      <span key={ext.id || ext.url}>
                         {Object.entries(ext).map(([key, value]) => (
                           <p
                             className={styles.extensionItem}
