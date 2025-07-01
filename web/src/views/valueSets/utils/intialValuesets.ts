@@ -1,4 +1,4 @@
-import { Coding, Extension, ValueSet, ValueSetComposeInclude } from "fhir/r4";
+import { Coding, ValueSet, ValueSetComposeInclude } from "fhir/r4";
 import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
 
