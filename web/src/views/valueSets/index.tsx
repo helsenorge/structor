@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 
 import { ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import UriFieldFr from "src/components/FormField/UriFieldFr";
 import { createUriUUID } from "src/helpers/uriHelper";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
@@ -24,7 +23,6 @@ import {
 import { TreeContext } from "../../store/treeStore/treeStore";
 
 import styles from "./valueSets.module.scss";
-const valueSetUri = createUriUUID();
 const ValueSets = (): React.JSX.Element => {
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
