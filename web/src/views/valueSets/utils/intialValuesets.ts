@@ -1,4 +1,4 @@
-import { ValueSet, ValueSetComposeInclude } from "fhir/r4";
+import { Coding, Extension, ValueSet, ValueSetComposeInclude } from "fhir/r4";
 import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
 
@@ -27,4 +27,11 @@ export const initValueSet = (): ValueSet => ({
   compose: {
     include: [initialComposeInclude()],
   },
+});
+
+export const initialCoding = (): Coding => ({
+  id: createUUID(),
+  code: "",
+  display: "",
+  system: createUriUUID(),
 });

@@ -28,15 +28,12 @@
   padding-top: 10px;
 }
 
-.jsonContainer {
-  display: block;
-  white-space: pre-wrap;
-  text-align: left;
-  padding: 20px;
-  max-height: 80vh;
-  overflow-y: auto;
-}
+@media screen and (width <= 1280px) {
+  .predefinedContainer {
+    grid-template-columns: 100%;
+  }
 
-.devider {
-  margin: 20px 0;
+  .predefinedContainer > div:first-child {
+    margin-right: 0;
+  }
 }

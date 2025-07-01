@@ -9,6 +9,7 @@
     .existingValueSetsListItems {
       list-style: none;
       margin-bottom: 1rem;
+      margin-right: 1rem;
     }
   }
 
@@ -22,13 +23,6 @@
     width: initial;
     top: initial;
   }
-}
-
-.extensionItem {
-  word-break: break-all;
-  padding: 1rem;
-  margin: 0 0.5rem;
-  border-bottom: 1px solid #ccc;
 }
 
 .jsonContainer {
@@ -54,4 +48,25 @@
   span {
     margin-right: 0.5rem;
   }
+}
+
+.existingValueSetsHeaderDescriptionContent {
+  text-align: left;
+  margin: 0 0 0 2.5rem;
+
+  span {
+    font-weight: bold;
+  }
+}
+
+.existingValueSetsHeaderDescription {
+  display: grid;
+  align-items: center;
+  text-align: left;
+  grid-template-columns: 1fr 5fr;
+}
+
+.existingValueSetsListItem {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
 }

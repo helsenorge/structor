@@ -14,16 +14,19 @@ import { useValueSetContext } from "../context/useValueSetContext";
 
 import styles from "./existinValueSets.module.scss";
 
-const ExistingValueSets = (): React.JSX.Element => {
+type Props = {
+  scrollToTarget: () => void;
+};
+
+const ExistingValueSets = ({ scrollToTarget }: Props): React.JSX.Element => {
   const { newValueSet } = useValueSetContext();
   const [showRawJson, setShowRawJson] = React.useState(false);
   const { t } = useTranslation();
-  const { targetRef, scrollToTarget } = useScrollToElement<HTMLDivElement>();
   const {
     state: { qContained },
   } = useContext(TreeContext);
   return (
-    <div className={styles.existingValueSets} ref={targetRef}>
+    <div className={styles.existingValueSets}>
       <header>
         <h2>{t("Existing Value Sets")}</h2>
         <Button
