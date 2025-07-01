@@ -1,0 +1,10 @@
+export declare const error: string;
+export declare const extensionItem: string;
+export declare const extensionItemInput: string;
+export declare const extensionItemInputWrapper: string;
+export declare const extensionItemSelectWrapper: string;
+export declare const extensionsContainer: string;
+export declare const extensionsHeader: string;
+export declare const extensionsHeaderTitle: string;
+export declare const removeButton: string;
+export declare const removeButtonWrapper: string;

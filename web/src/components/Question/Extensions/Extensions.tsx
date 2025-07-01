@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 
 import { Extension } from "fhir/r4";
+import { Extensions } from "src/components/extensions/Extensions";
 import createUUID from "src/helpers/CreateUUID";
 import { updateItemExtensionAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
 import { ValidationError } from "src/utils/validationUtils";
-import { Extensions } from "src/views/valueSets/extensions/Extensions";
 
 import style from "./q-extensions.module.scss";
 type Props = {

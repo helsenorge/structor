@@ -1,0 +1,65 @@
+.extensionsContainer {
+  display: flex;
+  margin: 1rem;
+  margin-left: 7rem;
+  flex-direction: column;
+}
+
+.extensionsHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0.5rem 0;
+  background-color: initial;
+  padding: initial;
+  position: initial;
+  width: initial;
+  top: initial;
+}
+
+.removeButtonWrapper {
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.extensionsHeaderTitle {
+  margin: 0 1rem 0 0;
+  align-self: center;
+}
+
+.extensionItem {
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+  align-items: center; // Vertically align items in each row
+  row-gap: 1rem; // Space between rows
+}
+
+.extensionItem:not(:last-child) {
+  border-bottom: 1px solid #ccc;
+}
+
+.extensionItemInputWrapper {
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+
+  & > div {
+    margin-bottom: 1rem;
+  }
+}
+
+.extensionItemInput {
+  width: 100%;
+}
+
+.removeButton {
+  margin-bottom: 1rem;
+}
+
+.extensionItemSelectWrapper {
+  margin-left: 1.5rem;
+}
+
+.error {
+  box-shadow: 0 0 0 4px #b62e1c;
+}

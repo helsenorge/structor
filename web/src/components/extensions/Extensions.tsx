@@ -1,0 +1,150 @@
+import React from "react";
+
+import { Extension } from "fhir/r4";
+import { useTranslation } from "react-i18next";
+
+import Button from "@helsenorge/designsystem-react/components/Button";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
+import RemoveIcon from "@helsenorge/designsystem-react/components/Icons/TrashCan";
+import Input from "@helsenorge/designsystem-react/components/Input";
+import Label from "@helsenorge/designsystem-react/components/Label";
+import Select from "@helsenorge/designsystem-react/components/Select";
+
+import { ExtensionValueKey } from "./types";
+import { useExtensions } from "./useExtensons";
+import { EXTENSION_VALUE_TYPES, getExtensionValue } from "./utils";
+import ValueInput from "./valueInputs/ValueInput";
+
+import styles from "./extensions.module.scss";
+
+type Props = {
+  extensions?: Extension[];
+  id: string;
+  idType?: "linkId" | "id";
+  updateExtensions: (
+    extensions: Extension[],
+    id: string,
+    idType?: "linkId" | "id",
+  ) => void;
+  hasValidationError?: (index: number) => boolean;
+};
+
+export const Extensions = ({
+  id,
+  idType = "id",
+  extensions,
+  updateExtensions,
+  hasValidationError,
+}: Props): React.JSX.Element | null => {
+  const {
+    addNewExtension,
+    removeExtension,
+    updateExtension,
+    handleTypeChange,
+  } = useExtensions({
+    id,
+    idType,
+    extensions: extensions || [],
+    successCallback: updateExtensions,
+  });
+  const { t } = useTranslation();
+
+  return (
+    <div className={styles.extensionsContainer}>
+      <header className={styles.extensionsHeader}>
+        <h3 className={styles.extensionsHeaderTitle}>{"Extensions"}</h3>
+        <Button
+          variant="borderless"
+          size="large"
+          onClick={() => {
+            addNewExtension();
+          }}
+          ariaLabel={t("Add new extension")}
+        >
+          <Icon svgIcon={PlussIcon} />
+        </Button>
+      </header>
+      {extensions?.map((ext, index) => {
+        const { type: valueType, value } = getExtensionValue(ext);
+        const hasError = hasValidationError ? hasValidationError(index) : false;
+        return (
+          <section
+            className={`${styles.extensionItem} ${hasError ? styles.error : ""}`}
+            key={ext.id}
+          >
+            <div className={styles.extensionItemInputWrapper}>
+              <div>
+                <Input
+                  label={
+                    <Label labelTexts={[{ text: "Url", type: "normal" }]} />
+                  }
+                  className={styles.extensionItemInput}
+                  size="medium"
+                  disabled={false}
+                  value={ext.url}
+                  placeholder={t("Enter an url..")}
+                  onChange={(event) =>
+                    updateExtension({
+                      extension: ext,
+                      field: "url",
+                      value: event.target.value,
+                    })
+                  }
+                />
+                <Select
+                  label={t("Type")}
+                  value={valueType || ""}
+                  onChange={(event) =>
+                    handleTypeChange(
+                      index,
+                      event.target.value as Partial<ExtensionValueKey>,
+                    )
+                  }
+                >
+                  <option value="" disabled>
+                    {t("Select a type...")}
+                  </option>
+                  {Object.entries(EXTENSION_VALUE_TYPES).map(([key, label]) => (
+                    <option key={key} value={key}>
+                      {label}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div className={styles.removeButtonWrapper}>
+                <Button
+                  type="button"
+                  size="large"
+                  variant="borderless"
+                  onClick={() => {
+                    removeExtension({ extension: ext });
+                  }}
+                  name={t("Remove element")}
+                  ariaLabel={t("Delete extension")}
+                >
+                  <Icon svgIcon={RemoveIcon} />
+                </Button>
+              </div>
+            </div>
+            <div className={styles.extensionItemSelectWrapper}>
+              {valueType && (
+                <ValueInput
+                  type={valueType}
+                  value={value as string | boolean | number | undefined}
+                  onChange={(newValue: string | boolean | number | undefined) =>
+                    updateExtension({
+                      extension: ext,
+                      field: valueType,
+                      value: newValue,
+                    })
+                  }
+                />
+              )}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  );
+};
