@@ -33,6 +33,7 @@ export const ADD_ITEM_CODE_ACTION = "addItemCode";
 export const ADD_QUESTIONNAIRE_LANGUAGE_ACTION = "addQuestionnaireLanguage";
 export const DELETE_ITEM_CODE_ACTION = "deleteItemCode";
 export const UPDATE_ITEM_CODE_PROPERTY_ACTION = "updateItemCodeProperty";
+export const UPDATE_ITEM_EXTENSION_ACTION = "updateItemExtension";
 export const UPDATE_ITEM_CODE_PROPERTY_WITH_CODE_ACTION =
   "updateItemCodePropertyWithCode";
 export const REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION =
@@ -100,6 +101,11 @@ export interface UpdateItemCodePropertyAction {
   value: string;
 }
 
+export interface UpdateItemExtensionAction {
+  type: typeof UPDATE_ITEM_EXTENSION_ACTION;
+  linkId: string;
+  extensions: Extension[];
+}
 export interface UpdateItemCodePropertyWithCodeAction {
   type: typeof UPDATE_ITEM_CODE_PROPERTY_WITH_CODE_ACTION;
   linkId: string;
@@ -310,6 +316,16 @@ export const updateItemCodePropertyAction = (
     index,
     property,
     value,
+  };
+};
+export const updateItemExtensionAction = (
+  linkId: string,
+  extensions: Extension[],
+): UpdateItemExtensionAction => {
+  return {
+    type: UPDATE_ITEM_EXTENSION_ACTION,
+    linkId,
+    extensions,
   };
 };
 

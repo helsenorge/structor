@@ -53,6 +53,7 @@ import EnableWhen from "./EnableWhen/EnableWhen";
 import FormField from "../FormField/FormField";
 import MarkdownEditor from "../MarkdownEditor/MarkdownEditor";
 import SwitchBtn from "../SwitchBtn/SwitchBtn";
+import QExtensions from "./Extensions/Extensions";
 
 interface QuestionProps {
   item: QuestionnaireItem;
@@ -73,7 +74,9 @@ const Question = (props: QuestionProps): React.JSX.Element => {
   const codeElements = props.item.code
     ? `(${props.item.code.filter((value) => !erRenderingOption(value)).length})`
     : "(0)";
-
+  const extensionElements = props.item.extension
+    ? `(${props.item.extension.length})`
+    : "(0)";
   const dispatchUpdateItem = (
     name: IItemProperty,
     value:
@@ -283,6 +286,12 @@ const Question = (props: QuestionProps): React.JSX.Element => {
         </Accordion>
         <Accordion title={`${t("Code")} ${codeElements}`}>
           <Codes
+            linkId={props.item.linkId}
+            itemValidationErrors={props.itemValidationErrors}
+          />
+        </Accordion>
+        <Accordion title={`${t("Extension")} ${extensionElements}`}>
+          <QExtensions
             linkId={props.item.linkId}
             itemValidationErrors={props.itemValidationErrors}
           />

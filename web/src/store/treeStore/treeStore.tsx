@@ -72,6 +72,8 @@ import {
   UPDATE_ITEM_CODE_TRANSLATION_ACTION,
   UpdateItemCodeTranslationAction,
   RemoveValueSetAction,
+  UpdateItemExtensionAction,
+  UPDATE_ITEM_EXTENSION_ACTION,
 } from "./treeActions";
 import { findCodingBySystemAndCode } from "../../helpers/codeHelper";
 import createUUID from "../../helpers/CreateUUID";
@@ -107,7 +109,8 @@ export type ActionType =
   | SaveAction
   | UpdateMarkedLinkId
   | UpdateItemCodeTranslationAction
-  | RemoveValueSetAction;
+  | RemoveValueSetAction
+  | UpdateItemExtensionAction;
 
 export interface Items {
   [linkId: string]: QuestionnaireItem;
@@ -438,6 +441,19 @@ function deleteItemCode(draft: TreeState, action: DeleteItemCodeAction): void {
   } else {
     delete draft.qItems[action.linkId].code;
   }
+}
+
+function updateItemExtension(
+  draft: TreeState,
+  action: UpdateItemExtensionAction,
+): void {
+  if (!draft.qItems[action.linkId]) {
+    // eslint-disable-next-line no-console
+    console.error('Trying to update "extension" from non-existent item');
+    return;
+  }
+
+  draft.qItems[action.linkId].extension = action.extensions;
 }
 
 function updateItemCodeProperty(
@@ -850,6 +866,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
       break;
     case ADD_QUESTIONNAIRE_LANGUAGE_ACTION:
       addLanguage(draft, action);
+      break;
+    case UPDATE_ITEM_EXTENSION_ACTION:
+      updateItemExtension(draft, action);
       break;
     case REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION:
       removeLanguage(draft, action);
