@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 
 import { ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { useScrollToElement } from "src/hooks/useScrollToElement";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";

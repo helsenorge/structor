@@ -20,7 +20,7 @@ export const createOID = (): string => {
   return `urn:oid:${createUUID()}`;
 };
 export const isValidOID = (oid: string): boolean => {
-  return new RegExp(/urn:oid:[0-2](\.(0|[1-9][0-9]*))+/).test(oid);
+  return new RegExp(/urn:oid:[0-2](\.(0|[1-9]\d*))+/).test(oid);
 };
 export const isValidID = (id: string): boolean => {
   // eslint-disable-next-line no-useless-escape
