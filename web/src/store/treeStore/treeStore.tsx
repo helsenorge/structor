@@ -54,6 +54,7 @@ import {
   UPDATE_QUESTIONNAIRE_METADATA_ACTION,
   UPDATE_SIDEBAR_TRANSLATION_ACTION,
   UPDATE_VALUESET_ACTION,
+  REMOVE_VALUESET_ACTION,
   UpdateContainedValueSetTranslationAction,
   UpdateItemAction,
   UpdateItemCodePropertyAction,
@@ -70,6 +71,7 @@ import {
   UpdateSettingTranslationAction,
   UPDATE_ITEM_CODE_TRANSLATION_ACTION,
   UpdateItemCodeTranslationAction,
+  RemoveValueSetAction,
 } from "./treeActions";
 import { findCodingBySystemAndCode } from "../../helpers/codeHelper";
 import createUUID from "../../helpers/CreateUUID";
@@ -104,7 +106,8 @@ export type ActionType =
   | RemoveItemAttributeAction
   | SaveAction
   | UpdateMarkedLinkId
-  | UpdateItemCodeTranslationAction;
+  | UpdateItemCodeTranslationAction
+  | RemoveValueSetAction;
 
 export interface Items {
   [linkId: string]: QuestionnaireItem;
@@ -751,6 +754,11 @@ function updateValueSet(draft: TreeState, action: UpdateValueSetAction): void {
     draft.qContained = [...(draft?.qContained || []), action.item];
   }
 }
+function removeValueSet(draft: TreeState, action: RemoveValueSetAction): void {
+  if (draft.qContained && action.item.id) {
+    draft.qContained = draft.qContained.filter((x) => x.id !== action.item.id);
+  }
+}
 
 function importValueSet(draft: TreeState, action: ImportValueSetAction): void {
   draft.qContained = [...(draft?.qContained || []), ...action.items];
@@ -899,6 +907,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
       break;
     case UPDATE_VALUESET_ACTION:
       updateValueSet(draft, action);
+      break;
+    case REMOVE_VALUESET_ACTION:
+      removeValueSet(draft, action);
       break;
     case IMPORT_VALUESET_ACTION:
       importValueSet(draft, action);

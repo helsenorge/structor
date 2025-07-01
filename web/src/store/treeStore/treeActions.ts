@@ -59,6 +59,8 @@ export const MOVE_ITEM_ACTION = "moveItem";
 export const APPEND_VALUESET_ACTION = "appendValueSet";
 export const UPDATE_LINK_ID_ACTION = "updateLinkId";
 export const UPDATE_MARKED_LINK_ID = "updateMarkedLinkId";
+export const REMOVE_VALUESET_ACTION = "REMOVE_VALUESET";
+
 export const UPDATE_VALUESET_ACTION = "UPDATE_VALUESET";
 export const IMPORT_VALUESET_ACTION = "IMPORT_VALUESET";
 export const UPDATE_ITEM_CODE_TRANSLATION_ACTION =
@@ -250,7 +252,10 @@ export interface UpdateValueSetAction {
   type: typeof UPDATE_VALUESET_ACTION;
   item: ValueSet;
 }
-
+export interface RemoveValueSetAction {
+  type: typeof REMOVE_VALUESET_ACTION;
+  item: ValueSet;
+}
 export interface ImportValueSetAction {
   type: typeof IMPORT_VALUESET_ACTION;
   items: ValueSet[];
@@ -613,6 +618,12 @@ export const moveItemAction = (
     newOrder,
     oldOrder,
     index,
+  };
+};
+export const removeValueSet = (item: ValueSet): RemoveValueSetAction => {
+  return {
+    type: REMOVE_VALUESET_ACTION,
+    item,
   };
 };
 

@@ -2,6 +2,7 @@
   .existingValueSetsList {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
     list-style: none;
     text-align: left;
 
@@ -12,36 +13,45 @@
   }
 
   .existingValueSetsHeader {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    row-gap: 1rem;
     background-color: initial;
     padding: initial;
     position: initial;
     width: initial;
     top: initial;
-
-    strong {
-      margin-right: 0.5rem;
-    }
-
-    button {
-      margin-left: auto;
-    }
   }
 }
 
 .extensionItem {
   word-break: break-all;
-  padding: 0 0.5rem;
+  padding: 1rem;
+  margin: 0 0.5rem;
+  border-bottom: 1px solid #ccc;
 }
 
 .jsonContainer {
   display: block;
   white-space: pre-wrap;
   text-align: left;
-  padding: 20px;
+  padding: 2rem;
   max-height: 80vh;
   overflow-y: auto;
+}
+
+.existingValueSetsHeaderTitle {
+  display: flex;
+  margin: 0 0 0 1rem;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.rawJsonButton {
+  display: flex;
+  align-items: center;
+
+  span {
+    margin-right: 0.5rem;
+  }
 }

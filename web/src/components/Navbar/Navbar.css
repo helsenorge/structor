@@ -54,6 +54,7 @@
 .form-logo {
   margin-left: 1rem;
   text-decoration: none;
+  background-color: initial;
 }
 
 .form-title {

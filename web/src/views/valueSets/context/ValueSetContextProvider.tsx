@@ -15,14 +15,17 @@ import { ValueSetContextInputTypes } from "./ValueSetContextTypes";
 import { ValueSetContext } from "./ValuseSetContext";
 import { initValueSet } from "../utils/intialValuesets";
 
-export type ValueSetProviderProps = ValueSetContextInputTypes;
+export type ValueSetProviderProps = ValueSetContextInputTypes & {
+  initialValueSet?: ValueSet;
+};
 
 export const ValueSetProvider = ({
   children,
+  initialValueSet,
 }: ValueSetProviderProps): React.JSX.Element => {
-  const [newValueSet, setNewValueSet] = useState<ValueSet>({
-    ...initValueSet(),
-  });
+  const [newValueSet, setNewValueSet] = useState<ValueSet>(
+    initialValueSet || { ...initValueSet() },
+  );
   const reset = useCallback((): void => {
     setNewValueSet({
       ...initValueSet(),

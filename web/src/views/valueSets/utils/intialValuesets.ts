@@ -23,6 +23,7 @@ export const initValueSet = (): ValueSet => ({
   date: new Date().toISOString(),
   status: "draft",
   publisher: "",
+  url: "",
   compose: {
     include: [initialComposeInclude()],
   },
