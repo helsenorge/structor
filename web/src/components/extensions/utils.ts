@@ -92,4 +92,5 @@ export const EXTENSION_VALUE_TYPES: Partial<Record<ExtensionValueKey, string>> =
     valueCoding: "Coding",
     valueDistance: "Distance",
     valueDuration: "Duration",
+    valueMarkdown: "Markdown",
   } as const;

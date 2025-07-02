@@ -28,6 +28,7 @@ type Props = {
     idType?: "linkId" | "id",
   ) => void;
   hasValidationError?: (index: number) => boolean;
+  className?: string;
 };
 
 export const Extensions = ({
@@ -36,6 +37,7 @@ export const Extensions = ({
   extensions,
   updateExtensions,
   hasValidationError,
+  className,
 }: Props): React.JSX.Element | null => {
   const {
     addNewExtension,
@@ -51,9 +53,8 @@ export const Extensions = ({
   const { t } = useTranslation();
 
   return (
-    <div className={styles.extensionsContainer}>
+    <div className={`${styles.extensionsContainer} ${className || ""}`}>
       <header className={styles.extensionsHeader}>
-        <h3 className={styles.extensionsHeaderTitle}>{"Extensions"}</h3>
         <Button
           variant="borderless"
           size="large"
@@ -62,6 +63,7 @@ export const Extensions = ({
           }}
           ariaLabel={t("Add new extension")}
         >
+          {t("Add")}
           <Icon svgIcon={PlussIcon} />
         </Button>
       </header>

@@ -6,6 +6,7 @@
 .valueSetsHeadline {
   color: black;
   margin-bottom: 1rem;
+  text-align: left;
 }
 
 .predefinedContainer {
@@ -36,4 +37,14 @@
   .predefinedContainer > div:first-child {
     margin-right: 0;
   }
+}
+
+.valueSetTabs > div:last-child > div {
+  padding-right: 0;
+  padding-left: 0;
+  display: flex;
+}
+
+.valueSetTabs > div:last-child > div > div {
+  width: 100%;
 }

@@ -1,37 +1,5 @@
 .existingValueSets {
-  .existingValueSetsList {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    list-style: none;
-    text-align: left;
-
-    .existingValueSetsListItems {
-      list-style: none;
-      margin-bottom: 1rem;
-      margin-right: 1rem;
-    }
-  }
-
-  .existingValueSetsHeader {
-    display: grid;
-    grid-template-columns: auto 1fr auto auto;
-    row-gap: 1rem;
-    background-color: initial;
-    padding: initial;
-    position: initial;
-    width: initial;
-    top: initial;
-  }
-}
-
-.jsonContainer {
-  display: block;
-  white-space: pre-wrap;
-  text-align: left;
-  padding: 2rem;
-  max-height: 80vh;
-  overflow-y: auto;
+  padding: 0 2rem;
 }
 
 .existingValueSetsHeaderTitle {
@@ -39,34 +7,4 @@
   margin: 0 0 0 1rem;
   align-items: center;
   margin-bottom: 0;
-}
-
-.rawJsonButton {
-  display: flex;
-  align-items: center;
-
-  span {
-    margin-right: 0.5rem;
-  }
-}
-
-.existingValueSetsHeaderDescriptionContent {
-  text-align: left;
-  margin: 0 0 0 2.5rem;
-
-  span {
-    font-weight: bold;
-  }
-}
-
-.existingValueSetsHeaderDescription {
-  display: grid;
-  align-items: center;
-  text-align: left;
-  grid-template-columns: 1fr 5fr;
-}
-
-.existingValueSetsListItem {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
 }

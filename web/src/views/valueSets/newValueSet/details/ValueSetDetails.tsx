@@ -1,0 +1,69 @@
+import { ValueSet } from "fhir/r4";
+import { useTranslation } from "react-i18next";
+
+import Input from "@helsenorge/designsystem-react/components/Input";
+import Label from "@helsenorge/designsystem-react/components/Label";
+import Select from "@helsenorge/designsystem-react/components/Select";
+
+import { useValueSetContext } from "../../context/useValueSetContext";
+
+import styles from "./value-set-details.module.scss";
+
+export const ValueSetDetails = (): JSX.Element => {
+  const { t } = useTranslation();
+  const { newValueSet, setNewValueSet } = useValueSetContext();
+  return (
+    <div className={styles.valueSetDetails}>
+      <Input
+        value={newValueSet.title}
+        onChange={(event) =>
+          setNewValueSet({ ...newValueSet, title: event.target.value })
+        }
+        label={<Label labelTexts={[{ text: t("Title") }]} />}
+      />
+      <Input
+        value={newValueSet.name}
+        onChange={(event) =>
+          setNewValueSet({ ...newValueSet, name: event.target.value })
+        }
+        label={<Label labelTexts={[{ text: t("Teknisk-navn") }]} />}
+      />
+      <Input
+        value={newValueSet.publisher}
+        onChange={(event) =>
+          setNewValueSet({ ...newValueSet, publisher: event.target.value })
+        }
+        label={<Label labelTexts={[{ text: t("Publisher") }]} />}
+      />
+      <Input
+        value={newValueSet.version}
+        onChange={(event) =>
+          setNewValueSet({ ...newValueSet, version: event.target.value })
+        }
+        label={<Label labelTexts={[{ text: t("Version") }]} />}
+      />
+      <Input
+        value={newValueSet.url}
+        onChange={(event) =>
+          setNewValueSet({ ...newValueSet, url: event.target.value })
+        }
+        label="Url"
+      />
+      <Select
+        label={t("Type")}
+        value={newValueSet.status || "draft"}
+        onChange={(event) =>
+          setNewValueSet({
+            ...newValueSet,
+            status: event.target.value as ValueSet["status"],
+          })
+        }
+      >
+        <option value="draft">{"Draft"}</option>
+        <option value="active">{"Active"}</option>
+        <option value="retired">{"Retired"}</option>
+        <option value="unknown">{"Unknown"}</option>
+      </Select>
+    </div>
+  );
+};

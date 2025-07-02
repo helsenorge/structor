@@ -1,10 +1,2 @@
 export declare const existingValueSets: string;
-export declare const existingValueSetsHeader: string;
-export declare const existingValueSetsHeaderDescription: string;
-export declare const existingValueSetsHeaderDescriptionContent: string;
 export declare const existingValueSetsHeaderTitle: string;
-export declare const existingValueSetsList: string;
-export declare const existingValueSetsListItem: string;
-export declare const existingValueSetsListItems: string;
-export declare const jsonContainer: string;
-export declare const rawJsonButton: string;

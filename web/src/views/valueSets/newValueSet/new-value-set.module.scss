@@ -1,3 +1,37 @@
 .devider {
   margin: 20px 0;
 }
+
+.valueSetTabs {
+  width: 100%;
+}
+
+.valueSetTabs > div:last-child > div {
+  padding-right: 0;
+  padding-left: 0;
+  display: flex;
+  width: 100%;
+}
+
+.valueSetTabs > div:last-child > div > div {
+  width: 100%;
+}
+
+.newValueSet {
+  padding: 0 2rem;
+}
+
+.valueSetTabsContainer {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.newValueSetButtons {
+  margin-top: 1rem;
+}
+
+.newValueSetButtons :first-child {
+  margin-right: 1rem;
+}

@@ -1,0 +1,7 @@
+export declare const answerOptionContent: string;
+export declare const answerOptionInputs: string;
+export declare const answerOptionItem: string;
+export declare const answerOptionLabel: string;
+export declare const extensionsContainer: string;
+export declare const includeHeader: string;
+export declare const valueSetCompose: string;
