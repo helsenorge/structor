@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Extension, ValueSetCompose, ValueSetComposeInclude } from "fhir/r4";
+import { Extension, ValueSetComposeInclude } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import UriFieldFr from "src/components/FormField/UriFieldFr";
 import createUUID from "src/helpers/CreateUUID";
