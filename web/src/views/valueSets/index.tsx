@@ -6,6 +6,7 @@ import { useScrollToElement } from "src/hooks/useScrollToElement";
 import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 
 import ExistingValueSets from "./existinValueSets/ExistingValueSets";
+import ImportValueSet from "./ImportValueSet/Index";
 import NewValueSet from "./newValueSet/NewValueSet";
 
 import styles from "./valueSets.module.scss";
@@ -34,6 +35,12 @@ const ValueSets = (): React.JSX.Element => {
           title={t("Existing Value Sets")}
         >
           <ExistingValueSets scrollToTarget={setTabToNewValueSetTab} />
+        </Tabs.Tab>
+        <Tabs.Tab
+          onTabClick={() => setActiveTab(2)}
+          title={t("Import Value Set")}
+        >
+          <ImportValueSet />
         </Tabs.Tab>
       </Tabs>
     </section>

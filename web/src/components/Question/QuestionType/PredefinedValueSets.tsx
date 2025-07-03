@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  Coding,
   QuestionnaireItem,
   QuestionnaireItemAnswerOption,
   ValueSet,
@@ -54,13 +55,17 @@ const PredefinedValueSets = ({
   const renderPreDefinedValueSet = (): JSX.Element[] | undefined => {
     const selectedPredefinedValueSet = handleDisplaySelected();
     if (selectedPredefinedValueSet !== "") {
-      return getContainedValueSetValues(selectedPredefinedValueSet).map((x) => {
-        return (
-          <div className="predefined-value" key={x.code}>
-            {x.display}
-          </div>
-        );
-      });
+      return getContainedValueSetValues(selectedPredefinedValueSet).map(
+        (x, index) => {
+          return (
+            <div className="predefined-value" key={x.code}>
+              {`item ${index + 1}`} <br /> {`${x.code}: (${x.display})`}
+              <br />
+              {`${t("has extensions")}: ${x.extension ? t("Yes") : t("No")}`}
+            </div>
+          );
+        },
+      );
     }
 
     return undefined;
@@ -81,9 +86,7 @@ const PredefinedValueSets = ({
     }
   };
 
-  const getContainedValueSetValues = (
-    valueSetId: string,
-  ): Array<{ code?: string; system?: string; display?: string }> => {
+  const getContainedValueSetValues = (valueSetId: string): Array<Coding> => {
     const valueSet = qContained?.find((x) => x.id === valueSetId);
     return getValueSetValues(valueSet);
   };

@@ -6,5 +6,6 @@ export declare const answerOptionLabel: string;
 export declare const composeIncludeExtensions: string;
 export declare const extensionsContainer: string;
 export declare const includeHeader: string;
+export declare const includeItemTabsWrapper: string;
 export declare const valueSetInclude: string;
 export declare const valueSetTabs: string;

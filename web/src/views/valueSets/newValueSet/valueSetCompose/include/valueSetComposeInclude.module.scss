@@ -1,5 +1,17 @@
+.includeItemTabsWrapper {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+
+  &:has(:nth-child(5)) {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 .valueSetTabs {
   margin: 1rem 0;
+  width: 100%;
 }
 
 .valueSetTabs > div:last-child > div {

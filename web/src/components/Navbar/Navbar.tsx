@@ -16,7 +16,6 @@ import {
 import { TreeContext } from "../../store/treeStore/treeStore";
 import Btn from "../Btn/Btn";
 import "./Navbar.css";
-import ImportValueSet from "../ImportValueSet/ImportValueSet";
 import JSONView from "../JSONView/JSONView";
 import CloseFormModal from "../Modal/CloseFormModal";
 import PredefinedValueSetModal from "../PredefinedValueSetModal/PredefinedValueSetModal";
@@ -49,7 +48,6 @@ const Navbar = ({
   const { state, dispatch } = useContext(TreeContext);
   const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
   const [showContained, setShowContained] = useState(false);
-  const [showImportValueSet, setShowImportValueSet] = useState(false);
   const [showJSONView, setShowJSONView] = useState(false);
   const [showCloseFormModal, setShowCloseFormModal] = useState(false);
   const navBarRef = useRef<HTMLDivElement>(null);
@@ -191,16 +189,9 @@ const Navbar = ({
                 callbackAndHide(() => setShowJSONView(!showJSONView))
               }
             />
+
             <Btn
-              title={t("Import choices")}
-              onClick={() =>
-                callbackAndHide(() =>
-                  setShowImportValueSet(!showImportValueSet),
-                )
-              }
-            />
-            <Btn
-              title={t("Choices")}
+              title={t("ValueSets")}
               onClick={() => {
                 navigate(`/formbuilder/${state.qMetadata.id}/valuesets`);
               }}
@@ -253,11 +244,7 @@ const Navbar = ({
           close={() => setShowContained(!showContained)}
         />
       )}
-      {showImportValueSet && (
-        <ImportValueSet
-          close={() => setShowImportValueSet(!showImportValueSet)}
-        />
-      )}
+
       {showJSONView && (
         <JSONView showJSONView={() => setShowJSONView(!showJSONView)} />
       )}

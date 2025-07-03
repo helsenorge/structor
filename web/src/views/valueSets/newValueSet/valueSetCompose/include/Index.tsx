@@ -104,6 +104,7 @@ const Include = (): React.JSX.Element => {
     }
     setNewValueSet({ ...newValueSetCopy });
   };
+
   const expanderTitle = (
     include: ValueSetComposeInclude,
     index: number,
@@ -159,38 +160,40 @@ const Include = (): React.JSX.Element => {
                     {t("Add new item")}
                     <Icon svgIcon={PlussIcon} />
                   </Button>
-                  {include.concept?.map((item, index) => {
-                    return (
-                      <Tabs
-                        key={item.id || index}
-                        className={styles.valueSetTabs}
-                      >
-                        <Tabs.Tab title="Details">
-                          <Details
-                            item={item}
-                            index={index}
-                            includeIndex={includeIndex}
-                            hasMoreThanOneConcept={
-                              !!include.concept?.length &&
-                              include.concept?.length > 1
-                            }
-                          />
-                        </Tabs.Tab>
-                        <Tabs.Tab title="Extensions">
-                          <div className={styles.extensionsContainer}>
-                            <Extensions
-                              idType="id"
-                              id={item.id || ""}
-                              key={item.id || index}
-                              extensions={item.extension}
-                              updateExtensions={updateExtensions}
-                              className={styles.composeIncludeExtensions}
+                  <div className={styles.includeItemTabsWrapper}>
+                    {include.concept?.map((item, index) => {
+                      return (
+                        <Tabs
+                          key={item.id || index}
+                          className={styles.valueSetTabs}
+                        >
+                          <Tabs.Tab title="Details">
+                            <Details
+                              item={item}
+                              index={index}
+                              includeIndex={includeIndex}
+                              hasMoreThanOneConcept={
+                                !!include.concept?.length &&
+                                include.concept?.length > 1
+                              }
                             />
-                          </div>
-                        </Tabs.Tab>
-                      </Tabs>
-                    );
-                  })}
+                          </Tabs.Tab>
+                          <Tabs.Tab title="Extensions">
+                            <div className={styles.extensionsContainer}>
+                              <Extensions
+                                idType="id"
+                                id={item.id || ""}
+                                key={item.id || index}
+                                extensions={item.extension}
+                                updateExtensions={updateExtensions}
+                                className={styles.composeIncludeExtensions}
+                              />
+                            </div>
+                          </Tabs.Tab>
+                        </Tabs>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </ExpanderList.Expander>
