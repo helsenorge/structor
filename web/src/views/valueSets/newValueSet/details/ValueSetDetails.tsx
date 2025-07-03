@@ -1,3 +1,5 @@
+import React from "react";
+
 import { ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
@@ -9,7 +11,7 @@ import { useValueSetContext } from "../../context/useValueSetContext";
 
 import styles from "./value-set-details.module.scss";
 
-export const ValueSetDetails = (): JSX.Element => {
+export const ValueSetDetails = (): React.JSX.Element => {
   const { t } = useTranslation();
   const { newValueSet, setNewValueSet } = useValueSetContext();
   return (
