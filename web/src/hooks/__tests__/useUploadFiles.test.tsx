@@ -17,7 +17,7 @@ const partialState = { foo: "bar", qMetadata: { id: "new-id" } };
 
 // ——— test‐only harness component ———
 const Harness = ({ onComplete }: { onComplete?: (id: string) => void }) => {
-  const { uploadQuestionnaire, isLoading, uploadRef, error } = useUploadFile({
+  const { uploadFile, isLoading, uploadRef, error } = useUploadFile({
     onUploadComplete: onComplete,
   });
   return (
@@ -26,7 +26,7 @@ const Harness = ({ onComplete }: { onComplete?: (id: string) => void }) => {
         data-testid="file-input"
         ref={uploadRef}
         type="file"
-        onChange={uploadQuestionnaire}
+        onChange={uploadFile}
       />
       <div data-testid="loading">{isLoading.toString()}</div>
       <div data-testid="error">{error ?? ""}</div>

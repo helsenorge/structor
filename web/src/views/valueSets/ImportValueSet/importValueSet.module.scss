@@ -3,6 +3,12 @@
   text-align: left;
 }
 
+.uploadValueSet {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .buttonBtn {
   position: sticky;
   bottom: 0;

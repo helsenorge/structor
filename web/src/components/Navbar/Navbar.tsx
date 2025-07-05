@@ -39,7 +39,7 @@ const Navbar = ({
 }: Props): React.JSX.Element => {
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
-  const { uploadQuestionnaire, uploadRef } = useUploadFile({
+  const { uploadFile, uploadRef } = useUploadFile({
     onUploadComplete: (formId: string) => {
       navigate(`/formbuilder/${formId}`);
       hideMenu();
@@ -193,7 +193,7 @@ const Navbar = ({
             <Btn
               title={t("ValueSets")}
               onClick={() => {
-                navigate(`/formbuilder/${state.qMetadata.id}/valuesets`);
+                navigate(`/formbuilder/${state.qMetadata.id}/valuesets/new`);
               }}
             />
             {i18n.language !== "nb-NO" && (
@@ -228,7 +228,7 @@ const Navbar = ({
             <input
               type="file"
               ref={uploadRef}
-              onChange={uploadQuestionnaire}
+              onChange={uploadFile}
               accept="application/json"
               style={{ display: "none" }}
             />

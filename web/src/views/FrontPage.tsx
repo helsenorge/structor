@@ -25,7 +25,7 @@ const FrontPage = (): React.JSX.Element => {
   const navigate = useNavigate();
   const { dispatch } = useContext(TreeContext);
 
-  const { uploadQuestionnaire, isLoading, uploadRef } = useUploadFile({
+  const { uploadFile, isLoading, uploadRef } = useUploadFile({
     onUploadComplete: (id) => navigate(`/formbuilder/${id}`),
   });
 
@@ -85,7 +85,7 @@ const FrontPage = (): React.JSX.Element => {
         <input
           type="file"
           ref={uploadRef}
-          onChange={uploadQuestionnaire}
+          onChange={uploadFile}
           accept="application/json"
           style={{ display: "none" }}
         />

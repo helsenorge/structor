@@ -396,7 +396,7 @@
   "Represented by parent? (true/false)": "Representert ved forelder? (true/false)",
   "Represented by guardianship? (true/false)": "Representert ved vergemålsvedtak? (true/false)",
   "Upload ValueSets as json files. Accepts a Bundle or ValueSet in a single file. It is possible to upload several files at once": "Last opp verdisett som json-filer. Håndterer Bundle eller verdisett i en egen fil. Det er mulig å laste opp flere filer samtidig.",
-  "Upload ValueSet(s)": "Last opp verdisett",
+  "...upload ValueSet(s)": "...Last opp verdisett",
   "Connect to print version (binary)": "Koble til PDF-skjema (binary)",
   "For example Binary/35": "F.eks Binary/35",
   "Print version": "Utskriftsversjon",
@@ -526,5 +526,9 @@
   "Add": "Legg til",
   "Reset": "Nullstill",
   "Raw JSON": "Rå JSON",
-  "ValueSet": "Verdisett"
+  "ValueSet": "Verdisett",
+  "Enter a location to import the ValueSets from": "Angi en plassering for å importere Verdisett fra",
+  "Drag and drop your files here, or...": "Dra og slipp filene dine her, eller...",
+  "All uploaded ValueSets are already in the questionnaire.": "Alle opplastede Verdisett er allerede i skjemaet.",
+  "Upload ValueSets as json files. Accepts a Bundle/Questionnaire or ValueSet in a single file. It is possible to upload several files at once": "Last opp Verdisett som JSON-filer. Aksepterer en Bundle/Questionnaire eller ValueSet i en enkelt fil. Det er mulig å laste opp flere filer samtidig."
 }

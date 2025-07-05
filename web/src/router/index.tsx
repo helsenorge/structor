@@ -1,6 +1,6 @@
 import React from "react";
 
-import { createHashRouter } from "react-router-dom";
+import { createHashRouter, Navigate } from "react-router-dom";
 import FormBuilder from "src/views/FormBuilder";
 import FrontPage from "src/views/FrontPage";
 import PageWrapper from "src/views/pageWrapper/PageWrapper";
@@ -26,6 +26,7 @@ export default createHashRouter([
     ),
   },
   {
+    // This is the parent layout route
     path: "/formbuilder/:id/valuesets",
     element: (
       <PageWrapper>
@@ -34,5 +35,28 @@ export default createHashRouter([
         </ValueSetProvider>
       </PageWrapper>
     ),
+    // The children are the tabs
+    children: [
+      {
+        index: true,
+        element: <Navigate to="new" replace />,
+      },
+      {
+        path: "new",
+        element: <ValueSets />,
+      },
+      {
+        path: "existing",
+        element: <ValueSets />,
+      },
+      {
+        path: "import",
+        element: <ValueSets />,
+      },
+      {
+        path: "upload",
+        element: <ValueSets />,
+      },
+    ],
   },
 ]);
