@@ -30,6 +30,7 @@ const ExistingValueSets = ({ scrollToTarget }: Props): React.JSX.Element => {
               valueSet={x}
               scrollToTarget={scrollToTarget}
               valueSetIndex={i}
+              canDelete={true}
             />
           </ExpanderList.Expander>
         ))}

@@ -530,5 +530,8 @@
   "Enter a location to import the ValueSets from": "Angi en plassering for å importere Verdisett fra",
   "Drag and drop your files here, or...": "Dra og slipp filene dine her, eller...",
   "All uploaded ValueSets are already in the questionnaire.": "Alle opplastede Verdisett er allerede i skjemaet.",
-  "Upload ValueSets as json files. Accepts a Bundle/Questionnaire or ValueSet in a single file. It is possible to upload several files at once": "Last opp Verdisett som JSON-filer. Aksepterer en Bundle/Questionnaire eller ValueSet i en enkelt fil. Det er mulig å laste opp flere filer samtidig."
+  "Upload ValueSets as json files. Accepts a Bundle/Questionnaire or ValueSet in a single file. It is possible to upload several files at once": "Last opp Verdisett som JSON-filer. Aksepterer en Bundle/Questionnaire eller ValueSet i en enkelt fil. Det er mulig å laste opp flere filer samtidig.",
+  "Import Value Set": "Importer Verdisett",
+  "Upload Value Set": "Last opp Verdisett",
+  "Delete Value Set": "Slett Verdisett"
 }
