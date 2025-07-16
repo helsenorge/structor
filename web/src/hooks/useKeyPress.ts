@@ -26,7 +26,7 @@ export const useKeyPress = (
       window.addEventListener("keydown", keyPressHandler);
     }
 
-    return () => {
+    return (): void => {
       window.removeEventListener("keydown", keyPressHandler);
     };
   });

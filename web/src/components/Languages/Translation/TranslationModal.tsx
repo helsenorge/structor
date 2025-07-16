@@ -215,7 +215,7 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
       myObserver.observe(myEl);
     }
 
-    return function cleanup() {
+    return function cleanup(): void {
       myObserver.disconnect();
     };
   }, [qItems, qOrder]);

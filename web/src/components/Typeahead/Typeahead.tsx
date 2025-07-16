@@ -91,7 +91,7 @@ const Typeahead = ({
       document.removeEventListener("mousedown", handleClickOutside);
     }
 
-    return () => {
+    return (): void => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [suggestions]);

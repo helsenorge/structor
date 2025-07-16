@@ -20,7 +20,7 @@ export const getTableCode = (
   return stringToReturn;
 };
 
-export const isSystemTableConfigSystem = (system: string) => {
+export const isSystemTableConfigSystem = (system: string): boolean => {
   return (
     system === ICodeSystem.tableColumnName ||
     system === ICodeSystem.tableOrderingColumn ||

@@ -2,12 +2,12 @@ import React, { MouseEvent } from "react";
 
 import { QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
+import { DeleteButton } from "src/components/Modal/DeleteModal";
 
 import { duplicateItemAction } from "../../../store/treeStore/treeActions";
 import { ActionType } from "../../../store/treeStore/treeStore";
 
 import "./ItemButtons.css";
-import { DeleteButton } from "src/components/Modal/DeleteModal";
 
 export const generateItemButtons = (
   t: TFunction<"translation">,
