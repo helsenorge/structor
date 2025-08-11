@@ -59,10 +59,10 @@ const NewValueSet = ({ scrollToTarget }: Props): React.JSX.Element => {
           sticky
           className={styles.valueSetTabs}
         >
-          <Tabs.Tab title={t("details")}>
+          <Tabs.Tab title={"Details"}>
             <ValueSetDetails />
           </Tabs.Tab>
-          <Tabs.Tab title={t("Compose")}>
+          <Tabs.Tab title={"Compose"}>
             <ValuseSetCompose />
           </Tabs.Tab>
         </Tabs>

@@ -18,13 +18,13 @@ const ValueSetCompose = (): React.JSX.Element => {
       sticky
       className={styles.valueSetCompose}
     >
-      <Tabs.Tab title={t("Details")}>
+      <Tabs.Tab title={"Details"}>
         <Details />
       </Tabs.Tab>
-      <Tabs.Tab title={t("Include")}>
+      <Tabs.Tab title={"Include"}>
         <Include />
       </Tabs.Tab>
-      <Tabs.Tab title={t("Exclude")}>
+      <Tabs.Tab title={"Exclude"}>
         <p>{t("Not implemented")}</p>
       </Tabs.Tab>
     </Tabs>
