@@ -3,7 +3,7 @@
   width: 100%;
   gap: 1rem;
 
-  &:has(:nth-child(5)) {
+  &:has(> :nth-child(5)) {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
   }
@@ -40,20 +40,20 @@
 }
 
 .answerOptionItem {
-  display: grid; // Changed from flex
-  grid-template-columns: auto 10fr; // 1. Column for text label, 2. Column for the input, 3. Column for the remove button
-  align-items: center; // Vertically align items in each row
-  gap: 1rem; // Space between the "display" and "code" rows
+  display: grid;
+  grid-template-columns: auto 10fr;
+  align-items: center;
+  gap: 1rem;
   margin: 0.5rem 0.8rem;
 }
 
 .answerOptionContent {
-  display: grid; // Changed from flex
+  display: grid;
   grid-template-columns: 1fr 9fr auto;
-  align-items: center; // Vertically align items in each row
+  align-items: center;
 
   .answerOptionLabel {
-    display: contents; // The magic property!
+    display: contents;
   }
 }
 

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 
 import { Coding, QuestionnaireItem, QuestionnaireItemInitial } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { getValueSetsFromState } from "src/store/treeStore/selectors";
 
 import { getValueSetValues } from "../../../helpers/valueSetHelper";
 import { TreeContext } from "../../../store/treeStore/treeStore";
@@ -18,8 +19,7 @@ const InitialInputTypeChoice = (
 ): React.JSX.Element => {
   const { t } = useTranslation();
   const { state } = useContext(TreeContext);
-  const { qContained } = state;
-
+  const valueSets = getValueSetsFromState(state);
   const getInitialValue = (): string => {
     const {
       item: { initial },
@@ -81,7 +81,7 @@ const InitialInputTypeChoice = (
 
   const getContainedValueSetValues = (): Coding[] => {
     const valueSetId = props.item.answerValueSet;
-    const containedValueSet = qContained?.find(
+    const containedValueSet = valueSets?.find(
       (valueSet) => `#${valueSet.id}` === valueSetId,
     );
     return getValueSetValues(containedValueSet);

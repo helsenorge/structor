@@ -8,6 +8,7 @@ import {
   ValueSetComposeIncludeConcept,
 } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { getValueSetsFromState } from "src/store/treeStore/selectors";
 
 import {
   IExtensionType,
@@ -46,8 +47,7 @@ const EnableWhenAnswerTypes = ({
 }: Props): React.JSX.Element => {
   const { state } = useContext(TreeContext);
   const { t } = useTranslation();
-  const { qContained } = state;
-
+  const valueSets = getValueSetsFromState(state);
   const getRecipients = (
     item: QuestionnaireItem,
   ): ValueSetComposeIncludeConcept[] => {
@@ -86,7 +86,7 @@ const EnableWhenAnswerTypes = ({
 
   const getSystem = (codeValue: string): string | undefined => {
     if (conditionItem.answerValueSet) {
-      const valueSet = qContained?.find(
+      const valueSet = valueSets?.find(
         (x) => x.id === conditionItem.answerValueSet?.replace("#", ""),
       );
       return getValueSetValues(valueSet).find((x) => x.code === codeValue)

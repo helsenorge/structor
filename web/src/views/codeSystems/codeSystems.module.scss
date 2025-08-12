@@ -1,0 +1,50 @@
+.codeSystems {
+  flex-direction: column;
+  padding: 80px 20px;
+}
+
+.codeSystemsHeadline {
+  color: black;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.predefinedContainer {
+  display: grid;
+  grid-template-columns: 48% 48%;
+  padding-bottom: 50px;
+}
+
+.predefinedContainer > div {
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.predefinedContainer > div:first-child {
+  margin-right: 20px;
+  border: 1px dotted black;
+}
+
+.predefinedContainer .codeSystems {
+  padding-top: 10px;
+}
+
+@media screen and (width <= 1280px) {
+  .predefinedContainer {
+    grid-template-columns: 100%;
+  }
+
+  .predefinedContainer > div:first-child {
+    margin-right: 0;
+  }
+}
+
+.codeSystems > div:last-child > div {
+  padding-right: 0;
+  padding-left: 0;
+  display: flex;
+}
+
+.codeSystems > div:last-child > div > div {
+  width: 100%;
+}

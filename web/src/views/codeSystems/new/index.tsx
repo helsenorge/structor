@@ -1,6 +1,12 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
+import {
+  removeCodeSystemAction,
+  updateCodeSystemAction,
+} from "src/store/treeStore/treeActions";
+import { TreeContext } from "src/store/treeStore/treeStore";
+import RawJson from "src/views/valueSets/newValueSet/rawJson";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -9,66 +15,59 @@ import Save from "@helsenorge/designsystem-react/components/Icons/Save";
 import TrashCan from "@helsenorge/designsystem-react/components/Icons/TrashCan";
 import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 
-import RawJson from "./rawJson";
-import {
-  updateValueSetAction,
-  removeValueSet,
-} from "../../../store/treeStore/treeActions";
-import { TreeContext } from "../../../store/treeStore/treeStore";
-import { useValueSetContext } from "../context/useValueSetContext";
-import { ValueSetDetails } from "./details/ValueSetDetails";
-import ValuseSetCompose from "./valueSetCompose/ValuseSetCompose";
+import CodeSystemConceptIndex from "./concept";
+import CodeSystemDetails from "./details";
+import { useCodeSystemContext } from "../context/useCodeSystemContext";
 
-import styles from "./new-value-set.module.scss";
+import styles from "./new-code-system.module.scss";
+
 type Props = {
   scrollToTarget: () => void;
 };
-const NewValueSet = ({ scrollToTarget }: Props): React.JSX.Element => {
-  const { t } = useTranslation();
 
+const NewCodeSystem = ({ scrollToTarget }: Props): React.JSX.Element => {
+  const { t } = useTranslation();
   const {
     dispatch,
     state: { qContained },
   } = useContext(TreeContext);
-  const { newValueSet, reset } = useValueSetContext();
+  const { newCodeSystem, reset } = useCodeSystemContext();
 
   const startNewValueSet = (): void => {
     reset();
     scrollToTarget();
   };
   const dispatchValueSet = (): void => {
-    dispatch(updateValueSetAction(newValueSet));
+    dispatch(updateCodeSystemAction(newCodeSystem));
     scrollToTarget();
   };
   const dispatchDeleteValueSet = (): void => {
-    if (newValueSet.id) {
-      dispatch(removeValueSet(newValueSet));
+    if (newCodeSystem.id) {
+      dispatch(removeCodeSystemAction(newCodeSystem));
       reset();
       scrollToTarget();
     }
   };
-  const isNewValueSet =
-    !newValueSet.id || !qContained?.some((x) => x.id === newValueSet.id);
-
+  const isNewCodeSystem =
+    !newCodeSystem.id || !qContained?.some((x) => x.id === newCodeSystem.id);
   return (
-    <div className={styles.newValueSet}>
-      <div className={styles.valueSetTabsContainer}>
+    <div className={styles.newCodeSystem}>
+      <div className={styles.codeSystemTabsContainer}>
         <Tabs
           ariaLabelLeftButton="Scroll left"
           ariaLabelRightButton="Scroll right"
           sticky
-          className={styles.valueSetTabs}
+          className={styles.codeSystemTabs}
         >
           <Tabs.Tab title={"Details"}>
-            <ValueSetDetails />
+            <CodeSystemDetails />
           </Tabs.Tab>
-          <Tabs.Tab title={"Compose"}>
-            <ValuseSetCompose />
+          <Tabs.Tab title={"Concept"}>
+            <CodeSystemConceptIndex />
           </Tabs.Tab>
         </Tabs>
-        <RawJson jsonContent={newValueSet} side="right" />
+        <RawJson showButton={false} jsonContent={newCodeSystem} side="right" />
       </div>
-
       <div className={styles.newValueSetButtons}>
         <Button variant="outline" onClick={dispatchValueSet}>
           <Icon svgIcon={Save} />
@@ -79,7 +78,7 @@ const NewValueSet = ({ scrollToTarget }: Props): React.JSX.Element => {
 
           {t("Reset")}
         </Button>
-        {!isNewValueSet && (
+        {!isNewCodeSystem && (
           <Button
             variant="fill"
             concept="destructive"
@@ -93,4 +92,5 @@ const NewValueSet = ({ scrollToTarget }: Props): React.JSX.Element => {
     </div>
   );
 };
-export default NewValueSet;
+
+export default NewCodeSystem;

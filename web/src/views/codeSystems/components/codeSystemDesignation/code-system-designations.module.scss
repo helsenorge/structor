@@ -1,0 +1,32 @@
+.designationsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.designationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 0;
+}
+
+.designationList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  margin: 1rem;
+}
+
+.designationContainer {
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+  gap: 1rem;
+  border: 0.1rem solid #eee;
+  padding: 0.5rem;
+  border-radius: 4px;
+
+  & .headerContainer {
+    display: flex;
+    align-items: center;
+  }
+}

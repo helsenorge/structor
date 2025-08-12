@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 
 import "./AdvancedQuestionOptions.css";
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
+import { getValueSetsFromState } from "src/store/treeStore/selectors";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { IQuestionnaireItemType } from "../../types/IQuestionnareItemType";
@@ -10,7 +11,6 @@ import FhirPathSelect from "./FhirPathSelect/FhirPathSelect";
 import ItemExtractionContextView from "./ItemExtractionContext/ItemExtractionView";
 import { AfterCompleteFormOption } from "./optionComponents/afterCompleteForm-option";
 import CalculatedExpressionOption from "./optionComponents/calculatedExpression-option";
-import { ContextCodeOption } from "./optionComponents/ContextCodeOption";
 import CopyFromOption from "./optionComponents/copyFrom-option";
 import { DefinitionOption } from "./optionComponents/definition-option";
 import { HelpOption } from "./optionComponents/help-option";
@@ -65,6 +65,7 @@ const AdvancedQuestionOptions = ({
 }: AdvancedQuestionOptionsProps): React.JSX.Element => {
   const { state, dispatch } = useContext(TreeContext);
   const { qItems, qOrder } = state;
+  const valueSets = getValueSetsFromState(state);
   const [isDataReceiver, setDataReceiverState] = useState(
     isItemControlDataReceiver(item),
   );
@@ -74,7 +75,8 @@ const AdvancedQuestionOptions = ({
     let returnValue: boolean = false;
     if (
       parentItem &&
-      existItemControlWithCode(parentItem, ItemControlType.tableHN2)
+      (existItemControlWithCode(parentItem, ItemControlType.tableHN2) ||
+        existItemControlWithCode(parentItem, ItemControlType.gTable))
     ) {
       returnValue = true;
     }
@@ -131,10 +133,6 @@ const AdvancedQuestionOptions = ({
         <PrefixOption item={item} dispatch={dispatch} />
       )}
       <DefinitionOption item={item} />
-      {item.type !== IQuestionnaireItemType.group &&
-        item.type !== IQuestionnaireItemType.display && (
-          <ContextCodeOption item={item} />
-        )}
       <ItemExtractionContextView item={item} />
       {canTypeBeRepeatable(item) && (
         <RepetitionOption item={item} dispatch={dispatch} />
@@ -152,7 +150,7 @@ const AdvancedQuestionOptions = ({
           item={item}
           qItems={qItems}
           qOrder={qOrder}
-          qContained={state.qContained}
+          qContained={valueSets}
           errors={itemValidationErrors}
         />
       )}

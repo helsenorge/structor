@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { getValueSetsFromState } from "src/store/treeStore/selectors";
 
 import {
   ICodeSystem,
@@ -62,7 +63,7 @@ type Props = {
 const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
   const { t } = useTranslation();
   const { dispatch, state } = useContext(TreeContext);
-  const { qContained } = state;
+  const valueSets = getValueSetsFromState(state);
   const isSlider = itemControlExistsInExtensionList(
     item.extension,
     ItemControlType.slider,
@@ -202,7 +203,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
       {item.answerValueSet ? (
         <PredefinedValueSets
           item={item}
-          qContained={qContained}
+          qContained={valueSets}
           dispatchUpdateItem={dispatchUpdateItem}
         />
       ) : (

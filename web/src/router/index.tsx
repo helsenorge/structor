@@ -1,6 +1,8 @@
 import React from "react";
 
 import { createHashRouter, Navigate } from "react-router-dom";
+import CodeSystems from "src/views/codeSystems";
+import { CodeSystemProvider } from "src/views/codeSystems/context/CodeSystemContextProvider";
 import FormBuilder from "src/views/FormBuilder";
 import FrontPage from "src/views/FrontPage";
 import PageWrapper from "src/views/pageWrapper/PageWrapper";
@@ -50,12 +52,48 @@ export default createHashRouter([
         element: <ValueSets />,
       },
       {
-        path: "import",
+        path: "upload",
         element: <ValueSets />,
       },
       {
-        path: "upload",
+        path: "*",
         element: <ValueSets />,
+      },
+    ],
+  },
+  {
+    path: "/formbuilder/:id/codesystems",
+    element: (
+      <PageWrapper>
+        <CodeSystemProvider>
+          <CodeSystems />
+        </CodeSystemProvider>
+      </PageWrapper>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Navigate to="new" replace />,
+      },
+      {
+        path: "new",
+        element: <CodeSystems />,
+      },
+      {
+        path: "existing",
+        element: <CodeSystems />,
+      },
+      {
+        path: "import",
+        element: <CodeSystems />,
+      },
+      {
+        path: "upload",
+        element: <CodeSystems />,
+      },
+      {
+        path: "*",
+        element: <CodeSystems />,
       },
     ],
   },

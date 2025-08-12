@@ -31,7 +31,7 @@
     "@helsenorge/datepicker": "^11.0.0",
     "@helsenorge/designsystem-react": "^11.0.0",
     "@helsenorge/file-upload": "^35.0.0",
-    "@helsenorge/refero": "18.1.0",
+    "@helsenorge/refero": "19.0.0",
     "@nosferatu500/react-sortable-tree": "^4.0.0",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@reduxjs/toolkit": "^2.0.0",

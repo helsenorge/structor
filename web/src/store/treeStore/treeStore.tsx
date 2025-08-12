@@ -1,6 +1,13 @@
 import React, { createContext, Dispatch, useEffect, useReducer } from "react";
 
-import { Coding, Extension, QuestionnaireItem, ValueSet } from "fhir/r4";
+import {
+  CodeSystem,
+  Coding,
+  Extension,
+  FhirResource,
+  QuestionnaireItem,
+  ValueSet,
+} from "fhir/r4";
 import produce from "immer";
 import { HelsenorgeUrlStartText } from "src/components/Validation/validationHelper";
 
@@ -74,6 +81,12 @@ import {
   RemoveValueSetAction,
   UpdateItemExtensionAction,
   UPDATE_ITEM_EXTENSION_ACTION,
+  ImportCodeSystemAction,
+  IMPORT_CODESYSTEM_ACTION,
+  UPDATE_CODESYSTEM_ACTION,
+  REMOVE_CODESYSTEM_ACTION,
+  RemoveCodeSystemAction,
+  UpdateCodeSystemAction,
 } from "./treeActions";
 import { findCodingBySystemAndCode } from "../../helpers/codeHelper";
 import createUUID from "../../helpers/CreateUUID";
@@ -110,7 +123,10 @@ export type ActionType =
   | UpdateMarkedLinkId
   | UpdateItemCodeTranslationAction
   | RemoveValueSetAction
-  | UpdateItemExtensionAction;
+  | UpdateItemExtensionAction
+  | ImportCodeSystemAction
+  | RemoveCodeSystemAction
+  | UpdateCodeSystemAction;
 
 export interface Items {
   [linkId: string]: QuestionnaireItem;
@@ -188,7 +204,7 @@ export interface TreeState {
   qItems: Items;
   qOrder: OrderItem[];
   qMetadata: IQuestionnaireMetadata;
-  qContained?: ValueSet[];
+  qContained?: FhirResource[];
   qCurrentItem?: MarkedItem;
   qAdditionalLanguages?: Languages;
 }
@@ -779,6 +795,33 @@ function removeValueSet(draft: TreeState, action: RemoveValueSetAction): void {
 function importValueSet(draft: TreeState, action: ImportValueSetAction): void {
   draft.qContained = [...(draft?.qContained || []), ...action.items];
 }
+function importCodeSystem(
+  draft: TreeState,
+  action: ImportCodeSystemAction,
+): void {
+  draft.qContained = [...(draft?.qContained || []), ...action.items];
+}
+
+function updateCodeSystem(
+  draft: TreeState,
+  action: UpdateCodeSystemAction,
+): void {
+  const indexToUpdate =
+    draft?.qContained?.findIndex((x) => x.id === action.item.id) ?? -1;
+  if (draft.qContained && indexToUpdate >= 0) {
+    draft.qContained[indexToUpdate] = action.item;
+  } else {
+    draft.qContained = [...(draft?.qContained || []), action.item];
+  }
+}
+function removeCodeSystem(
+  draft: TreeState,
+  action: RemoveCodeSystemAction,
+): void {
+  if (draft.qContained && action.item.id) {
+    draft.qContained = draft.qContained.filter((x) => x.id !== action.item.id);
+  }
+}
 
 function updateLinkId(draft: TreeState, action: UpdateLinkIdAction): void {
   const { qItems, qOrder, qAdditionalLanguages } = draft;
@@ -924,6 +967,12 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
     case MOVE_ITEM_ACTION:
       moveItem(draft, action);
       break;
+    case UPDATE_CODESYSTEM_ACTION:
+      updateCodeSystem(draft, action);
+      break;
+    case REMOVE_CODESYSTEM_ACTION:
+      removeCodeSystem(draft, action);
+      break;
     case UPDATE_VALUESET_ACTION:
       updateValueSet(draft, action);
       break;
@@ -932,6 +981,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
       break;
     case IMPORT_VALUESET_ACTION:
       importValueSet(draft, action);
+      break;
+    case IMPORT_CODESYSTEM_ACTION:
+      importCodeSystem(draft, action);
       break;
     case UPDATE_LINK_ID_ACTION:
       updateLinkId(draft, action);

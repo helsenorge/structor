@@ -17,7 +17,7 @@ export const getValueSetToTranslate = (
   state: TreeState,
 ): ValueSet[] | undefined => {
   const usedValueSet = getUsedValueSet(state);
-  return state.qContained?.filter(
-    (x) => x.id && usedValueSet?.includes(x.id) && x,
-  );
+  return state.qContained
+    ?.filter((x) => x.resourceType === "ValueSet")
+    .filter((x) => x.id && usedValueSet?.includes(x.id) && x);
 };

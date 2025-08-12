@@ -4,6 +4,8 @@ import { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import "./QuestionDrawer.css";
+import { getValueSetsFromState } from "src/store/treeStore/selectors";
+
 import { getEnableWhenConditionals } from "../../helpers/enableWhenValidConditional";
 import { calculateItemNumber } from "../../helpers/treeHelper";
 import { useItemNavigation } from "../../hooks/useItemNavigation";
@@ -26,6 +28,7 @@ const QuestionDrawer = ({
 }: Props): React.JSX.Element | null => {
   const { t } = useTranslation();
   const { state, dispatch } = useContext(TreeContext);
+  const valueSets = getValueSetsFromState(state);
   const { previous, next, hasNext, hasPrevious } = useItemNavigation();
   const closeDrawer = (): void => {
     setTimeout(() => {
@@ -114,7 +117,7 @@ const QuestionDrawer = ({
           parentArray={parentArray}
           conditionalArray={getConditional(parentArray, item.linkId)}
           getItem={getQItem}
-          containedResources={state.qContained}
+          containedResources={valueSets}
           dispatch={dispatch}
           itemValidationErrors={itemValidationErrors}
         />

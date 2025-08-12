@@ -21,28 +21,28 @@ export const ValueSetDetails = (): React.JSX.Element => {
         onChange={(event) =>
           setNewValueSet({ ...newValueSet, title: event.target.value })
         }
-        label={<Label labelTexts={[{ text: t("Title") }]} />}
+        label={<Label labelTexts={[{ text: "Title" }]} />}
       />
       <Input
         value={newValueSet.name}
         onChange={(event) =>
           setNewValueSet({ ...newValueSet, name: event.target.value })
         }
-        label={<Label labelTexts={[{ text: t("Teknisk-navn") }]} />}
+        label={<Label labelTexts={[{ text: "Teknisk-navn" }]} />}
       />
       <Input
         value={newValueSet.publisher}
         onChange={(event) =>
           setNewValueSet({ ...newValueSet, publisher: event.target.value })
         }
-        label={<Label labelTexts={[{ text: t("Publisher") }]} />}
+        label={<Label labelTexts={[{ text: "Publisher" }]} />}
       />
       <Input
         value={newValueSet.version}
         onChange={(event) =>
           setNewValueSet({ ...newValueSet, version: event.target.value })
         }
-        label={<Label labelTexts={[{ text: t("Version") }]} />}
+        label={<Label labelTexts={[{ text: "Version" }]} />}
       />
       <Input
         value={newValueSet.url}
@@ -52,7 +52,7 @@ export const ValueSetDetails = (): React.JSX.Element => {
         label="Url"
       />
       <Select
-        label={t("Type")}
+        label={<Label labelTexts={[{ text: "status" }]} />}
         value={newValueSet.status || "draft"}
         onChange={(event) =>
           setNewValueSet({

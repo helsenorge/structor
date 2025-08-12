@@ -10,6 +10,7 @@ import {
   NotDraggingStyle,
 } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
+import { getValueSetsFromState } from "src/store/treeStore/selectors";
 
 import { predefinedValueSetUri } from "../../types/IQuestionnareItemType";
 
@@ -67,7 +68,8 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
   const [newValueSet, setNewValueSet] = useState<ValueSet>({
     ...initValueSet(),
   });
-  const { qContained } = state;
+
+  const valueSets = getValueSetsFromState(state);
   const addNewElement = (): void => {
     newValueSet?.compose?.include[0].concept?.push({
       id: createUUID(),
@@ -322,7 +324,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
           </div>
         </div>
         <div>
-          {qContained?.map((x) => (
+          {valueSets?.map((x) => (
             <div key={x.id}>
               <p>
                 <strong>{`${x.title}`}</strong> {`(${x.name || x.id})`}

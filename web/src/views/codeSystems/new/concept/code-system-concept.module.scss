@@ -1,0 +1,35 @@
+.codeSystemConceptIndex {
+  display: flex;
+  flex-direction: column;
+}
+
+.addNewConceptButton {
+  text-align: left;
+  padding: 1rem;
+}
+
+.conceptContainer {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+
+  &:has(> :nth-child(2)) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.singleConceptContainer {
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: 10fr 1fr;
+  gap: 1rem;
+  border: 0.1rem solid #eee;
+  padding: 1rem;
+  border-radius: 4px;
+  width: 100%;
+
+  & .headerContainer {
+    display: flex;
+    align-items: center;
+  }
+}

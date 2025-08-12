@@ -5,6 +5,7 @@ import {
   QuestionnaireItemAnswerOption,
   ValueSet,
 } from "fhir/r4";
+import { getValueSetsFromState } from "src/store/treeStore/selectors";
 
 import { IQuestionnaireMetadata } from "../types/IQuestionnaireMetadataType";
 
@@ -310,13 +311,15 @@ export function mapToTreeState(resource: Bundle | Questionnaire): TreeState {
   mainQuestionnaire = addMetaSecurityIfDoesNotExist(mainQuestionnaire);
   mainQuestionnaire = addMetaSecurityIfCanBePerformedByExist(mainQuestionnaire);
   const qMetadata: IQuestionnaireMetadata = extractMetadata(mainQuestionnaire);
-  const qContained = (mainQuestionnaire.contained as Array<ValueSet>) || []; // we expect contained to only contain ValueSets
+  const qContained = mainQuestionnaire.contained;
+  const valueSets =
+    qContained?.filter((x) => x.resourceType === "ValueSet") || [];
   const { qItems, qOrder } = extractItemsAndOrder(mainQuestionnaire.item);
 
   // add missing initial value sets:
   initPredefinedValueSet.forEach((x) => {
-    if (!qContained.find((contained) => contained.id === x.id)) {
-      qContained.push(x);
+    if (!valueSets.find((contained) => contained.id === x.id)) {
+      qContained?.push(x);
     }
   });
 

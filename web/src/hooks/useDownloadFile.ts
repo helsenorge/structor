@@ -4,11 +4,11 @@ type UseDownloadFileReturn = {
 
 export const useDownloadFile = (): UseDownloadFileReturn => {
   const download = (
-    valueSet: string,
+    blobContent: string,
     fileName: string,
     type: string = "application/json",
   ): void => {
-    const blob = new Blob([valueSet], { type });
+    const blob = new Blob([blobContent], { type });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;

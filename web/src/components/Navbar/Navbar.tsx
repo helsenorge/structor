@@ -196,6 +196,12 @@ const Navbar = ({
                 navigate(`/formbuilder/${state.qMetadata.id}/valuesets/new`);
               }}
             />
+            <Btn
+              title={t("CodeSystems")}
+              onClick={() => {
+                navigate(`/formbuilder/${state.qMetadata.id}/codesystems/new`);
+              }}
+            />
             {i18n.language !== "nb-NO" && (
               <Btn
                 title={t("Change to norwegian")}

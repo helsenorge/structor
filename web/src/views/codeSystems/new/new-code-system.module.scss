@@ -1,0 +1,16 @@
+.codeSystemTabs > div:last-child > div {
+  padding-right: 0;
+  padding-left: 0;
+  display: flex;
+  width: 100%;
+}
+
+.codeSystemTabs > div:last-child > div > div {
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.codeSystemTabs {
+  padding: 0 2rem;
+  margin-top: 1rem;
+}
