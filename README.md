@@ -1,3 +1,5 @@
+#this repository is archived, for further updates to form builder (structor), see https://github.com/helsenorge/structor-export/
+
 # Structor - FHIR form builder
 
 Structor form builder is an open source tool for building FHIR Questionnaire forms. A live demo could be found at [formdesigner.helsenorgelab.no/](https://formdesigner.helsenorgelab.no/).
