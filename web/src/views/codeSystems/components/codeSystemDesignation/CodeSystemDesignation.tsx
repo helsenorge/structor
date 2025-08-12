@@ -82,6 +82,7 @@ const CodeSystemDesignation = ({
           variant="borderless"
           onClick={() => removeCodeSystemDesignation(index, conceptIndex)}
           ariaLabel={t("Remove include")}
+          concept="destructive"
         >
           <Icon svgIcon={RemoveIcon} />
         </Button>

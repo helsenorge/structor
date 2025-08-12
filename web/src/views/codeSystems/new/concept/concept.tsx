@@ -39,6 +39,7 @@ const Concept = ({ concept, index }: ConceptProps): React.JSX.Element => {
   return (
     <div className={styles.singleConceptContainer}>
       <div className={styles.inputContainer}>
+        <Input value={concept.id} disabled />
         <Input
           value={concept.display}
           onChange={(event) => updateConcept("display", event.target.value)}
@@ -67,6 +68,7 @@ const Concept = ({ concept, index }: ConceptProps): React.JSX.Element => {
         <Button
           variant="borderless"
           onClick={() => removeConcept()}
+          concept="destructive"
           ariaLabel={t("Remove include")}
         >
           <Icon svgIcon={RemoveIcon} />

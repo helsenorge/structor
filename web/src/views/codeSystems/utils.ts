@@ -3,6 +3,7 @@ import {
   CodeSystemConcept,
   CodeSystemConceptDesignation,
   CodeSystemConceptProperty,
+  CodeSystemProperty,
   Coding,
 } from "fhir/r4";
 import createUUID from "src/helpers/CreateUUID";
@@ -18,10 +19,11 @@ export const initialCodeSystem = (): CodeSystem => ({
   date: new Date().toISOString(),
   status: "draft",
   publisher: "",
-  url: "",
+  url: "https://nhn.no/code-system/",
   caseSensitive: true,
   language: "nb-NO",
-  concept: [initialConcept()],
+  concept: [],
+  property: [],
 });
 export const initialConcept = (): CodeSystemConcept => ({
   id: createUUID(),
@@ -47,4 +49,11 @@ export const initialCoding = (): Coding => ({
   code: "",
   display: "",
   system: createUriUUID(),
+});
+export const initialCodeSystemProperty = (): CodeSystemProperty => ({
+  id: createUUID(),
+  code: "",
+  type: "string",
+  description: "",
+  uri: createUriUUID(),
 });

@@ -1,5 +1,4 @@
 import { CodeSystem } from "fhir/r4";
-import { useTranslation } from "react-i18next";
 
 import Checkbox from "@helsenorge/designsystem-react/components/Checkbox";
 import Input from "@helsenorge/designsystem-react/components/Input";
@@ -10,10 +9,13 @@ import { LanguageLocales } from "@helsenorge/designsystem-react";
 
 import { useCodeSystemContext } from "../../context/useCodeSystemContext";
 
+import style from "./code-system-concept-details.module.scss";
+
 const CodeSystemDetails = (): React.JSX.Element => {
   const { newCodeSystem, setNewCodeSystem } = useCodeSystemContext();
   return (
     <div>
+      <Input value={newCodeSystem.id} disabled />
       <Input
         value={newCodeSystem.title}
         onChange={(event) =>
@@ -56,16 +58,18 @@ const CodeSystemDetails = (): React.JSX.Element => {
         }
         label={<Label labelTexts={[{ text: "Date" }]} />}
       />
-      <Checkbox
-        label={<Label labelTexts={[{ text: "Case Sensitive" }]} />}
-        checked={newCodeSystem.caseSensitive}
-        onChange={(event) =>
-          setNewCodeSystem({
-            ...newCodeSystem,
-            caseSensitive: event.target.checked,
-          })
-        }
-      />
+      <div className={style.checkboxCaseSensitive}>
+        <Checkbox
+          label={<Label labelTexts={[{ text: "Case Sensitive" }]} />}
+          checked={newCodeSystem.caseSensitive}
+          onChange={(event) =>
+            setNewCodeSystem({
+              ...newCodeSystem,
+              caseSensitive: event.target.checked,
+            })
+          }
+        />
+      </div>
       <Select
         label={<Label labelTexts={[{ text: "status" }]} />}
         value={newCodeSystem.status || "draft"}

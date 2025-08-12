@@ -1,38 +1,35 @@
-.codeSystemProperties {
+.propertiesContainer {
   display: flex;
   flex-direction: column;
 }
 
-.propertiesHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 12px 0;
+.singlePropertyContainer {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+
+  &:has(> :nth-child(2)) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
-.propertiesList {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 4rem;
-  margin: 1rem;
+.addNewPropertyButton {
+  text-align: left;
+  padding: 1rem;
 }
 
 .propertyContainer {
   display: grid;
+  box-sizing: border-box;
   grid-template-columns: 10fr 1fr;
   gap: 1rem;
   border: 0.1rem solid #eee;
-  padding: 0.5rem;
+  padding: 1rem;
   border-radius: 4px;
+  width: 100%;
 
   & .headerContainer {
     display: flex;
     align-items: center;
   }
-}
-
-.inputContainer {
-  display: grid;
-  text-align: left;
-  row-gap: 1rem;
 }

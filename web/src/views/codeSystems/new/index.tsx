@@ -15,9 +15,10 @@ import Save from "@helsenorge/designsystem-react/components/Icons/Save";
 import TrashCan from "@helsenorge/designsystem-react/components/Icons/TrashCan";
 import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 
-import CodeSystemConceptIndex from "./concept";
+import CodeSystemConceptIndex from "./concept/concepts";
 import CodeSystemDetails from "./details";
 import { useCodeSystemContext } from "../context/useCodeSystemContext";
+import Properties from "./properties/Properties";
 
 import styles from "./new-code-system.module.scss";
 
@@ -38,7 +39,12 @@ const NewCodeSystem = ({ scrollToTarget }: Props): React.JSX.Element => {
     scrollToTarget();
   };
   const dispatchValueSet = (): void => {
-    dispatch(updateCodeSystemAction(newCodeSystem));
+    dispatch(
+      updateCodeSystemAction({
+        ...newCodeSystem,
+        count: newCodeSystem.concept?.length,
+      }),
+    );
     scrollToTarget();
   };
   const dispatchDeleteValueSet = (): void => {
@@ -65,10 +71,12 @@ const NewCodeSystem = ({ scrollToTarget }: Props): React.JSX.Element => {
           <Tabs.Tab title={"Concept"}>
             <CodeSystemConceptIndex />
           </Tabs.Tab>
+          <Tabs.Tab title={"Properties"}>
+            <Properties />
+          </Tabs.Tab>
         </Tabs>
-        <RawJson showButton={false} jsonContent={newCodeSystem} side="right" />
       </div>
-      <div className={styles.newValueSetButtons}>
+      <div className={styles.newCodeSystemButtons}>
         <Button variant="outline" onClick={dispatchValueSet}>
           <Icon svgIcon={Save} />
           {t("Save")}
@@ -89,6 +97,7 @@ const NewCodeSystem = ({ scrollToTarget }: Props): React.JSX.Element => {
           </Button>
         )}
       </div>
+      <RawJson showButton={false} jsonContent={newCodeSystem} side="right" />
     </div>
   );
 };
