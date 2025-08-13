@@ -6,7 +6,7 @@ import {
   updateCodeSystemAction,
 } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
-import RawJson from "src/views/valueSets/newValueSet/rawJson";
+import RawJson from "src/views/components/rawJson";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -18,6 +18,8 @@ import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 import CodeSystemConceptIndex from "./concept/concepts";
 import CodeSystemDetails from "./details";
 import { useCodeSystemContext } from "../context/useCodeSystemContext";
+import CodeSystemFilterInput from "./codeSystemFilter/codeSystemFilter";
+import CodeSystemFilters from "./codeSystemFilter/CodeSystemFilters";
 import Properties from "./properties/Properties";
 
 import styles from "./new-code-system.module.scss";
@@ -73,6 +75,9 @@ const NewCodeSystem = ({ scrollToTarget }: Props): React.JSX.Element => {
           </Tabs.Tab>
           <Tabs.Tab title={"Properties"}>
             <Properties />
+          </Tabs.Tab>
+          <Tabs.Tab title={"Filter"}>
+            <CodeSystemFilters />
           </Tabs.Tab>
         </Tabs>
       </div>

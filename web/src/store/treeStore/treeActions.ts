@@ -9,6 +9,7 @@ import {
   Coding,
   ContactDetail,
   CodeSystem,
+  FhirResource,
 } from "fhir/r4";
 
 import { IQuestionnaireMetadataType } from "../../types/IQuestionnaireMetadataType";
@@ -67,6 +68,7 @@ export const UPDATE_VALUESET_ACTION = "UPDATE_VALUESET";
 export const REMOVE_CODESYSTEM_ACTION = "REMOVE_CODESYSTEM";
 export const UPDATE_CODESYSTEM_ACTION = "UPDATE_CODESYSTEM";
 export const IMPORT_VALUESET_ACTION = "IMPORT_VALUESET";
+export const IMPORT_FHIR_RESOURCE_ACTION = "IMPORT_FHIR_RESOURCE_ACTION";
 export const IMPORT_CODESYSTEM_ACTION = "IMPORT_CODESYSTEM_ACTION";
 export const UPDATE_ITEM_CODE_TRANSLATION_ACTION =
   "UPDATE_ITEM_CODE_TRANSLATION_ACTION";
@@ -278,7 +280,10 @@ export interface ImportValueSetAction {
   type: typeof IMPORT_VALUESET_ACTION;
   items: ValueSet[];
 }
-
+export interface ImportFhirResourceAction {
+  type: typeof IMPORT_FHIR_RESOURCE_ACTION;
+  items: FhirResource[];
+}
 export interface ImportCodeSystemAction {
   type: typeof IMPORT_CODESYSTEM_ACTION;
   items: CodeSystem[];
@@ -693,7 +698,14 @@ export const importValueSetAction = (
     items,
   };
 };
-
+export const importFhirResourceAction = (
+  items: FhirResource[],
+): ImportFhirResourceAction => {
+  return {
+    type: IMPORT_FHIR_RESOURCE_ACTION,
+    items,
+  };
+};
 export const importCodeSystemAction = (
   items: CodeSystem[],
 ): ImportCodeSystemAction => {

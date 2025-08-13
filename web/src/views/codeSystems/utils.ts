@@ -3,6 +3,7 @@ import {
   CodeSystemConcept,
   CodeSystemConceptDesignation,
   CodeSystemConceptProperty,
+  CodeSystemFilter,
   CodeSystemProperty,
   Coding,
 } from "fhir/r4";
@@ -24,6 +25,7 @@ export const initialCodeSystem = (): CodeSystem => ({
   language: "nb-NO",
   concept: [],
   property: [],
+  description: "",
 });
 export const initialConcept = (): CodeSystemConcept => ({
   id: createUUID(),
@@ -56,4 +58,10 @@ export const initialCodeSystemProperty = (): CodeSystemProperty => ({
   type: "string",
   description: "",
   uri: createUriUUID(),
+});
+export const initialCodeSystemFilter = (): CodeSystemFilter => ({
+  id: createUUID(),
+  value: "",
+  code: "",
+  operator: ["exists"],
 });

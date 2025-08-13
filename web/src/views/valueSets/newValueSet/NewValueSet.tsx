@@ -9,15 +9,15 @@ import Save from "@helsenorge/designsystem-react/components/Icons/Save";
 import TrashCan from "@helsenorge/designsystem-react/components/Icons/TrashCan";
 import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 
-import RawJson from "./rawJson";
+import { ValueSetDetails } from "./details/ValueSetDetails";
+import ValuseSetCompose from "./valueSetCompose/ValuseSetCompose";
 import {
   updateValueSetAction,
   removeValueSet,
 } from "../../../store/treeStore/treeActions";
 import { TreeContext } from "../../../store/treeStore/treeStore";
+import RawJson from "../../components/rawJson";
 import { useValueSetContext } from "../context/useValueSetContext";
-import { ValueSetDetails } from "./details/ValueSetDetails";
-import ValuseSetCompose from "./valueSetCompose/ValuseSetCompose";
 
 import styles from "./new-value-set.module.scss";
 type Props = {

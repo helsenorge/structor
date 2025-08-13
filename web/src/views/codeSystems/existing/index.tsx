@@ -1,20 +1,59 @@
+import { useContext } from "react";
+
 import { CodeSystem } from "fhir/r4";
-import { useTranslation } from "react-i18next";
-import { useDownloadFile } from "src/hooks/useDownloadFile";
+import { removeCodeSystemAction } from "src/store/treeStore/treeActions";
+import { TreeContext } from "src/store/treeStore/treeStore";
+import { Preview } from "src/views/components/preview/Preview";
 
-import Button from "@helsenorge/designsystem-react/components/Button";
-import { Icon } from "@helsenorge/designsystem-react/components/Icon/Icon";
-import Download from "@helsenorge/designsystem-react/components/Icons/Download";
+import ExpanderList from "@helsenorge/designsystem-react/components/ExpanderList";
 
+import { useCodeSystemContext } from "../context/useCodeSystemContext";
+
+import styles from "./existing-code-systems.module.scss";
 type Props = {
-  scrollToTarget: () => void;
+  navigateToNewTab: () => void;
 };
 
-const ExistingCodeSystems = ({ scrollToTarget }: Props): React.JSX.Element => {
-  const { download } = useDownloadFile();
-  const { t } = useTranslation();
-
-  return <div>{"existing code systems"}</div>;
+const ExistingCodeSystems = ({
+  navigateToNewTab,
+}: Props): React.JSX.Element => {
+  const { state, dispatch } = useContext(TreeContext);
+  const { handleEdit } = useCodeSystemContext();
+  const dispatchDelete = (codeSystem: CodeSystem): void => {
+    if (codeSystem.id) {
+      dispatch(removeCodeSystemAction(codeSystem));
+    }
+  };
+  return (
+    <div className={styles.existingCodeSystems}>
+      <ExpanderList childPadding color="white">
+        {state.qContained
+          ?.filter(
+            (item): item is CodeSystem => item.resourceType === "CodeSystem",
+          )
+          .map((codeSystem, i) => (
+            <ExpanderList.Expander
+              key={codeSystem.id || i}
+              expanded={i === 0}
+              title={`${codeSystem.title} (${codeSystem.name || codeSystem.id})`}
+            >
+              <Preview
+                deleteResource={() => dispatchDelete(codeSystem)}
+                handleEdit={() => {
+                  handleEdit(codeSystem);
+                  navigateToNewTab();
+                }}
+                canDelete={true}
+                canDownload={true}
+                canEdit={true}
+                fhirResource={codeSystem}
+                resourceType={codeSystem.resourceType}
+              />
+            </ExpanderList.Expander>
+          ))}
+      </ExpanderList>
+    </div>
+  );
 };
 
 export default ExistingCodeSystems;

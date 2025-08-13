@@ -1,0 +1,19 @@
+.existingFhirResourceHeader {
+  display: flex;
+  background-color: initial;
+  padding: 0 1.5rem;
+  position: initial;
+  width: initial;
+  top: initial;
+
+  & > button:first-child {
+    margin-right: 2rem;
+  }
+}
+
+.deleteButton {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

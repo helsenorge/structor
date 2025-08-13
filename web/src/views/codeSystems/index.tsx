@@ -8,7 +8,7 @@ import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 
 import ExistingCodeSystem from "./existing";
 import NewCodeSystem from "./new";
-import UploadCodeSystem from "./upload";
+import UploadCodeSystem from "../components/upload/Upload";
 
 import styles from "./codeSystems.module.scss";
 const CodeSystems = (): React.JSX.Element => {
@@ -26,10 +26,8 @@ const CodeSystems = (): React.JSX.Element => {
       setActiveTab(0);
     } else if (pathname.endsWith("existing")) {
       setActiveTab(1);
-    } else if (pathname.endsWith("import")) {
-      setActiveTab(2);
     } else if (pathname.endsWith("upload")) {
-      setActiveTab(3);
+      setActiveTab(2);
     }
   }, [pathname]);
 
@@ -57,16 +55,15 @@ const CodeSystems = (): React.JSX.Element => {
           }}
           title={t("Existing Code Systems")}
         >
-          <ExistingCodeSystem scrollToTarget={scrollToTarget} />
+          <ExistingCodeSystem navigateToNewTab={setTabToNewValueSetTab} />
         </Tabs.Tab>
-
         <Tabs.Tab
           onTabClick={() => {
             navigate("upload");
           }}
           title={t("Upload Code System")}
         >
-          <UploadCodeSystem />
+          <UploadCodeSystem resourceType="CodeSystem" />
         </Tabs.Tab>
       </Tabs>
     </section>

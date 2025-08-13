@@ -1,0 +1,30 @@
+.rawJsonContainer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 1rem;
+}
+
+.jsonContainer {
+  display: block;
+  white-space: pre-wrap;
+  text-align: left;
+  padding: 2rem;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.rawJsonButton {
+  display: flex;
+  align-items: center;
+
+  span {
+    margin-right: 0.5rem;
+  }
+}
+
+.jsonContainerWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

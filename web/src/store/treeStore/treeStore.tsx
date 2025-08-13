@@ -87,6 +87,8 @@ import {
   REMOVE_CODESYSTEM_ACTION,
   RemoveCodeSystemAction,
   UpdateCodeSystemAction,
+  ImportFhirResourceAction,
+  IMPORT_FHIR_RESOURCE_ACTION,
 } from "./treeActions";
 import { findCodingBySystemAndCode } from "../../helpers/codeHelper";
 import createUUID from "../../helpers/CreateUUID";
@@ -126,7 +128,8 @@ export type ActionType =
   | UpdateItemExtensionAction
   | ImportCodeSystemAction
   | RemoveCodeSystemAction
-  | UpdateCodeSystemAction;
+  | UpdateCodeSystemAction
+  | ImportFhirResourceAction;
 
 export interface Items {
   [linkId: string]: QuestionnaireItem;
@@ -795,6 +798,12 @@ function removeValueSet(draft: TreeState, action: RemoveValueSetAction): void {
 function importValueSet(draft: TreeState, action: ImportValueSetAction): void {
   draft.qContained = [...(draft?.qContained || []), ...action.items];
 }
+function importFhirResource(
+  draft: TreeState,
+  action: ImportFhirResourceAction,
+): void {
+  draft.qContained = [...(draft?.qContained || []), ...action.items];
+}
 function importCodeSystem(
   draft: TreeState,
   action: ImportCodeSystemAction,
@@ -982,6 +991,10 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
     case IMPORT_VALUESET_ACTION:
       importValueSet(draft, action);
       break;
+    case IMPORT_FHIR_RESOURCE_ACTION:
+      importFhirResource(draft, action);
+      break;
+
     case IMPORT_CODESYSTEM_ACTION:
       importCodeSystem(draft, action);
       break;

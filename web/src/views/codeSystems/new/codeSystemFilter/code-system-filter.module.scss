@@ -1,0 +1,30 @@
+.addNewFilterButton {
+  text-align: left;
+  padding: 1rem;
+}
+
+.filterContainer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  border: 1px solid #eee;
+}
+
+.filterOperatorContainer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+}
+
+.AllFiltersContainer {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+
+  &:has(> :nth-child(2)) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

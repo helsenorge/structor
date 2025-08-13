@@ -84,10 +84,6 @@ export default createHashRouter([
         element: <CodeSystems />,
       },
       {
-        path: "import",
-        element: <CodeSystems />,
-      },
-      {
         path: "upload",
         element: <CodeSystems />,
       },

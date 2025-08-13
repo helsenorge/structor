@@ -1,10 +1,14 @@
-import { CodeSystemConceptDesignation } from "fhir/r4";
+import { text } from "stream/consumers";
+
+import { CodeSystemConceptDesignation, Coding } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import CodingInput from "src/components/extensions/valueInputs/CodingInput";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
 import RemoveIcon from "@helsenorge/designsystem-react/components/Icons/TrashCan";
 import Input from "@helsenorge/designsystem-react/components/Input";
+import Label from "@helsenorge/designsystem-react/components/Label";
 
 import { useCodeSystemContext } from "../../context/useCodeSystemContext";
 
@@ -24,7 +28,7 @@ const CodeSystemDesignation = ({
 
   const updateDesignation = (
     key: keyof CodeSystemConceptDesignation,
-    value: string,
+    value: string | Coding,
   ): void => {
     setNewCodeSystem((prev) => ({
       ...prev,
@@ -58,7 +62,7 @@ const CodeSystemDesignation = ({
   };
   return (
     <div className={styles.designationContainer}>
-      <div className={styles.inputContainer}>
+      <div>
         <Input
           disabled
           value={designation.id}
@@ -76,6 +80,15 @@ const CodeSystemDesignation = ({
           }
           label="Language"
         />
+        <div className={styles.useInputContainer}>
+          <Label labelTexts={[{ text: "Use" }]}></Label>
+          <CodingInput
+            value={designation.use}
+            onChange={(value) => {
+              updateDesignation("use", value);
+            }}
+          />
+        </div>
       </div>
       <div className={styles.headerContainer}>
         <Button

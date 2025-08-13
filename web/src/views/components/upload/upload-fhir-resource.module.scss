@@ -1,0 +1,83 @@
+.importFhirResource {
+  padding: 20px;
+  text-align: left;
+}
+
+.uploadFhirResource {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.buttonBtn {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  border-top: 1px solid black;
+}
+
+.uploadButton {
+  margin: 2rem 0;
+  padding: 2rem;
+  border: 2px dashed transparent; // Add a transparent border to prevent layout shifts
+  border-color: #4b92d4; // Use a color from your design system
+  background-color: #f7fafd; // A light blue is common for drop zones
+  transition:
+    background-color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
+
+  // NEW: This is the style for when a file is dragged over the area
+  &.isDragging {
+    border-color: #0067c5; // Use a color from your design system
+    background-color: #f0f8ff; // A light blue is common for drop zones
+  }
+}
+
+.searchForm {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.buttonSearch {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.spinning {
+  text-align: center;
+  padding-top: 15px;
+}
+
+.spinning > i {
+  font-size: 32px;
+}
+
+.spinning > i::before {
+  animation: spin 0.8s ease infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fhirResourceList {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+
+  &:has(:nth-child(3)) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

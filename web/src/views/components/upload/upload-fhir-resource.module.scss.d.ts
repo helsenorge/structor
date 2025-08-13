@@ -1,0 +1,10 @@
+export declare const buttonBtn: string;
+export declare const buttonSearch: string;
+export declare const fhirResourceList: string;
+export declare const importFhirResource: string;
+export declare const isDragging: string;
+export declare const searchForm: string;
+export declare const spin: string;
+export declare const spinning: string;
+export declare const uploadButton: string;
+export declare const uploadFhirResource: string;
