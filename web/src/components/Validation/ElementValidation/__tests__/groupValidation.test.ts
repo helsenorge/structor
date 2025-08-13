@@ -24,7 +24,7 @@ describe("group validation", () => {
       expect(validationErrors.length).toBe(1);
       expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
       expect(translatationMock.mock.calls[0]).toEqual([
-        "Repeatable group cannot be child of a group",
+        "Repeatable group must be child of a group",
       ]);
     });
     it("Should get error if repeatable group has step coding", () => {
@@ -42,7 +42,7 @@ describe("group validation", () => {
   });
 });
 
-//Constants for repeatale group with a parent group
+//Constants for repeatable group without a parent group
 const repeatableGroup: QuestionnaireItem = {
   linkId: "a8e762a7-5754-4056-900b-6c1196d73175",
   type: "group",
@@ -56,7 +56,7 @@ const qItems: Items = {
   "4d86e6d0-51c8-477e-a74e-8e0a4d253fce": {
     linkId: "4d86e6d0-51c8-477e-a74e-8e0a4d253fce",
     type: "group",
-    text: "Parent group",
+    text: "group",
     extension: [],
     code: [],
     item: [],
@@ -67,12 +67,11 @@ const qItems: Items = {
 const qOrder: OrderItem[] = [
   {
     linkId: "4d86e6d0-51c8-477e-a74e-8e0a4d253fce",
-    items: [
-      {
-        linkId: "a8e762a7-5754-4056-900b-6c1196d73175",
-        items: [],
-      },
-    ],
+    items: [],
+  },
+  {
+    linkId: "a8e762a7-5754-4056-900b-6c1196d73175",
+    items: [],
   },
 ];
 

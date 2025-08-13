@@ -38,12 +38,12 @@ export const validateGroupParent = (
       qOrder,
     );
 
-    if (isitemChildOfGroup) {
+    if (!isitemChildOfGroup) {
       returnErrors.push(
         createError(
           qItem.linkId,
           "group",
-          t("Repeatable group cannot be child of a group"),
+          t("Repeatable group must be child of a group"),
         ),
       );
     }
