@@ -2,6 +2,7 @@ import React from "react";
 
 import { CodeSystemConcept } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import IdInput from "src/components/extensions/valueInputs/IdInput";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -38,8 +39,8 @@ const Concept = ({ concept, index }: ConceptProps): React.JSX.Element => {
   };
   return (
     <div className={styles.singleConceptContainer}>
-      <div className={styles.inputContainer}>
-        <Input value={concept.id} disabled />
+      <div>
+        <IdInput value={concept.id} />
         <Input
           value={concept.display}
           onChange={(event) => updateConcept("display", event.target.value)}

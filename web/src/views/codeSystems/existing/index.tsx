@@ -4,6 +4,7 @@ import { CodeSystem } from "fhir/r4";
 import { removeCodeSystemAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
 import { Preview } from "src/views/components/preview/Preview";
+import FeedBack from "src/views/components/upload/FeedBack";
 
 import ExpanderList from "@helsenorge/designsystem-react/components/ExpanderList";
 
@@ -24,14 +25,14 @@ const ExistingCodeSystems = ({
       dispatch(removeCodeSystemAction(codeSystem));
     }
   };
+  const existingCodeSystem = state.qContained?.filter(
+    (item): item is CodeSystem => item.resourceType === "CodeSystem",
+  );
   return (
     <div className={styles.existingCodeSystems}>
-      <ExpanderList childPadding color="white">
-        {state.qContained
-          ?.filter(
-            (item): item is CodeSystem => item.resourceType === "CodeSystem",
-          )
-          .map((codeSystem, i) => (
+      {(existingCodeSystem || []).length > 0 ? (
+        <ExpanderList childPadding color="white">
+          {existingCodeSystem?.map((codeSystem, i) => (
             <ExpanderList.Expander
               key={codeSystem.id || i}
               expanded={i === 0}
@@ -51,7 +52,10 @@ const ExistingCodeSystems = ({
               />
             </ExpanderList.Expander>
           ))}
-      </ExpanderList>
+        </ExpanderList>
+      ) : (
+        <FeedBack show text="Ingen eksisterende kodeverk funnet." />
+      )}
     </div>
   );
 };

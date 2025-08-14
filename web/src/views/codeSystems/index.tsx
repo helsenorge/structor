@@ -38,7 +38,6 @@ const CodeSystems = (): React.JSX.Element => {
         ariaLabelLeftButton="Scroll left"
         ariaLabelRightButton="Scroll right"
         sticky
-        className={styles.codeSystemsTabs}
         activeTab={activeTab}
       >
         <Tabs.Tab

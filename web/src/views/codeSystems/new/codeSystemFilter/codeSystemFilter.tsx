@@ -1,5 +1,6 @@
 import { CodeSystemFilter } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import IdInput from "src/components/extensions/valueInputs/IdInput";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -21,7 +22,7 @@ const CodeSystemFilterInput = ({
   const { t } = useTranslation();
   return (
     <div>
-      <Input value={filter.id} disabled />
+      <IdInput value={filter.id} />
       <Input
         value={filter.code}
         onChange={(event) =>

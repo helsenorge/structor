@@ -1,5 +1,6 @@
 import { CodeSystemProperty } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import IdInput from "src/components/extensions/valueInputs/IdInput";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -39,8 +40,8 @@ const Property = ({ index, property }: Props): React.JSX.Element => {
   };
   return (
     <div className={styles.propertyContainer}>
-      <div className={styles.inputContainer}>
-        <Input value={property.id} disabled />
+      <div>
+        <IdInput value={property.id} />
         <Input
           value={property.uri}
           onChange={(event) => updateProperty("uri", event.target.value)}

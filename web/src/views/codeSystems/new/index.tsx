@@ -18,7 +18,6 @@ import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 import CodeSystemConceptIndex from "./concept/concepts";
 import CodeSystemDetails from "./details";
 import { useCodeSystemContext } from "../context/useCodeSystemContext";
-import CodeSystemFilterInput from "./codeSystemFilter/codeSystemFilter";
 import CodeSystemFilters from "./codeSystemFilter/CodeSystemFilters";
 import Properties from "./properties/Properties";
 
@@ -59,8 +58,8 @@ const NewCodeSystem = ({ scrollToTarget }: Props): React.JSX.Element => {
   const isNewCodeSystem =
     !newCodeSystem.id || !qContained?.some((x) => x.id === newCodeSystem.id);
   return (
-    <div className={styles.newCodeSystem}>
-      <div className={styles.codeSystemTabsContainer}>
+    <div>
+      <div>
         <Tabs
           ariaLabelLeftButton="Scroll left"
           ariaLabelRightButton="Scroll right"

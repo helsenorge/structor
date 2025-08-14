@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { CodeSystemConceptProperty } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import IdInput from "src/components/extensions/valueInputs/IdInput";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Checkbox from "@helsenorge/designsystem-react/components/Checkbox";
@@ -66,7 +67,7 @@ const CodeSystemProperty = ({
   return (
     <div className={styles.propertyContainer}>
       <div className={styles.inputContainer}>
-        <Input value={property.id} disabled />
+        <IdInput value={property.id} />
         <Input
           label={<Label labelTexts={[{ text: "Code" }]} />}
           value={property.code}

@@ -3,6 +3,7 @@ import { text } from "stream/consumers";
 import { CodeSystemConceptDesignation, Coding } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import CodingInput from "src/components/extensions/valueInputs/CodingInput";
+import IdInput from "src/components/extensions/valueInputs/IdInput";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -63,11 +64,8 @@ const CodeSystemDesignation = ({
   return (
     <div className={styles.designationContainer}>
       <div>
-        <Input
-          disabled
-          value={designation.id}
-          onChange={(event) => updateDesignation("id", event.target.value)}
-        />
+        <IdInput value={designation.id} />
+
         <Input
           value={designation.value}
           onChange={(event) => updateDesignation("value", event.target.value)}

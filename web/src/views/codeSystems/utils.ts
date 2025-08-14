@@ -6,6 +6,7 @@ import {
   CodeSystemFilter,
   CodeSystemProperty,
   Coding,
+  Identifier,
 } from "fhir/r4";
 import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
@@ -64,4 +65,10 @@ export const initialCodeSystemFilter = (): CodeSystemFilter => ({
   value: "",
   code: "",
   operator: ["exists"],
+});
+export const initialIdentifier = (): Identifier => ({
+  id: createUUID(),
+  use: "official",
+  system: createUriUUID(),
+  value: "",
 });

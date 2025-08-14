@@ -1,5 +1,7 @@
 import { CodeSystem, Identifier } from "fhir/r4";
 import IdentifierInput from "src/components/extensions/valueInputs/Identifier";
+import Identifiers from "src/components/extensions/valueInputs/Identifiers";
+import IdInput from "src/components/extensions/valueInputs/IdInput";
 
 import Checkbox from "@helsenorge/designsystem-react/components/Checkbox";
 import Input from "@helsenorge/designsystem-react/components/Input";
@@ -16,7 +18,7 @@ const CodeSystemDetails = (): React.JSX.Element => {
   const { newCodeSystem, setNewCodeSystem } = useCodeSystemContext();
   return (
     <div>
-      <Input value={newCodeSystem.id} disabled />
+      <IdInput value={newCodeSystem.id} />
       <Input
         value={newCodeSystem.title}
         onChange={(event) =>
@@ -81,26 +83,10 @@ const CodeSystemDetails = (): React.JSX.Element => {
           }
         />
       </div>
-      {newCodeSystem.identifier?.length &&
-        newCodeSystem.identifier?.length > 0 && (
-          <div className={style.identifierContainer}>
-            <Label labelTexts={[{ text: "Identifier" }]} />
-            {newCodeSystem.identifier?.map((identifier, index) => (
-              <IdentifierInput
-                key={identifier.id}
-                value={identifier}
-                onChange={(value) =>
-                  setNewCodeSystem({
-                    ...newCodeSystem,
-                    identifier: newCodeSystem.identifier
-                      ?.map((j, i) => (i === index ? value : j))
-                      .filter((item): item is Identifier => item !== undefined),
-                  })
-                }
-              />
-            ))}
-          </div>
-        )}
+
+      <div className={style.identifierContainer}>
+        <Identifiers />
+      </div>
       <Select
         label={<Label labelTexts={[{ text: "status" }]} />}
         value={newCodeSystem.status || "draft"}
