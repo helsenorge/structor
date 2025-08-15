@@ -1,19 +1,23 @@
-import { Coding, ValueSet, ValueSetComposeInclude } from "fhir/r4";
+import {
+  Coding,
+  ValueSet,
+  ValueSetComposeInclude,
+  ValueSetComposeIncludeConcept,
+} from "fhir/r4";
 import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
 
 export const initialComposeInclude = (): ValueSetComposeInclude => ({
   id: createUUID(),
   system: createUriUUID(),
-  concept: [
-    {
-      id: createUUID(),
-      code: "",
-      display: "",
-    },
-  ],
+  concept: [valueSetComposeIncludeConcept()],
 });
-
+export const valueSetComposeIncludeConcept =
+  (): ValueSetComposeIncludeConcept => ({
+    id: createUUID(),
+    code: "",
+    display: "",
+  });
 export const initValueSet = (): ValueSet => ({
   resourceType: "ValueSet",
   id: createUUID(),
@@ -25,7 +29,7 @@ export const initValueSet = (): ValueSet => ({
   publisher: "",
   url: "",
   compose: {
-    include: [initialComposeInclude()],
+    include: [],
   },
 });
 

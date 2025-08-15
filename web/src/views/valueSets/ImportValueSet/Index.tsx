@@ -8,7 +8,7 @@ import { TreeContext } from "src/store/treeStore/treeStore";
 import Button from "@helsenorge/designsystem-react/components/Button";
 
 import FetchValueSet from "./FetchValueSet";
-import { PreviewValueSet } from "../existinValueSets/previewValueSet/PreviewValueSet";
+import PreviewValueSet from "../../components/preview/Preview";
 
 import styles from "./importValueSet.module.scss";
 
@@ -36,9 +36,14 @@ const ImportValueSet = (): React.JSX.Element => {
             return (
               <div key={valueSet.id}>
                 <PreviewValueSet
+                  canEdit={false}
+                  deleteResource={() => {}}
+                  handleEdit={() => {}}
+                  resourceType="ValueSet"
+                  canDelete={false}
                   canDownload={false}
                   key={valueSet.id}
-                  valueSet={valueSet}
+                  fhirResource={valueSet}
                 />
                 {valueSet.id && (
                   <Button

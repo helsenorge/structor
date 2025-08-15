@@ -39,7 +39,6 @@ const CodeSystemDesignations = ({
         <h3>{"Designations"}</h3>
         <Button
           variant="borderless"
-          className={styles.addButton}
           ariaLabel="test"
           onClick={handleAddDesignation}
         >

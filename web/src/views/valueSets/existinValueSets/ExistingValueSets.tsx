@@ -1,15 +1,14 @@
 import React, { useContext } from "react";
 
 import { FhirResource, Questionnaire, ValueSet } from "fhir/r4";
-import {
-  generarteQuestionnaireOrBundle,
-  generateQuestionnaire,
-} from "src/helpers/generateQuestionnaire";
+import { generarteQuestionnaireOrBundle } from "src/helpers/generateQuestionnaire";
+import { removeValueSet } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
+import { Preview } from "src/views/components/preview/Preview";
 
 import ExpanderList from "@helsenorge/designsystem-react/components/ExpanderList";
 
-import { PreviewValueSet } from "./previewValueSet/PreviewValueSet";
+import { useValueSetContext } from "../context/useValueSetContext";
 
 import styles from "./existinValueSets.module.scss";
 
@@ -18,8 +17,9 @@ type Props = {
 };
 
 const ExistingValueSets = ({ scrollToTarget }: Props): React.JSX.Element => {
-  const { state } = useContext(TreeContext);
+  const { state, dispatch } = useContext(TreeContext);
   const q = generarteQuestionnaireOrBundle(state);
+  const { canEdit, handleEdit } = useValueSetContext();
   const existingValueSetsInQuestionnaire: FhirResource[] = [];
   if (q.resourceType === "Questionnaire") {
     existingValueSetsInQuestionnaire.push(...(q?.contained || []));
@@ -32,6 +32,21 @@ const ExistingValueSets = ({ scrollToTarget }: Props): React.JSX.Element => {
       .flat();
     existingValueSetsInQuestionnaire.push(...valuesets);
   }
+  const dispatchDeleteValueSet = (valueSet: ValueSet): void => {
+    if (valueSet.id) {
+      dispatch(removeValueSet(valueSet));
+    }
+  };
+  const handleDeleteResource = (resource: FhirResource): void => {
+    if (resource.resourceType === "ValueSet") {
+      dispatchDeleteValueSet(resource);
+    }
+  };
+  const editValueSet = (fhirResource: FhirResource): void => {
+    if (fhirResource.resourceType === "ValueSet") {
+      handleEdit(fhirResource);
+    }
+  };
   return (
     <div className={styles.existingValueSets}>
       <ExpanderList childPadding color="white">
@@ -43,11 +58,14 @@ const ExistingValueSets = ({ scrollToTarget }: Props): React.JSX.Element => {
               expanded={i === 0}
               title={`${valueSet.title} (${valueSet.name || valueSet.id})`}
             >
-              <PreviewValueSet
+              <Preview
+                handleEdit={editValueSet}
+                canEdit={canEdit(valueSet.url)}
+                deleteResource={handleDeleteResource}
+                resourceType="ValueSet"
                 key={valueSet.id}
-                valueSet={valueSet}
+                fhirResource={valueSet}
                 scrollToTarget={scrollToTarget}
-                valueSetIndex={i}
                 canDelete={
                   !existingValueSetsInQuestionnaire
                     .map((vs) => vs.id)

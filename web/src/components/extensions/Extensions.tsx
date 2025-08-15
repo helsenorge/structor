@@ -29,6 +29,7 @@ type Props = {
   ) => void;
   hasValidationError?: (index: number) => boolean;
   className?: string;
+  buttonText?: string;
 };
 
 export const Extensions = ({
@@ -38,6 +39,7 @@ export const Extensions = ({
   updateExtensions,
   hasValidationError,
   className,
+  buttonText = "Add",
 }: Props): React.JSX.Element | null => {
   const {
     addNewExtension,
@@ -63,7 +65,7 @@ export const Extensions = ({
           }}
           ariaLabel={t("Add new extension")}
         >
-          {t("Add")}
+          {t(buttonText)}
           <Icon svgIcon={PlussIcon} />
         </Button>
       </header>

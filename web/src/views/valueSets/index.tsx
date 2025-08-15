@@ -10,6 +10,7 @@ import ExistingValueSets from "./existinValueSets/ExistingValueSets";
 import ImportValueSet from "./ImportValueSet/Index";
 import NewValueSet from "./newValueSet/NewValueSet";
 import UploadValueSet from "./uploadValueSet/UploadValueSet";
+import Upload from "../components/upload/Upload";
 
 import styles from "./valueSets.module.scss";
 const ValueSets = (): React.JSX.Element => {
@@ -74,7 +75,7 @@ const ValueSets = (): React.JSX.Element => {
           }}
           title={t("Upload Value Set")}
         >
-          <UploadValueSet />
+          <Upload resourceType="ValueSet" />
         </Tabs.Tab>
       </Tabs>
     </section>

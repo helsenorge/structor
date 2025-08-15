@@ -5,3 +5,4 @@ export declare const answerOptionLabel: string;
 export declare const extensionsContainer: string;
 export declare const includeHeader: string;
 export declare const valueSetCompose: string;
+export declare const valueSetComposeDetails: string;
