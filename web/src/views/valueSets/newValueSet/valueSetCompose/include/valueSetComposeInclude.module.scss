@@ -1,14 +1,3 @@
-.includeItemTabsWrapper {
-  display: flex;
-  width: 100%;
-  gap: 1rem;
-
-  &:has(> :nth-child(5)) {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
 .valueSetTabs {
   margin: 1rem 0;
   width: 100%;
@@ -57,27 +46,14 @@
   }
 }
 
-.extensionsContainer {
-  align-items: flex-start;
-}
-
 .answerOptionInputs {
   margin-left: 1rem;
 }
 
 .includeHeader {
-  display: grid;
-  grid-template-columns: 9fr 1fr;
   align-items: center;
   gap: 1rem;
   margin: 0.5rem 0.8rem;
-}
-
-.composeIncludeExtensions {
-  margin: 0;
-  padding: 0 1.5rem;
-  align-items: flex-start;
-  text-align: left;
 }
 
 .codeSystemsContainer {
@@ -90,4 +66,18 @@
   grid-template-columns: 1fr auto;
   align-items: center;
   padding: 0.5rem 0;
+}
+
+.includeContainer {
+  display: grid;
+  grid-template-columns: 11fr 1fr;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.deleteButtonContainer {
+  display: flex;
+  align-items: center;
 }

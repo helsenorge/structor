@@ -9,7 +9,6 @@ import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 import ExistingValueSets from "./existinValueSets/ExistingValueSets";
 import ImportValueSet from "./ImportValueSet/Index";
 import NewValueSet from "./newValueSet/NewValueSet";
-import UploadValueSet from "./uploadValueSet/UploadValueSet";
 import Upload from "../components/upload/Upload";
 
 import styles from "./valueSets.module.scss";

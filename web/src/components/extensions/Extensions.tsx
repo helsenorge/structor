@@ -63,7 +63,7 @@ export const Extensions = ({
           onClick={() => {
             addNewExtension();
           }}
-          ariaLabel={t("Add new extension")}
+          ariaLabel={t("Add extension")}
         >
           {t(buttonText)}
           <Icon svgIcon={PlussIcon} />
@@ -125,6 +125,7 @@ export const Extensions = ({
                     removeExtension({ extension: ext });
                   }}
                   name={t("Remove element")}
+                  concept="destructive"
                   ariaLabel={t("Delete extension")}
                 >
                   <Icon svgIcon={RemoveIcon} />

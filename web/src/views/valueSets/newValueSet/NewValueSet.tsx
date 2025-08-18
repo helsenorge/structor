@@ -66,7 +66,6 @@ const NewValueSet = ({ scrollToTarget }: Props): React.JSX.Element => {
             <ValuseSetCompose />
           </Tabs.Tab>
         </Tabs>
-        <RawJson jsonContent={newValueSet} side="right" />
       </div>
 
       <div className={styles.newValueSetButtons}>
@@ -90,6 +89,7 @@ const NewValueSet = ({ scrollToTarget }: Props): React.JSX.Element => {
           </Button>
         )}
       </div>
+      <RawJson showButton={false} jsonContent={newValueSet} side="right" />
     </div>
   );
 };

@@ -22,7 +22,6 @@ export const ResourcesToImport = ({
 
   return (
     <div key={fhirResource.id}>
-      <Preview fhirResource={fhirResource} resourceType={resourceType} />
       {fhirResource.id &&
         (stateFhirResource?.findIndex((y) => y.id === fhirResource.id) ===
         -1 ? (
@@ -36,6 +35,15 @@ export const ResourcesToImport = ({
         ) : (
           <p>{t("Already imported")}</p>
         ))}
+      <Preview
+        fhirResource={fhirResource}
+        resourceType={resourceType}
+        canEdit={false}
+        handleEdit={() => {}}
+        deleteResource={() => {}}
+        canDelete={false}
+        canDownload={true}
+      />
     </div>
   );
 };

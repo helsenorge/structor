@@ -1,0 +1,41 @@
+.valueSetInclude {
+  display: grid;
+  flex-direction: column;
+  text-align: left;
+  margin-top: 1rem;
+  padding: 0 2rem;
+}
+
+.addNewIncludeButton {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 15%;
+}
+
+.answerOptionItem {
+  display: grid;
+  grid-template-columns: 1fr 10fr 1fr;
+  margin: 0.5rem 0.8rem;
+  gap: 1rem;
+}
+
+.answerOptionInputs {
+  margin-left: 1rem;
+}
+
+.answerOptionbuttons {
+  display: flex;
+  align-items: center;
+}
+
+.conceptContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.conceptItem {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 0.5rem;
+}

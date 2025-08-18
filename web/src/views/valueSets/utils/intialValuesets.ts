@@ -3,6 +3,7 @@ import {
   ValueSet,
   ValueSetComposeInclude,
   ValueSetComposeIncludeConcept,
+  ValueSetComposeIncludeFilter,
 } from "fhir/r4";
 import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
@@ -10,7 +11,7 @@ import { createUriUUID } from "src/helpers/uriHelper";
 export const initialComposeInclude = (): ValueSetComposeInclude => ({
   id: createUUID(),
   system: createUriUUID(),
-  concept: [valueSetComposeIncludeConcept()],
+  concept: [],
 });
 export const valueSetComposeIncludeConcept =
   (): ValueSetComposeIncludeConcept => ({
@@ -38,4 +39,10 @@ export const initialCoding = (): Coding => ({
   code: "",
   display: "",
   system: createUriUUID(),
+});
+export const newIncludeFilterItem = (): ValueSetComposeIncludeFilter => ({
+  id: createUUID(),
+  op: "=",
+  value: "",
+  property: "",
 });

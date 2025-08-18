@@ -1,0 +1,30 @@
+.addNewFilter {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 15%;
+}
+
+.includeFilterContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.filterList {
+  margin: 0.5rem 0.8rem;
+}
+
+.filterItem {
+  display: grid;
+  grid-template-columns: 12fr 1fr;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  border: 1px solid #eee;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.removeButtonWrapper {
+  display: flex;
+  align-items: center;
+}
