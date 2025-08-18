@@ -39,6 +39,27 @@ export const isItemInArray = (
   return valueToReturn;
 };
 
+export const isItemWithLinkIdInArray = (
+  qOrder: OrderItem[],
+  linkId: string,
+  valueToReturn = false,
+): boolean => {
+  qOrder.forEach((item) => {
+    if (item.linkId === linkId) {
+      valueToReturn = true;
+      return;
+    }
+    if (item.items) {
+      valueToReturn = isItemWithLinkIdInArray(
+        item.items,
+        linkId,
+        valueToReturn,
+      );
+    }
+  });
+  return valueToReturn;
+};
+
 export const doesItemWithCodeExistInArray = (
   qOrder: OrderItem[],
   qItems: Items,

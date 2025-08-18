@@ -3,6 +3,7 @@ import { TFunction } from "react-i18next";
 import { getLinkIdFromValueString } from "src/helpers/dataReceiverHelper";
 import { OrderItem } from "src/store/treeStore/treeStore";
 import { IQuestionnaireMetadataType } from "src/types/IQuestionnaireMetadataType";
+import { isItemWithLinkIdInArray } from "src/utils/itemSearchUtils";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { ErrorLevel } from "./validationTypes";
@@ -16,9 +17,8 @@ export const existDataReceiverLinkId = (
   qOrder: OrderItem[],
 ): boolean => {
   const linkId = getLinkIdFromValueString(qItem);
-  const mainItemIndex = qOrder.findIndex((f) => f.linkId === linkId);
-
-  return mainItemIndex > -1;
+  const exists = isItemWithLinkIdInArray(qOrder, linkId);
+  return exists;
 };
 
 export const createError = (
