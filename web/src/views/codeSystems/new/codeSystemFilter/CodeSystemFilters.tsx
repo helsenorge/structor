@@ -43,7 +43,7 @@ const CodeSystemFilters = (): React.JSX.Element => {
           {t("New filter")}
         </Button>
       </div>
-      <div className={styles.AllFiltersContainer}>
+      <div>
         {newCodeSystem.filter?.map((filter, index) => (
           <div key={filter.id} className={styles.filterContainer}>
             <CodeSystemFilterInput

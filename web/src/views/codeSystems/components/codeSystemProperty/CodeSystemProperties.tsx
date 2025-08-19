@@ -40,7 +40,6 @@ const CodeSystemProperties = ({
         <h3>{"Properties"}</h3>
         <Button
           variant="borderless"
-          className={styles.addButton}
           ariaLabel="test"
           onClick={handleAddNewProperty}
         >
