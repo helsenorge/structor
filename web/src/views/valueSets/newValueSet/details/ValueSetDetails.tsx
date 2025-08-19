@@ -33,7 +33,7 @@ export const ValueSetDetails = (): React.JSX.Element => {
         onChange={(event) =>
           setNewValueSet({ ...newValueSet, name: event.target.value })
         }
-        label={<Label labelTexts={[{ text: "Teknisk-navn" }]} />}
+        label={<Label labelTexts={[{ text: "Name" }]} />}
       />
       <Input
         value={newValueSet.publisher}
@@ -57,7 +57,7 @@ export const ValueSetDetails = (): React.JSX.Element => {
         label="Url"
       />
       <DatePicker
-        label={<Label labelTexts={[{ text: t("Date") }]} />}
+        label={<Label labelTexts={[{ text: "Date" }]} />}
         dateValue={newValueSet.date ? new Date(newValueSet.date) : undefined}
         onChange={(_e, next) =>
           setNewValueSet((prev) => ({
@@ -67,7 +67,7 @@ export const ValueSetDetails = (): React.JSX.Element => {
         }
       />
       <Select
-        label={<Label labelTexts={[{ text: "status" }]} />}
+        label={<Label labelTexts={[{ text: "Status" }]} />}
         value={newValueSet.status || "draft"}
         onChange={(event) =>
           setNewValueSet({
