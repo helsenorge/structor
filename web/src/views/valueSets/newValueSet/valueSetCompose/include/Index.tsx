@@ -1,10 +1,8 @@
 import React, { useContext } from "react";
 
-import { CodeSystem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import UriFieldFr from "src/components/FormField/UriFieldFr";
 import createUUID from "src/helpers/CreateUUID";
-import { TreeContext } from "src/store/treeStore/treeStore";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -15,13 +13,13 @@ import Label from "@helsenorge/designsystem-react/components/Label";
 
 import { Concepts } from "./concept/Index";
 import IncludeFilter from "./filter/IncludeFilter";
+import { ImportCodeSystem } from "./importCodeSystem/Index";
 import { useValueSetContext } from "../../../context/useValueSetContext";
 import { initialComposeInclude } from "../../../utils/intialValuesets";
 
 import styles from "./valueSetComposeInclude.module.scss";
 const Include = (): React.JSX.Element => {
   const { t } = useTranslation();
-  const { state } = useContext(TreeContext);
   const { newValueSet, setNewValueSet } = useValueSetContext();
 
   const addNewInclude = (): void => {
@@ -81,37 +79,6 @@ const Include = (): React.JSX.Element => {
     }
     setNewValueSet({ ...newValueSetCopy });
   };
-  const handleImportCodeSystem = (codeSystemUrl: string): void => {
-    setNewValueSet((prevState) => {
-      const codeSystem: CodeSystem | undefined = state.qContained?.find(
-        (item) =>
-          item.resourceType === "CodeSystem" && item.url === codeSystemUrl,
-      ) as CodeSystem;
-      if (codeSystem) {
-        return {
-          ...prevState,
-          compose: {
-            ...prevState.compose,
-            include: [
-              ...(prevState.compose?.include || []),
-              {
-                system: codeSystem.url,
-                concept: codeSystem.concept?.map((concept) => ({
-                  id: concept.id,
-                  code: concept.code,
-                  display: concept.display,
-                })),
-              },
-            ],
-          },
-        };
-      }
-      return prevState;
-    });
-  };
-  const codeSystems = state.qContained?.filter(
-    (item) => item.resourceType === "CodeSystem",
-  );
 
   return (
     <div className={styles.valueSetInclude}>
@@ -124,34 +91,7 @@ const Include = (): React.JSX.Element => {
         <Icon svgIcon={PlussIcon} />
         {t("Add include")}
       </Button>
-
-      {codeSystems && codeSystems?.length > 0 && (
-        <div className={styles.codeSystemsContainer}>
-          <Label labelTexts={[{ text: t("Code systems") }]} />
-
-          {codeSystems
-            ?.filter((cs) => cs.url)
-            ?.filter(
-              (cs, index, self) =>
-                index === self.findIndex((t) => t.url === cs.url),
-            )
-            ?.map((item) => (
-              <div key={item.id} className={styles.codeSystemItem}>
-                <span>{item.url}</span>
-                <Button
-                  disabled={newValueSet.compose?.include?.some(
-                    (inc) => inc.system === item.url,
-                  )}
-                  variant="borderless"
-                  onClick={() => handleImportCodeSystem(item.url!)}
-                >
-                  {t("Import")}
-                </Button>
-              </div>
-            ))}
-        </div>
-      )}
-
+      <ImportCodeSystem />
       {newValueSet.compose?.include.map((include, includeIndex) => {
         return (
           <div

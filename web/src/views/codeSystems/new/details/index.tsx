@@ -2,12 +2,14 @@ import { CodeSystem, Identifier } from "fhir/r4";
 import IdentifierInput from "src/components/extensions/valueInputs/Identifier";
 import Identifiers from "src/components/extensions/valueInputs/Identifiers";
 import IdInput from "src/components/extensions/valueInputs/IdInput";
+import { toIsoOrUndefined } from "src/utils/dateUtils";
 
 import Checkbox from "@helsenorge/designsystem-react/components/Checkbox";
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
 import Select from "@helsenorge/designsystem-react/components/Select";
 
+import DatePicker from "@helsenorge/datepicker/components/DatePicker";
 import { LanguageLocales } from "@helsenorge/designsystem-react";
 
 import { useCodeSystemContext } from "../../context/useCodeSystemContext";
@@ -60,6 +62,18 @@ const CodeSystemDetails = (): React.JSX.Element => {
           setNewCodeSystem({ ...newCodeSystem, date: event.target.value })
         }
         label={<Label labelTexts={[{ text: "Date" }]} />}
+      />
+      <DatePicker
+        label={<Label labelTexts={[{ text: "Date" }]} />}
+        dateValue={
+          newCodeSystem.date ? new Date(newCodeSystem.date) : undefined
+        }
+        onChange={(_e, next) =>
+          setNewCodeSystem((prev) => ({
+            ...prev,
+            date: toIsoOrUndefined(next),
+          }))
+        }
       />
       <Input
         value={newCodeSystem.description}

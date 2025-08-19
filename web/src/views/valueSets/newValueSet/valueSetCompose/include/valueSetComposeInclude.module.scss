@@ -56,18 +56,6 @@
   margin: 0.5rem 0.8rem;
 }
 
-.codeSystemsContainer {
-  display: flex;
-  flex-direction: column;
-}
-
-.codeSystemItem {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  padding: 0.5rem 0;
-}
-
 .includeContainer {
   display: grid;
   grid-template-columns: 11fr 1fr;
