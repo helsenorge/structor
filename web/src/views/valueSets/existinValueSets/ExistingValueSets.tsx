@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { FhirResource, Questionnaire, ValueSet } from "fhir/r4";
 import { generarteQuestionnaireOrBundle } from "src/helpers/generateQuestionnaire";
-import { removeValueSet } from "src/store/treeStore/treeActions";
+import { removeFhirResourceAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
 import { Preview } from "src/views/components/preview/Preview";
 
@@ -34,7 +34,7 @@ const ExistingValueSets = ({ scrollToTarget }: Props): React.JSX.Element => {
   }
   const dispatchDeleteValueSet = (valueSet: ValueSet): void => {
     if (valueSet.id) {
-      dispatch(removeValueSet(valueSet));
+      dispatch(removeFhirResourceAction(valueSet));
     }
   };
   const handleDeleteResource = (resource: FhirResource): void => {

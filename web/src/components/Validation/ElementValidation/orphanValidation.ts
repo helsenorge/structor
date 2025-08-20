@@ -1,4 +1,4 @@
-import { FhirResource, QuestionnaireItem, ValueSet } from "fhir/r4";
+import { FhirResource, QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
 import { getValidationExtentionUrls } from "src/helpers/enumHelper";
 import {

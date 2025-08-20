@@ -2,8 +2,8 @@ import { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
 import {
-  removeCodeSystemAction,
-  updateCodeSystemAction,
+  removeFhirResourceAction,
+  updateFhirResourceAction,
 } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
 import RawJson from "src/views/components/rawJson";
@@ -41,7 +41,7 @@ const NewCodeSystem = ({ scrollToTarget }: Props): React.JSX.Element => {
   };
   const dispatchValueSet = (): void => {
     dispatch(
-      updateCodeSystemAction({
+      updateFhirResourceAction({
         ...newCodeSystem,
         count: newCodeSystem.concept?.length,
       }),
@@ -50,7 +50,7 @@ const NewCodeSystem = ({ scrollToTarget }: Props): React.JSX.Element => {
   };
   const dispatchDeleteValueSet = (): void => {
     if (newCodeSystem.id) {
-      dispatch(removeCodeSystemAction(newCodeSystem));
+      dispatch(removeFhirResourceAction(newCodeSystem));
       reset();
       scrollToTarget();
     }

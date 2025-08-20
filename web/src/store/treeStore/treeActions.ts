@@ -62,14 +62,9 @@ export const MOVE_ITEM_ACTION = "moveItem";
 export const APPEND_VALUESET_ACTION = "appendValueSet";
 export const UPDATE_LINK_ID_ACTION = "updateLinkId";
 export const UPDATE_MARKED_LINK_ID = "updateMarkedLinkId";
-export const REMOVE_VALUESET_ACTION = "REMOVE_VALUESET";
-
-export const UPDATE_VALUESET_ACTION = "UPDATE_VALUESET";
-export const REMOVE_CODESYSTEM_ACTION = "REMOVE_CODESYSTEM";
-export const UPDATE_CODESYSTEM_ACTION = "UPDATE_CODESYSTEM";
-export const IMPORT_VALUESET_ACTION = "IMPORT_VALUESET";
+export const REMOVE_FHIR_RESOURCE_ACTION = "REMOVE_FHIR_RESOURCE_ACTION";
+export const UPDATE_FHIR_RESOURCE_ACTION = "UPDATE_FHIR_RESOURCE_ACTION";
 export const IMPORT_FHIR_RESOURCE_ACTION = "IMPORT_FHIR_RESOURCE_ACTION";
-export const IMPORT_CODESYSTEM_ACTION = "IMPORT_CODESYSTEM_ACTION";
 export const UPDATE_ITEM_CODE_TRANSLATION_ACTION =
   "UPDATE_ITEM_CODE_TRANSLATION_ACTION";
 export const SAVE_ACTION = "save";
@@ -259,36 +254,20 @@ export interface MoveItemAction {
   newOrder: string[];
   index?: number;
 }
+export interface UpdateFhirResourceAction {
+  type: typeof UPDATE_FHIR_RESOURCE_ACTION;
+  item: FhirResource;
+}
 
-export interface UpdateValueSetAction {
-  type: typeof UPDATE_VALUESET_ACTION;
-  item: ValueSet;
+export interface RemoveFhirResourceAction {
+  type: typeof REMOVE_FHIR_RESOURCE_ACTION;
+  item: FhirResource;
 }
-export interface RemoveCodeSystemAction {
-  type: typeof REMOVE_CODESYSTEM_ACTION;
-  item: CodeSystem;
-}
-export interface UpdateCodeSystemAction {
-  type: typeof UPDATE_CODESYSTEM_ACTION;
-  item: CodeSystem;
-}
-export interface RemoveValueSetAction {
-  type: typeof REMOVE_VALUESET_ACTION;
-  item: ValueSet;
-}
-export interface ImportValueSetAction {
-  type: typeof IMPORT_VALUESET_ACTION;
-  items: ValueSet[];
-}
+
 export interface ImportFhirResourceAction {
   type: typeof IMPORT_FHIR_RESOURCE_ACTION;
   items: FhirResource[];
 }
-export interface ImportCodeSystemAction {
-  type: typeof IMPORT_CODESYSTEM_ACTION;
-  items: CodeSystem[];
-}
-
 export interface SaveAction {
   type: typeof SAVE_ACTION;
 }
@@ -658,59 +637,29 @@ export const moveItemAction = (
     index,
   };
 };
-export const removeValueSet = (item: ValueSet): RemoveValueSetAction => {
+export const updateFhirResourceAction = (
+  item: FhirResource,
+): UpdateFhirResourceAction => {
   return {
-    type: REMOVE_VALUESET_ACTION,
+    type: UPDATE_FHIR_RESOURCE_ACTION,
     item,
   };
 };
 
-export const updateValueSetAction = (item: ValueSet): UpdateValueSetAction => {
+export const removeFhirResourceAction = (
+  item: FhirResource,
+): RemoveFhirResourceAction => {
   return {
-    type: UPDATE_VALUESET_ACTION,
+    type: REMOVE_FHIR_RESOURCE_ACTION,
     item,
   };
 };
 
-export const removeCodeSystemAction = (
-  item: CodeSystem,
-): RemoveCodeSystemAction => {
-  return {
-    type: REMOVE_CODESYSTEM_ACTION,
-    item,
-  };
-};
-
-export const updateCodeSystemAction = (
-  item: CodeSystem,
-): UpdateCodeSystemAction => {
-  return {
-    type: UPDATE_CODESYSTEM_ACTION,
-    item,
-  };
-};
-
-export const importValueSetAction = (
-  items: ValueSet[],
-): ImportValueSetAction => {
-  return {
-    type: IMPORT_VALUESET_ACTION,
-    items,
-  };
-};
 export const importFhirResourceAction = (
   items: FhirResource[],
 ): ImportFhirResourceAction => {
   return {
     type: IMPORT_FHIR_RESOURCE_ACTION,
-    items,
-  };
-};
-export const importCodeSystemAction = (
-  items: CodeSystem[],
-): ImportCodeSystemAction => {
-  return {
-    type: IMPORT_CODESYSTEM_ACTION,
     items,
   };
 };

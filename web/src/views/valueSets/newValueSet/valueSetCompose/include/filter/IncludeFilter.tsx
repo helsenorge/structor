@@ -1,7 +1,6 @@
 import { ValueSetComposeIncludeFilter } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import IdInput from "src/components/extensions/valueInputs/IdInput";
-import { useValueSetContext } from "src/views/valueSets/context/useValueSetContext";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -43,7 +42,10 @@ const IncludeFilter = ({ item, includeIndex }: Props): React.JSX.Element => {
         {item && (
           <div>
             {item.map((filterItem, filterIndex) => (
-              <div key={filterIndex} className={styles.filterItem}>
+              <div
+                key={filterItem.id || filterIndex}
+                className={styles.filterItem}
+              >
                 <div>
                   <IdInput value={filterItem.id} />
                   <Select

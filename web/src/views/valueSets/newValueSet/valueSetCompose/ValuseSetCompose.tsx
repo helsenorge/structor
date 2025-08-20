@@ -8,7 +8,6 @@ import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
 import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 
-import Details from "./details/Index";
 import ValueSetComposeExclude from "./exclude/Index";
 import Include from "./include/Index";
 import { useValueSetContext } from "../../context/useValueSetContext";

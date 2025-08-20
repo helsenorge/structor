@@ -12,8 +12,8 @@ import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 import { ValueSetDetails } from "./details/ValueSetDetails";
 import ValuseSetCompose from "./valueSetCompose/ValuseSetCompose";
 import {
-  updateValueSetAction,
-  removeValueSet,
+  updateFhirResourceAction,
+  removeFhirResourceAction,
 } from "../../../store/treeStore/treeActions";
 import { TreeContext } from "../../../store/treeStore/treeStore";
 import RawJson from "../../components/rawJson";
@@ -37,12 +37,12 @@ const NewValueSet = ({ scrollToTarget }: Props): React.JSX.Element => {
     scrollToTarget();
   };
   const dispatchValueSet = (): void => {
-    dispatch(updateValueSetAction(newValueSet));
+    dispatch(updateFhirResourceAction(newValueSet));
     scrollToTarget();
   };
   const dispatchDeleteValueSet = (): void => {
     if (newValueSet.id) {
-      dispatch(removeValueSet(newValueSet));
+      dispatch(removeFhirResourceAction(newValueSet));
       reset();
       scrollToTarget();
     }

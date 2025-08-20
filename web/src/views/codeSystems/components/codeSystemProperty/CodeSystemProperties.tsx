@@ -52,7 +52,7 @@ const CodeSystemProperties = ({
             <CodeSystemProperty
               property={property}
               index={index}
-              key={index}
+              key={property.code}
               conceptIndex={conceptIndex}
             />
           ),

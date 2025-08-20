@@ -1,5 +1,3 @@
-import { text } from "stream/consumers";
-
 import { CodeSystemConceptDesignation, Coding } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import CodingInput from "src/components/extensions/valueInputs/CodingInput";

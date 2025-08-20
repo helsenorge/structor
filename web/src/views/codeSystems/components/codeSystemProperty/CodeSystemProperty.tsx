@@ -7,11 +7,9 @@ import IdInput from "src/components/extensions/valueInputs/IdInput";
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Checkbox from "@helsenorge/designsystem-react/components/Checkbox";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
-import PlussSmall from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
 import RemoveIcon from "@helsenorge/designsystem-react/components/Icons/TrashCan";
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
-import { Select } from "@helsenorge/designsystem-react/components/Select/Select";
 
 import { useCodeSystemContext } from "../../context/useCodeSystemContext";
 
@@ -27,7 +25,6 @@ const CodeSystemProperty = ({
   conceptIndex: number;
 }): React.JSX.Element => {
   const { setNewCodeSystem } = useCodeSystemContext();
-  const [showAvailableProps, setShowAvailableProps] = useState(false);
   const { t } = useTranslation();
   const updateProperty = (
     key: keyof CodeSystemConceptProperty,

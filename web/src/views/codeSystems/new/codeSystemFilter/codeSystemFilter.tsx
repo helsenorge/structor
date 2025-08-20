@@ -49,7 +49,7 @@ const CodeSystemFilterInput = ({
         </Button>
       </div>
       {filter.operator.map((op, index) => (
-        <div key={index} className={styles.filterOperatorContainer}>
+        <div key={op} className={styles.filterOperatorContainer}>
           <Input
             value={op}
             onChange={(event) =>

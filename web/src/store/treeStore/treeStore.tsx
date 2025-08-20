@@ -1,13 +1,6 @@
 import React, { createContext, Dispatch, useEffect, useReducer } from "react";
 
-import {
-  CodeSystem,
-  Coding,
-  Extension,
-  FhirResource,
-  QuestionnaireItem,
-  ValueSet,
-} from "fhir/r4";
+import { Coding, Extension, FhirResource, QuestionnaireItem } from "fhir/r4";
 import produce from "immer";
 import { HelsenorgeUrlStartText } from "src/components/Validation/validationHelper";
 
@@ -33,8 +26,6 @@ import {
   DeleteItemCodeAction,
   DUPLICATE_ITEM_ACTION,
   DuplicateItemAction,
-  IMPORT_VALUESET_ACTION,
-  ImportValueSetAction,
   MOVE_ITEM_ACTION,
   MoveItemAction,
   NEW_ITEM_ACTION,
@@ -60,8 +51,6 @@ import {
   UPDATE_METADATA_TRANSLATION_ACTION,
   UPDATE_QUESTIONNAIRE_METADATA_ACTION,
   UPDATE_SIDEBAR_TRANSLATION_ACTION,
-  UPDATE_VALUESET_ACTION,
-  REMOVE_VALUESET_ACTION,
   UpdateContainedValueSetTranslationAction,
   UpdateItemAction,
   UpdateItemCodePropertyAction,
@@ -73,22 +62,18 @@ import {
   UpdateMetadataTranslationAction,
   UpdateQuestionnaireMetadataAction,
   UpdateSidebarTranslationAction,
-  UpdateValueSetAction,
   UPDATE_SETTING_TRANSLATION_ACTION,
   UpdateSettingTranslationAction,
   UPDATE_ITEM_CODE_TRANSLATION_ACTION,
   UpdateItemCodeTranslationAction,
-  RemoveValueSetAction,
   UpdateItemExtensionAction,
   UPDATE_ITEM_EXTENSION_ACTION,
-  ImportCodeSystemAction,
-  IMPORT_CODESYSTEM_ACTION,
-  UPDATE_CODESYSTEM_ACTION,
-  REMOVE_CODESYSTEM_ACTION,
-  RemoveCodeSystemAction,
-  UpdateCodeSystemAction,
+  REMOVE_FHIR_RESOURCE_ACTION,
+  RemoveFhirResourceAction,
   ImportFhirResourceAction,
   IMPORT_FHIR_RESOURCE_ACTION,
+  UpdateFhirResourceAction,
+  UPDATE_FHIR_RESOURCE_ACTION,
 } from "./treeActions";
 import { findCodingBySystemAndCode } from "../../helpers/codeHelper";
 import createUUID from "../../helpers/CreateUUID";
@@ -99,7 +84,6 @@ export type ActionType =
   | AddItemCodeAction
   | AddQuestionnaireLanguageAction
   | DeleteItemCodeAction
-  | ImportValueSetAction
   | RemoveQuestionnaireLanguageAction
   | UpdateItemCodePropertyAction
   | UpdateItemCodePropertyWithCodeAction
@@ -119,17 +103,14 @@ export type ActionType =
   | UpdateMetadataTranslationAction
   | UpdateSettingTranslationAction
   | UpdateSidebarTranslationAction
-  | UpdateValueSetAction
   | RemoveItemAttributeAction
   | SaveAction
   | UpdateMarkedLinkId
   | UpdateItemCodeTranslationAction
-  | RemoveValueSetAction
   | UpdateItemExtensionAction
-  | ImportCodeSystemAction
-  | RemoveCodeSystemAction
-  | UpdateCodeSystemAction
-  | ImportFhirResourceAction;
+  | RemoveFhirResourceAction
+  | ImportFhirResourceAction
+  | UpdateFhirResourceAction;
 
 export interface Items {
   [linkId: string]: QuestionnaireItem;
@@ -780,40 +761,16 @@ function reorderItem(draft: TreeState, action: ReorderItemAction): void {
   );
 }
 
-function updateValueSet(draft: TreeState, action: UpdateValueSetAction): void {
-  const indexToUpdate =
-    draft?.qContained?.findIndex((x) => x.id === action.item.id) ?? -1;
-  if (draft.qContained && indexToUpdate >= 0) {
-    draft.qContained[indexToUpdate] = action.item;
-  } else {
-    draft.qContained = [...(draft?.qContained || []), action.item];
-  }
-}
-function removeValueSet(draft: TreeState, action: RemoveValueSetAction): void {
-  if (draft.qContained && action.item.id) {
-    draft.qContained = draft.qContained.filter((x) => x.id !== action.item.id);
-  }
-}
-
-function importValueSet(draft: TreeState, action: ImportValueSetAction): void {
-  draft.qContained = [...(draft?.qContained || []), ...action.items];
-}
 function importFhirResource(
   draft: TreeState,
   action: ImportFhirResourceAction,
 ): void {
   draft.qContained = [...(draft?.qContained || []), ...action.items];
 }
-function importCodeSystem(
-  draft: TreeState,
-  action: ImportCodeSystemAction,
-): void {
-  draft.qContained = [...(draft?.qContained || []), ...action.items];
-}
 
-function updateCodeSystem(
+function updateFhirResource(
   draft: TreeState,
-  action: UpdateCodeSystemAction,
+  action: UpdateFhirResourceAction,
 ): void {
   const indexToUpdate =
     draft?.qContained?.findIndex((x) => x.id === action.item.id) ?? -1;
@@ -823,9 +780,9 @@ function updateCodeSystem(
     draft.qContained = [...(draft?.qContained || []), action.item];
   }
 }
-function removeCodeSystem(
+function removeFhirResource(
   draft: TreeState,
-  action: RemoveCodeSystemAction,
+  action: RemoveFhirResourceAction,
 ): void {
   if (draft.qContained && action.item.id) {
     draft.qContained = draft.qContained.filter((x) => x.id !== action.item.id);
@@ -976,27 +933,14 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
     case MOVE_ITEM_ACTION:
       moveItem(draft, action);
       break;
-    case UPDATE_CODESYSTEM_ACTION:
-      updateCodeSystem(draft, action);
+    case UPDATE_FHIR_RESOURCE_ACTION:
+      updateFhirResource(draft, action);
       break;
-    case REMOVE_CODESYSTEM_ACTION:
-      removeCodeSystem(draft, action);
-      break;
-    case UPDATE_VALUESET_ACTION:
-      updateValueSet(draft, action);
-      break;
-    case REMOVE_VALUESET_ACTION:
-      removeValueSet(draft, action);
-      break;
-    case IMPORT_VALUESET_ACTION:
-      importValueSet(draft, action);
+    case REMOVE_FHIR_RESOURCE_ACTION:
+      removeFhirResource(draft, action);
       break;
     case IMPORT_FHIR_RESOURCE_ACTION:
       importFhirResource(draft, action);
-      break;
-
-    case IMPORT_CODESYSTEM_ACTION:
-      importCodeSystem(draft, action);
       break;
     case UPDATE_LINK_ID_ACTION:
       updateLinkId(draft, action);

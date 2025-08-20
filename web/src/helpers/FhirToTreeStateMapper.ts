@@ -5,7 +5,6 @@ import {
   QuestionnaireItemAnswerOption,
   ValueSet,
 } from "fhir/r4";
-import { getValueSetsFromState } from "src/store/treeStore/selectors";
 
 import { IQuestionnaireMetadata } from "../types/IQuestionnaireMetadataType";
 

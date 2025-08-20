@@ -52,7 +52,7 @@ const CodeSystemDesignations = ({
               designation={designation}
               index={index}
               conceptIndex={conceptIndex}
-              key={index}
+              key={designation.id || index}
             />
           ),
         )}

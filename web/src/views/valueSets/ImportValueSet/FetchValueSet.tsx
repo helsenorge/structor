@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Bundle, BundleEntry, FhirResource, ValueSet } from "fhir/r4";
+import { Bundle, BundleEntry, ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import createUUID from "src/helpers/CreateUUID";
 import { useFetch } from "src/hooks/useFetch";
-import { TreeContext } from "src/store/treeStore/treeStore";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Input from "@helsenorge/designsystem-react/components/Input";

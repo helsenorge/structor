@@ -1,9 +1,8 @@
 import React from "react";
 
-import { isDate } from "date-fns";
 import { ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { isRealDate, toIsoOrUndefined } from "src/utils/dateUtils";
+import { toIsoOrUndefined } from "src/utils/dateUtils";
 
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
@@ -16,7 +15,6 @@ import { useValueSetContext } from "../../context/useValueSetContext";
 import styles from "./value-set-details.module.scss";
 
 export const ValueSetDetails = (): React.JSX.Element => {
-  const { t } = useTranslation();
   const { newValueSet, setNewValueSet } = useValueSetContext();
 
   return (

@@ -17,7 +17,7 @@ type Props = {
   resourceType: FhirResource["resourceType"];
 };
 
-const UploadCodeSystem = ({ resourceType }: Props): React.JSX.Element => {
+const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
   const { t } = useTranslation();
   const [fhirResource, setFhirResource] = useState<FhirResource[] | null>(null);
   const { state } = useContext(TreeContext);
@@ -203,4 +203,4 @@ const UploadCodeSystem = ({ resourceType }: Props): React.JSX.Element => {
     </div>
   );
 };
-export default UploadCodeSystem;
+export default UploadFhirResource;

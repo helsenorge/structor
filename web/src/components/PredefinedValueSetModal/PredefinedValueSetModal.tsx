@@ -18,7 +18,7 @@ import createUUID from "../../helpers/CreateUUID";
 import { removeSpace } from "../../helpers/formatHelper";
 import { createUriUUID } from "../../helpers/uriHelper";
 import { getValueSetValues } from "../../helpers/valueSetHelper";
-import { updateValueSetAction } from "../../store/treeStore/treeActions";
+import { updateFhirResourceAction } from "../../store/treeStore/treeActions";
 import { TreeContext } from "../../store/treeStore/treeStore";
 import Btn from "../Btn/Btn";
 import FormField from "../FormField/FormField";
@@ -119,7 +119,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
   };
 
   const dispatchValueSet = (): void => {
-    dispatch(updateValueSetAction(newValueSet));
+    dispatch(updateFhirResourceAction(newValueSet));
     setNewValueSet({ ...initValueSet() });
   };
 

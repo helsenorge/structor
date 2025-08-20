@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import { useTranslation } from "react-i18next";
 import UriFieldFr from "src/components/FormField/UriFieldFr";

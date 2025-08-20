@@ -10,7 +10,7 @@ export const useIncludeFilter = (
   removeFilter: (filterItem: ValueSetComposeIncludeFilter) => void;
   changeFilterValue: (filterItem: ValueSetComposeIncludeFilter) => void;
 } => {
-  const { newValueSet, setNewValueSet } = useValueSetContext();
+  const { setNewValueSet } = useValueSetContext();
   const addNewFilter = (): void => {
     const newFilter =
       filters && filters?.length > 0

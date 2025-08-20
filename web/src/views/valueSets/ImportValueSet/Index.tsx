@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 
 import { ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { importValueSetAction } from "src/store/treeStore/treeActions";
+import { importFhirResourceAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
@@ -21,7 +21,7 @@ const ImportValueSet = (): React.JSX.Element => {
   const handleAddNewValueSet = (id: string): void => {
     const valueSetsToImport = valueSets?.filter((x) => x.id === id);
     if (valueSetsToImport && valueSetsToImport?.length > 0) {
-      dispatch(importValueSetAction(valueSetsToImport));
+      dispatch(importFhirResourceAction(valueSetsToImport));
     }
   };
 
