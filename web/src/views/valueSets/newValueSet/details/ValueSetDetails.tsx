@@ -1,7 +1,6 @@
 import React from "react";
 
 import { ValueSet } from "fhir/r4";
-import { useTranslation } from "react-i18next";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
 
 import Input from "@helsenorge/designsystem-react/components/Input";

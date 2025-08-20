@@ -1,5 +1,4 @@
-import { CodeSystem, Identifier } from "fhir/r4";
-import IdentifierInput from "src/components/extensions/valueInputs/Identifier";
+import { CodeSystem } from "fhir/r4";
 import Identifiers from "src/components/extensions/valueInputs/Identifiers";
 import IdInput from "src/components/extensions/valueInputs/IdInput";
 import { toIsoOrUndefined } from "src/utils/dateUtils";

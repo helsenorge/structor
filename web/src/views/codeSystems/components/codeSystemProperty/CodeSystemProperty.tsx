@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { CodeSystemConceptProperty } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import IdInput from "src/components/extensions/valueInputs/IdInput";

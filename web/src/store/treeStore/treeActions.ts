@@ -4,11 +4,9 @@ import {
   QuestionnaireItemAnswerOption,
   QuestionnaireItemInitial,
   Element,
-  ValueSet,
   Meta,
   Coding,
   ContactDetail,
-  CodeSystem,
   FhirResource,
 } from "fhir/r4";
 
