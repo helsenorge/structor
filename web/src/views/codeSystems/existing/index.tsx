@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
 import { CodeSystem } from "fhir/r4";
-import { removeCodeSystemAction } from "src/store/treeStore/treeActions";
+import { removeFhirResourceAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
 import { Preview } from "src/views/components/preview/Preview";
 import FeedBack from "src/views/components/upload/FeedBack";
@@ -22,7 +22,7 @@ const ExistingCodeSystems = ({
   const { handleEdit } = useCodeSystemContext();
   const dispatchDelete = (codeSystem: CodeSystem): void => {
     if (codeSystem.id) {
-      dispatch(removeCodeSystemAction(codeSystem));
+      dispatch(removeFhirResourceAction(codeSystem));
     }
   };
   const existingCodeSystem = state.qContained?.filter(

@@ -3,8 +3,6 @@ export declare const answerOptionContent: string;
 export declare const answerOptionInputs: string;
 export declare const answerOptionItem: string;
 export declare const answerOptionLabel: string;
-export declare const codeSystemItem: string;
-export declare const codeSystemsContainer: string;
 export declare const deleteButtonContainer: string;
 export declare const includeContainer: string;
 export declare const includeHeader: string;
