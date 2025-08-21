@@ -21,6 +21,7 @@ type UseExtensionsReturn = {
   }) => void;
   handleTypeChange: (index: number, newType: ExtensionValueKey) => void;
 };
+
 type UseExtensionInput = {
   id: string;
   idType?: "linkId" | "id";
@@ -31,6 +32,7 @@ type UseExtensionInput = {
   ) => void;
   extensions: Extension[];
 };
+
 export const useExtensions = ({
   id,
   idType = "id",

@@ -55,13 +55,6 @@ const CodeSystemDetails = (): React.JSX.Element => {
         }
         label="Url"
       />
-      <Input
-        value={newCodeSystem.date}
-        onChange={(event) =>
-          setNewCodeSystem({ ...newCodeSystem, date: event.target.value })
-        }
-        label={<Label labelTexts={[{ text: "Date" }]} />}
-      />
       <DatePicker
         label={<Label labelTexts={[{ text: "Date" }]} />}
         dateValue={

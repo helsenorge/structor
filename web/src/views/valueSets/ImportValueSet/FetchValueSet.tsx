@@ -4,12 +4,11 @@ import { Bundle, BundleEntry, ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import createUUID from "src/helpers/CreateUUID";
 import { useFetch } from "src/hooks/useFetch";
+import FeedBack from "src/views/components/feedback/FeedBack";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Loader from "@helsenorge/designsystem-react/components/Loader";
-
-import FeedBack from "./FeedBack";
 
 import styles from "./importValueSet.module.scss";
 type Props = {

@@ -21,6 +21,7 @@ type Props = {
   canDownload?: boolean;
   canDelete?: boolean;
   deleteResource: (fhirResource: FhirResource) => void;
+  showHeadline?: boolean;
 };
 
 export const Preview = ({
@@ -32,22 +33,25 @@ export const Preview = ({
   canDownload = true,
   canDelete = false,
   deleteResource,
+  showHeadline = true,
 }: Props): React.JSX.Element => {
   const { t } = useTranslation();
   const { download } = useDownloadFile();
   return (
     <div>
-      <h4>
-        {resourceType} {" - "}
-        {fhirResource.resourceType === "ValueSet" ||
-        fhirResource.resourceType === "CodeSystem"
-          ? fhirResource.name
-          : fhirResource.id}
-      </h4>
+      {showHeadline && (
+        <h4>
+          {resourceType} {" - "}
+          {fhirResource.resourceType === "ValueSet" ||
+          fhirResource.resourceType === "CodeSystem"
+            ? fhirResource.name
+            : fhirResource.id}
+        </h4>
+      )}
       <div className={styles.existingFhirResourceHeader}>
         {canEdit && (
           <Button
-            ariaLabel="change resource"
+            ariaLabel={t("Edit Resource")}
             variant="borderless"
             onClick={() => {
               handleEdit(fhirResource);
@@ -60,7 +64,7 @@ export const Preview = ({
         )}
         {canDownload && (
           <Button
-            ariaLabel="download resource"
+            ariaLabel={t("Download Resource")}
             variant="borderless"
             onClick={() =>
               download(
@@ -76,7 +80,7 @@ export const Preview = ({
         {canDelete && (
           <div className={styles.deleteButton}>
             <Button
-              ariaLabel="delete Resource"
+              ariaLabel={t("Delete Resource")}
               variant="borderless"
               concept="destructive"
               onClick={() => deleteResource(fhirResource)}
@@ -87,7 +91,11 @@ export const Preview = ({
           </div>
         )}
       </div>
-      <RawJson jsonContent={fhirResource} showButton={false} />
+      <RawJson
+        jsonContent={fhirResource}
+        showButton={false}
+        showHeadline={showHeadline}
+      />
     </div>
   );
 };

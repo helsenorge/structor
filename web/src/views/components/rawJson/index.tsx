@@ -14,6 +14,7 @@ type Props = {
   side?: "left" | "right";
   jsonContent: unknown;
   showButton?: boolean;
+  showHeadline?: boolean;
 };
 
 const RawJson = ({
@@ -21,6 +22,7 @@ const RawJson = ({
   side,
   jsonContent,
   showButton = true,
+  showHeadline = true,
 }: Props): React.JSX.Element => {
   const [showRawJson, setShowRawJson] = React.useState(false);
   const { t } = useTranslation();
@@ -30,7 +32,7 @@ const RawJson = ({
     <div className={`${styles.rawJsonContainer} ${className || ""}`}>
       {showOutput && (
         <div className={styles.jsonContainerWrapper}>
-          <h3>{t("Raw JSON")}</h3>
+          {showHeadline && <h3>{t("Raw JSON")}</h3>}
           <pre className={styles.jsonContainer}>{jsonString}</pre>
         </div>
       )}

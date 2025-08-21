@@ -37,7 +37,7 @@ const CodeSystemFilters = (): React.JSX.Element => {
         <Button
           variant="borderless"
           onClick={addNewFilter}
-          ariaLabel={t("Add filter")}
+          ariaLabel={t("New filter")}
         >
           <Icon svgIcon={PlussIcon} />
           {t("New filter")}

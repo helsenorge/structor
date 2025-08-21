@@ -8,8 +8,8 @@ import { TreeContext } from "src/store/treeStore/treeStore";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 
-import FeedBack from "./FeedBack";
 import ResourcesToImport from "./ResourcesToImport";
+import FeedBack from "../feedback/FeedBack";
 
 import styles from "./upload-fhir-resource.module.scss";
 
@@ -166,6 +166,7 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
         >
           <h3>{t("Drag and drop your files here, or...")}</h3>
           <Button
+            ariaLabel={t("Select files")}
             type="button"
             variant="fill"
             onClick={() => {
@@ -173,7 +174,7 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
               setFileUploadError("");
             }}
           >
-            {t(`Select files`)}
+            {t("Select files")}
           </Button>
         </div>
       </div>

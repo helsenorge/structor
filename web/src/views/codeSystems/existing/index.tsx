@@ -3,8 +3,8 @@ import { useContext } from "react";
 import { CodeSystem } from "fhir/r4";
 import { removeFhirResourceAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
+import FeedBack from "src/views/components/feedback/FeedBack";
 import { Preview } from "src/views/components/preview/Preview";
-import FeedBack from "src/views/components/upload/FeedBack";
 
 import ExpanderList from "@helsenorge/designsystem-react/components/ExpanderList";
 

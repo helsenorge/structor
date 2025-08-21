@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -10,14 +10,9 @@ import TrashCan from "@helsenorge/designsystem-react/components/Icons/TrashCan";
 import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 
 import { ValueSetDetails } from "./details/ValueSetDetails";
+import useNewValueSet from "./useNewValuset";
 import ValuseSetCompose from "./valueSetCompose/ValuseSetCompose";
-import {
-  updateFhirResourceAction,
-  removeFhirResourceAction,
-} from "../../../store/treeStore/treeActions";
-import { TreeContext } from "../../../store/treeStore/treeStore";
 import RawJson from "../../components/rawJson";
-import { useValueSetContext } from "../context/useValueSetContext";
 
 import styles from "./new-value-set.module.scss";
 type Props = {
@@ -25,30 +20,13 @@ type Props = {
 };
 const NewValueSet = ({ scrollToTarget }: Props): React.JSX.Element => {
   const { t } = useTranslation();
-
   const {
-    dispatch,
-    state: { qContained },
-  } = useContext(TreeContext);
-  const { newValueSet, reset } = useValueSetContext();
-
-  const startNewValueSet = (): void => {
-    reset();
-    scrollToTarget();
-  };
-  const dispatchValueSet = (): void => {
-    dispatch(updateFhirResourceAction(newValueSet));
-    scrollToTarget();
-  };
-  const dispatchDeleteValueSet = (): void => {
-    if (newValueSet.id) {
-      dispatch(removeFhirResourceAction(newValueSet));
-      reset();
-      scrollToTarget();
-    }
-  };
-  const isNewValueSet =
-    !newValueSet.id || !qContained?.some((x) => x.id === newValueSet.id);
+    startNewValueSet,
+    dispatchValueSet,
+    dispatchDeleteValueSet,
+    isNewValueSet,
+    newValueSet,
+  } = useNewValueSet({ scrollToTarget });
 
   return (
     <div className={styles.newValueSet}>
@@ -89,7 +67,12 @@ const NewValueSet = ({ scrollToTarget }: Props): React.JSX.Element => {
           </Button>
         )}
       </div>
-      <RawJson showButton={false} jsonContent={newValueSet} side="right" />
+      <RawJson
+        showButton={false}
+        jsonContent={newValueSet}
+        side="right"
+        showHeadline={false}
+      />
     </div>
   );
 };

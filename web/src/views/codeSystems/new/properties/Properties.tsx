@@ -29,7 +29,7 @@ const Properties = (): React.JSX.Element => {
         <Button
           variant="borderless"
           onClick={addNewProperty}
-          ariaLabel={t("Add property")}
+          ariaLabel={t("New property")}
         >
           <Icon svgIcon={PlussIcon} />
           {t("New property")}

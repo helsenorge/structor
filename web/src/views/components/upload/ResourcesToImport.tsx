@@ -29,8 +29,9 @@ export const ResourcesToImport = ({
             variant="outline"
             type="button"
             onClick={() => handleAddNewResource(fhirResource.id!)}
+            ariaLabel={t("Import resource")}
           >
-            {t("Import")}
+            {t("Import resource")}
           </Button>
         ) : (
           <p>{t("Already imported")}</p>

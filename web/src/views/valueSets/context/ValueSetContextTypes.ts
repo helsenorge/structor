@@ -10,4 +10,5 @@ export type ValueSetContextValueTypes = {
   reset: () => void;
   handleEdit: (valueSet: ValueSet) => void;
   canEdit: (type?: string) => boolean;
+  valueSets: ValueSet[] | undefined;
 };

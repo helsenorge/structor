@@ -18,7 +18,7 @@ type Props = {
   property: CodeSystemProperty;
 };
 
-const Property = ({ index, property }: Props): React.JSX.Element => {
+const Property = ({ property }: Props): React.JSX.Element => {
   const { setNewCodeSystem } = useCodeSystemContext();
   const { t } = useTranslation();
   const updateProperty = (

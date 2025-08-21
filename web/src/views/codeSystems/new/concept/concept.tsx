@@ -89,7 +89,7 @@ const Concept = ({ concept, index }: ConceptProps): React.JSX.Element => {
           <Label
             labelTexts={[
               {
-                text: t("Extensions"),
+                text: "Extensions",
               },
             ]}
           />

@@ -42,7 +42,7 @@ const CodeSystemFilterInput = ({
               operator: [...filter.operator, "exists"],
             })
           }
-          ariaLabel={t("Add operator")}
+          ariaLabel={t("New operator")}
         >
           <Icon svgIcon={PlussIcon} />
           {t("New operator")}

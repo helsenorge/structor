@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 
 import {
   Extension,
@@ -9,6 +9,7 @@ import {
 } from "fhir/r4";
 import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
+import { TreeContext } from "src/store/treeStore/treeStore";
 import { predefinedValueSetUri } from "src/types/IQuestionnareItemType";
 
 import { ValueSetContextInputTypes } from "./ValueSetContextTypes";
@@ -23,6 +24,8 @@ export const ValueSetProvider = ({
   children,
   initialValueSet,
 }: ValueSetProviderProps): React.JSX.Element => {
+  const { state } = useContext(TreeContext);
+
   const [newValueSet, setNewValueSet] = useState<ValueSet>(
     initialValueSet || { ...initValueSet() },
   );
@@ -97,7 +100,11 @@ export const ValueSetProvider = ({
     },
     [newValueSet?.compose?.include],
   );
-
+  const valueSets = useMemo(() => {
+    return state.qContained?.filter(
+      (item): item is ValueSet => item.resourceType === "ValueSet",
+    );
+  }, [state.qContained]);
   const value = useMemo(() => {
     return {
       newValueSet,
@@ -106,8 +113,16 @@ export const ValueSetProvider = ({
       canEdit,
       handleEdit,
       copyComposeIncludeConcept,
+      valueSets,
     };
-  }, [newValueSet, reset, canEdit, handleEdit, copyComposeIncludeConcept]);
+  }, [
+    newValueSet,
+    reset,
+    canEdit,
+    handleEdit,
+    copyComposeIncludeConcept,
+    valueSets,
+  ]);
   return (
     <ValueSetContext.Provider value={value}>
       {children}

@@ -48,7 +48,7 @@ const ValueSets = (): React.JSX.Element => {
           onTabClick={() => {
             navigate("new");
           }}
-          title={t("New Value Set")}
+          title={t("New ValueSet")}
         >
           <NewValueSet scrollToTarget={scrollToTarget} />
         </Tabs.Tab>
@@ -56,7 +56,7 @@ const ValueSets = (): React.JSX.Element => {
           onTabClick={() => {
             navigate("existing");
           }}
-          title={t("Existing Value Sets")}
+          title={t("Existing ValueSets")}
         >
           <ExistingValueSets scrollToTarget={setTabToNewValueSetTab} />
         </Tabs.Tab>
@@ -64,7 +64,7 @@ const ValueSets = (): React.JSX.Element => {
           onTabClick={() => {
             navigate("import");
           }}
-          title={t("Import Value Set")}
+          title={t("Import ValueSet")}
         >
           <ImportValueSet />
         </Tabs.Tab>
@@ -72,7 +72,7 @@ const ValueSets = (): React.JSX.Element => {
           onTabClick={() => {
             navigate("upload");
           }}
-          title={t("Upload Value Set")}
+          title={t("Upload ValueSet")}
         >
           <Upload resourceType="ValueSet" />
         </Tabs.Tab>

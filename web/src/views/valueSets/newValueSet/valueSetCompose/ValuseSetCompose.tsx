@@ -2,11 +2,15 @@ import React from "react";
 
 import { ValueSetCompose } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { toIsoOrUndefined } from "src/utils/dateUtils";
 
+import Button from "@helsenorge/designsystem-react/components/Button";
 import Checkbox from "@helsenorge/designsystem-react/components/Checkbox";
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
 import Tabs from "@helsenorge/designsystem-react/components/Tabs";
+
+import DatePicker from "@helsenorge/datepicker/components/DatePicker";
 
 import ValueSetComposeExclude from "./exclude/Index";
 import Include from "./include/Index";
@@ -44,7 +48,27 @@ const ValueSetComposeComponent = (): React.JSX.Element => {
           onChange={(event) =>
             handleComposeItem(event.target.value, "lockedDate")
           }
-          label={<Label labelTexts={[{ text: t("LockedDate") }]} />}
+          label={<Label labelTexts={[{ text: "LockedDate" }]} />}
+        />
+        <DatePicker
+          label={<Label labelTexts={[{ text: "LockedDate" }]} />}
+          dateValue={
+            newValueSet?.compose?.lockedDate
+              ? new Date(newValueSet?.compose?.lockedDate)
+              : undefined
+          }
+          footerContent={
+            <Button
+              onClick={() => handleComposeItem(undefined, "lockedDate")}
+              variant="borderless"
+            >
+              {"clear"}
+            </Button>
+          }
+          variant="positionautomatic"
+          onChange={(_e, next) =>
+            handleComposeItem(toIsoOrUndefined(next), "lockedDate")
+          }
         />
       </div>
       <Tabs

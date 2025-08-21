@@ -11,7 +11,6 @@ import { createUriUUID } from "src/helpers/uriHelper";
 export const initialComposeInclude = (): ValueSetComposeInclude => ({
   id: createUUID(),
   system: createUriUUID(),
-  concept: [],
 });
 export const valueSetComposeIncludeConcept =
   (): ValueSetComposeIncludeConcept => ({
@@ -29,9 +28,6 @@ export const initValueSet = (): ValueSet => ({
   status: "draft",
   publisher: "",
   url: "",
-  compose: {
-    include: [],
-  },
 });
 
 export const initialCoding = (): Coding => ({
