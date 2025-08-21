@@ -37,14 +37,14 @@ const CodeSystemDesignations = ({
     <div className={styles.designationsContainer}>
       <div className={styles.designationHeader}>
         <h3>{"Designations"}</h3>
-        <Button
-          variant="borderless"
-          ariaLabel="test"
-          onClick={handleAddDesignation}
-        >
-          <Icon svgIcon={PlussIcon} /> {t("Add designation")}
-        </Button>
       </div>
+      <Button
+        variant="borderless"
+        ariaLabel={t("Add designation")}
+        onClick={handleAddDesignation}
+      >
+        <Icon svgIcon={PlussIcon} /> {t("Add designation")}
+      </Button>
       <div className={styles.designationList}>
         {designations?.map(
           (designation: CodeSystemConceptDesignation, index: number) => (

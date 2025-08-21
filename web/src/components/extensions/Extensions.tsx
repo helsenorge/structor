@@ -59,14 +59,14 @@ export const Extensions = ({
       <header className={styles.extensionsHeader}>
         <Button
           variant="borderless"
-          size="large"
           onClick={() => {
             addNewExtension();
           }}
           ariaLabel={t("Add extension")}
         >
-          {t(buttonText)}
           <Icon svgIcon={PlussIcon} />
+
+          {t(buttonText)}
         </Button>
       </header>
       {extensions?.map((ext, index) => {

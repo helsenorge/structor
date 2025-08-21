@@ -38,14 +38,14 @@ const CodeSystemProperties = ({
     <div className={styles.codeSystemProperties}>
       <div className={styles.propertiesHeader}>
         <h3>{"Properties"}</h3>
-        <Button
-          variant="borderless"
-          ariaLabel="test"
-          onClick={handleAddNewProperty}
-        >
-          <Icon svgIcon={PlussIcon} /> {t("Add Property")}
-        </Button>
       </div>
+      <Button
+        variant="borderless"
+        ariaLabel="test"
+        onClick={handleAddNewProperty}
+      >
+        <Icon svgIcon={PlussIcon} /> {t("Add Property")}
+      </Button>
       <div className={styles.propertiesList}>
         {properties?.map(
           (property: CodeSystemConceptProperty, index: number) => (

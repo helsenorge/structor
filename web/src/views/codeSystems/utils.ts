@@ -24,8 +24,6 @@ export const initialCodeSystem = (): CodeSystem => ({
   url: "https://nhn.no/code-system/",
   caseSensitive: true,
   language: "nb-NO",
-  concept: [],
-  property: [],
   description: "",
 });
 export const initialConcept = (): CodeSystemConcept => ({
@@ -33,8 +31,6 @@ export const initialConcept = (): CodeSystemConcept => ({
   code: "",
   display: "",
   definition: "",
-  designation: [],
-  property: [],
 });
 export const initialDesignation = (): CodeSystemConceptDesignation => ({
   id: createUUID(),
