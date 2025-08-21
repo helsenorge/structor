@@ -1,5 +1,7 @@
 import {
   Coding,
+  ContactDetail,
+  ContactPoint,
   ValueSet,
   ValueSetComposeInclude,
   ValueSetComposeIncludeConcept,
@@ -41,4 +43,13 @@ export const newIncludeFilterItem = (): ValueSetComposeIncludeFilter => ({
   op: "=",
   value: "",
   property: "",
+});
+export const initialContact = (): ContactDetail => ({
+  id: createUUID(),
+  name: "",
+});
+export const initialTelecom = (): ContactPoint => ({
+  id: createUUID(),
+  system: "phone",
+  value: "",
 });

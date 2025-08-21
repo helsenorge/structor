@@ -1,10 +1,10 @@
 import React from "react";
 
 import { Identifier, ValueSet } from "fhir/r4";
-import IdentifierInput from "src/components/extensions/valueInputs/Identifier";
 import Identifiers from "src/components/extensions/valueInputs/Identifiers";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
 import { initialIdentifier } from "src/views/codeSystems/utils";
+import ContactDetails from "src/views/components/contactDetail/ContactDetails";
 
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
@@ -13,6 +13,7 @@ import Select from "@helsenorge/designsystem-react/components/Select";
 import DatePicker from "@helsenorge/datepicker/components/DatePicker";
 
 import { useValueSetContext } from "../../context/useValueSetContext";
+import { initialContact } from "../../utils/intialValuesets";
 
 import styles from "./value-set-details.module.scss";
 
@@ -72,6 +73,7 @@ export const ValueSetDetails = (): React.JSX.Element => {
         }
         label="Url"
       />
+
       <DatePicker
         label={<Label labelTexts={[{ text: "Date" }]} />}
         dateValue={newValueSet.date ? new Date(newValueSet.date) : undefined}
@@ -104,6 +106,30 @@ export const ValueSetDetails = (): React.JSX.Element => {
           identifiers={newValueSet.identifier}
         />
       </div>
+
+      <ContactDetails
+        contacts={newValueSet.contact}
+        handleUpdate={(field, value, index) =>
+          setNewValueSet((prev) => ({
+            ...prev,
+            contact: prev.contact?.map((c, i) =>
+              i === index ? { ...c, [field]: value } : c,
+            ),
+          }))
+        }
+        handleAdd={() =>
+          setNewValueSet((prev) => ({
+            ...prev,
+            contact: [...(prev.contact || []), initialContact()],
+          }))
+        }
+        handleRemove={(index) =>
+          setNewValueSet((prev) => ({
+            ...prev,
+            contact: prev.contact?.filter((_, i) => i !== index),
+          }))
+        }
+      />
     </div>
   );
 };

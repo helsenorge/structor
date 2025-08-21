@@ -2,6 +2,8 @@ import { CodeSystem, Identifier } from "fhir/r4";
 import Identifiers from "src/components/extensions/valueInputs/Identifiers";
 import IdInput from "src/components/extensions/valueInputs/IdInput";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
+import ContactDetails from "src/views/components/contactDetail/ContactDetails";
+import { initialContact } from "src/views/valueSets/utils/intialValuesets";
 
 import Checkbox from "@helsenorge/designsystem-react/components/Checkbox";
 import Input from "@helsenorge/designsystem-react/components/Input";
@@ -26,7 +28,7 @@ const CodeSystemDetails = (): React.JSX.Element => {
   };
   const handleIdentifierChange = (
     index: number,
-    value: Identifier | undefined,
+    value: Identifier | undefined
   ): void => {
     setNewCodeSystem({
       ...newCodeSystem,
@@ -36,7 +38,7 @@ const CodeSystemDetails = (): React.JSX.Element => {
     });
   };
   return (
-    <div>
+    <div className={style.codeSystemDetails}>
       <IdInput value={newCodeSystem.id} />
       <Input
         value={newCodeSystem.title}
@@ -161,6 +163,29 @@ const CodeSystemDetails = (): React.JSX.Element => {
         <option value={LanguageLocales.NORWEGIAN_NYNORSK}>{"Nynorsk"}</option>
         <option value={LanguageLocales.SAMI_NORTHERN}>{"Sami Northern"}</option>
       </Select>
+      <ContactDetails
+        contacts={newCodeSystem.contact}
+        handleUpdate={(field, value, index) =>
+          setNewCodeSystem((prev) => ({
+            ...prev,
+            contact: prev.contact?.map((c, i) =>
+              i === index ? { ...c, [field]: value } : c
+            ),
+          }))
+        }
+        handleAdd={() =>
+          setNewCodeSystem((prev) => ({
+            ...prev,
+            contact: [...(prev.contact || []), initialContact()],
+          }))
+        }
+        handleRemove={(index) =>
+          setNewCodeSystem((prev) => ({
+            ...prev,
+            contact: prev.contact?.filter((_, i) => i !== index),
+          }))
+        }
+      />
     </div>
   );
 };
