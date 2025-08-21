@@ -1,7 +1,10 @@
 import React from "react";
 
-import { ValueSet } from "fhir/r4";
+import { Identifier, ValueSet } from "fhir/r4";
+import IdentifierInput from "src/components/extensions/valueInputs/Identifier";
+import Identifiers from "src/components/extensions/valueInputs/Identifiers";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
+import { initialIdentifier } from "src/views/codeSystems/utils";
 
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
@@ -15,7 +18,23 @@ import styles from "./value-set-details.module.scss";
 
 export const ValueSetDetails = (): React.JSX.Element => {
   const { newValueSet, setNewValueSet } = useValueSetContext();
-
+  const addNewIdentifier = (): void => {
+    setNewValueSet((prev) => ({
+      ...prev,
+      identifier: [...(prev?.identifier || []), initialIdentifier()],
+    }));
+  };
+  const handleIdentifierChange = (
+    index: number,
+    value: Identifier | undefined,
+  ): void => {
+    setNewValueSet({
+      ...newValueSet,
+      identifier: newValueSet.identifier
+        ?.map((j, i) => (i === index ? value : j))
+        .filter((item): item is Identifier => item !== undefined),
+    });
+  };
   return (
     <div className={styles.valueSetDetails}>
       <Input
@@ -78,6 +97,13 @@ export const ValueSetDetails = (): React.JSX.Element => {
         <option value="retired">{"Retired"}</option>
         <option value="unknown">{"Unknown"}</option>
       </Select>
+      <div className={styles.identifierContainer}>
+        <Identifiers
+          addNewIdentifier={addNewIdentifier}
+          handleChange={handleIdentifierChange}
+          identifiers={newValueSet.identifier}
+        />
+      </div>
     </div>
   );
 };

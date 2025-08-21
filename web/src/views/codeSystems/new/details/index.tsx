@@ -1,4 +1,4 @@
-import { CodeSystem } from "fhir/r4";
+import { CodeSystem, Identifier } from "fhir/r4";
 import Identifiers from "src/components/extensions/valueInputs/Identifiers";
 import IdInput from "src/components/extensions/valueInputs/IdInput";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
@@ -12,11 +12,29 @@ import DatePicker from "@helsenorge/datepicker/components/DatePicker";
 import { LanguageLocales } from "@helsenorge/designsystem-react";
 
 import { useCodeSystemContext } from "../../context/useCodeSystemContext";
+import { initialIdentifier } from "../../utils";
 
 import style from "./code-system-concept-details.module.scss";
 
 const CodeSystemDetails = (): React.JSX.Element => {
   const { newCodeSystem, setNewCodeSystem } = useCodeSystemContext();
+  const addNewIdentifier = (): void => {
+    setNewCodeSystem((prev) => ({
+      ...prev,
+      identifier: [...(prev?.identifier || []), initialIdentifier()],
+    }));
+  };
+  const handleIdentifierChange = (
+    index: number,
+    value: Identifier | undefined,
+  ): void => {
+    setNewCodeSystem({
+      ...newCodeSystem,
+      identifier: newCodeSystem.identifier
+        ?.map((j, i) => (i === index ? value : j))
+        .filter((item): item is Identifier => item !== undefined),
+    });
+  };
   return (
     <div>
       <IdInput value={newCodeSystem.id} />
@@ -91,7 +109,11 @@ const CodeSystemDetails = (): React.JSX.Element => {
       </div>
 
       <div className={style.identifierContainer}>
-        <Identifiers />
+        <Identifiers
+          addNewIdentifier={addNewIdentifier}
+          handleChange={handleIdentifierChange}
+          identifiers={newCodeSystem.identifier}
+        />
       </div>
       <Select
         label={<Label labelTexts={[{ text: "status" }]} />}
