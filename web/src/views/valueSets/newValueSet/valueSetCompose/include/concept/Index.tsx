@@ -1,8 +1,8 @@
-import { Extension, ValueSetComposeIncludeConcept } from "fhir/r4";
+import { ValueSetComposeIncludeConcept } from "fhir/r4";
 import { Extensions } from "src/components/extensions/Extensions";
-import { useValueSetContext } from "src/views/valueSets/context/useValueSetContext.js";
 
 import Details from "./Details";
+import useValueSetComposeIncludeConcept from "./useValueSetComposeIncludeConcept";
 
 import styles from "./valuset-compose-include-details.module.scss";
 type Props = {
@@ -14,38 +14,7 @@ export const Concepts = ({
   concepts,
   includeIndex,
 }: Props): React.JSX.Element => {
-  const { setNewValueSet } = useValueSetContext();
-
-  const updateExtensions = (
-    extensions: Extension[],
-    id: string,
-    idType: "linkId" | "id" = "id",
-  ): void => {
-    setNewValueSet((prevState) => {
-      const updatedInclude =
-        prevState.compose?.include?.map((inc) => {
-          if (idType === "id" && inc.id === id) {
-            return { ...inc, extension: extensions };
-          }
-          const concepts =
-            inc.concept?.map((concept) => {
-              if (concept.id === id) {
-                return { ...concept, extension: extensions };
-              }
-              return concept;
-            }) || [];
-          return { ...inc, concept: concepts };
-        }) || [];
-
-      return {
-        ...prevState,
-        compose: {
-          ...prevState.compose,
-          include: updatedInclude,
-        },
-      };
-    });
-  };
+  const { updateExtensions } = useValueSetComposeIncludeConcept();
 
   return (
     <div className={styles.conceptContainer}>

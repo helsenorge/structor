@@ -1,4 +1,3 @@
-import { CodeSystemFilter } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
@@ -7,30 +6,14 @@ import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall
 import TrashCan from "@helsenorge/designsystem-react/components/Icons/TrashCan";
 
 import CodeSystemFilterInput from "./codeSystemFilter";
-import { useCodeSystemContext } from "../../context/useCodeSystemContext";
-import { initialCodeSystemFilter } from "../../utils";
+import useCodeSystemFilter from "./useCodeSystemFilter";
 
 import styles from "./code-system-filter.module.scss";
 
 const CodeSystemFilters = (): React.JSX.Element => {
-  const { newCodeSystem, setNewCodeSystem } = useCodeSystemContext();
   const { t } = useTranslation();
-  const updateFilter = (filter: CodeSystemFilter, index: number): void => {
-    setNewCodeSystem((prev) => {
-      const updatedFilters = prev.filter ? [...prev.filter] : [];
-      updatedFilters[index] = filter;
-      return {
-        ...prev,
-        filter: updatedFilters,
-      };
-    });
-  };
-  const addNewFilter = (): void => {
-    setNewCodeSystem((prev) => ({
-      ...prev,
-      filter: [...(prev?.filter || []), initialCodeSystemFilter()],
-    }));
-  };
+  const { filter, updateFilter, addNewFilter, removeFilter } =
+    useCodeSystemFilter();
   return (
     <div>
       <div className={styles.addNewFilterButton}>
@@ -44,7 +27,7 @@ const CodeSystemFilters = (): React.JSX.Element => {
         </Button>
       </div>
       <div>
-        {newCodeSystem.filter?.map((filter, index) => (
+        {filter?.map((filter, index) => (
           <div key={filter.id} className={styles.filterContainer}>
             <CodeSystemFilterInput
               filter={filter}
@@ -55,12 +38,7 @@ const CodeSystemFilters = (): React.JSX.Element => {
             <Button
               variant="borderless"
               concept="destructive"
-              onClick={() =>
-                setNewCodeSystem((prev) => ({
-                  ...prev,
-                  filter: prev.filter?.filter((_, i) => i !== index),
-                }))
-              }
+              onClick={() => removeFilter(index)}
               ariaLabel={t("Remove filter")}
             >
               <Icon svgIcon={TrashCan} />

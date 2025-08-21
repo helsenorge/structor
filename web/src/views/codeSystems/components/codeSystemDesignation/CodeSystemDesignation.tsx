@@ -1,4 +1,4 @@
-import { CodeSystemConceptDesignation, Coding } from "fhir/r4";
+import { CodeSystemConceptDesignation } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import CodingInput from "src/components/extensions/valueInputs/CodingInput";
 import IdInput from "src/components/extensions/valueInputs/IdInput";
@@ -9,7 +9,7 @@ import RemoveIcon from "@helsenorge/designsystem-react/components/Icons/TrashCan
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
 
-import { useCodeSystemContext } from "../../context/useCodeSystemContext";
+import useCodeSystemDesignation from "./useCodeSystemDesignation";
 
 import styles from "./code-system-designations.module.scss";
 
@@ -22,43 +22,10 @@ const CodeSystemDesignation = ({
   conceptIndex: number;
   index: number;
 }): React.JSX.Element => {
-  const { setNewCodeSystem } = useCodeSystemContext();
+  const { updateDesignation, removeCodeSystemDesignation } =
+    useCodeSystemDesignation();
   const { t } = useTranslation();
 
-  const updateDesignation = (
-    key: keyof CodeSystemConceptDesignation,
-    value: string | Coding,
-  ): void => {
-    setNewCodeSystem((prev) => ({
-      ...prev,
-      concept: prev?.concept?.map((c, i) =>
-        i === conceptIndex
-          ? {
-              ...c,
-              designation: c.designation?.map((d, j) =>
-                j === index ? { ...d, [key]: value } : d,
-              ),
-            }
-          : c,
-      ),
-    }));
-  };
-  const removeCodeSystemDesignation = (
-    index: number,
-    conceptIndex: number,
-  ): void => {
-    setNewCodeSystem((prev) => ({
-      ...prev,
-      concept: prev?.concept?.map((c, i) =>
-        i === conceptIndex
-          ? {
-              ...c,
-              designation: c.designation?.filter((_, j) => j !== index),
-            }
-          : c,
-      ),
-    }));
-  };
   return (
     <div className={styles.designationContainer}>
       <div>
@@ -66,13 +33,20 @@ const CodeSystemDesignation = ({
 
         <Input
           value={designation.value}
-          onChange={(event) => updateDesignation("value", event.target.value)}
+          onChange={(event) =>
+            updateDesignation("value", event.target.value, conceptIndex, index)
+          }
           label="Value"
         />
         <Input
           value={designation.language}
           onChange={(event) =>
-            updateDesignation("language", event.target.value)
+            updateDesignation(
+              "language",
+              event.target.value,
+              conceptIndex,
+              index,
+            )
           }
           label="Language"
         />
@@ -81,7 +55,7 @@ const CodeSystemDesignation = ({
           <CodingInput
             value={designation.use}
             onChange={(value) => {
-              updateDesignation("use", value);
+              updateDesignation("use", value, conceptIndex, index);
             }}
           />
         </div>

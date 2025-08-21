@@ -2,7 +2,6 @@ import React from "react";
 
 import { useTranslation } from "react-i18next";
 import UriFieldFr from "src/components/FormField/UriFieldFr";
-import createUUID from "src/helpers/CreateUUID";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -14,71 +13,18 @@ import Label from "@helsenorge/designsystem-react/components/Label";
 import { Concepts } from "./concept/Index";
 import IncludeFilter from "./filter/IncludeFilter";
 import { ImportCodeSystem } from "./importCodeSystem/Index";
-import { useValueSetContext } from "../../../context/useValueSetContext";
-import { initialComposeInclude } from "../../../utils/intialValuesets";
+import useValueSetInclude from "./useValueSetInclude";
 
 import styles from "./valueSetComposeInclude.module.scss";
 const Include = (): React.JSX.Element => {
   const { t } = useTranslation();
-  const { newValueSet, setNewValueSet } = useValueSetContext();
-
-  const addNewInclude = (): void => {
-    setNewValueSet((prevState) => ({
-      ...prevState,
-      compose: {
-        ...prevState.compose,
-        include: [
-          ...(prevState.compose?.include || []),
-          initialComposeInclude(),
-        ],
-      },
-    }));
-  };
-  const removeInclude = (includeIndex: number): void => {
-    setNewValueSet((prevState) => {
-      const updatedInclude =
-        prevState.compose?.include?.filter(
-          (_, index) => index !== includeIndex,
-        ) || [];
-      return {
-        ...prevState,
-        compose: {
-          ...prevState.compose,
-          include: updatedInclude,
-        },
-      };
-    });
-  };
-
-  const handleSystem = (
-    value: string,
-    includeIndex: number,
-    key: "system" | "version",
-  ): void => {
-    const compose = { ...newValueSet.compose };
-    compose.include && (compose.include[includeIndex][key] = value);
-    setNewValueSet({ ...newValueSet });
-  };
-
-  const addNewElement = (includeIndex = 0): void => {
-    const newValueSetCopy = { ...newValueSet };
-    if (newValueSetCopy.compose?.include?.[includeIndex]?.concept) {
-      newValueSetCopy.compose.include[includeIndex].concept?.push({
-        id: createUUID(),
-        code: "",
-        display: "",
-      });
-    } else if (newValueSetCopy.compose?.include?.[includeIndex]) {
-      newValueSetCopy.compose.include[includeIndex].concept = [
-        {
-          id: createUUID(),
-          code: "",
-          display: "",
-        },
-      ];
-    }
-    setNewValueSet({ ...newValueSetCopy });
-  };
+  const {
+    handleUpdateValue,
+    addNewElement,
+    removeInclude,
+    addNewInclude,
+    include,
+  } = useValueSetInclude();
 
   return (
     <div className={styles.valueSetInclude}>
@@ -92,7 +38,7 @@ const Include = (): React.JSX.Element => {
         {t("Add include")}
       </Button>
       <ImportCodeSystem />
-      {newValueSet.compose?.include.map((include, includeIndex) => {
+      {include?.map((include, includeIndex) => {
         return (
           <div
             className={styles.includeContainer}
@@ -104,14 +50,22 @@ const Include = (): React.JSX.Element => {
                   label={t("System")}
                   value={include.system}
                   onBlur={(event) =>
-                    handleSystem(event.target.value, includeIndex, "system")
+                    handleUpdateValue(
+                      event.target.value,
+                      includeIndex,
+                      "system",
+                    )
                   }
                 />
                 <Input
                   label={<Label labelTexts={[{ text: t("Version") }]} />}
                   value={include.version}
                   onChange={(event) =>
-                    handleSystem(event.target.value, includeIndex, "version")
+                    handleUpdateValue(
+                      event.target.value,
+                      includeIndex,
+                      "version",
+                    )
                   }
                 />
               </div>
@@ -124,7 +78,7 @@ const Include = (): React.JSX.Element => {
                 <Button
                   onClick={() => addNewElement(includeIndex)}
                   variant="borderless"
-                  ariaLabel="Add concept"
+                  ariaLabel={t("Add concept")}
                 >
                   <Icon svgIcon={PlussIcon} />
                   {t("Add concept")}

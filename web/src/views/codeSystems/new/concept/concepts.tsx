@@ -5,23 +5,13 @@ import Icon from "@helsenorge/designsystem-react/components/Icon";
 import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
 
 import Concept from "./concept";
-import { useCodeSystemContext } from "../../context/useCodeSystemContext";
-import { initialConcept } from "../../utils";
+import useConcept from "./useConcept";
 
 import styles from "./code-system-concept.module.scss";
 
 const CodeSystemConceptIndex = (): React.JSX.Element => {
   const { t } = useTranslation();
-  const {
-    newCodeSystem: { concept },
-    setNewCodeSystem,
-  } = useCodeSystemContext();
-  const addNewConcept = (): void => {
-    setNewCodeSystem((prev) => ({
-      ...prev,
-      concept: [...(prev?.concept || []), initialConcept()],
-    }));
-  };
+  const { concept, addNewConcept } = useConcept();
 
   return (
     <div className={styles.codeSystemConceptIndex}>

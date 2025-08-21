@@ -6,8 +6,7 @@ import Icon from "@helsenorge/designsystem-react/components/Icon";
 import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
 
 import CodeSystemProperty from "./CodeSystemProperty";
-import { useCodeSystemContext } from "../../context/useCodeSystemContext";
-import { initialProperty } from "../../utils";
+import useNewCodeSystemProperties from "./useNewCodeSystemProperties";
 
 import styles from "./code-system-properties.module.scss";
 
@@ -20,20 +19,7 @@ const CodeSystemProperties = ({
   conceptIndex,
 }: Props): React.JSX.Element => {
   const { t } = useTranslation();
-  const { setNewCodeSystem } = useCodeSystemContext();
-  const handleAddNewProperty = (): void => {
-    setNewCodeSystem((prev) => ({
-      ...prev,
-      concept: prev?.concept?.map((c, idx) =>
-        idx === conceptIndex
-          ? {
-              ...c,
-              property: [...(c.property || []), initialProperty()],
-            }
-          : c,
-      ),
-    }));
-  };
+  const { handleAddNewProperty } = useNewCodeSystemProperties();
   return (
     <div className={styles.codeSystemProperties}>
       <div className={styles.propertiesHeader}>
@@ -42,7 +28,7 @@ const CodeSystemProperties = ({
       <Button
         variant="borderless"
         ariaLabel="test"
-        onClick={handleAddNewProperty}
+        onClick={() => handleAddNewProperty(conceptIndex)}
       >
         <Icon svgIcon={PlussIcon} /> {t("Add Property")}
       </Button>

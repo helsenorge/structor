@@ -6,8 +6,7 @@ import Icon from "@helsenorge/designsystem-react/components/Icon";
 import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
 
 import CodeSystemDesignation from "./CodeSystemDesignation";
-import { useCodeSystemContext } from "../../context/useCodeSystemContext";
-import { initialDesignation } from "../../utils";
+import useCodeSystemDesignation from "./useCodeSystemDesignation";
 
 import styles from "./code-system-designations.module.scss";
 
@@ -19,20 +18,8 @@ const CodeSystemDesignations = ({
   conceptIndex: number;
 }): React.JSX.Element => {
   const { t } = useTranslation();
-  const { setNewCodeSystem } = useCodeSystemContext();
-  const handleAddDesignation = (): void => {
-    setNewCodeSystem((prev) => ({
-      ...prev,
-      concept: prev?.concept?.map((c, i) =>
-        i === conceptIndex
-          ? {
-              ...c,
-              designation: [...(c.designation || []), initialDesignation()],
-            }
-          : c,
-      ),
-    }));
-  };
+  const { handleAddDesignation } = useCodeSystemDesignation();
+
   return (
     <div className={styles.designationsContainer}>
       <div className={styles.designationHeader}>
@@ -41,7 +28,7 @@ const CodeSystemDesignations = ({
       <Button
         variant="borderless"
         ariaLabel={t("Add designation")}
-        onClick={handleAddDesignation}
+        onClick={() => handleAddDesignation(conceptIndex)}
       >
         <Icon svgIcon={PlussIcon} /> {t("Add designation")}
       </Button>

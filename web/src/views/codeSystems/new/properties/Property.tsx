@@ -9,7 +9,7 @@ import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
 import Select from "@helsenorge/designsystem-react/components/Select";
 
-import { useCodeSystemContext } from "../../context/useCodeSystemContext";
+import useProperty from "./useProperty";
 
 import styles from "./code-system-properties.module.scss";
 
@@ -19,43 +19,33 @@ type Props = {
 };
 
 const Property = ({ property }: Props): React.JSX.Element => {
-  const { setNewCodeSystem } = useCodeSystemContext();
+  const { updateProperty, removeProperty } = useProperty();
   const { t } = useTranslation();
-  const updateProperty = (
-    key: keyof CodeSystemProperty,
-    value: string,
-  ): void => {
-    setNewCodeSystem((prev) => ({
-      ...prev,
-      property: prev?.property?.map((c) =>
-        c.id === property.id ? { ...c, [key]: value } : c,
-      ),
-    }));
-  };
-  const removeProperty = (): void => {
-    setNewCodeSystem((prev) => ({
-      ...prev,
-      property: prev?.property?.filter((c) => c.id !== property.id),
-    }));
-  };
+
   return (
     <div className={styles.propertyContainer}>
       <div>
         <IdInput value={property.id} />
         <Input
           value={property.uri}
-          onChange={(event) => updateProperty("uri", event.target.value)}
+          onChange={(event) =>
+            updateProperty("uri", event.target.value, property)
+          }
           label="URI"
         />
         <Input
           value={property.code}
-          onChange={(event) => updateProperty("code", event.target.value)}
+          onChange={(event) =>
+            updateProperty("code", event.target.value, property)
+          }
           label="Code"
         />
         <Select
           label={<Label labelTexts={[{ text: "type" }]} />}
           value={property.type || "string"}
-          onChange={(event) => updateProperty("type", event.target.value)}
+          onChange={(event) =>
+            updateProperty("type", event.target.value, property)
+          }
         >
           <option value="code">{"code"}</option>
           <option value="Coding">{"Coding"}</option>
@@ -68,7 +58,7 @@ const Property = ({ property }: Props): React.JSX.Element => {
         <Input
           value={property.description}
           onChange={(event) =>
-            updateProperty("description", event.target.value)
+            updateProperty("description", event.target.value, property)
           }
           label="Description"
         />
@@ -76,7 +66,7 @@ const Property = ({ property }: Props): React.JSX.Element => {
       <div className={styles.headerContainer}>
         <Button
           variant="borderless"
-          onClick={() => removeProperty()}
+          onClick={() => removeProperty(property)}
           concept="destructive"
           ariaLabel={t("Remove include")}
         >

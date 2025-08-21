@@ -1,14 +1,10 @@
-import { useContext } from "react";
-
-import { CodeSystem } from "fhir/r4";
-import { removeFhirResourceAction } from "src/store/treeStore/treeActions";
-import { TreeContext } from "src/store/treeStore/treeStore";
+import { useTranslation } from "react-i18next";
 import FeedBack from "src/views/components/feedback/FeedBack";
 import { Preview } from "src/views/components/preview/Preview";
 
 import ExpanderList from "@helsenorge/designsystem-react/components/ExpanderList";
 
-import { useCodeSystemContext } from "../context/useCodeSystemContext";
+import useExistingCodeSystem from "./useExistionCodeSystem";
 
 import styles from "./existing-code-systems.module.scss";
 type Props = {
@@ -18,31 +14,24 @@ type Props = {
 const ExistingCodeSystems = ({
   navigateToNewTab,
 }: Props): React.JSX.Element => {
-  const { state, dispatch } = useContext(TreeContext);
-  const { handleEdit } = useCodeSystemContext();
-  const dispatchDelete = (codeSystem: CodeSystem): void => {
-    if (codeSystem.id) {
-      dispatch(removeFhirResourceAction(codeSystem));
-    }
-  };
-  const existingCodeSystem = state.qContained?.filter(
-    (item): item is CodeSystem => item.resourceType === "CodeSystem",
-  );
+  const { edit, deleteCodeSystem, codeSystems } = useExistingCodeSystem({
+    navigateToNewTab,
+  });
+  const { t } = useTranslation();
   return (
     <div className={styles.existingCodeSystems}>
-      {(existingCodeSystem || []).length > 0 ? (
+      {(codeSystems || []).length > 0 ? (
         <ExpanderList childPadding color="white">
-          {existingCodeSystem?.map((codeSystem, i) => (
+          {codeSystems?.map((codeSystem, i) => (
             <ExpanderList.Expander
               key={codeSystem.id || i}
               expanded={i === 0}
               title={`${codeSystem.title} (${codeSystem.name || codeSystem.id})`}
             >
               <Preview
-                deleteResource={() => dispatchDelete(codeSystem)}
+                deleteResource={() => deleteCodeSystem(codeSystem)}
                 handleEdit={() => {
-                  handleEdit(codeSystem);
-                  navigateToNewTab();
+                  edit(codeSystem);
                 }}
                 canDelete={true}
                 canDownload={true}
@@ -54,7 +43,7 @@ const ExistingCodeSystems = ({
           ))}
         </ExpanderList>
       ) : (
-        <FeedBack show text="Ingen eksisterende kodeverk funnet." />
+        <FeedBack show text={t("no existing codeSystems found.")} />
       )}
     </div>
   );

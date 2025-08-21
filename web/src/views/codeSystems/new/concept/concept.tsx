@@ -11,6 +11,7 @@ import RemoveIcon from "@helsenorge/designsystem-react/components/Icons/TrashCan
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
 
+import useConcept from "./useConcept";
 import CodeSystemDesignations from "../../components/codeSystemDesignation/CodeSystemDesignations";
 import CodeSystemProperties from "../../components/codeSystemProperty/CodeSystemProperties";
 import { useCodeSystemContext } from "../../context/useCodeSystemContext";
@@ -24,26 +25,9 @@ type ConceptProps = {
 const Concept = ({ concept, index }: ConceptProps): React.JSX.Element => {
   const { setNewCodeSystem } = useCodeSystemContext();
   const { t } = useTranslation();
+  const { updateConcept, removeConcept } = useConcept();
 
-  const updateConcept = (key: keyof CodeSystemConcept, value: string): void => {
-    setNewCodeSystem((prev) => ({
-      ...prev,
-      concept: prev?.concept?.map((c) =>
-        c.id === concept.id ? { ...c, [key]: value } : c,
-      ),
-    }));
-  };
-  const removeConcept = (): void => {
-    setNewCodeSystem((prev) => ({
-      ...prev,
-      concept: prev?.concept?.filter((c) => c.id !== concept.id),
-    }));
-  };
-  const updateExtensions = (
-    extensions: Extension[],
-    id: string,
-    idType: "linkId" | "id" = "id",
-  ): void => {
+  const updateExtensions = (extensions: Extension[], id: string): void => {
     setNewCodeSystem((prevState) => {
       const updatedConcepts =
         prevState.concept?.map((c) => {
@@ -64,17 +48,23 @@ const Concept = ({ concept, index }: ConceptProps): React.JSX.Element => {
         <IdInput value={concept.id} />
         <Input
           value={concept.display}
-          onChange={(event) => updateConcept("display", event.target.value)}
+          onChange={(event) =>
+            updateConcept("display", event.target.value, concept)
+          }
           label="Display"
         />
         <Input
           value={concept.code}
-          onChange={(event) => updateConcept("code", event.target.value)}
+          onChange={(event) =>
+            updateConcept("code", event.target.value, concept)
+          }
           label="Code"
         />
         <Input
           value={concept.definition}
-          onChange={(event) => updateConcept("definition", event.target.value)}
+          onChange={(event) =>
+            updateConcept("definition", event.target.value, concept)
+          }
           label="Definition"
         />
         <CodeSystemDesignations
@@ -107,7 +97,7 @@ const Concept = ({ concept, index }: ConceptProps): React.JSX.Element => {
       <div className={styles.headerContainer}>
         <Button
           variant="borderless"
-          onClick={() => removeConcept()}
+          onClick={() => removeConcept(concept)}
           concept="destructive"
           ariaLabel={t("Remove include")}
         >

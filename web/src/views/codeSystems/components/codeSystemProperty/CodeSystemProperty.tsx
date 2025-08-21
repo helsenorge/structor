@@ -9,6 +9,7 @@ import RemoveIcon from "@helsenorge/designsystem-react/components/Icons/TrashCan
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
 
+import useNewCodeSystemProperties from "./useNewCodeSystemProperties";
 import { useCodeSystemContext } from "../../context/useCodeSystemContext";
 
 import styles from "./code-system-properties.module.scss";
@@ -22,42 +23,9 @@ const CodeSystemProperty = ({
   index: number;
   conceptIndex: number;
 }): React.JSX.Element => {
-  const { setNewCodeSystem } = useCodeSystemContext();
   const { t } = useTranslation();
-  const updateProperty = (
-    key: keyof CodeSystemConceptProperty,
-    value: string | boolean,
-  ): void => {
-    setNewCodeSystem((prev) => ({
-      ...prev,
-      concept: prev?.concept?.map((c, idx) =>
-        idx === conceptIndex
-          ? {
-              ...c,
-              property: c.property?.map((p, i) =>
-                i === index ? { ...p, [key]: value } : p,
-              ),
-            }
-          : c,
-      ),
-    }));
-  };
-  const removeCodeSystemProperty = (
-    index: number,
-    conceptIndex: number,
-  ): void => {
-    setNewCodeSystem((prev) => ({
-      ...prev,
-      concept: prev?.concept?.map((c, idx) =>
-        idx === conceptIndex
-          ? {
-              ...c,
-              property: c.property?.filter((_, i) => i !== index),
-            }
-          : c,
-      ),
-    }));
-  };
+  const { updateProperty, removeCodeSystemProperty } =
+    useNewCodeSystemProperties();
 
   return (
     <div className={styles.propertyContainer}>
@@ -66,37 +34,56 @@ const CodeSystemProperty = ({
         <Input
           label={<Label labelTexts={[{ text: "Code" }]} />}
           value={property.code}
-          onChange={(e) => updateProperty("code", e.target.value)}
+          onChange={(e) =>
+            updateProperty("code", e.target.value, conceptIndex, index)
+          }
         />
         <Input
           label={<Label labelTexts={[{ text: "valueCode" }]} />}
           value={property.valueCode}
-          onChange={(e) => updateProperty("valueCode", e.target.value)}
+          onChange={(e) =>
+            updateProperty("valueCode", e.target.value, conceptIndex, index)
+          }
         />
         <Input
           label={<Label labelTexts={[{ text: "valueString" }]} />}
           value={property.valueString}
-          onChange={(e) => updateProperty("valueString", e.target.value)}
+          onChange={(e) =>
+            updateProperty("valueString", e.target.value, conceptIndex, index)
+          }
         />
         <Input
           label={<Label labelTexts={[{ text: "valueDateTime" }]} />}
           value={property.valueDateTime}
-          onChange={(e) => updateProperty("valueDateTime", e.target.value)}
+          onChange={(e) =>
+            updateProperty("valueDateTime", e.target.value, conceptIndex, index)
+          }
         />
         <Input
           label={<Label labelTexts={[{ text: "valueInteger" }]} />}
           value={property.valueInteger}
-          onChange={(e) => updateProperty("valueInteger", e.target.value)}
+          onChange={(e) =>
+            updateProperty("valueInteger", e.target.value, conceptIndex, index)
+          }
         />
         <Input
           label={<Label labelTexts={[{ text: "valueDecimal" }]} />}
           value={property.valueDecimal}
-          onChange={(e) => updateProperty("valueDecimal", e.target.value)}
+          onChange={(e) =>
+            updateProperty("valueDecimal", e.target.value, conceptIndex, index)
+          }
         />
         <Checkbox
           label={<Label labelTexts={[{ text: "valueBoolean" }]} />}
           checked={property.valueBoolean}
-          onChange={(e) => updateProperty("valueBoolean", e.target.checked)}
+          onChange={(e) =>
+            updateProperty(
+              "valueBoolean",
+              e.target.checked,
+              conceptIndex,
+              index,
+            )
+          }
         />
       </div>
       <div className={styles.headerContainer}>

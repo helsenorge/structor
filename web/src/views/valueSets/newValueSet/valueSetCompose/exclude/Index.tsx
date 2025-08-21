@@ -15,90 +15,13 @@ import Icon from "@helsenorge/designsystem-react/components/Icon";
 import TrashCan from "@helsenorge/designsystem-react/components/Icons/X";
 import Label from "@helsenorge/designsystem-react/components/Label";
 
+import useExclude from "./useExclude";
+
 import styles from "./valueset-compose-exclude.module.scss";
 const ValueSetComposeExclude = (): React.JSX.Element => {
-  const { newValueSet, setNewValueSet } = useValueSetContext();
   const { t } = useTranslation();
-  const { state } = useContext(TreeContext);
+  const { getActiveCodeSystems, toggleExclude, codeIsExcluded } = useExclude();
 
-  const getActiveCodeSystems = (): CodeSystem[] => {
-    const systemsInValueSet =
-      newValueSet?.compose?.include?.map((include) => include.system) || [];
-    const existingCodeSystems = state.qContained
-      ?.filter((fhirResources) => fhirResources.resourceType === "CodeSystem")
-      ?.filter((codeSystem) => systemsInValueSet.includes(codeSystem.url));
-
-    const uniqueCodeSystems = new Map<string | undefined, CodeSystem>();
-
-    systemsInValueSet.forEach((systemInValueset) => {
-      existingCodeSystems?.forEach((existing) => {
-        if (
-          existing?.url === systemInValueset &&
-          !uniqueCodeSystems.has(existing?.url)
-        ) {
-          uniqueCodeSystems.set(existing?.url, existing);
-        }
-      });
-    });
-
-    return Array.from(uniqueCodeSystems.values());
-  };
-  const toggleExclude = useCallback(
-    (conceptToToggle: ValueSetComposeIncludeConcept, system?: string): void => {
-      const code = conceptToToggle?.code;
-      if (!system || !code) return;
-
-      setNewValueSet((prev) => {
-        if (!prev.compose) {
-          return prev;
-        }
-        const compose = prev.compose;
-        const exclude = compose?.exclude ?? [];
-        const sysIdx = exclude.findIndex((e) => e.system === system);
-
-        if (sysIdx === -1) {
-          return {
-            ...prev,
-            compose: {
-              ...compose,
-              exclude: [...exclude, { system, concept: [{ code: code }] }],
-            },
-          };
-        }
-
-        const entry = exclude[sysIdx];
-        const concepts = entry.concept ?? [];
-        const exists = concepts.some((c) => c.code === code);
-
-        const nextConcepts = exists
-          ? concepts.filter((c) => c.code !== code)
-          : [...concepts, conceptToToggle];
-
-        const nextEntry: ValueSetComposeInclude =
-          nextConcepts.length === 0
-            ? { system }
-            : { ...entry, concept: nextConcepts };
-
-        const nextExclude =
-          nextConcepts.length === 0
-            ? exclude.filter((_, i) => i !== sysIdx) // drop empty system block
-            : exclude.map((e, i) => (i === sysIdx ? nextEntry : e));
-
-        return {
-          ...prev,
-          compose: { ...compose, exclude: nextExclude },
-        };
-      });
-    },
-    [setNewValueSet],
-  );
-  const codeIsExcluded = (code: string, system?: string): boolean => {
-    return (
-      newValueSet?.compose?.exclude
-        ?.find((e) => e.system === system)
-        ?.concept?.some((c) => c.code === code) ?? false
-    );
-  };
   return (
     <div>
       {getActiveCodeSystems()?.map((codeSystem) => (
@@ -119,7 +42,7 @@ const ValueSetComposeExclude = (): React.JSX.Element => {
                   {codeIsExcluded(concept?.code, codeSystem.url) && (
                     <div className={styles.excludedIconContainer}>
                       <Icon size={25} svgIcon={TrashCan} />
-                      {"Excluded"}{" "}
+                      {"Excluded"}
                     </div>
                   )}
                   <span>
