@@ -2,6 +2,7 @@ import React from "react";
 
 import { Identifier, ValueSet } from "fhir/r4";
 import Identifiers from "src/components/extensions/valueInputs/Identifiers";
+import IdInput from "src/components/extensions/valueInputs/IdInput";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
 import { initialIdentifier } from "src/views/codeSystems/utils";
 import ContactDetails from "src/views/components/contactDetail/ContactDetails";
@@ -38,6 +39,7 @@ export const ValueSetDetails = (): React.JSX.Element => {
   };
   return (
     <div className={styles.valueSetDetails}>
+      <IdInput value={newValueSet.id} />
       <Input
         value={newValueSet.title}
         onChange={(event) =>

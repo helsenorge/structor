@@ -1,6 +1,7 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
+import IdInput from "src/components/extensions/valueInputs/IdInput";
 import UriFieldFr from "src/components/FormField/UriFieldFr";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
@@ -46,6 +47,7 @@ const Include = (): React.JSX.Element => {
           >
             <div>
               <div className={styles.includeHeader}>
+                <IdInput value={include.id} />
                 <UriFieldFr
                   label={t("System")}
                   value={include.system}

@@ -1,5 +1,6 @@
 import { ValueSetComposeIncludeConcept } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import IdInput from "src/components/extensions/valueInputs/IdInput";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -41,6 +42,8 @@ const ValuseSetComposeIncludeDetails = ({
       </div>
 
       <div className={styles.answerOptionInputs}>
+        <IdInput value={item.id} />
+
         <Input
           value={item.display}
           placeholder={t("Enter a display value..")}

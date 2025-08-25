@@ -2,6 +2,7 @@ import React from "react";
 
 import { ValueSetCompose } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import IdInput from "src/components/extensions/valueInputs/IdInput";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
@@ -36,6 +37,7 @@ const ValueSetComposeComponent = (): React.JSX.Element => {
   return (
     <div>
       <div className={styles.valueSetComposeDetails}>
+        <IdInput value={newValueSet?.compose?.id} />
         <Checkbox
           label={<Label labelTexts={[{ text: t("Inactive") }]} />}
           checked={newValueSet?.compose?.inactive}
@@ -43,13 +45,7 @@ const ValueSetComposeComponent = (): React.JSX.Element => {
             handleComposeItem(event.target.checked, "inactive")
           }
         ></Checkbox>
-        <Input
-          value={newValueSet?.compose?.lockedDate}
-          onChange={(event) =>
-            handleComposeItem(event.target.value, "lockedDate")
-          }
-          label={<Label labelTexts={[{ text: "LockedDate" }]} />}
-        />
+
         <DatePicker
           label={<Label labelTexts={[{ text: "LockedDate" }]} />}
           dateValue={
