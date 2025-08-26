@@ -28,7 +28,7 @@ const CodeSystemDetails = (): React.JSX.Element => {
   };
   const handleIdentifierChange = (
     index: number,
-    value: Identifier | undefined
+    value: Identifier | undefined,
   ): void => {
     setNewCodeSystem({
       ...newCodeSystem,
@@ -110,7 +110,7 @@ const CodeSystemDetails = (): React.JSX.Element => {
         />
       </div>
 
-      <div className={style.identifierContainer}>
+      <div>
         <Identifiers
           addNewIdentifier={addNewIdentifier}
           handleChange={handleIdentifierChange}
@@ -169,7 +169,7 @@ const CodeSystemDetails = (): React.JSX.Element => {
           setNewCodeSystem((prev) => ({
             ...prev,
             contact: prev.contact?.map((c, i) =>
-              i === index ? { ...c, [field]: value } : c
+              i === index ? { ...c, [field]: value } : c,
             ),
           }))
         }

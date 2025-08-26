@@ -51,7 +51,7 @@ const MetaComponent = ({ meta, updateMeta }: Props): React.JSX.Element => {
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <IdInput value={meta?.id} />
       <Input
         /*[A-Za-z0-9\-\.]{1,64} */ value={meta?.versionId}
