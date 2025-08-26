@@ -1,4 +1,5 @@
-#this repository is archived, for further updates to form builder (structor), see https://github.com/helsenorge/structor-export/
+# This repository is archived
+For further updates to form builder (structor), see https://github.com/helsenorge/structor-export/
 
 # Structor - FHIR form builder
 
