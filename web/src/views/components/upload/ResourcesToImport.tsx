@@ -30,11 +30,12 @@ export const ResourcesToImport = ({
             type="button"
             onClick={() => handleAddNewResource(fhirResource.id!)}
             ariaLabel={t("Import resource")}
+            data-testid="import-resource-button"
           >
             {t("Import resource")}
           </Button>
         ) : (
-          <p>{t("Already imported")}</p>
+          <p data-testid="already-imported">{t("Already imported")}</p>
         ))}
       <Preview
         fhirResource={fhirResource}

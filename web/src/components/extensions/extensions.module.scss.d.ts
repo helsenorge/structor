@@ -6,5 +6,7 @@ export declare const extensionItemSelectWrapper: string;
 export declare const extensionsContainer: string;
 export declare const extensionsHeader: string;
 export declare const extensionsHeaderTitle: string;
+export declare const full: string;
 export declare const removeButton: string;
 export declare const removeButtonWrapper: string;
+export declare const underline: string;

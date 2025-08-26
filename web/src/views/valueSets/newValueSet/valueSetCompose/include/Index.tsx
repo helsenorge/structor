@@ -1,6 +1,8 @@
 import React from "react";
 
+import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { Extensions } from "src/components/extensions/Extensions";
 import IdInput from "src/components/extensions/valueInputs/IdInput";
 import UriFieldFr from "src/components/FormField/UriFieldFr";
 
@@ -26,7 +28,12 @@ const Include = (): React.JSX.Element => {
     addNewInclude,
     include,
   } = useValueSetInclude();
-
+  const handleUpdateExtensions = (
+    extensions: Extension[],
+    includeIndex: number,
+  ): void => {
+    handleUpdateValue(extensions, includeIndex, "extension");
+  };
   return (
     <div className={styles.valueSetInclude}>
       <Button
@@ -71,6 +78,16 @@ const Include = (): React.JSX.Element => {
                   }
                 />
               </div>
+              <Extensions
+                id={include.id || ""}
+                updateExtensions={(extension: Extension[]) =>
+                  handleUpdateExtensions(extension, includeIndex)
+                }
+                extensions={include.extension}
+                buttonText={t("Add Extension")}
+                className={styles.extensions}
+                borderType="full"
+              />
               <IncludeFilter
                 item={include.filter}
                 includeIndex={includeIndex}

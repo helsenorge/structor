@@ -1,13 +1,13 @@
-import { ValueSetComposeInclude } from "fhir/r4";
+import { Extension, ValueSetComposeInclude } from "fhir/r4";
 import createUUID from "src/helpers/CreateUUID";
 import { useValueSetContext } from "src/views/valueSets/context/useValueSetContext";
 import { initialComposeInclude } from "src/views/valueSets/utils/intialValuesets";
 
 type ReturnType = {
   handleUpdateValue: (
-    value: string,
+    value: string | Extension[],
     includeIndex: number,
-    key: "system" | "version",
+    key: "system" | "version" | "extension",
   ) => void;
   addNewElement: (includeIndex?: number) => void;
   removeInclude: (includeIndex: number) => void;
@@ -47,12 +47,21 @@ const useValueSetInclude = (): ReturnType => {
   };
 
   const handleUpdateValue = (
-    value: string,
+    value: string | Extension[] | undefined,
     includeIndex: number,
-    key: "system" | "version",
+    key: "system" | "version" | "extension",
   ): void => {
     const compose = { ...newValueSet.compose };
-    compose.include && (compose.include[includeIndex][key] = value);
+    if (compose.include) {
+      if (key === "extension" && Array.isArray(value)) {
+        compose.include[includeIndex][key] = value;
+      } else if (
+        (key === "system" || key === "version") &&
+        typeof value === "string"
+      ) {
+        compose.include[includeIndex][key] = value;
+      }
+    }
     setNewValueSet({ ...newValueSet });
   };
 

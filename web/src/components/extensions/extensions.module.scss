@@ -33,6 +33,16 @@
   padding-bottom: 1rem;
   align-items: center; // Vertically align items in each row
   row-gap: 1rem; // Space between rows
+  &.full {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin-left: 1rem;
+  }
+
+  &.underline:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+  }
 }
 
 .extensionItem:not(:last-child) {

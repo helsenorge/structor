@@ -89,7 +89,7 @@ export const ValueSetProvider = ({
                 ...(prevState?.compose?.include[includeIndex]?.concept || []),
                 newElement,
               ],
-            } as ValueSetComposeInclude,
+            },
           ],
         };
         return {

@@ -8,15 +8,15 @@ import { CodeSystemContextInputTypes } from "./CodeSystemContextTypes";
 import { initialCodeSystem } from "../utils";
 
 export type CodeSystemProviderProps = CodeSystemContextInputTypes & {
-  initialValueSet?: CodeSystem;
+  initCodeSystem?: CodeSystem;
 };
 
 export const CodeSystemProvider = ({
   children,
-  initialValueSet,
+  initCodeSystem,
 }: CodeSystemProviderProps): React.JSX.Element => {
   const [newCodeSystem, setNewCodeSystem] = useState<CodeSystem>(
-    initialValueSet || { ...initialCodeSystem() },
+    initCodeSystem || { ...initialCodeSystem() },
   );
   const reset = useCallback((): void => {
     setNewCodeSystem({

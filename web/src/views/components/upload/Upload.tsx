@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import { BundleEntry, FhirResource } from "fhir/r4";
+import { BundleEntry, FhirResource, Questionnaire } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { getFhirResourcesFromState } from "src/store/treeStore/selectors";
 import { importFhirResourceAction } from "src/store/treeStore/treeActions";
@@ -27,7 +27,15 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
   const [isDragging, setIsDragging] = useState(false);
 
   const handleAddNewFhirResource = (id: string): void => {
-    const fhirResourcesToImport = fhirResource?.filter((x) => x.id === id);
+    const fhirResourcesToImport = fhirResource
+      ?.filter((x) => x?.id === id)
+      .filter(
+        (obj, index, self) =>
+          index ===
+          self.findIndex(
+            (t) => t.id === obj.id && t.resourceType === obj.resourceType,
+          ),
+      );
     if (fhirResourcesToImport && fhirResourcesToImport?.length > 0) {
       dispatch(importFhirResourceAction(fhirResourcesToImport));
     }
@@ -52,17 +60,35 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
 
     try {
       const allFiles = await Promise.all(filePromises);
-
       const toAdd: FhirResource[] = allFiles.flatMap((fileObj) => {
         try {
           const resource = JSON.parse(fileObj as string);
           if (resource.resourceType === "Bundle" && resource.entry) {
-            return resource.entry
+            const resourcesInBundle = resource.entry
               .filter(
                 (entry: BundleEntry) =>
                   entry.resource?.resourceType === resourceType,
               )
-              .map((entry: BundleEntry) => entry.resource);
+              .map((entry: BundleEntry) => entry.resource)
+              .filter(Boolean);
+            const resourcesInQuestionnaires = resource.entry
+              .filter(
+                (entry: BundleEntry) =>
+                  entry.resource?.resourceType === "Questionnaire",
+              )
+              .map((entry: BundleEntry<Questionnaire>) => {
+                return entry.resource?.contained?.filter(
+                  (containedResource: FhirResource) =>
+                    containedResource.resourceType === resourceType,
+                );
+              })
+              .filter(Boolean);
+
+            return (
+              [...resourcesInBundle, ...resourcesInQuestionnaires].flat(
+                Infinity,
+              ) as FhirResource[]
+            ).filter((n, i, arr) => arr.indexOf(n) === i);
           } else if (resource.resourceType === "Questionnaire") {
             return (
               resource.contained
@@ -84,9 +110,17 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
         return [];
       });
 
-      const filteredToAdd = toAdd.filter((x) => {
-        return stateFhirResource.findIndex((y) => y.id === x.id) === -1;
-      });
+      const filteredToAdd = toAdd
+        .filter((x) => {
+          return stateFhirResource.findIndex((y) => y?.id === x?.id) === -1;
+        })
+        .filter(
+          (obj, index, self) =>
+            index ===
+            self.findIndex(
+              (t) => t.id === obj.id && t.resourceType === obj.resourceType,
+            ),
+        );
       if (toAdd.length > 0 && filteredToAdd.length === 0) {
         setFileUploadError(
           "All uploaded resources are already in the questionnaire.",
@@ -113,6 +147,7 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>): void => {
     event.preventDefault();
     event.stopPropagation();
+    setIsDragging(true);
     setFileUploadError("");
   };
 
@@ -137,7 +172,6 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
     const droppedFiles = event.dataTransfer.files;
     processFiles(droppedFiles);
   };
-
   return (
     <div className={styles.uploadFhirResource}>
       <div>
@@ -187,10 +221,10 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
         <div>
           <h3>{t(`Available ${resourceType}`)}</h3>
           <div className={styles.fhirResourceList}>
-            {fhirResource.map((resource) => {
+            {fhirResource?.filter(Boolean).map((resource) => {
               return (
                 <ResourcesToImport
-                  key={resource.id}
+                  key={resource?.id}
                   fhirResource={resource}
                   stateFhirResource={stateFhirResource}
                   handleAddNewResource={handleAddNewFhirResource}

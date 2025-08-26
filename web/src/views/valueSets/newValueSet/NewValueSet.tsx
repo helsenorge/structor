@@ -10,7 +10,7 @@ import TrashCan from "@helsenorge/designsystem-react/components/Icons/TrashCan";
 import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 
 import { ValueSetDetails } from "./details/ValueSetDetails";
-import useNewValueSet from "./useNewValuset";
+import useNewValueSet from "./useNewValueset";
 import ValuseSetCompose from "./valueSetCompose/ValuseSetCompose";
 import RawJson from "../../components/rawJson";
 

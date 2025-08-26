@@ -4,6 +4,7 @@ export declare const answerOptionInputs: string;
 export declare const answerOptionItem: string;
 export declare const answerOptionLabel: string;
 export declare const deleteButtonContainer: string;
+export declare const extensions: string;
 export declare const includeContainer: string;
 export declare const includeHeader: string;
 export declare const valueSetInclude: string;

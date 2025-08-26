@@ -40,7 +40,7 @@ export const Preview = ({
   return (
     <div>
       {showHeadline && (
-        <h4>
+        <h4 data-testid="resource-heading">
           {resourceType} {" - "}
           {fhirResource.resourceType === "ValueSet" ||
           fhirResource.resourceType === "CodeSystem"

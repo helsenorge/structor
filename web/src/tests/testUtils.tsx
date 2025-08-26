@@ -7,7 +7,7 @@ import {
   RenderResult,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ValueSet } from "fhir/r4";
+import { CodeSystem, ValueSet } from "fhir/r4";
 import { I18nextProvider } from "react-i18next";
 import { MemoryRouter, MemoryRouterProps } from "react-router-dom";
 import i18n from "src/helpers/i18n";
@@ -17,6 +17,7 @@ import {
   TreeContext,
   TreeState,
 } from "src/store/treeStore/treeStore";
+import { CodeSystemProvider } from "src/views/codeSystems/context/CodeSystemContextProvider";
 import { ValueSetProvider } from "src/views/valueSets/context/ValueSetContextProvider";
 import { Mock, vi } from "vitest";
 
@@ -37,6 +38,7 @@ interface ProvidersProps {
    */
   state?: Partial<TreeState>;
   initialValueSet?: ValueSet;
+  initialCodeSystem?: CodeSystem;
 }
 
 const Providers = ({
@@ -45,6 +47,7 @@ const Providers = ({
   initialEntries = ["/"],
   state = getInitialState(),
   initialValueSet,
+  initialCodeSystem,
 }: ProvidersProps): React.JSX.Element => {
   const newState = state as TreeState;
   return (
@@ -55,6 +58,10 @@ const Providers = ({
             <ValueSetProvider initialValueSet={initialValueSet}>
               {children}
             </ValueSetProvider>
+          ) : initialCodeSystem ? (
+            <CodeSystemProvider initCodeSystem={initialCodeSystem}>
+              {children}
+            </CodeSystemProvider>
           ) : (
             children
           )}

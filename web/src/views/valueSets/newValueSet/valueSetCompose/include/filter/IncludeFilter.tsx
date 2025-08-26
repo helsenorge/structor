@@ -4,7 +4,7 @@ import IdInput from "src/components/extensions/valueInputs/IdInput";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
-import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
+import PlusSmall from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
 import TrashCan from "@helsenorge/designsystem-react/components/Icons/TrashCan";
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
@@ -35,7 +35,7 @@ const IncludeFilter = ({ item, includeIndex }: Props): React.JSX.Element => {
         ariaLabel={t("Add filter")}
         className={styles.addNewFilter}
       >
-        <Icon svgIcon={PlussIcon} />
+        <Icon svgIcon={PlusSmall} />
         {t("Add filter")}
       </Button>
       <div className={styles.filterList}>

@@ -29,11 +29,13 @@
     background-color 0.2s ease-in-out,
     border-color 0.2s ease-in-out;
 
-  // NEW: This is the style for when a file is dragged over the area
   &.isDragging {
-    border-color: #0067c5; // Use a color from your design system
-    background-color: #f0f8ff; // A light blue is common for drop zones
+    border: solid;
+    border-color: #0067c5;
+    background-color: #f0f8ff;
   }
+
+  // NEW: This is the style for when a file is dragged over the area
 }
 
 .searchForm {

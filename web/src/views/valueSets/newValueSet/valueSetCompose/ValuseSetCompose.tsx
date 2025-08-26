@@ -1,8 +1,11 @@
 import React from "react";
 
-import { ValueSetCompose } from "fhir/r4";
+import { Extension, Meta, ValueSetCompose } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { Extensions } from "src/components/extensions/Extensions";
 import IdInput from "src/components/extensions/valueInputs/IdInput";
+import MetaComponent from "src/components/meta/Meta";
+import { createUriUUID } from "src/helpers/uriHelper";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
@@ -34,9 +37,29 @@ const ValueSetComposeComponent = (): React.JSX.Element => {
       },
     });
   }
+  const handleUpdateComposeExtensions = (extension: Extension[]): void => {
+    setNewValueSet({
+      ...newValueSet,
+      compose: {
+        include: newValueSet?.compose?.include || [],
+        ...newValueSet?.compose,
+        extension: extension,
+      },
+    });
+  };
+  const handleComposeMeta = (meta: Meta): void => {
+    setNewValueSet({
+      ...newValueSet,
+      meta: meta,
+    });
+  };
   return (
     <div>
       <div className={styles.valueSetComposeDetails}>
+        <MetaComponent
+          meta={newValueSet?.meta}
+          updateMeta={handleComposeMeta}
+        />
         <IdInput value={newValueSet?.compose?.id} />
         <Checkbox
           label={<Label labelTexts={[{ text: t("Inactive") }]} />}
@@ -67,6 +90,15 @@ const ValueSetComposeComponent = (): React.JSX.Element => {
           }
         />
       </div>
+      <Extensions
+        id={newValueSet?.compose?.id || createUriUUID()}
+        updateExtensions={handleUpdateComposeExtensions}
+        extensions={newValueSet?.compose?.extension}
+        idType="id"
+        buttonText="Add extension"
+        className={styles.extensions}
+        borderType="full"
+      />
       <Tabs
         ariaLabelLeftButton="Scroll left"
         ariaLabelRightButton="Scroll right"

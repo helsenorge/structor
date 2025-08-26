@@ -18,6 +18,8 @@ import ValueInput from "./valueInputs/ValueInput";
 
 import styles from "./extensions.module.scss";
 
+type BorderType = "underline" | "full";
+
 type Props = {
   extensions?: Extension[];
   id: string;
@@ -30,6 +32,7 @@ type Props = {
   hasValidationError?: (index: number) => boolean;
   className?: string;
   buttonText?: string;
+  borderType?: BorderType;
 };
 
 export const Extensions = ({
@@ -40,6 +43,7 @@ export const Extensions = ({
   hasValidationError,
   className,
   buttonText = "Add",
+  borderType = "underline",
 }: Props): React.JSX.Element | null => {
   const {
     addNewExtension,
@@ -53,7 +57,16 @@ export const Extensions = ({
     successCallback: updateExtensions,
   });
   const { t } = useTranslation();
-
+  const borderClass = (): string => {
+    switch (borderType) {
+      case "underline":
+        return styles.underline;
+      case "full":
+        return styles.full;
+      default:
+        return "";
+    }
+  };
   return (
     <div className={`${styles.extensionsContainer} ${className || ""}`}>
       <header className={styles.extensionsHeader}>
@@ -74,7 +87,7 @@ export const Extensions = ({
         const hasError = hasValidationError ? hasValidationError(index) : false;
         return (
           <section
-            className={`${styles.extensionItem} ${hasError ? styles.error : ""}`}
+            className={`${styles.extensionItem} ${borderClass()} ${hasError ? styles.error : ""}`}
             key={ext.id}
           >
             <div className={styles.extensionItemInputWrapper}>
