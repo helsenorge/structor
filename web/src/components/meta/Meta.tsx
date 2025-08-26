@@ -49,9 +49,21 @@ const MetaComponent = ({ meta, updateMeta }: Props): React.JSX.Element => {
     const newTag: Coding = initialCoding();
     handleChange({ ...meta, tag: [...(meta?.tag || []), newTag] });
   };
-
+  const handleUpdateProfile = (profile: string): void => {
+    const updatedProfiles = meta?.profile?.map((p) =>
+      p === profile ? profile : p,
+    );
+    handleChange({ ...meta, profile: updatedProfiles });
+  };
+  const handleAddProfile = (): void => {
+    const newProfile = "";
+    handleChange({
+      ...meta,
+      profile: [...(meta?.profile || []), newProfile],
+    });
+  };
   return (
-    <div>
+    <div className={styles.metaContainer}>
       <IdInput value={meta?.id} />
       <Input
         /*[A-Za-z0-9\-\.]{1,64} */ value={meta?.versionId}
@@ -67,6 +79,7 @@ const MetaComponent = ({ meta, updateMeta }: Props): React.JSX.Element => {
           handleChange({ ...meta, lastUpdated: toIsoOrUndefined(date) })
         }
       />
+
       <Input
         value={meta?.source}
         label={<Label labelTexts={[{ text: "Source" }]} />}
@@ -74,6 +87,36 @@ const MetaComponent = ({ meta, updateMeta }: Props): React.JSX.Element => {
           handleChange({ ...meta, source: event.target.value })
         }
       />
+      <div>
+        <Label labelTexts={[{ text: "Profile" }]} />
+        <Button variant="borderless" onClick={() => handleAddProfile()}>
+          <Icon svgIcon={PlusSmall} />
+          {t("Add Profile")}
+        </Button>
+        {meta?.profile?.map((profile) => {
+          return (
+            <div key={profile} className={styles.profileContainer}>
+              <Input
+                key={profile}
+                onChange={(event) => handleUpdateProfile(event.target.value)}
+                value={profile}
+              />
+              <Button
+                variant="borderless"
+                onClick={() =>
+                  handleChange({
+                    ...meta,
+                    profile: meta?.profile?.filter((p) => p !== profile),
+                  })
+                }
+              >
+                <Icon svgIcon={TrashCan} />
+                {t("Remove")}
+              </Button>
+            </div>
+          );
+        })}
+      </div>
       <div>
         <Label labelTexts={[{ text: "Security" }]} />
         <Button variant="borderless" onClick={() => handleAddSecurity()}>
