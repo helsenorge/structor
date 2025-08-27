@@ -1,8 +1,8 @@
 import React from "react";
 
 import { Identifier, ValueSet } from "fhir/r4";
-import Identifiers from "src/components/extensions/valueInputs/Identifiers";
-import IdInput from "src/components/extensions/valueInputs/IdInput";
+import Identifiers from "src/components/valueInputs/Identifiers";
+import IdInput from "src/components/valueInputs/IdInput";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
 import { initialIdentifier } from "src/views/codeSystems/utils";
 import ContactDetails from "src/views/components/contactDetail/ContactDetails";

@@ -1,6 +1,6 @@
 import { CodeSystem, Identifier } from "fhir/r4";
-import Identifiers from "src/components/extensions/valueInputs/Identifiers";
-import IdInput from "src/components/extensions/valueInputs/IdInput";
+import Identifiers from "src/components/valueInputs/Identifiers";
+import IdInput from "src/components/valueInputs/IdInput";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
 import ContactDetails from "src/views/components/contactDetail/ContactDetails";
 import { initialContact } from "src/views/valueSets/utils/intialValuesets";

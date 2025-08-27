@@ -1,6 +1,6 @@
 import { CodeSystemConceptProperty } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import IdInput from "src/components/extensions/valueInputs/IdInput";
+import IdInput from "src/components/valueInputs/IdInput";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Checkbox from "@helsenorge/designsystem-react/components/Checkbox";

@@ -1,0 +1,12 @@
+export declare const addNewIdentifierButton: string;
+export declare const codeableConceptCodings: string;
+export declare const codingInput: string;
+export declare const durationButtonContainer: string;
+export declare const durationContainer: string;
+export declare const durationInputContainer: string;
+export declare const identifierContainer: string;
+export declare const identifierInputContainer: string;
+export declare const idInput: string;
+export declare const removeButtonWrapper: string;
+export declare const removeCodingButtonWrapper: string;
+export declare const typeInput: string;

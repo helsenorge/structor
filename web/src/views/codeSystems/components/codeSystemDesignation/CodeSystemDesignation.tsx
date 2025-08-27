@@ -1,7 +1,7 @@
 import { CodeSystemConceptDesignation } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import CodingInput from "src/components/extensions/valueInputs/CodingInput";
-import IdInput from "src/components/extensions/valueInputs/IdInput";
+import CodingInput from "src/components/valueInputs/CodingInput";
+import IdInput from "src/components/valueInputs/IdInput";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";

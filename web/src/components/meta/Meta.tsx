@@ -14,8 +14,8 @@ import Label from "@helsenorge/designsystem-react/components/Label";
 
 import DatePicker from "@helsenorge/datepicker/components/DatePicker";
 
-import CodingInput from "../extensions/valueInputs/CodingInput";
-import IdInput from "../extensions/valueInputs/IdInput";
+import CodingInput from "../valueInputs/CodingInput";
+import IdInput from "../valueInputs/IdInput";
 
 import styles from "./meta.module.scss";
 type Props = {

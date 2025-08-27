@@ -3,8 +3,8 @@ import React from "react";
 import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { Extensions } from "src/components/extensions/Extensions";
-import IdInput from "src/components/extensions/valueInputs/IdInput";
 import UriFieldFr from "src/components/FormField/UriFieldFr";
+import IdInput from "src/components/valueInputs/IdInput";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";

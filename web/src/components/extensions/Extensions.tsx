@@ -14,7 +14,7 @@ import Select from "@helsenorge/designsystem-react/components/Select";
 import { ExtensionValueKey } from "./types";
 import { useExtensions } from "./useExtensons";
 import { EXTENSION_VALUE_TYPES, getExtensionValue } from "./utils";
-import ValueInput from "./valueInputs/ValueInput";
+import ValueInput from "../valueInputs/ValueInput";
 
 import styles from "./extensions.module.scss";
 

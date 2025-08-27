@@ -3,8 +3,8 @@ import React from "react";
 import { Extension, Meta, ValueSetCompose } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { Extensions } from "src/components/extensions/Extensions";
-import IdInput from "src/components/extensions/valueInputs/IdInput";
 import MetaComponent from "src/components/meta/Meta";
+import IdInput from "src/components/valueInputs/IdInput";
 import { createUriUUID } from "src/helpers/uriHelper";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
 
@@ -47,19 +47,19 @@ const ValueSetComposeComponent = (): React.JSX.Element => {
       },
     });
   };
-  const handleComposeMeta = (meta: Meta): void => {
-    setNewValueSet({
-      ...newValueSet,
-      meta: meta,
-    });
-  };
+  // const handleComposeMeta = (meta: Meta): void => {
+  //   setNewValueSet({
+  //     ...newValueSet,
+  //     meta: meta,
+  //   });
+  // };
   return (
     <div>
       <div className={styles.valueSetComposeDetails}>
-        <MetaComponent
+        {/* <MetaComponent
           meta={newValueSet?.meta}
           updateMeta={handleComposeMeta}
-        />
+        /> */}
         <IdInput value={newValueSet?.compose?.id} />
         <Checkbox
           label={<Label labelTexts={[{ text: t("Inactive") }]} />}

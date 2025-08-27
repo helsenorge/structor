@@ -1,0 +1,66 @@
+.codeableConceptCodings {
+  display: grid;
+  grid-template-columns: 12fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.codingInput {
+  padding-bottom: 1rem;
+}
+
+.removeCodingButtonWrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.durationInputContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  gap: 1rem;
+}
+
+.durationContainer {
+  display: grid;
+  grid-template-columns: 12fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.durationButtonContainer {
+  display: flex;
+  align-items: center;
+}
+
+.removeButtonWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.typeInput {
+  margin-left: 1rem;
+}
+
+.identifierContainer {
+  display: grid;
+  grid-template-columns: 12fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.identifierInputContainer {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-top: 1rem;
+}
+
+.addNewIdentifierButton {
+  text-align: left;
+}
+
+.idInput {
+  margin: 0.5rem 0;
+}
