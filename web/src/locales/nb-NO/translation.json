@@ -419,7 +419,7 @@
   "Select whether the group should be a step in step-view": "Velg om denne gruppen skal være et steg i stegvising",
   "Step in step-view": "Steg i stegvisning",
   "Repeatable group cannot be displayed as a step in stepview": "Gjentakende gruppe kan ikke vises som et steg i stegvisning",
-  "Repeatable group cannot be child of a group": "Gjentakende gruppe kan ikke være child av en gruppe",
+  "Repeatable group must be child of a group": "Gjentakende gruppe må være child av en gruppe",
   "Repeatable items that are not of type group cannot have children": "Gjentakende elementer som ikke er av typen gruppe kan ikke ha children",
   "Repeatable items must have a maxOccurs extension": "Gjentakende elementer må ha en maxOccurs extension",
   "Change": "Endre",
