@@ -1,7 +1,5 @@
 import { Identifier } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { useCodeSystemContext } from "src/views/codeSystems/context/useCodeSystemContext";
-import { initialIdentifier } from "src/views/codeSystems/utils";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";

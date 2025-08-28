@@ -1,10 +1,7 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
-import Accordion from "src/components/Accordion/Accordion";
-import MetaComponent from "src/components/meta/Meta";
 import QuestionnaireSettings from "src/components/QuestionnaireDetails/QuestionnaireSettings";
-import { TreeContext } from "src/store/treeStore/treeStore";
 
 import { useKeyPress } from "../../../hooks/useKeyPress";
 import { ValidationError } from "../../../utils/validationUtils";
@@ -27,7 +24,6 @@ const FormDetailsDrawer = ({
   isOpen = false,
 }: FormDetailsDrawerProps): React.JSX.Element => {
   const { t } = useTranslation();
-  const { state } = React.useContext(TreeContext);
   useKeyPress("Escape", closeDrawer, !isOpen);
 
   return (
