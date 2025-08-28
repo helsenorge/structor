@@ -1,0 +1,8 @@
+.contactDetail {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid #eee;
+  padding: 0.5rem;
+}

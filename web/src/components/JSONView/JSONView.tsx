@@ -9,18 +9,17 @@ import IconBtn from "../IconBtn/IconBtn";
 
 type Props = {
   showJSONView: () => void;
+  jsonContent?: unknown;
 };
 
-const JSONView = ({ showJSONView }: Props): React.JSX.Element => {
+const JSONView = ({ showJSONView, jsonContent }: Props): React.JSX.Element => {
   const { t } = useTranslation();
   const { state } = useContext(TreeContext);
   const { isCopied, copyToClipboard } = useCopyToClipboard();
+  const content = jsonContent
+    ? JSON.stringify(jsonContent, null, 2)
+    : JSON.stringify(JSON.parse(generateQuestionnaire(state)), null, 2);
   const handleCopy = async (): Promise<void> => {
-    const content = JSON.stringify(
-      JSON.parse(generateQuestionnaire(state)),
-      null,
-      2,
-    );
     await copyToClipboard(content);
   };
   return (
@@ -41,13 +40,7 @@ const JSONView = ({ showJSONView }: Props): React.JSX.Element => {
           </div>
         </div>
 
-        <code className="json">
-          {JSON.stringify(
-            JSON.parse(generateQuestionnaire(state)),
-            undefined,
-            2,
-          )}
-        </code>
+        <code className="json">{content}</code>
       </div>
     </div>
   );

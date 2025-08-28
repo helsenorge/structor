@@ -32,14 +32,17 @@ const RawJson = ({
     <div className={`${styles.rawJsonContainer} ${className || ""}`}>
       {showOutput && (
         <div className={styles.jsonContainerWrapper}>
-          {showHeadline && <h3>{t("Raw JSON")}</h3>}
-          <pre className={styles.jsonContainer}>{jsonString}</pre>
+          {showHeadline && (
+            <h3 data-testid="raw-json-headline">{t("Raw JSON")}</h3>
+          )}
+          <code className={styles.jsonContainer}>{jsonString}</code>
         </div>
       )}
       {showButton && (
         <Button
           variant="borderless"
           size="medium"
+          testId="toggle-raw-json"
           onClick={() => setShowRawJson(!showRawJson)}
           ariaLabel={t("Show raw JSON")}
         >

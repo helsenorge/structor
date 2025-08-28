@@ -4,6 +4,7 @@ import { Extension, ValueSetCompose } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { Extensions } from "src/components/extensions/Extensions";
 import IdInput from "src/components/valueInputs/IdInput";
+import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
 
@@ -29,8 +30,9 @@ const ValueSetComposeComponent = (): React.JSX.Element => {
     setNewValueSet({
       ...newValueSet,
       compose: {
-        include: newValueSet?.compose?.include || [],
         ...newValueSet?.compose,
+        id: newValueSet?.compose?.id || createUUID(),
+        include: newValueSet?.compose?.include || [],
         [updateField]: value,
       },
     });
@@ -39,8 +41,9 @@ const ValueSetComposeComponent = (): React.JSX.Element => {
     setNewValueSet({
       ...newValueSet,
       compose: {
-        include: newValueSet?.compose?.include || [],
         ...newValueSet?.compose,
+        id: newValueSet?.compose?.id || createUUID(),
+        include: newValueSet?.compose?.include || [],
         extension: extension,
       },
     });
