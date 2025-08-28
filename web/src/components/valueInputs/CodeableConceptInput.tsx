@@ -45,7 +45,7 @@ const CodeableConceptInput = ({
       )}
       <div className={styles.removeCodingButtonWrapper}>
         <Button
-          ariaLabel="Add new coding"
+          ariaLabel="Add coding"
           variant="borderless"
           size="large"
           onClick={() => {
@@ -60,7 +60,7 @@ const CodeableConceptInput = ({
           }}
         >
           <Icon svgIcon={PlussIcon} />
-          <span>{t("New coding")}</span>
+          <span>{t("Add coding")}</span>
         </Button>
       </div>
       <div className={styles.codeableConceptCodings}>

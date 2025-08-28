@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Identifier, ValueSet } from "fhir/r4";
+import { useTranslation } from "react-i18next";
 import ContactDetails from "src/components/contactDetail/ContactDetails";
 import Identifiers from "src/components/valueInputs/Identifiers";
 import IdInput from "src/components/valueInputs/IdInput";
@@ -20,6 +21,7 @@ import styles from "./value-set-details.module.scss";
 
 export const ValueSetDetails = (): React.JSX.Element => {
   const { newValueSet, setNewValueSet } = useValueSetContext();
+  const { t } = useTranslation();
   const addNewIdentifier = (): void => {
     setNewValueSet((prev) => ({
       ...prev,
@@ -52,7 +54,9 @@ export const ValueSetDetails = (): React.JSX.Element => {
         onChange={(event) =>
           setNewValueSet({ ...newValueSet, name: event.target.value })
         }
-        label={<Label labelTexts={[{ text: "Name" }]} />}
+        label={
+          <Label labelTexts={[{ text: `Name (${t("Technical name")})` }]} />
+        }
       />
       <Input
         value={newValueSet.publisher}

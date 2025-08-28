@@ -30,7 +30,7 @@ const CodeSystemProperties = ({
         ariaLabel="test"
         onClick={() => handleAddNewProperty(conceptIndex)}
       >
-        <Icon svgIcon={PlussIcon} /> {t("Add Property")}
+        <Icon svgIcon={PlussIcon} /> {t("Add property")}
       </Button>
       <div className={styles.propertiesList}>
         {properties?.map(

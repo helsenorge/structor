@@ -42,10 +42,10 @@ const CodeSystemFilterInput = ({
               operator: [...filter.operator, "exists"],
             })
           }
-          ariaLabel={t("New operator")}
+          ariaLabel={t("Add operator")}
         >
           <Icon svgIcon={PlussIcon} />
-          {t("New operator")}
+          {t("Add operator")}
         </Button>
       </div>
       {filter.operator.map((op, index) => (

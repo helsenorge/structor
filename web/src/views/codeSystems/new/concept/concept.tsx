@@ -90,7 +90,7 @@ const Concept = ({ concept, index }: ConceptProps): React.JSX.Element => {
             extensions={concept.extension}
             updateExtensions={updateExtensions}
             className={styles.conceptExtensions}
-            buttonText={"Add extension"}
+            buttonText={t("Add extension")}
           />
         </div>
       </div>

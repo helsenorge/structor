@@ -22,7 +22,7 @@ const CodeSystemConceptIndex = (): React.JSX.Element => {
           ariaLabel={t("Add concept")}
         >
           <Icon svgIcon={PlussIcon} />
-          {t("New concept")}
+          {t("Add concept")}
         </Button>
       </div>
 

@@ -172,6 +172,9 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
     const droppedFiles = event.dataTransfer.files;
     processFiles(droppedFiles);
   };
+  const feedBackText = t(
+    "Upload [0] as json files. Accepts a Bundle/Questionnaire or [0] in a single file. It is possible to upload several files at once",
+  );
   return (
     <div className={styles.uploadFhirResource}>
       <div>
@@ -183,14 +186,7 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
           style={{ display: "none" }}
           multiple
         />
-        <FeedBack
-          show
-          text={
-            t(
-              `Upload ${resourceType} as json files. Accepts a Bundle/Questionnaire or ${resourceType} in a single file. It is possible to upload several files at once`,
-            )!
-          }
-        />
+        <FeedBack show text={feedBackText.replace(/\[0]/g, resourceType)} />
         <div
           className={`${styles.uploadButton} ${isDragging ? styles.isDragging : ""}`}
           onDrop={handleDrop}

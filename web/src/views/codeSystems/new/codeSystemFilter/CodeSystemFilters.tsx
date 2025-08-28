@@ -20,10 +20,10 @@ const CodeSystemFilters = (): React.JSX.Element => {
         <Button
           variant="borderless"
           onClick={addNewFilter}
-          ariaLabel={t("New filter")}
+          ariaLabel={t("Add filter")}
         >
           <Icon svgIcon={PlussIcon} />
-          {t("New filter")}
+          {t("Add filter")}
         </Button>
       </div>
       <div>

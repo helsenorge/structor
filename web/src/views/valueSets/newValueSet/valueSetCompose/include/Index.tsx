@@ -84,7 +84,7 @@ const Include = (): React.JSX.Element => {
                   handleUpdateExtensions(extension, includeIndex)
                 }
                 extensions={include.extension}
-                buttonText={t("Add Extension")}
+                buttonText={t("Add extension")}
                 className={styles.extensions}
                 borderType="full"
               />

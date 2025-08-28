@@ -40,10 +40,10 @@ const ContactDetails = ({
       <Label labelTexts={[{ text: "Contacts" }]} />
       <Button
         variant="borderless"
-        ariaLabel={t("Add Contact")}
+        ariaLabel={t("Add contact")}
         onClick={() => handleAdd()}
       >
-        <Icon svgIcon={PlussIcon} /> {t("Add Contact")}
+        <Icon svgIcon={PlussIcon} /> {t("Add contact")}
       </Button>
       {contacts?.map((contact, index) => {
         return (

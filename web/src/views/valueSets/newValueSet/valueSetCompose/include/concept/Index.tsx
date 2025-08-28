@@ -1,4 +1,5 @@
 import { ValueSetComposeIncludeConcept } from "fhir/r4";
+import { useTranslation } from "react-i18next";
 import { Extensions } from "src/components/extensions/Extensions";
 
 import Details from "./Details";
@@ -15,7 +16,7 @@ export const Concepts = ({
   includeIndex,
 }: Props): React.JSX.Element => {
   const { updateExtensions } = useValueSetComposeIncludeConcept();
-
+  const { t } = useTranslation();
   return (
     <div className={styles.conceptContainer}>
       {concepts?.map((item, index) => {
@@ -33,7 +34,7 @@ export const Concepts = ({
               key={item.id || index}
               extensions={item.extension}
               updateExtensions={updateExtensions}
-              buttonText="Add Extension"
+              buttonText={t("Add extension")}
             />
           </div>
         );

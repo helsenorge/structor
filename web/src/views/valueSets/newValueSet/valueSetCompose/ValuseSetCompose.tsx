@@ -87,7 +87,7 @@ const ValueSetComposeComponent = (): React.JSX.Element => {
         updateExtensions={handleUpdateComposeExtensions}
         extensions={newValueSet?.compose?.extension}
         idType="id"
-        buttonText="Add extension"
+        buttonText={t("Add extension")}
         className={styles.extensions}
         borderType="full"
       />

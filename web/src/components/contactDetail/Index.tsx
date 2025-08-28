@@ -72,7 +72,7 @@ const ContactDetailInput = ({
         />
         <Button
           variant="borderless"
-          ariaLabel={t("Add Contact")}
+          ariaLabel={t("Add telecom")}
           onClick={addTelecom}
         >
           <Icon svgIcon={PlusSmall} /> {t("Add telecom")}

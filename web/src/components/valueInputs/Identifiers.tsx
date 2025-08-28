@@ -31,7 +31,7 @@ const Identifiers = ({
           ariaLabel={t("Add identifier")}
         >
           <Icon svgIcon={PlussIcon} />
-          {t("New identifier")}
+          {t("Add identifier")}
         </Button>
       </div>
       {identifiers?.map((identifier, index) => (
