@@ -1,5 +1,3 @@
-import React from "react";
-
 import { createHashRouter, Navigate } from "react-router-dom";
 import CodeSystems from "src/views/codeSystems";
 import { CodeSystemProvider } from "src/views/codeSystems/context/CodeSystemContextProvider";
@@ -28,7 +26,6 @@ export default createHashRouter([
     ),
   },
   {
-    // This is the parent layout route
     path: "/formbuilder/:id/valuesets",
     element: (
       <PageWrapper>
@@ -37,7 +34,6 @@ export default createHashRouter([
         </ValueSetProvider>
       </PageWrapper>
     ),
-    // The children are the tabs
     children: [
       {
         index: true,
@@ -92,5 +88,13 @@ export default createHashRouter([
         element: <CodeSystems />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: (
+      <PageWrapper>
+        <></>
+      </PageWrapper>
+    ),
   },
 ]);

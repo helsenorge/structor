@@ -1,18 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useScrollToElement } from "src/hooks/useScrollToElement";
+import { TreeContext } from "src/store/treeStore/treeStore";
 
+import Button from "@helsenorge/designsystem-react/components/Button";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import ArrowRight from "@helsenorge/designsystem-react/components/Icons/ArrowRight";
 import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 
 import ExistingCodeSystem from "./existing";
 import NewCodeSystem from "./new";
+import SectionHeader from "../components/sectionHeader/SectionHeader";
 import UploadCodeSystem from "../components/upload/Upload";
 
 import styles from "./codeSystems.module.scss";
+
 const CodeSystems = (): React.JSX.Element => {
   const [activeTab, setActiveTab] = React.useState(0);
+  const { state } = useContext(TreeContext);
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -33,7 +41,12 @@ const CodeSystems = (): React.JSX.Element => {
 
   return (
     <section className={styles.codeSystems} ref={targetRef}>
-      <h1 className={styles.codeSystemsHeadline}>{t("CodeSystems")}</h1>
+      <SectionHeader
+        id={state.qMetadata.id}
+        headline={t("CodeSystems")}
+        linkText={t("To form builder ")}
+      />
+
       <Tabs
         ariaLabelLeftButton="Scroll left"
         ariaLabelRightButton="Scroll right"

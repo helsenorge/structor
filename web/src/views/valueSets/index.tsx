@@ -1,19 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useScrollToElement } from "src/hooks/useScrollToElement";
+import { TreeContext } from "src/store/treeStore/treeStore";
 
+import Button from "@helsenorge/designsystem-react/components/Button";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import ArrowRight from "@helsenorge/designsystem-react/components/Icons/ArrowRight";
 import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 
 import ExistingValueSets from "./existinValueSets/ExistingValueSets";
 import ImportValueSet from "./ImportValueSet/Index";
 import NewValueSet from "./newValueSet/NewValueSet";
+import SectionHeader from "../components/sectionHeader/SectionHeader";
 import Upload from "../components/upload/Upload";
 
 import styles from "./valueSets.module.scss";
 const ValueSets = (): React.JSX.Element => {
   const [activeTab, setActiveTab] = React.useState(0);
+  const { state } = useContext(TreeContext);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -33,10 +39,13 @@ const ValueSets = (): React.JSX.Element => {
       setActiveTab(3);
     }
   }, [pathname]);
-
   return (
     <section className={styles.valueSets} ref={targetRef}>
-      <h1 className={styles.valueSetsHeadline}>{t("ValueSets")}</h1>
+      <SectionHeader
+        id={state.qMetadata.id}
+        headline={t("ValueSets")}
+        linkText={t("To form builder ")}
+      />
       <Tabs
         ariaLabelLeftButton="Scroll left"
         ariaLabelRightButton="Scroll right"

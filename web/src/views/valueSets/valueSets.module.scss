@@ -48,3 +48,9 @@
 .valueSetTabs > div:last-child > div > div {
   width: 100%;
 }
+
+.valueSetsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
