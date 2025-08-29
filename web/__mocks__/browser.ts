@@ -2,7 +2,7 @@
 
 import { setupWorker } from "msw/browser";
 
-import handlers from "@helsenorge/core-build/handlers";
+import handlers from "../msw-helpers/handlers";
 
 const dataFiles = import.meta.glob<JSON>("../../__data__/**/*.json");
 

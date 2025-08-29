@@ -13,8 +13,6 @@
     "stylelint": "stylelint src/**/*.{scss,module.scss}",
     "stylelint:fix": "npm run stylelint -- --fix",
     "prepare": "cd .. && husky web/.husky",
-    "prebuild": "npm run generate:cssdefinitions && tsc --noEmit --project tsconfig.json",
-    "generate:cssdefinitions": "typed-scss-modules src/**/*.module.scss",
     "eslint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "eslint:fix": "npm run eslint -- --fix",
     "prettier": "prettier --check src/**/*.{js,jsx,ts,tsx,css,scss,md,json}",
@@ -26,12 +24,11 @@
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^9.0.0",
     "@helsenorge/autosuggest": "^35.0.0",
-    "@helsenorge/core-build": "^35.0.0",
     "@helsenorge/core-utils": "^35.0.0",
     "@helsenorge/datepicker": "^11.0.0",
     "@helsenorge/designsystem-react": "^11.0.0",
     "@helsenorge/file-upload": "^35.0.0",
-    "@helsenorge/refero": "19.0.2",
+    "@helsenorge/refero": "18.0.4",
     "@nosferatu500/react-sortable-tree": "^4.0.0",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@reduxjs/toolkit": "^2.0.0",
@@ -57,7 +54,8 @@
     "react-router-dom": "^6.0.0",
     "react-virtualized": "^9.22.5",
     "remove-markdown": "^0.5.0",
-    "vite-plugin-svgr": "^4.2.0"
+    "vite-plugin-svgr": "^4.2.0",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.2",
@@ -76,12 +74,13 @@
     "@vitest/ui": "^3.0.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "sass": "^1.83.4"
+    "sass": "^1.83.4",
+    "husky": "^9.1.7"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.0.0",
-    "sass-embedded-linux-x64": "^1.88.0",
-    "sass-embedded-linux-musl-x64": "^1.88.0"
+    "sass-embedded-linux-musl-x64": "^1.88.0",
+    "sass-embedded-linux-x64": "^1.88.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --fix",

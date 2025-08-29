@@ -1,7 +1,7 @@
 import { setupServer } from "msw/node";
 
-import handlers from "@helsenorge/core-build/handlers";
-import { getDataFiles } from "@helsenorge/core-build/msw-data-helper";
+import handlers from "../msw-helpers/handlers";
+import { getDataFiles } from "../msw-helpers/msw-data-helper";
 
 const dataFiles = getDataFiles(`${process.cwd()}/__data__`);
 

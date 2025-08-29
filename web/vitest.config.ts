@@ -1,25 +1,63 @@
 import path from "path";
 
-import { defineConfig } from "vitest/config";
+import tsconfigPaths from "vite-tsconfig-paths";
+import {
+  coverageConfigDefaults,
+  defineConfig,
+  UserConfigFn,
+} from "vitest/config";
 
-import { getConfig } from "@helsenorge/core-build/vitest.config";
-
-export default defineConfig(async (env) => {
-  const config = await getConfig(env);
-  const testFiles = config?.test?.setupFiles || [];
+export const getConfig: UserConfigFn = async (env) => {
   return {
-    ...config,
+    plugins: [tsconfigPaths()],
+    test: {
+      include: [
+        "**/__tests__/**/*.[jt]s?(x)",
+        "**/?(*.)+(spec|test).[jt]s?(x)",
+      ],
+      globals: true,
+      environment: "jsdom",
+      environmentOptions: {
+        jsdom: {
+          url: "http://tjenester.helsenorge.utvikling",
+        },
+      },
+      setupFiles: ["./setupTests.ts"],
+      css: {
+        modules: {
+          classNameStrategy: "non-scoped",
+        },
+      },
+      coverage: {
+        enabled: true,
+        reporter: ["cobertura", "lcov", "json"],
+        include: ["**/*.test.tsx", "**/*.test.ts"],
+        exclude: [
+          ...coverageConfigDefaults.exclude,
+          "**/__devonly__/**",
+          "**/__mocks__/**",
+          "**/mocks/**",
+        ],
+      },
+      reporters: ["default", "junit"],
+      outputFile: {
+        junit: "test-report.xml",
+      },
+      server: {
+        deps: {
+          inline: [
+            "@helsenorge/designsystem-react",
+            "@helsenorge/datepicker",
+            "@helsenorge/lightbox",
+            "@portabletext/react",
+          ],
+        },
+      },
+    },
+
     resolve: {
       alias: [{ find: "src", replacement: path.resolve(__dirname, "src") }],
     },
-    test: {
-      ...config.test,
-      setupFiles: [...testFiles, "./setupTests.ts"],
-      globals: true,
-      include: ["**/*.test.tsx", "**/*.test.ts"],
-      coverage: {
-        reporter: ["cobertura", "json", "lcov"],
-      },
-    },
   };
-});
+};
+export default defineConfig((env) => getConfig(env));
