@@ -1,13 +1,10 @@
 import React, { useContext, useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useScrollToElement } from "src/hooks/useScrollToElement";
 import { TreeContext } from "src/store/treeStore/treeStore";
 
-import Button from "@helsenorge/designsystem-react/components/Button";
-import Icon from "@helsenorge/designsystem-react/components/Icon";
-import ArrowRight from "@helsenorge/designsystem-react/components/Icons/ArrowRight";
 import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 
 import ExistingCodeSystem from "./existing";
