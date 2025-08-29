@@ -12,7 +12,7 @@ export const getConfig: UserConfigFn = async (env) => {
     plugins: [tsconfigPaths()],
     test: {
       include: [
-        "**/__tests__/**/*.[jt]s?(x)",
+        "**/__tests__/**/(test|spec).[jt]s?(x)",
         "**/?(*.)+(spec|test).[jt]s?(x)",
       ],
       globals: true,

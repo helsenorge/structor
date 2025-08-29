@@ -41,6 +41,7 @@
     "idb": "^8.0.0",
     "immer": "^9.0.0",
     "jose": "^3.11.3",
+    "msw": "^2.10.5",
     "openid-client": "^4.7.2",
     "papaparse": "^5.4.1",
     "qs": "^6.11.2",
@@ -74,8 +75,9 @@
     "@vitest/ui": "^3.0.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "sass": "^1.83.4",
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
+    "sass": "^1.83.4"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.0.0",
