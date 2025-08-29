@@ -44,7 +44,7 @@ const ValueSets = (): React.JSX.Element => {
       <SectionHeader
         id={state.qMetadata.id}
         headline={t("ValueSets")}
-        linkText={t("To form builder ")}
+        linkText={t("To form builder")}
       />
       <Tabs
         ariaLabelLeftButton="Scroll left"

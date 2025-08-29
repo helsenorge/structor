@@ -44,7 +44,7 @@ const CodeSystems = (): React.JSX.Element => {
       <SectionHeader
         id={state.qMetadata.id}
         headline={t("CodeSystems")}
-        linkText={t("To form builder ")}
+        linkText={t("To form builder")}
       />
 
       <Tabs
