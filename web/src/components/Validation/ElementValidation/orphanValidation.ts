@@ -1,4 +1,4 @@
-import { FhirResource, QuestionnaireItem } from "fhir/r4";
+import { QuestionnaireItem, ValueSet } from "fhir/r4";
 import { TFunction } from "react-i18next";
 import { getValidationExtentionUrls } from "src/helpers/enumHelper";
 import {
@@ -8,6 +8,10 @@ import {
   hasOneOrMoreExtensions,
   isExtensionValueTrue,
 } from "src/helpers/extensionHelper";
+import {
+  generarteQuestionnaireOrBundle,
+  generateMainQuestionnaire,
+} from "src/helpers/generateQuestionnaire";
 import {
   isItemControlHelp,
   isItemControlHighlight,
@@ -44,6 +48,7 @@ import { validateChoice } from "./choiceValidation";
 import { validateGroup } from "./groupValidation";
 import { validateQuantity } from "./quantityValidation";
 import { validateRepeatableItems } from "./repeatableValidation";
+import { serviceRequestValidation } from "./serviceRequestValidation";
 
 const validEnableWhenChoiceOperators = [IOperator.equal, IOperator.notEqual];
 
@@ -442,7 +447,7 @@ const validateExtensions = (
 const validateInitial = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
-  qContained: FhirResource[],
+  qContained: ValueSet[],
 ): ValidationError[] => {
   const returnErrors: ValidationError[] = [];
   if (qItem.initial && qItem.initial[0].valueCoding) {
@@ -464,9 +469,9 @@ const validateInitial = (
         );
       }
     } else if (qItem.answerValueSet) {
-      const valueSetToCheck = qContained
-        .filter((x) => x.resourceType === "ValueSet")
-        .find((x) => `#${x.id}` === qItem.answerValueSet);
+      const valueSetToCheck = qContained.find(
+        (x) => `#${x.id}` === qItem.answerValueSet,
+      );
       if (valueSetToCheck) {
         const isMatch = getValueSetValues(valueSetToCheck).find(
           (x) =>
@@ -503,7 +508,7 @@ const validateEnableWhen = (
   t: TFunction<"translation">,
   qItems: Items,
   qItem: QuestionnaireItem,
-  qContained: FhirResource[],
+  qContained: ValueSet[],
 ): ValidationError[] => {
   const returnErrors: ValidationError[] = [];
   qItem.enableWhen?.forEach((ew, index) => {
@@ -645,9 +650,9 @@ const validateEnableWhen = (
           );
         } else {
           // check contained valueSets
-          const valueSetToCheck = qContained
-            .filter((x) => x.resourceType === "ValueSet")
-            .find((x) => `#${x.id}` === qItems[ew.question].answerValueSet);
+          const valueSetToCheck = qContained.find(
+            (x) => `#${x.id}` === qItems[ew.question].answerValueSet,
+          );
           if (valueSetToCheck) {
             const isMatch = getValueSetValues(valueSetToCheck).find(
               (x) =>
@@ -691,20 +696,30 @@ export const validateOrphanedElements = (
 ): ValidationError[] => {
   const errors: ValidationError[] = [];
   state.qOrder.forEach((item) =>
-    validate(t, errors, item, state.qItems, state.qOrder, state.qContained),
+    validate(
+      t,
+      errors,
+      item,
+      state.qItems,
+      state.qOrder,
+      state.qContained,
+      state,
+    ),
   );
 
   return errors;
 };
-
 const validate = (
   t: TFunction<"translation">,
   errors: ValidationError[],
   currentItem: OrderItem,
   qItems: Items,
   qOrder: OrderItem[],
-  qContained: FhirResource[] = [],
+  qContained: ValueSet[] = [],
+  state: TreeState,
 ): void => {
+  const questionnaires = generateMainQuestionnaire(state);
+
   const qItem = qItems[currentItem.linkId];
 
   //validate group item
@@ -751,8 +766,9 @@ const validate = (
 
   // validate repeatable items
   errors.push(...validateRepeatableItems(t, qItem, qOrder));
+  errors.push(...serviceRequestValidation(t, qItem, questionnaires));
 
   currentItem.items.forEach((item) =>
-    validate(t, errors, item, qItems, qOrder, qContained),
+    validate(t, errors, item, qItems, qOrder, qContained, state),
   );
 };
