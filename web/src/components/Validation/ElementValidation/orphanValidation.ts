@@ -45,6 +45,7 @@ import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";
 import { validateChoice } from "./choiceValidation";
+import { conditionValidation } from "./ConditionValidation";
 import { validateGroup } from "./groupValidation";
 import { validateQuantity } from "./quantityValidation";
 import { validateRepeatableItems } from "./repeatableValidation";
@@ -767,7 +768,7 @@ const validate = (
   // validate repeatable items
   errors.push(...validateRepeatableItems(t, qItem, qOrder));
   errors.push(...serviceRequestValidation(t, qItem, questionnaires));
-
+  errors.push(...conditionValidation(t, qItem, questionnaires));
   currentItem.items.forEach((item) =>
     validate(t, errors, item, qItems, qOrder, qContained, state),
   );
