@@ -21,10 +21,9 @@ export const useUploadFile = (
    */
   options: UseUploadFileOptions = {},
 ): {
-  uploadFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  uploadFiles: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  uploadQuestionnaire: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isLoading: boolean;
-  uploadRef: React.RefObject<HTMLInputElement>;
+  uploadRef: React.RefObject<HTMLInputElement | null>;
   error: string | null;
 } => {
   const { onUploadComplete } = options;
@@ -40,7 +39,6 @@ export const useUploadFile = (
       try {
         const raw = await file.text();
         const payload = JSON.parse(raw);
-
         const importedState = { ...mapToTreeState(payload), isEdited: true };
         dispatch(resetQuestionnaireAction(importedState));
 
@@ -50,10 +48,13 @@ export const useUploadFile = (
           onUploadComplete(newId);
         }
       } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error("Failed to import questionnaire:", err);
         setError(
           "Failed to import questionnaire. Please check the file format.",
         );
       } finally {
+        // always reset loading + clear input
         setIsLoading(false);
         if (uploadRef.current) uploadRef.current.value = "";
       }
@@ -61,42 +62,12 @@ export const useUploadFile = (
     [dispatch, onUploadComplete],
   );
 
-  const uploadMultipleFiles = async (files: FileList | null): Promise<void> => {
-    if (files && files.length > 0) {
-      try {
-        const filePromises = Array.from(files).map((file) => {
-          const reader = new FileReader();
-          return new Promise((resolve) => {
-            reader.onload = (): void => resolve(reader.result);
-            reader.onerror = (): void => {
-              setError("Could not read uploaded file");
-            };
-
-            reader.readAsText(file);
-          });
-        });
-        await Promise.all(filePromises);
-      } catch (err) {
-        setError("Failed to read files. Please check the file format.");
-      } finally {
-        setIsLoading(false);
-        if (uploadRef.current) uploadRef.current.value = "";
-      }
-    }
-  };
-  const uploadFile = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const uploadQuestionnaire = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     const file = e.target.files?.[0];
     if (!file) return;
     handleFile(file);
   };
-  const uploadFiles = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ): Promise<void> => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return Promise.resolve();
-    setIsLoading(true);
-    setError(null);
-    return uploadMultipleFiles(files);
-  };
-  return { uploadFile, uploadFiles, isLoading, uploadRef, error };
+  return { uploadQuestionnaire, isLoading, uploadRef, error };
 };

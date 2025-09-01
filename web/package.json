@@ -66,6 +66,7 @@
     "@types/node": "^22.0.0",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-datepicker": "^4.0.0",
+    "@types/react-dom": "^19.1.9",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
