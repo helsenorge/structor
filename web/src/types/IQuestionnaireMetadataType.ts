@@ -1,4 +1,4 @@
-import { ContactDetail, Extension, Meta, UsageContext } from "fhir/r4";
+import { Coding, ContactDetail, Extension, Meta, UsageContext } from "fhir/r4";
 
 export enum IQuestionnaireMetadataType {
   title = "title",
@@ -17,6 +17,7 @@ export enum IQuestionnaireMetadataType {
   extension = "extension",
   version = "version",
   useContext = "useContext",
+  code = "code",
 }
 
 export interface IQuestionnaireMetadata {
@@ -36,6 +37,7 @@ export interface IQuestionnaireMetadata {
   contact?: Array<ContactDetail>;
   subjectType?: Array<string>;
   extension?: Array<Extension>;
+  code?: Array<Coding>;
   purpose?: string;
   copyright?: string;
 }

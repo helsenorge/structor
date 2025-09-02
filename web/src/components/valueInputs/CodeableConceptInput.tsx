@@ -13,8 +13,8 @@ import Label, {
   LabelText,
 } from "@helsenorge/designsystem-react/components/Label";
 
-import CodingInput from "./CodingInput";
 import StringInput from "./StringInput";
+import CodingComponent from "../coding/CodingComponent";
 
 import styles from "./value-input.module.scss";
 type Props = {
@@ -66,31 +66,21 @@ const CodeableConceptInput = ({
       <div className={styles.codeableConceptCodings}>
         {codings.map((coding, index) => (
           <React.Fragment key={coding.id || index}>
-            <CodingInput
-              className={styles.codingInput}
-              value={coding}
-              onChange={(newCoding) => {
+            <CodingComponent
+              coding={coding}
+              updateCoding={(newCoding) => {
                 const newCodings = [...codings];
                 newCodings[index] = newCoding;
                 setCodings(newCodings);
                 onChange({ ...value, coding: newCodings });
               }}
+              removeCoding={() => {
+                const newCodings = [...codings];
+                newCodings.splice(index, 1);
+                setCodings(newCodings);
+                onChange({ ...value, coding: newCodings });
+              }}
             />
-            <div className={styles.removeCodingButtonWrapper}>
-              <Button
-                ariaLabel="Remove last coding"
-                variant="borderless"
-                concept="destructive"
-                onClick={() => {
-                  const newCodings = [...codings];
-                  newCodings.splice(index, 1);
-                  setCodings(newCodings);
-                  onChange({ ...value, coding: newCodings });
-                }}
-              >
-                <Icon svgIcon={RemoveIcon} />
-              </Button>
-            </div>
           </React.Fragment>
         ))}
       </div>

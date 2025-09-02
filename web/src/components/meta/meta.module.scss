@@ -1,21 +1,35 @@
-.securityTagContainer {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  margin-bottom: 0.5rem;
+.securityContainer {
+  margin: 1.5rem 0;
 }
 
 .tagContainer {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  margin-bottom: 0.5rem;
+  margin: 1.5rem 0;
 }
 
 .profileContainer {
+  margin: 1.5rem 0;
+}
+
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.profileItemContainer {
   display: grid;
   grid-template-columns: 1fr auto;
-  margin-bottom: 0.5rem;
 }
 
 .metaContainer {
   text-align: left;
+}
+
+.expanderList {
+  box-sizing: border-box;
+}
+
+.expanderItem {
+  box-sizing: border-box;
 }

@@ -4,6 +4,7 @@ import "./Accordion.css";
 type AccordionProps = {
   title: string;
   children: React.ReactNode;
+  className?: string;
 };
 
 const Accordion = (props: AccordionProps): React.JSX.Element => {
@@ -23,7 +24,9 @@ const Accordion = (props: AccordionProps): React.JSX.Element => {
         {props.title}
       </button>
       <div className={`panel${open ? " active" : ""}`}>
-        {open && <div className="content">{props.children}</div>}
+        {open && (
+          <div className={`content ${props.className}`}>{props.children}</div>
+        )}
       </div>
     </>
   );

@@ -1,0 +1,34 @@
+.codingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.removeButtonWrapper {
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.codingComponent {
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+  border-bottom: 1px solid #ccc;
+
+  & > div {
+    margin: 1rem 0;
+  }
+}
+
+.extensions {
+  margin-left: 0.5rem;
+}
+
+.codingContent {
+  box-sizing: border-box;
+}
+
+.codingContent.error {
+  border: 3px solid red;
+}

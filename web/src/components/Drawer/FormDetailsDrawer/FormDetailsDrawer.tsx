@@ -1,6 +1,7 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
+import AdvancedQuestionnaireSettings from "src/components/AdvancedQuestionnaireSettings";
 import QuestionnaireSettings from "src/components/QuestionnaireDetails/QuestionnaireSettings";
 
 import { useKeyPress } from "../../../hooks/useKeyPress";
@@ -39,6 +40,7 @@ const FormDetailsDrawer = ({
       />
       <Sidebar questionnaireDetailsErrors={questionnaireDetailsErrors} />
       <LanguageAccordion setTranslateLang={setTranslateLang} />
+      <AdvancedQuestionnaireSettings />
     </Drawer>
   );
 };

@@ -1,6 +1,6 @@
 import { CodeSystemConceptDesignation } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import CodingInput from "src/components/valueInputs/CodingInput";
+import CodingComponent from "src/components/coding/CodingComponent";
 import IdInput from "src/components/valueInputs/IdInput";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
@@ -52,9 +52,9 @@ const CodeSystemDesignation = ({
         />
         <div className={styles.useInputContainer}>
           <Label labelTexts={[{ text: "Use" }]}></Label>
-          <CodingInput
-            value={designation.use}
-            onChange={(value) => {
+          <CodingComponent
+            coding={designation.use || { code: "", system: "", display: "" }}
+            updateCoding={(value) => {
               updateDesignation("use", value, conceptIndex, index);
             }}
           />

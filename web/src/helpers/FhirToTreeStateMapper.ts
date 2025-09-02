@@ -66,6 +66,7 @@ function extractMetadata(questionnaireObj: Questionnaire) {
     copyright,
     date,
     url,
+    code,
   }: // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   IQuestionnaireMetadata) => ({
     resourceType,
@@ -86,6 +87,7 @@ function extractMetadata(questionnaireObj: Questionnaire) {
     copyright,
     date,
     url,
+    code,
   });
   return getMetadataParts(questionnaireObj);
 }

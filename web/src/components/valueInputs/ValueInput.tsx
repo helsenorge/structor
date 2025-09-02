@@ -7,13 +7,13 @@ import type {
 
 import BooleanInput from "./BooleanInput";
 import CodeableConceptInput from "./CodeableConceptInput";
-import CodingInput from "./CodingInput";
 import DecimalInput from "./DecimalInput";
 import DurationInput from "./DurationInput";
 import IntegerInput from "./IntegerInput";
 import { NotImplemented } from "./NotImplemented";
 import QuantityInput from "./QuantityInput";
 import StringInput from "./StringInput";
+import CodingComponent from "../coding/CodingComponent";
 
 type ValueInputProps = ValueInputPropsMap[ExtensionValueKey];
 
@@ -28,7 +28,13 @@ const ValueInput = (props: ValueInputProps): React.JSX.Element => {
     case "valueDecimal":
       return <DecimalInput value={value} onChange={onChange} />;
     case "valueCoding":
-      return <CodingInput value={value} onChange={onChange} />;
+      return (
+        <CodingComponent
+          coding={value}
+          updateCoding={onChange}
+          removeCoding={() => {}}
+        />
+      );
     case "valueCodeableConcept":
       return <CodeableConceptInput value={value} onChange={onChange} />;
     case "valueQuantity":

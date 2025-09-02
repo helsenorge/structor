@@ -1,4 +1,5 @@
 export declare const error: string;
+export declare const extensionExpanderItem: string;
 export declare const extensionItem: string;
 export declare const extensionItemInput: string;
 export declare const extensionItemInputWrapper: string;
