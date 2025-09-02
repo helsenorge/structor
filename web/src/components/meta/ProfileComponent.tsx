@@ -34,6 +34,7 @@ export const ProfileComponent = ({
       <Button
         variant="borderless"
         concept="destructive"
+        ariaLabel={t("Remove profile")}
         onClick={() =>
           handleChange({
             ...meta,
