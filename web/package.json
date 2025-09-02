@@ -64,9 +64,10 @@
     "@testing-library/user-event": "^14.0.0",
     "@types/fhir": "^0.0.41",
     "@types/node": "^22.0.0",
+    "@types/react": "^18.3.24",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-datepicker": "^4.0.0",
-    "@types/react-dom": "^19.1.9",
+    "@types/react-dom": "^18.3.7",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
@@ -78,7 +79,8 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
-    "sass": "^1.83.4"
+    "sass": "^1.83.4",
+    "typescript": "^5.9.2"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.0.0",
