@@ -23,7 +23,7 @@ export const useUploadFile = (
 ): {
   uploadQuestionnaire: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isLoading: boolean;
-  uploadRef: React.RefObject<HTMLInputElement | null>;
+  uploadRef: React.RefObject<HTMLInputElement>;
   error: string | null;
 } => {
   const { onUploadComplete } = options;
