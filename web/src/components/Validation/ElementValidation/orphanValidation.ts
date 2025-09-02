@@ -8,10 +8,7 @@ import {
   hasOneOrMoreExtensions,
   isExtensionValueTrue,
 } from "src/helpers/extensionHelper";
-import {
-  generarteQuestionnaireOrBundle,
-  generateMainQuestionnaire,
-} from "src/helpers/generateQuestionnaire";
+import { generateMainQuestionnaire } from "src/helpers/generateQuestionnaire";
 import {
   isItemControlHelp,
   isItemControlHighlight,
