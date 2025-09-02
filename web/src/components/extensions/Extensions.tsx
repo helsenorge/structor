@@ -127,7 +127,7 @@ export const Extensions = ({
     </div>
   );
 };
-
+type ExtensionValue = string | boolean | number | undefined;
 const ExtensionItem = ({
   index,
   ext,
@@ -140,7 +140,7 @@ const ExtensionItem = ({
   updateExtension: (params: {
     extension: Extension;
     field: keyof Extension;
-    value: string | boolean | number | undefined;
+    value: ExtensionValue;
   }) => void;
   handleTypeChange: (
     index: number,
@@ -209,8 +209,8 @@ const ExtensionItem = ({
         {valueType && (
           <ValueInput
             type={valueType}
-            value={value as string | boolean | number | undefined}
-            onChange={(newValue: string | boolean | number | undefined) =>
+            value={value as ExtensionValue}
+            onChange={(newValue: ExtensionValue) =>
               updateExtension({
                 extension: ext,
                 field: valueType,
