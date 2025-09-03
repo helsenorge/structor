@@ -2,6 +2,7 @@ import { useContext } from "react";
 
 import { Coding, Extension, Meta } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { useValidationContext } from "src/contexts/validation/useValidationContext";
 import { updateQuestionnaireMetadataAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
 import { IQuestionnaireMetadataType } from "src/types/IQuestionnaireMetadataType";
@@ -15,12 +16,14 @@ import Accordion from "../Accordion/Accordion";
 import CodingsComponent from "../coding/CodingsComponent";
 import { Extensions } from "../extensions/Extensions";
 import MetaComponent from "../meta/Meta";
+import { ValidationType } from "../Validation/validationTypes";
 
 import style from "./advanced-questionnaire-settings.module.scss";
 
 const AdvancedQuestionnaireSettings = (): React.JSX.Element => {
   const { t } = useTranslation();
   const { state, dispatch } = useContext(TreeContext);
+  const { questionnaireDetailsErrors } = useValidationContext();
   const handleUpdateExtensions = (extensions: Extension[]): void => {
     dispatch(
       updateQuestionnaireMetadataAction(
@@ -43,6 +46,9 @@ const AdvancedQuestionnaireSettings = (): React.JSX.Element => {
       updateQuestionnaireMetadataAction(IQuestionnaireMetadataType.meta, meta),
     );
   };
+  const codeErrors = questionnaireDetailsErrors.filter(
+    (X) => X.errorProperty === ValidationType.questionnaireCode,
+  );
   return (
     <Accordion
       title={t("Advanced Questionnaire Settings")}
@@ -81,6 +87,9 @@ const AdvancedQuestionnaireSettings = (): React.JSX.Element => {
           <CodingsComponent
             codings={state.qMetadata.code}
             updateCoding={handleUpdateCodings}
+            hasValidationError={(index: number) =>
+              codeErrors.some((x) => x.index === index)
+            }
             collapsable
           />
         </Expander>

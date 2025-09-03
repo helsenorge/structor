@@ -6,6 +6,7 @@ import { ValidationError } from "src/utils/validationUtils";
 import { validateBundle } from "./bundleValidation";
 import { validateLanguage } from "./languageValidation";
 import { validateMetadata } from "./metadataValidation";
+import { validateQuestionnaireCode } from "./questionnaireCodeValidation";
 import { metaSecurityValidation } from "./securityValidation";
 import { validateQuestionnaireSettings } from "./settingsValidation";
 import { validateSidebar } from "./sidebarValidation";
@@ -22,10 +23,12 @@ export const validateQuestionnaireDetails = (
   const securityValidation = metaSecurityValidation(t, state.qMetadata);
   const bundleValidation = validateBundle(t, questionnaires);
   const languageValidation = validateLanguage(t, questionnaires);
+  const codeValidation = validateQuestionnaireCode(t, state.qMetadata);
   return metadataValidation
     .concat(sidebarValidation)
     .concat(settingValidation)
     .concat(securityValidation)
     .concat(bundleValidation)
-    .concat(languageValidation);
+    .concat(languageValidation)
+    .concat(codeValidation);
 };

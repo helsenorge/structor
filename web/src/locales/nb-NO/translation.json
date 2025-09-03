@@ -559,5 +559,6 @@
   "Advanced Questionnaire Settings": "Avanserte innstillinger",
   "Codes": "Codes",
   "Add Profile": "Legg til profil",
-  "Add Security": "Legg til sikkerhet"
+  "Add Security": "Legg til sikkerhet",
+  "Invalid code on questionnaire": "Ugyldig Code på spørreskjema"
 }
