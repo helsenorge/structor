@@ -1,0 +1,48 @@
+.accordion {
+  background: transparent;
+  color: #000;
+  cursor: pointer;
+  font-size: 20px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+  border-top: 8px solid #ebf8ff;
+  padding: 20px 70px;
+
+  &p {
+    font-size: 16px;
+  }
+
+  &::after {
+    content: "+"; /* Unicode character for "plus" sign (+) */
+    float: right;
+    margin-left: 5px;
+    font-size: 24px;
+  }
+
+  &.active,
+  &:hover {
+    background-color: #ccc;
+  }
+
+  & .panel {
+    padding: 0;
+    background-color: white;
+    transition: max-height 0.2s ease-in-out;
+    white-space: pre-wrap;
+  }
+}
+
+.panel.active {
+  display: block;
+}
+
+.content {
+  padding: 20px 70px;
+}
+
+.active::after {
+  transform: rotate(45deg);
+}

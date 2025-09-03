@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import { Provider } from "react-redux";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import X from "@helsenorge/designsystem-react/components/Icons/X";
 
 import { Refero, rootReducer } from "@helsenorge/refero";
 
@@ -68,7 +70,13 @@ const FormFillerPreview = ({
       <div className="overlay">
         <div className="preview-window">
           <div className="title align-everything">
-            <IconBtn type="x" title={t("Close")} onClick={showFormFiller} />
+            <Button
+              ariaLabel={t("Close")}
+              onClick={showFormFiller}
+              variant="borderless"
+            >
+              <Icon color="white" svgIcon={X} />
+            </Button>
             <h1>{t("Preview")}</h1>
             <div className="pull-right">
               <Select

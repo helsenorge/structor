@@ -42,11 +42,11 @@ import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";
 import { validateChoice } from "./choiceValidation";
-import { conditionValidation } from "./ConditionValidation";
+import { conditionValidation } from "./fhirExtract/ConditionValidation";
+import { serviceRequestValidation } from "./fhirExtract/serviceRequestValidation";
 import { validateGroup } from "./groupValidation";
 import { validateQuantity } from "./quantityValidation";
 import { validateRepeatableItems } from "./repeatableValidation";
-import { serviceRequestValidation } from "./serviceRequestValidation";
 
 const validEnableWhenChoiceOperators = [IOperator.equal, IOperator.notEqual];
 

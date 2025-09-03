@@ -2,9 +2,12 @@ import React, { MouseEvent } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import Btn from "../Btn/Btn";
-import IconBtn from "../IconBtn/IconBtn";
 import "./Modal.css";
+import Button from "@helsenorge/designsystem-react/components/Button";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import X from "@helsenorge/designsystem-react/components/Icons/X";
+
+import Btn from "../Btn/Btn";
 
 type Props = {
   close?: () => void;
@@ -32,7 +35,9 @@ const Modal = ({
     <div className="overlay align-everything">
       <div className={`modal ${size}`} id={id}>
         <div className="title">
-          <IconBtn type="x" title={t("Close")} onClick={close} />
+          <Button variant="borderless" ariaLabel={t("Close")} onClick={close}>
+            <Icon color="white" svgIcon={X} />
+          </Button>
           <h1>{title}</h1>
         </div>
         <div className="content">{children}</div>

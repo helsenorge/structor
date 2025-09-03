@@ -2,11 +2,12 @@ import React, { forwardRef, ReactNode, useRef, Ref } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import useOutsideClick from "../../hooks/useOutsideClick";
-import IconBtn from "../IconBtn/IconBtn";
-
 import "./Drawer.css";
+import Button from "@helsenorge/designsystem-react/components/Button";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import X from "@helsenorge/designsystem-react/components/Icons/X";
 
+import useOutsideClick from "../../hooks/useOutsideClick";
 type DrawerProps = {
   position: "left" | "right";
   visible: boolean;
@@ -31,7 +32,14 @@ const Drawer = (
       {props.visible && <div className="overlay" />}
       <div className={classNames} ref={ref || drawerRef}>
         <div className="drawer-header">
-          <IconBtn type="x" title={t("Close (Esc)")} onClick={props.hide} />
+          <Button
+            ariaLabel={t("Close (Esc)")}
+            onClick={props.hide}
+            variant="borderless"
+            className="close-button"
+          >
+            <Icon color="white" svgIcon={X} />
+          </Button>
           {props.title && <h1>{props.title}</h1>}
         </div>
         {props.children}

@@ -1,10 +1,10 @@
 import React, { useState, MouseEvent } from "react";
-import "./Accordion.css";
+
+import styles from "./accordion.module.scss";
 
 type AccordionProps = {
   title: string;
   children: React.ReactNode;
-  className?: string;
 };
 
 const Accordion = (props: AccordionProps): React.JSX.Element => {
@@ -18,15 +18,13 @@ const Accordion = (props: AccordionProps): React.JSX.Element => {
   return (
     <>
       <button
-        className={`accordion${open ? " active" : ""}`}
+        className={`${styles.accordion} ${open ? styles.active : ""}`}
         onClick={handleClick}
       >
         {props.title}
       </button>
-      <div className={`panel${open ? " active" : ""}`}>
-        {open && (
-          <div className={`content ${props.className}`}>{props.children}</div>
-        )}
+      <div className={`${styles.panel} ${open ? styles.active : ""}`}>
+        {open && <div className={styles.content}>{props.children}</div>}
       </div>
     </>
   );

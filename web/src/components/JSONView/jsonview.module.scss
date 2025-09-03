@@ -1,0 +1,40 @@
+.copyWrapper {
+  width: 80%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.structorHelper {
+  background-color: #f5f3f3;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+}
+
+.title {
+  background-color: var(--primary-2);
+  display: flex;
+  padding: 10px 0;
+}
+
+.json {
+  display: block;
+  white-space: pre-wrap;
+  text-align: left;
+  padding: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.overlay {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #000000a8;
+  z-index: 4;
+  width: 100%;
+  transition: 1s ease-in-out;
+}

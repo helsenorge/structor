@@ -1,13 +1,16 @@
-import React, { MouseEvent } from "react";
+import React from "react";
 
 import { QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
+import "./ItemButtons.css";
 import { DeleteButton } from "src/components/Modal/DeleteModal";
+
+import Button from "@helsenorge/designsystem-react/components/Button";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import Copy from "@helsenorge/designsystem-react/components/Icons/Copy";
 
 import { duplicateItemAction } from "../../../store/treeStore/treeActions";
 import { ActionType } from "../../../store/treeStore/treeStore";
-
-import "./ItemButtons.css";
 
 export const generateItemButtons = (
   t: TFunction<"translation">,
@@ -20,28 +23,25 @@ export const generateItemButtons = (
     return [];
   }
 
-  const dispatchDuplicateItem = (
-    event: MouseEvent<HTMLButtonElement>,
-  ): void => {
-    event.stopPropagation();
-    dispatch(duplicateItemAction(item.linkId, parentArray));
-  };
-
   const getClassNames = (): string => {
-    return `item-button ${showLabel ? "item-button--visible" : ""}`;
+    return `${showLabel ? "visible" : ""}`;
   };
 
   return [
-    <button
+    <Button
       key="duplicate-item-button"
       className={getClassNames()}
-      onClick={dispatchDuplicateItem}
-      aria-label="Duplicate element"
-      title={t("Duplicate")}
+      onClick={(event): void => {
+        event?.stopPropagation();
+        dispatch(duplicateItemAction(item.linkId, parentArray));
+      }}
+      ariaLabel={t("Duplicate")}
+      size="medium"
+      variant="borderless"
     >
-      <i className="duplicate-icon" />
-      {showLabel && <label>{t("Duplicate")}</label>}
-    </button>,
+      <Icon svgIcon={Copy} />
+      {showLabel && t("Duplicate")}
+    </Button>,
     <DeleteButton
       dispatch={dispatch}
       item={item}

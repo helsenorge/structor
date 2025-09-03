@@ -2,7 +2,8 @@ import React from "react";
 
 import { ValueSetExpansionParameter } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import "./RadioBtn.css";
+
+import styles from "./radio-btn.module.scss";
 
 type Props = {
   onChange: (value: string) => void;
@@ -18,14 +19,14 @@ const ValueSetExpansionRadioBtn = ({
   const { t } = useTranslation();
 
   return (
-    <div className="radioBtn">
+    <div className={styles.radioBtn}>
       {options.map((x) => {
         return (
           <div key={x.name}>
             <label>
               <input
                 data-testid={`radioBtn-${x.name}`}
-                className="radioBtn-input"
+                className={styles.radioBtnInput}
                 type="radio"
                 checked={x.valueUri === checked}
                 value={x.valueUri}

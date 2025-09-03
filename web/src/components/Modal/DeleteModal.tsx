@@ -5,6 +5,10 @@ import { useTranslation } from "react-i18next";
 import { deleteItemAction } from "src/store/treeStore/treeActions";
 import { ActionType } from "src/store/treeStore/treeStore";
 
+import Button from "@helsenorge/designsystem-react/components/Button";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import TrashCan from "@helsenorge/designsystem-react/components/Icons/TrashCan";
+
 import Modal from "../Modal/Modal";
 
 interface DeleteButtonProps {
@@ -24,10 +28,10 @@ export const DeleteButton = ({
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const getClassNames = (): string => {
-    return `item-button ${showLabel ? "item-button--visible" : ""}`;
+    return `${showLabel ? "item-button--visible" : ""}`;
   };
 
-  const onClickButton = (event: MouseEvent<HTMLButtonElement>): void => {
+  const onClickButton = (): void => {
     setShowDeleteModal(!showDeleteModal);
   };
 
@@ -44,15 +48,15 @@ export const DeleteButton = ({
 
   return (
     <>
-      <button
+      <Button
         className={getClassNames()}
         onClick={onClickButton}
-        aria-label="Delete element"
-        title={t("Delete")}
+        ariaLabel="Delete element"
+        variant="borderless"
       >
-        <i className="trash-icon" />
+        <Icon svgIcon={TrashCan} />
         {showLabel && <label>{t("Delete")}</label>}
-      </button>
+      </Button>
       {showDeleteModal && (
         <Modal
           close={onClose}

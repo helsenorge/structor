@@ -2,7 +2,8 @@ import React from "react";
 
 import { ValueSetComposeIncludeConcept } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import "./RadioBtn.css";
+
+import styles from "./radio-btn.module.scss";
 
 type Props = {
   onChange: (value: string) => void;
@@ -20,13 +21,13 @@ const RadioBtn = ({
   const { t } = useTranslation();
 
   return (
-    <div className="radioBtn">
+    <div className={styles.radioBtn}>
       {options.map((x) => {
         return (
           <div key={x.code}>
             <label>
               <input
-                className="radioBtn-input"
+                className={styles.radioBtnInput}
                 type="radio"
                 checked={x.code === checked}
                 value={x.code}

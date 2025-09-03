@@ -4,7 +4,10 @@ import { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import "./QuestionDrawer.css";
-import { getValueSetsFromState } from "src/store/treeStore/selectors";
+import Button from "@helsenorge/designsystem-react/components/Button";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import ChevronLeft from "@helsenorge/designsystem-react/components/Icons/ChevronLeft";
+import ChevronRight from "@helsenorge/designsystem-react/components/Icons/ChevronRight";
 
 import { getEnableWhenConditionals } from "../../helpers/enableWhenValidConditional";
 import { calculateItemNumber } from "../../helpers/treeHelper";
@@ -28,7 +31,6 @@ const QuestionDrawer = ({
 }: Props): React.JSX.Element | null => {
   const { t } = useTranslation();
   const { state, dispatch } = useContext(TreeContext);
-  const valueSets = getValueSetsFromState(state);
   const { previous, next, hasNext, hasPrevious } = useItemNavigation();
   const closeDrawer = (): void => {
     setTimeout(() => {
@@ -75,22 +77,24 @@ const QuestionDrawer = ({
       <div className="item-button-row">
         <div className="item-button-wrapper">
           {hasPrevious() && (
-            <IconBtn
-              type="back"
-              title={t("Previous (left arrow)")}
+            <Button
+              variant="borderless"
+              ariaLabel={t("Previous (left arrow)")}
               onClick={previous}
-              color="black"
-            />
+            >
+              <Icon color="black" svgIcon={ChevronLeft} />
+            </Button>
           )}
         </div>
         <div className="item-button-wrapper">
           {hasNext() && (
-            <IconBtn
-              type="forward"
-              title={t("Next (right arrow)")}
+            <Button
+              ariaLabel={t("Next (right arrow)")}
               onClick={next}
-              color="black"
-            />
+              variant="borderless"
+            >
+              <Icon color="black" svgIcon={ChevronRight} />
+            </Button>
           )}
         </div>
         {item && (
@@ -117,7 +121,7 @@ const QuestionDrawer = ({
           parentArray={parentArray}
           conditionalArray={getConditional(parentArray, item.linkId)}
           getItem={getQItem}
-          containedResources={valueSets}
+          containedResources={state.qContained}
           dispatch={dispatch}
           itemValidationErrors={itemValidationErrors}
         />
