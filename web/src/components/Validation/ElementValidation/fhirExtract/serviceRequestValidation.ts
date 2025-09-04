@@ -6,12 +6,12 @@ import { ValidationError } from "src/utils/validationUtils";
 
 import { ItemTypeConstants } from "@helsenorge/refero";
 
+import { findQuestionnaireItemInQuestionnaire } from "./utils";
 import { createError } from "../../validationHelper";
-import { findQuestionnaireItemInQuestionnaire } from "../utils";
 
 const reasonReference = "ServiceRequest#reasonReference";
 const supportingInfo = "ServiceRequest#supportingInfo";
-const definitions: string[] = [reasonReference, supportingInfo];
+const CONDITION_ANCHORS: string[] = [reasonReference, supportingInfo];
 export const serviceRequestValidation = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
@@ -21,6 +21,7 @@ export const serviceRequestValidation = (
     t,
     qItem,
     questionnaire,
+    CONDITION_ANCHORS,
   );
   const validateSupportingInfoValidation = validateSupportingInfo(t, qItem);
   return validateReasonReferenceValidation.concat(
@@ -31,9 +32,15 @@ const validateReasonReference = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
   questionnaire: Questionnaire,
+  CONDITION_ANCHORS: readonly string[],
 ): ValidationError[] => {
   return [
-    ...ancestorHasServiceRequestExtension(t, qItem, questionnaire),
+    ...ancestorHasServiceRequestExtension(
+      t,
+      qItem,
+      questionnaire,
+      CONDITION_ANCHORS,
+    ),
     ...resourceMustBeCorrectType(
       t,
       qItem,
@@ -137,11 +144,12 @@ const ancestorHasServiceRequestExtension = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
   questionnaire: Questionnaire,
+  CONDITION_ANCHORS: readonly string[],
 ): ValidationError[] => {
   if (!questionnaire || !questionnaire?.item) return [];
   if (
     qItem.definition &&
-    definitions.some((def) => qItem.definition?.includes(def))
+    CONDITION_ANCHORS.some((def) => qItem.definition?.includes(def))
   ) {
     const parent = findQuestionnaireItemInQuestionnaire(
       questionnaire.item,
@@ -153,7 +161,7 @@ const ancestorHasServiceRequestExtension = (
       (itm: QuestionnaireItem) =>
         !!(
           itm.definition &&
-          definitions.some((def) => itm.definition?.includes(def))
+          CONDITION_ANCHORS.some((def) => itm.definition?.includes(def))
         ),
     );
     if (!parent) {

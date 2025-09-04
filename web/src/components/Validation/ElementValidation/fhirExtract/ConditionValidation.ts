@@ -1,6 +1,5 @@
-import { Extension, Questionnaire, QuestionnaireItem } from "fhir/r4";
+import { Questionnaire, QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
-import { findExtensionByUrl } from "src/helpers/extensionHelper";
 import {
   IExtensionType,
   ItemExtractionContext,
@@ -9,31 +8,14 @@ import { ValidationError } from "src/utils/validationUtils";
 
 import { ItemTypeConstants } from "@helsenorge/refero";
 
-import { createError } from "../../validationHelper";
-import { findQuestionnaireItemInQuestionnaire } from "../utils";
-
-const COND_EVIDENCE_ANCHOR = "Condition#Evidence";
-const COND_RECORDED_DATE_ANCHOR = "Condition#RecordedDate";
-const COND_CODE_ANCHOR = "Condition#Code"; // <== casing fixed
-
-const CONDITION_ANCHORS = [
+import {
+  ancestorHasConditionExtractionContext,
   COND_EVIDENCE_ANCHOR,
-  COND_RECORDED_DATE_ANCHOR,
-  COND_CODE_ANCHOR,
-] as const;
-
-const makeExpectedTypesText = (
-  t: TFunction<"translation">,
-  types: Array<QuestionnaireItem["type"] | string>,
-  orCodeSystem?: string | boolean,
-): string => {
-  const uniq = Array.from(new Set(types));
-  const list = uniq.join(", ");
-  if (orCodeSystem) {
-    return t(`Expected one of [{0}] or a code.`).replace("{0}", list);
-  }
-  return t(`Expected one of [{0}].`).replace("{0}", list);
-};
+  CONDITION_ANCHORS,
+  hasExtensionWithUrlAndValueUri,
+  makeExpectedTypesText,
+} from "./utils";
+import { createError } from "../../validationHelper";
 
 export const conditionValidation = (
   t: TFunction<"translation">,
@@ -44,24 +26,31 @@ export const conditionValidation = (
     t,
     qItem,
     questionnaire,
+    CONDITION_ANCHORS,
   );
   return conditionEvidenceValidation;
 };
-const hasExtensionWithUrlAndValueUri = (
-  url: string,
-  valueUri: string,
-  extensions?: Extension[],
-): boolean => {
-  const ext = findExtensionByUrl(extensions, url);
-  return ext?.valueUri === valueUri;
-};
+
 const validateConditionEvidence = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
+
   questionnaire: Questionnaire,
+  CONDITION_ANCHORS: readonly string[],
 ): ValidationError[] => {
   return [
-    ...ancestorHasConditionExtractionContext(t, qItem, questionnaire),
+    ...ancestorHasConditionExtractionContext(
+      t,
+      qItem,
+      questionnaire,
+      CONDITION_ANCHORS,
+      (itm: QuestionnaireItem) =>
+        hasExtensionWithUrlAndValueUri(
+          IExtensionType.itemExtractionContext,
+          ItemExtractionContext.condition,
+          itm.extension,
+        ),
+    ),
     ...resourceMustBeCorrectType({
       t,
       qItem,
@@ -146,63 +135,5 @@ const resourceMustBeCorrectType = ({
       ),
     ];
   }
-  return [];
-};
-
-const ancestorHasConditionExtractionContext = (
-  t: TFunction<"translation">,
-  qItem: QuestionnaireItem,
-  questionnaire: Questionnaire,
-): ValidationError[] => {
-  if (!questionnaire?.item?.length) return [];
-
-  const definitionHitsAnchor =
-    !!qItem.definition &&
-    CONDITION_ANCHORS.some((def) => qItem.definition!.includes(def));
-
-  if (!definitionHitsAnchor) return [];
-
-  const parent = findQuestionnaireItemInQuestionnaire(
-    questionnaire.item,
-    (itm: QuestionnaireItem) =>
-      hasExtensionWithUrlAndValueUri(
-        IExtensionType.itemExtractionContext,
-        ItemExtractionContext.condition,
-        itm.extension,
-      ),
-  );
-
-  const child = findQuestionnaireItemInQuestionnaire(
-    parent?.item,
-    (itm: QuestionnaireItem) =>
-      !!itm.definition &&
-      CONDITION_ANCHORS.some((def) => itm.definition!.includes(def)),
-  );
-
-  if (!parent) {
-    return [
-      createError(
-        qItem.linkId,
-        "system",
-        t(`no item with extension {0} found as parent to {1}`)
-          .replace("{0}", IExtensionType.itemExtractionContext)
-          .replace("{1}", qItem.linkId),
-      ),
-    ];
-  }
-
-  if (parent && !child) {
-    const anchorsText = CONDITION_ANCHORS.join(" or ");
-    return [
-      createError(
-        qItem.linkId,
-        "system",
-        t(`no item with definition {0} found as child to {1}`)
-          .replace("{0}", anchorsText)
-          .replace("{1}", qItem.linkId),
-      ),
-    ];
-  }
-
   return [];
 };

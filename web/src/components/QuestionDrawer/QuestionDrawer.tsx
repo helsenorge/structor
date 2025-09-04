@@ -19,7 +19,6 @@ import { TreeContext } from "../../store/treeStore/treeStore";
 import { ValidationError } from "../../utils/validationUtils";
 import { generateItemButtons } from "../AnchorMenu/ItemButtons/ItemButtons";
 import Drawer from "../Drawer/Drawer";
-import IconBtn from "../IconBtn/IconBtn";
 import Question from "../Question/Question";
 
 interface Props {

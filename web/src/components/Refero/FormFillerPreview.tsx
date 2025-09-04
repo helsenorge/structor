@@ -20,7 +20,6 @@ import {
 } from "../../helpers/LanguageHelper";
 import { getResources } from "../../locales/referoResources";
 import { TreeState } from "../../store/treeStore/treeStore";
-import IconBtn from "../IconBtn/IconBtn";
 import Select from "../Select/Select";
 
 type Props = {

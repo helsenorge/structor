@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Questionnaire, QuestionnaireItem, Coding } from "fhir/r4";
 
-import { serviceRequestValidation } from "../fhirExtract/serviceRequestValidation";
+import { serviceRequestValidation } from "../serviceRequestValidation";
 
 vi.mock("src/helpers/extensionHelper", () => {
   return {
