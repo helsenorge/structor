@@ -39,6 +39,7 @@ const QExtensions = ({
           dispatch(updateItemExtensionAction(id, extensions));
         }}
         extensions={getExtension() || []}
+        collapsable
         hasValidationError={hasValidationError}
       />
     </div>
