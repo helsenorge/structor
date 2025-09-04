@@ -2,6 +2,8 @@ import { Identifier } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
+import Expander from "@helsenorge/designsystem-react/components/Expander";
+import ExpanderList from "@helsenorge/designsystem-react/components/ExpanderList";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
 import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
 import Label from "@helsenorge/designsystem-react/components/Label";
@@ -13,11 +15,13 @@ type Props = {
   identifiers: Identifier[] | undefined;
   addNewIdentifier: () => void;
   handleChange: (index: number, value: Identifier | undefined) => void;
+  collapsable?: boolean;
 };
 const Identifiers = ({
   identifiers,
   addNewIdentifier,
   handleChange,
+  collapsable,
 }: Props): React.JSX.Element => {
   const { t } = useTranslation();
 
@@ -34,14 +38,35 @@ const Identifiers = ({
           {t("Add identifier")}
         </Button>
       </div>
-      {identifiers?.map((identifier, index) => (
-        <div className={styles.identifierInputContainer} key={identifier.id}>
-          <IdentifierInput
-            value={identifier}
-            onChange={(value) => handleChange(index, value)}
-          />
-        </div>
-      ))}
+      <ExpanderList>
+        {identifiers?.map((identifier, index) =>
+          collapsable ? (
+            <Expander
+              title={identifier.id || t("New Identifier")}
+              key={identifier.id}
+              expanded={index === 0}
+              contentClassNames={styles.expanderContent}
+            >
+              <div className={styles.identifierInputContainer}>
+                <IdentifierInput
+                  value={identifier}
+                  onChange={(value) => handleChange(index, value)}
+                />
+              </div>
+            </Expander>
+          ) : (
+            <div
+              className={styles.identifierInputContainer}
+              key={identifier.id || identifier.system || index}
+            >
+              <IdentifierInput
+                value={identifier}
+                onChange={(value) => handleChange(index, value)}
+              />
+            </div>
+          ),
+        )}
+      </ExpanderList>
     </>
   );
 };

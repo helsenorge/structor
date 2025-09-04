@@ -4,6 +4,7 @@ export declare const codingInput: string;
 export declare const durationButtonContainer: string;
 export declare const durationContainer: string;
 export declare const durationInputContainer: string;
+export declare const expanderContent: string;
 export declare const identifierContainer: string;
 export declare const identifierInputContainer: string;
 export declare const idInput: string;

@@ -2,11 +2,15 @@ import { ContactDetail } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
+import Expander from "@helsenorge/designsystem-react/components/Expander";
+import ExpanderList from "@helsenorge/designsystem-react/components/ExpanderList";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
 import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
 import Label from "@helsenorge/designsystem-react/components/Label";
 
 import ContactDetailInput from "./Index";
+
+import styles from "./contact-detail.module.scss";
 
 type Props = {
   contacts: ContactDetail[] | undefined;
@@ -17,6 +21,7 @@ type Props = {
   ) => void;
   handleAdd: () => void;
   handleRemove: (index: number) => void;
+  collapsable?: boolean;
 };
 
 const ContactDetails = ({
@@ -24,6 +29,7 @@ const ContactDetails = ({
   handleUpdate,
   handleAdd,
   handleRemove,
+  collapsable,
 }: Props): React.JSX.Element => {
   const { t } = useTranslation();
 
@@ -45,18 +51,35 @@ const ContactDetails = ({
       >
         <Icon svgIcon={PlussIcon} /> {t("Add contact")}
       </Button>
-      {contacts?.map((contact, index) => {
-        return (
-          <ContactDetailInput
-            key={contact.id || contact.name}
-            contactDetail={contact}
-            onChange={(field, value) =>
-              handleContactChange(index, field, value)
-            }
-            handleRemove={() => handleRemove(index)}
-          />
-        );
-      })}
+      <ExpanderList>
+        {contacts?.map((contact, index) => {
+          return collapsable ? (
+            <Expander
+              key={contact.id || contact.name}
+              title={contact.name || t("new Contact")}
+              expanded={index === 0}
+              contentClassNames={styles.expanderContent}
+            >
+              <ContactDetailInput
+                contactDetail={contact}
+                onChange={(field, value) =>
+                  handleContactChange(index, field, value)
+                }
+                handleRemove={() => handleRemove(index)}
+              />
+            </Expander>
+          ) : (
+            <ContactDetailInput
+              key={contact.id || contact.name}
+              contactDetail={contact}
+              onChange={(field, value) =>
+                handleContactChange(index, field, value)
+              }
+              handleRemove={() => handleRemove(index)}
+            />
+          );
+        })}
+      </ExpanderList>
     </div>
   );
 };

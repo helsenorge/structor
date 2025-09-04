@@ -35,6 +35,7 @@ export const Concepts = ({
               extensions={item.extension}
               updateExtensions={updateExtensions}
               buttonText={t("Add extension")}
+              collapsable
             />
           </div>
         );

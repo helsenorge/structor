@@ -107,6 +107,7 @@ export const ValueSetDetails = (): React.JSX.Element => {
       </Select>
       <div className={styles.identifierContainer}>
         <Identifiers
+          collapsable
           addNewIdentifier={addNewIdentifier}
           handleChange={handleIdentifierChange}
           identifiers={newValueSet.identifier}
@@ -114,6 +115,7 @@ export const ValueSetDetails = (): React.JSX.Element => {
       </div>
 
       <ContactDetails
+        collapsable
         contacts={newValueSet.contact}
         handleUpdate={(field, value, index) =>
           setNewValueSet((prev) => ({
