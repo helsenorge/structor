@@ -1,4 +1,3 @@
-// src/components/Validation/ElementValidation/__tests__/conditionValidation.test.ts
 import { describe, it, expect } from "vitest";
 import type {
   Questionnaire,
@@ -6,8 +5,6 @@ import type {
   Coding,
   Extension,
 } from "fhir/r4";
-
-// -- juster stien om nødvendig
 
 import { ItemTypeConstants } from "@helsenorge/refero";
 import {

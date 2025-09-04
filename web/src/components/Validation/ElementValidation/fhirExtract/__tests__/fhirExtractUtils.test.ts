@@ -1,10 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import type {
-  Questionnaire,
-  QuestionnaireItem,
-  Coding,
-  Extension,
-} from "fhir/r4";
+import type { Questionnaire, QuestionnaireItem, Coding } from "fhir/r4";
 
 import {
   makeExpectedTypesText,

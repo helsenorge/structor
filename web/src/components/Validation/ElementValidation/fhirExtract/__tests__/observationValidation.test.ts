@@ -1,4 +1,3 @@
-// src/components/Validation/ElementValidation/__tests__/observationValidation.test.ts
 import { describe, it, expect } from "vitest";
 import type {
   Questionnaire,
@@ -7,7 +6,6 @@ import type {
   Extension,
 } from "fhir/r4";
 
-// -- juster denne hvis plassering er annerledes hos deg
 import { observationValidation } from "../observationValidation";
 
 import { ItemTypeConstants } from "@helsenorge/refero";
