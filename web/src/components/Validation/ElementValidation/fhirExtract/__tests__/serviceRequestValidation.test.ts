@@ -2,14 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Questionnaire, QuestionnaireItem, Coding } from "fhir/r4";
 
 import { serviceRequestValidation } from "../serviceRequestValidation";
-
-vi.mock("src/helpers/extensionHelper", () => {
-  return {
-    hasExtension: (item: any, type: string) =>
-      Array.isArray(item?.extension) &&
-      item.extension.some((e: any) => e?.url === type),
-  };
-});
+import { ItemExtractionContext } from "src/types/IQuestionnareItemType";
 
 const t = (s: string) => s;
 
@@ -39,7 +32,9 @@ const makeParentWithExtractionContext = (
 ): QuestionnaireItem =>
   makeItem({
     linkId: "parent",
-    extension: [{ url: SDC_EXT, valueBoolean: true }],
+    extension: [
+      { url: SDC_EXT, valueUri: ItemExtractionContext.serviceRequest },
+    ],
     item: children,
   });
 
@@ -94,12 +89,11 @@ describe("reasonReference.type – (allowed type) ELLER (code.system === fhir re
     expect(serviceRequestValidation(t as any, child, q)).toEqual([]);
   });
 
-  it("FAIL: ikke-allowed type (string) og code.system != FHIR_RES_TYPES", () => {
+  it("FAIL: ikke-allowed type (string) og !code", () => {
     const child = makeItem({
       linkId: "rrt4",
       definition: `${RR}.type`,
       type: "string",
-      code: [{ system: "http://example.org/other", code: "X" }],
     });
     const q = withAncestor(child);
     const res = serviceRequestValidation(t as any, child, q);
@@ -148,12 +142,11 @@ describe("reasonReference.identifier – samme regler som for type", () => {
     expect(serviceRequestValidation(t as any, child, q)).toEqual([]);
   });
 
-  it("FAIL: feil type + code.system != FHIR_RES_TYPES", () => {
+  it("FAIL: feil type + !code", () => {
     const child = makeItem({
       linkId: "rri3",
       definition: `${RR}.identifier`,
       type: "string",
-      code: [{ system: "http://example.org/other", code: "X" }],
     });
     const q = withAncestor(child);
     const res = serviceRequestValidation(t as any, child, q);
@@ -256,12 +249,11 @@ describe("supportingInfo.type/identifier – (allowed type) ELLER (code.system =
     expect(serviceRequestValidation(t as any, item, q)).toEqual([]);
   });
 
-  it("FAIL: feil type og code.system != FHIR_RES_TYPES", () => {
+  it("FAIL: feil type og !code", () => {
     const item = makeItem({
       linkId: "sit3",
       definition: `${SI}.type`,
       type: "string",
-      code: [{ system: "http://example.org/other", code: "X" }],
     });
     const q = withAncestor(item);
     const res = serviceRequestValidation(t as any, item, q);
@@ -289,12 +281,11 @@ describe("supportingInfo.type/identifier – (allowed type) ELLER (code.system =
     expect(serviceRequestValidation(t as any, item, q)).toEqual([]);
   });
 
-  it("FAIL: identifier feil type uten korrekt code.system", () => {
+  it("FAIL: identifier feil type uten code.system", () => {
     const item = makeItem({
       linkId: "sii3",
       definition: `${SI}.identifier`,
       type: "string",
-      code: [{ system: "http://example.org/other", code: "X" }],
     });
     const q = withAncestor(item);
     const res = serviceRequestValidation(t as any, item, q);

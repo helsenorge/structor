@@ -12,10 +12,17 @@ import {
   ancestorHasConditionExtractionContext,
   COND_EVIDENCE_ANCHOR,
   CONDITION_ANCHORS,
+  ConditionAnchor,
   hasExtensionWithUrlAndValueUri,
-  makeExpectedTypesText,
+  resourceMustBeCorrectType,
 } from "./utils";
-import { createError } from "../../validationHelper";
+
+type resourceType =
+  | "detail.type"
+  | "detail.identifier"
+  | "detail.display"
+  | "detail.reference"
+  | "code";
 
 export const conditionValidation = (
   t: TFunction<"translation">,
@@ -51,7 +58,7 @@ const validateConditionEvidence = (
           itm.extension,
         ),
     ),
-    ...resourceMustBeCorrectType({
+    ...resourceMustBeCorrectType<ConditionAnchor, resourceType>({
       t,
       qItem,
       resource: "detail.type",
@@ -59,7 +66,7 @@ const validateConditionEvidence = (
       allowedTypes: [ItemTypeConstants.CHOICE, ItemTypeConstants.OPENCHOICE],
       orCodeSystem: true,
     }),
-    ...resourceMustBeCorrectType({
+    ...resourceMustBeCorrectType<ConditionAnchor, resourceType>({
       t,
       qItem,
       resource: "detail.identifier",
@@ -67,21 +74,21 @@ const validateConditionEvidence = (
       allowedTypes: [ItemTypeConstants.CHOICE, ItemTypeConstants.OPENCHOICE],
       orCodeSystem: true,
     }),
-    ...resourceMustBeCorrectType({
+    ...resourceMustBeCorrectType<ConditionAnchor, resourceType>({
       t,
       qItem,
       resource: "detail.display",
       anchor: COND_EVIDENCE_ANCHOR,
       allowedTypes: [ItemTypeConstants.STRING, ItemTypeConstants.DISPLAY],
     }),
-    ...resourceMustBeCorrectType({
+    ...resourceMustBeCorrectType<ConditionAnchor, resourceType>({
       t,
       qItem,
       resource: "detail.reference",
       anchor: COND_EVIDENCE_ANCHOR,
       allowedTypes: [ItemTypeConstants.STRING, ItemTypeConstants.DISPLAY],
     }),
-    ...resourceMustBeCorrectType({
+    ...resourceMustBeCorrectType<ConditionAnchor, resourceType>({
       t,
       qItem,
       resource: "code",
@@ -90,50 +97,4 @@ const validateConditionEvidence = (
       orCodeSystem: true,
     }),
   ];
-};
-
-const resourceMustBeCorrectType = ({
-  t,
-  qItem,
-  anchor,
-  resource,
-  allowedTypes,
-  orCodeSystem,
-}: {
-  t: TFunction<"translation">;
-  qItem: QuestionnaireItem;
-  anchor: (typeof CONDITION_ANCHORS)[number];
-  resource:
-    | "detail.type"
-    | "detail.identifier"
-    | "detail.display"
-    | "detail.reference"
-    | "code";
-  allowedTypes: Array<QuestionnaireItem["type"] | string>;
-  orCodeSystem?: string | boolean;
-}): ValidationError[] => {
-  if (qItem.definition && qItem.definition.includes(`${anchor}.${resource}`)) {
-    const typeOk = allowedTypes.includes(qItem.type);
-
-    const codeSystemOk =
-      typeof orCodeSystem === "boolean"
-        ? !orCodeSystem
-        : !!qItem.code?.some((c) => c.system === orCodeSystem);
-
-    if (typeOk || codeSystemOk) {
-      return [];
-    }
-
-    return [
-      createError(
-        qItem.linkId,
-        "system",
-        t(`Invalid type for item {0}. {1} on {2}.`)
-          .replace("{0}", qItem.linkId)
-          .replace("{1}", makeExpectedTypesText(t, allowedTypes, orCodeSystem))
-          .replace("{2}", resource),
-      ),
-    ];
-  }
-  return [];
 };

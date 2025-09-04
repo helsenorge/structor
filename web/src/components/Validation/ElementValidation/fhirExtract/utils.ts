@@ -1,10 +1,7 @@
 import { Extension, Questionnaire, QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
 import { findExtensionByUrl, hasExtension } from "src/helpers/extensionHelper";
-import {
-  IExtensionType,
-  ItemExtractionContext,
-} from "src/types/IQuestionnareItemType";
+import { IExtensionType } from "src/types/IQuestionnareItemType";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { createError } from "../../validationHelper";
@@ -104,6 +101,55 @@ export const ancestorHasConditionExtractionContext = (
 
   return [];
 };
+export const resourceMustBeCorrectType = <
+  T extends string,
+  ResourceType extends string,
+>({
+  t,
+  qItem,
+  anchor,
+  resource,
+  allowedTypes,
+  orCodeSystem,
+}: {
+  t: TFunction<"translation">;
+  qItem: QuestionnaireItem;
+  anchor: T;
+  resource?: ResourceType;
+  allowedTypes: Array<QuestionnaireItem["type"] | string>;
+  orCodeSystem?: string | true;
+}): ValidationError[] => {
+  if (
+    qItem.definition &&
+    (resource
+      ? qItem.definition.includes(`${anchor}.${resource}`)
+      : qItem.definition.endsWith(anchor))
+  ) {
+    const typeOk = allowedTypes.includes(qItem.type);
+
+    const codeSystemOk =
+      typeof orCodeSystem === "boolean"
+        ? qItem.code && qItem.code?.length > 0
+        : !!qItem.code?.some((c) => c.system === orCodeSystem);
+
+    if (typeOk || codeSystemOk) {
+      return [];
+    }
+
+    return [
+      createError(
+        qItem.linkId,
+        "system",
+        t(`Invalid type for item {0}. {1}${resource ? ` on {2}` : ""}`)
+          .replace("{0}", qItem.linkId)
+          .replace("{1}", makeExpectedTypesText(t, allowedTypes, orCodeSystem))
+          .replace("{2}", resource || ""),
+      ),
+    ];
+  }
+  return [];
+};
+
 //Observation
 export const OBS_COMPONENT_ANCHOR = "Observation#component";
 export const OBS_DERIVED_FROM_ANCHOR = "Observation#derivedFrom";
@@ -122,7 +168,7 @@ export type ObservationAnchor = (typeof OBSERVATION_ANCHORS)[number];
 //Condition
 export const COND_EVIDENCE_ANCHOR = "Condition#Evidence";
 export const COND_RECORDED_DATE_ANCHOR = "Condition#RecordedDate";
-export const COND_CODE_ANCHOR = "Condition#Code"; // <== casing fixed
+export const COND_CODE_ANCHOR = "Condition#Code";
 
 export const CONDITION_ANCHORS = [
   COND_EVIDENCE_ANCHOR,
@@ -130,3 +176,13 @@ export const CONDITION_ANCHORS = [
   COND_CODE_ANCHOR,
 ] as const;
 export type ConditionAnchor = (typeof CONDITION_ANCHORS)[number];
+
+//ServiceRequest
+export const SR_REASON_REFERENCE_ANCHOR = "ServiceRequest#reasonReference";
+export const SR_SUPPORTING_INFO_ANCHOR = "ServiceRequest#supportingInfo";
+
+export const SERVICE_REQUEST_ANCHORS = [
+  SR_REASON_REFERENCE_ANCHOR,
+  SR_SUPPORTING_INFO_ANCHOR,
+] as const;
+export type ServiceRequestAnchor = (typeof SERVICE_REQUEST_ANCHORS)[number];

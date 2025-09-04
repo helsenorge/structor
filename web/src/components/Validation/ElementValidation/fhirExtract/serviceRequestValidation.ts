@@ -1,17 +1,25 @@
 import { Questionnaire, QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
-import { hasExtension } from "src/helpers/extensionHelper";
-import { ICodeSystem, IExtensionType } from "src/types/IQuestionnareItemType";
+import {
+  IExtensionType,
+  ItemExtractionContext,
+} from "src/types/IQuestionnareItemType";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { ItemTypeConstants } from "@helsenorge/refero";
 
-import { findQuestionnaireItemInQuestionnaire } from "./utils";
-import { createError } from "../../validationHelper";
+import {
+  ancestorHasConditionExtractionContext,
+  hasExtensionWithUrlAndValueUri,
+  resourceMustBeCorrectType,
+  SERVICE_REQUEST_ANCHORS,
+  ServiceRequestAnchor,
+  SR_REASON_REFERENCE_ANCHOR,
+  SR_SUPPORTING_INFO_ANCHOR,
+} from "./utils";
 
-const reasonReference = "ServiceRequest#reasonReference";
-const supportingInfo = "ServiceRequest#supportingInfo";
-const CONDITION_ANCHORS: string[] = [reasonReference, supportingInfo];
+type ResourceType = "type" | "identifier" | "display" | "reference";
+
 export const serviceRequestValidation = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
@@ -21,7 +29,7 @@ export const serviceRequestValidation = (
     t,
     qItem,
     questionnaire,
-    CONDITION_ANCHORS,
+    SERVICE_REQUEST_ANCHORS,
   );
   const validateSupportingInfoValidation = validateSupportingInfo(t, qItem);
   return validateReasonReferenceValidation.concat(
@@ -35,36 +43,48 @@ const validateReasonReference = (
   CONDITION_ANCHORS: readonly string[],
 ): ValidationError[] => {
   return [
-    ...ancestorHasServiceRequestExtension(
+    ...ancestorHasConditionExtractionContext(
       t,
       qItem,
       questionnaire,
       CONDITION_ANCHORS,
+      (itm: QuestionnaireItem) =>
+        hasExtensionWithUrlAndValueUri(
+          IExtensionType.itemExtractionContext,
+          ItemExtractionContext.serviceRequest,
+          itm.extension,
+        ),
     ),
-    ...resourceMustBeCorrectType(
+    ...resourceMustBeCorrectType<ServiceRequestAnchor, ResourceType>({
       t,
       qItem,
-      "type",
-      "reasonReference",
-      [ItemTypeConstants.CHOICE, ItemTypeConstants.OPENCHOICE],
-      ICodeSystem.resourceTypes,
-    ),
-    ...resourceMustBeCorrectType(
+      anchor: SR_REASON_REFERENCE_ANCHOR,
+      allowedTypes: [ItemTypeConstants.CHOICE, ItemTypeConstants.OPENCHOICE],
+      resource: "type",
+      orCodeSystem: true,
+    }),
+    ...resourceMustBeCorrectType<ServiceRequestAnchor, ResourceType>({
       t,
       qItem,
-      "identifier",
-      "reasonReference",
-      [ItemTypeConstants.CHOICE, ItemTypeConstants.OPENCHOICE],
-      ICodeSystem.resourceTypes,
-    ),
-    ...resourceMustBeCorrectType(t, qItem, "display", "reasonReference", [
-      ItemTypeConstants.STRING,
-      ItemTypeConstants.DISPLAY,
-    ]),
-    ...resourceMustBeCorrectType(t, qItem, "reference", "reasonReference", [
-      ItemTypeConstants.STRING,
-      ItemTypeConstants.DISPLAY,
-    ]),
+      resource: "identifier",
+      anchor: SR_REASON_REFERENCE_ANCHOR,
+      allowedTypes: [ItemTypeConstants.CHOICE, ItemTypeConstants.OPENCHOICE],
+      orCodeSystem: true,
+    }),
+    ...resourceMustBeCorrectType<ServiceRequestAnchor, ResourceType>({
+      t,
+      qItem,
+      resource: "display",
+      anchor: SR_REASON_REFERENCE_ANCHOR,
+      allowedTypes: [ItemTypeConstants.STRING, ItemTypeConstants.DISPLAY],
+    }),
+    ...resourceMustBeCorrectType<ServiceRequestAnchor, ResourceType>({
+      t,
+      qItem,
+      resource: "reference",
+      anchor: SR_REASON_REFERENCE_ANCHOR,
+      allowedTypes: [ItemTypeConstants.STRING, ItemTypeConstants.DISPLAY],
+    }),
   ];
 };
 const validateSupportingInfo = (
@@ -72,120 +92,35 @@ const validateSupportingInfo = (
   qItem: QuestionnaireItem,
 ): ValidationError[] => {
   return [
-    ...resourceMustBeCorrectType(
+    ...resourceMustBeCorrectType({
       t,
       qItem,
-      "type",
-      "supportingInfo",
-      [ItemTypeConstants.CHOICE, ItemTypeConstants.OPENCHOICE],
-      ICodeSystem.resourceTypes,
-    ),
-    ...resourceMustBeCorrectType(
+      resource: "type",
+      anchor: SR_SUPPORTING_INFO_ANCHOR,
+      allowedTypes: [ItemTypeConstants.CHOICE, ItemTypeConstants.OPENCHOICE],
+      orCodeSystem: true,
+    }),
+    ...resourceMustBeCorrectType({
       t,
       qItem,
-      "identifier",
-      "supportingInfo",
-      [ItemTypeConstants.CHOICE, ItemTypeConstants.OPENCHOICE],
-      ICodeSystem.resourceTypes,
-    ),
-    ...resourceMustBeCorrectType(t, qItem, "display", "supportingInfo", [
-      ItemTypeConstants.STRING,
-      ItemTypeConstants.DISPLAY,
-    ]),
-    ...resourceMustBeCorrectType(t, qItem, "reference", "supportingInfo", [
-      ItemTypeConstants.STRING,
-      ItemTypeConstants.DISPLAY,
-    ]),
+      resource: "identifier",
+      anchor: SR_SUPPORTING_INFO_ANCHOR,
+      allowedTypes: [ItemTypeConstants.CHOICE, ItemTypeConstants.OPENCHOICE],
+      orCodeSystem: true,
+    }),
+    ...resourceMustBeCorrectType({
+      t,
+      qItem,
+      resource: "display",
+      anchor: SR_SUPPORTING_INFO_ANCHOR,
+      allowedTypes: [ItemTypeConstants.STRING, ItemTypeConstants.DISPLAY],
+    }),
+    ...resourceMustBeCorrectType({
+      t,
+      qItem,
+      resource: "reference",
+      anchor: SR_SUPPORTING_INFO_ANCHOR,
+      allowedTypes: [ItemTypeConstants.STRING, ItemTypeConstants.DISPLAY],
+    }),
   ];
-};
-const resourceMustBeCorrectType = (
-  t: TFunction<"translation">,
-  qItem: QuestionnaireItem,
-  resource: "type" | "identifier" | "display" | "reference",
-  serviceRequestType: "reasonReference" | "supportingInfo",
-  types: QuestionnaireItem["type"][] | string[],
-  orCodeSystem?: string | boolean,
-): ValidationError[] => {
-  if (
-    qItem.definition &&
-    qItem.definition.includes(
-      `ServiceRequest#${serviceRequestType}.${resource}`,
-    )
-  ) {
-    if (!types.includes(qItem.type)) {
-      const codeSystemOk =
-        typeof orCodeSystem === "boolean"
-          ? !orCodeSystem
-          : !!qItem.code?.some((c) => c.system === orCodeSystem);
-
-      if (codeSystemOk) {
-        return [];
-      } else {
-        return [
-          createError(
-            qItem.linkId,
-            "system",
-            t(
-              `Invalid type for item {0}. Expected choice, open-choice, or code. on {1}.`,
-            )
-              .replace("{0}", qItem.linkId)
-              .replace("{1}", resource),
-          ),
-        ];
-      }
-    } else {
-      return [];
-    }
-  }
-  return [];
-};
-
-const ancestorHasServiceRequestExtension = (
-  t: TFunction<"translation">,
-  qItem: QuestionnaireItem,
-  questionnaire: Questionnaire,
-  CONDITION_ANCHORS: readonly string[],
-): ValidationError[] => {
-  if (!questionnaire || !questionnaire?.item) return [];
-  if (
-    qItem.definition &&
-    CONDITION_ANCHORS.some((def) => qItem.definition?.includes(def))
-  ) {
-    const parent = findQuestionnaireItemInQuestionnaire(
-      questionnaire.item,
-      (itm: QuestionnaireItem) =>
-        hasExtension(itm, IExtensionType.itemExtractionContext),
-    );
-    const child = findQuestionnaireItemInQuestionnaire(
-      parent?.item,
-      (itm: QuestionnaireItem) =>
-        !!(
-          itm.definition &&
-          CONDITION_ANCHORS.some((def) => itm.definition?.includes(def))
-        ),
-    );
-    if (!parent) {
-      return [
-        createError(
-          qItem.linkId,
-          "system",
-          t(`no item with extension {0} found as parent to {1}`)
-            .replace("{0}", IExtensionType.itemExtractionContext)
-            .replace("{1}", qItem.linkId),
-        ),
-      ];
-    } else if (parent && !child) {
-      return [
-        createError(
-          qItem.linkId,
-          "system",
-          t(`no item with definition {0} or {1} found as child to {2}`)
-            .replace("{0}", `${reasonReference}`)
-            .replace("{1}", `${supportingInfo}`)
-            .replace("{2}", qItem.linkId),
-        ),
-      ];
-    }
-  }
-  return [];
 };

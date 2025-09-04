@@ -12,15 +12,13 @@ import {
   OBS_CATEGORY_ANCHOR,
   OBS_COMPONENT_ANCHOR,
   OBS_EFFECTIVE_DATE_TIME_ANCHOR,
-  findQuestionnaireItemInQuestionnaire,
   hasExtensionWithUrlAndValueUri,
-  makeExpectedTypesText,
   OBSERVATION_ANCHORS,
   OBS_CODE_ANCHOR,
   ObservationAnchor,
   ancestorHasConditionExtractionContext,
+  resourceMustBeCorrectType,
 } from "./utils";
-import { createError } from "../../validationHelper";
 
 type ResourceType = "value[x]" | "code";
 
@@ -54,7 +52,7 @@ const validateObservation = <T extends readonly string[]>(
           itm.extension,
         ),
     ),
-    ...resourceMustBeCorrectType<ObservationAnchor>({
+    ...resourceMustBeCorrectType<ObservationAnchor, ResourceType>({
       t,
       qItem,
       resource: "value[x]",
@@ -73,7 +71,7 @@ const validateObservation = <T extends readonly string[]>(
       ],
       orCodeSystem: true,
     }),
-    ...resourceMustBeCorrectType<ObservationAnchor>({
+    ...resourceMustBeCorrectType<ObservationAnchor, ResourceType>({
       t,
       qItem,
       resource: "code",
@@ -81,28 +79,28 @@ const validateObservation = <T extends readonly string[]>(
       allowedTypes: [ItemTypeConstants.CHOICE, ItemTypeConstants.DISPLAY],
       orCodeSystem: true,
     }),
-    ...resourceMustBeCorrectType<ObservationAnchor>({
+    ...resourceMustBeCorrectType<ObservationAnchor, ResourceType>({
       t,
       qItem,
       anchor: OBS_COMPONENT_ANCHOR,
       allowedTypes: [ItemTypeConstants.CHOICE, ItemTypeConstants.DISPLAY],
       orCodeSystem: true,
     }),
-    ...resourceMustBeCorrectType<ObservationAnchor>({
+    ...resourceMustBeCorrectType<ObservationAnchor, ResourceType>({
       t,
       qItem,
       anchor: OBS_CODE_ANCHOR,
       allowedTypes: [ItemTypeConstants.CHOICE, ItemTypeConstants.DISPLAY],
       orCodeSystem: true,
     }),
-    ...resourceMustBeCorrectType<ObservationAnchor>({
+    ...resourceMustBeCorrectType<ObservationAnchor, ResourceType>({
       t,
       qItem,
       anchor: OBS_CATEGORY_ANCHOR,
       allowedTypes: [ItemTypeConstants.CHOICE, ItemTypeConstants.DISPLAY],
       orCodeSystem: true,
     }),
-    ...resourceMustBeCorrectType<ObservationAnchor>({
+    ...resourceMustBeCorrectType<ObservationAnchor, ResourceType>({
       t,
       qItem,
       anchor: OBS_EFFECTIVE_DATE_TIME_ANCHOR,
@@ -110,50 +108,4 @@ const validateObservation = <T extends readonly string[]>(
       orCodeSystem: true,
     }),
   ];
-};
-
-const resourceMustBeCorrectType = <T extends string>({
-  t,
-  qItem,
-  anchor,
-  resource,
-  allowedTypes,
-  orCodeSystem,
-}: {
-  t: TFunction<"translation">;
-  qItem: QuestionnaireItem;
-  anchor: T;
-  resource?: ResourceType;
-  allowedTypes: Array<QuestionnaireItem["type"] | string>;
-  orCodeSystem?: string | boolean;
-}): ValidationError[] => {
-  if (
-    qItem.definition &&
-    (resource
-      ? qItem.definition.includes(`${anchor}.${resource}`)
-      : qItem.definition.endsWith(anchor))
-  ) {
-    const typeOk = allowedTypes.includes(qItem.type);
-
-    const codeSystemOk =
-      typeof orCodeSystem === "boolean"
-        ? !orCodeSystem
-        : !!qItem.code?.some((c) => c.system === orCodeSystem);
-
-    if (typeOk || codeSystemOk) {
-      return [];
-    }
-
-    return [
-      createError(
-        qItem.linkId,
-        "system",
-        t(`Invalid type for item {0}. {1}${resource ? ` on {2}` : ""}`)
-          .replace("{0}", qItem.linkId)
-          .replace("{1}", makeExpectedTypesText(t, allowedTypes, orCodeSystem))
-          .replace("{2}", resource || ""),
-      ),
-    ];
-  }
-  return [];
 };
