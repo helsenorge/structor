@@ -258,15 +258,46 @@ export const getAllOrderItemChildrenOfItem = (
     }
 
     if (orderItem.items) {
-      const nestedResults = getAllOrderItemChildrenOfItem(
-        orderItem.items,
-        parentLinkId,
+      result.push(
+        ...getAllOrderItemChildrenOfItem(orderItem.items, parentLinkId),
       );
-      result.push(...nestedResults);
     }
   }
 
   return result;
+};
+
+export const getQuestionnaireItemWithChildren = ({
+  linkId,
+  qItems,
+  qOrder,
+}: {
+  linkId: string;
+  qItems: Items;
+  qOrder: OrderItem[];
+}): QuestionnaireItem | undefined => {
+  const orderItem = getOrderItemByLinkId(qOrder, linkId);
+  if (!orderItem) return undefined;
+
+  const currentItem = qItems[linkId];
+  if (!currentItem) return undefined;
+
+  const children: QuestionnaireItem[] = [];
+
+  if (orderItem.items && orderItem.items.length > 0) {
+    for (const childOrderItem of orderItem.items) {
+      const childWithItsChildren = getQuestionnaireItemWithChildren({
+        linkId: childOrderItem.linkId,
+        qItems,
+        qOrder,
+      });
+      if (childWithItsChildren) {
+        children.push(childWithItsChildren);
+      }
+    }
+  }
+
+  return { ...currentItem, item: children.length > 0 ? children : undefined };
 };
 
 export const updateChildWithMatchingCode = (
@@ -308,7 +339,10 @@ export const findCodingBySystemAndCode = (
   return codeing?.find((c) => c.system === system && c.code === codeValue);
 };
 
-export const canEditCode = (system: string, codingProp: ICodingProperty) => {
+export const canEditCode = (
+  system: string,
+  codingProp: ICodingProperty,
+): boolean => {
   if (codingProp === ICodingProperty.display) {
     return system !== ICodeSystem.tableColumn;
   } else {

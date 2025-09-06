@@ -133,7 +133,16 @@ export const existItemWithSystem = (
   const exist = item.code?.find((x: Coding) => x.system === system);
   return exist ? true : false;
 };
-
+export const oneOrMoreItemControlsExistOnItem = (
+  item: QuestionnaireItem,
+  itemControlList: ItemControlType[],
+): boolean => {
+  return (
+    itemControlList.filter((itemControl) =>
+      itemControlExistsInExtensionList(item.extension, itemControl),
+    ).length > 0
+  );
+};
 export const itemControlExistsInExtensionList = (
   extension?: Extension[],
   itemControlType?: ItemControlType,
@@ -146,7 +155,7 @@ export const itemControlExistsInExtensionList = (
         ),
       );
 
-const existItemControlExtension = (item: QuestionnaireItem): boolean => {
+export const existItemControlExtension = (item: QuestionnaireItem): boolean => {
   return (
     item.extension?.find(
       (x: Extension) => x.url === IExtensionType.itemControl,

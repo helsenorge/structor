@@ -8,7 +8,6 @@ import {
   hasOneOrMoreExtensions,
   isExtensionValueTrue,
 } from "src/helpers/extensionHelper";
-import { generateMainQuestionnaire } from "src/helpers/generateQuestionnaire";
 import {
   isItemControlHelp,
   isItemControlHighlight,
@@ -42,8 +41,6 @@ import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";
 import { validateChoice } from "./choiceValidation";
-import { conditionValidation } from "./fhirExtract/ConditionValidation";
-import { serviceRequestValidation } from "./fhirExtract/serviceRequestValidation";
 import { validateGroup } from "./groupValidation";
 import { validateQuantity } from "./quantityValidation";
 import { validateRepeatableItems } from "./repeatableValidation";
@@ -694,19 +691,12 @@ export const validateOrphanedElements = (
 ): ValidationError[] => {
   const errors: ValidationError[] = [];
   state.qOrder.forEach((item) =>
-    validate(
-      t,
-      errors,
-      item,
-      state.qItems,
-      state.qOrder,
-      state.qContained,
-      state,
-    ),
+    validate(t, errors, item, state.qItems, state.qOrder, state.qContained),
   );
 
   return errors;
 };
+
 const validate = (
   t: TFunction<"translation">,
   errors: ValidationError[],
@@ -714,12 +704,8 @@ const validate = (
   qItems: Items,
   qOrder: OrderItem[],
   qContained: ValueSet[] = [],
-  state: TreeState,
 ): void => {
-  const questionnaires = generateMainQuestionnaire(state);
-
   const qItem = qItems[currentItem.linkId];
-
   //validate group item
   errors.push(...validateGroup(t, qItem, qItems, qOrder));
 
@@ -764,9 +750,8 @@ const validate = (
 
   // validate repeatable items
   errors.push(...validateRepeatableItems(t, qItem, qOrder));
-  errors.push(...serviceRequestValidation(t, qItem, questionnaires));
-  errors.push(...conditionValidation(t, qItem, questionnaires));
+
   currentItem.items.forEach((item) =>
-    validate(t, errors, item, qItems, qOrder, qContained, state),
+    validate(t, errors, item, qItems, qOrder, qContained),
   );
 };
