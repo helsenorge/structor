@@ -32,21 +32,26 @@ const allDecendentsHasTableColumnCode = ({
   item: QuestionnaireItem;
   t: TFunction<"translation">;
 }): ValidationError[] => {
+  const errors: ValidationError[] = [];
+
   if (!hasTableColumnCode(item)) {
-    return [
+    errors.push(
       createError(
         item.linkId,
         ValidationType.table,
         t("All decendents of a tableHN2 must have a table-column code"),
         ErrorLevel.error,
       ),
-    ];
+    );
   }
+
   for (const child of item.item || []) {
-    return [...allDecendentsHasTableColumnCode({ item: child, t })];
+    errors.push(...allDecendentsHasTableColumnCode({ item: child, t }));
   }
-  return [];
+
+  return errors;
 };
+
 const allTableChildrenMustHaveTableColumnCode = ({
   t,
   qItem,
@@ -58,12 +63,14 @@ const allTableChildrenMustHaveTableColumnCode = ({
     qItem,
     tableType: ItemControlType.tableHN2,
   });
-  if (itemIsGTableGroup) {
-    for (const child of qItem.item || []) {
-      return allDecendentsHasTableColumnCode({ item: child, t });
-    }
+
+  if (!itemIsGTableGroup) return [];
+
+  const errors: ValidationError[] = [];
+  for (const child of qItem.item || []) {
+    errors.push(...allDecendentsHasTableColumnCode({ item: child, t }));
   }
-  return [];
+  return errors;
 };
 const allChildrenMustHaveTheCorrectProperties = ({
   t,

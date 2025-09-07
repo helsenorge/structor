@@ -135,6 +135,7 @@ export const validateTableOrderingColumn = ({
   }
   return [];
 };
+
 const itemAndAllChildrenAreReadOnly = (qItem: QuestionnaireItem): boolean => {
   if (!qItem.readOnly) {
     return false;
@@ -144,6 +145,7 @@ const itemAndAllChildrenAreReadOnly = (qItem: QuestionnaireItem): boolean => {
   }
   return true;
 };
+
 export const allTableItemsMustBeReadOnly = ({
   t,
   qItem,
@@ -171,6 +173,7 @@ export const allTableItemsMustBeReadOnly = ({
   }
   return [];
 };
+
 export const validateTableCommonFunction = ({
   t,
   qItem,

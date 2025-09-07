@@ -131,18 +131,7 @@ export const checkAllDecendantsForCorrectTypes = ({
 export const isItemsWithReadOnlyProperty = (
   qItem: QuestionnaireItem,
 ): boolean => {
-  if (
-    qItem.type === IQuestionnaireItemType.string ||
-    qItem.type === IQuestionnaireItemType.text ||
-    qItem.type === IQuestionnaireItemType.quantity ||
-    qItem.type === IQuestionnaireItemType.integer ||
-    qItem.type === IQuestionnaireItemType.decimal ||
-    qItem.type === IQuestionnaireItemType.date ||
-    qItem.type === IQuestionnaireItemType.dateTime ||
-    qItem.type === IQuestionnaireItemType.time ||
-    qItem.type === IQuestionnaireItemType.choice ||
-    qItem.type === IQuestionnaireItemType.openChoice
-  ) {
+  if (qItem.type !== IQuestionnaireItemType.display) {
     return true;
   }
   return false;
