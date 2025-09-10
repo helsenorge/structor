@@ -7,10 +7,11 @@ import {
   IExtensionType,
   IQuestionnaireItemType,
 } from "src/types/IQuestionnareItemType";
+import { getDuplicateLinkIds } from "src/utils/traversionUtils";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { createError } from "../validationHelper";
-import { ValidationType } from "../validationTypes";
+import { ErrorLevel, ValidationType } from "../validationTypes";
 
 export const validateCalulatedExpressionElements = (
   t: TFunction<"translation">,
@@ -40,27 +41,11 @@ const validate = (
     errors.push(...validateMaxMin(t, qItem));
     errors.push(...validateLinkIds(t, qItem, qOrder));
     errors.push(...validateItemType(t, qItem));
-    errors.push(...readOnlyValidation(t, qItem));
+    errors.push(...validateAllLinkIdsInQuestionnaireIsUnique(t, qOrder));
   }
   currentItem.items.forEach((item) =>
     validate(t, item, qItems, qOrder, errors),
   );
-};
-const readOnlyValidation = (
-  t: TFunction<"translation">,
-  qItem: QuestionnaireItem,
-): ValidationError[] => {
-  const errors: ValidationError[] = [];
-  if (!qItem.readOnly) {
-    errors.push(
-      createError(
-        qItem.linkId,
-        ValidationType.readonly,
-        t("Calculated expression must be read-only"),
-      ),
-    );
-  }
-  return errors;
 };
 
 const validateMaxMin = (
@@ -103,7 +88,7 @@ const validateLinkIds = (
           qItem.linkId,
           ValidationType.calculation,
           t(
-            "Calculation expression does not have an earlier question with LinkId '{0}'",
+            "Item with LinkId '{0}' does not exist in the form and is used in the calculated expression.",
           ).replace("{0}", linkId),
         ),
       );
@@ -132,5 +117,24 @@ const validateItemType = (
       ),
     );
   }
+  return errors;
+};
+const validateAllLinkIdsInQuestionnaireIsUnique = (
+  t: TFunction<"translation">,
+  qOrder: OrderItem[],
+): ValidationError[] => {
+  const errors: ValidationError[] = [];
+  const duplicates = getDuplicateLinkIds(qOrder);
+  duplicates.forEach((duplicate) => {
+    errors.push(
+      createError(
+        duplicate,
+        ValidationType.linkId,
+        t("LinkId '{0}' is not unique").replace("{0}", duplicate),
+        ErrorLevel.error,
+      ),
+    );
+  });
+
   return errors;
 };

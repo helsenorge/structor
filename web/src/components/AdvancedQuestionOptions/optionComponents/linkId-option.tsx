@@ -2,6 +2,8 @@ import { FocusEvent, useState } from "react";
 
 import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { ValidationType } from "src/components/Validation/validationTypes";
+import { ValidationError } from "src/utils/validationUtils";
 
 import UndoIcon from "../../../images/icons/arrow-undo-outline.svg";
 import { updateLinkIdAction } from "../../../store/treeStore/treeActions";
@@ -13,6 +15,7 @@ type LinkIdOptionProps = {
   dispatch: React.Dispatch<ActionType>;
   qItems: Items;
   parentArray: Array<string>;
+  errors: ValidationError[];
 };
 
 export const LinkIdOption = ({
@@ -20,10 +23,16 @@ export const LinkIdOption = ({
   dispatch,
   qItems,
   parentArray,
+  errors,
 }: LinkIdOptionProps): JSX.Element => {
   const { t } = useTranslation();
   const [linkId, setLinkId] = useState(item.linkId);
   const [isDuplicateLinkId, setDuplicateLinkId] = useState(false);
+  const hasError = errors.some(
+    (error) =>
+      error.errorProperty === ValidationType.linkId &&
+      item.linkId === error.linkId,
+  );
 
   function validateLinkId(linkIdToValidate: string): void {
     const hasLinkIdConflict = !(
@@ -46,7 +55,9 @@ export const LinkIdOption = ({
   }
 
   return (
-    <div className="horizontal full">
+    <div
+      className={`horizontal full ${hasError ? "validation-error-box" : ""}`}
+    >
       <div className={`form-field ${isDuplicateLinkId ? "field-error" : ""}`}>
         <label>{t("LinkId")}</label>
         <InputField

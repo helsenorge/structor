@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 
 import "./AdvancedQuestionOptions.css";
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
-import { getValueSetsFromState } from "src/store/treeStore/selectors";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { IQuestionnaireItemType } from "../../types/IQuestionnareItemType";
@@ -66,7 +65,6 @@ const AdvancedQuestionOptions = ({
 }: AdvancedQuestionOptionsProps): React.JSX.Element => {
   const { state, dispatch } = useContext(TreeContext);
   const { qItems, qOrder } = state;
-  const valueSets = getValueSetsFromState(state);
   const [isDataReceiver, setDataReceiverState] = useState(
     isItemControlDataReceiver(item),
   );
@@ -128,6 +126,7 @@ const AdvancedQuestionOptions = ({
         dispatch={dispatch}
         qItems={qItems}
         parentArray={parentArray}
+        errors={itemValidationErrors}
       ></LinkIdOption>
       {canTypeHavePrefix(item) && (
         <PrefixOption item={item} dispatch={dispatch} />
@@ -154,7 +153,7 @@ const AdvancedQuestionOptions = ({
           item={item}
           qItems={qItems}
           qOrder={qOrder}
-          qContained={valueSets}
+          qContained={state.qContained}
           errors={itemValidationErrors}
         />
       )}

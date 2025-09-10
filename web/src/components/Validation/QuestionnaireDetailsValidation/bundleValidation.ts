@@ -1,18 +1,25 @@
 import { Bundle, Questionnaire } from "fhir/r4";
 import { TFunction } from "react-i18next";
+import { TreeState } from "src/store/treeStore/treeStore";
 import { IQuestionnaireMetadataType } from "src/types/IQuestionnaireMetadataType";
+import {
+  buildLinkIdIndexSet,
+  getDuplicateLinkIds,
+} from "src/utils/traversionUtils";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { createError } from "../validationHelper";
-import { ErrorLevel } from "../validationTypes";
+import { ErrorLevel, ValidationType } from "../validationTypes";
 
 export const validateBundle = (
   t: TFunction<"translation">,
   questionnaires: Questionnaire | Bundle,
+  state: TreeState,
 ): ValidationError[] => {
   const errors: ValidationError[] = [];
 
   errors.push(...validateQuestionnaireIds(t, questionnaires));
+
   return errors;
 };
 

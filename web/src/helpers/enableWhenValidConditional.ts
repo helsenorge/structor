@@ -28,14 +28,14 @@ export const getEnableWhenConditionals = (
       isItemControlHighlight(qItem) ||
       isItemControlSidebar(qItem) ||
       isItemControlInline(qItem) ||
-      qItem.type === IQuestionnaireItemType.display
+      qItem?.type === IQuestionnaireItemType.display
     ) {
       return [];
     }
 
     // TODO: ignore items which cannot have enableWhen? (display, group, text.help, text.highlight...)
     const itemText = `${"\xA0".repeat(idArray.length * 4)}${
-      qItem.text || "Ikke definert tittel"
+      qItem?.text || "Ikke definert tittel"
     }`; // TODO translate
     const displayText =
       itemText.length > 120 ? `${itemText?.substr(0, 120)}...` : itemText;

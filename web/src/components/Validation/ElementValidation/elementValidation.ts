@@ -15,8 +15,9 @@ export const validateElements = (
   const tableValidation = validateTableElements(t, state);
   const dataReceiverValidation = validateDataReceiverElements(t, state);
   const calculatedValidation = validateCalulatedExpressionElements(t, state);
-  return orphanValidation
+  const elementValidation = orphanValidation
     .concat(tableValidation)
     .concat(dataReceiverValidation)
     .concat(calculatedValidation);
+  return elementValidation;
 };
