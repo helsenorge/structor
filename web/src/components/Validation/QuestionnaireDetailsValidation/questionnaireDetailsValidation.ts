@@ -20,7 +20,7 @@ export const validateQuestionnaireDetails = (
   const sidebarValidation = validateSidebar(t, state);
   const settingValidation = validateQuestionnaireSettings(t, state);
   const securityValidation = metaSecurityValidation(t, state.qMetadata);
-  const bundleValidation = validateBundle(t, questionnaires, state);
+  const bundleValidation = validateBundle(t, questionnaires);
   const languageValidation = validateLanguage(t, questionnaires);
   return metadataValidation
     .concat(sidebarValidation)
