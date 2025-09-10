@@ -42,10 +42,27 @@ const validate = (
     errors.push(...validateLinkIds(t, qItem, qOrder));
     errors.push(...validateItemType(t, qItem));
     errors.push(...validateAllLinkIdsInQuestionnaireIsUnique(t, qOrder));
+    errors.push(...readOnlyValidation(t, qItem));
   }
   currentItem.items.forEach((item) =>
     validate(t, item, qItems, qOrder, errors),
   );
+};
+const readOnlyValidation = (
+  t: TFunction<"translation">,
+  qItem: QuestionnaireItem,
+): ValidationError[] => {
+  const errors: ValidationError[] = [];
+  if (!qItem.readOnly) {
+    errors.push(
+      createError(
+        qItem.linkId,
+        ValidationType.readonly,
+        t("Calculated expression must be read-only"),
+      ),
+    );
+  }
+  return errors;
 };
 
 const validateMaxMin = (

@@ -515,5 +515,6 @@
   "Item with LinkId '{0}' does not exist in the form and is used in the calculated expression.": "Element med LinkId '{0}' finnes ikke i skjemaet, men brukes i kalkuleringsuttrykket.",
   "Calculated expression can only be in quantity or number items": "Kalkuleringsfeltet kan være kun nummer eller antall men enhet",
   "Context parameter": "Kontekstparameter",
+  "Calculated expression must be read-only": "Kalkuleringsfeltet må være skrivebeskyttet",
   "LinkId '{0}' is not unique": "LinkId '{0}' er ikke unik"
 }
