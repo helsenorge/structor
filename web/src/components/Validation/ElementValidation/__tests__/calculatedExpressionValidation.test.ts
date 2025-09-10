@@ -6,6 +6,7 @@ import {
 } from "src/types/IQuestionnareItemType";
 import { ErrorLevel, ValidationType } from "../../validationTypes";
 import { validateCalulatedExpressionElements } from "../calculatedExpressionValidation";
+import { ValidationError } from "src/utils/validationUtils";
 
 const calulatedExtention = (valueString: string): Extension[] => {
   return [
@@ -42,18 +43,19 @@ describe("Calculated expression Validation", () => {
       linkId: "1",
       type: "decimal",
       text: "Hight",
-    };
+    } as QuestionnaireItem;
 
     calculatedItem = {
       linkId: "2",
       type: "decimal",
       text: "Calculated",
-      readOnly: true,
+      readOnly: true, // important due to readOnlyValidation
       extension: calulatedExtention(
         "QuestionnaireResponse.descendants().where(linkId='1').answer.value.value / 100)",
       ),
-    };
+    } as QuestionnaireItem;
   });
+
   it("does not duplicate errors when the same missing linkId is referenced multiple times", () => {
     translationMock.mockReturnValue(
       "Item with LinkId '{0}' does not exist in the form and is used in the calculated expression.",
@@ -63,24 +65,33 @@ describe("Calculated expression Validation", () => {
       "QuestionnaireResponse.descendants().where(linkId='A').answer.value.value + QuestionnaireResponse.descendants().where(linkId='A').answer.value.value + QuestionnaireResponse.descendants().where(linkId=\"B\").answer.value.value",
     );
 
-    const treeState = {
-      qOrder: baseOrder, // A og B finnes ikke i treet
-      qItems: { "1": item, "2": calculatedItem } as Items,
-    } as TreeState;
+    const treeState = makeTreeState(baseOrder, {
+      "1": item,
+      "2": calculatedItem,
+    });
 
     const validationErrors = validateCalulatedExpressionElements(
       translationMock,
       treeState,
     );
 
-    expect(validationErrors.length).toBe(2); // A og B, ikke 3
-    expect(validationErrors[0].errorReadableText).toBe(
-      "Item with LinkId 'A' does not exist in the form and is used in the calculated expression.",
-    );
-    expect(validationErrors[1].errorReadableText).toBe(
-      "Item with LinkId 'B' does not exist in the form and is used in the calculated expression.",
-    );
+    expect(validationErrors.length).toBe(2); // A and B, not 3
+    expect(
+      validationErrors.some(
+        (x: ValidationError) =>
+          x.errorReadableText ===
+          "Item with LinkId 'A' does not exist in the form and is used in the calculated expression.",
+      ),
+    ).toBe(true);
+    expect(
+      validationErrors.some(
+        (x: ValidationError) =>
+          x.errorReadableText ===
+          "Item with LinkId 'B' does not exist in the form and is used in the calculated expression.",
+      ),
+    ).toBe(true);
   });
+
   test.each([
     IQuestionnaireItemType.decimal,
     IQuestionnaireItemType.integer,
@@ -89,6 +100,7 @@ describe("Calculated expression Validation", () => {
     const calculated = {
       linkId: "2",
       type,
+      readOnly: true, // avoid readonly error
       extension: calulatedExtention(
         "QuestionnaireResponse.descendants().where(linkId='1').answer.value.value / 100)",
       ),
@@ -108,13 +120,11 @@ describe("Calculated expression Validation", () => {
   });
 
   it("reports missing linkIds in calculated expression (new message and count)", () => {
-    // Ny tekst i validatoren:
     translationMock.mockReturnValue(
       "Item with LinkId '{0}' does not exist in the form and is used in the calculated expression.",
     );
 
     calculatedItem.extension = calulatedExtention(
-      // To ulike linkId-er som IKKE finnes i qOrder:
       'QuestionnaireResponse.descendants().where(linkId=\'Vekt\').answer.value.value / ((QuestionnaireResponse.descendants().where(linkId="Hoyde").answer.value.value/10000) * QuestionnaireResponse.descendants().where(linkId="Hoyde").answer.value.value)',
     );
 
@@ -148,7 +158,6 @@ describe("Calculated expression Validation", () => {
       "Item with LinkId '{0}' does not exist in the form and is used in the calculated expression.",
     );
 
-    // Legg linkId 'child-1' inn som barn av '1'
     const nestedOrder: OrderItem[] = [
       {
         linkId: "1",
@@ -173,7 +182,7 @@ describe("Calculated expression Validation", () => {
         linkId: "child-1",
         type: "integer",
         text: "Nested value",
-      },
+      } as QuestionnaireItem,
       "2": calcWithNestedRef,
     });
 
@@ -182,7 +191,6 @@ describe("Calculated expression Validation", () => {
       treeState,
     );
 
-    // Ingen feil: rekursjonen i existAllCalculatedExpressionLinkIds finner child-1
     expect(validationErrors.length).toBe(0);
   });
 
@@ -190,7 +198,7 @@ describe("Calculated expression Validation", () => {
     calculatedItem.extension?.push({
       url: IExtensionType.minValue,
       valueInteger: 2,
-    });
+    } as Extension);
 
     const treeState = makeTreeState(baseOrder, {
       "1": item,
@@ -216,7 +224,7 @@ describe("Calculated expression Validation", () => {
     calculatedItem.extension?.push({
       url: IExtensionType.maxValue,
       valueInteger: 4,
-    });
+    } as Extension);
 
     const treeState = makeTreeState(baseOrder, {
       "1": item,
@@ -251,6 +259,7 @@ describe("Calculated expression Validation", () => {
     const calculated = {
       linkId: "2",
       type,
+      readOnly: true, // avoid readonly error so the test only targets type rule
       extension: calulatedExtention(
         "QuestionnaireResponse.descendants().where(linkId='1').answer.value.value / 100)",
       ),
@@ -286,7 +295,6 @@ describe("Calculated expression Validation", () => {
     const treeState = makeTreeState(baseOrder, {
       "1": item,
       "2": calculatedItem,
-      // Intentionally leaving out X and Y to trigger two errors
     });
 
     const validationErrors = validateCalulatedExpressionElements(
