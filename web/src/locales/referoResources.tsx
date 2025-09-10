@@ -66,9 +66,7 @@ export const getResources = (language: string): Resources => {
       linkOpensInNewTab: "Opens in new tab",
       nextStep: "Next",
       previousStep: "Previous",
-      quantity_unit_sublabel: "Unit",
-      attachmentError_minFiles_and_maxFiles: "Add {0} to {1} files",
-      attachmentError_required: "Upload file",
+
       maxCharactersText: "characters",
       timeError_hours_digits: "The field for hours only allows 2 characters",
       timeError_minutes_digits:
@@ -78,6 +76,7 @@ export const getResources = (language: string): Resources => {
       microwebstep_navigasjon_avbryt_button: "Cancel",
       microwebstep_navigasjon_neste_button: "Next",
       microwebstep_navigasjon_tilbake_button: "Back",
+      quantity_unit_sublabel: "Unit",
     };
   }
   return {
@@ -172,6 +171,5 @@ export const getResources = (language: string): Resources => {
     microwebstep_navigasjon_neste_button: "Neste",
     microwebstep_navigasjon_tilbake_button: "Tilbake",
     quantity_unit_sublabel: "Enhet",
-    attachmentError_minFiles_and_maxFiles: "Legg til {0} til {1} filer",
   };
 };
