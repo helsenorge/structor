@@ -76,7 +76,6 @@ export const getResources = (language: string): Resources => {
       microwebstep_navigasjon_avbryt_button: "Cancel",
       microwebstep_navigasjon_neste_button: "Next",
       microwebstep_navigasjon_tilbake_button: "Back",
-      quantity_unit_sublabel: "Unit",
     };
   }
   return {
@@ -170,6 +169,5 @@ export const getResources = (language: string): Resources => {
     microwebstep_navigasjon_avbryt_button: "Avbryt",
     microwebstep_navigasjon_neste_button: "Neste",
     microwebstep_navigasjon_tilbake_button: "Tilbake",
-    quantity_unit_sublabel: "Enhet",
   };
 };
