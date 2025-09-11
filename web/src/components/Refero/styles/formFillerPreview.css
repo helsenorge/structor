@@ -1,37 +1,41 @@
-@import './formFillerSidebar.css';
+@import "./formFillerSidebar.css";
 
 .preview-window {
-    font-family: Source Sans Pro, Arial, Verdana, sans-serif;
-    background-color: #f5f3f3;
-    position: fixed;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    height: 80vh; /* Set height to 80% of the viewport height */
-    overflow: hidden;
-    border-radius: 8px; /* Optional: Add rounded corners */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visualization */
+  font-family:
+    "Source Sans Pro",
+    Arial,
+    Verdana,
+    sans-serif;
+  background-color: #f5f3f3;
+  position: fixed;
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 96vh; /* Extend further down to use more vertical space */
+  overflow: hidden;
+  border-radius: 8px; /* Optional: Add rounded corners */
+  box-shadow: 0 0 10px rgb(0 0 0 / 10%); /* Optional: Add a shadow for better visualization */
 }
 
 .preview-window h2 {
-    color: black;
-    margin-top: 70px;
-    text-align: left;
-    font-size: 42px;
-    padding-left: 20px;
-    font-weight: 700;
+  color: black;
+  margin-top: 70px;
+  text-align: left;
+  font-size: 42px;
+  padding-left: 20px;
+  font-weight: 700;
 }
 
 .referoContainer-div {
-    padding: 20px;
-    height: calc(100% - 90px);
-    overflow-y: auto;
-    text-align: initial;
-    position: relative;
-
+  padding: 20px;
+  height: calc(100% - 90px);
+  overflow-y: auto;
+  text-align: initial;
+  position: relative;
 }
+
 .referoInnerContent {
-    height: 100%;
-    padding-right: 16px; /* Adjust padding to prevent scrollbar overlap */
+  height: 100%;
+  padding-right: 16px; /* Adjust padding to prevent scrollbar overlap */
 }
