@@ -39,6 +39,8 @@ const LanguageAccordion = (props: LanguageAccordionProps): JSX.Element => {
     }
 
     const dispatchAddLanguage = (selectedLanguage: string, translation: Translation) => {
+        if (!selectedLanguage) return;
+
         const isoLanguage = languageToIsoString(selectedLanguage);
         if (isoLanguage && qAdditionalLanguages !== undefined && !qAdditionalLanguages[isoLanguage]) {
             dispatch(addQuestionnaireLanguageAction(isoLanguage, translation));
