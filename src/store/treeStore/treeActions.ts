@@ -51,6 +51,7 @@ export const UPDATE_MARKED_LINK_ID = 'updateMarkedLinkId';
 export const UPDATE_VALUESET_ACTION = 'UPDATE_VALUESET';
 export const IMPORT_VALUESET_ACTION = 'IMPORT_VALUESET';
 export const SAVE_ACTION = 'save';
+export const UPDATE_SELECTED_NODES_ACTION = 'updateSelectedNodesAction';
 
 type ItemValueType =
     | string
@@ -64,6 +65,22 @@ type ItemValueType =
     | QuestionnaireItemInitial[]
     | Coding[]
     | undefined; // TODO: legg på alle lovlige verdier
+
+export interface Node {
+    linkId?: number;
+    title: string;
+    hierarchy?: string;
+    nodeType?: IQuestionnaireItemType;
+    nodeReadableType?: string;
+    children: Node[];
+}
+
+export interface ExtendedNode {
+    node: Node;
+    path: string[];
+    parentNode: Node;
+    treeIndex?: number;
+}
 
 export interface AddItemCodeAction {
     type: typeof ADD_ITEM_CODE_ACTION;
@@ -122,6 +139,19 @@ export interface UpdateMetadataTranslationAction {
     languageCode: string;
     propertyName: string;
     translation: string;
+}
+
+export interface updateSelectedNodesAction {
+    type: typeof UPDATE_SELECTED_NODES_ACTION;
+    firstSelectedIndex: number[] | null;
+    orderTreeData: Node[];
+    selectedNodes: { node: Node; path: Array<string> }[];
+    event: React.MouseEvent;
+    node: Node;
+    extendedNode: ExtendedNode;
+    setSelectedNodes: React.Dispatch<React.SetStateAction<{ node: Node; path: Array<string> }[]>>;
+    setFirstSelectedIndex: React.Dispatch<React.SetStateAction<number[] | []>>;
+    collapsedNodes: string[];
 }
 
 export interface UpdateSettingTranslationAction {
@@ -341,6 +371,31 @@ export const updateSettingTranslationAction = (
         languageCode,
         extension,
         translatedValue,
+    };
+};
+
+export const updateSelectedNodesAction = (
+    firstSelectedIndex: number[] | null,
+    orderTreeData: Node[],
+    selectedNodes: { node: Node; path: Array<string> }[],
+    event: React.MouseEvent,
+    node: Node,
+    extendedNode: ExtendedNode,
+    setSelectedNodes: React.Dispatch<React.SetStateAction<{ node: Node; path: Array<string> }[]>>,
+    setFirstSelectedIndex: React.Dispatch<React.SetStateAction<number[] | []>>,
+    collapsedNodes: string[],
+): updateSelectedNodesAction => {
+    return {
+        type: UPDATE_SELECTED_NODES_ACTION,
+        firstSelectedIndex,
+        orderTreeData,
+        selectedNodes,
+        event,
+        node,
+        extendedNode,
+        setSelectedNodes,
+        setFirstSelectedIndex,
+        collapsedNodes,
     };
 };
 

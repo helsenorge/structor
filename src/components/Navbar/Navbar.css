@@ -23,7 +23,7 @@ header p {
     background-color: #ffffff36;
 }
 
-.more-menu > img {
+.more-menu>img {
     filter: invert(100%);
 }
 
@@ -37,12 +37,16 @@ header p {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.menu > button {
+.menu>button {
     width: 100%;
 }
+
 .form-title {
     width: 100%;
+    text-align: left;
+    margin-left: 9em;
 }
+
 .form-title h1 {
     font-size: 24px;
 }

@@ -1,23 +1,26 @@
-import './AnchorMenu.css';
+import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DndProvider, DragSource, DragSourceConnector, ConnectDragSource } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { SortableTreeWithoutDndContext as SortableTree } from '@nosferatu500/react-sortable-tree';
+import '@nosferatu500/react-sortable-tree/style.css';
 
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { ActionType, Items, MarkedItem, OrderItem } from '../../store/treeStore/treeStore';
 import { IQuestionnaireItemType } from '../../types/IQuestionnareItemType';
 import {
     moveItemAction,
     newItemAction,
     reorderItemAction,
-    updateMarkedLinkIdAction,
+    updateSelectedNodesAction,
 } from '../../store/treeStore/treeActions';
+import { ActionType, Items, MarkedItem, OrderItem, TreeContext } from '../../store/treeStore/treeStore';
 import { ValidationErrors } from '../../helpers/orphanValidation';
-import { SortableTreeWithoutDndContext as SortableTree } from '@nosferatu500/react-sortable-tree';
-import '@nosferatu500/react-sortable-tree/style.css';
 import { isIgnorableItem } from '../../helpers/itemControl';
-import { generateItemButtons } from './ItemButtons/ItemButtons';
 import { canTypeHaveChildren, getInitialItemConfig } from '../../helpers/questionTypeFeatures';
+import addIcon from '../../images/icons/add-icon.svg';
+import { Node } from '../../store/treeStore/treeActions';
+
+import { generateItemButtons } from './ItemButtons/ItemButtons';
+import './AnchorMenu.css';
 
 interface AnchorMenuProps {
     qOrder: OrderItem[];
@@ -25,19 +28,14 @@ interface AnchorMenuProps {
     qCurrentItem: MarkedItem | undefined;
     validationErrors: ValidationErrors[];
     dispatch: React.Dispatch<ActionType>;
-}
-
-interface Node {
-    title: string;
-    hierarchy?: string;
-    nodeType?: IQuestionnaireItemType;
-    nodeReadableType?: string;
-    children: Node[];
+    selectedNodes: { node: Node; path: Array<string> }[];
+    setSelectedNodes: React.Dispatch<React.SetStateAction<{ node: Node; path: Array<string> }[]>>;
 }
 
 interface ExtendedNode {
     node: Node;
     path: string[];
+    parentNode: Node;
 }
 
 interface NodeMoveEvent {
@@ -53,38 +51,82 @@ interface NodeVisibilityToggleEvent {
     expanded: boolean;
 }
 
-const newNodeLinkId = 'NEW';
-const externalNodeType = 'yourNodeType';
-
-const externalNodeSpec = {
-    // This needs to return an object with a property `node` in it.
-    // Object rest spread is recommended to avoid side effects of
-    // referencing the same object in different trees.
-    beginDrag: (componentProps: { node: Node }) => ({ node: { ...componentProps.node } }),
-};
-const externalNodeCollect = (connect: DragSourceConnector) => ({
-    connectDragSource: connect.dragSource(),
-    // Add props via react-dnd APIs to enable more visual
-    // customization of your component
-    // isDragging: monitor.isDragging(),
-    // didDrop: monitor.didDrop(),
-});
-
-const ExternalNodeBaseComponent = (props: { connectDragSource: ConnectDragSource; node: Node }): JSX.Element | null => {
-    return props.connectDragSource(<div className="anchor-menu__dragcomponent">{props.node.nodeReadableType}</div>, {
-        dropEffect: 'copy',
-    });
-};
-
-const YourExternalNodeComponent = DragSource(
-    externalNodeType,
-    externalNodeSpec,
-    externalNodeCollect,
-)(ExternalNodeBaseComponent);
-
 const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     const { t } = useTranslation();
+    const { dispatch } = useContext(TreeContext);
+    const { selectedNodes, setSelectedNodes } = props;
+
     const [collapsedNodes, setCollapsedNodes] = React.useState<string[]>([]);
+    const [firstSelectedIndex, setFirstSelectedIndex] = React.useState<number[] | []>([]);
+
+    const newNodeLinkId = 'NEW';
+    const externalNodeType = 'yourNodeType';
+
+    const externalNodeSpec = {
+        // This needs to return an object with a property `node` in it.
+        // Object rest spread is recommended to avoid side effects of
+        // referencing the same object in different trees.
+        beginDrag: (componentProps: { node: Node }) => ({ node: { ...componentProps.node } }),
+    };
+    const externalNodeCollect = (connect: DragSourceConnector) => ({
+        connectDragSource: connect.dragSource(),
+        // Add props via react-dnd APIs to enable more visual
+        // customization of your component
+        // isDragging: monitor.isDragging(),
+        // didDrop: monitor.didDrop(),
+    });
+
+    /* eslint-disable react/prop-types */
+    const ExternalNodeBaseComponent = (props: {
+        connectDragSource: ConnectDragSource;
+        node: Node;
+    }): JSX.Element | null => {
+        return props.connectDragSource(
+            <div className="anchor-menu__dragcomponent">
+                {props.node.nodeReadableType}{' '}
+                <div className="plus-icon" onClick={() => handleOnElementAdd(props.node)}>
+                    <img src={addIcon} alt="Add Icon" />
+                </div>
+            </div>,
+            {
+                dropEffect: 'copy',
+            },
+        );
+    };
+
+    /* eslint-enable react/prop-types */
+    const YourExternalNodeComponent = DragSource(
+        externalNodeType,
+        externalNodeSpec,
+        externalNodeCollect,
+    )(ExternalNodeBaseComponent);
+
+    const handleOnElementAdd = (node: Node) => {
+        const moveIndex = orderTreeData.length;
+        const newPath: string[] = [];
+
+        if (node.nodeType) {
+            props.dispatch(
+                newItemAction(getInitialItemConfig(node.nodeType, t('Recipient component')), newPath, moveIndex),
+            );
+        }
+    };
+
+    const handleOnNodeClick = (event: React.MouseEvent, node: Node, extendedNode: ExtendedNode) => {
+        dispatch(
+            updateSelectedNodesAction(
+                firstSelectedIndex,
+                orderTreeData,
+                selectedNodes,
+                event,
+                node,
+                extendedNode,
+                setSelectedNodes,
+                setFirstSelectedIndex,
+                collapsedNodes,
+            ),
+        );
+    };
 
     const mapToTreeData = (item: OrderItem[], hierarchy: string, parentLinkId?: string): Node[] => {
         return item
@@ -121,6 +163,10 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
         return props.qCurrentItem?.linkId === linkId;
     };
 
+    const isNodeHighlighted = (node: Node) => {
+        return selectedNodes.some((item) => item.node.title === node.title);
+    };
+
     const getRelevantIcon = (type?: string) => {
         switch (type) {
             case IQuestionnaireItemType.group:
@@ -145,7 +191,18 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
         );
     };
 
+    const isParentSelected = (path: string[]): boolean => {
+        for (const pathString of path) {
+            // Check if any of the selectedNodes have a title that matches the pathString
+            if (selectedNodes.some((selectedNode) => selectedNode.node.title === pathString)) {
+                return false;
+            }
+        }
+        return true;
+    };
+
     const orderTreeData = mapToTreeData(props.qOrder, '');
+
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="questionnaire-overview">
@@ -188,12 +245,36 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                                 ),
                             );
                         } else {
-                            const oldPath = treePathToOrderArray(prevPath);
-                            // reorder within same parent
-                            if (JSON.stringify(newPath) === JSON.stringify(oldPath)) {
-                                props.dispatch(reorderItemAction(node.title, newPath, moveIndex));
+                            if (
+                                selectedNodes.length > 1 &&
+                                selectedNodes.some((item) => item.node.title === node.title)
+                            ) {
+                                let count = 0;
+                                selectedNodes.map((item) => {
+                                    const isMovable = isParentSelected(item.path.slice(-2, -1));
+
+                                    if (!isMovable) {
+                                        return;
+                                    }
+
+                                    const oldPath = treePathToOrderArray(item.path);
+                                    if (JSON.stringify(oldPath) === JSON.stringify(newPath)) {
+                                        props.dispatch(reorderItemAction(item.node.title, newPath, moveIndex + count));
+                                    } else {
+                                        props.dispatch(
+                                            moveItemAction(item.node.title, newPath, oldPath, moveIndex + count),
+                                        );
+                                    }
+                                    count++;
+                                });
+                                setSelectedNodes([]);
                             } else {
-                                props.dispatch(moveItemAction(node.title, newPath, oldPath, moveIndex));
+                                const oldPath = treePathToOrderArray(prevPath);
+                                if (JSON.stringify(newPath) === JSON.stringify(oldPath)) {
+                                    props.dispatch(reorderItemAction(node.title, newPath, moveIndex));
+                                } else {
+                                    props.dispatch(moveItemAction(node.title, newPath, oldPath, moveIndex));
+                                }
                             }
                         }
                     }}
@@ -209,23 +290,26 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                         return item ? canTypeHaveChildren(item) : false;
                     }}
                     generateNodeProps={(extendedNode: ExtendedNode) => ({
+                        onClick: (event: React.MouseEvent) => {
+                            event.stopPropagation();
+                            const target = event.target as HTMLElement;
+                            const clickedItemClassName = target.className;
+
+                            if (
+                                clickedItemClassName !== 'rstcustom__expandButton' &&
+                                clickedItemClassName !== 'rst__collapseButton'
+                            ) {
+                                handleOnNodeClick(event, extendedNode.node, extendedNode);
+                            }
+                        },
                         className: `anchor-menu__item 
                             ${hasValidationError(extendedNode.node.title) ? 'validation-error' : ''} 
                             ${extendedNode.path.length === 1 ? 'anchor-menu__topitem' : ''} 
+                            ${isNodeHighlighted(extendedNode.node) ? 'selectedHighlight' : ''}
                             ${isSelectedItem(extendedNode.node.title) ? 'anchor-menu__item--selected' : ''}
                         `,
                         title: (
-                            <span
-                                className="anchor-menu__inneritem"
-                                onClick={() => {
-                                    props.dispatch(
-                                        updateMarkedLinkIdAction(
-                                            extendedNode.node.title,
-                                            treePathToOrderArray(extendedNode.path),
-                                        ),
-                                    );
-                                }}
-                            >
+                            <span>
                                 <span className={getRelevantIcon(props.qItems[extendedNode.node.title]?.type)} />
                                 <span className="anchor-menu__title">
                                     {extendedNode.node.hierarchy}
@@ -240,6 +324,8 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                             treePathToOrderArray(extendedNode.path),
                             false,
                             props.dispatch,
+                            selectedNodes,
+                            setSelectedNodes,
                         ),
                     })}
                 />

@@ -1,4 +1,5 @@
 import React, { createContext, Dispatch, useEffect, useReducer } from 'react';
+import { getNodeAtPath } from '@nosferatu500/react-sortable-tree';
 import produce from 'immer';
 
 import { Extension, QuestionnaireItem, ValueSet } from '../../types/fhir';
@@ -55,6 +56,8 @@ import {
     UpdateValueSetAction,
     UPDATE_SETTING_TRANSLATION_ACTION,
     UpdateSettingTranslationAction,
+    updateSelectedNodesAction,
+    UPDATE_SELECTED_NODES_ACTION,
 } from './treeActions';
 import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../../types/IQuestionnaireMetadataType';
 import createUUID from '../../helpers/CreateUUID';
@@ -68,6 +71,8 @@ import { isRecipientList } from '../../helpers/QuestionHelper';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
 import { createVisibilityCoding, VisibilityType } from '../../helpers/globalVisibilityHelper';
 import { tjenesteomraadeCode, getTjenesteomraadeCoding } from '../../helpers/MetadataHelper';
+
+import { Node, ExtendedNode } from './treeActions';
 
 export type ActionType =
     | AddItemCodeAction
@@ -95,7 +100,8 @@ export type ActionType =
     | UpdateValueSetAction
     | RemoveItemAttributeAction
     | SaveAction
-    | UpdateMarkedLinkId;
+    | UpdateMarkedLinkId
+    | updateSelectedNodesAction;
 
 export interface Items {
     [linkId: string]: QuestionnaireItem;
@@ -164,6 +170,10 @@ export interface OrderItem {
 export interface MarkedItem {
     linkId: string;
     parentArray: Array<string>;
+}
+
+export interface TreeNodeKeyParams {
+    treeIndex: number;
 }
 
 export interface TreeState {
@@ -665,6 +675,336 @@ function removeAttributeFromItem(draft: TreeState, action: RemoveItemAttributeAc
     }
 }
 
+// Takes the node title (unique id) and orderedTreeData and returns path to that node
+const pathToChild = (index: string, list: Node[], collapsedNodes: string[]): number[] => {
+    let visitedNode: number[] | null = null;
+    let globalIndex = -1;
+
+    const getData = (child: Node[], path: number[]): number[] | null => {
+        for (let i = 0; i < child.length; i++) {
+            globalIndex++;
+            const currentPath = path.concat(globalIndex);
+
+            // Check if the current object's title matches the id we're looking for
+            if (child[i].title === index) {
+                return currentPath;
+            }
+
+            // If the current object has children and is not in the collapsed nodes, recurse into the children
+            if (child[i].children && child[i].children.length > 0 && !collapsedNodes.includes(child[i].title)) {
+                const result = getData(child[i].children, currentPath);
+                if (result) {
+                    return result;
+                }
+            }
+        }
+        return null;
+    };
+
+    visitedNode = getData(list, []);
+    return visitedNode ? visitedNode : [];
+};
+
+// Function to check if all children are selected
+const areAllChildrenNodesSelected = (
+    currentNode: Node,
+    parentNode: Node,
+    selectedNodes: { node: Node; path: Array<string> }[],
+): boolean => {
+    const selectedTitles = new Set(selectedNodes.map((item) => item.node.title));
+
+    const checkAllChildren = (node: Node): boolean => {
+        if (!node.children || node.children.length === 0) {
+            return true;
+        }
+
+        for (const child of node.children) {
+            if (!selectedTitles.has(child.title)) {
+                return false;
+            }
+            if (!checkAllChildren(child)) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+    selectedTitles.add(currentNode.title);
+    return checkAllChildren(parentNode);
+};
+
+// Return a list with parent nodes upto the top level if all it's children are selected
+const checkAndAddParentNodes = (
+    extendedNode: ExtendedNode,
+    orderTreeData: Node[],
+    selectedNodes: { node: Node; path: Array<string> }[],
+    collapsedNodes: string[],
+): { node: Node; path: Array<string> }[] => {
+    const path = extendedNode.path.slice(0, -1); // Remove the last element to get the parent path
+    let currentPath = path;
+    const allSelectedNodes = [...selectedNodes];
+
+    while (currentPath.length > 0) {
+        const calculatedPath = pathToChild(currentPath[currentPath.length - 1], orderTreeData, collapsedNodes);
+
+        const result = getNodeAtPath({
+            treeData: orderTreeData,
+            path: calculatedPath,
+            getNodeKey: ({ treeIndex }: { treeIndex: number }) => treeIndex,
+        });
+
+        if (result && result.node && areAllChildrenNodesSelected(extendedNode.node, result.node, allSelectedNodes)) {
+            const nodeExists = allSelectedNodes.some((item) => item.node.title === result.node.title);
+
+            if (!nodeExists) {
+                allSelectedNodes.push({ node: result.node, path: currentPath });
+            }
+
+            // Move to the next parent
+            currentPath = currentPath.slice(0, -1);
+        } else {
+            // If not all children are selected, break the loop
+            break;
+        }
+    }
+
+    return allSelectedNodes;
+};
+
+// Returns the list of passed node and it's children until the maximum depth
+function recursiveAddNodes(node: Node, path: string[], selectedNodes: { node: Node; path: string[] }[]) {
+    const nodes: { node: Node; path: string[] }[] = [];
+    const addNodeIfNotExist = (node: Node, path: string[]) => {
+        const nodeExists = selectedNodes.some((item) => item.node.title === node.title);
+        if (!nodeExists) {
+            nodes.push({ node, path });
+            if (node.children) {
+                for (const child of node.children) {
+                    addNodeIfNotExist(child, [...path, child.title]);
+                }
+            }
+        }
+    };
+    addNodeIfNotExist(node, path);
+    return nodes;
+}
+
+const recursiveRemoveChildNodes = (node: Node, selectedNodes: { node: Node; path: string[] }[]) => {
+    let nodes = [...selectedNodes];
+
+    const removeNodeAndChildren = (node: Node) => {
+        nodes = nodes.filter((item) => item.node.title !== node.title);
+        if (node.children) {
+            for (const child of node.children) {
+                removeNodeAndChildren(child);
+            }
+        }
+    };
+    removeNodeAndChildren(node);
+    return nodes;
+};
+
+const checkAndRemoveParentNodes = (
+    extendedNode: ExtendedNode,
+    orderTreeData: Node[],
+    selectedNodes: { node: Node; path: Array<string> }[],
+    collapsedNodes: string[],
+): { node: Node; path: Array<string> }[] => {
+    const path = extendedNode.path.slice(0, -1); // Remove the last element to get the parent path
+    let currentPath = path;
+    let updatedSelectedNodes = [...selectedNodes]; // Copy the selectedNodes array
+
+    while (currentPath.length > 0) {
+        const calculatedPath = pathToChild(currentPath[currentPath.length - 1], orderTreeData, collapsedNodes);
+
+        const result = getNodeAtPath({
+            treeData: orderTreeData,
+            path: calculatedPath,
+            getNodeKey: ({ treeIndex }: { treeIndex: number }) => treeIndex,
+        });
+
+        if (result && result.node) {
+            updatedSelectedNodes = updatedSelectedNodes.filter((item) => item.node.title !== result.node.title);
+
+            // Move to the next parent
+            currentPath = currentPath.slice(0, -1);
+        } else {
+            // If no parent is found, break the loop
+            break;
+        }
+    }
+
+    return updatedSelectedNodes;
+};
+
+const findNodePath = (title: string, list: Node[]): string[] | null => {
+    const path: string[] = [];
+
+    const searchTree = (nodes: Node[], path: string[]): boolean => {
+        for (let i = 0; i < nodes.length; i++) {
+            path.push(nodes[i].title);
+
+            if (nodes[i].title === title) {
+                return true;
+            }
+
+            if (nodes[i].children) {
+                const nodePath = searchTree(nodes[i].children, path);
+                if (nodePath) {
+                    return true;
+                }
+            }
+
+            path.pop();
+        }
+
+        return false;
+    };
+
+    const nodePath = searchTree(list, path);
+    return nodePath ? path : null;
+};
+
+// Handle the selection of a single node
+function handleSingleSelect(
+    setSelectedNodes: React.Dispatch<React.SetStateAction<{ node: Node; path: string[] }[]>>,
+    node: Node,
+    extendedNode: ExtendedNode,
+    orderTreeData: Node[],
+    collapsedNodes: string[],
+    selectedNodes: { node: Node; path: string[] }[],
+) {
+    let newNodes: { node: Node; path: string[] }[] = [];
+
+    setSelectedNodes((prevSelectedNodes) => {
+        const nodeExists = prevSelectedNodes.some((item) => item.node.title === node.title);
+        if (nodeExists) {
+            // If node exists, remove it and its children from the selection
+            let updatedNodes = recursiveRemoveChildNodes(node, prevSelectedNodes);
+
+            // Remove parent nodes if the node is unselected
+            updatedNodes = checkAndRemoveParentNodes(extendedNode, orderTreeData, updatedNodes, collapsedNodes);
+
+            return updatedNodes;
+        } else {
+            // If node doesn't exist, add it and its children to the selection
+            newNodes = recursiveAddNodes(node, extendedNode.path, prevSelectedNodes);
+            return [...prevSelectedNodes, ...newNodes];
+        }
+    });
+
+    if (newNodes.length > 0) {
+        // Add parent nodes if all children are selected
+        const updatedList = checkAndAddParentNodes(
+            extendedNode,
+            orderTreeData,
+            [...newNodes, ...selectedNodes],
+            collapsedNodes,
+        );
+        setSelectedNodes(updatedList);
+    }
+}
+
+// Select multiple nodes when the shift key is pressed
+function handleShiftSelect(
+    pathToTheClickedNode: number[],
+    firstSelectedIndex: number[] | null,
+    orderTreeData: Node[],
+    selectedNodes: { node: Node; path: string[] }[],
+    extendedNode: ExtendedNode,
+    collapsedNodes: string[],
+    setSelectedNodes: React.Dispatch<React.SetStateAction<{ node: Node; path: string[] }[]>>,
+) {
+    if (!firstSelectedIndex) return;
+
+    const parent = pathToTheClickedNode.slice(0, -1);
+    const firstIndex = firstSelectedIndex[firstSelectedIndex.length - 1];
+    const clickedIndex = pathToTheClickedNode[pathToTheClickedNode.length - 1];
+
+    // Determine the start and end indices for the range selection
+    let startIndex = Math.min(firstIndex, clickedIndex);
+    let endIndex = Math.max(firstIndex, clickedIndex);
+
+    // Adjust indices for reverse selection mode
+    if (firstIndex > clickedIndex) {
+        startIndex -= 1;
+        endIndex -= 1;
+    }
+
+    let newSelectedNodes: { node: Node; path: string[] }[] = [];
+    const selectedTitles = new Set(selectedNodes.map((item) => item.node.title));
+
+    for (let i = startIndex + 1; i <= endIndex; i++) {
+        // TO-DO: The parent is considered to be the same, but what if we select different children in the end? Need to fix this.
+        const result = getNodeAtPath({
+            treeData: orderTreeData,
+            path: [...parent, i],
+            getNodeKey: ({ treeIndex }: TreeNodeKeyParams) => treeIndex,
+        });
+
+        if (result && result.node) {
+            // Find the full path to the node
+            const nodePath = findNodePath(result.node.title, orderTreeData) || [];
+
+            // Check if the node is already selected
+            if (!selectedTitles.has(result.node.title)) {
+                // Add the node and its children to the selection
+                const nodesToAdd = recursiveAddNodes(result.node, nodePath, selectedNodes);
+                newSelectedNodes.push(...nodesToAdd);
+                nodesToAdd.forEach((node) => selectedTitles.add(node.node.title));
+            }
+        }
+    }
+
+    // Add parent nodes if all children are selected
+    newSelectedNodes = checkAndAddParentNodes(
+        extendedNode,
+        orderTreeData,
+        [...newSelectedNodes, ...selectedNodes],
+        collapsedNodes,
+    );
+    setSelectedNodes(newSelectedNodes);
+}
+
+function updateSelectedNodes(draft: TreeState, action: updateSelectedNodesAction): void {
+    const {
+        event,
+        firstSelectedIndex,
+        selectedNodes,
+        setSelectedNodes,
+        setFirstSelectedIndex,
+        extendedNode,
+        orderTreeData,
+        node,
+        collapsedNodes,
+    } = action;
+
+    // Get the path to the node that was clicked
+    const pathToTheClickedNode = pathToChild(extendedNode.node.title, orderTreeData, collapsedNodes);
+    const { treeIndex } = extendedNode;
+
+    // Check if shift key is held and firstSelectedIndex is not null
+    if (event.shiftKey && firstSelectedIndex !== null && treeIndex !== undefined) {
+        handleShiftSelect(
+            pathToTheClickedNode,
+            firstSelectedIndex,
+            orderTreeData,
+            selectedNodes,
+            extendedNode,
+            collapsedNodes,
+            setSelectedNodes,
+        );
+    } else {
+        handleSingleSelect(setSelectedNodes, node, extendedNode, orderTreeData, collapsedNodes, selectedNodes);
+    }
+
+    // Update the first selected index
+    if (pathToTheClickedNode) {
+        setFirstSelectedIndex(pathToTheClickedNode);
+    }
+}
+
 const reducer = produce((draft: TreeState, action: ActionType) => {
     // Flag as dirty on all changes except reset, save and "scroll"
     if (
@@ -752,6 +1092,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
             break;
         case UPDATE_MARKED_LINK_ID:
             updateMarkedItemId(draft, action);
+            break;
+        case UPDATE_SELECTED_NODES_ACTION:
+            updateSelectedNodes(draft, action);
             break;
     }
 });

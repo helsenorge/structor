@@ -1,6 +1,6 @@
 .questionnaire-overview {
     text-align: center;
-    margin-top: 70px;
+    margin-top: 120px;
     margin-left: auto;
     margin-right: auto;
     position: relative;
@@ -39,8 +39,16 @@
 .anchor-menu__item--selected {
     box-shadow: 0 0 0 4px var(--primary-2);
 }
+
 .anchor-menu__item:hover .item-button {
     visibility: visible;
+}
+
+.selectedHighlight {
+    .rst__rowContents {
+        background-color: #e4f7f9 !important;
+
+    }
 }
 
 /* override styling */
@@ -54,12 +62,14 @@
     padding: 0.5rem;
     cursor: pointer;
 }
+
 .anchor-menu__inneritem:hover {
     background-color: #e4e4e4;
 }
+
 .anchor-menu__topitem .rst__rowContents {
     /* override styling */
-    background-color: #e4f7f9;
+    /* background-color: #e4f7f9; */
 }
 
 .anchor-menu__title {
@@ -68,14 +78,17 @@
 }
 
 .anchor-menu__dragcomponent {
-    padding: 8px 16px;
+    padding: 13px 16px;
     background: #e4f7f9;
     margin: 5px;
+    margin-bottom: 13px;
     text-align: left;
     color: black;
     border: 1px solid #cae7ed;
     cursor: grab;
+    position: relative;
 }
+
 .anchor-menu__dragcomponent:active {
     cursor: grabbing;
 }
@@ -99,4 +112,62 @@
     min-width: 25px;
     margin-right: 0.5rem;
     background: url('../../images/icons/help-circle-outline.svg') no-repeat center;
+}
+
+.multi-select-widget {
+    margin-top: 60px;
+}
+
+
+.header-wrapper {
+    width: 66em;
+    margin-left: 14em;
+    margin-bottom: 2em;
+    margin-top: 5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+
+    .title {
+        margin-left: 10em;
+        display: flex;
+        padding: 0;
+        align-items: center;
+        background-color: transparent;
+    }
+
+    .items-selected {
+        font-weight: 600;
+        margin-left: 0.6em;
+    }
+
+    .delete-multiple {
+        width: 90px;
+        border: 1px solid rgb(239, 16, 16);
+        border-radius: 8px;
+        padding: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bi-trash3 {
+        margin-right: 4px;
+
+        path {
+            color: rgb(239, 16, 16);
+        }
+    }
+
+    .cross-icon {
+        cursor: pointer;
+    }
+}
+
+.plus-icon {
+    position: absolute;
+    top: -0.6em;
+    left: 10.5em;
 }

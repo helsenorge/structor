@@ -1,0 +1,25 @@
+.delete-confirmation-modal {
+    .modal-btn-bottom {
+        margin-top: 2em;
+        margin-bottom: 0.5em;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+    .heading {
+        font-weight: 600;
+    }
+
+    p {
+        margin-left: 1.5em;
+    }
+
+    .save-btn,
+    .cancel-btn {
+        padding-left: 3em;
+        padding-right: 3em;
+        cursor: pointer;
+    }
+}
