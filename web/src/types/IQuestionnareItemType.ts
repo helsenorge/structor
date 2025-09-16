@@ -99,6 +99,7 @@ export enum ICodeSystem {
   validationOptions = "http://helsenorge.no/fhir/CodeSystem/ValidationOptions",
   workflow = "http://helsenorge.no/fhir/CodeSystem/workflow",
   contextParameter = "http://helsenorge.no/fhir/CodeSystem/ContextParameter",
+  resourceTypes = "http://hl7.org/fhir/resource-types",
 }
 
 export enum IExtensionType {

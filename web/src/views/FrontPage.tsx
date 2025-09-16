@@ -1,13 +1,15 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useUploadFile } from "src/hooks/useUploadFile";
 import { getInitialState } from "src/store/treeStore/initialState";
 
+import Button from "@helsenorge/designsystem-react/components/Button";
 import EmptyState from "@helsenorge/designsystem-react/components/EmptyState";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import Upload from "@helsenorge/designsystem-react/components/Icons/Upload";
 
-import Btn from "../components/Btn/Btn";
 import Modal from "../components/Modal/Modal";
 import QuestionnairesList from "../components/QuestionnairesList/Index";
 import SpinnerBox from "../components/Spinner/SpinnerBox";
@@ -89,20 +91,20 @@ const FrontPage = (): React.JSX.Element => {
           accept="application/json"
           style={{ display: "none" }}
         />
-        <Btn
-          onClick={handleSetNewQuestionnaire}
-          title={t("New questionnaire")}
-          variant="primary"
-        />
-        {` `}
-        <Btn
-          onClick={() => {
-            uploadRef.current?.click();
-          }}
-          title={t("Upload questionnaire")}
-          variant="secondary"
-        />
-
+        <div className="frontpage__buttons">
+          <Button onClick={handleSetNewQuestionnaire} variant="fill">
+            {t("New questionnaire")}
+          </Button>
+          <Button
+            onClick={() => {
+              uploadRef.current?.click();
+            }}
+            variant="outline"
+          >
+            <Icon size={10} svgIcon={Upload} />
+            {t("Upload questionnaire")}
+          </Button>
+        </div>
         <div className="frontpage__questionnaires-list">
           {questionnaires.length === 0 ? (
             <EmptyState

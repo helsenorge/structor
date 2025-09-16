@@ -10,7 +10,6 @@ export enum ValidationType {
   scoring = "scoring",
   calculation = "calculation",
   validationValue = "validationValue",
-  questionnaireCode = "questionnaireCode",
   linkId = "linkId",
 }
 

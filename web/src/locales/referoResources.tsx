@@ -76,7 +76,7 @@ export const getResources = (language: string): Resources => {
       microwebstep_navigasjon_avbryt_button: "Cancel",
       microwebstep_navigasjon_neste_button: "Next",
       microwebstep_navigasjon_tilbake_button: "Back",
-      quantity_unit_sublabel: "Enter in",
+      quantity_unit_sublabel: "Select unit",
     };
   }
   return {
@@ -170,6 +170,8 @@ export const getResources = (language: string): Resources => {
     microwebstep_navigasjon_avbryt_button: "Avbryt",
     microwebstep_navigasjon_neste_button: "Neste",
     microwebstep_navigasjon_tilbake_button: "Tilbake",
-    quantity_unit_sublabel: "Oppgi i",
+    quantity_unit_sublabel: "Velg enhet",
+    attachmentError_minFiles_and_maxFiles:
+      "Legg til minst {0} og maks {1} fil(er)",
   };
 };

@@ -512,8 +512,9 @@
   "data receiver must be readonly": "data-receiver må være et skrivebeskyttet felt",
   "data receiver cannot be mandatory": "data-receiver kan ikke være obligatorisk",
   "data receiver cannot be a summation field": "data-receiver kan ikke være et skåring felt",
-  "Calculation expression does not have an earlier question with LinkId '{0}'": "Kalkuleringsfeltet har et tidligere spørsmål med LinkId '{0}'",
+  "Item with LinkId '{0}' does not exist in the form and is used in the calculated expression.": "Element med LinkId '{0}' finnes ikke i skjemaet, men brukes i kalkuleringsuttrykket.",
   "Calculated expression can only be in quantity or number items": "Kalkuleringsfeltet kan være kun nummer eller antall men enhet",
+  "Calculated expression must be read-only": "Kalkuleringsfeltet må være skrivebeskyttet",
   "Context parameter": "Kontekstparameter",
   "Invalid type for item {0}. Expected choice, open-choice, or code. on {1}.": "Ugyldig type for element {0}. Forventet valg, åpen valg eller kode. på {1}.",
   "no item with extension {0} found as parent to {1}": "Ingen element med utvidelse {0} funnet som forelder til {1}",
@@ -522,5 +523,6 @@
   "Invalid type for item {0}. {1}": "Ugyldig type for element {0}. {1}",
   "Expected one of [{0}] or a code.": "Forventet en av [{0}] eller en kode.",
   "Expected one of [{0}].": "Forventet en av [{0}].",
-  "no item with definition {0} found as child to {1}": "Ingen element med definisjon {0} funnet som barn til {1}"
+  "no item with definition {0} found as child to {1}": "Ingen element med definisjon {0} funnet som barn til {1}",
+  "LinkId '{0}' is not unique": "LinkId '{0}' er ikke unik"
 }

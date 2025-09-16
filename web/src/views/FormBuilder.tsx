@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { validateElements } from "src/components/Validation/ElementValidation/elementValidation";
 import { validateQuestionnaireDetails } from "src/components/Validation/QuestionnaireDetailsValidation/questionnaireDetailsValidation";
 import {
@@ -16,9 +16,12 @@ import {
 import { getInitialState } from "src/store/treeStore/initialState";
 import { resetQuestionnaireAction } from "src/store/treeStore/treeActions";
 
+import Button from "@helsenorge/designsystem-react/components/Button";
+import Icon, { IconSize } from "@helsenorge/designsystem-react/components/Icon";
+import Upload from "@helsenorge/designsystem-react/components/Icons/InfoSignStroke";
+
 import AnchorMenu from "../components/AnchorMenu/AnchorMenu";
 import FormDetailsDrawer from "../components/Drawer/FormDetailsDrawer/FormDetailsDrawer";
-import IconBtn from "../components/IconBtn/IconBtn";
 import TranslationModal from "../components/Languages/Translation/TranslationModal";
 import Navbar from "../components/Navbar/Navbar";
 import QuestionDrawer from "../components/QuestionDrawer/QuestionDrawer";
@@ -49,7 +52,7 @@ const FormBuilder = (): React.JSX.Element => {
   >(undefined);
   const [translateLang, setTranslateLang] = useState("");
 
-  const onClickValidation = () => {
+  const onClickValidation = (): void => {
     setItemsErrors(validateElements(t, state));
     setTranslationErrors(validateTranslations(t, state));
     setQuestionnaireDetailsErrors(validateQuestionnaireDetails(t, state));
@@ -120,13 +123,14 @@ const FormBuilder = (): React.JSX.Element => {
       </div>
       <div className="page-wrapper">
         <div className="details-button">
-          <IconBtn
-            type="info"
-            title={t("Questionnaire details")}
-            color="black"
+          <Button
             onClick={toggleFormDetails}
-            size="large"
-          />
+            ariaLabel={t("Questionnaire details")}
+            size="medium"
+            variant="borderless"
+          >
+            <Icon size={IconSize.Medium} svgIcon={Upload} />
+          </Button>
         </div>
         <FormDetailsDrawer
           setTranslateLang={(language: string) => {
