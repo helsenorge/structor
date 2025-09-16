@@ -362,6 +362,7 @@ describe("ancestorHasServiceRequestExtension – feilscenarier for RR", () => {
     // Ingen SDC extension på parent
     const q = makeQuestionnaire([makeItem({ linkId: "root", item: [lone] })]);
     const res = serviceRequestValidation(t as any, lone, q);
+
     expect(
       res.some((r) =>
         r.errorReadableText.includes(
@@ -371,32 +372,39 @@ describe("ancestorHasServiceRequestExtension – feilscenarier for RR", () => {
     ).toBe(true);
   });
 
-  it("FAIL: parent har SDC extension, men ingen child med RR/SI-definition", () => {
-    const wrongChild = makeItem({
-      linkId: "wrongChild",
-      definition: "Other#thing",
-    });
-    const parent = makeParentWithExtractionContext([wrongChild]);
-    const q = makeQuestionnaire([parent]);
+  it("FAIL: parent har SDC extension, men qItem er ikke descendant av denne parenten", () => {
+    // Parent med korrekt extension, men inneholder IKKE vår qItem
+    const parentWithSDC = makeParentWithExtractionContext([
+      makeItem({ linkId: "other", definition: "Other#thing" }),
+    ]);
 
-    const qItem = makeItem({ linkId: "wrongChild", definition: `${RR}.type` });
+    // qItem ligger på en helt annen gren av treet
+    const unrelatedBranch = makeItem({
+      linkId: "unrelated",
+      item: [makeItem({ linkId: "child", definition: `${RR}.type` })],
+    });
+
+    const q = makeQuestionnaire([parentWithSDC, unrelatedBranch]);
+
+    const qItem = makeItem({ linkId: "child", definition: `${RR}.type` });
     const res = serviceRequestValidation(t as any, qItem, q);
+
     expect(
       res.some((r) =>
         r.errorReadableText.includes(
-          `no item with definition ${RR} or ${SI} found as child to wrongChild`,
+          `no item with extension ${SDC_EXT} found as parent to child`,
         ),
       ),
     ).toBe(true);
   });
 
-  it("PASS: gyldig ancestor (SDC extension + child med RR-definition)", () => {
+  it("PASS: gyldig ancestor (SDC extension + qItem er descendant)", () => {
     const child = makeItem({
       linkId: "ok",
       definition: `${RR}.type`,
       type: "choice",
     });
-    const q = withAncestor(child);
+    const q = withAncestor(child); // lager parent med SDC extension som faktisk inneholder 'child'
     expect(serviceRequestValidation(t as any, child, q)).toEqual([]);
   });
 });

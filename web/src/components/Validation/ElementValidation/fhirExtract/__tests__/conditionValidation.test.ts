@@ -265,30 +265,49 @@ describe("ancestorHasConditionExtractionContext", () => {
     ).toBe(true);
   });
 
-  it("errors when parent exists but no child with any of the anchors under that parent", () => {
-    const parent = makeParentWithConditionExtractionContext([
-      makeItem({ linkId: "wrongChild", definition: "Other#thing" }),
+  it("errors when parent with extension exists, but qItem is not a descendant of that parent", () => {
+    const otherChild = makeItem({ linkId: "other", definition: "Other#thing" });
+    const parentWithExtension = makeParentWithConditionExtractionContext([
+      otherChild,
     ]);
-    const q = makeQuestionnaire([parent]);
+    const unrelatedParent = makeItem({
+      linkId: "unrelatedParent",
+      item: [
+        makeItem({ linkId: "child", definition: `${EVIDENCE}.detail.type` }),
+      ],
+    });
+
+    const q = makeQuestionnaire([parentWithExtension, unrelatedParent]);
 
     const qItem = makeItem({
-      linkId: "wrongChild",
+      linkId: "child",
       definition: `${EVIDENCE}.detail.type`,
     });
+
     const res = conditionValidation(t as any, qItem, q);
 
-    const expected = `no item with definition ${EVIDENCE} or ${RECORDED_DATE} or ${CODE_ANCHOR} found as child to wrongChild`;
-    expect(res.some((r) => r.errorReadableText.includes(expected))).toBe(true);
+    expect(
+      res.some(
+        (r) =>
+          r.errorReadableText.includes("no item with extension") &&
+          r.errorReadableText.includes(
+            String(IExtensionType.itemExtractionContext),
+          ) &&
+          r.errorReadableText.includes("found as parent to child"),
+      ),
+    ).toBe(true);
   });
 
-  it("passes ancestor check when parent has extension and child has a matching anchor", () => {
+  it("passes when parent has extraction-context extension and qItem is descendant of that parent", () => {
     const child = makeItem({
       linkId: "ok",
       definition: `${EVIDENCE}.detail.type`,
       type: ItemTypeConstants.CHOICE,
     });
+
     const q = wrapWithValidAncestor(child);
     const res = conditionValidation(t as any, child, q);
+
     expect(res).toEqual([]);
   });
 });

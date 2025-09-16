@@ -3,7 +3,7 @@ import type { Questionnaire, QuestionnaireItem, Coding } from "fhir/r4";
 
 import {
   makeExpectedTypesText,
-  findQuestionnaireItemInQuestionnaire,
+  findQuestionnaireItemsInQuestionnaire,
   hasExtensionWithUrlAndValueUri,
   ancestorHasConditionExtractionContext,
   resourceMustBeCorrectType,
@@ -74,37 +74,20 @@ describe("findQuestionnaireItemInQuestionnaire", () => {
     const a = makeItem({ linkId: "a" });
     const b = makeItem({ linkId: "b" });
     const q = makeQuestionnaire([a, b]);
-    const found = findQuestionnaireItemInQuestionnaire(
+    const found = findQuestionnaireItemsInQuestionnaire(
       q.item,
       (itm) => itm.linkId === "b",
     );
-    expect(found?.linkId).toBe("b");
-  });
-
-  it("søker rekursivt og finner child som har itemExtractionContext-extension (via hasExtension)", () => {
-    const child = makeItem({
-      linkId: "child",
-      extension: [
-        { url: IExtensionType.itemExtractionContext, valueBoolean: true },
-      ],
-    });
-    const parent = makeItem({ linkId: "parent", item: [child] });
-    const q = makeQuestionnaire([parent]);
-
-    const found = findQuestionnaireItemInQuestionnaire(
-      q.item,
-      (itm) => itm.linkId === "nope",
-    );
-    expect(found?.linkId).toBe("child");
+    expect(found[0]?.linkId).toBe("b");
   });
 
   it("returnerer undefined når ingen matcher", () => {
     const q = makeQuestionnaire([makeItem({ linkId: "x" })]);
-    const found = findQuestionnaireItemInQuestionnaire(
+    const found = findQuestionnaireItemsInQuestionnaire(
       q.item,
       (itm) => itm.linkId === "zzz",
     );
-    expect(found).toBeUndefined();
+    expect(found).toEqual([]);
   });
 });
 
@@ -123,7 +106,6 @@ describe("hasExtensionWithUrlAndValueUri", () => {
     ).toBe(false);
   });
 });
-
 describe("ancestorHasConditionExtractionContext", () => {
   const ANCHORS = ["A#one", "B#two"] as const;
 
@@ -155,7 +137,8 @@ describe("ancestorHasConditionExtractionContext", () => {
     expect(res).toEqual([]);
   });
 
-  it("feiler når parent ikke finnes", () => {
+  it("feiler når ingen parent med itemExtractionContext finnes i hele questionnaire", () => {
+    // parent uten extension
     const parent = makeItem({ linkId: "p", item: [makeItem({ linkId: "c" })] });
     const q = makeQuestionnaire([parent]);
 
@@ -167,18 +150,31 @@ describe("ancestorHasConditionExtractionContext", () => {
       findParentConditionFunction,
     );
 
-    const expected = `no item with extension ${IExtensionType.itemExtractionContext} found as parent to c`;
-    expect(res.some((r) => r.errorReadableText.includes(expected))).toBe(true);
+    const allTexts = res.map((r) => r.errorReadableText).join(" | ");
+    // Funksjonen returnerer en "no item with extension ..." når det ikke finnes noen foreldre med extension
+    expect(allTexts).toMatch(/no item with extension .*itemExtractionContext/i);
   });
 
-  it("feiler når parent finnes, men ingen child under parent matcher noen anchors", () => {
-    const child = makeItem({ linkId: "wrongChild", definition: "Other#bla" });
-    const parent = makeItem({
+  it("feiler når parent med itemExtractionContext finnes, men er ikke faktisk ancestor til qItem", () => {
+    // Vi lager en parent MED extension, men qItem ligger ikke under denne parenten
+    const foreignChild = makeItem({
+      linkId: "foreign",
+      definition: "Other#bla",
+    });
+
+    const goodParent = makeItem({
       linkId: "p",
       extension: [{ url: IExtensionType.itemExtractionContext }],
-      item: [child],
+      item: [foreignChild], // ikke vår qItem
     });
-    const q = makeQuestionnaire([parent]);
+
+    // qItem ligger et annet sted i treet, under en annen parent
+    const realParent = makeItem({
+      linkId: "realParent",
+      item: [makeItem({ linkId: "wrongChild", definition: "A#one" })],
+    });
+
+    const q = makeQuestionnaire([goodParent, realParent]);
 
     const res = ancestorHasConditionExtractionContext(
       t,
@@ -188,11 +184,15 @@ describe("ancestorHasConditionExtractionContext", () => {
       findParentConditionFunction,
     );
 
-    const expected = `no item with definition ${ANCHORS.join(" or ")} found as child to wrongChild`;
-    expect(res.some((r) => r.errorReadableText.includes(expected))).toBe(true);
+    const allTexts = res.map((r) => r.errorReadableText).join(" | ");
+    // I denne situasjonen forventer vi meldingen om at ingen parent med extension
+    // ble funnet SOM parent til gjeldende qItem
+    expect(allTexts).toMatch(
+      /no item with extension .*itemExtractionContext.* found as parent to .*wrongChild/i,
+    );
   });
 
-  it("passerer når parent finnes og minst ett child har en anchor", () => {
+  it("passerer når parent med itemExtractionContext finnes og er ancestor til qItem", () => {
     const child = makeItem({ linkId: "ok", definition: "B#two" });
     const parent = makeItem({
       linkId: "p",

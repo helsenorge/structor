@@ -33,19 +33,17 @@ type ResourceType =
 export const observationValidation = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
-  qOrder: OrderItem[],
   questionnaire: Questionnaire,
 ): ValidationError[] => {
   const observationValidationErrors = validateObservation<
     readonly ObservationAnchor[]
-  >(t, qItem, qOrder, questionnaire, OBSERVATION_ANCHORS);
+  >(t, qItem, questionnaire, OBSERVATION_ANCHORS);
   return observationValidationErrors;
 };
 
 const validateObservation = <T extends readonly string[]>(
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
-  qOrder: OrderItem[],
   questionnaire: Questionnaire,
   CONDITION_ANCHORS: T,
 ): ValidationError[] => {
@@ -53,7 +51,6 @@ const validateObservation = <T extends readonly string[]>(
     ...ancestorHasConditionExtractionContext(
       t,
       qItem,
-      qOrder,
       questionnaire,
       CONDITION_ANCHORS,
       (itm: QuestionnaireItem) =>

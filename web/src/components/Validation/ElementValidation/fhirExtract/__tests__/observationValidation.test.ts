@@ -297,28 +297,40 @@ describe("ancestorHasConditionExtractionContext (Observation)", () => {
     );
   });
 
-  it("errors when parent exists but no child under parent has any of the anchors", () => {
-    const parent = makeParentWithObservationExtractionContext([
-      makeItem({ linkId: "wrongChild", definition: "Other#thing" }),
+  it("errors when parent with extraction-context exists, but qItem is not a descendant of that parent", () => {
+    // Parent med korrekt extension, men inneholder IKKE vår qItem
+    const parentWithExt = makeParentWithObservationExtractionContext([
+      makeItem({ linkId: "other", definition: "Other#thing" }),
     ]);
-    const q = makeQuestionnaire([parent]);
+
+    // qItem ligger et annet sted i treet
+    const unrelatedBranch = makeItem({
+      linkId: "unrelated",
+      item: [
+        makeItem({ linkId: "child", definition: `${COMPONENT}.value[x]` }),
+      ],
+    });
+
+    const q = makeQuestionnaire([parentWithExt, unrelatedBranch]);
 
     const qItem = makeItem({
-      linkId: "wrongChild",
+      linkId: "child",
       definition: `${COMPONENT}.value[x]`,
     });
+
     const res = observationValidation(t as any, qItem, q);
 
-    const anchorsText = `${COMPONENT} or ${DERIVED_FROM} or ${EFFECTIVE_DT} or ${CODE_ANCHOR} or ${CATEGORY}`;
-    const expected = `no item with definition ${anchorsText} found as child to wrongChild`;
-    expect(res.some((r) => r.errorReadableText.includes(expected))).toBe(true);
+    const expectedMsg = `no item with extension ${IExtensionType.itemExtractionContext} found as parent to child`;
+    expect(res.some((r) => r.errorReadableText.includes(expectedMsg))).toBe(
+      true,
+    );
   });
 
   it("passes ancestor check when parent has extension and child matches an anchor", () => {
     const child = makeItem({
       linkId: "ok",
       definition: `${COMPONENT}.value[x]`,
-      type: ItemTypeConstants.STRING, // allowed for value[x]
+      type: ItemTypeConstants.STRING, // tillatt for value[x]
     });
     const q = wrapWithValidAncestor(child);
     const res = observationValidation(t as any, child, q);

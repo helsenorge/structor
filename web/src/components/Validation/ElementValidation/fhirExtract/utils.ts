@@ -1,7 +1,6 @@
 import { Extension, Questionnaire, QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
 import { findExtensionByUrl, hasExtension } from "src/helpers/extensionHelper";
-import { OrderItem } from "src/store/treeStore/treeStore";
 import { IExtensionType } from "src/types/IQuestionnareItemType";
 import { ValidationError } from "src/utils/validationUtils";
 
@@ -9,7 +8,7 @@ import { createError } from "../../validationHelper";
 export const makeExpectedTypesText = (
   t: TFunction<"translation">,
   types: Array<QuestionnaireItem["type"] | string>,
-  orCodeSystem?: string | boolean
+  orCodeSystem?: string | boolean,
 ): string => {
   const uniq = Array.from(new Set(types));
   const list = uniq.join(", ");
@@ -21,7 +20,7 @@ export const makeExpectedTypesText = (
 
 export const findQuestionnaireItemsInQuestionnaire = (
   questionnaireItems: QuestionnaireItem[] | undefined,
-  condition: (item: QuestionnaireItem) => boolean
+  condition: (item: QuestionnaireItem) => boolean,
 ): QuestionnaireItem[] => {
   const results: QuestionnaireItem[] = [];
 
@@ -32,7 +31,7 @@ export const findQuestionnaireItemsInQuestionnaire = (
 
     if (item.item?.length) {
       results.push(
-        ...findQuestionnaireItemsInQuestionnaire(item.item, condition)
+        ...findQuestionnaireItemsInQuestionnaire(item.item, condition),
       );
     }
   }
@@ -42,7 +41,7 @@ export const findQuestionnaireItemsInQuestionnaire = (
 export const hasExtensionWithUrlAndValueUri = (
   url: string,
   valueUri: string,
-  extensions?: Extension[]
+  extensions?: Extension[],
 ): boolean => {
   const ext = findExtensionByUrl(extensions, url);
   return ext?.valueUri === valueUri;
@@ -51,10 +50,9 @@ export const hasExtensionWithUrlAndValueUri = (
 export const ancestorHasConditionExtractionContext = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
-  qOrder: OrderItem[],
   questionnaire: Questionnaire,
   CONDITION_ANCHORS: readonly string[],
-  findParentConditionFunction: (item: QuestionnaireItem) => boolean
+  findParentConditionFunction: (item: QuestionnaireItem) => boolean,
 ): ValidationError[] => {
   if (!questionnaire?.item?.length) return [];
 
@@ -66,43 +64,39 @@ export const ancestorHasConditionExtractionContext = (
 
   const parents = findQuestionnaireItemsInQuestionnaire(
     questionnaire.item,
-    findParentConditionFunction
+    findParentConditionFunction,
   );
   if (parents.length === 0) {
     return [
       createError(
         qItem.linkId,
         "system",
-        t(`no item with extension {0} found}`)
-          .replace("{0}", IExtensionType.itemExtractionContext)
-          .replace("{1}", qItem.linkId)
-      ),
-    ];
-  }
-  let foundInParent = false;
-  for (const parent of parents) {
-    const foundQuestItemInParent = findQuestionnaireItemsInQuestionnaire(
-      parent.item,
-      (itm: QuestionnaireItem) => itm.linkId === qItem.linkId
-    );
-    if (foundQuestItemInParent.length > 0) {
-      foundInParent = true;
-      break;
-    }
-  }
-  if (foundInParent) {
-    return [];
-  } else {
-    return [
-      createError(
-        qItem.linkId,
-        "system",
         t(`no item with extension {0} found as parent to {1}`)
           .replace("{0}", IExtensionType.itemExtractionContext)
-          .replace("{1}", qItem.linkId)
+          .replace("{1}", qItem.linkId),
       ),
     ];
   }
+
+  for (const parent of parents) {
+    const hits = findQuestionnaireItemsInQuestionnaire(
+      parent.item ?? [],
+      (itm: QuestionnaireItem) => itm.linkId === qItem.linkId,
+    );
+    if (hits.length > 0) {
+      return [];
+    }
+  }
+
+  return [
+    createError(
+      qItem.linkId,
+      "system",
+      t(`no item with extension {0} found as parent to {1}`)
+        .replace("{0}", IExtensionType.itemExtractionContext)
+        .replace("{1}", qItem.linkId),
+    ),
+  ];
 };
 export const resourceMustBeCorrectType = <
   T extends string,
@@ -146,7 +140,7 @@ export const resourceMustBeCorrectType = <
         t(`Invalid type for item {0}. {1}${resource ? ` on {2}` : ""}`)
           .replace("{0}", qItem.linkId)
           .replace("{1}", makeExpectedTypesText(t, allowedTypes, orCodeSystem))
-          .replace("{2}", resource || "")
+          .replace("{2}", resource || ""),
       ),
     ];
   }
