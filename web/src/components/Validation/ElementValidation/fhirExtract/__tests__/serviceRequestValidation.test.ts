@@ -365,9 +365,7 @@ describe("ancestorHasServiceRequestExtension – feilscenarier for RR", () => {
 
     expect(
       res.some((r) =>
-        r.errorReadableText.includes(
-          `no item with extension ${SDC_EXT} found as parent to child`,
-        ),
+        r.errorReadableText.includes(`no item with extension ${SDC_EXT} found`),
       ),
     ).toBe(true);
   });

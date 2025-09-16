@@ -291,7 +291,7 @@ describe("ancestorHasConditionExtractionContext (Observation)", () => {
     });
     const res = observationValidation(t as any, qItem, q);
 
-    const expectedMsg = `no item with extension ${IExtensionType.itemExtractionContext} found as parent to child`;
+    const expectedMsg = `no item with extension ${IExtensionType.itemExtractionContext} found`;
     expect(res.some((r) => r.errorReadableText.includes(expectedMsg))).toBe(
       true,
     );

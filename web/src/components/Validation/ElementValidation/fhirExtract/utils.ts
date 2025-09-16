@@ -71,9 +71,10 @@ export const ancestorHasConditionExtractionContext = (
       createError(
         qItem.linkId,
         "system",
-        t(`no item with extension {0} found as parent to {1}`)
-          .replace("{0}", IExtensionType.itemExtractionContext)
-          .replace("{1}", qItem.linkId),
+        t(`no item with extension {0} found`).replace(
+          "{0}",
+          IExtensionType.itemExtractionContext,
+        ),
       ),
     ];
   }

@@ -260,7 +260,7 @@ describe("ancestorHasConditionExtractionContext", () => {
           r.errorReadableText.includes(
             String(IExtensionType.itemExtractionContext),
           ) &&
-          r.errorReadableText.includes("found as parent to child"),
+          r.errorReadableText.includes("found"),
       ),
     ).toBe(true);
   });
