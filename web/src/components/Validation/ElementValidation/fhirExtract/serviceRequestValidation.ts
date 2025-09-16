@@ -1,5 +1,6 @@
 import { Questionnaire, QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
+import { OrderItem } from "src/store/treeStore/treeStore";
 import {
   IExtensionType,
   ItemExtractionContext,
@@ -23,11 +24,13 @@ type ResourceType = "type" | "identifier" | "display" | "reference";
 export const serviceRequestValidation = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
+  qOrder: OrderItem[],
   questionnaire: Questionnaire,
 ): ValidationError[] => {
   const validateReasonReferenceValidation = validateReasonReference(
     t,
     qItem,
+    qOrder,
     questionnaire,
     SERVICE_REQUEST_ANCHORS,
   );
@@ -39,6 +42,7 @@ export const serviceRequestValidation = (
 const validateReasonReference = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
+  qOrder: OrderItem[],
   questionnaire: Questionnaire,
   CONDITION_ANCHORS: readonly string[],
 ): ValidationError[] => {
@@ -46,6 +50,7 @@ const validateReasonReference = (
     ...ancestorHasConditionExtractionContext(
       t,
       qItem,
+      qOrder,
       questionnaire,
       CONDITION_ANCHORS,
       (itm: QuestionnaireItem) =>

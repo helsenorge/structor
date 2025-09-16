@@ -1,6 +1,7 @@
 import { Extension, Questionnaire, QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
 import { findExtensionByUrl, hasExtension } from "src/helpers/extensionHelper";
+import { OrderItem } from "src/store/treeStore/treeStore";
 import { IExtensionType } from "src/types/IQuestionnareItemType";
 import { ValidationError } from "src/utils/validationUtils";
 
@@ -8,7 +9,7 @@ import { createError } from "../../validationHelper";
 export const makeExpectedTypesText = (
   t: TFunction<"translation">,
   types: Array<QuestionnaireItem["type"] | string>,
-  orCodeSystem?: string | boolean,
+  orCodeSystem?: string | boolean
 ): string => {
   const uniq = Array.from(new Set(types));
   const list = uniq.join(", ");
@@ -18,30 +19,30 @@ export const makeExpectedTypesText = (
   return t(`Expected one of [{0}].`).replace("{0}", list);
 };
 
-export const findQuestionnaireItemInQuestionnaire = (
-  questionnaireItem: QuestionnaireItem[] | undefined,
-  condition: (item: QuestionnaireItem) => boolean,
-): QuestionnaireItem | undefined => {
-  for (const item of questionnaireItem || []) {
+export const findQuestionnaireItemsInQuestionnaire = (
+  questionnaireItems: QuestionnaireItem[] | undefined,
+  condition: (item: QuestionnaireItem) => boolean
+): QuestionnaireItem[] => {
+  const results: QuestionnaireItem[] = [];
+
+  for (const item of questionnaireItems ?? []) {
     if (condition(item)) {
-      return item;
+      results.push(item);
     }
-    if (item.item && item.item.length > 0) {
-      const foundInChild = findQuestionnaireItemInQuestionnaire(
-        item.item,
-        (item: QuestionnaireItem) =>
-          hasExtension(item, IExtensionType.itemExtractionContext),
+
+    if (item.item?.length) {
+      results.push(
+        ...findQuestionnaireItemsInQuestionnaire(item.item, condition)
       );
-      if (foundInChild) {
-        return foundInChild;
-      }
     }
   }
+
+  return results;
 };
 export const hasExtensionWithUrlAndValueUri = (
   url: string,
   valueUri: string,
-  extensions?: Extension[],
+  extensions?: Extension[]
 ): boolean => {
   const ext = findExtensionByUrl(extensions, url);
   return ext?.valueUri === valueUri;
@@ -50,56 +51,58 @@ export const hasExtensionWithUrlAndValueUri = (
 export const ancestorHasConditionExtractionContext = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
+  qOrder: OrderItem[],
   questionnaire: Questionnaire,
   CONDITION_ANCHORS: readonly string[],
-  findParentConditionFunction: (item: QuestionnaireItem) => boolean,
+  findParentConditionFunction: (item: QuestionnaireItem) => boolean
 ): ValidationError[] => {
   if (!questionnaire?.item?.length) return [];
 
   const definitionHitsAnchor =
     !!qItem.definition &&
-    CONDITION_ANCHORS.some((def) => qItem.definition!.includes(def));
+    CONDITION_ANCHORS.some((def) => qItem.definition?.includes(def));
 
   if (!definitionHitsAnchor) return [];
 
-  const parent = findQuestionnaireItemInQuestionnaire(
+  const parents = findQuestionnaireItemsInQuestionnaire(
     questionnaire.item,
-    findParentConditionFunction,
+    findParentConditionFunction
   );
-
-  const child = findQuestionnaireItemInQuestionnaire(
-    parent?.item,
-    (itm: QuestionnaireItem) =>
-      !!itm.definition &&
-      CONDITION_ANCHORS.some((def) => itm.definition!.includes(def)),
-  );
-
-  if (!parent) {
+  if (parents.length === 0) {
+    return [
+      createError(
+        qItem.linkId,
+        "system",
+        t(`no item with extension {0} found}`)
+          .replace("{0}", IExtensionType.itemExtractionContext)
+          .replace("{1}", qItem.linkId)
+      ),
+    ];
+  }
+  let foundInParent = false;
+  for (const parent of parents) {
+    const foundQuestItemInParent = findQuestionnaireItemsInQuestionnaire(
+      parent.item,
+      (itm: QuestionnaireItem) => itm.linkId === qItem.linkId
+    );
+    if (foundQuestItemInParent.length > 0) {
+      foundInParent = true;
+      break;
+    }
+  }
+  if (foundInParent) {
+    return [];
+  } else {
     return [
       createError(
         qItem.linkId,
         "system",
         t(`no item with extension {0} found as parent to {1}`)
           .replace("{0}", IExtensionType.itemExtractionContext)
-          .replace("{1}", qItem.linkId),
+          .replace("{1}", qItem.linkId)
       ),
     ];
   }
-
-  if (parent && !child) {
-    const anchorsText = CONDITION_ANCHORS.join(" or ");
-    return [
-      createError(
-        qItem.linkId,
-        "system",
-        t(`no item with definition {0} found as child to {1}`)
-          .replace("{0}", anchorsText)
-          .replace("{1}", qItem.linkId),
-      ),
-    ];
-  }
-
-  return [];
 };
 export const resourceMustBeCorrectType = <
   T extends string,
@@ -143,7 +146,7 @@ export const resourceMustBeCorrectType = <
         t(`Invalid type for item {0}. {1}${resource ? ` on {2}` : ""}`)
           .replace("{0}", qItem.linkId)
           .replace("{1}", makeExpectedTypesText(t, allowedTypes, orCodeSystem))
-          .replace("{2}", resource || ""),
+          .replace("{2}", resource || "")
       ),
     ];
   }

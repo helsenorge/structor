@@ -765,9 +765,9 @@ const validate = (
 
   // validate repeatable items
   errors.push(...validateRepeatableItems(t, qItem, qOrder));
-  errors.push(...serviceRequestValidation(t, qItem, questionnaires));
-  errors.push(...observationValidation(t, qItem, questionnaires));
-  errors.push(...conditionValidation(t, qItem, questionnaires));
+  errors.push(...serviceRequestValidation(t, qItem, qOrder, questionnaires));
+  errors.push(...observationValidation(t, qItem, qOrder, questionnaires));
+  errors.push(...conditionValidation(t, qItem, qOrder, questionnaires));
   currentItem.items.forEach((item) =>
     validate(t, errors, item, qItems, qOrder, qContained, state),
   );

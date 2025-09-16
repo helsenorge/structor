@@ -1,5 +1,6 @@
 import { Questionnaire, QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
+import { OrderItem } from "src/store/treeStore/treeStore";
 import {
   IExtensionType,
   ItemExtractionContext,
@@ -32,17 +33,19 @@ type ResourceType =
 export const observationValidation = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
+  qOrder: OrderItem[],
   questionnaire: Questionnaire,
 ): ValidationError[] => {
   const observationValidationErrors = validateObservation<
     readonly ObservationAnchor[]
-  >(t, qItem, questionnaire, OBSERVATION_ANCHORS);
+  >(t, qItem, qOrder, questionnaire, OBSERVATION_ANCHORS);
   return observationValidationErrors;
 };
 
 const validateObservation = <T extends readonly string[]>(
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
+  qOrder: OrderItem[],
   questionnaire: Questionnaire,
   CONDITION_ANCHORS: T,
 ): ValidationError[] => {
@@ -50,6 +53,7 @@ const validateObservation = <T extends readonly string[]>(
     ...ancestorHasConditionExtractionContext(
       t,
       qItem,
+      qOrder,
       questionnaire,
       CONDITION_ANCHORS,
       (itm: QuestionnaireItem) =>

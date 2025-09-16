@@ -1,5 +1,6 @@
 import { Questionnaire, QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
+import { OrderItem } from "src/store/treeStore/treeStore";
 import {
   IExtensionType,
   ItemExtractionContext,
@@ -27,11 +28,13 @@ type resourceType =
 export const conditionValidation = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
+  qOrder: OrderItem[],
   questionnaire: Questionnaire,
 ): ValidationError[] => {
   const conditionEvidenceValidation = validateConditionEvidence(
     t,
     qItem,
+    qOrder,
     questionnaire,
     CONDITION_ANCHORS,
   );
@@ -41,7 +44,7 @@ export const conditionValidation = (
 const validateConditionEvidence = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
-
+  qOrder: OrderItem[],
   questionnaire: Questionnaire,
   CONDITION_ANCHORS: readonly string[],
 ): ValidationError[] => {
@@ -49,6 +52,7 @@ const validateConditionEvidence = (
     ...ancestorHasConditionExtractionContext(
       t,
       qItem,
+      qOrder,
       questionnaire,
       CONDITION_ANCHORS,
       (itm: QuestionnaireItem) =>
