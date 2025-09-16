@@ -1,6 +1,5 @@
 import { Questionnaire, QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
-import { OrderItem } from "src/store/treeStore/treeStore";
 import {
   IExtensionType,
   ItemExtractionContext,
