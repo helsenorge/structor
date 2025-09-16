@@ -18,9 +18,16 @@ import {
   ObservationAnchor,
   ancestorHasConditionExtractionContext,
   resourceMustBeCorrectType,
+  OBS_DERIVED_FROM_ANCHOR,
 } from "./utils";
 
-type ResourceType = "value[x]" | "code";
+type ResourceType =
+  | "value[x]"
+  | "code"
+  | "type"
+  | "identifier"
+  | "display"
+  | "reference";
 
 export const observationValidation = (
   t: TFunction<"translation">,
@@ -106,6 +113,36 @@ const validateObservation = <T extends readonly string[]>(
       anchor: OBS_EFFECTIVE_DATE_TIME_ANCHOR,
       allowedTypes: [ItemTypeConstants.DATE, ItemTypeConstants.DATETIME],
       orCodeSystem: true,
+    }),
+    ...resourceMustBeCorrectType<ObservationAnchor, ResourceType>({
+      t,
+      qItem,
+      resource: "type",
+      anchor: OBS_DERIVED_FROM_ANCHOR,
+      allowedTypes: [ItemTypeConstants.CHOICE, ItemTypeConstants.OPENCHOICE],
+      orCodeSystem: true,
+    }),
+    ...resourceMustBeCorrectType<ObservationAnchor, ResourceType>({
+      t,
+      qItem,
+      resource: "identifier",
+      anchor: OBS_DERIVED_FROM_ANCHOR,
+      allowedTypes: [ItemTypeConstants.CHOICE, ItemTypeConstants.OPENCHOICE],
+      orCodeSystem: true,
+    }),
+    ...resourceMustBeCorrectType<ObservationAnchor, ResourceType>({
+      t,
+      qItem,
+      resource: "display",
+      anchor: OBS_DERIVED_FROM_ANCHOR,
+      allowedTypes: [ItemTypeConstants.STRING, ItemTypeConstants.DISPLAY],
+    }),
+    ...resourceMustBeCorrectType<ObservationAnchor, ResourceType>({
+      t,
+      qItem,
+      resource: "reference",
+      anchor: OBS_DERIVED_FROM_ANCHOR,
+      allowedTypes: [ItemTypeConstants.STRING, ItemTypeConstants.DISPLAY],
     }),
   ];
 };
