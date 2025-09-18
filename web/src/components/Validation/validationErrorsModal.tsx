@@ -67,11 +67,28 @@ export const ValidationErrorsModal = (
   const renderVelidationErrorMessages = (): React.JSX.Element | undefined => {
     if (props.validationErrors.length > 0) {
       return (
-        <p className="msg-error">
-          {t(
-            "Found {0} errors. Questions with errors are marked with a red border.",
-          ).replace("{0}", props.validationErrors.length.toString())}
-        </p>
+        <>
+          <p className="msg-error">
+            {t(
+              "Found {0} errors. Questions with errors are marked with a red border.",
+            ).replace(
+              "{0}",
+              props.validationErrors
+                .filter((x) => x.errorLevel === "error")
+                .length.toString(),
+            )}
+          </p>
+          <p className="msg-warning">
+            {t(
+              "Found {0} warnings. Questions with warnings are marked with a yellow border.",
+            ).replace(
+              "{0}",
+              props.validationErrors
+                .filter((x) => x.errorLevel === "warning")
+                .length.toString(),
+            )}
+          </p>
+        </>
       );
     }
   };

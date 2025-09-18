@@ -143,3 +143,9 @@
   padding: 12px;
   text-align: left;
 }
+.error-highlight {
+  border: #b62e1c 4px solid;
+}
+.warning-highlight {
+  border: #ab7c00 4px solid;
+}

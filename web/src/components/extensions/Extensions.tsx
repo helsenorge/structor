@@ -25,7 +25,7 @@ type Props = {
     id: string,
     idType?: "linkId" | "id",
   ) => void;
-  hasValidationError?: (index: number) => boolean;
+  hasValidationError?: (index: number) => string | false;
   className?: string;
   buttonText?: string;
   borderType?: BorderType;
@@ -83,12 +83,12 @@ export const Extensions = ({
 
       <ExpanderList>
         {extensions?.map((ext, index) => {
-          const hasError = hasValidationError
+          const errorType = hasValidationError
             ? hasValidationError(index)
             : false;
           return (
             <section
-              className={`${styles.extensionItem} ${borderClass()} ${hasError ? styles.error : ""}`}
+              className={`${styles.extensionItem} ${borderClass()} ${errorType ? styles[errorType as keyof typeof styles] : ""}`}
               key={ext.id}
             >
               {collapsable ? (

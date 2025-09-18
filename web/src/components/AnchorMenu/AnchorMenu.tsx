@@ -153,9 +153,15 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
   };
 
   const hasValidationError = (linkId: string): boolean => {
-    return props.validationErrors.some((error) => error.linkId === linkId);
+    return props.validationErrors.some(
+      (error) => error.linkId === linkId && error.errorLevel === "error",
+    );
   };
-
+  const hasValidationWarnings = (linkId: string): boolean => {
+    return props.validationErrors.some(
+      (error) => error.linkId === linkId && error.errorLevel === "warning",
+    );
+  };
   const isSelectedItem = (linkId: string): boolean => {
     return props.qCurrentItem?.linkId === linkId;
   };
@@ -286,10 +292,16 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
           generateNodeProps={(extendedNode: ExtendedNode) => ({
             className: `anchor-menu__item 
                             ${
+                              hasValidationWarnings(extendedNode.node.title)
+                                ? "validation-warning"
+                                : ""
+                            } 
+                            ${
                               hasValidationError(extendedNode.node.title)
                                 ? "validation-error"
                                 : ""
                             } 
+                
                             ${
                               extendedNode.path.length === 1
                                 ? "anchor-menu__topitem"

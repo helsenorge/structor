@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 
 import { Extension } from "fhir/r4";
 import { Extensions } from "src/components/extensions/Extensions";
+import { ValidationType } from "src/components/Validation/validationTypes";
 import createUUID from "src/helpers/CreateUUID";
 import { updateItemExtensionAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
@@ -26,10 +27,13 @@ const QExtensions = ({
       return { ...ext, id: ext.id || createUUID() };
     });
   };
-  const hasValidationError = (index: number): boolean =>
-    itemValidationErrors.some(
-      (x) => x.errorProperty.substring(0, 4) === "code" && index === x.index,
+  const hasValidationError = (index: number): string | false => {
+    const errorLevel = itemValidationErrors.filter(
+      (x) => x.errorProperty === ValidationType.extension && index === x.index,
     );
+    return errorLevel.length > 0 ? errorLevel[0].errorLevel : false;
+  };
+
   return (
     <div className={style.extensions}>
       <Extensions
