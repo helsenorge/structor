@@ -1,4 +1,4 @@
-import { QuestionnaireItem, ValueSet } from "fhir/r4";
+import { FhirResource, QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
 import { getValidationExtentionUrls } from "src/helpers/enumHelper";
 import {
@@ -446,7 +446,7 @@ const validateExtensions = (
 const validateInitial = (
   t: TFunction<"translation">,
   qItem: QuestionnaireItem,
-  qContained: ValueSet[],
+  qContained: FhirResource[],
 ): ValidationError[] => {
   const returnErrors: ValidationError[] = [];
   if (qItem.initial && qItem.initial[0].valueCoding) {
@@ -468,9 +468,9 @@ const validateInitial = (
         );
       }
     } else if (qItem.answerValueSet) {
-      const valueSetToCheck = qContained.find(
-        (x) => `#${x.id}` === qItem.answerValueSet,
-      );
+      const valueSetToCheck = qContained
+        .filter((x) => x.resourceType === "ValueSet")
+        .find((x) => `#${x.id}` === qItem.answerValueSet);
       if (valueSetToCheck) {
         const isMatch = getValueSetValues(valueSetToCheck).find(
           (x) =>
@@ -507,7 +507,7 @@ const validateEnableWhen = (
   t: TFunction<"translation">,
   qItems: Items,
   qItem: QuestionnaireItem,
-  qContained: ValueSet[],
+  qContained: FhirResource[],
 ): ValidationError[] => {
   const returnErrors: ValidationError[] = [];
   qItem.enableWhen?.forEach((ew, index) => {
@@ -649,9 +649,9 @@ const validateEnableWhen = (
           );
         } else {
           // check contained valueSets
-          const valueSetToCheck = qContained.find(
-            (x) => `#${x.id}` === qItems[ew.question].answerValueSet,
-          );
+          const valueSetToCheck = qContained
+            .filter((x) => x.resourceType === "ValueSet")
+            .find((x) => `#${x.id}` === qItems[ew.question].answerValueSet);
           if (valueSetToCheck) {
             const isMatch = getValueSetValues(valueSetToCheck).find(
               (x) =>
@@ -714,7 +714,7 @@ const validate = (
   currentItem: OrderItem,
   qItems: Items,
   qOrder: OrderItem[],
-  qContained: ValueSet[] = [],
+  qContained: FhirResource[] = [],
   state: TreeState,
 ): void => {
   const questionnaires = generateMainQuestionnaire(state);

@@ -5,6 +5,7 @@
   height: 100%;
 }
 
+/* header {
 header {
   background-color: var(--primary-2);
   display: flex;
@@ -13,7 +14,7 @@ header {
   width: 100%;
   z-index: 3;
   top: 0;
-}
+} */
 
 h1 {
   color: var(--color-base-1);
@@ -57,6 +58,19 @@ select {
 select {
   padding: 10px 40px 10px 10px;
   text-overflow: ellipsis;
+}
+
+.structor-helper {
+  background-color: #f5f3f3;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+}
+
+.copyWrapper {
+  width: 80%;
 }
 
 .title {

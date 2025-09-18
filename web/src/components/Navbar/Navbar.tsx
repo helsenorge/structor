@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import { useNavigate, NavLink } from "react-router";
+import { useNavigate, NavLink } from "react-router-dom";
 import { useUploadFile } from "src/hooks/useUploadFile";
 import { saveQuestionnaire } from "src/store/treeStore/indexedDbHelper";
 import { getInitialState } from "src/store/treeStore/initialState";
@@ -16,7 +16,6 @@ import {
 import { TreeContext } from "../../store/treeStore/treeStore";
 import Btn from "../Btn/Btn";
 import "./Navbar.css";
-import ImportValueSet from "../ImportValueSet/ImportValueSet";
 import JSONView from "../JSONView/JSONView";
 import CloseFormModal from "../Modal/CloseFormModal";
 import PredefinedValueSetModal from "../PredefinedValueSetModal/PredefinedValueSetModal";
@@ -40,7 +39,7 @@ const Navbar = ({
 }: Props): React.JSX.Element => {
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
-  const { uploadQuestionnaire, uploadRef } = useUploadFile({
+  const { uploadFile, uploadRef } = useUploadFile({
     onUploadComplete: (formId: string) => {
       navigate(`/formbuilder/${formId}`);
       hideMenu();
@@ -49,7 +48,6 @@ const Navbar = ({
   const { state, dispatch } = useContext(TreeContext);
   const [selectedMenuItem, setSelectedMenuItem] = useState(MenuItem.none);
   const [showContained, setShowContained] = useState(false);
-  const [showImportValueSet, setShowImportValueSet] = useState(false);
   const [showJSONView, setShowJSONView] = useState(false);
   const [showCloseFormModal, setShowCloseFormModal] = useState(false);
   const navBarRef = useRef<HTMLDivElement>(null);
@@ -57,7 +55,6 @@ const Navbar = ({
   const hideMenu = (): void => {
     setSelectedMenuItem(MenuItem.none);
   };
-
   useOutsideClick(navBarRef, hideMenu, selectedMenuItem === MenuItem.none);
 
   const callbackAndHide = (callback: () => void): void => {
@@ -140,12 +137,17 @@ const Navbar = ({
 
   return (
     <>
-      <header ref={navBarRef}>
+      <header className="nav-header" ref={navBarRef}>
         <NavLink to="/" className="form-logo">
           <h2 className="form-title--link">{t("Frontpage")}</h2>
         </NavLink>
         <div className="form-title">
-          <h1>{getFileName()}</h1>
+          <NavLink
+            className="form-logo"
+            to={`/formbuilder/${state.qMetadata.id}`}
+          >
+            <h1 className="form-title--link">{getFileName()}</h1>
+          </NavLink>
         </div>
 
         <div className="pull-right">
@@ -166,7 +168,7 @@ const Navbar = ({
             aria-label="menu list"
             aria-pressed="false"
             onClick={() => handleMenuItemClick(MenuItem.more)}
-            onKeyPress={(e) =>
+            onKeyDown={(e) =>
               e.code === "Enter" && handleMenuItemClick(MenuItem.more)
             }
           >
@@ -187,19 +189,18 @@ const Navbar = ({
                 callbackAndHide(() => setShowJSONView(!showJSONView))
               }
             />
+
             <Btn
-              title={t("Import choices")}
-              onClick={() =>
-                callbackAndHide(() =>
-                  setShowImportValueSet(!showImportValueSet),
-                )
-              }
+              title={t("ValueSets")}
+              onClick={() => {
+                navigate(`/formbuilder/${state.qMetadata.id}/valuesets/new`);
+              }}
             />
             <Btn
-              title={t("Choices")}
-              onClick={() =>
-                callbackAndHide(() => setShowContained(!showContained))
-              }
+              title={t("CodeSystems")}
+              onClick={() => {
+                navigate(`/formbuilder/${state.qMetadata.id}/codesystems/new`);
+              }}
             />
             {i18n.language !== "nb-NO" && (
               <Btn
@@ -233,7 +234,7 @@ const Navbar = ({
             <input
               type="file"
               ref={uploadRef}
-              onChange={uploadQuestionnaire}
+              onChange={uploadFile}
               accept="application/json"
               style={{ display: "none" }}
             />
@@ -249,11 +250,7 @@ const Navbar = ({
           close={() => setShowContained(!showContained)}
         />
       )}
-      {showImportValueSet && (
-        <ImportValueSet
-          close={() => setShowImportValueSet(!showImportValueSet)}
-        />
-      )}
+
       {showJSONView && (
         <JSONView showJSONView={() => setShowJSONView(!showJSONView)} />
       )}

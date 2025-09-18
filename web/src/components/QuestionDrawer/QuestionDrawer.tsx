@@ -1,9 +1,10 @@
 import React, { useContext, useRef } from "react";
 
 import { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
-import { useTranslation } from "react-i18next";
-
 import "./QuestionDrawer.css";
+import { useTranslation } from "react-i18next";
+import { getValueSetsFromState } from "src/store/treeStore/selectors";
+
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
 import ChevronLeft from "@helsenorge/designsystem-react/components/Icons/ChevronLeft";
@@ -30,6 +31,7 @@ const QuestionDrawer = ({
 }: Props): React.JSX.Element | null => {
   const { t } = useTranslation();
   const { state, dispatch } = useContext(TreeContext);
+  const valueSets = getValueSetsFromState(state);
   const { previous, next, hasNext, hasPrevious } = useItemNavigation();
   const closeDrawer = (): void => {
     setTimeout(() => {
@@ -120,7 +122,7 @@ const QuestionDrawer = ({
           parentArray={parentArray}
           conditionalArray={getConditional(parentArray, item.linkId)}
           getItem={getQItem}
-          containedResources={state.qContained}
+          containedResources={valueSets}
           dispatch={dispatch}
           itemValidationErrors={itemValidationErrors}
         />

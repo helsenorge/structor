@@ -15,18 +15,17 @@ import { TreeContext } from "../../store/treeStore/treeStore";
 import styles from "./jsonview.module.scss";
 type Props = {
   showJSONView: () => void;
+  jsonContent?: unknown;
 };
 
-const JSONView = ({ showJSONView }: Props): React.JSX.Element => {
+const JSONView = ({ showJSONView, jsonContent }: Props): React.JSX.Element => {
   const { t } = useTranslation();
   const { state } = useContext(TreeContext);
   const { isCopied, copyToClipboard } = useCopyToClipboard();
+  const content = jsonContent
+    ? JSON.stringify(jsonContent, null, 2)
+    : JSON.stringify(JSON.parse(generateQuestionnaire(state)), null, 2);
   const handleCopy = async (): Promise<void> => {
-    const content = JSON.stringify(
-      JSON.parse(generateQuestionnaire(state)),
-      null,
-      2,
-    );
     await copyToClipboard(content);
   };
   return (

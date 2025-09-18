@@ -80,37 +80,42 @@ const getTranslatedAnswerOptions = (
 };
 
 const getTranslatedContained = (
-  qContained: Array<ValueSet> | undefined,
+  qContained: FhirResource[] | undefined,
   translation: Translation,
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-) => {
+): ValueSet[] => {
   if (!qContained || qContained.length < 1) {
     return [];
   }
 
-  return qContained.map((valueSet) => {
-    if (getValueSetValues(valueSet).length === 0) {
-      return valueSet;
-    }
+  return qContained
+    .map((contained) => {
+      if (contained.resourceType !== "ValueSet") {
+        return;
+      }
+      if (getValueSetValues(contained).length === 0) {
+        return contained;
+      }
 
-    const includes = valueSet.compose?.include.map((include) => {
+      const includes = contained.compose?.include.map((include) => {
+        return {
+          ...include,
+          concept: include.concept?.map((c) => {
+            const translatedValue =
+              contained.id && translation.contained[contained.id]
+                ? translation.contained[contained.id].concepts[c.code]
+                : "";
+            return { ...c, display: translatedValue };
+          }),
+        };
+      });
+
       return {
-        ...include,
-        concept: include.concept?.map((c) => {
-          const translatedValue =
-            valueSet.id && translation.contained[valueSet.id]
-              ? translation.contained[valueSet.id].concepts[c.code]
-              : "";
-          return { ...c, display: translatedValue };
-        }),
+        ...contained,
+        compose: { ...contained.compose, include: includes },
       };
-    });
-
-    return {
-      ...valueSet,
-      compose: { ...valueSet.compose, include: includes },
-    };
-  });
+    })
+    .filter(Boolean) as ValueSet[];
 };
 
 const getTranslatedSidebarItem = (
@@ -352,7 +357,7 @@ function getLanguageData(
   };
 }
 
-export const generateTree = (
+const generateTree = (
   order: Array<OrderItem>,
   items: Items,
 ): Array<QuestionnaireItem> => {
@@ -425,9 +430,9 @@ export function getUsedValueSetToTranslate(
   state: TreeState,
 ): ValueSet[] | undefined {
   const usedValueSet = getUsedValueSet(state);
-  const valueSetsToTranslate = state.qContained?.filter(
-    (x) => x.id && usedValueSet?.includes(x.id) && x,
-  );
+  const valueSetsToTranslate = state.qContained
+    ?.filter((x) => x.resourceType === "ValueSet")
+    .filter((x) => x.id && usedValueSet?.includes(x.id) && x);
 
   return valueSetsToTranslate;
 }

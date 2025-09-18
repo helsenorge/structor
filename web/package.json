@@ -13,6 +13,8 @@
     "stylelint": "stylelint src/**/*.{scss,module.scss}",
     "stylelint:fix": "npm run stylelint -- --fix",
     "prepare": "cd .. && husky web/.husky",
+    "prebuild": "npm run generate:cssdefinitions && tsc --noEmit --project tsconfig.json",
+    "generate:cssdefinitions": "typed-scss-modules src/**/*.module.scss",
     "eslint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "eslint:fix": "npm run eslint -- --fix",
     "prettier": "prettier --check src/**/*.{js,jsx,ts,tsx,css,scss,md,json}",

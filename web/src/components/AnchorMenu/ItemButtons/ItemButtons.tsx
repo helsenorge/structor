@@ -2,8 +2,8 @@ import React from "react";
 
 import { QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
-import "./ItemButtons.css";
 import { DeleteButton } from "src/components/Modal/DeleteModal";
+import "./ItemButtons.css";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";

@@ -5,6 +5,7 @@ import styles from "./accordion.module.scss";
 type AccordionProps = {
   title: string;
   children: React.ReactNode;
+  className?: string;
 };
 
 const Accordion = (props: AccordionProps): React.JSX.Element => {
@@ -24,7 +25,11 @@ const Accordion = (props: AccordionProps): React.JSX.Element => {
         {props.title}
       </button>
       <div className={`${styles.panel} ${open ? styles.active : ""}`}>
-        {open && <div className={styles.content}>{props.children}</div>}
+        {open && (
+          <div className={`${styles.content} ${props.className}`}>
+            {props.children}
+          </div>
+        )}
       </div>
     </>
   );
