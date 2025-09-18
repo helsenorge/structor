@@ -1,6 +1,6 @@
 import { Extension, Questionnaire, QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
-import { findExtensionByUrl, hasExtension } from "src/helpers/extensionHelper";
+import { findExtensionByUrl } from "src/helpers/extensionHelper";
 import { IExtensionType } from "src/types/IQuestionnareItemType";
 import { ValidationError } from "src/utils/validationUtils";
 
