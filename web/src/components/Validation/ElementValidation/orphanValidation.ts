@@ -701,8 +701,8 @@ export const validateOrphanedElements = (
       item,
       state.qItems,
       state.qOrder,
-      state.qContained,
       state,
+      state.qContained,
     ),
   );
 
@@ -714,8 +714,8 @@ const validate = (
   currentItem: OrderItem,
   qItems: Items,
   qOrder: OrderItem[],
-  qContained: FhirResource[] = [],
   state: TreeState,
+  qContained: FhirResource[] = [],
 ): void => {
   const questionnaires = generateMainQuestionnaire(state);
 
@@ -769,6 +769,6 @@ const validate = (
   errors.push(...observationValidation(t, qItem, questionnaires));
   errors.push(...conditionValidation(t, qItem, questionnaires));
   currentItem.items.forEach((item) =>
-    validate(t, errors, item, qItems, qOrder, qContained, state),
+    validate(t, errors, item, qItems, qOrder, state, qContained),
   );
 };

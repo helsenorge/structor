@@ -1,14 +1,4 @@
-import { useCallback, useContext } from "react";
-
-import { map } from "@nosferatu500/react-sortable-tree";
-import {
-  CodeSystem,
-  ValueSetComposeInclude,
-  ValueSetComposeIncludeConcept,
-} from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { TreeContext } from "src/store/treeStore/treeStore";
-import { useValueSetContext } from "src/views/valueSets/context/useValueSetContext";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";

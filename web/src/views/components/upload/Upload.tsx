@@ -151,12 +151,8 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
     setFileUploadError("");
   };
 
-  const handleDragEnter = (event: React.DragEvent<HTMLDivElement>): void => {
-    event.preventDefault();
-    event.stopPropagation();
-    setIsDragging(true);
-    setFileUploadError("");
-  };
+  const handleDragEnter = (event: React.DragEvent<HTMLDivElement>): void =>
+    handleDragOver(event);
 
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>): void => {
     event.preventDefault();
@@ -210,7 +206,7 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
       </div>
       <FeedBack
         show={!!fileUploadError}
-        text={t(fileUploadError!)}
+        text={t(fileUploadError)}
         variant="error"
       />
       {fhirResource && fhirResource.length > 0 && (

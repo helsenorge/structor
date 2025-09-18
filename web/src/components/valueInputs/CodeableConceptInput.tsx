@@ -8,7 +8,6 @@ import { createUriUUID } from "src/helpers/uriHelper";
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
 import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
-import RemoveIcon from "@helsenorge/designsystem-react/components/Icons/TrashCan";
 import Label, {
   LabelText,
 } from "@helsenorge/designsystem-react/components/Label";

@@ -4,7 +4,6 @@ import {
   Extension,
   ValueSet,
   ValueSetCompose,
-  ValueSetComposeInclude,
   ValueSetComposeIncludeConcept,
 } from "fhir/r4";
 import createUUID from "src/helpers/CreateUUID";

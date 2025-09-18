@@ -10,7 +10,6 @@ import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
 
 import useNewCodeSystemProperties from "./useNewCodeSystemProperties";
-import { useCodeSystemContext } from "../../context/useCodeSystemContext";
 
 import styles from "./code-system-properties.module.scss";
 
