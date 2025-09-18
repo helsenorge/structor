@@ -17,9 +17,11 @@ import CodingComponent from "../coding/CodingComponent";
 
 type ValueInputProps = ValueInputPropsMap[ExtensionValueKey];
 
-const ValueInput = (props: ValueInputProps): React.JSX.Element => {
-  const { type, value, onChange } = props;
-
+const ValueInput = ({
+  type,
+  value,
+  onChange,
+}: ValueInputProps): React.JSX.Element => {
   switch (type) {
     case "valueBoolean":
       return <BooleanInput value={value} onChange={onChange} />;
@@ -28,13 +30,7 @@ const ValueInput = (props: ValueInputProps): React.JSX.Element => {
     case "valueDecimal":
       return <DecimalInput value={value} onChange={onChange} />;
     case "valueCoding":
-      return (
-        <CodingComponent
-          coding={value}
-          updateCoding={onChange}
-          removeCoding={() => {}}
-        />
-      );
+      return <CodingComponent coding={value} updateCoding={onChange} />;
     case "valueCodeableConcept":
       return <CodeableConceptInput value={value} onChange={onChange} />;
     case "valueQuantity":

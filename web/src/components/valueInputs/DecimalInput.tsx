@@ -21,7 +21,7 @@ const DecimalInput = ({
     <Input
       label={label || "Value"}
       type="number"
-      value={value}
+      value={value || ""}
       placeholder={placeholder || t("Enter a decimal value..")}
       onChange={(e) => {
         const floatValue = parseFloat(e.target.value);

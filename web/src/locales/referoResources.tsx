@@ -66,6 +66,27 @@ export const getResources = (language: string): Resources => {
       linkOpensInNewTab: "Opens in new tab",
       nextStep: "Next",
       previousStep: "Previous",
+      attachmentError_fileSize: "File size must be less than {0}MB",
+      attachmentError_fileType: "Allowed file types are:",
+      attachmentError_minFiles: "Add at least {0} file(s)",
+      attachmentError_maxFiles: "Maximum {0} file(s) are allowed",
+      attachmentError_minFiles_and_maxFiles:
+        "Add at least {0} and maximum {1} file(s)",
+      dateError_invalid: "Invalid date",
+      dateError_time_invalid: "Invalid time",
+      dateFormat_ddmmyyyy: "(dd.mm.yyyy)",
+      dateLabel_january: "January",
+      dateLabel_february: "February",
+      dateLabel_march: "March",
+      dateLabel_april: "April",
+      dateLabel_may: "May",
+      dateLabel_june: "June",
+      dateLabel_july: "July",
+      dateLabel_august: "August",
+      dateLabel_september: "September",
+      dateLabel_october: "October",
+      dateLabel_november: "November",
+      dateLabel_december: "December",
 
       maxCharactersText: "characters",
       timeError_hours_digits: "The field for hours only allows 2 characters",
@@ -77,6 +98,7 @@ export const getResources = (language: string): Resources => {
       microwebstep_navigasjon_neste_button: "Next",
       microwebstep_navigasjon_tilbake_button: "Back",
       quantity_unit_sublabel: "Select unit",
+      attachmentError_required: "Upload file",
     };
   }
   return {

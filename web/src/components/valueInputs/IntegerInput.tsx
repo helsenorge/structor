@@ -23,7 +23,7 @@ const IntegerInput = ({
       label={label || "Value"}
       type="number"
       disabled={disabled}
-      value={value}
+      value={value || ""}
       placeholder={placeholder || t("Enter an integer value..")}
       onChange={(e) => {
         const intValue = parseInt(e.target.value, 10);
