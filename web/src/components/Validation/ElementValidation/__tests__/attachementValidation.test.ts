@@ -1,12 +1,10 @@
-// src/components/Validation/ElementValidation/__tests__/attachementValidation.test.ts
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, afterEach, Mock } from "vitest";
 import type { TFunction } from "react-i18next";
 import type { QuestionnaireItem } from "fhir/r4";
 
-// 1) Mocks (HOISTED) — safe: no top-level refs inside factory
 vi.mock("src/helpers/constants", () => ({
-  MAX_ATTACHMENT_ALLOWED: 3, // occurrences
-  MAX_ATTACHMENT_SIZE_MB: 5, // size in MB
+  MAX_ATTACHMENT_ALLOWED: 3,
+  MAX_ATTACHMENT_SIZE_MB: 5,
 }));
 
 vi.mock("@helsenorge/refero", () => {
@@ -75,13 +73,13 @@ describe("attachementValidation()", () => {
 
       item = qAtt({ extension: [ext.maxSize, ext.foo] });
       // force equal to limit (5 MB) for this run
-      getMaxSizeExtensionValue.mockReturnValueOnce(5);
+      (getMaxSizeExtensionValue as Mock).mockReturnValueOnce(5);
       expect(attachementValidation(t, item)).toEqual([]);
     });
 
     it("warning når maxSize > MAX_ATTACHMENT_SIZE_MB, med riktig index og tekst", () => {
       const item = qAtt({ linkId: "att-x", extension: [ext.foo, ext.maxSize] });
-      getMaxSizeExtensionValue.mockReturnValueOnce(10); // > 5
+      (getMaxSizeExtensionValue as Mock).mockReturnValueOnce(10); // > 5
 
       const [err] = attachementValidation(t, item);
       expect(err).toMatchObject({
@@ -95,7 +93,7 @@ describe("attachementValidation()", () => {
 
     it("index=-1 når extension-lista mangler men verdi rapporteres (edge via mock)", () => {
       const item = qAtt({ extension: undefined });
-      getMaxSizeExtensionValue.mockReturnValueOnce(999);
+      (getMaxSizeExtensionValue as Mock).mockReturnValueOnce(999);
 
       const [err] = attachementValidation(t, item);
       expect(err.index).toBe(-1);
@@ -108,7 +106,7 @@ describe("attachementValidation()", () => {
       expect(attachementValidation(t, item)).toEqual([]);
 
       item = qAtt({ extension: [ext.maxOccurs] });
-      getMaxOccursExtensionValue.mockReturnValueOnce(3); // == limit
+      (getMaxOccursExtensionValue as Mock).mockReturnValueOnce(3); // == limit
       expect(attachementValidation(t, item)).toEqual([]);
     });
 
@@ -117,7 +115,7 @@ describe("attachementValidation()", () => {
         linkId: "att-y",
         extension: [ext.maxOccurs, ext.foo],
       });
-      getMaxOccursExtensionValue.mockReturnValueOnce(10); // > 3
+      (getMaxOccursExtensionValue as Mock).mockReturnValueOnce(10); // > 3
 
       const [err] = attachementValidation(t, item);
       expect(err).toMatchObject({
@@ -131,7 +129,7 @@ describe("attachementValidation()", () => {
 
     it("index=-1 når extension-lista mangler men verdi rapporteres (edge via mock)", () => {
       const item = qAtt({ extension: undefined });
-      getMaxOccursExtensionValue.mockReturnValueOnce(42);
+      (getMaxOccursExtensionValue as Mock).mockReturnValueOnce(42);
 
       const [err] = attachementValidation(t, item);
       expect(err.index).toBe(-1);
@@ -145,8 +143,8 @@ describe("attachementValidation()", () => {
         extension: [ext.foo, ext.maxSize, ext.maxOccurs],
       });
 
-      getMaxSizeExtensionValue.mockReturnValueOnce(8); // > 5
-      getMaxOccursExtensionValue.mockReturnValueOnce(7); // > 3
+      (getMaxSizeExtensionValue as Mock).mockReturnValueOnce(8); // > 5
+      (getMaxOccursExtensionValue as Mock).mockReturnValueOnce(7); // > 3
 
       const errors = attachementValidation(t, item);
       expect(errors).toHaveLength(2);
@@ -165,8 +163,8 @@ describe("attachementValidation()", () => {
 
     it("returnerer [] når ingen regler trigges", () => {
       const item = qAtt({ extension: [ext.foo] });
-      getMaxSizeExtensionValue.mockReturnValueOnce(undefined);
-      getMaxOccursExtensionValue.mockReturnValueOnce(undefined);
+      (getMaxSizeExtensionValue as Mock).mockReturnValueOnce(undefined);
+      (getMaxOccursExtensionValue as Mock).mockReturnValueOnce(undefined);
 
       expect(attachementValidation(t, item)).toEqual([]);
     });
