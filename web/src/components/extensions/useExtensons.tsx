@@ -22,6 +22,13 @@ type UseExtensionsReturn = {
   handleTypeChange: (index: number, newType: ExtensionValueKey) => void;
 };
 
+type UpdateExtension = {
+  extension: Extension;
+  field: keyof Extension;
+  value: string | boolean | number | undefined;
+  index?: number;
+};
+
 type UseExtensionInput = {
   id: string;
   idType?: "linkId" | "id";
@@ -46,9 +53,26 @@ export const useExtensions = ({
     };
     successCallback([...extensions, newExtension], id, "id");
   };
-  const removeExtension = ({ extension }: { extension: Extension }): void => {
+  const removeExtension = ({
+    extension,
+    index,
+  }: {
+    extension: Extension;
+    index?: number;
+  }): void => {
     successCallback(
-      [...extensions.filter((ext) => ext.id !== extension.id)],
+      [
+        ...extensions.filter((ext, i) => {
+          const hasId = ext.id && extension.id;
+          if (index !== undefined) {
+            return i !== index;
+          }
+          if (hasId) {
+            return ext.id !== extension.id;
+          }
+          return ext.url !== extension.url;
+        }),
+      ],
       id,
       "id",
     );
@@ -57,15 +81,22 @@ export const useExtensions = ({
     extension,
     field,
     value,
-  }: {
-    extension: Extension;
-    field: keyof Extension;
-    value: string | boolean | number | undefined;
-  }): void => {
+    index,
+  }: UpdateExtension): void => {
     successCallback(
-      extensions.map((ext) =>
-        ext.id === extension.id ? { ...ext, [field]: value } : ext,
-      ),
+      extensions.map((ext) => {
+        const hasId = ext.id && extension.id;
+        if (index !== undefined) {
+          return ext === extensions[index] ? { ...ext, [field]: value } : ext;
+        }
+        return hasId
+          ? ext.id === extension.id
+            ? { ...ext, [field]: value }
+            : ext
+          : ext.url === extension.url
+            ? { ...ext, [field]: value }
+            : ext;
+      }),
       id,
       "id",
     );

@@ -28,12 +28,13 @@ const ExtensionItem = ({
     extension: Extension;
     field: keyof Extension;
     value: ExtensionValue;
+    index?: number;
   }) => void;
   handleTypeChange: (
     index: number,
     newType: Partial<ExtensionValueKey>,
   ) => void;
-  removeExtension: (params: { extension: Extension }) => void;
+  removeExtension: (params: { extension: Extension; index?: number }) => void;
 }): React.JSX.Element => {
   const { t } = useTranslation();
   const { type: valueType, value } = getExtensionValue(ext);
@@ -53,6 +54,7 @@ const ExtensionItem = ({
                 extension: ext,
                 field: "url",
                 value: event.target.value,
+                index,
               })
             }
           />
@@ -82,7 +84,7 @@ const ExtensionItem = ({
             size="large"
             variant="borderless"
             onClick={() => {
-              removeExtension({ extension: ext });
+              removeExtension({ extension: ext, index });
             }}
             name={t("Remove element")}
             concept="destructive"
@@ -102,6 +104,7 @@ const ExtensionItem = ({
                 extension: ext,
                 field: valueType,
                 value: newValue,
+                index,
               })
             }
           />
