@@ -1,0 +1,45 @@
+$color-error: #b62e1c;
+$color-warning: #ab7c00;
+$color-info: #08667c;
+
+.error-highlight {
+  border: $color-error 4px solid;
+}
+
+.warning-highlight {
+  border: $color-warning 4px solid;
+}
+
+.info-highlight {
+  border: $color-info 4px solid;
+}
+
+.error-text {
+  color: $color-error;
+}
+
+.warning-text {
+  color: $color-warning;
+}
+
+.info-text {
+  color: $color-info;
+}
+
+.error-highlight-box {
+  box-shadow: 0 0 0 4px $color-error;
+  padding: 1rem;
+  margin: 1.5rem 0;
+}
+
+.warning-highlight-box {
+  box-shadow: 0 0 0 4px $color-warning;
+  padding: 1rem;
+  margin: 1.5rem 0;
+}
+
+.info-highlight-box {
+  box-shadow: 0 0 0 4px $color-info;
+  padding: 1rem;
+  margin: 1.5rem 0;
+}

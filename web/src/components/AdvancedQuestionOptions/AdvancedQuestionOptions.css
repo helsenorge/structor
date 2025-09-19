@@ -1,44 +1,44 @@
-.msg-error button {
-    background: none;
-    border: none;
-    color: #4299e1;
-    cursor: pointer;
-    font-weight: 700;
+.error-text button {
+  background: none;
+  border: none;
+  color: #4299e1;
+  cursor: pointer;
+  font-weight: 700;
 }
 
 .table-column-options-wrapper {
-    display: flex;
-    margin-bottom: 12px;
+  display: flex;
+  margin-bottom: 12px;
 }
 
 .indentation-element {
-    vertical-align: top;
-    width: 12px;
-    height: auto;
-    background-color: #e4f7f9;
+  vertical-align: top;
+  width: 12px;
+  height: auto;
+  background-color: #e4f7f9;
 }
 
 .table-column-options {
-    vertical-align: top;
-    margin-left: 24px;
+  vertical-align: top;
+  margin-left: 24px;
 }
 
 .columnNames-fieldWrapper {
-    display: inline-flex;
-    margin-right: auto;
-    gap: 12px;
+  display: inline-flex;
+  margin-right: auto;
+  gap: 12px;
 }
 
 .columnNames-deleteButton {
-    border: 0;
-    cursor: pointer;
-    padding: 0;
-    background: url('../../images/icons/close-outline.svg') no-repeat center;
-    height: 25px;
-    width: 25px;
-    margin-top: 12px;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  background: url("../../images/icons/close-outline.svg") no-repeat center;
+  height: 25px;
+  width: 25px;
+  margin-top: 12px;
 }
 
 .columnNames-addButton {
-    margin-right: auto;
+  margin-right: auto;
 }

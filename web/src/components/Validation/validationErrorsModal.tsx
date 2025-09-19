@@ -25,7 +25,7 @@ export const ValidationErrorsModal = (
       const translationErrors = translationErrorMessages();
       const elements: React.JSX.Element[] = [];
       translationErrors?.map((message) => {
-        elements.push(<p className="msg-error">{message}</p>);
+        elements.push(<p className="error-text">{message}</p>);
       });
       return elements;
     }
@@ -68,7 +68,7 @@ export const ValidationErrorsModal = (
     if (props.validationErrors.length > 0) {
       return (
         <>
-          <p className="msg-error">
+          <p className="error-text">
             {t(
               "Found {0} errors. Questions with errors are marked with a red border.",
             ).replace(
@@ -78,7 +78,7 @@ export const ValidationErrorsModal = (
                 .length.toString(),
             )}
           </p>
-          <p className="msg-warning">
+          <p className="warning-text">
             {t(
               "Found {0} warnings. Questions with warnings are marked with a yellow border.",
             ).replace(
@@ -95,7 +95,9 @@ export const ValidationErrorsModal = (
   const renderWarningMessages = (): React.JSX.Element | undefined => {
     if (props.markdownWarning) {
       return (
-        <p className="msg-warning">{props.markdownWarning.errorReadableText}</p>
+        <p className="warning-text">
+          {props.markdownWarning.errorReadableText}
+        </p>
       );
     }
   };

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 
 import { Extension, QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { getSeverityClass } from "src/components/Validation/validationHelper";
 import { ValidationType } from "src/components/Validation/validationTypes";
 import {
   removeItemExtension,
@@ -28,12 +29,14 @@ const CalculatedExpressionOption = ({
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
 
-  const hasError = errors.some(
-    (error) =>
-      error.errorProperty === ValidationType.calculation &&
-      item.linkId === error.linkId,
+  const errorClass = getSeverityClass(
+    "box",
+    errors.filter(
+      (error) =>
+        error.errorProperty === ValidationType.calculation &&
+        item.linkId === error.linkId,
+    ),
   );
-
   const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>): void => {
     if (!event.target.value) {
       removeItemExtension(item, IExtensionType.calculatedExpression, dispatch);
@@ -53,7 +56,7 @@ const CalculatedExpressionOption = ({
 
   return (
     <>
-      <div className={hasError ? "validation-error-box" : ""}>
+      <div className={errorClass}>
         <FormField label={t("Calculation formula")}>
           <textarea
             data-testid="calculation-formula-testid"

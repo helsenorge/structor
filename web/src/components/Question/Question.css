@@ -43,18 +43,6 @@
   justify-content: space-between;
 }
 
-.msg-error {
-  color: #b62e1c;
-}
-
-.msg-warning {
-  color: #ab7c00;
-}
-
-.msg-info {
-  color: #08667c;
-}
-
 .form-field.field-error input,
 .form-field.field-error input:focus,
 .form-field.field-error select,
@@ -142,10 +130,4 @@
   border-bottom: 1px solid #e2e8f0;
   padding: 12px;
   text-align: left;
-}
-.error-highlight {
-  border: #b62e1c 4px solid;
-}
-.warning-highlight {
-  border: #ab7c00 4px solid;
 }

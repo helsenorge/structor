@@ -73,7 +73,7 @@ const Codes = ({
       <div
         key={`${code.id}`}
         className={`code-section ${
-          hasValidationError ? "validation-error" : ""
+          hasValidationError ? "error-highlight" : ""
         }`}
       >
         <div className="horizontal equal">

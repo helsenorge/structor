@@ -11,7 +11,7 @@ import { ErrorLevel } from "./validationTypes";
 export const HelsenorgeUrlStartText = "Questionnaire/";
 export const HelsenorgeBinaryStartText = "Binary/";
 export const HelsenorgeEndpointStartText = "Endpoint/";
-
+import stylesRaw from "./validation.module.scss";
 export const existDataReceiverLinkId = (
   qItem: QuestionnaireItem,
   qOrder: OrderItem[],
@@ -82,15 +82,123 @@ export const GetValueAfterSlash = (value: string): string | undefined => {
   return splitValue.length === 2 ? splitValue[1] : undefined;
 };
 
-export const getValidationError = (
-  propsname: string,
-  validationErrors: ValidationError[],
-): ValidationError | undefined => {
-  const index = validationErrors.findIndex(
-    (error) => error.errorProperty === propsname,
+export type ErrorClassVariant = "highlight" | "text" | "box";
+
+export interface ExtensionError {
+  errorLevel: ErrorLevel | string;
+}
+
+type SeverityKey =
+  | "error-highlight"
+  | "warning-highlight"
+  | "info-highlight"
+  | "error-text"
+  | "warning-text"
+  | "info-text"
+  | "error-highlight-box"
+  | "warning-highlight-box"
+  | "info-highlight-box";
+
+export type CssModule = Record<SeverityKey, string>;
+
+const LEVEL_PRIORITY: ErrorLevel[] = [
+  ErrorLevel.error,
+  ErrorLevel.warning,
+  ErrorLevel.info,
+];
+
+const CLASS_KEYS = {
+  [ErrorLevel.error]: {
+    highlight: "error-highlight",
+    text: "error-text",
+    box: "error-highlight-box",
+  },
+  [ErrorLevel.warning]: {
+    highlight: "warning-highlight",
+    text: "warning-text",
+    box: "warning-highlight-box",
+  },
+  [ErrorLevel.info]: {
+    highlight: "info-highlight",
+    text: "info-text",
+    box: "info-highlight-box",
+  },
+} as const;
+
+type SeverityClasses = {
+  level: ErrorLevel | null;
+  classes: { highlight: string; text: string; box: string };
+};
+
+export function getSeverityLevel(
+  errors?: ReadonlyArray<ExtensionError>,
+): ErrorLevel | null {
+  if (!errors?.length) return null;
+  const present = new Set(errors.map((e) => e.errorLevel));
+  for (const level of LEVEL_PRIORITY) if (present.has(level)) return level;
+  return null;
+}
+
+export function getSeverityClassesCore(
+  errors?: ReadonlyArray<ExtensionError>,
+  styles?: Partial<CssModule>,
+): SeverityClasses {
+  const level = getSeverityLevel(errors);
+  if (!level)
+    return { level: null, classes: { highlight: "", text: "", box: "" } };
+
+  const keys = CLASS_KEYS[level];
+  const highlight = styles?.[keys.highlight] ?? keys.highlight;
+  const text = styles?.[keys.text] ?? keys.text;
+  const box = styles?.[keys.box] ?? keys.box;
+  return { level, classes: { highlight, text, box } };
+}
+
+export function getSeverityClassCore(
+  variant: ErrorClassVariant,
+  errors?: ReadonlyArray<ExtensionError>,
+  styles?: Partial<CssModule>,
+): string {
+  return getSeverityClassesCore(errors, styles).classes[variant];
+}
+const styles = stylesRaw as unknown as CssModule;
+
+export const getSeverityClasses = (
+  errors?: ReadonlyArray<ExtensionError>,
+): SeverityClasses => getSeverityClassesCore(errors, styles);
+
+export const getSeverityClass = (
+  variant: ErrorClassVariant,
+  errors?: ReadonlyArray<ExtensionError>,
+): string => getSeverityClassCore(variant, errors, styles);
+
+export const getErrorMessagesAndSeverityClasses = (
+  variant: ErrorClassVariant,
+  errors?: ReadonlyArray<ValidationError>,
+): { message: string; severityClass: string }[] | undefined => {
+  if (!errors?.length) return undefined;
+  return errors.map((error) => ({
+    message: error.errorReadableText,
+    severityClass: getSeverityClass(variant, [error]),
+  }));
+};
+
+export const getValidationErrorByErrorProperty = (
+  errorProperty: string,
+  validationErrors: ReadonlyArray<ValidationError>,
+): ValidationError[] | undefined => {
+  return getValidationErrorByKey(
+    "errorProperty",
+    errorProperty,
+    validationErrors,
+  )?.filter((error) => error.errorProperty === errorProperty);
+};
+export const getValidationErrorByKey = (
+  errorKey: keyof ValidationError,
+  value: ValidationError[keyof ValidationError],
+  validationErrors: ReadonlyArray<ValidationError>,
+): ValidationError[] | undefined => {
+  return (
+    validationErrors?.filter((error) => error[errorKey] === value) || undefined
   );
-  if (index > -1) {
-    return validationErrors[index];
-  }
-  return undefined;
 };

@@ -72,8 +72,8 @@ const TranslateSidebar = ({
                 <div
                   className={
                     !translatedMarkdown?.trim()
-                      ? "validation-error"
-                      : "validation-warning"
+                      ? "error-highlight"
+                      : "warning-highlight"
                   }
                 >
                   <MarkdownEditor

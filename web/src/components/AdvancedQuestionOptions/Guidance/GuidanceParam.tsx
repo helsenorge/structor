@@ -2,6 +2,7 @@ import React, { FocusEvent, useContext, useState } from "react";
 
 import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { getSeverityClass } from "src/components/Validation/validationHelper";
 
 import { IExtensionType } from "../../../types/IQuestionnareItemType";
 
@@ -90,7 +91,11 @@ const GuidanceParam = (props: GuidanceParamProps): React.JSX.Element => {
             onChange={(event) => validateParameterName(event.target.value)}
           />
           {validationMessage && (
-            <div className="msg-error">{validationMessage}</div>
+            <div
+              className={getSeverityClass("text", [{ errorLevel: "error" }])}
+            >
+              {validationMessage}
+            </div>
           )}
         </FormField>
       )}

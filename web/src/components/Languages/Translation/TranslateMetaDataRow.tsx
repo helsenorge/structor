@@ -67,7 +67,7 @@ const TranslateMetaDataRow = ({
   const getClassName = (): string | undefined => {
     if (propertyName === TranslatableMetadataProperty.title) {
       if (!translatedValue?.trim()) {
-        return "validation-error";
+        return "error-highlight";
       }
     }
     if (

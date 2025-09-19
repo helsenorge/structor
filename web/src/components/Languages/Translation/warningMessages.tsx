@@ -9,7 +9,7 @@ interface WarningMessagesProps {
 const WarningMessages = (props: WarningMessagesProps): React.JSX.Element => {
   const renderWarningMessage = (): React.JSX.Element => {
     return (
-      <h3 className="msg-warning">
+      <h3 className="warning-text">
         {props.markdownWarning?.errorReadableText}
       </h3>
     );

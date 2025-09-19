@@ -88,10 +88,10 @@ describe("TranslateMetaDataRow", () => {
         />,
       );
 
-      expect(
-        container.getElementsByClassName("validation-warning").length,
-      ).toBe(1);
-      expect(container.getElementsByClassName("msg-warning").length).toBe(1);
+      expect(container.getElementsByClassName("warning-highlight").length).toBe(
+        1,
+      );
+      expect(container.getElementsByClassName("warning-text").length).toBe(1);
       expect(
         screen.getByText(
           "In case of Helsenorge this field must be 'Questionnaire/<Id>'",
@@ -123,10 +123,10 @@ describe("TranslateMetaDataRow", () => {
         />,
       );
 
-      expect(container.getElementsByClassName("validation-error").length).toBe(
+      expect(container.getElementsByClassName("error-highlight").length).toBe(
         1,
       );
-      expect(container.getElementsByClassName("msg-error").length).toBe(1);
+      expect(container.getElementsByClassName("error-text").length).toBe(1);
       expect(
         screen.getByText("Url must be 'Questionnaire/<Id>'"),
       ).toBeInTheDocument();
@@ -215,10 +215,10 @@ describe("TranslateMetaDataRow", () => {
       );
 
       expect(screen.getByText("Tittel")).toBeInTheDocument();
-      expect(container.getElementsByClassName("validation-error").length).toBe(
+      expect(container.getElementsByClassName("error-highlight").length).toBe(
         1,
       );
-      expect(container.getElementsByClassName("msg-error").length).not.toBe(1);
+      expect(container.getElementsByClassName("error-text").length).not.toBe(1);
     });
   });
 });

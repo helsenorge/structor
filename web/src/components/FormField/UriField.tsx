@@ -45,7 +45,7 @@ const UriField = ({
         }}
       />
       {!hasValidUri && (
-        <div className="msg-error" aria-live="polite">
+        <div className="error-text" aria-live="polite">
           {t("Uri must start with http://, https:// or urn:uuid:")}
         </div>
       )}

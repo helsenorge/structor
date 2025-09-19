@@ -102,8 +102,8 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
             <div
               className={
                 !translatedHelpText?.trim()
-                  ? "validation-error"
-                  : "validation-warning"
+                  ? "error-highlight"
+                  : "warning-highlight"
               }
             >
               <MarkdownEditor

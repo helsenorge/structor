@@ -2,7 +2,10 @@ import React, { useContext } from "react";
 
 import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { getValidationError } from "src/components/Validation/validationHelper";
+import {
+  getErrorMessagesAndSeverityClasses,
+  getValidationErrorByErrorProperty,
+} from "src/components/Validation/validationHelper";
 import { ValidationType } from "src/components/Validation/validationTypes";
 import { translatableSettings } from "src/helpers/LanguageHelper";
 import {
@@ -32,8 +35,10 @@ const PrintVersionView = ({
   const { state } = useContext(TreeContext);
   const { qMetadata } = state;
 
-  const validationError = getValidationError(ValidationType.binary, errors);
-
+  const validationErrors = getErrorMessagesAndSeverityClasses(
+    "highlight",
+    getValidationErrorByErrorProperty(ValidationType.binary, errors),
+  );
   return (
     <FormField label={t("Connect to print version (binary)")}>
       <InputField
@@ -59,14 +64,15 @@ const PrintVersionView = ({
           }
         }}
       />
-      {validationError?.errorReadableText && (
+      {validationErrors?.map((error) => (
         <div
-          className={getTextValidationErrorClassName(validationError)}
+          key={error.message}
+          className={error.severityClass}
           aria-live="polite"
         >
-          {validationError.errorReadableText}
+          {error.message}
         </div>
-      )}
+      ))}
     </FormField>
   );
 };

@@ -79,7 +79,7 @@ const MetadataEditor = (props: MetadataEditorProps): React.JSX.Element => {
             }}
           />
           {displayIdValidationError && (
-            <div className="msg-error" aria-live="polite">
+            <div className="error-text" aria-live="polite">
               {t(
                 "Id must be 1-64 characters and only letters a-z, numbers, - and .",
               )}
@@ -105,7 +105,7 @@ const MetadataEditor = (props: MetadataEditorProps): React.JSX.Element => {
             }}
           />
           {displayNameValidationError && (
-            <div className="msg-error" aria-live="polite">
+            <div className="error-text" aria-live="polite">
               {t(
                 "Technical name must start with a captital letter, 1-255 characters and can only contain numbers and characters a-z",
               )}

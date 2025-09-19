@@ -55,9 +55,7 @@ export const LinkIdOption = ({
   }
 
   return (
-    <div
-      className={`horizontal full ${hasError ? "validation-error-box" : ""}`}
-    >
+    <div className={`horizontal full ${hasError ? "error-highlight-box" : ""}`}>
       <div className={`form-field ${isDuplicateLinkId ? "field-error" : ""}`}>
         <label>{t("LinkId")}</label>
         <InputField
@@ -72,7 +70,7 @@ export const LinkIdOption = ({
           onBlur={dispatchUpdateLinkId}
         />
         {isDuplicateLinkId && (
-          <div className="msg-error" aria-live="polite">
+          <div className="error-text" aria-live="polite">
             {`${t("LinkId is already in use")} `}
             <button onClick={resetLinkId}>
               <img alt="undo icon " src={UndoIcon} height={16} />

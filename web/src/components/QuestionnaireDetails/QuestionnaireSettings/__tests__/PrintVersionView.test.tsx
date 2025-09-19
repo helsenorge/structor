@@ -88,10 +88,10 @@ describe("PrintVersionView", () => {
       </TreeContext.Provider>,
     );
 
-    expect(container.getElementsByClassName("validation-warning").length).toBe(
+    expect(container.getElementsByClassName("warning-highlight").length).toBe(
       1,
     );
-    expect(container.getElementsByClassName("msg-warning").length).toBe(1);
+    expect(container.getElementsByClassName("warning-text").length).toBe(1);
     expect(
       screen.getByText(
         "In case of Helsenorge, reference to print version must start with 'Binary/<print version's Id>",

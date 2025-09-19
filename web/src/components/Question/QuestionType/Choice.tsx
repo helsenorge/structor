@@ -211,7 +211,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
           <div
             key={`${getSystem()}`}
             className={`code-section ${
-              hasValidationError() ? "validation-error" : ""
+              hasValidationError() ? "error-highlight" : ""
             }`}
           >
             <FormField label={t("System")}>

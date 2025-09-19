@@ -82,7 +82,7 @@ const Sidebar = (props: SidebarProps): React.JSX.Element => {
 
   return (
     <Accordion title={t("Sidebar")}>
-      {sidebarItems.map((x, index) => {
+      {sidebarItems.map((x) => {
         return (
           <div key={x.linkId}>
             <FormField label={t("Sidebar heading")}>
@@ -111,7 +111,7 @@ const Sidebar = (props: SidebarProps): React.JSX.Element => {
             <FormField label={t("Content")}>
               <div
                 className={
-                  hasValidationError(x.linkId) ? "validation-error" : ""
+                  hasValidationError(x.linkId) ? "error-highlight" : ""
                 }
               >
                 <MarkdownEditor

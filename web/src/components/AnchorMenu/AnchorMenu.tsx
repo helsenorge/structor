@@ -33,6 +33,7 @@ import {
   OrderItem,
 } from "../../store/treeStore/treeStore";
 import { ValidationError } from "../../utils/validationUtils";
+import { getSeverityClass } from "../Validation/validationHelper";
 
 interface AnchorMenuProps {
   qOrder: OrderItem[];
@@ -152,14 +153,10 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     return newPath;
   };
 
-  const hasValidationError = (linkId: string): boolean => {
-    return props.validationErrors.some(
-      (error) => error.linkId === linkId && error.errorLevel === "error",
-    );
-  };
-  const hasValidationWarnings = (linkId: string): boolean => {
-    return props.validationErrors.some(
-      (error) => error.linkId === linkId && error.errorLevel === "warning",
+  const validationClasses = (linkId: string): string => {
+    return getSeverityClass(
+      "highlight",
+      props.validationErrors.filter((error) => error.linkId === linkId),
     );
   };
   const isSelectedItem = (linkId: string): boolean => {
@@ -291,17 +288,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
           }}
           generateNodeProps={(extendedNode: ExtendedNode) => ({
             className: `anchor-menu__item 
-                            ${
-                              hasValidationWarnings(extendedNode.node.title)
-                                ? "validation-warning"
-                                : ""
-                            } 
-                            ${
-                              hasValidationError(extendedNode.node.title)
-                                ? "validation-error"
-                                : ""
-                            } 
-                
+                            ${validationClasses(extendedNode.node.title)}
                             ${
                               extendedNode.path.length === 1
                                 ? "anchor-menu__topitem"

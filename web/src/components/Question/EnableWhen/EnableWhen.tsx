@@ -86,7 +86,7 @@ const EnableWhen = ({
           <div
             key={`${linkId}-${x.question}-${x.operator}-${index}`}
             className={`enablewhen-box ${
-              hasValidationError ? "validation-error" : ""
+              hasValidationError ? "error-highlight" : ""
             }`}
           >
             {!x.question || conditionCanBeEdited(x.question) ? (

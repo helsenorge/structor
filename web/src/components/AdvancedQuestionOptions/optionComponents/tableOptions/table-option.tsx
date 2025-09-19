@@ -135,7 +135,7 @@ export const TableOption = ({
 
   return (
     <>
-      <div className={hasError ? "validation-error-box" : ""}>
+      <div className={hasError ? "error-highlight-box" : ""}>
         <FormField
           label={t("Table")}
           sublabel={t(

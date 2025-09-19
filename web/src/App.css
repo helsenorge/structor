@@ -114,20 +114,32 @@ p {
   background-color: #e0e0e0 !important;
 }
 
-.validation-error {
+.error-highlight {
   box-shadow: 0 0 0 4px #b62e1c;
 }
 
-.validation-warning {
+.warning-highlight {
   box-shadow: 0 0 0 4px #ab7c00;
 }
 
-.validation-info {
+.info-highlight {
   box-shadow: 0 0 0 4px #08667c;
 }
 
-.validation-error-box {
+.error-highlight-box {
   box-shadow: 0 0 0 4px #b62e1c;
+  padding: 1rem;
+  margin: 1.5rem 0;
+}
+
+.warning-highlight-box {
+  box-shadow: 0 0 0 4px #ab7c00;
+  padding: 1rem;
+  margin: 1.5rem 0;
+}
+
+.info-highlight-box {
+  box-shadow: 0 0 0 4px #08667c;
   padding: 1rem;
   margin: 1.5rem 0;
 }

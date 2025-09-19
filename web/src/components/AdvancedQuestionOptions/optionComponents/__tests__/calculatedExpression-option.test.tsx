@@ -171,7 +171,7 @@ describe("CalculatedExpressionOption", () => {
     );
 
     expect(
-      container.getElementsByClassName("validation-error-box"),
+      container.getElementsByClassName("error-highlight-box"),
     ).exist.toBeTruthy();
   });
 });

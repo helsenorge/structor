@@ -177,7 +177,7 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
   return (
     <>
       <div
-        className={hasDataReceiverValidationError ? "validation-error-box" : ""}
+        className={hasDataReceiverValidationError ? "error-highlight-box" : ""}
       >
         <div className="horizontal equal">
           <FormField>

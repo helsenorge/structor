@@ -109,8 +109,8 @@ const TranslateItemRow = ({
         <div
           className={
             !itemTranslation.text?.trim()
-              ? "validation-error"
-              : "validation-warning"
+              ? "error-highlight"
+              : "warning-highlight"
           }
         >
           <MarkdownEditor
@@ -125,7 +125,7 @@ const TranslateItemRow = ({
     return (
       <textarea
         value={translatedText}
-        className={!itemTranslation.text?.trim() ? "validation-error" : ""}
+        className={!itemTranslation.text?.trim() ? "error-highlight" : ""}
         onChange={(e) => setTranslatedText(e.target.value)}
         onBlur={(e) =>
           dispatchUpdateItemTranslation(
@@ -207,8 +207,8 @@ const TranslateItemRow = ({
               <div
                 className={
                   !itemPropertyTranslation?.trim()
-                    ? "validation-error"
-                    : "validation-warning"
+                    ? "error-highlight"
+                    : "warning-highlight"
                 }
               >
                 <MarkdownEditor
@@ -219,7 +219,7 @@ const TranslateItemRow = ({
             ) : (
               <textarea
                 className={
-                  !itemPropertyTranslation?.trim() ? "validation-error" : ""
+                  !itemPropertyTranslation?.trim() ? "error-highlight" : ""
                 }
                 defaultValue={itemPropertyTranslation}
                 onBlur={handleOnBlurText}
@@ -257,7 +257,7 @@ const TranslateItemRow = ({
           <FormField>
             <textarea
               className={
-                !itemPropertyTranslation?.trim() ? "validation-error" : ""
+                !itemPropertyTranslation?.trim() ? "error-highlight" : ""
               }
               defaultValue={itemPropertyTranslation}
               onBlur={handleOnBlurText}

@@ -2,12 +2,9 @@ import React, { useContext } from "react";
 
 import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { getValidationError } from "src/components/Validation/validationHelper";
+import { getErrorMessagesAndSeverityClasses } from "src/components/Validation/validationHelper";
 import { ValidationType } from "src/components/Validation/validationTypes";
-import {
-  getTextValidationErrorClassName,
-  getValidaitonClassNameWithPropsName,
-} from "src/helpers/validationClassHelper";
+import { getValidaitonClassNameWithPropsName } from "src/helpers/validationClassHelper";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { IExtensionType } from "../../../types/IQuestionnareItemType";
@@ -30,9 +27,10 @@ const EndpointView = ({
   const { t } = useTranslation();
   const { state } = useContext(TreeContext);
   const { qMetadata } = state;
-
-  const validationError = getValidationError(ValidationType.endpoint, errors);
-
+  const validationErrorsWithClass = getErrorMessagesAndSeverityClasses(
+    "highlight",
+    errors.filter((error) => error.errorProperty === ValidationType.endpoint),
+  );
   return (
     <FormField label={t("Helsenorge endpoint")}>
       <InputField
@@ -58,14 +56,15 @@ const EndpointView = ({
           }
         }}
       />
-      {validationError?.errorReadableText && (
+      {validationErrorsWithClass?.map((validationError) => (
         <div
-          className={getTextValidationErrorClassName(validationError)}
+          key={validationError.message}
+          className={validationError.severityClass}
           aria-live="polite"
         >
-          {validationError.errorReadableText}
+          {validationError.message}
         </div>
-      )}
+      ))}
     </FormField>
   );
 };
