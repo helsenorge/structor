@@ -25,6 +25,10 @@ import Btn from "../Btn/Btn";
 import FormField from "../FormField/FormField";
 import MarkdownEditor from "../MarkdownEditor/MarkdownEditor";
 import Select from "../Select/Select";
+import {
+  ErrorClassVariant,
+  getSeverityClass,
+} from "../Validation/validationHelper";
 
 interface SidebarProps {
   questionnaireDetailsErrors: ValidationError[];
@@ -52,13 +56,19 @@ const Sidebar = (props: SidebarProps): React.JSX.Element => {
         ),
   );
 
-  const hasValidationError = (linkId: string): boolean => {
-    return (
-      !getMarkdown(linkId) &&
-      props.questionnaireDetailsErrors.some((error) => error.linkId === linkId)
+  const validationErrors = (linkId: string): ValidationError[] => {
+    if (!getMarkdown(linkId))
+      return props.questionnaireDetailsErrors.filter(
+        (error) => error.linkId === linkId,
+      );
+    return [];
+  };
+  const errorClasses = (linkId: string): string => {
+    return getSeverityClass(
+      ErrorClassVariant.highlight,
+      validationErrors(linkId),
     );
   };
-
   const findCurrentCode = (linkId: string): Coding | undefined => {
     return state.qItems[linkId].code?.find(
       (x) => x.system === IValueSetSystem.sotHeader,
@@ -109,11 +119,7 @@ const Sidebar = (props: SidebarProps): React.JSX.Element => {
               />
             </FormField>
             <FormField label={t("Content")}>
-              <div
-                className={
-                  hasValidationError(x.linkId) ? "error-highlight" : ""
-                }
-              >
+              <div className={errorClasses(x.linkId)}>
                 <MarkdownEditor
                   data={getMarkdown(x.linkId)}
                   onBlur={(markdown) => handleMarkdown(x.linkId, markdown)}

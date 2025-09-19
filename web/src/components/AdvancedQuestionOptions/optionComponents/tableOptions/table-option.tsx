@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 
 import { Extension, QuestionnaireItem, ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import { getSeverityClass } from "src/components/Validation/validationHelper";
 import { ValidationType } from "src/components/Validation/validationTypes";
 import { removeItemCodes } from "src/helpers/codeHelper";
 import { ValidationError } from "src/utils/validationUtils";
@@ -58,12 +59,6 @@ export const TableOption = ({
       getTableCode(itemControlExtension) || TableOptionsEnum.None;
     return tableCode;
   };
-
-  const hasError = errors.some(
-    (error) =>
-      error.errorProperty === ValidationType.table &&
-      item.linkId === error.linkId,
-  );
 
   const onChangeTableOption = (newValue: string): void => {
     removeItemCodes(
@@ -132,10 +127,17 @@ export const TableOption = ({
     qItems,
     IQuestionnaireItemType.choice,
   );
-
+  const errorClass = getSeverityClass(
+    "box",
+    errors.filter(
+      (error) =>
+        error.errorProperty === ValidationType.table &&
+        item.linkId === error.linkId,
+    ),
+  );
   return (
     <>
-      <div className={hasError ? "error-highlight-box" : ""}>
+      <div className={errorClass}>
         <FormField
           label={t("Table")}
           sublabel={t(

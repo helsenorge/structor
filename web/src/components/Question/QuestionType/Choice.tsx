@@ -2,6 +2,10 @@ import React, { useContext } from "react";
 
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import {
+  ErrorClassVariant,
+  getSeverityClass,
+} from "src/components/Validation/validationHelper";
 import { getValueSetsFromState } from "src/store/treeStore/selectors";
 
 import {
@@ -147,12 +151,12 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
     return "";
   };
 
-  const hasValidationError = (): boolean => {
-    return itemValidationErrors.some(
+  const errorClass = getSeverityClass(
+    ErrorClassVariant.highlight,
+    itemValidationErrors.filter(
       (x) => x.errorProperty === "system" && x.linkId === item.linkId,
-    );
-  };
-
+    ),
+  );
   return (
     <>
       <ChoiceTypeSelect
@@ -208,12 +212,7 @@ const Choice = ({ item, itemValidationErrors }: Props): React.JSX.Element => {
         />
       ) : (
         <>
-          <div
-            key={`${getSystem()}`}
-            className={`code-section ${
-              hasValidationError() ? "error-highlight" : ""
-            }`}
-          >
+          <div key={`${getSystem()}`} className={`code-section ${errorClass}`}>
             <FormField label={t("System")}>
               <UriField
                 value={getSystem()}

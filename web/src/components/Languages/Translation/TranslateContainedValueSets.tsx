@@ -2,6 +2,11 @@ import React from "react";
 
 import { ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import {
+  ErrorClassVariant,
+  getSeverityClassByLevelAndTypeIfError,
+} from "src/components/Validation/validationHelper";
+import { ErrorLevel } from "src/components/Validation/validationTypes";
 
 import { getValueSetValues } from "../../../helpers/valueSetHelper";
 import { updateContainedValueSetTranslationAction } from "../../../store/treeStore/treeActions";
@@ -46,7 +51,11 @@ const TranslateContainedValueSets = ({
               <FormField>
                 <textarea
                   defaultValue={translatedText}
-                  className={!translatedText?.trim() ? "error-highlight" : ""}
+                  className={getSeverityClassByLevelAndTypeIfError(
+                    ErrorLevel.error,
+                    ErrorClassVariant.highlight,
+                    !translatedText?.trim(),
+                  )}
                   onBlur={(event) => {
                     dispatch(
                       updateContainedValueSetTranslationAction(

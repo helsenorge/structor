@@ -3,43 +3,43 @@ $color-warning: #ab7c00;
 $color-info: #08667c;
 
 .error-highlight {
-  border: $color-error 4px solid;
+  border: $color-error 4px solid !important;
 }
 
 .warning-highlight {
-  border: $color-warning 4px solid;
+  border: $color-warning 4px solid !important;
 }
 
 .info-highlight {
-  border: $color-info 4px solid;
+  border: $color-info 4px solid !important;
 }
 
 .error-text {
-  color: $color-error;
+  color: $color-error !important;
 }
 
 .warning-text {
-  color: $color-warning;
+  color: $color-warning !important;
 }
 
 .info-text {
-  color: $color-info;
+  color: $color-info !important;
 }
 
 .error-highlight-box {
-  box-shadow: 0 0 0 4px $color-error;
-  padding: 1rem;
-  margin: 1.5rem 0;
+  box-shadow: 0 0 0 4px $color-error !important;
+  padding: 1rem !important;
+  margin: 1.5rem 0 !important;
 }
 
 .warning-highlight-box {
-  box-shadow: 0 0 0 4px $color-warning;
-  padding: 1rem;
-  margin: 1.5rem 0;
+  box-shadow: 0 0 0 4px $color-warning !important;
+  padding: 1rem !important;
+  margin: 1.5rem 0 !important;
 }
 
 .info-highlight-box {
-  box-shadow: 0 0 0 4px $color-info;
-  padding: 1rem;
-  margin: 1.5rem 0;
+  box-shadow: 0 0 0 4px $color-info !important;
+  padding: 1rem !important;
+  margin: 1.5rem 0 !important;
 }

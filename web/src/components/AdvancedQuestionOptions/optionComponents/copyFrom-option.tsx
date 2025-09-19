@@ -7,6 +7,10 @@ import {
   QuestionnaireItemEnableWhen,
 } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import {
+  getSeverityClass,
+  getSeverityClasses,
+} from "src/components/Validation/validationHelper";
 import { ValidationType } from "src/components/Validation/validationTypes";
 import { ValidationError } from "src/utils/validationUtils";
 
@@ -47,12 +51,6 @@ type CopyFromOptionProps = {
 const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
-
-  const hasDataReceiverValidationError = props.errors.some(
-    (error) =>
-      error.errorProperty === ValidationType.dataReceiver &&
-      props.item.linkId === error.linkId,
-  );
 
   const getSelectedValue = (): ValueSetComposeIncludeConcept | undefined =>
     props.conditionalArray.find(
@@ -173,12 +171,17 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
     setSelectedvalue(code);
     setDataReceiverExtenssion(code);
   };
-
+  const dataReceiverErrorClasses = getSeverityClass(
+    "box",
+    props.errors.filter(
+      (error) =>
+        error.errorProperty === ValidationType.dataReceiver &&
+        props.item.linkId === error.linkId,
+    ),
+  );
   return (
     <>
-      <div
-        className={hasDataReceiverValidationError ? "error-highlight-box" : ""}
-      >
+      <div className={dataReceiverErrorClasses}>
         <div className="horizontal equal">
           <FormField>
             <SwitchBtn

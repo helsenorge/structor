@@ -1,6 +1,11 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
+import {
+  ErrorClassVariant,
+  getSeverityClassByLevelAndTypeIfError,
+} from "src/components/Validation/validationHelper";
+import { ErrorLevel } from "src/components/Validation/validationTypes";
 
 import { isItemControlSidebar } from "../../../helpers/itemControl";
 import { updateSidebarTranslationAction } from "../../../store/treeStore/treeActions";
@@ -70,11 +75,11 @@ const TranslateSidebar = ({
               </FormField>
               <FormField>
                 <div
-                  className={
-                    !translatedMarkdown?.trim()
-                      ? "error-highlight"
-                      : "warning-highlight"
-                  }
+                  className={getSeverityClassByLevelAndTypeIfError(
+                    ErrorLevel.error,
+                    ErrorClassVariant.highlight,
+                    !translatedMarkdown?.trim(),
+                  )}
                 >
                   <MarkdownEditor
                     data={translatedMarkdown}

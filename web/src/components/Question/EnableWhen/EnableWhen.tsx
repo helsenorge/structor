@@ -9,6 +9,10 @@ import {
   ValueSetComposeIncludeConcept,
 } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import {
+  ErrorClassVariant,
+  getSeverityClass,
+} from "src/components/Validation/validationHelper";
 
 import {
   IItemProperty,
@@ -77,17 +81,19 @@ const EnableWhen = ({
       <p>{t("Set condition for display of element")}</p>
       {enableWhen.map((x, index) => {
         const conditionItem = getItem(x.question);
-        const hasValidationError = itemValidationErrors.some(
-          (error) =>
-            error.errorProperty.substring(0, 10) === "enableWhen" &&
-            index === error.index,
+
+        const hasValidationError = getSeverityClass(
+          ErrorClassVariant.highlight,
+          itemValidationErrors.filter(
+            (error) =>
+              error.errorProperty.substring(0, 10) === "enableWhen" &&
+              index === error.index,
+          ),
         );
         return (
           <div
             key={`${linkId}-${x.question}-${x.operator}-${index}`}
-            className={`enablewhen-box ${
-              hasValidationError ? "error-highlight" : ""
-            }`}
+            className={`enablewhen-box ${hasValidationError}`}
           >
             {!x.question || conditionCanBeEdited(x.question) ? (
               <>

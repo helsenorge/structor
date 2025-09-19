@@ -33,7 +33,10 @@ import {
   OrderItem,
 } from "../../store/treeStore/treeStore";
 import { ValidationError } from "../../utils/validationUtils";
-import { getSeverityClass } from "../Validation/validationHelper";
+import {
+  ErrorClassVariant,
+  getSeverityClass,
+} from "../Validation/validationHelper";
 
 interface AnchorMenuProps {
   qOrder: OrderItem[];
@@ -155,7 +158,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
   const validationClasses = (linkId: string): string => {
     return getSeverityClass(
-      "highlight",
+      ErrorClassVariant.highlight,
       props.validationErrors.filter((error) => error.linkId === linkId),
     );
   };

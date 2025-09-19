@@ -3,6 +3,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { isUriValid } from "../../helpers/uriHelper";
+import {
+  ErrorClassVariant,
+  getSeverityClassByLevelAndType,
+} from "../Validation/validationHelper";
+import { ErrorLevel } from "../Validation/validationTypes";
 
 type Props = {
   value: string | undefined;
@@ -45,7 +50,13 @@ const UriField = ({
         }}
       />
       {!hasValidUri && (
-        <div className="error-text" aria-live="polite">
+        <div
+          className={getSeverityClassByLevelAndType(
+            ErrorLevel.error,
+            ErrorClassVariant.text,
+          )}
+          aria-live="polite"
+        >
           {t("Uri must start with http://, https:// or urn:uuid:")}
         </div>
       )}

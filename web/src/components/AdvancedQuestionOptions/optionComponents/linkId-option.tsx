@@ -2,7 +2,15 @@ import { FocusEvent, useState } from "react";
 
 import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { ValidationType } from "src/components/Validation/validationTypes";
+import {
+  ErrorClassVariant,
+  getSeverityClass,
+  getSeverityClassByLevelAndType,
+} from "src/components/Validation/validationHelper";
+import {
+  ErrorLevel,
+  ValidationType,
+} from "src/components/Validation/validationTypes";
 import { ValidationError } from "src/utils/validationUtils";
 
 import UndoIcon from "../../../images/icons/arrow-undo-outline.svg";
@@ -28,11 +36,6 @@ export const LinkIdOption = ({
   const { t } = useTranslation();
   const [linkId, setLinkId] = useState(item.linkId);
   const [isDuplicateLinkId, setDuplicateLinkId] = useState(false);
-  const hasError = errors.some(
-    (error) =>
-      error.errorProperty === ValidationType.linkId &&
-      item.linkId === error.linkId,
-  );
 
   function validateLinkId(linkIdToValidate: string): void {
     const hasLinkIdConflict = !(
@@ -53,9 +56,16 @@ export const LinkIdOption = ({
     }
     dispatch(updateLinkIdAction(item.linkId, event.target.value, parentArray));
   }
-
+  const errorClasses = getSeverityClass(
+    ErrorClassVariant.box,
+    errors.filter(
+      (error) =>
+        error.errorProperty === ValidationType.linkId &&
+        item.linkId === error.linkId,
+    ),
+  );
   return (
-    <div className={`horizontal full ${hasError ? "error-highlight-box" : ""}`}>
+    <div className={`horizontal full ${errorClasses}`}>
       <div className={`form-field ${isDuplicateLinkId ? "field-error" : ""}`}>
         <label>{t("LinkId")}</label>
         <InputField
@@ -70,7 +80,13 @@ export const LinkIdOption = ({
           onBlur={dispatchUpdateLinkId}
         />
         {isDuplicateLinkId && (
-          <div className="error-text" aria-live="polite">
+          <div
+            className={getSeverityClassByLevelAndType(
+              ErrorLevel.error,
+              ErrorClassVariant.text,
+            )}
+            aria-live="polite"
+          >
             {`${t("LinkId is already in use")} `}
             <button onClick={resetLinkId}>
               <img alt="undo icon " src={UndoIcon} height={16} />

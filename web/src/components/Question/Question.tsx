@@ -55,6 +55,7 @@ import MarkdownEditor from "../MarkdownEditor/MarkdownEditor";
 import SwitchBtn from "../SwitchBtn/SwitchBtn";
 import QExtensions from "./Extensions/Extensions";
 import {
+  ErrorClassVariant,
   getSeverityClass,
   getSeverityClasses,
 } from "../Validation/validationHelper";
@@ -196,7 +197,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
       : "";
 
   const severityClass = getSeverityClass(
-    "highlight",
+    ErrorClassVariant.highlight,
     props.itemValidationErrors.filter(
       (x) => x.errorProperty === ValidationType.extension,
     ),

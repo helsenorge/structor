@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import { getValidationError } from "src/components/Validation/validationHelper";
 import {
-  getTextValidationErrorClassName,
-  getValidationClassName,
-} from "src/helpers/validationClassHelper";
+  ErrorClassVariant,
+  getErrorMessagesAndSeverityClasses,
+  getSeverityClass,
+  getSeverityClassByLevelAndTypeIfError,
+  getValidationErrorByErrorProperty,
+} from "src/components/Validation/validationHelper";
+import { ErrorLevel } from "src/components/Validation/validationTypes";
 import { ValidationError } from "src/utils/validationUtils";
 
 import {
@@ -62,22 +65,30 @@ const TranslateMetaDataRow = ({
     </>
   );
 
-  const validationError = getValidationError(propertyName, validationErrors);
+  const validationError = getValidationErrorByErrorProperty(
+    propertyName,
+    validationErrors,
+  );
 
   const getClassName = (): string | undefined => {
     if (propertyName === TranslatableMetadataProperty.title) {
-      if (!translatedValue?.trim()) {
-        return "error-highlight";
-      }
+      return getSeverityClassByLevelAndTypeIfError(
+        ErrorLevel.error,
+        ErrorClassVariant.highlight,
+        !translatedValue?.trim(),
+      );
     }
     if (
       propertyName === TranslatableMetadataProperty.url &&
       !!validationError
     ) {
-      return getValidationClassName(validationError);
+      return getSeverityClass(ErrorClassVariant.highlight, validationError);
     }
   };
-
+  const errorsMap = getErrorMessagesAndSeverityClasses(
+    ErrorClassVariant.text,
+    validationError,
+  );
   const renderTranslation = (): JSX.Element => (
     <>
       {markdown ? (
@@ -89,14 +100,15 @@ const TranslateMetaDataRow = ({
             }}
             placeholder={t("Enter translation..")}
           />
-          {validationError?.errorReadableText && (
+          {errorsMap?.map((error) => (
             <div
-              className={getTextValidationErrorClassName(validationError)}
+              key={error.message}
+              className={error.severityClass}
               aria-live="polite"
             >
-              {validationError.errorReadableText}
+              {error.message}
             </div>
-          )}
+          ))}
         </div>
       ) : (
         <>
@@ -111,14 +123,15 @@ const TranslateMetaDataRow = ({
             }}
             placeholder={t("Enter translation..")}
           />
-          {validationError?.errorReadableText && (
+          {errorsMap?.map((error) => (
             <div
-              className={getTextValidationErrorClassName(validationError)}
+              key={error.message}
+              className={error.severityClass}
               aria-live="polite"
             >
-              {validationError.errorReadableText}
+              {error.message}
             </div>
-          )}
+          ))}
         </>
       )}
     </>

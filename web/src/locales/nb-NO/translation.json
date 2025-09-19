@@ -240,6 +240,7 @@
   "- Remove element": "- Fjern element",
   "+ Add element": "+ Legg til element",
   "Found {0} errors. Questions with errors are marked with a red border.": "Fant {0} feil. Spørsmål med feil er markert med rød ramme.",
+  "Found {0} warnings. Questions with warnings are marked with a yellow border.": "Fant {0} advarsler. Spørsmål med advarsler er markert med gul ramme.",
   "Found no validation errors!": "Fant ingen valideringsfeil!",
   "Found {0} missing translations.": "Fant {0} manglende oversettelser.",
   "Found no translations errors!": "Fant ingen manglende oversettelser!",

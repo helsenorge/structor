@@ -27,12 +27,10 @@ const QExtensions = ({
       return { ...ext, id: ext.id || createUUID() };
     });
   };
-  const hasValidationError = (index: number): string | false => {
-    const errorLevel = itemValidationErrors.filter(
+  const validationErrors = (index: number): ValidationError[] | undefined =>
+    itemValidationErrors.filter(
       (x) => x.errorProperty === ValidationType.extension && index === x.index,
     );
-    return errorLevel.length > 0 ? errorLevel[0].errorLevel : false;
-  };
 
   return (
     <div className={style.extensions}>
@@ -44,7 +42,7 @@ const QExtensions = ({
         }}
         extensions={getExtension() || []}
         collapsable
-        hasValidationError={hasValidationError}
+        validationErrors={validationErrors}
       />
     </div>
   );

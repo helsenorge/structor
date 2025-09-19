@@ -2,9 +2,12 @@ import React, { useContext } from "react";
 
 import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { getErrorMessagesAndSeverityClasses } from "src/components/Validation/validationHelper";
+import {
+  ErrorClassVariant,
+  getErrorMessagesAndSeverityClasses,
+  getSeverityClass,
+} from "src/components/Validation/validationHelper";
 import { ValidationType } from "src/components/Validation/validationTypes";
-import { getValidaitonClassNameWithPropsName } from "src/helpers/validationClassHelper";
 import { ValidationError } from "src/utils/validationUtils";
 
 import { IExtensionType } from "../../../types/IQuestionnareItemType";
@@ -28,16 +31,13 @@ const EndpointView = ({
   const { state } = useContext(TreeContext);
   const { qMetadata } = state;
   const validationErrorsWithClass = getErrorMessagesAndSeverityClasses(
-    "highlight",
+    ErrorClassVariant.highlight,
     errors.filter((error) => error.errorProperty === ValidationType.endpoint),
   );
   return (
     <FormField label={t("Helsenorge endpoint")}>
       <InputField
-        className={getValidaitonClassNameWithPropsName(
-          ValidationType.endpoint,
-          errors,
-        )}
+        className={getSeverityClass(ErrorClassVariant.highlight, errors)}
         placeholder={t("For example Endpoint/35")}
         defaultValue={
           qMetadata?.extension?.find((ex) => ex.url === IExtensionType.endpoint)

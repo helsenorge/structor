@@ -3,6 +3,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { getTextValidationErrorClassName } from "src/helpers/validationClassHelper";
 
+import {
+  ErrorClassVariant,
+  getErrorMessagesAndSeverityClasses,
+  getSeverityClassByLevelAndType,
+} from "./validationHelper";
+import { ErrorLevel } from "./validationTypes";
 import { Languages } from "../../store/treeStore/treeStore";
 import { ValidationError } from "../../utils/validationUtils";
 import Modal from "../Modal/Modal";
@@ -25,7 +31,16 @@ export const ValidationErrorsModal = (
       const translationErrors = translationErrorMessages();
       const elements: React.JSX.Element[] = [];
       translationErrors?.map((message) => {
-        elements.push(<p className="error-text">{message}</p>);
+        elements.push(
+          <p
+            className={getSeverityClassByLevelAndType(
+              ErrorLevel.error,
+              ErrorClassVariant.text,
+            )}
+          >
+            {message}
+          </p>,
+        );
       });
       return elements;
     }
@@ -54,40 +69,49 @@ export const ValidationErrorsModal = (
     | undefined => {
     if (props.questionnaireDetailsErrors.length > 0) {
       const elements: React.JSX.Element[] = [];
-      props.questionnaireDetailsErrors.forEach((error) => {
-        elements.push(
-          <p className={getTextValidationErrorClassName(error)}>
-            {error.errorReadableText}
-          </p>,
-        );
+      getErrorMessagesAndSeverityClasses(
+        ErrorClassVariant.text,
+        props.questionnaireDetailsErrors,
+      )?.forEach((error) => {
+        elements.push(<p className={error.severityClass}>{error.message}</p>);
       });
       return elements;
     }
   };
-  const renderVelidationErrorMessages = (): React.JSX.Element | undefined => {
+  const renderValidationErrorMessages = (): React.JSX.Element | undefined => {
     if (props.validationErrors.length > 0) {
+      const errors = props.validationErrors.filter(
+        (x) => x.errorLevel === ErrorLevel.error,
+      );
+      const warnings = props.validationErrors.filter(
+        (x) => x.errorLevel === ErrorLevel.warning,
+      );
       return (
         <>
-          <p className="error-text">
-            {t(
-              "Found {0} errors. Questions with errors are marked with a red border.",
-            ).replace(
-              "{0}",
-              props.validationErrors
-                .filter((x) => x.errorLevel === "error")
-                .length.toString(),
-            )}
-          </p>
-          <p className="warning-text">
-            {t(
-              "Found {0} warnings. Questions with warnings are marked with a yellow border.",
-            ).replace(
-              "{0}",
-              props.validationErrors
-                .filter((x) => x.errorLevel === "warning")
-                .length.toString(),
-            )}
-          </p>
+          {errors.length > 0 ? (
+            <p
+              className={getSeverityClassByLevelAndType(
+                ErrorLevel.error,
+                ErrorClassVariant.text,
+              )}
+            >
+              {t(
+                "Found {0} errors. Questions with errors are marked with a red border.",
+              ).replace("{0}", errors.length.toString())}
+            </p>
+          ) : null}
+          {warnings.length > 0 ? (
+            <p
+              className={getSeverityClassByLevelAndType(
+                ErrorLevel.warning,
+                ErrorClassVariant.text,
+              )}
+            >
+              {t(
+                "Found {0} warnings. Questions with warnings are marked with a yellow border.",
+              ).replace("{0}", warnings.length.toString())}
+            </p>
+          ) : null}
         </>
       );
     }
@@ -95,7 +119,12 @@ export const ValidationErrorsModal = (
   const renderWarningMessages = (): React.JSX.Element | undefined => {
     if (props.markdownWarning) {
       return (
-        <p className="warning-text">
+        <p
+          className={getSeverityClassByLevelAndType(
+            ErrorLevel.warning,
+            ErrorClassVariant.text,
+          )}
+        >
           {props.markdownWarning.errorReadableText}
         </p>
       );
@@ -117,7 +146,7 @@ export const ValidationErrorsModal = (
       title={t("Validation")}
       buttonSecondaryText={t("Close")}
     >
-      <>{renderVelidationErrorMessages()}</>
+      <>{renderValidationErrorMessages()}</>
       <>{renderQuestionnaireDetailsErrorMessages()}</>
       <>{renderTranslateErrorMessages()}</>
       <>{renderNoValidationErrormessage()}</>

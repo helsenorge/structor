@@ -3,7 +3,6 @@ import React, { useContext, useState } from "react";
 import { formatISO, parseISO } from "date-fns";
 import { ContactDetail, Extension, Meta, UsageContext } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { getValidaitonClassNameWithPropsName } from "src/helpers/validationClassHelper";
 
 import { IQuestionnaireMetadataType } from "../../types/IQuestionnaireMetadataType";
 
@@ -21,6 +20,12 @@ import FormField from "../FormField/FormField";
 import InputField from "../InputField/inputField";
 import MarkdownEditor from "../MarkdownEditor/MarkdownEditor";
 import RadioBtn from "../RadioBtn/RadioBtn";
+import {
+  ErrorClassVariant,
+  getSeverityClass,
+  getSeverityClassByLevelAndType,
+} from "../Validation/validationHelper";
+import { ErrorLevel } from "../Validation/validationTypes";
 
 interface MetadataEditorProps {
   questionnaireDetailsErrors: ValidationError[];
@@ -49,9 +54,11 @@ const MetadataEditor = (props: MetadataEditorProps): React.JSX.Element => {
           <input
             placeholder={t("Title")}
             value={state.qMetadata.title}
-            className={getValidaitonClassNameWithPropsName(
-              IQuestionnaireMetadataType.title,
-              props.questionnaireDetailsErrors,
+            className={getSeverityClass(
+              ErrorClassVariant.highlight,
+              props.questionnaireDetailsErrors.filter(
+                (x) => x.errorProperty === IQuestionnaireMetadataType.title,
+              ),
             )}
             onChange={(event) => {
               updateMeta(IQuestionnaireMetadataType.title, event.target.value);
@@ -79,7 +86,13 @@ const MetadataEditor = (props: MetadataEditorProps): React.JSX.Element => {
             }}
           />
           {displayIdValidationError && (
-            <div className="error-text" aria-live="polite">
+            <div
+              className={getSeverityClassByLevelAndType(
+                ErrorLevel.error,
+                ErrorClassVariant.text,
+              )}
+              aria-live="polite"
+            >
               {t(
                 "Id must be 1-64 characters and only letters a-z, numbers, - and .",
               )}
@@ -89,9 +102,11 @@ const MetadataEditor = (props: MetadataEditorProps): React.JSX.Element => {
         <FormField label={t("Technical name")}>
           <InputField
             defaultValue={qMetadata.name}
-            className={getValidaitonClassNameWithPropsName(
-              IQuestionnaireMetadataType.name,
-              props.questionnaireDetailsErrors,
+            className={getSeverityClass(
+              ErrorClassVariant.highlight,
+              props.questionnaireDetailsErrors.filter(
+                (x) => x.errorProperty === IQuestionnaireMetadataType.name,
+              ),
             )}
             onChange={(e) => {
               setDisplayNameValidationError(
@@ -105,7 +120,13 @@ const MetadataEditor = (props: MetadataEditorProps): React.JSX.Element => {
             }}
           />
           {displayNameValidationError && (
-            <div className="error-text" aria-live="polite">
+            <div
+              className={getSeverityClassByLevelAndType(
+                ErrorLevel.error,
+                ErrorClassVariant.text,
+              )}
+              aria-live="polite"
+            >
               {t(
                 "Technical name must start with a captital letter, 1-255 characters and can only contain numbers and characters a-z",
               )}
@@ -170,9 +191,11 @@ const MetadataEditor = (props: MetadataEditorProps): React.JSX.Element => {
           <input
             placeholder={t("Enter a url..")}
             value={state.qMetadata.url || ""}
-            className={getValidaitonClassNameWithPropsName(
-              IQuestionnaireMetadataType.url,
-              props.questionnaireDetailsErrors,
+            className={getSeverityClass(
+              ErrorClassVariant.highlight,
+              props.questionnaireDetailsErrors.filter(
+                (x) => x.errorProperty === IQuestionnaireMetadataType.url,
+              ),
             )}
             onChange={(e) =>
               updateMeta(IQuestionnaireMetadataType.url, e.target.value || "")

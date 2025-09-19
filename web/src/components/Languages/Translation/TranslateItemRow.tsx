@@ -6,6 +6,11 @@ import {
   QuestionnaireItemAnswerOption,
 } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import {
+  ErrorClassVariant,
+  getSeverityClassByLevelAndTypeIfError,
+} from "src/components/Validation/validationHelper";
+import { ErrorLevel } from "src/components/Validation/validationTypes";
 
 import { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
 import { TranslatableItemProperty } from "../../../types/LanguageTypes";
@@ -107,11 +112,11 @@ const TranslateItemRow = ({
     if (isMarkdown) {
       return (
         <div
-          className={
-            !itemTranslation.text?.trim()
-              ? "error-highlight"
-              : "warning-highlight"
-          }
+          className={getSeverityClassByLevelAndTypeIfError(
+            ErrorLevel.error,
+            ErrorClassVariant.highlight,
+            !itemTranslation.text?.trim(),
+          )}
         >
           <MarkdownEditor
             data={translatedText}
@@ -125,7 +130,11 @@ const TranslateItemRow = ({
     return (
       <textarea
         value={translatedText}
-        className={!itemTranslation.text?.trim() ? "error-highlight" : ""}
+        className={getSeverityClassByLevelAndTypeIfError(
+          ErrorLevel.error,
+          ErrorClassVariant.highlight,
+          !itemTranslation.text?.trim(),
+        )}
         onChange={(e) => setTranslatedText(e.target.value)}
         onBlur={(e) =>
           dispatchUpdateItemTranslation(
@@ -205,11 +214,11 @@ const TranslateItemRow = ({
           <FormField>
             {isMarkdownField ? (
               <div
-                className={
-                  !itemPropertyTranslation?.trim()
-                    ? "error-highlight"
-                    : "warning-highlight"
-                }
+                className={`${getSeverityClassByLevelAndTypeIfError(
+                  ErrorLevel.error,
+                  ErrorClassVariant.highlight,
+                  !itemPropertyTranslation?.trim(),
+                )}`}
               >
                 <MarkdownEditor
                   data={itemPropertyTranslation}
@@ -218,9 +227,11 @@ const TranslateItemRow = ({
               </div>
             ) : (
               <textarea
-                className={
-                  !itemPropertyTranslation?.trim() ? "error-highlight" : ""
-                }
+                className={getSeverityClassByLevelAndTypeIfError(
+                  ErrorLevel.error,
+                  ErrorClassVariant.highlight,
+                  !itemPropertyTranslation?.trim(),
+                )}
                 defaultValue={itemPropertyTranslation}
                 onBlur={handleOnBlurText}
               />
@@ -256,9 +267,11 @@ const TranslateItemRow = ({
           </FormField>
           <FormField>
             <textarea
-              className={
-                !itemPropertyTranslation?.trim() ? "error-highlight" : ""
-              }
+              className={getSeverityClassByLevelAndTypeIfError(
+                ErrorLevel.error,
+                ErrorClassVariant.highlight,
+                !itemPropertyTranslation?.trim(),
+              )}
               defaultValue={itemPropertyTranslation}
               onBlur={handleOnBlurText}
             />

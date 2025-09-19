@@ -82,7 +82,14 @@ export const GetValueAfterSlash = (value: string): string | undefined => {
   return splitValue.length === 2 ? splitValue[1] : undefined;
 };
 
-export type ErrorClassVariant = "highlight" | "text" | "box";
+export const ErrorClassVariant = {
+  highlight: "highlight",
+  text: "text",
+  box: "box",
+} as const;
+
+export type ErrorClassVariant =
+  (typeof ErrorClassVariant)[keyof typeof ErrorClassVariant];
 
 export interface ExtensionError {
   errorLevel: ErrorLevel | string;
@@ -107,7 +114,7 @@ const LEVEL_PRIORITY: ErrorLevel[] = [
   ErrorLevel.info,
 ];
 
-const CLASS_KEYS = {
+export const ERROR_CLASS_KEYS = {
   [ErrorLevel.error]: {
     highlight: "error-highlight",
     text: "error-text",
@@ -129,7 +136,13 @@ type SeverityClasses = {
   level: ErrorLevel | null;
   classes: { highlight: string; text: string; box: string };
 };
-
+export const getSeverityClassByLevelAndType = (
+  level: ErrorLevel,
+  variant: ErrorClassVariant,
+): string => {
+  const keys = ERROR_CLASS_KEYS[level];
+  return styles?.[keys[variant]] ?? keys[variant];
+};
 export function getSeverityLevel(
   errors?: ReadonlyArray<ExtensionError>,
 ): ErrorLevel | null {
@@ -147,7 +160,7 @@ export function getSeverityClassesCore(
   if (!level)
     return { level: null, classes: { highlight: "", text: "", box: "" } };
 
-  const keys = CLASS_KEYS[level];
+  const keys = ERROR_CLASS_KEYS[level];
   const highlight = styles?.[keys.highlight] ?? keys.highlight;
   const text = styles?.[keys.text] ?? keys.text;
   const box = styles?.[keys.box] ?? keys.box;
@@ -202,3 +215,8 @@ export const getValidationErrorByKey = (
     validationErrors?.filter((error) => error[errorKey] === value) || undefined
   );
 };
+export const getSeverityClassByLevelAndTypeIfError = (
+  level: ErrorLevel,
+  variant: ErrorClassVariant,
+  hasError: boolean,
+): string => (hasError ? getSeverityClassByLevelAndType(level, variant) : "");

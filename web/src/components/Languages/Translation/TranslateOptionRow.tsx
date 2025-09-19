@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 
 import { QuestionnaireItemAnswerOption } from "fhir/r4";
+import {
+  ErrorClassVariant,
+  getSeverityClassByLevelAndTypeIfError,
+} from "src/components/Validation/validationHelper";
+import { ErrorLevel } from "src/components/Validation/validationTypes";
 
 import FormField from "../../FormField/FormField";
 import InputField from "../../InputField/inputField";
@@ -29,7 +34,11 @@ const TranslateOptionRow = ({
           onChange={(event) => {
             setTranslatedText(event.target.value);
           }}
-          className={!translatedText?.trim() ? "error-highlight" : ""}
+          className={getSeverityClassByLevelAndTypeIfError(
+            ErrorLevel.error,
+            ErrorClassVariant.highlight,
+            !translatedText?.trim(),
+          )}
           onBlur={(event) => onBlur(event.target.value)}
         />
       </FormField>

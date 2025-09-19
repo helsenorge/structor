@@ -2,6 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 
 import { Coding } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+import {
+  ErrorClassVariant,
+  getSeverityClass,
+} from "src/components/Validation/validationHelper";
 
 import { ICodingProperty } from "../../../types/IQuestionnareItemType";
 
@@ -66,16 +70,14 @@ const Codes = ({
   };
 
   const renderCode = (code: Coding, index: number): React.JSX.Element => {
-    const hasValidationError = itemValidationErrors.some(
-      (x) => x.errorProperty.substring(0, 4) === "code" && index === x.index,
+    const errorClass = getSeverityClass(
+      ErrorClassVariant.highlight,
+      itemValidationErrors.filter(
+        (x) => x.errorProperty.substring(0, 4) === "code" && index === x.index,
+      ),
     );
     return (
-      <div
-        key={`${code.id}`}
-        className={`code-section ${
-          hasValidationError ? "error-highlight" : ""
-        }`}
-      >
+      <div key={`${code.id}`} className={`code-section ${errorClass}`}>
         <div className="horizontal equal">
           <FormField label={t("Display")}>
             <InputField
