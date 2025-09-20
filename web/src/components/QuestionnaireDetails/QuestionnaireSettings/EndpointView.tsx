@@ -31,7 +31,7 @@ const EndpointView = ({
   const { state } = useContext(TreeContext);
   const { qMetadata } = state;
   const validationErrorsWithClass = getErrorMessagesAndSeverityClasses(
-    ErrorClassVariant.highlight,
+    ErrorClassVariant.text,
     errors.filter((error) => error.errorProperty === ValidationType.endpoint),
   );
   return (

@@ -34,7 +34,7 @@ const PrintVersionView = ({
   const { qMetadata } = state;
 
   const validationErrors = getErrorMessagesAndSeverityClasses(
-    ErrorClassVariant.highlight,
+    ErrorClassVariant.text,
     getValidationErrorByErrorProperty(ValidationType.binary, errors),
   );
   return (

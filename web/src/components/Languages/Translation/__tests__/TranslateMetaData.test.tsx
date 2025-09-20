@@ -4,6 +4,24 @@ import { TreeState } from "src/store/treeStore/treeStore";
 import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 
 describe("TranslateMetaData", () => {
+  vi.mock("src/components/MarkdownEditor/MarkdownEditor", () => ({
+    __esModule: true,
+    default: (props: {
+      data: string;
+      onBlur?: (data: string) => void;
+      disabled?: boolean;
+      placeholder?: string;
+    }) => (
+      <textarea
+        data-testid="markdown-editor-mock"
+        defaultValue={props.data}
+        disabled={props.disabled}
+        placeholder={props.placeholder}
+        onBlur={(e) => props.onBlur?.(e.currentTarget.value)}
+        onChange={() => {}}
+      />
+    ),
+  }));
   vi.mock("react-i18next", () => ({
     useTranslation: () => {
       return {

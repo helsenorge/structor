@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useState } from "react";
 
-// @ts-ignore
-import { CKEditor, EventInfo } from "@ckeditor/ckeditor5-react";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import { EventInfo } from "ckeditor5";
 
-// @ts-ignore
 import Editor from "./Editor";
 
 import "./MarkdownEditor.css";
@@ -18,10 +17,16 @@ interface MarkdownEditorProps {
 
 const MarkdownEditor = (props: MarkdownEditorProps): React.JSX.Element => {
   const [value, setValue] = useState<string>(props.data);
-  const handleChange = (_event: EventInfo, editor: Editor): void => {
+  const handleChange = (
+    _event: EventInfo<string, unknown>,
+    editor: Editor,
+  ): void => {
     setValue(editor.getData());
   };
-  const handleBlur = (_event: EventInfo, editor: Editor): void => {
+  const handleBlur = (
+    _event: EventInfo<string, unknown>,
+    editor: Editor,
+  ): void => {
     if (props.onBlur) {
       props.onBlur(editor.getData());
     }
