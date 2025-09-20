@@ -15,7 +15,6 @@ import { useExtensions } from "./useExtensons";
 import {
   ErrorClassVariant,
   getSeverityClass,
-  getSeverityClasses,
 } from "../Validation/validationHelper";
 
 import styles from "./extensions.module.scss";

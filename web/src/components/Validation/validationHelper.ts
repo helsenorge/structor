@@ -176,10 +176,6 @@ export function getSeverityClassCore(
 }
 const styles = stylesRaw as unknown as CssModule;
 
-export const getSeverityClasses = (
-  errors?: ReadonlyArray<ExtensionError>,
-): SeverityClasses => getSeverityClassesCore(errors, styles);
-
 export const getSeverityClass = (
   variant: ErrorClassVariant,
   errors?: ReadonlyArray<ExtensionError>,

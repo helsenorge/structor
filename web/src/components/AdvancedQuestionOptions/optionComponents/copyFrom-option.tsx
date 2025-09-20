@@ -7,10 +7,7 @@ import {
   QuestionnaireItemEnableWhen,
 } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import {
-  getSeverityClass,
-  getSeverityClasses,
-} from "src/components/Validation/validationHelper";
+import { getSeverityClass } from "src/components/Validation/validationHelper";
 import { ValidationType } from "src/components/Validation/validationTypes";
 import { ValidationError } from "src/utils/validationUtils";
 

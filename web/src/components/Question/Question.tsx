@@ -57,7 +57,6 @@ import QExtensions from "./Extensions/Extensions";
 import {
   ErrorClassVariant,
   getSeverityClass,
-  getSeverityClasses,
 } from "../Validation/validationHelper";
 import { ValidationType } from "../Validation/validationTypes";
 
