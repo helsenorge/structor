@@ -94,7 +94,7 @@ const getItemControlType = (
   );
   if (itemControlExtension) {
     const code = itemControlExtension.valueCodeableConcept?.coding
-      ? itemControlExtension.valueCodeableConcept.coding[0].code
+      ? itemControlExtension.valueCodeableConcept.coding[0]?.code
       : undefined;
 
     if (code) {
