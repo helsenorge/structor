@@ -155,10 +155,7 @@ export const allTableItemsMustBeReadOnly = ({
 }): ValidationError[] => {
   if (isTableGroup(qItem)) {
     for (const child of qItem.item || []) {
-      if (
-        !itemAndAllChildrenAreReadOnly(child) &&
-        isItemsWithReadOnlyProperty(child)
-      ) {
+      if (!itemAndAllChildrenAreReadOnly(child)) {
         return [
           createError(
             qItem.linkId,

@@ -233,7 +233,14 @@ describe("allTableItemsMustBeReadOnly", () => {
 
     vi.mocked(isItemsWithReadOnlyProperty).mockReturnValue(false);
 
-    expect(allTableItemsMustBeReadOnly({ t, qItem })).toEqual([]);
+    expect(allTableItemsMustBeReadOnly({ t, qItem })).toEqual([
+      {
+        errorLevel: "error",
+        errorProperty: "readonly",
+        errorReadableText: "All items in a table must be readOnly",
+        linkId: "tbl3",
+      },
+    ]);
   });
 
   it("[] når table group ikke har barn (readonly-sjekk har ingenting å validere)", () => {
