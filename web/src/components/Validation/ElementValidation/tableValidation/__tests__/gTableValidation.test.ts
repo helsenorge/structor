@@ -86,8 +86,8 @@ describe("validateGTable", () => {
     const qItem = makeItem({
       linkId: "gt-1",
       item: [
-        { linkId: "row-1", text: "OK" } as any,
-        { linkId: "row-2", text: "" } as any,
+        { linkId: "row-1", text: "OK", required: true } as any,
+        { linkId: "row-2", text: "", required: true } as any,
       ],
     });
 
@@ -111,8 +111,8 @@ describe("validateGTable", () => {
     const qItem = makeItem({
       linkId: "gt-2",
       item: [
-        { linkId: "row-1", text: "OK" } as any,
-        { linkId: "row-2", text: "OK" } as any,
+        { linkId: "row-1", text: "OK", required: true } as any,
+        { linkId: "row-2", text: "OK", required: true } as any,
       ],
     });
 
@@ -128,15 +128,15 @@ describe("validateGTable", () => {
     expect(createError).toHaveBeenCalledTimes(1);
   });
 
-  it("returns [] when gTable and all children have non-empty text AND dataReceiver", () => {
+  it("returns [] when gTable and all children have non-empty text AND dataReceiver AND required", () => {
     vi.mocked(isTableType).mockReturnValue(true);
     vi.mocked(isDataReceiver).mockReturnValue(true);
 
     const qItem = makeItem({
       linkId: "gt-3",
       item: [
-        { linkId: "row-1", text: "Row 1" } as any,
-        { linkId: "row-2", text: "Row 2" } as any,
+        { required: true, linkId: "row-1", text: "Row 1" } as any,
+        { required: true, linkId: "row-2", text: "Row 2" } as any,
       ],
     });
 
@@ -155,5 +155,45 @@ describe("validateGTable", () => {
     const errors = validateGTable({ t, qItem });
     expect(errors).toEqual([]);
     expect(isDataReceiver).not.toHaveBeenCalled();
+  });
+  it("returns [] when gTable and all children are required", () => {
+    vi.mocked(isTableType).mockReturnValue(true);
+
+    const qItem = makeItem({
+      linkId: "gt-3",
+      item: [
+        { linkId: "row-1", type: "string", text: "Row 1", required: true },
+        { linkId: "row-2", type: "string", text: "Row 2", required: true },
+      ],
+    });
+
+    const errors = validateGTable({ t, qItem });
+    expect(errors).toEqual([]);
+  });
+  it("errors when gTable but at least one child is NOT required", () => {
+    vi.mocked(isTableType).mockReturnValue(true);
+
+    const qItem = makeItem({
+      linkId: "gt-4",
+      item: [
+        { linkId: "row-1", type: "string", text: "Row 1", required: true },
+        {
+          linkId: "row-2",
+          type: "string",
+          text: "Row 2",
+          required: false,
+        },
+      ],
+    });
+
+    const errors = validateGTable({ t, qItem });
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toMatchObject({
+      linkId: "gt-4",
+      errorProperty: ValidationType.table,
+      errorReadableText: "All items in a gTable must be required",
+      errorLevel: ErrorLevel.error,
+    });
+    expect(createError).toHaveBeenCalledTimes(1);
   });
 });

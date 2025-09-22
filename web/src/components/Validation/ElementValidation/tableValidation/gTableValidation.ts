@@ -19,6 +19,7 @@ export const validateGTable = ({
   return [
     ...allItemsMustHaveTextValue({ t, qItem }),
     ...allItemsMustHaveDataReceiverExtension({ t, qItem }),
+    ...allItemsMustBeRequired({ t, qItem }),
   ];
 };
 
@@ -71,6 +72,33 @@ const allItemsMustHaveTextValue = ({
         qItem.linkId,
         ValidationType.table,
         t("All items in a gTable must have a text value"),
+        ErrorLevel.error,
+      ),
+    ];
+  }
+  return [];
+};
+const allItemsMustBeRequired = ({
+  t,
+  qItem,
+}: {
+  t: TFunction<"translation">;
+  qItem: QuestionnaireItem;
+}): ValidationError[] => {
+  const itemIsGTableGroup = isTableType({
+    qItem,
+    tableType: ItemControlType.gTable,
+  });
+  if (!itemIsGTableGroup) {
+    return [];
+  }
+  const allAreRequired = qItem.item?.every((item) => item.required);
+  if (!allAreRequired) {
+    return [
+      createError(
+        qItem.linkId,
+        ValidationType.table,
+        t("All items in a gTable must be required"),
         ErrorLevel.error,
       ),
     ];

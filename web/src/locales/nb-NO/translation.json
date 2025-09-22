@@ -570,5 +570,6 @@
   "Expected one of [{0}] or a code.": "Forventet en av [{0}] eller en kode.",
   "Expected one of [{0}].": "Forventet en av [{0}].",
   "no item with definition {0} found as child to {1}": "Ingen element med definisjon {0} funnet som barn til {1}",
-  "LinkId '{0}' is not unique": "LinkId '{0}' er ikke unik"
+  "LinkId '{0}' is not unique": "LinkId '{0}' er ikke unik",
+  "All items in a gTable must be required": "Alle elementer i en gTable må være obligatoriske"
 }
