@@ -41,7 +41,6 @@ import {
 import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";
-import { attachementValidation } from "./attachementValidation";
 import { validateChoice } from "./choiceValidation";
 import { conditionValidation } from "./fhirExtract/ConditionValidation";
 import { observationValidation } from "./fhirExtract/observationValidation";
@@ -721,7 +720,6 @@ const validate = (
   const questionnaires = generateMainQuestionnaire(state);
 
   const qItem = qItems[currentItem.linkId];
-
   //validate group item
   errors.push(...validateGroup(t, qItem, qItems, qOrder));
 
@@ -769,7 +767,6 @@ const validate = (
   errors.push(...serviceRequestValidation(t, qItem, questionnaires));
   errors.push(...observationValidation(t, qItem, questionnaires));
   errors.push(...conditionValidation(t, qItem, questionnaires));
-  errors.push(...attachementValidation(t, qItem));
   currentItem.items.forEach((item) =>
     validate(t, errors, item, qItems, qOrder, state, qContained),
   );

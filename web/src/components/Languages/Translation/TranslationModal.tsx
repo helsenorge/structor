@@ -5,12 +5,6 @@ import { useTranslation } from "react-i18next";
 
 import "./TranslationModal.css";
 
-import {
-  ErrorClassVariant,
-  getSeverityClassByLevelAndTypeIfError,
-} from "src/components/Validation/validationHelper";
-import { ErrorLevel } from "src/components/Validation/validationTypes";
-
 import { TranslatableItemProperty } from "../../../types/LanguageTypes";
 
 import ModalHeader from "./modalHeader";
@@ -106,11 +100,11 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
           </FormField>
           <FormField>
             <div
-              className={getSeverityClassByLevelAndTypeIfError(
-                ErrorLevel.error,
-                ErrorClassVariant.highlight,
-                !translatedHelpText?.trim(),
-              )}
+              className={
+                !translatedHelpText?.trim()
+                  ? "validation-error"
+                  : "validation-warning"
+              }
             >
               <MarkdownEditor
                 data={translatedHelpText}

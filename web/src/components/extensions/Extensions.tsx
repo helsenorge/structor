@@ -2,7 +2,6 @@ import React from "react";
 
 import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { ValidationError } from "src/utils/validationUtils";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Expander from "@helsenorge/designsystem-react/components/Expander";
@@ -12,10 +11,6 @@ import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall
 
 import ExtensionItem from "./ExtensionItem";
 import { useExtensions } from "./useExtensons";
-import {
-  ErrorClassVariant,
-  getSeverityClass,
-} from "../Validation/validationHelper";
 
 import styles from "./extensions.module.scss";
 
@@ -30,7 +25,7 @@ type Props = {
     id: string,
     idType?: "linkId" | "id",
   ) => void;
-  validationErrors?: (index: number) => ValidationError[] | undefined;
+  hasValidationError?: (index: number) => boolean;
   className?: string;
   buttonText?: string;
   borderType?: BorderType;
@@ -42,7 +37,7 @@ export const Extensions = ({
   idType = "id",
   extensions,
   updateExtensions,
-  validationErrors,
+  hasValidationError,
   className,
   buttonText = "Add",
   borderType = "underline",
@@ -88,13 +83,12 @@ export const Extensions = ({
 
       <ExpanderList>
         {extensions?.map((ext, index) => {
-          const errorclass = getSeverityClass(
-            ErrorClassVariant.highlight,
-            validationErrors && validationErrors(index),
-          );
+          const hasError = hasValidationError
+            ? hasValidationError(index)
+            : false;
           return (
             <section
-              className={`${styles.extensionItem} ${borderClass()} ${errorclass}`}
+              className={`${styles.extensionItem} ${borderClass()} ${hasError ? styles.error : ""}`}
               key={ext.id}
             >
               {collapsable ? (

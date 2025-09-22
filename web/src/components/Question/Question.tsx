@@ -54,11 +54,6 @@ import FormField from "../FormField/FormField";
 import MarkdownEditor from "../MarkdownEditor/MarkdownEditor";
 import SwitchBtn from "../SwitchBtn/SwitchBtn";
 import QExtensions from "./Extensions/Extensions";
-import {
-  ErrorClassVariant,
-  getSeverityClass,
-} from "../Validation/validationHelper";
-import { ValidationType } from "../Validation/validationTypes";
 
 interface QuestionProps {
   item: QuestionnaireItem;
@@ -195,12 +190,6 @@ const Question = (props: QuestionProps): React.JSX.Element => {
       ? `(${props.item.enableWhen?.length})`
       : "";
 
-  const severityClass = getSeverityClass(
-    ErrorClassVariant.highlight,
-    props.itemValidationErrors.filter(
-      (x) => x.errorProperty === ValidationType.extension,
-    ),
-  );
   return (
     <div className="question" id={props.item.linkId}>
       <div className="question-form">
@@ -301,15 +290,12 @@ const Question = (props: QuestionProps): React.JSX.Element => {
             itemValidationErrors={props.itemValidationErrors}
           />
         </Accordion>
-        <div className={severityClass}>
-          <Accordion title={`${t("Extension")} ${extensionElements}`}>
-            <QExtensions
-              linkId={props.item.linkId}
-              itemValidationErrors={props.itemValidationErrors}
-            />
-          </Accordion>
-        </div>
-
+        <Accordion title={`${t("Extension")} ${extensionElements}`}>
+          <QExtensions
+            linkId={props.item.linkId}
+            itemValidationErrors={props.itemValidationErrors}
+          />
+        </Accordion>
         <Accordion title={t("Advanced settings")}>
           <AdvancedQuestionOptions
             item={props.item}

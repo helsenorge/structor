@@ -357,7 +357,7 @@ function getLanguageData(
   };
 }
 
-const generateTree = (
+export const generateTree = (
   order: Array<OrderItem>,
   items: Items,
 ): Array<QuestionnaireItem> => {
