@@ -11,7 +11,6 @@ import {
 import { ValidationError } from "src/utils/validationUtils";
 
 import {
-  isItemsWithReadOnlyProperty,
   itemHasCodeWithOneOrMoreSystems,
   itemHasCodeWithSystem,
 } from "./utils";
