@@ -128,7 +128,7 @@ describe("validateTableOrderingColumn", () => {
 
     expect(errors).toHaveLength(1);
     expect(errors[0].errorReadableText).toContain(
-      "Table with table ordering column must also have the table ordering functions code",
+      "Table with table ordering column must also have the tableOrderingFunctions",
     );
   });
 
@@ -143,7 +143,7 @@ describe("validateTableOrderingColumn", () => {
 
     expect(errors).toHaveLength(1);
     expect(errors[0].errorReadableText).toContain(
-      "Table with table ordering functions must also have the table ordering column code",
+      "Table with table ordering functions must also have the tableOrderingColumn",
     );
   });
 
