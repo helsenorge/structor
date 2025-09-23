@@ -11,6 +11,7 @@ import {
 import { ValidationError } from "src/utils/validationUtils";
 
 import {
+  isItemsWithReadOnlyProperty,
   itemHasCodeWithOneOrMoreSystems,
   itemHasCodeWithSystem,
 } from "./utils";
@@ -136,7 +137,7 @@ export const validateTableOrderingColumn = ({
 };
 
 const itemAndAllChildrenAreReadOnly = (qItem: QuestionnaireItem): boolean => {
-  if (qItem.type !== "group" && qItem.type !== "display" && !qItem.readOnly) {
+  if (isItemsWithReadOnlyProperty(qItem) && !qItem.readOnly) {
     return false;
   }
   if (qItem.item && qItem.item.length > 0) {

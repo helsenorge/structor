@@ -231,7 +231,7 @@ describe("allTableItemsMustBeReadOnly", () => {
       ],
     });
 
-    vi.mocked(isItemsWithReadOnlyProperty).mockReturnValue(false);
+    vi.mocked(isItemsWithReadOnlyProperty).mockReturnValue(true);
 
     expect(allTableItemsMustBeReadOnly({ t, qItem })).toEqual([
       {

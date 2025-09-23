@@ -149,8 +149,8 @@ export const checkAllDecendantsForCorrectTypes = ({
 export const isItemsWithReadOnlyProperty = (
   qItem: QuestionnaireItem,
 ): boolean => {
-  if (qItem.type !== IQuestionnaireItemType.display) {
-    return true;
-  }
-  return false;
+  return !(
+    qItem.type === IQuestionnaireItemType.display ||
+    qItem.type === IQuestionnaireItemType.group
+  );
 };
