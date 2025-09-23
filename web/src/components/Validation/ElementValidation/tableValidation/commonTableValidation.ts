@@ -136,7 +136,7 @@ export const validateTableOrderingColumn = ({
 };
 
 const itemAndAllChildrenAreReadOnly = (qItem: QuestionnaireItem): boolean => {
-  if (!qItem.readOnly) {
+  if (qItem.type !== "group" && qItem.type !== "display" && !qItem.readOnly) {
     return false;
   }
   if (qItem.item && qItem.item.length > 0) {

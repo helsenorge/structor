@@ -47,8 +47,26 @@ export const itemIsScoringItem = (qItem: QuestionnaireItem): boolean => {
 export const hasTableColumnCode = (qItem: QuestionnaireItem): boolean => {
   return itemHasCodeWithSystem(qItem, ICodeSystem.tableColumn);
 };
+export const hasTableColumnCodeWithCodeAndDisplay = (
+  qItem: QuestionnaireItem,
+): boolean => {
+  const codes = qItem.code?.filter(
+    (coding) => coding.system === ICodeSystem.tableColumn,
+  );
+  if (!codes || codes.length === 0) return false;
+  return codes.some((code) => code.code && code.display);
+};
 export const hasTableColumnNameCode = (qItem: QuestionnaireItem): boolean => {
   return itemHasCodeWithSystem(qItem, ICodeSystem.tableColumnName);
+};
+export const hasTableColumnNameWithCodeAndDisplay = (
+  qItem: QuestionnaireItem,
+): boolean => {
+  const codes = qItem.code?.filter(
+    (coding) => coding.system === ICodeSystem.tableColumnName,
+  );
+  if (!codes || codes.length === 0) return false;
+  return codes.some((code) => code.code && code.display);
 };
 export const isAllowedTableItem = ({
   qItem,

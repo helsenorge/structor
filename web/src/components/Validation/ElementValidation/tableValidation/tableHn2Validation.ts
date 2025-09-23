@@ -4,8 +4,8 @@ import { ItemControlType } from "src/helpers/itemControl";
 import { ValidationError } from "src/utils/validationUtils";
 
 import {
-  hasTableColumnCode,
-  hasTableColumnNameCode,
+  hasTableColumnCodeWithCodeAndDisplay,
+  hasTableColumnNameWithCodeAndDisplay,
   isAllowedTableItem,
   isTableType,
 } from "./utils";
@@ -34,7 +34,7 @@ const allDecendentsHasTableColumnCode = ({
 }): ValidationError[] => {
   const errors: ValidationError[] = [];
 
-  if (!hasTableColumnCode(item)) {
+  if (!hasTableColumnCodeWithCodeAndDisplay(item)) {
     errors.push(
       createError(
         item.linkId,
@@ -88,7 +88,7 @@ const allChildrenMustHaveTheCorrectProperties = ({
       if (!isAllowedTableItem({ qItem: child })) {
         return [
           createError(
-            qItem.linkId,
+            child.linkId,
             ValidationType.table,
             t(
               "Table options must have the correct item types: type.display, data-receiver, initial value, enriched text, be a calculator or scoring (SS/TS)",
@@ -110,7 +110,7 @@ const tableGroupMustHaveAtLeastOneTableColumnNameCode = ({
   qItem: QuestionnaireItem;
 }): ValidationError[] => {
   if (isTableType({ qItem, tableType: ItemControlType.tableHN2 })) {
-    if (!hasTableColumnNameCode(qItem)) {
+    if (!hasTableColumnNameWithCodeAndDisplay(qItem)) {
       return [
         createError(
           qItem.linkId,

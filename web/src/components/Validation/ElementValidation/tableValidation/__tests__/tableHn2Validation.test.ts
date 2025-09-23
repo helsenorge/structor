@@ -7,6 +7,8 @@ vi.mock("../utils", () => ({
   isAllowedTableItem: vi.fn(),
   hasTableColumnCode: vi.fn(),
   hasTableColumnNameCode: vi.fn(),
+  hasTableColumnCodeWithCodeAndDisplay: vi.fn(),
+  hasTableColumnNameWithCodeAndDisplay: vi.fn(),
 }));
 
 vi.mock("../../validationHelper", () => ({
@@ -30,6 +32,8 @@ import {
   isAllowedTableItem,
   hasTableColumnCode,
   hasTableColumnNameCode,
+  hasTableColumnCodeWithCodeAndDisplay,
+  hasTableColumnNameWithCodeAndDisplay,
 } from "../utils";
 import { validateTableHn2 } from "../tableHn2Validation";
 import {
@@ -53,14 +57,14 @@ const makeItem = (partial?: Partial<QuestionnaireItem>): QuestionnaireItem =>
     extension: partial?.extension,
   }) as QuestionnaireItem;
 
-beforeEach(() => {
-  vi.clearAllMocks();
-});
-
 // -----------------------------------------------------------------------------
 // Tests
 // -----------------------------------------------------------------------------
 describe("validateTableHn2", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("returns [] when NOT a tableHN2 group", () => {
     vi.mocked(isTableType).mockReturnValue(false);
 
@@ -77,8 +81,8 @@ describe("validateTableHn2", () => {
     vi.mocked(isTableType).mockReturnValue(true);
     vi.mocked(isAllowedTableItem).mockReturnValueOnce(false);
 
-    vi.mocked(hasTableColumnNameCode).mockReturnValue(true);
-    vi.mocked(hasTableColumnCode).mockReturnValue(true);
+    vi.mocked(hasTableColumnNameWithCodeAndDisplay).mockReturnValue(true);
+    vi.mocked(hasTableColumnCodeWithCodeAndDisplay).mockReturnValue(true);
 
     const qItem = makeItem({
       linkId: "hn2-bad-child",
@@ -88,7 +92,7 @@ describe("validateTableHn2", () => {
     const errors = validateTableHn2({ t, qItem });
     expect(errors).toHaveLength(1);
     expect(errors[0]).toMatchObject({
-      linkId: "hn2-bad-child",
+      linkId: "row-1",
       errorProperty: ValidationType.table,
       errorLevel: ErrorLevel.error,
     });
@@ -99,10 +103,10 @@ describe("validateTableHn2", () => {
 
   it("errors when tableHN2 is missing table-column-name code on the group", () => {
     vi.mocked(isTableType).mockReturnValue(true);
-    vi.mocked(hasTableColumnNameCode).mockReturnValue(false);
+    vi.mocked(hasTableColumnNameWithCodeAndDisplay).mockReturnValue(false);
 
     vi.mocked(isAllowedTableItem).mockReturnValue(true);
-    vi.mocked(hasTableColumnCode).mockReturnValue(true);
+    vi.mocked(hasTableColumnCodeWithCodeAndDisplay).mockReturnValue(true);
 
     const qItem = makeItem({ linkId: "hn2-missing-name", item: [] });
     const errors = validateTableHn2({ t, qItem });
@@ -116,10 +120,10 @@ describe("validateTableHn2", () => {
 
   it("errors when a descendant is missing table-column code", () => {
     vi.mocked(isTableType).mockReturnValue(true);
-    vi.mocked(hasTableColumnNameCode).mockReturnValue(true);
+    vi.mocked(hasTableColumnNameWithCodeAndDisplay).mockReturnValue(true);
     vi.mocked(isAllowedTableItem).mockReturnValue(true);
 
-    vi.mocked(hasTableColumnCode).mockReturnValue(false);
+    vi.mocked(hasTableColumnCodeWithCodeAndDisplay).mockReturnValue(false);
 
     const qItem = makeItem({
       linkId: "hn2-missing-col",
@@ -139,8 +143,8 @@ describe("validateTableHn2", () => {
     vi.mocked(isTableType).mockReturnValue(true);
 
     vi.mocked(isAllowedTableItem).mockReturnValue(false);
-    vi.mocked(hasTableColumnNameCode).mockReturnValue(false);
-    vi.mocked(hasTableColumnCode).mockReturnValue(false);
+    vi.mocked(hasTableColumnNameWithCodeAndDisplay).mockReturnValue(false);
+    vi.mocked(hasTableColumnCodeWithCodeAndDisplay).mockReturnValue(false);
 
     const qItem = makeItem({
       linkId: "hn2-agg",
@@ -160,6 +164,8 @@ describe("validateTableHn2", () => {
     vi.mocked(hasTableColumnNameCode).mockReturnValue(true);
     vi.mocked(isAllowedTableItem).mockReturnValue(true);
     vi.mocked(hasTableColumnCode).mockReturnValue(true);
+    vi.mocked(hasTableColumnNameWithCodeAndDisplay).mockReturnValue(true);
+    vi.mocked(hasTableColumnCodeWithCodeAndDisplay).mockReturnValue(true);
 
     const qItem = makeItem({
       linkId: "hn2-ok",
@@ -174,7 +180,7 @@ describe("validateTableHn2", () => {
     vi.mocked(hasTableColumnNameCode).mockReturnValue(true);
     vi.mocked(isAllowedTableItem).mockReturnValue(true);
 
-    vi.mocked(hasTableColumnCode).mockImplementation(
+    vi.mocked(hasTableColumnCodeWithCodeAndDisplay).mockImplementation(
       (q) => q.linkId !== "row-2",
     );
 
