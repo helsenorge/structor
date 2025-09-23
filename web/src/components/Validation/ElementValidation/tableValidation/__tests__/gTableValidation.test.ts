@@ -5,11 +5,15 @@ import type { TFunction } from "react-i18next";
 vi.mock("../utils", () => ({
   isTableType: vi.fn(),
 }));
-
+vi.mock("../../fhirExtract/utils", () => ({
+  findQuestionnaireItemsInQuestionnaire: vi.fn(),
+}));
 vi.mock("@helsenorge/refero", () => ({
   isDataReceiver: vi.fn(),
 }));
-
+vi.mock("src/helpers/dataReceiverHelper", () => ({
+  getLinkIdFromValueString: vi.fn(),
+}));
 vi.mock("src/components/Validation/validationHelper", () => ({
   createError: vi.fn(
     (
@@ -36,6 +40,8 @@ import {
   ValidationType,
 } from "src/components/Validation/validationTypes";
 import { createError } from "src/components/Validation/validationHelper";
+import { findQuestionnaireItemsInQuestionnaire } from "../../fhirExtract/utils";
+import { getLinkIdFromValueString } from "src/helpers/dataReceiverHelper";
 
 // -----------------------------------------------------------------------------
 // Test helpers
@@ -71,7 +77,11 @@ describe("validateGTable", () => {
       ],
     });
 
-    const errors = validateGTable({ t, qItem });
+    const errors = validateGTable({
+      t,
+      qItem,
+      questionnaire: { item: [] } as any,
+    });
     expect(errors).toEqual([]);
     expect(isTableType).toHaveBeenCalledWith({
       qItem,
@@ -91,7 +101,11 @@ describe("validateGTable", () => {
       ],
     });
 
-    const errors = validateGTable({ t, qItem });
+    const errors = validateGTable({
+      t,
+      qItem,
+      questionnaire: { item: [] } as any,
+    });
     expect(errors).toHaveLength(1);
     expect(errors[0]).toMatchObject({
       linkId: "gt-1",
@@ -116,7 +130,11 @@ describe("validateGTable", () => {
       ],
     });
 
-    const errors = validateGTable({ t, qItem });
+    const errors = validateGTable({
+      t,
+      qItem,
+      questionnaire: { item: [] } as any,
+    });
     expect(errors).toHaveLength(1);
     expect(errors[0]).toMatchObject({
       linkId: "gt-2",
@@ -140,7 +158,11 @@ describe("validateGTable", () => {
       ],
     });
 
-    const errors = validateGTable({ t, qItem });
+    const errors = validateGTable({
+      t,
+      qItem,
+      questionnaire: { item: [] } as any,
+    });
     expect(errors).toEqual([]);
   });
 
@@ -152,7 +174,11 @@ describe("validateGTable", () => {
       item: [{ linkId: "row-1" } as any],
     });
 
-    const errors = validateGTable({ t, qItem });
+    const errors = validateGTable({
+      t,
+      qItem,
+      questionnaire: { item: [] } as any,
+    });
     expect(errors).toEqual([]);
     expect(isDataReceiver).not.toHaveBeenCalled();
   });
@@ -167,16 +193,19 @@ describe("validateGTable", () => {
       ],
     });
 
-    const errors = validateGTable({ t, qItem });
+    const errors = validateGTable({
+      t,
+      qItem,
+      questionnaire: { item: [] } as any,
+    });
     expect(errors).toEqual([]);
   });
   it("errors when gTable but at least one child is NOT required", () => {
     vi.mocked(isTableType).mockReturnValue(true);
-
     const qItem = makeItem({
       linkId: "gt-4",
       item: [
-        { linkId: "row-1", type: "string", text: "Row 1", required: true },
+        { linkId: "row-1", type: "string", text: "Row 1", required: false },
         {
           linkId: "row-2",
           type: "string",
@@ -185,15 +214,25 @@ describe("validateGTable", () => {
         },
       ],
     });
-
-    const errors = validateGTable({ t, qItem });
-    expect(errors).toHaveLength(1);
+    vi.mocked(findQuestionnaireItemsInQuestionnaire).mockReturnValue([qItem]);
+    vi.mocked(getLinkIdFromValueString).mockImplementation(
+      (item) => item.linkId,
+    );
+    const errors = validateGTable({
+      t,
+      qItem,
+      questionnaire: { item: [qItem] } as any,
+    });
+    expect(errors).toHaveLength(2);
     expect(errors[0]).toMatchObject({
-      linkId: "gt-4",
+      linkId: "row-1",
       errorProperty: ValidationType.table,
-      errorReadableText: "All items in a gTable must be required",
+      errorReadableText: "Item with linkId {0} are not required".replace(
+        "{0}",
+        "row-1",
+      ),
       errorLevel: ErrorLevel.error,
     });
-    expect(createError).toHaveBeenCalledTimes(1);
+    expect(createError).toHaveBeenCalledTimes(2);
   });
 });

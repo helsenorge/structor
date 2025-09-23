@@ -1,6 +1,7 @@
 import { QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
 import { getQuestionnaireItemWithChildren } from "src/helpers/codeHelper";
+import { generateMainQuestionnaire } from "src/helpers/generateQuestionnaire";
 import { Items, OrderItem, TreeState } from "src/store/treeStore/treeStore";
 import { ValidationError } from "src/utils/validationUtils";
 
@@ -36,11 +37,12 @@ const validate = (
     qItems,
     qOrder,
   }) as QuestionnaireItem;
+  const questionnaire = generateMainQuestionnaire(state);
   errors.push(...validateTable(t, item, state));
   errors.push(...validateTableHn2({ t, qItem: item }));
   errors.push(...validateTableHn1({ t, qItem: item }));
   errors.push(...validateTableCommonFunction({ t, qItem: item }));
-  errors.push(...validateGTable({ t, qItem: item }));
+  errors.push(...validateGTable({ t, qItem: item, questionnaire }));
   currentItem.items.forEach((item) =>
     validate(t, item, qItems, qOrder, errors, state),
   );
