@@ -227,10 +227,8 @@ describe("validateGTable", () => {
     expect(errors[0]).toMatchObject({
       linkId: "row-1",
       errorProperty: ValidationType.table,
-      errorReadableText: "Item with linkId {0} are not required".replace(
-        "{0}",
-        "row-1",
-      ),
+      errorReadableText:
+        "Items used in a repeatable table (gTable) must be required",
       errorLevel: ErrorLevel.error,
     });
     expect(createError).toHaveBeenCalledTimes(2);

@@ -116,7 +116,7 @@ const allItemsMustBeRequired = ({
         createError(
           linkId,
           ValidationType.table,
-          t(`Item with linkId {0} are not required`).replace("{0}", linkId),
+          t(`Items used in a repeatable table (gTable) must be required`),
           ErrorLevel.error,
         ),
       );

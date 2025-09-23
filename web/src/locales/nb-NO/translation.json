@@ -571,5 +571,5 @@
   "Expected one of [{0}].": "Forventet en av [{0}].",
   "no item with definition {0} found as child to {1}": "Ingen element med definisjon {0} funnet som barn til {1}",
   "LinkId '{0}' is not unique": "LinkId '{0}' er ikke unik",
-  "Item with linkId {0} are not required": "Element med linkId {0} er ikke obligatorisk"
+  "Items used in a repeatable table (gTable) must be required": "Elementer brukt i en gjentakende tabell (gTable) må være påkrevd"
 }
