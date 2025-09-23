@@ -110,7 +110,7 @@ export const validateTableOrderingColumn = ({
             qItem.linkId,
             ValidationType.table,
             t(
-              "Table with table ordering column must also have the table ordering functions code",
+              "Table with table ordering column must also have the tableOrderingFunctions",
             ),
             ErrorLevel.error,
           ),
@@ -124,7 +124,7 @@ export const validateTableOrderingColumn = ({
             qItem.linkId,
             ValidationType.table,
             t(
-              "Table with table ordering functions must also have the table ordering column code",
+              "Table with table ordering functions must also have the tableOrderingColumn",
             ),
             ErrorLevel.error,
           ),
