@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
 import { useScrollToElement } from "src/hooks/useScrollToElement";
 import { TreeContext } from "src/store/treeStore/treeStore";
 
