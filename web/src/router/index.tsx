@@ -1,4 +1,4 @@
-import { createHashRouter, Navigate } from "react-router-dom";
+import { createHashRouter, Navigate } from "react-router";
 import CodeSystems from "src/views/codeSystems";
 import { CodeSystemProvider } from "src/views/codeSystems/context/CodeSystemContextProvider";
 import FormBuilder from "src/views/FormBuilder";

@@ -13,6 +13,7 @@
     "stylelint": "stylelint src/**/*.{scss,module.scss}",
     "stylelint:fix": "npm run stylelint -- --fix",
     "prepare": "cd .. && husky web/.husky",
+    "prebuild": "tsc --noEmit --project tsconfig.json",
     "eslint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "eslint:fix": "npm run eslint -- --fix",
     "prettier": "prettier --check src/**/*.{js,jsx,ts,tsx,css,scss,md,json}",
@@ -51,7 +52,8 @@
     "react-redux": "^9.0.0",
     "react-virtualized": "^9.22.5",
     "remove-markdown": "^0.5.0",
-    "vite-plugin-svgr": "^4.2.0"
+    "vite-plugin-svgr": "^4.2.0",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
     "@types/fhir": "^0.0.41",
@@ -60,8 +62,10 @@
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.0.0",
     "@types/node": "^22.0.0",
+    "@types/react": "^18.3.24",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-datepicker": "^4.0.0",
+    "@types/react-dom": "^18.3.7",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
@@ -71,12 +75,15 @@
     "@vitest/ui": "^3.0.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "sass": "^1.83.4"
+    "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
+    "sass": "^1.83.4",
+    "typescript": "^5.9.2"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.0.0",
-    "sass-embedded-linux-x64": "^1.88.0",
-    "sass-embedded-linux-musl-x64": "^1.88.0"
+    "sass-embedded-linux-musl-x64": "^1.88.0",
+    "sass-embedded-linux-x64": "^1.88.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --fix",

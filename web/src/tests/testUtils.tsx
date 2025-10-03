@@ -9,7 +9,7 @@ import {
 import userEvent from "@testing-library/user-event";
 import { CodeSystem, ValueSet } from "fhir/r4";
 import { I18nextProvider } from "react-i18next";
-import { MemoryRouter, MemoryRouterProps } from "react-router-dom";
+import { MemoryRouter, MemoryRouterProps } from "react-router";
 import i18n from "src/helpers/i18n";
 import { getInitialState } from "src/store/treeStore/initialState";
 import {

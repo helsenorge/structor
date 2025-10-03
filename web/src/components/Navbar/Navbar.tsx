@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router";
 import { useUploadFile } from "src/hooks/useUploadFile";
 import { saveQuestionnaire } from "src/store/treeStore/indexedDbHelper";
 import { getInitialState } from "src/store/treeStore/initialState";
