@@ -12,6 +12,7 @@ export enum ValidationType {
   validationValue = "validationValue",
   questionnaireCode = "questionnaireCode",
   linkId = "linkId",
+  extension = "extension",
 }
 
 export enum ErrorLevel {
