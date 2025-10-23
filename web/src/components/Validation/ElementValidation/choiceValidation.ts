@@ -1,7 +1,11 @@
 import { QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
+import { hasExtension } from "src/helpers/extensionHelper";
 
-import { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
+import {
+  IExtensionType,
+  IQuestionnaireItemType,
+} from "../../../types/IQuestionnareItemType";
 
 import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
@@ -21,10 +25,15 @@ export const validateAnswerOptions = (
   qItem: QuestionnaireItem,
 ): ValidationError[] => {
   const returnErrors: ValidationError[] = [];
+
   if (
     qItem.type === IQuestionnaireItemType.choice ||
     qItem.type === IQuestionnaireItemType.openChoice
   ) {
+    const extension = hasExtension(qItem, IExtensionType.copyExpression);
+    if (extension) {
+      return returnErrors;
+    }
     qItem.answerOption?.forEach((answerOption) => {
       if (!answerOption.valueCoding?.code) {
         returnErrors.push(

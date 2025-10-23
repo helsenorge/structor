@@ -1,5 +1,7 @@
 import { QuestionnaireItem } from "fhir/r4";
 import { TFunction } from "react-i18next";
+import { hasExtension } from "src/helpers/extensionHelper";
+import { IExtensionType } from "src/types/IQuestionnareItemType";
 
 import { validateMetadataTranslation } from "./translateMetadataValidation";
 import { isItemControlSidebar } from "../../../helpers/itemControl";
@@ -270,6 +272,10 @@ const validateAnsweroptions = (
   itemIndex: number,
   errors: ValidationError[],
 ): void => {
+  const extension = hasExtension(qItem, IExtensionType.copyExpression);
+  if (extension) {
+    return;
+  }
   qItem.answerOption?.forEach((f) => {
     const valueCode = f.valueCoding?.code ?? "";
     if (!translation.items[qItem.linkId].answerOptions?.[valueCode]) {
