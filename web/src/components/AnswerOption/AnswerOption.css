@@ -1,5 +1,6 @@
 .answer-option-item {
   display: flex;
+  place-items: center center;
 }
 
 .answer-option-item .answer-option-content {
@@ -27,9 +28,6 @@
   border: 0;
   cursor: pointer;
   padding: 0;
-  background: url("../../images/icons/close-outline.svg") no-repeat center;
-  height: 25px;
-  width: 25px;
 }
 
 .reorder-icon {

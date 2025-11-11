@@ -7,6 +7,10 @@ import { useTranslation } from "react-i18next";
 import "./AnswerOption.css";
 import { IExtensionType } from "../../types/IQuestionnareItemType";
 
+import Button from "@helsenorge/designsystem-react/components/Button";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import TrashCan from "@helsenorge/designsystem-react/components/Icons/TrashCan";
+
 import { findExtensionInExtensionArray } from "../../helpers/extensionHelper";
 import { ItemControlType } from "../../helpers/itemControl";
 import { doesItemHaveCode } from "../../utils/itemSearchUtils";
@@ -16,12 +20,10 @@ type Props = {
   item: QuestionnaireItem;
   answerOption?: QuestionnaireItemAnswerOption;
   handleDrag?: DraggableProvidedDragHandleProps;
-  changeDisplay: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  changeCode: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  changeOrdinalValueExtension: (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => void;
-  changeValueSetLabel: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  changeDisplay: (event: ChangeEvent<HTMLInputElement>) => void;
+  changeCode: (event: ChangeEvent<HTMLInputElement>) => void;
+  changeOrdinalValueExtension: (event: ChangeEvent<HTMLInputElement>) => void;
+  changeValueSetLabel: (event: ChangeEvent<HTMLInputElement>) => void;
   deleteItem?: () => void;
   showDelete?: boolean;
   disabled?: boolean;
@@ -146,12 +148,16 @@ const AnswerOption = ({
         )}
       </div>
       {showDelete && (
-        <button
-          type="button"
+        <Button
           name={t("Remove element")}
+          ariaLabel={t("Remove element")}
           onClick={deleteItem}
-          className="align-everything"
-        />
+          className="answer-option-item-remove"
+          variant="borderless"
+          size="medium"
+        >
+          <Icon color="red" svgIcon={TrashCan} />
+        </Button>
       )}
     </div>
   );
