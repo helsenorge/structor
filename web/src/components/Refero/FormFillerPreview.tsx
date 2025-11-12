@@ -9,7 +9,7 @@ import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
 import X from "@helsenorge/designsystem-react/components/Icons/X";
 
-import { Refero, rootReducer } from "@helsenorge/refero";
+import { Refero, Resources, rootReducer } from "@helsenorge/refero";
 
 import FormFillerSidebar from "./FormFillerSidebar";
 import { emptyPropertyReplacer } from "../../helpers/emptyPropertyReplacer";
@@ -150,7 +150,11 @@ const FormFillerPreview = ({
                     }}
                     onSubmit={() => {}}
                     authorized={true}
-                    resources={getResources(selectedLanguage || language || "")}
+                    resources={
+                      getResources(
+                        selectedLanguage || language || "",
+                      ) as Resources
+                    }
                     sticky={true}
                     saveButtonDisabled={false}
                     loginButton={<Button>{"Login"}</Button>}
