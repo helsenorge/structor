@@ -13,6 +13,8 @@ import { useTranslation } from "react-i18next";
 
 import { IQuestionnaireItemType } from "../../types/IQuestionnareItemType";
 
+import FormFieldTag from "@helsenorge/designsystem-react/components/FormFieldTag";
+
 import "@nosferatu500/react-sortable-tree/style.css";
 import { generateItemButtons } from "./ItemButtons/ItemButtons";
 import { isIgnorableItem } from "../../helpers/itemControl";
@@ -332,11 +334,26 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                     props.qItems[extendedNode.node.title]?.type,
                   )}
                 />
+
                 <span className="anchor-menu__title">
                   {extendedNode.node.hierarchy}
                   {` `}
                   {props.qItems[extendedNode.node.title]?.text}
                 </span>
+                {props.qItems[extendedNode.node.title]?.required && (
+                  <FormFieldTag
+                    level="required-field"
+                    resources={{
+                      allRequired: t("formAllRequired"),
+                      requiredField: t("Required"),
+                      optional: t("formOptional"),
+                      allOptional: t("formAllOptional"),
+                      requiredRadiobuttonList: t("formRequiredRadiobuttonList"),
+                      requiredCheckboxList: t("formRequiredMultiCheckbox"),
+                      requiredSingleCheckbox: t("formRequiredSingleCheckbox"),
+                    }}
+                  />
+                )}
               </span>
             ),
             buttons: generateItemButtons(

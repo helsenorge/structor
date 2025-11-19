@@ -582,5 +582,11 @@
   "tableHN1 cannot have sorting": "tableHN1 kan ikke ha sortering",
   "Table must have at least one table-column-name code": "Tabell må ha minst én table-column-name kode",
   "Table must only contain choice or openChoice items": "Tabell må kun inneholde alternatier eller alternativer med åpent svar elementer",
-  "Table options must have an initial value or be a data receiver": "Tabellalternativer må ha en initial verdi eller være en data receiver"
+  "Table options must have an initial value or be a data receiver": "Tabellalternativer må ha en initial verdi eller være en data receiverormAllRequired",
+  "Required field": "Obligatorisk",
+  "formOptional": "",
+  "formAllOptional": "",
+  "formRequiredRadiobuttonList": "",
+  "formRequiredMultiCheckbox": "",
+  "formRequiredSingleCheckbox": ""
 }
