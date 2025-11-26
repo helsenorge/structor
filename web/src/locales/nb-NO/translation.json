@@ -584,6 +584,7 @@
   "Table must only contain choice or openChoice items": "Tabell må kun inneholde alternatier eller alternativer med åpent svar elementer",
   "Table options must have an initial value or be a data receiver": "Tabellalternativer må ha en initial verdi eller være en data receiverormAllRequired",
   "Required field": "Obligatorisk",
+  "Required": "Påkrevd",
   "formOptional": "",
   "formAllOptional": "",
   "formRequiredRadiobuttonList": "",
