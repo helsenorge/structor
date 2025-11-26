@@ -11,33 +11,16 @@ export const getResources = (language: string): Resources => {
       dateLabel_september: "September",
       dateLabel_october: "October",
       dateLabel_november: "November",
-      formSend_skjema_i_oppgave: "Submit response",
       dateLabel_january: "January",
-      harikkeTilgang_skjema_ungdom: "You do not have access to this form",
       attachmentError_minFiles: "You must add at least {0} file(s)",
       attachmentError_maxFiles: "A maximum of {0} file(s) are allowed",
       attachmentError_fileSize: "File size must be less than {0}MB",
       attachmentError_fileType: "Allowed file types are:",
       dateError_invalid: "Invalid date",
-      hjelpeknapp_ariaLabel: "more information about the form",
       dateError_time_invalid: "Invalid time",
       dateLabel_year: "Year",
       dateLabel_month: "Month",
-      kanIkkeLagreErrorBody: "You cannot save the form",
-      kanIkkeLagreErrorTitle: "Cannot save form",
-      skjemaTittelVedDiscretion: "Submitted form",
-      uploadFileError: "Technical error",
-      attachment_max_occurrences:
-        "You cannot upload more than {0} attachments to this form",
-      attachmentError_wrong_file_type: "Invalid file type",
-      attachmentError_fileSize_total:
-        "Total file size exceeds the allowed limit",
-      attachment_max_occurrences_single_file:
-        "You cannot upload more than {0} attachments to this form",
-      attachment_min_occurrences_single_file:
-        "You must upload at least {0} attachments to this form",
-      kan_ikke_autofylle_skjema:
-        "The questions in this form have been changed since you started filling it out, so you must fill out the form again.",
+
       attachmentError_minFiles_and_maxFiles:
         "You must upload between {0} and {1} attachments to this form",
       dateLabel_april: "April",
@@ -48,29 +31,17 @@ export const getResources = (language: string): Resources => {
       confirmDeleteHeading: "There are unsaved changes",
       confirmDeleteDescription:
         "If you delete the row, your changes will be discarded.",
-      skjemaAccessDeniedErrorTitle: "This form is not available",
-      skjemaAccessDeniedDiscretionSubjectOnlyErrorBody:
-        "The form must be completed by you personally.",
+
       validationNotAllowed: "is not allowed",
-      helsenorge: "helsenorge.no",
       formCancel: "Cancel",
       formSend: "Submit",
       formOptional: "(optional)",
       repeatButtonText: "Add",
-      confirmationActionButton: "Ok",
-      sendtConfirmation: "Submitted",
-      sendtConfirmationText:
-        "You will find a copy of the message in your inbox. You can delete messages whenever you want.\nA copy is also stored in Documents. You can delete this document, or hide it from the person to whom you have given power of attorney.",
-      sendInnSkjemaErrorTitle: "Error",
-      sendInnSkjemaErrorBody:
-        "An error occurred while submitting the form. Try again later",
+
       errorAfterMaxDate: "Date cannot be after maximum date",
       errorBeforeMinDate: "Date cannot be before minimum date",
-      ugyldigTid: "Invalid time",
-      ugyldigDatoTid: "Invalid date and time",
       oppgiVerdi: "Select one of the options",
       oppgiGyldigVerdi: "Please enter a valid value",
-      innsendtSkjema: "Form sent to {0} via Helsenorge",
       skjemaKopi: "Your copy of completed form attached.",
       oppgavenFinsIkke: "The task does not exist,",
       deleteButtonText: "Delete",
