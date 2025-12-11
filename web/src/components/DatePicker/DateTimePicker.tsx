@@ -31,9 +31,11 @@ const DateTimePicker = ({
         disabled={disabled}
         placeholderText={t("dd.mm.yyyy 00:00")}
         selected={selected || startDate}
-        onChange={(date: Date) => {
-          setStartDate(date);
-          callback && callback(date);
+        onChange={(date: Date | null) => {
+          if (date) {
+            setStartDate(date);
+            callback && callback(date);
+          }
         }}
         todayButton={nowButton ? t("Today") : undefined}
         timeIntervals={15}

@@ -36,9 +36,11 @@ const DatePicker = ({
         disabled={disabled}
         placeholderText={type === "time" ? "00:00" : t("dd.mm.yyyy")}
         selected={selected || startDate}
-        onChange={(date: Date) => {
-          setStartDate(date);
-          callback && callback(date);
+        onChange={(date: Date | null) => {
+          if (date) {
+            setStartDate(date);
+            callback && callback(date);
+          }
         }}
         todayButton={nowButton ? t("Today") : undefined}
         locale="nb"
