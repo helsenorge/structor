@@ -1,7 +1,8 @@
 import { useContext } from "react";
 
+import type { CodeSystemContextValueTypes } from "./CodeSystemContextTypes";
+
 import { CodeSystemContext } from "./CodeSystemContext";
-import { CodeSystemContextValueTypes } from "./CodeSystemContextTypes";
 
 export const useCodeSystemContext = (): CodeSystemContextValueTypes => {
   const context = useContext(CodeSystemContext);

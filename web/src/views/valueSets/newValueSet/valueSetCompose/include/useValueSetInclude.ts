@@ -1,7 +1,8 @@
-import { Extension, ValueSetComposeInclude } from "fhir/r4";
 import createUUID from "src/helpers/CreateUUID";
 import { useValueSetContext } from "src/views/valueSets/context/useValueSetContext";
 import { initialComposeInclude } from "src/views/valueSets/utils/intialValuesets";
+
+import type { Extension, ValueSetComposeInclude } from "fhir/r4";
 
 type ReturnType = {
   handleUpdateValue: (

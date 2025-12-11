@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 
-import { ValueSetComposeIncludeConcept } from "fhir/r4";
+import type { ValueSetComposeIncludeConcept } from "fhir/r4";
 import "./Typeahead.css";
 
 type Props = {

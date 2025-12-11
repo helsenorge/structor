@@ -1,16 +1,16 @@
-import React from "react";
+import type React from "react";
 
-import {
-  QuestionnaireItem,
-  QuestionnaireItemEnableWhen,
-  ValueSetComposeIncludeConcept,
-} from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import {
   IOperator,
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
+import type {
+  QuestionnaireItem,
+  QuestionnaireItemEnableWhen,
+  ValueSetComposeIncludeConcept,
+} from "fhir/r4";
 
 import {
   enableWhenOperator,

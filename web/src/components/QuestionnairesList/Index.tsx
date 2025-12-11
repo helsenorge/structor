@@ -1,8 +1,9 @@
 // src/components/QuestionnairesList.tsx
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
-import { TreeState } from "src/store/treeStore/treeStore";
+
+import type { TreeState } from "src/store/treeStore/treeStore";
 
 import "./questionnaires-list.css";
 import { DeleteIcon } from "./Icons/DeleteIcon";

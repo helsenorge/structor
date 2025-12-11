@@ -1,9 +1,10 @@
 import { useContext } from "react";
 
-import { FhirResource, Questionnaire, ValueSet } from "fhir/r4";
 import { generarteQuestionnaireOrBundle } from "src/helpers/generateQuestionnaire";
 import { removeFhirResourceAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
+
+import type { FhirResource, Questionnaire, ValueSet } from "fhir/r4";
 
 import { useValueSetContext } from "../context/useValueSetContext";
 

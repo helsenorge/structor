@@ -1,4 +1,4 @@
-import { ValueSetComposeIncludeFilter } from "fhir/r4";
+import type { ValueSetComposeIncludeFilter } from "fhir/r4";
 
 type FilterOp = ValueSetComposeIncludeFilter["op"];
 export const VS_FILTER_OPERATORS = [

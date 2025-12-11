@@ -1,6 +1,5 @@
-import { ValueSet } from "fhir/r4";
-
 import { predefinedValueSetUri } from "../types/IQuestionnareItemType";
+import type { ValueSet } from "fhir/r4";
 
 export const initPredefinedValueSet = [
   {

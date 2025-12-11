@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 import {
   ErrorClassVariant,
@@ -6,7 +6,7 @@ import {
 } from "src/components/Validation/validationHelper";
 import { ErrorLevel } from "src/components/Validation/validationTypes";
 
-import { ValidationError } from "../../../utils/validationUtils";
+import type { ValidationError } from "../../../utils/validationUtils";
 
 interface WarningMessagesProps {
   markdownWarning: ValidationError | undefined;

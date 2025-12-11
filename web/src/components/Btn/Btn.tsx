@@ -1,7 +1,7 @@
-import React, { MouseEvent } from "react";
+import type { MouseEvent } from "react";
 
 import "./Btn.css";
-import { BTN_ICONS, BTN_TYPES, BTN_VARIANTS } from "./types";
+import type { BTN_ICONS, BTN_TYPES, BTN_VARIANTS } from "./types";
 
 type BtnProps = {
   title: string;

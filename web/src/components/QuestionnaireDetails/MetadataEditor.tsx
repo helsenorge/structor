@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 
 import { formatISO, parseISO } from "date-fns";
-import { ContactDetail, Extension, Meta, UsageContext } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import { IQuestionnaireMetadataType } from "../../types/IQuestionnaireMetadataType";
+import type { ValidationError } from "../../utils/validationUtils";
+import type { ContactDetail, Extension, Meta, UsageContext } from "fhir/r4";
 
 import {
   isValidId,
@@ -13,7 +14,6 @@ import {
 } from "../../helpers/MetadataHelper";
 import { updateQuestionnaireMetadataAction } from "../../store/treeStore/treeActions";
 import { TreeContext } from "../../store/treeStore/treeStore";
-import { ValidationError } from "../../utils/validationUtils";
 import Accordion from "../Accordion/Accordion";
 import DatePicker from "../DatePicker/DatePicker";
 import FormField from "../FormField/FormField";

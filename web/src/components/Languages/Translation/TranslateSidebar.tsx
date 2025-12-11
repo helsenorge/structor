@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 import { useTranslation } from "react-i18next";
 import {
@@ -7,13 +7,14 @@ import {
 } from "src/components/Validation/validationHelper";
 import { ErrorLevel } from "src/components/Validation/validationTypes";
 
-import { isItemControlSidebar } from "../../../helpers/itemControl";
-import { updateSidebarTranslationAction } from "../../../store/treeStore/treeActions";
-import {
+import type {
   ActionType,
   Items,
   Languages,
 } from "../../../store/treeStore/treeStore";
+
+import { isItemControlSidebar } from "../../../helpers/itemControl";
+import { updateSidebarTranslationAction } from "../../../store/treeStore/treeActions";
 import FormField from "../../FormField/FormField";
 import MarkdownEditor from "../../MarkdownEditor/MarkdownEditor";
 

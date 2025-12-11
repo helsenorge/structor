@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { Extension } from "fhir/r4";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import AuthenticationRequirementView from "./QuestionnaireSettings/AuthenticationRequirementView";
 import ButtonsPresentationView from "./QuestionnaireSettings/ButtonsPresentationView";

@@ -1,9 +1,10 @@
 import { useContext } from "react";
 
-import { CodeSystem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { TreeContext } from "src/store/treeStore/treeStore";
 import { useValueSetContext } from "src/views/valueSets/context/useValueSetContext";
+
+import type { CodeSystem } from "fhir/r4";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Label from "@helsenorge/designsystem-react/components/Label";

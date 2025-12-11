@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 
-import { QuestionnaireItem, Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import {
   IExtensionType,
   IItemProperty,
 } from "../../../types/IQuestionnareItemType";
+import type { QuestionnaireItem, Extension } from "fhir/r4";
 
 import { FhirPathDateValidation } from "./FhirPathDateValidation";
 import {

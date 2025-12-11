@@ -1,4 +1,4 @@
-import { ValidationError } from "src/utils/validationUtils";
+import type { ValidationError } from "src/utils/validationUtils";
 
 export type ValidationType = {
   translateLang: string;

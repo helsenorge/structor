@@ -1,16 +1,16 @@
-import React from "react";
+import type React from "react";
 
 import { format } from "date-fns";
-import {
+import { useTranslation } from "react-i18next";
+
+import { IOperator } from "../../../types/IQuestionnareItemType";
+import type {
   Coding,
   Quantity,
   QuestionnaireItem,
   QuestionnaireItemEnableWhen,
   ValueSet,
 } from "fhir/r4";
-import { useTranslation } from "react-i18next";
-
-import { IOperator } from "../../../types/IQuestionnareItemType";
 
 import { QuestionnaireItemEnableBehaviorCodes } from "@helsenorge/refero";
 

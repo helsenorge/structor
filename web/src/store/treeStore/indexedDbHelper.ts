@@ -1,6 +1,6 @@
-import { IDBPDatabase, openDB, DBSchema } from "idb";
+import { openDB, type IDBPDatabase, type DBSchema } from "idb";
 
-import { TreeState } from "./treeStore";
+import type { TreeState } from "./treeStore";
 
 const DATABASE_NAME = "structor-db";
 const STORE_NAME = "questionnaire-store";

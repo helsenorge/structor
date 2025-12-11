@@ -1,7 +1,7 @@
 import "react-datepicker/dist/react-datepicker.css";
 import "./DatePicker.css";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { nb } from "date-fns/locale";
 import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";

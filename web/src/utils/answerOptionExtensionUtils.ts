@@ -1,13 +1,12 @@
-import { QuestionnaireItem } from "fhir/r4";
-
+import type { ActionType } from "../store/treeStore/treeStore";
 import { IExtensionType, IItemProperty } from "../types/IQuestionnareItemType";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import {
   addOrdinalValueExtensionToAllAnswerOptions,
   removeExtensionFromAnswerOptions,
 } from "../helpers/answerOptionHelper";
 import { updateItemAction } from "../store/treeStore/treeActions";
-import { ActionType } from "../store/treeStore/treeStore";
 
 export const addDefaultOrdinalValueExtensionToAllAnswerOptions = (
   item: QuestionnaireItem,

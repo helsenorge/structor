@@ -1,12 +1,13 @@
-import { Coding } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import {
   filterMetaSecurity,
   tilgangsstyringsCode,
 } from "src/helpers/MetadataHelper";
-import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 import { MetaSecuritySystem } from "src/types/IQuestionnareItemType";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { Coding } from "fhir/r4";
+import type { TFunction } from "react-i18next";
+import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { createError } from "../validationHelper";
 import { ErrorLevel, ValidationType } from "../validationTypes";

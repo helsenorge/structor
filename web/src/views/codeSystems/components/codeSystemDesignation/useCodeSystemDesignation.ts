@@ -1,4 +1,4 @@
-import { CodeSystemConceptDesignation, Coding } from "fhir/r4";
+import type { CodeSystemConceptDesignation, Coding } from "fhir/r4";
 
 import { useCodeSystemContext } from "../../context/useCodeSystemContext";
 import { initialDesignation } from "../../utils";

@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-import { QuestionnaireItemAnswerOption } from "fhir/r4";
 import {
   ErrorClassVariant,
   getSeverityClassByLevelAndTypeIfError,
 } from "src/components/Validation/validationHelper";
 import { ErrorLevel } from "src/components/Validation/validationTypes";
+
+import type { QuestionnaireItemAnswerOption } from "fhir/r4";
 
 import FormField from "../../FormField/FormField";
 import InputField from "../../InputField/inputField";

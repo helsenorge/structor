@@ -1,5 +1,4 @@
-import { Extension, QuestionnaireItem, Coding } from "fhir/r4";
-
+import type { ActionType } from "../store/treeStore/treeStore";
 import {
   IExtensionType,
   IQuestionnaireItemType,
@@ -7,12 +6,12 @@ import {
   IItemProperty,
   ICodeSystem,
 } from "../types/IQuestionnareItemType";
+import type { Extension, QuestionnaireItem, Coding } from "fhir/r4";
 
 import { getEnumKeyByString } from "./enumHelper";
 import { getTextExtensionMarkdown } from "./QuestionHelper";
 import { CodingSystemType } from "./uriHelper";
 import { updateItemAction } from "../store/treeStore/treeActions";
-import { ActionType } from "../store/treeStore/treeStore";
 
 export enum ItemControlType {
   inline = "inline",

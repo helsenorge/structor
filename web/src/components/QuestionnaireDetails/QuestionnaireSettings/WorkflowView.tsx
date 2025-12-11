@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { ContactDetail, Extension, Meta, UsageContext } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import SwitchBtn from "src/components/SwitchBtn/SwitchBtn";
 import { updateQuestionnaireMetadataAction } from "src/store/treeStore/treeActions";
@@ -11,6 +10,7 @@ import {
   IExtensionType,
   WorkflowCode,
 } from "../../../types/IQuestionnareItemType";
+import type { ContactDetail, Extension, Meta, UsageContext } from "fhir/r4";
 
 import { TreeContext } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";

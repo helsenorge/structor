@@ -1,13 +1,13 @@
-import React from "react";
+import type React from "react";
 
-import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
-import { IExtensionType } from "../../../types/IQuestionnareItemType";
+import type { ActionType, Languages } from "../../../store/treeStore/treeStore";
+import type { IExtensionType } from "../../../types/IQuestionnareItemType";
+import type { Extension } from "fhir/r4";
 
 import { translatableSettings } from "../../../helpers/LanguageHelper";
 import { updateSettingTranslationAction } from "../../../store/treeStore/treeActions";
-import { ActionType, Languages } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 
 type TranslateSettingsProps = {

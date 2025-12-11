@@ -1,6 +1,7 @@
-import { Identifier } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { createUriUUID } from "src/helpers/uriHelper";
+
+import type { Identifier } from "fhir/r4";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";

@@ -1,4 +1,4 @@
-import { OrderItem } from "src/store/treeStore/treeStore";
+import type { OrderItem } from "src/store/treeStore/treeStore";
 
 export function buildLinkIdIndexSet(qOrder: OrderItem[]): ReadonlySet<string> {
   const set = new Set<string>();

@@ -1,9 +1,12 @@
-import React, { useContext, useRef } from "react";
+import { useContext, useRef } from "react";
 
-import { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
-import "./QuestionDrawer.css";
 import { useTranslation } from "react-i18next";
 import { getValueSetsFromState } from "src/store/treeStore/selectors";
+
+import type { ValidationError } from "../../utils/validationUtils";
+import type { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
+
+import "./QuestionDrawer.css";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -17,7 +20,6 @@ import { useKeyPress } from "../../hooks/useKeyPress";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { updateMarkedLinkIdAction } from "../../store/treeStore/treeActions";
 import { TreeContext } from "../../store/treeStore/treeStore";
-import { ValidationError } from "../../utils/validationUtils";
 import { generateItemButtons } from "../AnchorMenu/ItemButtons/ItemButtons";
 import Drawer from "../Drawer/Drawer";
 import Question from "../Question/Question";

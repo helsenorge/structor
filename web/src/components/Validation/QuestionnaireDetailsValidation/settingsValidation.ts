@@ -1,9 +1,10 @@
-import { TFunction } from "react-i18next";
 import { findExtensionByUrl } from "src/helpers/extensionHelper";
-import { TreeState } from "src/store/treeStore/treeStore";
-import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 import { IExtensionType } from "src/types/IQuestionnareItemType";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { TFunction } from "react-i18next";
+import type { TreeState } from "src/store/treeStore/treeStore";
+import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import {
   createError,

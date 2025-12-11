@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import RadioBtn from "src/components/RadioBtn/RadioBtn";
 import { saveCapability } from "src/helpers/MetadataHelper";
@@ -9,6 +8,7 @@ import {
   IExtensionType,
   IValueSetSystem,
 } from "../../../types/IQuestionnareItemType";
+import type { Extension } from "fhir/r4";
 
 import { TreeContext } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";

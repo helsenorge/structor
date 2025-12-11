@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 
-import { Meta, Questionnaire } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import { IQuestionnaireMetadataType } from "../../types/IQuestionnaireMetadataType";
+import type { Meta, Questionnaire } from "fhir/r4";
 
 import UploadTranslation from "./uploadTranslation";
 import { exportTranslations } from "../../helpers/exportTranslations";
@@ -26,7 +26,7 @@ import {
   removeQuestionnaireLanguageAction,
   updateQuestionnaireMetadataAction,
 } from "../../store/treeStore/treeActions";
-import { Translation, TreeContext } from "../../store/treeStore/treeStore";
+import { type Translation, TreeContext } from "../../store/treeStore/treeStore";
 import Accordion from "../Accordion/Accordion";
 import Btn from "../Btn/Btn";
 import FormField from "../FormField/FormField";

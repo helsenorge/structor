@@ -1,11 +1,12 @@
 import { useContext } from "react";
 
-import { Coding, Extension, Meta } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { useValidationContext } from "src/contexts/validation/useValidationContext";
 import { updateQuestionnaireMetadataAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
 import { IQuestionnaireMetadataType } from "src/types/IQuestionnaireMetadataType";
+
+import type { Coding, Extension, Meta } from "fhir/r4";
 
 import Expander, {
   ExpanderSize,

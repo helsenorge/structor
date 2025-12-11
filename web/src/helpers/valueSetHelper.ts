@@ -1,8 +1,8 @@
-import { Coding, ValueSet, ValueSetCompose } from "fhir/r4";
+import type { Items, OrderItem } from "../store/treeStore/treeStore";
+import type { Coding, ValueSet, ValueSetCompose } from "fhir/r4";
 
 import createUUID from "./CreateUUID";
 import { initPredefinedValueSet } from "./initPredefinedValueSet";
-import { Items, OrderItem } from "../store/treeStore/treeStore";
 
 export const addIDToValueSet = (compose: ValueSetCompose): ValueSetCompose => {
   const concept = compose.include[0].concept;

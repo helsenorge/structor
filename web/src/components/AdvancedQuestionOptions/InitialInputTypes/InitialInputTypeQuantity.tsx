@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-import { Quantity, QuestionnaireItem, QuestionnaireItemInitial } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+
+import type {
+  Quantity,
+  QuestionnaireItem,
+  QuestionnaireItemInitial,
+} from "fhir/r4";
 
 import { getQuantityExtension } from "../../../helpers/extensionHelper";
 import { isNumeric } from "../../../helpers/formatHelper";

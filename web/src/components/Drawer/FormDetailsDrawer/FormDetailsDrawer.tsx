@@ -1,11 +1,12 @@
-import React from "react";
+import type React from "react";
 
 import { useTranslation } from "react-i18next";
 import AdvancedQuestionnaireSettings from "src/components/AdvancedQuestionnaireSettings";
 import QuestionnaireSettings from "src/components/QuestionnaireDetails/QuestionnaireSettings";
 
+import type { ValidationError } from "../../../utils/validationUtils";
+
 import { useKeyPress } from "../../../hooks/useKeyPress";
-import { ValidationError } from "../../../utils/validationUtils";
 import LanguageAccordion from "../../Languages/LanguageAccordion";
 import MetadataEditor from "../../QuestionnaireDetails/MetadataEditor";
 import Sidebar from "../../QuestionnaireDetails/Sidebar";

@@ -1,9 +1,10 @@
-import React, { useState, MouseEvent } from "react";
+import { type MouseEvent, useState } from "react";
 
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { deleteItemAction } from "src/store/treeStore/treeActions";
-import { ActionType } from "src/store/treeStore/treeStore";
+
+import type { QuestionnaireItem } from "fhir/r4";
+import type { ActionType } from "src/store/treeStore/treeStore";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";

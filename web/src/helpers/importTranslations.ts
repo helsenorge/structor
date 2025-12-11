@@ -1,5 +1,6 @@
 import Papa from "papaparse";
 
+import type { ActionType, Items } from "../store/treeStore/treeStore";
 import { IExtensionType } from "../types/IQuestionnareItemType";
 import {
   TranslatableItemProperty,
@@ -16,7 +17,6 @@ import {
   updateSidebarTranslationAction,
   updateItemCodeTranslation,
 } from "../store/treeStore/treeActions";
-import { ActionType, Items } from "../store/treeStore/treeStore";
 
 export const importCSV = (
   csvData: string,

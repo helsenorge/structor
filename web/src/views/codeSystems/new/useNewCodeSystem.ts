@@ -1,11 +1,12 @@
 import { useContext } from "react";
 
-import { CodeSystem } from "fhir/r4";
 import {
   removeFhirResourceAction,
   updateFhirResourceAction,
 } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
+
+import type { CodeSystem } from "fhir/r4";
 
 import { useCodeSystemContext } from "../context/useCodeSystemContext";
 

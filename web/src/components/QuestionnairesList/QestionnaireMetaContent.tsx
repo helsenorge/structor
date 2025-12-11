@@ -1,7 +1,8 @@
-import React from "react";
+import type React from "react";
 
 import { useTranslation } from "react-i18next";
-import { TreeState } from "src/store/treeStore/treeStore";
+
+import type { TreeState } from "src/store/treeStore/treeStore";
 import "./questionnaire-meta-content.css";
 
 interface Props {

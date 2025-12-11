@@ -1,13 +1,7 @@
 import "./EnableWhen.css";
 
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import {
-  QuestionnaireItem,
-  QuestionnaireItemEnableWhen,
-  ValueSet,
-  ValueSetComposeIncludeConcept,
-} from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import {
   ErrorClassVariant,
@@ -19,8 +13,15 @@ import {
   IOperator,
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
+import type { ValidationError } from "../../../utils/validationUtils";
+import type {
+  QuestionnaireItem,
+  QuestionnaireItemEnableWhen,
+  ValueSet,
+  ValueSetComposeIncludeConcept,
+} from "fhir/r4";
 
-import { QuestionnaireItemEnableBehaviorCodes } from "@helsenorge/refero";
+import type { QuestionnaireItemEnableBehaviorCodes } from "@helsenorge/refero";
 
 import EnableBehavior from "./EnableBehavior";
 import EnableWhenAnswerTypes from "./EnableWhenAnswerTypes";
@@ -28,7 +29,6 @@ import EnableWhenInfoBox from "./EnableWhenInfoBox";
 import EnableWhenOperator from "./EnableWhenOperator";
 import { updateItemAction } from "../../../store/treeStore/treeActions";
 import { TreeContext } from "../../../store/treeStore/treeStore";
-import { ValidationError } from "../../../utils/validationUtils";
 import Btn from "../../Btn/Btn";
 import FormField from "../../FormField/FormField";
 import Select from "../../Select/Select";

@@ -1,8 +1,9 @@
-import { Extension, Questionnaire, QuestionnaireItem } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import { findExtensionByUrl } from "src/helpers/extensionHelper";
 import { IExtensionType } from "src/types/IQuestionnareItemType";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { Extension, Questionnaire, QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { createError } from "../../validationHelper";
 export const makeExpectedTypesText = (

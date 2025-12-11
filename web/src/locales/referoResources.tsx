@@ -1,4 +1,4 @@
-import { Resources } from "@helsenorge/refero";
+import type { Resources } from "@helsenorge/refero";
 
 export const getResources = (language: string): Resources => {
   if (language === "en-GB") {

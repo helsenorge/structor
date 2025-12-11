@@ -1,15 +1,16 @@
 import React from "react";
 
-import { CodeableConcept, Coding } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
+
+import type { CodeableConcept, Coding } from "fhir/r4";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
 import PlussIcon from "@helsenorge/designsystem-react/components/Icons/PlusSmall";
 import Label, {
-  LabelText,
+  type LabelText,
 } from "@helsenorge/designsystem-react/components/Label";
 
 import StringInput from "./StringInput";

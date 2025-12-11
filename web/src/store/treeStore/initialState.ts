@@ -1,8 +1,8 @@
 import { HelsenorgeUrlStartText } from "src/components/Validation/validationHelper";
 
+import type { TreeState } from "./treeStore";
 import { IExtensionType } from "../../types/IQuestionnareItemType";
 
-import { TreeState } from "./treeStore";
 import createUUID from "../../helpers/CreateUUID";
 import {
   VisibilityType,

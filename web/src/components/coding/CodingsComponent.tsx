@@ -1,7 +1,8 @@
-import { Coding } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
+
+import type { Coding } from "fhir/r4";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Expander from "@helsenorge/designsystem-react/components/Expander";

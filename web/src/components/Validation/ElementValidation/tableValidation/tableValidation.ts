@@ -1,5 +1,3 @@
-import { QuestionnaireItem } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import { getAllOrderItemChildrenOfItem } from "src/helpers/codeHelper";
 import {
   existItemControlWithCode,
@@ -7,9 +5,16 @@ import {
   oneOrMoreItemControlsExistOnItem,
 } from "src/helpers/itemControl";
 import { doesAllItemsHaveSameAnswerValueSet } from "src/helpers/valueSetHelper";
-import { Items, OrderItem, TreeState } from "src/store/treeStore/treeStore";
 import { IQuestionnaireItemType } from "src/types/IQuestionnareItemType";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
+import type {
+  Items,
+  OrderItem,
+  TreeState,
+} from "src/store/treeStore/treeStore";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { isDataReceiver } from "@helsenorge/refero";
 

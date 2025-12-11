@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-
-import { QuestionnaireItem } from "fhir/r4";
-import { useTranslation } from "react-i18next";
+import { useContext, useEffect, useState } from "react";
 
 import "./TranslationModal.css";
 
+import { useTranslation } from "react-i18next";
 import {
   ErrorClassVariant,
   getSeverityClassByLevelAndTypeIfError,
@@ -12,6 +10,7 @@ import {
 import { ErrorLevel } from "src/components/Validation/validationTypes";
 
 import { TranslatableItemProperty } from "../../../types/LanguageTypes";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import ModalHeader from "./modalHeader";
 import TranslateContainedValueSets from "./TranslateContainedValueSets";
@@ -30,10 +29,13 @@ import {
 import { getItemPropertyTranslation } from "../../../helpers/LanguageHelper";
 import { isHiddenItem } from "../../../helpers/QuestionHelper";
 import { updateItemTranslationAction } from "../../../store/treeStore/treeActions";
-import { OrderItem, TreeContext } from "../../../store/treeStore/treeStore";
 import {
+  type OrderItem,
+  TreeContext,
+} from "../../../store/treeStore/treeStore";
+import {
+  type ValidationError,
   getValueSetToTranslate,
-  ValidationError,
 } from "../../../utils/validationUtils";
 import FormField from "../../FormField/FormField";
 import MarkdownEditor from "../../MarkdownEditor/MarkdownEditor";

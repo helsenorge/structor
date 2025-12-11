@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router";
@@ -18,10 +18,11 @@ import { getInitialState } from "src/store/treeStore/initialState";
 import { resetQuestionnaireAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
 
+import type { ValidationError } from "../../utils/validationUtils";
+
 import TranslationModal from "../../components/Languages/Translation/TranslationModal";
 import Navbar from "../../components/Navbar/Navbar";
 import FormFillerPreview from "../../components/Refero/FormFillerPreview";
-import { ValidationError } from "../../utils/validationUtils";
 const PageWrapper = ({
   children,
 }: {

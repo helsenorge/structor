@@ -1,8 +1,13 @@
-import React from "react";
+import type React from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { isOptionGroup, Option, OptionGroup } from "../../types/OptionTypes";
+import {
+  type Option,
+  type OptionGroup,
+  isOptionGroup,
+} from "../../types/OptionTypes";
+
 import "./Select.css";
 
 type GroupedSelectProps = {

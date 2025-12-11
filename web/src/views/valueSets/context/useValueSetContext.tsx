@@ -1,6 +1,7 @@
 import { useContext } from "react";
 
-import { ValueSetContextValueTypes } from "./ValueSetContextTypes";
+import type { ValueSetContextValueTypes } from "./ValueSetContextTypes";
+
 import { ValueSetContext } from "./ValuseSetContext";
 
 export const useValueSetContext = (): ValueSetContextValueTypes => {

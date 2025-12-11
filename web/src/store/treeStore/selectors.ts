@@ -1,6 +1,5 @@
-import { FhirResource, ValueSet } from "fhir/r4";
-
-import { TreeState } from "./treeStore";
+import type { TreeState } from "./treeStore";
+import type { FhirResource, ValueSet } from "fhir/r4";
 
 export const getValueSetsFromState = (state: TreeState): ValueSet[] => {
   return (

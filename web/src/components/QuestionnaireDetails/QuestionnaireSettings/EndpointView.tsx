@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import {
   ErrorClassVariant,
@@ -8,9 +7,10 @@ import {
   getSeverityClass,
 } from "src/components/Validation/validationHelper";
 import { ValidationType } from "src/components/Validation/validationTypes";
-import { ValidationError } from "src/utils/validationUtils";
 
 import { IExtensionType } from "../../../types/IQuestionnareItemType";
+import type { Extension } from "fhir/r4";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { TreeContext } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";

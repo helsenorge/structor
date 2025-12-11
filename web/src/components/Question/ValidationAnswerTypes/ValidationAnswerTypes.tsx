@@ -1,8 +1,7 @@
-import React from "react";
-
-import { QuestionnaireItem } from "fhir/r4";
+import type React from "react";
 
 import { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import ValidationAnswerTypeAttachment from "./ValidationAnswerTypeAttachment";
 import ValidationAnswerTypeDate from "./ValidationAnswerTypeDate";

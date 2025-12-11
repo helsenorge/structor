@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Store, configureStore } from "@reduxjs/toolkit";
-import { QuestionnaireResponse } from "fhir/r4";
+import { configureStore, type Store } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
 import { Provider } from "react-redux";
+
+import type { TreeState } from "../../store/treeStore/treeStore";
+import type { QuestionnaireResponse } from "fhir/r4";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
 import X from "@helsenorge/designsystem-react/components/Icons/X";
 
-import { Refero, Resources, rootReducer } from "@helsenorge/refero";
+import { type Resources, Refero, rootReducer } from "@helsenorge/refero";
 
 import FormFillerSidebar from "./FormFillerSidebar";
 import { emptyPropertyReplacer } from "../../helpers/emptyPropertyReplacer";
@@ -19,7 +21,6 @@ import {
   INITIAL_LANGUAGE,
 } from "../../helpers/LanguageHelper";
 import { getResources } from "../../locales/referoResources";
-import { TreeState } from "../../store/treeStore/treeStore";
 import Select from "../Select/Select";
 
 type Props = {

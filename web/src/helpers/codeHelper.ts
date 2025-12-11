@@ -1,17 +1,22 @@
-import {
-  Coding,
-  QuestionnaireItem,
-  ValueSetComposeIncludeConcept,
-} from "fhir/r4";
-import { TFunction } from "react-i18next";
 import { isSystemTableConfigSystem } from "src/utils/tableutils";
 
+import type {
+  ActionType,
+  Items,
+  OrderItem,
+} from "../store/treeStore/treeStore";
 import {
   ICodeSystem,
   ICodingProperty,
   IItemProperty,
 } from "../types/IQuestionnareItemType";
-import { Option } from "../types/OptionTypes";
+import type { Option } from "../types/OptionTypes";
+import type {
+  Coding,
+  QuestionnaireItem,
+  ValueSetComposeIncludeConcept,
+} from "fhir/r4";
+import type { TFunction } from "react-i18next";
 
 import createUUID from "./CreateUUID";
 import {
@@ -20,7 +25,6 @@ import {
   updateItemCodePropertyWithCodeAction,
   updateItemAction,
 } from "../store/treeStore/treeActions";
-import { ActionType, Items, OrderItem } from "../store/treeStore/treeStore";
 
 export enum RenderingOptionsEnum {
   None = "0",

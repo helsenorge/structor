@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 
-import { Extension } from "fhir/r4";
 import createUUID from "src/helpers/CreateUUID";
 
 import type { ExtensionValueKey } from "./types";
+import type { Extension } from "fhir/r4";
 
 import { getDefaultValueForType } from "./utils";
 

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-import { QuestionnaireItemInitial } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+
+import type { QuestionnaireItemInitial } from "fhir/r4";
 
 import { isNumeric } from "../../../helpers/formatHelper";
 import FormField from "../../FormField/FormField";

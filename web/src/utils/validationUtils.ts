@@ -1,8 +1,8 @@
-import { ValueSet } from "fhir/r4";
-import { ErrorLevel } from "src/components/Validation/validationTypes";
+import type { TreeState } from "../store/treeStore/treeStore";
+import type { ValueSet } from "fhir/r4";
+import type { ErrorLevel } from "src/components/Validation/validationTypes";
 
 import { getUsedValueSet } from "../helpers/generateQuestionnaire";
-import { TreeState } from "../store/treeStore/treeStore";
 
 export interface ValidationError {
   linkId: string;

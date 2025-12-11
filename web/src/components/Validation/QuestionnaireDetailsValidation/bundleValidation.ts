@@ -1,7 +1,8 @@
-import { Bundle, Questionnaire } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import { IQuestionnaireMetadataType } from "src/types/IQuestionnaireMetadataType";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { Bundle, Questionnaire } from "fhir/r4";
+import type { TFunction } from "react-i18next";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";

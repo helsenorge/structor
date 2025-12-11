@@ -1,13 +1,14 @@
-import React from "react";
+import type React from "react";
 
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
+import type { ActionType } from "../../../store/treeStore/treeStore";
 import {
   IExtensionType,
   IItemProperty,
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import {
   removeItemExtension,
@@ -18,7 +19,6 @@ import {
   ItemControlType,
 } from "../../../helpers/itemControl";
 import { updateItemAction } from "../../../store/treeStore/treeActions";
-import { ActionType } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 import RadioBtn from "../../RadioBtn/RadioBtn";
 

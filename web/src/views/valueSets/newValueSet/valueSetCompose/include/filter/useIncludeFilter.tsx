@@ -1,6 +1,7 @@
-import { ValueSetComposeIncludeFilter } from "fhir/r4";
 import { useValueSetContext } from "src/views/valueSets/context/useValueSetContext";
 import { newIncludeFilterItem } from "src/views/valueSets/utils/intialValuesets";
+
+import type { ValueSetComposeIncludeFilter } from "fhir/r4";
 
 export const useIncludeFilter = (
   filters?: ValueSetComposeIncludeFilter[],

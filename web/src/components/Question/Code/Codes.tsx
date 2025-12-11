@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { Coding } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import {
   ErrorClassVariant,
@@ -8,6 +7,8 @@ import {
 } from "src/components/Validation/validationHelper";
 
 import { ICodingProperty } from "../../../types/IQuestionnareItemType";
+import type { ValidationError } from "../../../utils/validationUtils";
+import type { Coding } from "fhir/r4";
 
 import { canEditCode } from "../../../helpers/codeHelper";
 import createUUID from "../../../helpers/CreateUUID";
@@ -18,7 +19,6 @@ import {
   updateItemCodePropertyAction,
 } from "../../../store/treeStore/treeActions";
 import { TreeContext } from "../../../store/treeStore/treeStore";
-import { ValidationError } from "../../../utils/validationUtils";
 import Btn from "../../Btn/Btn";
 import FormField from "../../FormField/FormField";
 import UriField from "../../FormField/UriField";

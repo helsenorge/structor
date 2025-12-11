@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
@@ -19,7 +19,8 @@ import {
   saveQuestionnaire,
 } from "../store/treeStore/indexedDbHelper";
 import { resetQuestionnaireAction } from "../store/treeStore/treeActions";
-import { TreeContext, TreeState } from "../store/treeStore/treeStore";
+import { type TreeState, TreeContext } from "../store/treeStore/treeStore";
+
 import "./FrontPage.css";
 
 const FrontPage = (): React.JSX.Element => {

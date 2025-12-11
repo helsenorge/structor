@@ -1,4 +1,4 @@
-import React, { MouseEvent } from "react";
+import type { MouseEvent } from "react";
 
 import { useTranslation } from "react-i18next";
 

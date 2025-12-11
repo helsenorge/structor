@@ -1,6 +1,7 @@
-import { ContactDetail, ContactPoint } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { initialTelecom } from "src/views/valueSets/utils/intialValuesets";
+
+import type { ContactDetail, ContactPoint } from "fhir/r4";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";

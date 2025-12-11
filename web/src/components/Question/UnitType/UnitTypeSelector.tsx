@@ -1,18 +1,18 @@
-import React, { ChangeEvent, useContext } from "react";
+import { type ChangeEvent, useContext } from "react";
 
-import {
-  Coding,
-  Extension,
-  Quantity,
-  QuestionnaireItem,
-  QuestionnaireItemInitial,
-} from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import {
   IExtensionType,
   IItemProperty,
 } from "../../../types/IQuestionnareItemType";
+import type {
+  Coding,
+  Extension,
+  Quantity,
+  QuestionnaireItem,
+  QuestionnaireItemInitial,
+} from "fhir/r4";
 
 import {
   removeItemExtension,

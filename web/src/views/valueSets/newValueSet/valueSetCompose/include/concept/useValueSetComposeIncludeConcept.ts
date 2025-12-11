@@ -1,6 +1,7 @@
-import { Extension } from "fhir/r4";
 import { removeSpace } from "src/helpers/formatHelper";
 import { useValueSetContext } from "src/views/valueSets/context/useValueSetContext";
+
+import type { Extension } from "fhir/r4";
 
 type ReturnType = {
   updateExtensions: (

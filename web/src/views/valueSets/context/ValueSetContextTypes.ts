@@ -1,4 +1,4 @@
-import { ValueSet } from "fhir/r4";
+import type { ValueSet } from "fhir/r4";
 
 export type ValueSetContextInputTypes = {
   children: React.ReactNode;

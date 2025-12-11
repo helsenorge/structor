@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import { EventInfo } from "ckeditor5";
+
+import type { EventInfo } from "ckeditor5";
 
 import Editor from "./Editor";
 

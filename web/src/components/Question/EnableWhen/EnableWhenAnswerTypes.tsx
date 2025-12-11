@@ -1,12 +1,6 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import { format, parse, formatISO, parseISO } from "date-fns";
-import {
-  QuestionnaireItem,
-  QuestionnaireItemEnableWhen,
-  ValueSet,
-  ValueSetComposeIncludeConcept,
-} from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { getValueSetsFromState } from "src/store/treeStore/selectors";
 
@@ -14,6 +8,12 @@ import {
   IExtensionType,
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
+import type {
+  QuestionnaireItem,
+  QuestionnaireItemEnableWhen,
+  ValueSet,
+  ValueSetComposeIncludeConcept,
+} from "fhir/r4";
 
 import {
   isItemControlReceiverComponent,

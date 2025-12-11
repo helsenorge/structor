@@ -1,11 +1,11 @@
-import { Coding, QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
+import type { ActionType } from "../../../../store/treeStore/treeStore";
 import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
 import { TableColumnOrderingOptionsEnum } from "../../../../types/tableOptions";
+import type { Coding, QuestionnaireItem } from "fhir/r4";
 
 import { removeItemCode, addItemCode } from "../../../../helpers/codeHelper";
-import { ActionType } from "../../../../store/treeStore/treeStore";
 import FormField from "../../../FormField/FormField";
 import RadioBtn from "../../../RadioBtn/RadioBtn";
 

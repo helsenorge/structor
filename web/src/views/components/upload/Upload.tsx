@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 
-import { BundleEntry, FhirResource, Questionnaire } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { getFhirResourcesFromState } from "src/store/treeStore/selectors";
 import { importFhirResourceAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
+
+import type { BundleEntry, FhirResource, Questionnaire } from "fhir/r4";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 

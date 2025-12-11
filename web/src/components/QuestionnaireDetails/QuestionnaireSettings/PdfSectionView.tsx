@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import CheckboxBtn from "src/components/CheckboxBtn/CheckboxBtn";
 import SwitchBtn from "src/components/SwitchBtn/SwitchBtn";
@@ -13,6 +12,7 @@ import {
 } from "src/helpers/globalVisibilityHelper";
 
 import { IExtensionType } from "../../../types/IQuestionnareItemType";
+import type { Extension } from "fhir/r4";
 
 import { TreeContext } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";

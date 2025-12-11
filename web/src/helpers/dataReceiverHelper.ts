@@ -1,6 +1,7 @@
-import { QuestionnaireItem } from "fhir/r4";
 import { getExtensionStringValue } from "src/helpers/extensionHelper";
 import { IExtensionType } from "src/types/IQuestionnareItemType";
+
+import type { QuestionnaireItem } from "fhir/r4";
 
 export const getLinkIdFromValueString = (item: QuestionnaireItem): string => {
   const extensionValueString =

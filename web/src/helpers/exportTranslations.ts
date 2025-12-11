@@ -1,12 +1,13 @@
-import { Coding, ValueSet } from "fhir/r4";
-import Papa, { UnparseConfig } from "papaparse";
+import Papa, { type UnparseConfig } from "papaparse";
 
-import { IQuestionnaireMetadata } from "../types/IQuestionnaireMetadataType";
+import type { Items, Languages } from "../store/treeStore/treeStore";
+import type { IQuestionnaireMetadata } from "../types/IQuestionnaireMetadataType";
 import { IExtensionType } from "../types/IQuestionnareItemType";
 import {
   TranslatableKeyProptey,
   TranslatableItemProperty,
 } from "../types/LanguageTypes";
+import type { Coding, ValueSet } from "fhir/r4";
 
 import { isItemControlSidebar } from "./itemControl";
 import { translatableMetadata } from "./LanguageHelper";
@@ -21,7 +22,6 @@ import {
 } from "./QuestionHelper";
 import { getValueSetValues } from "./valueSetHelper";
 import { systemCodesToTranslate } from "../components/Languages/Translation/systemCodesToTranslate";
-import { Items, Languages } from "../store/treeStore/treeStore";
 
 export const exportTranslations = (
   qMetadata: IQuestionnaireMetadata,

@@ -1,15 +1,15 @@
-import React from "react";
+import type React from "react";
 
-import {
+import { useTranslation } from "react-i18next";
+
+import { IItemProperty } from "../../../types/IQuestionnareItemType";
+import type {
   Coding,
   QuestionnaireItem,
   QuestionnaireItemAnswerOption,
   ValueSet,
   ValueSetComposeIncludeConcept,
 } from "fhir/r4";
-import { useTranslation } from "react-i18next";
-
-import { IItemProperty } from "../../../types/IQuestionnareItemType";
 
 import { getValueSetValues } from "../../../helpers/valueSetHelper";
 import FormField from "../../FormField/FormField";

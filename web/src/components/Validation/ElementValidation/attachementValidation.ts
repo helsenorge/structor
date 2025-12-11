@@ -1,5 +1,3 @@
-import { QuestionnaireItem } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import {
   MAX_ATTACHMENT_ALLOWED,
   MAX_ATTACHMENT_SIZE_MB,
@@ -8,7 +6,10 @@ import {
   IExtensionType,
   IQuestionnaireItemType,
 } from "src/types/IQuestionnareItemType";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import {
   getMaxOccursExtensionValue,

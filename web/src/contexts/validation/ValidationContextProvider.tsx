@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
-import { ValidationError } from "src/utils/validationUtils";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { ValidationContext } from "./ValidationContext";
 

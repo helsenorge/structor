@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { Coding } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -9,6 +8,8 @@ import {
   IQuestionnaireItemType,
   IValueSetSystem,
 } from "../../types/IQuestionnareItemType";
+import type { ValidationError } from "../../utils/validationUtils";
+import type { Coding } from "fhir/r4";
 
 import { createMarkdownExtension } from "../../helpers/extensionHelper";
 import { ItemControlType } from "../../helpers/itemControl";
@@ -19,7 +20,6 @@ import {
   updateItemAction,
 } from "../../store/treeStore/treeActions";
 import { TreeContext } from "../../store/treeStore/treeStore";
-import { ValidationError } from "../../utils/validationUtils";
 import Accordion from "../Accordion/Accordion";
 import Btn from "../Btn/Btn";
 import FormField from "../FormField/FormField";

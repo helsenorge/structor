@@ -1,7 +1,8 @@
-import { TFunction } from "react-i18next";
 import { generarteQuestionnaireOrBundle } from "src/helpers/generateQuestionnaire";
-import { TreeState } from "src/store/treeStore/treeStore";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { TFunction } from "react-i18next";
+import type { TreeState } from "src/store/treeStore/treeStore";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { validateBundle } from "./bundleValidation";
 import { validateLanguage } from "./languageValidation";

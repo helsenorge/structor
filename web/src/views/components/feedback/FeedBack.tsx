@@ -1,5 +1,5 @@
 import NotificationPanel, {
-  NotificationPanelVariants,
+  type NotificationPanelVariants,
 } from "@helsenorge/designsystem-react/components/NotificationPanel";
 
 type Props = {

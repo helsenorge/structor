@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { type FunctionComponent, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 

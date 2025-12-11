@@ -1,6 +1,6 @@
-import React from "react";
+import type React from "react";
 
-import { IQuestionnaireMetadata } from "../../../types/IQuestionnaireMetadataType";
+import type { IQuestionnaireMetadata } from "../../../types/IQuestionnaireMetadataType";
 
 import { getLanguageFromCode } from "../../../helpers/LanguageHelper";
 

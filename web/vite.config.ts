@@ -6,9 +6,10 @@ import url from "node:url";
 
 import { esbuildCommonjs } from "@originjs/vite-plugin-commonjs";
 import react from "@vitejs/plugin-react";
-import { PluginOption } from "vite";
 import svgr from "vite-plugin-svgr";
 import { defineConfig } from "vitest/config";
+
+import type { PluginOption } from "vite";
 // https://vitejs.dev/config/
 
 // localhost part
@@ -39,7 +40,7 @@ export default () => {
     css: {
       preprocessorOptions: {
         scss: {
-          includePaths: ["node_modules"],
+          loadPaths: ["node_modules"],
         },
       },
     },
@@ -64,7 +65,7 @@ export default () => {
 const removeCrossOriginAttr = () => {
   return {
     name: "no-attribute",
-    transformIndexHtml(html) {
+    transformIndexHtml(html: string) {
       return html.replace(`type="module" crossorigin`, `type="module"`);
     },
   };

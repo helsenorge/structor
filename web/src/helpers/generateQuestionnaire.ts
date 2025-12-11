@@ -1,4 +1,17 @@
+import type {
+  CodeStringValue,
+  Items,
+  Languages,
+  OrderItem,
+  Translation,
+  TreeState,
+} from "../store/treeStore/treeStore";
+import type { IQuestionnaireMetadata } from "../types/IQuestionnaireMetadataType";
 import {
+  IExtensionType,
+  IQuestionnaireItemType,
+} from "../types/IQuestionnareItemType";
+import type {
   Bundle,
   Coding,
   Extension,
@@ -9,12 +22,6 @@ import {
   QuestionnaireItemInitial,
   ValueSet,
 } from "fhir/r4";
-
-import { IQuestionnaireMetadata } from "../types/IQuestionnaireMetadataType";
-import {
-  IExtensionType,
-  IQuestionnaireItemType,
-} from "../types/IQuestionnareItemType";
 
 import { emptyPropertyReplacer } from "./emptyPropertyReplacer";
 import {
@@ -28,14 +35,6 @@ import {
   translatableSettings,
 } from "./LanguageHelper";
 import { getValueSetValues } from "./valueSetHelper";
-import {
-  CodeStringValue,
-  Items,
-  Languages,
-  OrderItem,
-  Translation,
-  TreeState,
-} from "../store/treeStore/treeStore";
 
 const getExtension = (
   extensions: Extension[] | undefined,
@@ -82,7 +81,6 @@ const getTranslatedAnswerOptions = (
 const getTranslatedContained = (
   qContained: FhirResource[] | undefined,
   translation: Translation,
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 ): ValueSet[] => {
   if (!qContained || qContained.length < 1) {
     return [];

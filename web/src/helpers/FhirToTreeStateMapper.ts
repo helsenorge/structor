@@ -1,12 +1,26 @@
-import {
+import type {
+  CodeStringValue,
+  ContainedTranslations,
+  Items,
+  ItemTranslation,
+  ItemTranslations,
+  Languages,
+  MetadataTranslations,
+  OrderItem,
+  SettingTranslations,
+  SidebarItemTranslation,
+  SidebarItemTranslations,
+  Translation,
+  TreeState,
+} from "../store/treeStore/treeStore";
+import type { IQuestionnaireMetadata } from "../types/IQuestionnaireMetadataType";
+import type {
   Bundle,
   Questionnaire,
   QuestionnaireItem,
   QuestionnaireItemAnswerOption,
   ValueSet,
 } from "fhir/r4";
-
-import { IQuestionnaireMetadata } from "../types/IQuestionnaireMetadataType";
 
 import { initPredefinedValueSet } from "./initPredefinedValueSet";
 import { isItemControlSidebar } from "./itemControl";
@@ -29,21 +43,6 @@ import {
   getTextExtensionMarkdown,
 } from "./QuestionHelper";
 import { getValueSetValues } from "./valueSetHelper";
-import {
-  CodeStringValue,
-  ContainedTranslations,
-  Items,
-  ItemTranslation,
-  ItemTranslations,
-  Languages,
-  MetadataTranslations,
-  OrderItem,
-  SettingTranslations,
-  SidebarItemTranslation,
-  SidebarItemTranslations,
-  Translation,
-  TreeState,
-} from "../store/treeStore/treeStore";
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function extractMetadata(questionnaireObj: Questionnaire) {

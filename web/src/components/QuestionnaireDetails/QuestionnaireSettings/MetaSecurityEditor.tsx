@@ -21,7 +21,8 @@ import {
 } from "src/helpers/MetadataHelper";
 import { TreeContext } from "src/store/treeStore/treeStore";
 import { MetaSecuritySystem } from "src/types/IQuestionnareItemType";
-import { CheckboxOption } from "src/types/OptionTypes";
+
+import type { CheckboxOption } from "src/types/OptionTypes";
 
 const MetaSecurityEditor = (): React.JSX.Element => {
   const { t } = useTranslation();

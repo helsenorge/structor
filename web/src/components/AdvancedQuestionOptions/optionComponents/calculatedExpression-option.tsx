@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { Extension, QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { getSeverityClass } from "src/components/Validation/validationHelper";
 import { ValidationType } from "src/components/Validation/validationTypes";
@@ -9,9 +8,10 @@ import {
   setItemExtension,
 } from "src/helpers/extensionHelper";
 import { TreeContext } from "src/store/treeStore/treeStore";
-import { ValidationError } from "src/utils/validationUtils";
 
 import { IExtensionType } from "../../../types/IQuestionnareItemType";
+import type { Extension, QuestionnaireItem } from "fhir/r4";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import FormField from "../../FormField/FormField";
 

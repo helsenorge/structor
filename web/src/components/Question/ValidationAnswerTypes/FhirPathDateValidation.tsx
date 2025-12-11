@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 import { format, parse } from "date-fns";
 import { useTranslation } from "react-i18next";

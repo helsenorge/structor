@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-import { ValueSetContextValueTypes } from "./ValueSetContextTypes";
+import type { ValueSetContextValueTypes } from "./ValueSetContextTypes";
 
 export const ValueSetContext = createContext<
   ValueSetContextValueTypes | undefined

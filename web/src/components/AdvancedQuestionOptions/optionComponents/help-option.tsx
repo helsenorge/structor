@@ -1,7 +1,12 @@
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
+import type {
+  ActionType,
+  Items,
+  OrderItem,
+} from "../../../store/treeStore/treeStore";
 import { IItemProperty } from "../../../types/IQuestionnareItemType";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import { createMarkdownExtension } from "../../../helpers/extensionHelper";
 import { getHelpText, isItemControlHelp } from "../../../helpers/itemControl";
@@ -12,11 +17,6 @@ import {
   newItemHelpIconAction,
   updateItemAction,
 } from "../../../store/treeStore/treeActions";
-import {
-  ActionType,
-  Items,
-  OrderItem,
-} from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 import MarkdownEditor from "../../MarkdownEditor/MarkdownEditor";
 import SwitchBtn from "../../SwitchBtn/SwitchBtn";

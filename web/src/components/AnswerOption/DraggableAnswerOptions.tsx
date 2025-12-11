@@ -1,19 +1,19 @@
-import React from "react";
+import type React from "react";
 
-import { QuestionnaireItem, QuestionnaireItemAnswerOption } from "fhir/r4";
 import {
   DragDropContext,
   Draggable,
-  DraggingStyle,
   Droppable,
-  DropResult,
-  NotDraggingStyle,
+  type DraggingStyle,
+  type DropResult,
+  type NotDraggingStyle,
 } from "react-beautiful-dnd";
 
 import {
   IExtensionType,
   IItemProperty,
 } from "../../types/IQuestionnareItemType";
+import type { QuestionnaireItem, QuestionnaireItemAnswerOption } from "fhir/r4";
 
 import AnswerOption from "./AnswerOption";
 import {

@@ -1,5 +1,7 @@
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+
+import type { ActionType } from "../../../store/treeStore/treeStore";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import {
   setItemControlExtension,
@@ -7,7 +9,6 @@ import {
   isItemControlSummary,
   isItemControlSummaryContainer,
 } from "../../../helpers/itemControl";
-import { ActionType } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 import SwitchBtn from "../../SwitchBtn/SwitchBtn";
 

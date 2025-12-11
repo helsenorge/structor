@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import SwitchBtn from "src/components/SwitchBtn/SwitchBtn";
 import { IExtensionType } from "src/types/IQuestionnareItemType";
+
+import type { Extension } from "fhir/r4";
 
 import { TreeContext } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";

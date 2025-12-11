@@ -1,6 +1,7 @@
-import { ValueSetComposeIncludeConcept } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { Extensions } from "src/components/extensions/Extensions";
+
+import type { ValueSetComposeIncludeConcept } from "fhir/r4";
 
 import Details from "./Details";
 import useValueSetComposeIncludeConcept from "./useValueSetComposeIncludeConcept";

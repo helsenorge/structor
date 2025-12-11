@@ -1,13 +1,12 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { Extension, QuestionnaireItem } from "fhir/r4";
 import {
+  type DraggingStyle,
+  type DropResult,
+  type NotDraggingStyle,
   DragDropContext,
   Draggable,
-  DraggingStyle,
   Droppable,
-  DropResult,
-  NotDraggingStyle,
 } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 import "./OptionReference.css";
@@ -16,6 +15,7 @@ import {
   IExtensionType,
   IItemProperty,
 } from "../../../types/IQuestionnareItemType";
+import type { Extension, QuestionnaireItem } from "fhir/r4";
 
 import createUUID from "../../../helpers/CreateUUID";
 import { updateItemAction } from "../../../store/treeStore/treeActions";

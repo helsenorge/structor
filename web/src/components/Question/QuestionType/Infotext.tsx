@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { Extension, QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -8,6 +7,7 @@ import {
   IItemProperty,
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
+import type { Extension, QuestionnaireItem } from "fhir/r4";
 
 import {
   createMarkdownExtension,

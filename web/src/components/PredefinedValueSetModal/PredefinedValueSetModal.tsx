@@ -1,18 +1,18 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 
-import { ValueSet } from "fhir/r4";
 import {
   DragDropContext,
   Draggable,
-  DraggingStyle,
   Droppable,
-  DropResult,
-  NotDraggingStyle,
+  type DraggingStyle,
+  type DropResult,
+  type NotDraggingStyle,
 } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 import { getValueSetsFromState } from "src/store/treeStore/selectors";
 
 import { predefinedValueSetUri } from "../../types/IQuestionnareItemType";
+import type { ValueSet } from "fhir/r4";
 
 import createUUID from "../../helpers/CreateUUID";
 import { removeSpace } from "../../helpers/formatHelper";

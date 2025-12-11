@@ -1,11 +1,12 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import { type ChangeEvent, useState, useEffect } from "react";
 
-import { QuestionnaireItem, QuestionnaireItemAnswerOption } from "fhir/r4";
-import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 
-import "./AnswerOption.css";
 import { IExtensionType } from "../../types/IQuestionnareItemType";
+import type { QuestionnaireItem, QuestionnaireItemAnswerOption } from "fhir/r4";
+import type { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
+
+import "./AnswerOption.css";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";

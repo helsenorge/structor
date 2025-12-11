@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 
 import "./AdvancedQuestionOptions.css";
-import { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
 import { getValueSetsFromState } from "src/store/treeStore/selectors";
-import { ValidationError } from "src/utils/validationUtils";
 
 import { IQuestionnaireItemType } from "../../types/IQuestionnareItemType";
+import type { QuestionnaireItem, ValueSetComposeIncludeConcept } from "fhir/r4";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import FhirPathSelect from "./FhirPathSelect/FhirPathSelect";
 import ItemExtractionContextView from "./ItemExtractionContext/ItemExtractionView";

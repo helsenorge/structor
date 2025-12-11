@@ -1,16 +1,15 @@
-import { Coding, Extension } from "fhir/r4";
-
+import type { Languages, TreeState } from "../store/treeStore/treeStore";
 import { IExtensionType } from "../types/IQuestionnareItemType";
 import {
-  Language,
-  MetadataProperty,
-  SettingsProperty,
-  TranslatableItemProperty,
+  type Language,
+  type MetadataProperty,
+  type SettingsProperty,
+  type TranslatableItemProperty,
   TranslatableMetadataProperty,
 } from "../types/LanguageTypes";
+import type { Coding, Extension } from "fhir/r4";
 
 import { isValidId } from "./MetadataHelper";
-import { Languages, TreeState } from "../store/treeStore/treeStore";
 
 export const INITIAL_LANGUAGE: Language = {
   code: "nb-NO",

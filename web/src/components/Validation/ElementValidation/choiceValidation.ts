@@ -1,13 +1,13 @@
-import { QuestionnaireItem } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import { hasExtension } from "src/helpers/extensionHelper";
 
 import {
   IExtensionType,
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
+import type { ValidationError } from "../../../utils/validationUtils";
+import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
 
-import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 
 export const validateChoice = (

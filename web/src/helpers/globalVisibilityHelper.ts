@@ -1,13 +1,12 @@
-import { Extension, Coding } from "fhir/r4";
-
+import type { ActionType } from "../store/treeStore/treeStore";
 import {
-  IQuestionnaireMetadata,
+  type IQuestionnaireMetadata,
   IQuestionnaireMetadataType,
 } from "../types/IQuestionnaireMetadataType";
 import { ICodeSystem, IExtensionType } from "../types/IQuestionnareItemType";
+import type { Extension, Coding } from "fhir/r4";
 
 import { updateQuestionnaireMetadataAction } from "../store/treeStore/treeActions";
-import { ActionType } from "../store/treeStore/treeStore";
 
 export const globalVisibility = [
   { code: "hide-sidebar", display: "Hide sidebar texts" },

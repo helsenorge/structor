@@ -1,6 +1,6 @@
-import { ValueSetComposeIncludeConcept } from "fhir/r4";
-
+import type { OrderItem, TreeState } from "../store/treeStore/treeStore";
 import { IQuestionnaireItemType } from "../types/IQuestionnareItemType";
+import type { ValueSetComposeIncludeConcept } from "fhir/r4";
 
 import {
   isItemControlHelp,
@@ -8,7 +8,6 @@ import {
   isItemControlInline,
   isItemControlSidebar,
 } from "./itemControl";
-import { OrderItem, TreeState } from "../store/treeStore/treeStore";
 
 export const getEnableWhenConditionals = (
   state: TreeState,

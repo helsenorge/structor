@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from "react";
+import { type MouseEvent, useState } from "react";
 
 import styles from "./accordion.module.scss";
 

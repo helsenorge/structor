@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useLayoutEffect, useContext } from "react";
+import { useState, useEffect, useLayoutEffect, useContext } from "react";
 
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import { HyperlinkTarget } from "../../types/hyperlinkTargetType";
 import { IExtensionType } from "../../types/IQuestionnareItemType";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import {
   createHyperlinkTargetExtension,
@@ -13,7 +13,7 @@ import {
   setItemExtension,
 } from "../../helpers/extensionHelper";
 import { isItemControlInline } from "../../helpers/itemControl";
-import { OrderItem, TreeContext } from "../../store/treeStore/treeStore";
+import { type OrderItem, TreeContext } from "../../store/treeStore/treeStore";
 import FormField from "../FormField/FormField";
 import SwitchBtn from "../SwitchBtn/SwitchBtn";
 

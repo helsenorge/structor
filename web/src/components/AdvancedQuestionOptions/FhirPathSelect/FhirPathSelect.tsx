@@ -1,13 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import {
   IExtensionType,
   IItemProperty,
 } from "../../../types/IQuestionnareItemType";
-import { isOptionGroup, Option, OptionGroup } from "../../../types/OptionTypes";
+import {
+  type Option,
+  type OptionGroup,
+  isOptionGroup,
+} from "../../../types/OptionTypes";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import { CreateOptionSetForType } from "../../../helpers/EnrichmentSet";
 import {

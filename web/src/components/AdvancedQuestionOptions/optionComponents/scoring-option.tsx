@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import { ICodeSystem } from "../../../types/IQuestionnareItemType";
 import { ScoringFormulaCodes } from "../../../types/scoringFormulas";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import { addItemCode, removeItemCodes } from "../../../helpers/codeHelper";
 import { existItemWithCode, scoreCoding } from "../../../helpers/itemControl";

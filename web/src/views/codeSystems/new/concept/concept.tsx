@@ -1,9 +1,10 @@
-import React from "react";
+import type React from "react";
 
-import { CodeSystemConcept, Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { Extensions } from "src/components/extensions/Extensions";
 import IdInput from "src/components/valueInputs/IdInput";
+
+import type { CodeSystemConcept, Extension } from "fhir/r4";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";

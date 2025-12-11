@@ -1,8 +1,7 @@
-import { Coding, Questionnaire, Meta } from "fhir/r4";
-
+import type { ActionType } from "../store/treeStore/treeStore";
 import {
+  type IQuestionnaireMetadata,
   IQuestionnaireStatus,
-  IQuestionnaireMetadata,
   IQuestionnaireMetadataType,
 } from "../types/IQuestionnaireMetadataType";
 import {
@@ -10,9 +9,9 @@ import {
   MetaSecuritySystem,
   UseContextSystem,
 } from "../types/IQuestionnareItemType";
+import type { Coding, Questionnaire, Meta } from "fhir/r4";
 
 import { updateQuestionnaireMetadataAction } from "../store/treeStore/treeActions";
-import { ActionType } from "../store/treeStore/treeStore";
 
 export const questionnaireStatusOptions = [
   {

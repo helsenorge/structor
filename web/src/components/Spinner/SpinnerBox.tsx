@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import "./SpinnerBox.css";
 
 const SpinnerBox = (): React.JSX.Element => {

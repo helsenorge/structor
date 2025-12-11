@@ -1,10 +1,11 @@
-import { QuestionnaireItem } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import { getLinkIdFromValueString } from "src/helpers/dataReceiverHelper";
-import { OrderItem } from "src/store/treeStore/treeStore";
 import { IQuestionnaireMetadataType } from "src/types/IQuestionnaireMetadataType";
 import { isItemWithLinkIdInArray } from "src/utils/itemSearchUtils";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
+import type { OrderItem } from "src/store/treeStore/treeStore";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { ErrorLevel } from "./validationTypes";
 

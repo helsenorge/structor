@@ -1,6 +1,5 @@
-import { FocusEvent, useState } from "react";
+import { type FocusEvent, useState } from "react";
 
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import {
   ErrorClassVariant,
@@ -11,11 +10,13 @@ import {
   ErrorLevel,
   ValidationType,
 } from "src/components/Validation/validationTypes";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { ActionType, Items } from "../../../store/treeStore/treeStore";
+import type { QuestionnaireItem } from "fhir/r4";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import UndoIcon from "../../../images/icons/arrow-undo-outline.svg";
 import { updateLinkIdAction } from "../../../store/treeStore/treeActions";
-import { ActionType, Items } from "../../../store/treeStore/treeStore";
 import InputField from "../../InputField/inputField";
 
 type LinkIdOptionProps = {

@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { QuestionnaireItem, QuestionnaireItemAnswerOption } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import {
   ErrorClassVariant,
@@ -14,6 +13,8 @@ import {
   IItemProperty,
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
+import type { ValidationError } from "../../../utils/validationUtils";
+import type { QuestionnaireItem, QuestionnaireItemAnswerOption } from "fhir/r4";
 
 import ChoiceTypeSelect from "./ChoiceTypeSelect";
 import PredefinedValueSets from "./PredefinedValueSets";
@@ -51,7 +52,6 @@ import {
   updateItemAction,
 } from "../../../store/treeStore/treeActions";
 import { TreeContext } from "../../../store/treeStore/treeStore";
-import { ValidationError } from "../../../utils/validationUtils";
 import DraggableAnswerOptions from "../../AnswerOption/DraggableAnswerOptions";
 import Btn from "../../Btn/Btn";
 import { BTN_TYPES, BTN_VARIANTS } from "../../Btn/types";

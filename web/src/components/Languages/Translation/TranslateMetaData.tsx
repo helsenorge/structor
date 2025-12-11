@@ -1,11 +1,12 @@
-import React from "react";
+import type React from "react";
 
 import { useTranslation } from "react-i18next";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { ActionType, TreeState } from "../../../store/treeStore/treeStore";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import TranslateMetaDataRow from "./TranslateMetaDataRow";
 import { translatableMetadata } from "../../../helpers/LanguageHelper";
-import { ActionType, TreeState } from "../../../store/treeStore/treeStore";
 
 type TranslateMetaDataProps = {
   state: TreeState;

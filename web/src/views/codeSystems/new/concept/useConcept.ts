@@ -1,4 +1,4 @@
-import { CodeSystemConcept } from "fhir/r4";
+import type { CodeSystemConcept } from "fhir/r4";
 
 import { useCodeSystemContext } from "../../context/useCodeSystemContext";
 import { initialConcept } from "../../utils";

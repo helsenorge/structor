@@ -1,13 +1,12 @@
-import { QuestionnaireItem } from "fhir/r4";
 import { ItemControlType } from "src/helpers/itemControl";
 
+import type { Items, OrderItem } from "../store/treeStore/treeStore";
 import {
-  IExtensionType,
-  IQuestionnaireItemType,
+  type IExtensionType,
+  type IQuestionnaireItemType,
   IValueSetSystem,
 } from "../types/IQuestionnareItemType";
-
-import { Items, OrderItem } from "../store/treeStore/treeStore";
+import type { QuestionnaireItem } from "fhir/r4";
 
 export const doesItemHaveCode = (
   item: QuestionnaireItem,

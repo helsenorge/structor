@@ -1,4 +1,4 @@
-import { CodeSystemConceptProperty } from "fhir/r4";
+import type { CodeSystemConceptProperty } from "fhir/r4";
 
 import { useCodeSystemContext } from "../../context/useCodeSystemContext";
 import { initialProperty } from "../../utils";

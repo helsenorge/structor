@@ -1,7 +1,6 @@
-import { Extension } from "fhir/r4";
-
-import { IExtensionType } from "./IQuestionnareItemType";
-import { TreeState } from "../store/treeStore/treeStore";
+import type { IExtensionType } from "./IQuestionnareItemType";
+import type { TreeState } from "../store/treeStore/treeStore";
+import type { Extension } from "fhir/r4";
 
 export type Language = {
   code: string;

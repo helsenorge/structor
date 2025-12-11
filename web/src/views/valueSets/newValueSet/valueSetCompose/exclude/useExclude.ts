@@ -1,12 +1,13 @@
 import { useCallback, useContext } from "react";
 
-import {
+import { TreeContext } from "src/store/treeStore/treeStore";
+import { useValueSetContext } from "src/views/valueSets/context/useValueSetContext";
+
+import type {
   CodeSystem,
   ValueSetComposeInclude,
   ValueSetComposeIncludeConcept,
 } from "fhir/r4";
-import { TreeContext } from "src/store/treeStore/treeStore";
-import { useValueSetContext } from "src/views/valueSets/context/useValueSetContext";
 
 type ReturnType = {
   getActiveCodeSystems: () => CodeSystem[];

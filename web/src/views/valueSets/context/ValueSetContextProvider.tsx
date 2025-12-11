@@ -1,17 +1,18 @@
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 
-import {
-  Extension,
-  ValueSet,
-  ValueSetCompose,
-  ValueSetComposeIncludeConcept,
-} from "fhir/r4";
 import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
 import { TreeContext } from "src/store/treeStore/treeStore";
 import { predefinedValueSetUri } from "src/types/IQuestionnareItemType";
 
-import { ValueSetContextInputTypes } from "./ValueSetContextTypes";
+import type { ValueSetContextInputTypes } from "./ValueSetContextTypes";
+import type {
+  Extension,
+  ValueSet,
+  ValueSetCompose,
+  ValueSetComposeIncludeConcept,
+} from "fhir/r4";
+
 import { ValueSetContext } from "./ValuseSetContext";
 import { initValueSet } from "../utils/intialValuesets";
 

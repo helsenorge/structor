@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-import { CodeSystemContextValueTypes } from "./CodeSystemContextTypes";
+import type { CodeSystemContextValueTypes } from "./CodeSystemContextTypes";
 
 export const CodeSystemContext = createContext<
   CodeSystemContextValueTypes | undefined

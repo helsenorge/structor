@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect } from "react";
+import { type MutableRefObject, useEffect } from "react";
 
 const useOutsideClick = (
   ref: MutableRefObject<HTMLDivElement | null>,

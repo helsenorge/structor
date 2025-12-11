@@ -1,7 +1,8 @@
 import { useContext } from "react";
 
+import type { ValidationType } from "./ValidationContextTypes";
+
 import { ValidationContext } from "./ValidationContext";
-import { ValidationType } from "./ValidationContextTypes";
 
 export const useValidationContext = (): ValidationType => {
   const context = useContext(ValidationContext);

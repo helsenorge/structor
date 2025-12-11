@@ -1,14 +1,19 @@
-import { QuestionnaireItem } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import { existAllCalculatedExpressionLinkIds } from "src/helpers/calculatedExpressionHelper";
 import { findExtensionByUrl } from "src/helpers/extensionHelper";
-import { Items, OrderItem, TreeState } from "src/store/treeStore/treeStore";
 import {
   IExtensionType,
   IQuestionnaireItemType,
 } from "src/types/IQuestionnareItemType";
 import { getDuplicateLinkIds } from "src/utils/traversionUtils";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
+import type {
+  Items,
+  OrderItem,
+  TreeState,
+} from "src/store/treeStore/treeStore";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { createError } from "../validationHelper";
 import { ErrorLevel, ValidationType } from "../validationTypes";

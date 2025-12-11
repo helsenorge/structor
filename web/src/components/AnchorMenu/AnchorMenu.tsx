@@ -1,17 +1,25 @@
-import { Dispatch, useState } from "react";
+import { type Dispatch, useState } from "react";
+
 import "./AnchorMenu.css";
 
 import { SortableTreeWithoutDndContext as SortableTree } from "@nosferatu500/react-sortable-tree";
 import {
   DndProvider,
   DragSource,
-  DragSourceConnector,
-  ConnectDragSource,
+  type DragSourceConnector,
+  type ConnectDragSource,
 } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useTranslation } from "react-i18next";
 
+import type {
+  ActionType,
+  Items,
+  MarkedItem,
+  OrderItem,
+} from "../../store/treeStore/treeStore";
 import { IQuestionnaireItemType } from "../../types/IQuestionnareItemType";
+import type { ValidationError } from "../../utils/validationUtils";
 
 import FormFieldTag from "@helsenorge/designsystem-react/components/FormFieldTag";
 
@@ -28,13 +36,6 @@ import {
   reorderItemAction,
   updateMarkedLinkIdAction,
 } from "../../store/treeStore/treeActions";
-import {
-  ActionType,
-  Items,
-  MarkedItem,
-  OrderItem,
-} from "../../store/treeStore/treeStore";
-import { ValidationError } from "../../utils/validationUtils";
 import {
   ErrorClassVariant,
   getSeverityClass,

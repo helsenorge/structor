@@ -1,9 +1,8 @@
-import { QuestionnaireItem } from "fhir/r4";
-
 import {
   IExtensionType,
   IQuestionnaireItemType,
 } from "../types/IQuestionnareItemType";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import { createNewAnswerOption } from "./answerOptionHelper";
 import CreateUUID from "./CreateUUID";

@@ -1,7 +1,8 @@
-import { QuestionnaireItem } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import { ItemControlType } from "src/helpers/itemControl";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import {
   hasTableColumnCodeWithCodeAndDisplay,

@@ -1,7 +1,8 @@
-import React from "react";
+import type React from "react";
 
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+
+import type { QuestionnaireItem } from "fhir/r4";
 
 import { QuestionnaireItemEnableBehaviorCodes } from "@helsenorge/refero";
 

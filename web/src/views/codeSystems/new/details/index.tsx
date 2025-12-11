@@ -1,9 +1,10 @@
-import { CodeSystem, Identifier } from "fhir/r4";
 import ContactDetails from "src/components/contactDetail/ContactDetails";
 import Identifiers from "src/components/valueInputs/Identifiers";
 import IdInput from "src/components/valueInputs/IdInput";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
 import { initialContact } from "src/views/valueSets/utils/intialValuesets";
+
+import type { CodeSystem, Identifier } from "fhir/r4";
 
 import Checkbox from "@helsenorge/designsystem-react/components/Checkbox";
 import Input from "@helsenorge/designsystem-react/components/Input";

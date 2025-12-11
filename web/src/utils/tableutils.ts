@@ -1,7 +1,7 @@
-import { Extension } from "fhir/r4";
 import { ICodeSystem } from "src/types/IQuestionnareItemType";
 
 import { TableOptionsEnum } from "../types/tableOptions";
+import type { Extension } from "fhir/r4";
 
 export const getTableCode = (
   extension: Extension | undefined,

@@ -1,11 +1,9 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { Extension, QuestionnaireItem, ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { getSeverityClass } from "src/components/Validation/validationHelper";
 import { ValidationType } from "src/components/Validation/validationTypes";
 import { removeItemCodes } from "src/helpers/codeHelper";
-import { ValidationError } from "src/utils/validationUtils";
 
 import {
   ICodeSystem,
@@ -13,6 +11,8 @@ import {
   IQuestionnaireItemType,
 } from "../../../../types/IQuestionnareItemType";
 import { TableOptionsEnum } from "../../../../types/tableOptions";
+import type { Extension, QuestionnaireItem, ValueSet } from "fhir/r4";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { ColumnNameOption } from "./columnName-option";
 import { ColumnOrderingFunctionOption } from "./columnOrderingFunction-option";
@@ -27,8 +27,8 @@ import {
   existItemControlWithCode,
 } from "../../../../helpers/itemControl";
 import {
-  Items,
-  OrderItem,
+  type Items,
+  type OrderItem,
   TreeContext,
 } from "../../../../store/treeStore/treeStore";
 import { getAllItemTypes } from "../../../../utils/itemSearchUtils";

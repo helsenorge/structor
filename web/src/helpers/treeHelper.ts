@@ -1,5 +1,6 @@
+import type { Items, OrderItem } from "../store/treeStore/treeStore";
+
 import { isIgnorableItem } from "./itemControl";
-import { Items, OrderItem } from "../store/treeStore/treeStore";
 
 export const findElementInTreeArray = (
   searchPath: Array<string>,

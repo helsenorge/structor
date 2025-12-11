@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import {
@@ -9,15 +9,15 @@ import {
   getValidationErrorByErrorProperty,
 } from "src/components/Validation/validationHelper";
 import { ErrorLevel } from "src/components/Validation/validationTypes";
-import { ValidationError } from "src/utils/validationUtils";
 
+import type { ActionType, TreeState } from "../../../store/treeStore/treeStore";
 import {
-  MetadataProperty,
+  type MetadataProperty,
   TranslatableMetadataProperty,
 } from "../../../types/LanguageTypes";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { updateMetadataTranslationAction } from "../../../store/treeStore/treeActions";
-import { ActionType, TreeState } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 import MarkdownEditor from "../../MarkdownEditor/MarkdownEditor";
 

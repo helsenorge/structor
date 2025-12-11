@@ -1,7 +1,8 @@
-import React from "react";
+import type React from "react";
 
-import { ValueSetExpansionParameter } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+
+import type { ValueSetExpansionParameter } from "fhir/r4";
 
 import styles from "./radio-btn.module.scss";
 

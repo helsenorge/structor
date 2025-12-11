@@ -4,10 +4,10 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import {
   coverageConfigDefaults,
   defineConfig,
-  UserConfigFn,
+  type UserConfigFn,
 } from "vitest/config";
 
-export const getConfig: UserConfigFn = async (env) => {
+export const getConfig: UserConfigFn = async () => {
   return {
     plugins: [tsconfigPaths()],
     test: {

@@ -1,7 +1,8 @@
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
+import type { ActionType } from "../../../store/treeStore/treeStore";
 import { ICodeSystem } from "../../../types/IQuestionnareItemType";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import {
   addValidateReadOnlyItemCode,
@@ -9,7 +10,6 @@ import {
   removeItemCode,
   ValidationOptionsCodes,
 } from "../../../helpers/codeHelper";
-import { ActionType } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 import SwitchBtn from "../../SwitchBtn/SwitchBtn";
 

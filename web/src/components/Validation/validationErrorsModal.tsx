@@ -1,6 +1,9 @@
-import React from "react";
+import type React from "react";
 
 import { useTranslation } from "react-i18next";
+
+import type { Languages } from "../../store/treeStore/treeStore";
+import type { ValidationError } from "../../utils/validationUtils";
 
 import {
   ErrorClassVariant,
@@ -8,8 +11,6 @@ import {
   getSeverityClassByLevelAndType,
 } from "./validationHelper";
 import { ErrorLevel } from "./validationTypes";
-import { Languages } from "../../store/treeStore/treeStore";
-import { ValidationError } from "../../utils/validationUtils";
 import Modal from "../Modal/Modal";
 
 interface ValidationErrorsModalProps {

@@ -1,7 +1,8 @@
-import { QuestionnaireItem } from "fhir/r4";
-import { OrderItem } from "src/store/treeStore/treeStore";
 import { IExtensionType } from "src/types/IQuestionnareItemType";
 import { buildLinkIdIndexSet } from "src/utils/traversionUtils";
+
+import type { QuestionnaireItem } from "fhir/r4";
+import type { OrderItem } from "src/store/treeStore/treeStore";
 
 import { getExtensionStringValue } from "./extensionHelper";
 

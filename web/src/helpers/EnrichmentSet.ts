@@ -1,5 +1,5 @@
 import { IQuestionnaireItemType } from "../types/IQuestionnareItemType";
-import { Option, Options, OptionGroup } from "../types/OptionTypes";
+import type { Option, Options, OptionGroup } from "../types/OptionTypes";
 
 const makeOption = (display: string, code: string): Option => {
   return { display, code };

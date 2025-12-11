@@ -1,4 +1,4 @@
-import { CodeSystem } from "fhir/r4";
+import type { CodeSystem } from "fhir/r4";
 
 export type CodeSystemContextInputTypes = {
   children: React.ReactNode;

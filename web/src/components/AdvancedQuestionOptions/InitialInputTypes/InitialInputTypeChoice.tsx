@@ -1,8 +1,13 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 
-import { Coding, QuestionnaireItem, QuestionnaireItemInitial } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { getValueSetsFromState } from "src/store/treeStore/selectors";
+
+import type {
+  Coding,
+  QuestionnaireItem,
+  QuestionnaireItemInitial,
+} from "fhir/r4";
 
 import { getValueSetValues } from "../../../helpers/valueSetHelper";
 import { TreeContext } from "../../../store/treeStore/treeStore";

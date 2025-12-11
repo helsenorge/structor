@@ -1,6 +1,5 @@
-import React from "react";
+import type React from "react";
 
-import { ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import {
   ErrorClassVariant,
@@ -8,9 +7,11 @@ import {
 } from "src/components/Validation/validationHelper";
 import { ErrorLevel } from "src/components/Validation/validationTypes";
 
+import type { ActionType, Languages } from "../../../store/treeStore/treeStore";
+import type { ValueSet } from "fhir/r4";
+
 import { getValueSetValues } from "../../../helpers/valueSetHelper";
 import { updateContainedValueSetTranslationAction } from "../../../store/treeStore/treeActions";
-import { ActionType, Languages } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 
 type TranslateContainedValueSetsProps = {

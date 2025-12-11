@@ -1,6 +1,6 @@
-import { TFunction } from "react-i18next";
-import { TreeState } from "src/store/treeStore/treeStore";
-import { ValidationError } from "src/utils/validationUtils";
+import type { TFunction } from "react-i18next";
+import type { TreeState } from "src/store/treeStore/treeStore";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { validateCalulatedExpressionElements } from "./calculatedExpressionValidation";
 import { validateDataReceiverElements } from "./data-receiverValidation";

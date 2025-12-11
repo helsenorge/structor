@@ -1,12 +1,12 @@
 import { useContext } from "react";
 
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import {
   IExtensionType,
   IValueSetSystem,
 } from "../../../types/IQuestionnareItemType";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import {
   removeItemExtension,

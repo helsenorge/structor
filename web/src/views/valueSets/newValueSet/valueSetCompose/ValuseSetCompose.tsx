@@ -1,12 +1,13 @@
-import React from "react";
+import type React from "react";
 
-import { Extension, ValueSetCompose } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { Extensions } from "src/components/extensions/Extensions";
 import IdInput from "src/components/valueInputs/IdInput";
 import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
+
+import type { Extension, ValueSetCompose } from "fhir/r4";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Checkbox from "@helsenorge/designsystem-react/components/Checkbox";

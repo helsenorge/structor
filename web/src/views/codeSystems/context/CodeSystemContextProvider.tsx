@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
-import { CodeSystem } from "fhir/r4";
 import { predefinedValueSetUri } from "src/types/IQuestionnareItemType";
 
+import type { CodeSystemContextInputTypes } from "./CodeSystemContextTypes";
+import type { CodeSystem } from "fhir/r4";
+
 import { CodeSystemContext } from "./CodeSystemContext";
-import { CodeSystemContextInputTypes } from "./CodeSystemContextTypes";
 import { initialCodeSystem } from "../utils";
 
 export type CodeSystemProviderProps = CodeSystemContextInputTypes & {

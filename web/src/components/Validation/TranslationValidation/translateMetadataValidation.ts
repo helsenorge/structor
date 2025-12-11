@@ -1,8 +1,9 @@
-import { TFunction } from "react-i18next";
 import { isValidTitle } from "src/helpers/MetadataHelper";
-import { Translation } from "src/store/treeStore/treeStore";
 import { TranslatableMetadataProperty } from "src/types/LanguageTypes";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { TFunction } from "react-i18next";
+import type { Translation } from "src/store/treeStore/treeStore";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { createError, ValidateUrl } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";

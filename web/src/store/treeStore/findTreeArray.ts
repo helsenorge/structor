@@ -1,4 +1,4 @@
-import { OrderItem } from "./treeStore";
+import type { OrderItem } from "./treeStore";
 
 export function findTreeArray(
   searchPath: Array<string>,

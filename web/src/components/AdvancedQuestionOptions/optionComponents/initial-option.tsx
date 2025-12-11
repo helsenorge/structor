@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
-
-import { QuestionnaireItem, QuestionnaireItemInitial } from "fhir/r4";
+import { useContext } from "react";
 
 import {
   IItemProperty,
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
+import type { QuestionnaireItem, QuestionnaireItemInitial } from "fhir/r4";
 
 import { updateItemAction } from "../../../store/treeStore/treeActions";
 import { TreeContext } from "../../../store/treeStore/treeStore";

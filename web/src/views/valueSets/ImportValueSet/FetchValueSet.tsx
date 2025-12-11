@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Bundle, BundleEntry, ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import createUUID from "src/helpers/CreateUUID";
 import { useFetch } from "src/hooks/useFetch";
 import FeedBack from "src/views/components/feedback/FeedBack";
+
+import type { Bundle, BundleEntry, ValueSet } from "fhir/r4";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Input from "@helsenorge/designsystem-react/components/Input";

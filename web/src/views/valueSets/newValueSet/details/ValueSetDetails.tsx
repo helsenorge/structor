@@ -1,12 +1,13 @@
-import React from "react";
+import type React from "react";
 
-import { Identifier, ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import ContactDetails from "src/components/contactDetail/ContactDetails";
 import Identifiers from "src/components/valueInputs/Identifiers";
 import IdInput from "src/components/valueInputs/IdInput";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
 import { initialIdentifier } from "src/views/codeSystems/utils";
+
+import type { Identifier, ValueSet } from "fhir/r4";
 
 import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";

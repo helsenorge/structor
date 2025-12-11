@@ -1,5 +1,6 @@
-import { FhirResource } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+
+import type { FhirResource } from "fhir/r4";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 

@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 
-import { QuestionnaireItem, Coding } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
+import type {
+  ActionType,
+  Items,
+  OrderItem,
+} from "../../../../store/treeStore/treeStore";
 import {
   ICodeSystem,
   ICodingProperty,
 } from "../../../../types/IQuestionnareItemType";
+import type { QuestionnaireItem, Coding } from "fhir/r4";
 
 import {
   removeItemCodeWithCode,
@@ -15,11 +20,6 @@ import {
   updateChildWithMatchingCode,
 } from "../../../../helpers/codeHelper";
 import { updateItemCodePropertyWithCodeAction } from "../../../../store/treeStore/treeActions";
-import {
-  ActionType,
-  Items,
-  OrderItem,
-} from "../../../../store/treeStore/treeStore";
 import Btn from "../../../Btn/Btn";
 import FormField from "../../../FormField/FormField";
 import InputField from "../../../InputField/inputField";

@@ -1,4 +1,7 @@
-import {
+import createUUID from "src/helpers/CreateUUID";
+import { createUriUUID } from "src/helpers/uriHelper";
+
+import type {
   CodeSystem,
   CodeSystemConcept,
   CodeSystemConceptDesignation,
@@ -8,8 +11,6 @@ import {
   Coding,
   Identifier,
 } from "fhir/r4";
-import createUUID from "src/helpers/CreateUUID";
-import { createUriUUID } from "src/helpers/uriHelper";
 
 export const initialCodeSystem = (): CodeSystem => ({
   resourceType: "CodeSystem",

@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
 import { IExtensionType } from "../../../types/IQuestionnareItemType";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import { setItemExtension } from "../../../helpers/extensionHelper";
 import { TreeContext } from "../../../store/treeStore/treeStore";

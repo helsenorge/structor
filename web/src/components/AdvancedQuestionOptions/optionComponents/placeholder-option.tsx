@@ -1,13 +1,13 @@
-import { QuestionnaireItem } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
+import type { ActionType } from "../../../store/treeStore/treeStore";
 import { IExtensionType } from "../../../types/IQuestionnareItemType";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import {
   removeItemExtension,
   setItemExtension,
 } from "../../../helpers/extensionHelper";
-import { ActionType } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
 import InputField from "../../InputField/inputField";
 

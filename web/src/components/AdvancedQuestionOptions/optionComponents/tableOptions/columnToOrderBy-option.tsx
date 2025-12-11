@@ -1,16 +1,16 @@
-import { QuestionnaireItem, ValueSet } from "fhir/r4";
 import { useTranslation } from "react-i18next";
 
-import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
-import { Option } from "../../../../types/OptionTypes";
-import { TableOptionsEnum } from "../../../../types/tableOptions";
-
-import { removeItemCode, addItemCode } from "../../../../helpers/codeHelper";
-import {
+import type {
   ActionType,
   Items,
   OrderItem,
 } from "../../../../store/treeStore/treeStore";
+import { ICodeSystem } from "../../../../types/IQuestionnareItemType";
+import type { Option } from "../../../../types/OptionTypes";
+import { TableOptionsEnum } from "../../../../types/tableOptions";
+import type { QuestionnaireItem, ValueSet } from "fhir/r4";
+
+import { removeItemCode, addItemCode } from "../../../../helpers/codeHelper";
 import {
   createOptionsFromQItemCode,
   getContainedOptions,

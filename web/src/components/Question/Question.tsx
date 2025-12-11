@@ -1,6 +1,16 @@
 import React from "react";
 
+import { useTranslation } from "react-i18next";
+import removeMd from "remove-markdown";
+
+import type { ActionType } from "../../store/treeStore/treeStore";
 import {
+  IExtensionType,
+  IItemProperty,
+  IQuestionnaireItemType,
+} from "../../types/IQuestionnareItemType";
+import type { ValidationError } from "../../utils/validationUtils";
+import type {
   Element,
   Extension,
   QuestionnaireItem,
@@ -8,15 +18,8 @@ import {
   ValueSet,
   ValueSetComposeIncludeConcept,
 } from "fhir/r4";
-import { useTranslation } from "react-i18next";
-import "./Question.css";
-import removeMd from "remove-markdown";
 
-import {
-  IExtensionType,
-  IItemProperty,
-  IQuestionnaireItemType,
-} from "../../types/IQuestionnareItemType";
+import "./Question.css";
 
 import Choice from "./QuestionType/Choice";
 import { DateType } from "./QuestionType/DateType";
@@ -44,8 +47,6 @@ import {
   getItemDisplayType,
 } from "../../helpers/questionTypeFeatures";
 import { updateItemAction } from "../../store/treeStore/treeActions";
-import { ActionType } from "../../store/treeStore/treeStore";
-import { ValidationError } from "../../utils/validationUtils";
 import Accordion from "../Accordion/Accordion";
 import AdvancedQuestionOptions from "../AdvancedQuestionOptions/AdvancedQuestionOptions";
 import Codes from "./Code/Codes";

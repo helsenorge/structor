@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import { isIgnorableItem } from "../helpers/itemControl";
 import { updateMarkedLinkIdAction } from "../store/treeStore/treeActions";
-import { OrderItem, TreeContext } from "../store/treeStore/treeStore";
+import { type OrderItem, TreeContext } from "../store/treeStore/treeStore";
 
 interface FlatOrderItem {
   linkId: string;

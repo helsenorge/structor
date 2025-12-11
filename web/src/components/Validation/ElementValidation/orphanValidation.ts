@@ -1,5 +1,3 @@
-import { FhirResource, QuestionnaireItem } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import { getValidationExtentionUrls } from "src/helpers/enumHelper";
 import {
   findExtensionByUrl,
@@ -19,6 +17,11 @@ import {
 import { isUriValid } from "src/helpers/uriHelper";
 import { getValueSetValues } from "src/helpers/valueSetHelper";
 
+import type {
+  Items,
+  OrderItem,
+  TreeState,
+} from "../../../store/treeStore/treeStore";
 import {
   ICodeSystem,
   IExtensionType,
@@ -26,19 +29,16 @@ import {
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
 import { ScoringFormulaCodes } from "../../../types/scoringFormulas";
+import type { ValidationError } from "../../../utils/validationUtils";
+import type { FhirResource, QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
 
-import {
-  Items,
-  OrderItem,
-  TreeState,
-} from "../../../store/treeStore/treeStore";
 import {
   doesItemWithCodeExistInArray,
   isItemInArray,
   getAllItemTypes,
   doesAllAnswerOptionsInItemHaveExtenison,
 } from "../../../utils/itemSearchUtils";
-import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";
 import { attachementValidation } from "./attachementValidation";

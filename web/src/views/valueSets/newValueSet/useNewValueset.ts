@@ -1,11 +1,12 @@
 import { useContext } from "react";
 
-import { ValueSet } from "fhir/r4";
 import {
   removeFhirResourceAction,
   updateFhirResourceAction,
 } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
+
+import type { ValueSet } from "fhir/r4";
 
 import { useValueSetContext } from "../context/useValueSetContext";
 

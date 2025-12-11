@@ -1,10 +1,11 @@
-import React, {
+import {
+  type ReactNode,
+  type HTMLAttributes,
+  type LiHTMLAttributes,
   createContext,
   useContext,
-  ReactNode,
-  HTMLAttributes,
-  LiHTMLAttributes,
 } from "react";
+
 import "./list-style.css";
 
 type Variant = "lightest" | "light" | "medium" | "dark";

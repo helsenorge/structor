@@ -1,23 +1,22 @@
-import { Element, Extension, Quantity, QuestionnaireItem } from "fhir/r4";
-
-import { HyperlinkTarget } from "../types/hyperlinkTargetType";
+import type { ActionType } from "../store/treeStore/treeStore";
+import type { HyperlinkTarget } from "../types/hyperlinkTargetType";
 import {
-  IQuestionnaireMetadata,
+  type IQuestionnaireMetadata,
   IQuestionnaireMetadataType,
 } from "../types/IQuestionnaireMetadataType";
 import {
+  type ICodeSystem,
   IExtensionType,
   IValueSetSystem,
   IItemProperty,
-  ICodeSystem,
 } from "../types/IQuestionnareItemType";
+import type { Element, Extension, Quantity, QuestionnaireItem } from "fhir/r4";
 
 import createUUID from "./CreateUUID";
 import {
   updateItemAction,
   updateQuestionnaireMetadataAction,
 } from "../store/treeStore/treeActions";
-import { ActionType } from "../store/treeStore/treeStore";
 
 export const setQuestionnaireExtension = (
   qMetadata: IQuestionnaireMetadata,

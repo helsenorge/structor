@@ -1,4 +1,15 @@
+import type { Translation, TreeState } from "./treeStore";
+import type { IQuestionnaireMetadataType } from "../../types/IQuestionnaireMetadataType";
 import {
+  type ICodingProperty,
+  type IEnableWhen,
+  type IExtensionType,
+  type IItemProperty,
+  IQuestionnaireItemType,
+  IValueSetSystem,
+} from "../../types/IQuestionnareItemType";
+import type { TranslatableItemProperty } from "../../types/LanguageTypes";
+import type {
   QuestionnaireItem,
   Extension,
   QuestionnaireItemAnswerOption,
@@ -10,18 +21,6 @@ import {
   FhirResource,
 } from "fhir/r4";
 
-import { IQuestionnaireMetadataType } from "../../types/IQuestionnaireMetadataType";
-import {
-  ICodingProperty,
-  IEnableWhen,
-  IExtensionType,
-  IItemProperty,
-  IQuestionnaireItemType,
-  IValueSetSystem,
-} from "../../types/IQuestionnareItemType";
-import { TranslatableItemProperty } from "../../types/LanguageTypes";
-
-import { Translation, TreeState } from "./treeStore";
 import CreateUUID from "../../helpers/CreateUUID";
 import { createMarkdownExtension } from "../../helpers/extensionHelper";
 import {

@@ -1,14 +1,14 @@
-import { QuestionnaireItem } from "fhir/r4";
-import { TFunction } from "react-i18next";
-import { Items, OrderItem } from "src/store/treeStore/treeStore";
 import {
   doesItemHaveStepCoding,
   isItemChildOfType,
 } from "src/utils/itemSearchUtils";
 
 import { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
+import type { ValidationError } from "../../../utils/validationUtils";
+import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
+import type { Items, OrderItem } from "src/store/treeStore/treeStore";
 
-import { ValidationError } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 
 export const validateGroup = (

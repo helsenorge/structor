@@ -1,8 +1,9 @@
-import React from "react";
+import type React from "react";
 
-import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { Extension } from "fhir/r4";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Expander from "@helsenorge/designsystem-react/components/Expander";

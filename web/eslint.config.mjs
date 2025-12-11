@@ -3,7 +3,7 @@ import config from "@helsenorge/eslint-config";
 export default [
   ...config,
   {
-    files: ["**/*.{js,jsx,ts,tsx}"],
+    files: ["src/**/*.{js,jsx,ts,tsx}"],
     rules: {
       // Relax rules that cause too many false positives in this project
       "react-refresh/only-export-components": "off",
@@ -25,7 +25,6 @@ export default [
     rules: {
       "react-refresh/only-export-components": "off",
       "react-hooks/exhaustive-deps": "off",
-      "@typescript-eslint/consistent-type-imports": "off",
     },
   },
 

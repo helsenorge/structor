@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
 import SwitchBtn from "src/components/SwitchBtn/SwitchBtn";

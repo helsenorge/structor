@@ -1,4 +1,4 @@
-import { CodeSystemFilter } from "fhir/r4";
+import type { CodeSystemFilter } from "fhir/r4";
 
 import { useCodeSystemContext } from "../../context/useCodeSystemContext";
 import { initialCodeSystemFilter } from "../../utils";

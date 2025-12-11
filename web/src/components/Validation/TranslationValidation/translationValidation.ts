@@ -1,7 +1,13 @@
-import { QuestionnaireItem } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import { hasExtension } from "src/helpers/extensionHelper";
 import { IExtensionType } from "src/types/IQuestionnareItemType";
+
+import type {
+  Items,
+  TreeState,
+  Translation,
+} from "../../../store/treeStore/treeStore";
+import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
 
 import { validateMetadataTranslation } from "./translateMetadataValidation";
 import { isItemControlSidebar } from "../../../helpers/itemControl";
@@ -15,13 +21,8 @@ import {
 } from "../../../helpers/QuestionHelper";
 import { getValueSetValues } from "../../../helpers/valueSetHelper";
 import {
-  Items,
-  TreeState,
-  Translation,
-} from "../../../store/treeStore/treeStore";
-import {
+  type ValidationError,
   getValueSetToTranslate,
-  ValidationError,
 } from "../../../utils/validationUtils";
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";

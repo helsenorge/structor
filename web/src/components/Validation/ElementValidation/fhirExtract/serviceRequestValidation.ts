@@ -1,19 +1,20 @@
-import { Questionnaire, QuestionnaireItem } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import {
   IExtensionType,
   ItemExtractionContext,
 } from "src/types/IQuestionnareItemType";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { Questionnaire, QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { ItemTypeConstants } from "@helsenorge/refero";
 
 import {
+  type ServiceRequestAnchor,
   ancestorHasConditionExtractionContext,
   hasExtensionWithUrlAndValueUri,
   resourceMustBeCorrectType,
   SERVICE_REQUEST_ANCHORS,
-  ServiceRequestAnchor,
   SR_REASON_REFERENCE_ANCHOR,
   SR_SUPPORTING_INFO_ANCHOR,
 } from "./utils";

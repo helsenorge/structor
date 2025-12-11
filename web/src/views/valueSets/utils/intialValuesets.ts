@@ -1,4 +1,7 @@
-import {
+import createUUID from "src/helpers/CreateUUID";
+import { createUriUUID } from "src/helpers/uriHelper";
+
+import type {
   Coding,
   ContactDetail,
   ContactPoint,
@@ -7,8 +10,6 @@ import {
   ValueSetComposeIncludeConcept,
   ValueSetComposeIncludeFilter,
 } from "fhir/r4";
-import createUUID from "src/helpers/CreateUUID";
-import { createUriUUID } from "src/helpers/uriHelper";
 
 export const initialComposeInclude = (): ValueSetComposeInclude => ({
   id: createUUID(),

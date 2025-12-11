@@ -1,18 +1,19 @@
-import { Questionnaire, QuestionnaireItem } from "fhir/r4";
-import { TFunction } from "react-i18next";
 import {
   IExtensionType,
   ItemExtractionContext,
 } from "src/types/IQuestionnareItemType";
-import { ValidationError } from "src/utils/validationUtils";
+
+import type { Questionnaire, QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { ItemTypeConstants } from "@helsenorge/refero";
 
 import {
+  type ConditionAnchor,
   ancestorHasConditionExtractionContext,
   COND_EVIDENCE_ANCHOR,
   CONDITION_ANCHORS,
-  ConditionAnchor,
   hasExtensionWithUrlAndValueUri,
   resourceMustBeCorrectType,
 } from "./utils";

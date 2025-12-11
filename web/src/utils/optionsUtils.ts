@@ -1,11 +1,10 @@
-import { QuestionnaireItem, ValueSet } from "fhir/r4";
-
-import { ICodeSystem } from "../types/IQuestionnareItemType";
-import { Option } from "../types/OptionTypes";
+import type { OrderItem, Items } from "../store/treeStore/treeStore";
+import type { ICodeSystem } from "../types/IQuestionnareItemType";
+import type { Option } from "../types/OptionTypes";
+import type { QuestionnaireItem, ValueSet } from "fhir/r4";
 
 import { getOrderItemByLinkId } from "../helpers/codeHelper";
 import { getFirstAnswerValueSetFromOrderItem } from "../helpers/valueSetHelper";
-import { OrderItem, Items } from "../store/treeStore/treeStore";
 
 export const createOptionsFromQItemCode = (
   item: QuestionnaireItem,

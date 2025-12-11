@@ -1,15 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import {
-  QuestionnaireItem,
-  ValueSetComposeIncludeConcept,
-  Extension,
-  QuestionnaireItemEnableWhen,
-} from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import { getSeverityClass } from "src/components/Validation/validationHelper";
 import { ValidationType } from "src/components/Validation/validationTypes";
-import { ValidationError } from "src/utils/validationUtils";
 
 import {
   IItemProperty,
@@ -17,6 +10,13 @@ import {
   IOperator,
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
+import type {
+  QuestionnaireItem,
+  ValueSetComposeIncludeConcept,
+  Extension,
+  QuestionnaireItemEnableWhen,
+} from "fhir/r4";
+import type { ValidationError } from "src/utils/validationUtils";
 
 import { getLinkIdFromValueString } from "../../../helpers/dataReceiverHelper";
 import {

@@ -1,5 +1,7 @@
-import { Extension } from "fhir/r4";
 import { useTranslation } from "react-i18next";
+
+import type { ExtensionValueKey } from "./types";
+import type { Extension } from "fhir/r4";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -8,7 +10,6 @@ import Input from "@helsenorge/designsystem-react/components/Input";
 import Label from "@helsenorge/designsystem-react/components/Label";
 import Select from "@helsenorge/designsystem-react/components/Select";
 
-import { ExtensionValueKey } from "./types";
 import { EXTENSION_VALUE_TYPES, getExtensionValue } from "./utils";
 import ValueInput from "../valueInputs/ValueInput";
 

@@ -1,10 +1,5 @@
 import React, { useContext, useState } from "react";
 
-import {
-  Coding,
-  QuestionnaireItem,
-  QuestionnaireItemAnswerOption,
-} from "fhir/r4";
 import { useTranslation } from "react-i18next";
 import {
   ErrorClassVariant,
@@ -14,6 +9,11 @@ import { ErrorLevel } from "src/components/Validation/validationTypes";
 
 import { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
 import { TranslatableItemProperty } from "../../../types/LanguageTypes";
+import type {
+  Coding,
+  QuestionnaireItem,
+  QuestionnaireItemAnswerOption,
+} from "fhir/r4";
 
 import { systemCodesToTranslate } from "./systemCodesToTranslate";
 import TranslateOptionRow from "./TranslateOptionRow";
@@ -37,7 +37,7 @@ import {
   updateItemCodeTranslation,
 } from "../../../store/treeStore/treeActions";
 import {
-  ItemTranslation,
+  type ItemTranslation,
   TreeContext,
 } from "../../../store/treeStore/treeStore";
 import FormField from "../../FormField/FormField";
