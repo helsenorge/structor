@@ -1,6 +1,6 @@
 import { type Dispatch, createContext, useEffect, useReducer } from "react";
 
-import produce from "immer";
+import { produce } from "immer";
 import { HelsenorgeUrlStartText } from "src/components/Validation/validationHelper";
 
 import {
