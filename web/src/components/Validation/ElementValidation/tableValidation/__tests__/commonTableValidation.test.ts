@@ -123,7 +123,7 @@ describe("validateTableOrderingColumn", () => {
 
   it("error hvis table group har ordering column men mangler ordering functions", () => {
     vi.mocked(oneOrMoreItemControlsExistOnItem).mockReturnValue(true);
-    vi.mocked(itemHasCodeWithSystem).mockImplementation((item, system) =>
+    vi.mocked(itemHasCodeWithSystem).mockImplementation((_, system) =>
       system === ICodeSystem.tableOrderingColumn ? true : false,
     );
 
@@ -138,7 +138,7 @@ describe("validateTableOrderingColumn", () => {
 
   it("error hvis table group har ordering functions men mangler ordering column", () => {
     vi.mocked(oneOrMoreItemControlsExistOnItem).mockReturnValue(true);
-    vi.mocked(itemHasCodeWithSystem).mockImplementation((item, system) =>
+    vi.mocked(itemHasCodeWithSystem).mockImplementation((_, system) =>
       system === ICodeSystem.tableOrderingFunctions ? true : false,
     );
 
@@ -154,7 +154,7 @@ describe("validateTableOrderingColumn", () => {
   it("[] når begge (column + functions) finnes på table group", () => {
     vi.mocked(oneOrMoreItemControlsExistOnItem).mockReturnValue(true);
     vi.mocked(itemHasCodeWithSystem).mockImplementation(
-      (item, system) =>
+      (_, system) =>
         system === ICodeSystem.tableOrderingFunctions ||
         system === ICodeSystem.tableOrderingColumn,
     );

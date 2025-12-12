@@ -5,6 +5,7 @@ import type {
   Distance,
   Extension,
   Quantity,
+  Duration,
 } from "fhir/r4";
 
 export const getDefaultValueForType = (

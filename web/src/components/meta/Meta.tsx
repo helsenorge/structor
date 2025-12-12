@@ -63,7 +63,7 @@ const MetaComponent = ({
       <DatePicker
         label={<Label labelTexts={[{ text: "LastUpdated" }]} />}
         dateValue={meta?.lastUpdated ? new Date(meta?.lastUpdated) : undefined}
-        onChange={(e, date) =>
+        onChange={(_, date) =>
           handleChange({ ...meta, lastUpdated: toIsoOrUndefined(date) })
         }
       />

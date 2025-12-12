@@ -1,10 +1,20 @@
-import Button from "@helsenorge/designsystem-react/components/Button";
-import Icon from "@helsenorge/designsystem-react/components/Icon";
-import RemoveIcon from "@helsenorge/designsystem-react/components/Icons/TrashCan";
+import type { Duration } from "fhir/r4";
 
-import IntegerInput from "./IntegerInput";
+import Button from "@helsenorge/designsystem-react/components/Button";
+import Input from "@helsenorge/designsystem-react/components/Input";
+import Select from "@helsenorge/designsystem-react/components/Select";
 
 import styles from "./value-input.module.scss";
+
+const UNIT_OPTIONS = [
+  { value: "a", label: "Years", code: "a" },
+  { value: "mo", label: "Months", code: "mo" },
+  { value: "wk", label: "Weeks", code: "wk" },
+  { value: "d", label: "Days", code: "d" },
+  { value: "h", label: "Hours", code: "h" },
+  { value: "min", label: "Minutes", code: "min" },
+  { value: "s", label: "Seconds", code: "s" },
+];
 
 const DurationInput = ({
   value,
@@ -13,44 +23,51 @@ const DurationInput = ({
   value: Duration;
   onChange: (newValue: Duration | undefined) => void;
 }): React.JSX.Element => {
+  const handleValueChange = (newValue: number): void => {
+    onChange({
+      ...value,
+      value: newValue,
+    });
+  };
+
+  const handleUnitChange = (code: string): void => {
+    const selectedUnit = UNIT_OPTIONS.find((opt) => opt.code === code);
+    onChange({
+      ...value,
+      unit: selectedUnit?.label,
+      code: selectedUnit?.code,
+      system: "http://unitsofmeasure.org",
+    });
+  };
+
   return (
     <div className={styles.durationContainer}>
       <div className={styles.durationInputContainer}>
-        <IntegerInput
-          value={value.years || 0}
-          onChange={(newValue) => onChange({ ...value, years: newValue })}
-          label="Years"
+        <Input
+          type="number"
+          value={value.value?.toString() || "0"}
+          onChange={(e) => handleValueChange(Number(e.target.value))}
+          label="Duration"
         />
-        <IntegerInput
-          value={value.months || 0}
-          onChange={(newValue) => onChange({ ...value, months: newValue })}
-          label="Months"
-        />
-        <IntegerInput
-          value={value.weeks || 0}
-          onChange={(newValue) => onChange({ ...value, weeks: newValue })}
-          label="Weeks"
-        />
-        <IntegerInput
-          value={value.days || 0}
-          onChange={(newValue) => onChange({ ...value, days: newValue })}
-          label="Days"
-        />
-        <IntegerInput
-          value={value.hours || 0}
-          onChange={(newValue) => onChange({ ...value, hours: newValue })}
-          label="Hours"
-        />
+        <Select
+          value={value.code || "d"}
+          onChange={(e) => handleUnitChange(e.target.value)}
+          label="Unit"
+        >
+          {UNIT_OPTIONS.map((opt) => (
+            <option key={opt.code} value={opt.code}>
+              {opt.label}
+            </option>
+          ))}
+        </Select>
       </div>
       <div className={styles.durationButtonContainer}>
         <Button
           ariaLabel="clear duration"
           variant="borderless"
-          onClick={() => {
-            onChange(undefined);
-          }}
+          onClick={() => onChange(undefined)}
         >
-          <Icon svgIcon={RemoveIcon} />
+          {"Clear"}
         </Button>
       </div>
     </div>
