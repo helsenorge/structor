@@ -2,7 +2,7 @@ import { DeleteButton } from "src/components/Modal/DeleteModal";
 
 import type { ActionType } from "../../../store/treeStore/treeStore";
 import type { QuestionnaireItem } from "fhir/r4";
-import type { TFunction } from "react-i18next";
+import type { TFunction } from "i18next";
 import "./ItemButtons.css";
 
 import Button from "@helsenorge/designsystem-react/components/Button";

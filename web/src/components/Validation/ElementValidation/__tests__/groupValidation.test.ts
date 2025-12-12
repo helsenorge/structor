@@ -1,4 +1,5 @@
 import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "i18next";
 import type { Items, OrderItem } from "src/store/treeStore/treeStore";
 
 import { ErrorLevel } from "../../validationTypes";
@@ -16,7 +17,7 @@ describe("group validation", () => {
   describe("repeatable group", () => {
     it("Should get error if repeatable group is child of a group", () => {
       const validationErrors = validateGroupParent(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         repeatableGroup,
         qItems,
         qOrder,
@@ -30,7 +31,7 @@ describe("group validation", () => {
     });
     it("Should get error if repeatable group has step coding", () => {
       const validationErrors = validateRepeatableGroup(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         repeatableGroupWithStepCoding,
       );
 

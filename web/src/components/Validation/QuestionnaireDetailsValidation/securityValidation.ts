@@ -5,7 +5,7 @@ import {
 import { MetaSecuritySystem } from "src/types/IQuestionnareItemType";
 
 import type { Coding } from "fhir/r4";
-import type { TFunction } from "react-i18next";
+import type { TFunction } from "i18next";
 import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 import type { ValidationError } from "src/utils/validationUtils";
 

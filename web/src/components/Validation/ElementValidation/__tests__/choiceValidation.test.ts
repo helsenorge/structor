@@ -1,4 +1,5 @@
 import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "i18next";
 
 import { ErrorLevel } from "../../validationTypes";
 import {
@@ -15,7 +16,7 @@ describe("choice validation", () => {
   describe("choice answerOptions", () => {
     it("Should get errors if answerOption has no display and no code", () => {
       const validationErrors = validateAnswerOptions(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         noDisplayAndCode,
       );
 
@@ -31,7 +32,7 @@ describe("choice validation", () => {
     });
     it("Should NOT get errors if answerOption has a display value and a code", () => {
       const validationErrors = validateAnswerOptions(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         withDisplayAndCode,
       );
 
@@ -39,7 +40,7 @@ describe("choice validation", () => {
     });
     it("Should get errors if system does not have the same value in all answerOptions", () => {
       const validationErrors = validateAnswerOptionsSystem(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         noMatchingSystems,
       );
 

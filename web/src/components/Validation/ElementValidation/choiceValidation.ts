@@ -6,7 +6,7 @@ import {
 } from "../../../types/IQuestionnareItemType";
 import type { ValidationError } from "../../../utils/validationUtils";
 import type { QuestionnaireItem } from "fhir/r4";
-import type { TFunction } from "react-i18next";
+import type { TFunction } from "i18next";
 
 import { createError } from "../validationHelper";
 

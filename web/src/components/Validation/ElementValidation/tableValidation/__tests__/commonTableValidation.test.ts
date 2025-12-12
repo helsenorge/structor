@@ -5,7 +5,7 @@ import {
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import type { QuestionnaireItem } from "fhir/r4";
-import type { TFunction } from "react-i18next";
+import type { TFunction } from "i18next";
 
 vi.mock("src/helpers/itemControl", async () => {
   const actual = await vi.importActual<any>("src/helpers/itemControl");

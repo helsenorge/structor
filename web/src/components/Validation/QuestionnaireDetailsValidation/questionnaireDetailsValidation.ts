@@ -1,6 +1,6 @@
 import { generarteQuestionnaireOrBundle } from "src/helpers/generateQuestionnaire";
 
-import type { TFunction } from "react-i18next";
+import type { TFunction } from "i18next";
 import type { TreeState } from "src/store/treeStore/treeStore";
 import type { ValidationError } from "src/utils/validationUtils";
 

@@ -19,6 +19,6 @@ export default [
     },
   },
   {
-    ignores: ["*config.*"],
+    ignores: ["*config.*", "**/node_modules/**"],
   },
 ];

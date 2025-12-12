@@ -16,7 +16,7 @@ import type {
   QuestionnaireItem,
   ValueSetComposeIncludeConcept,
 } from "fhir/r4";
-import type { TFunction } from "react-i18next";
+import type { TFunction } from "i18next";
 
 import createUUID from "./CreateUUID";
 import {

@@ -3,7 +3,7 @@ import { IQuestionnaireMetadataType } from "src/types/IQuestionnaireMetadataType
 import { isItemWithLinkIdInArray } from "src/utils/itemSearchUtils";
 
 import type { QuestionnaireItem } from "fhir/r4";
-import type { TFunction } from "react-i18next";
+import type { TFunction } from "i18next";
 import type { OrderItem } from "src/store/treeStore/treeStore";
 import type { ValidationError } from "src/utils/validationUtils";
 

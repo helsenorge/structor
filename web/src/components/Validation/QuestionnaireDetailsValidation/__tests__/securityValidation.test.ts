@@ -1,6 +1,7 @@
 import { tilgangsstyringsCode } from "src/helpers/MetadataHelper";
 
 import type { Meta } from "fhir/r4";
+import type { TFunction } from "node_modules/i18next/typescript/t";
 import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 
 import { ErrorLevel, ValidationType } from "../../validationTypes";
@@ -30,7 +31,7 @@ describe("securityValidation", () => {
       } as Meta;
       const metadata = { meta: meta } as IQuestionnaireMetadata;
       const validationErrors = metaSecurityValidation(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         metadata,
       );
 
@@ -59,7 +60,7 @@ describe("securityValidation", () => {
       } as Meta;
       const metadata = { meta: meta } as IQuestionnaireMetadata;
       const validationErrors = metaSecurityValidation(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         metadata,
       );
 
@@ -93,7 +94,7 @@ describe("securityValidation", () => {
       } as Meta;
       const metadata = { meta: meta } as IQuestionnaireMetadata;
       const validationErrors = metaSecurityValidation(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         metadata,
       );
 
@@ -131,7 +132,7 @@ describe("securityValidation", () => {
 
         const metadata = { meta: meta } as IQuestionnaireMetadata;
         const validationErrors = metaSecurityValidation(
-          translatationMock,
+          translatationMock as unknown as TFunction<"translation">,
           metadata,
         );
 

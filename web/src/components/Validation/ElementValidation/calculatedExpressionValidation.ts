@@ -7,7 +7,7 @@ import {
 import { getDuplicateLinkIds } from "src/utils/traversionUtils";
 
 import type { QuestionnaireItem } from "fhir/r4";
-import type { TFunction } from "react-i18next";
+import type { TFunction } from "i18next";
 import type {
   Items,
   OrderItem,

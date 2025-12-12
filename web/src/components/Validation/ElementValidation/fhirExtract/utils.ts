@@ -2,7 +2,7 @@ import { findExtensionByUrl } from "src/helpers/extensionHelper";
 import { IExtensionType } from "src/types/IQuestionnareItemType";
 
 import type { Extension, Questionnaire, QuestionnaireItem } from "fhir/r4";
-import type { TFunction } from "react-i18next";
+import type { TFunction } from "i18next";
 import type { ValidationError } from "src/utils/validationUtils";
 
 import { createError } from "../../validationHelper";

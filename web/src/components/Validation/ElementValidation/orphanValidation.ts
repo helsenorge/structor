@@ -31,7 +31,7 @@ import {
 import { ScoringFormulaCodes } from "../../../types/scoringFormulas";
 import type { ValidationError } from "../../../utils/validationUtils";
 import type { FhirResource, QuestionnaireItem } from "fhir/r4";
-import type { TFunction } from "react-i18next";
+import type { TFunction } from "i18next";
 
 import {
   doesItemWithCodeExistInArray,

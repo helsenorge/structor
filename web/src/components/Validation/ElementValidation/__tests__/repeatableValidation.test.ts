@@ -1,4 +1,5 @@
 import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "i18next";
 import type { OrderItem } from "src/store/treeStore/treeStore";
 
 import { ErrorLevel } from "../../validationTypes";
@@ -15,7 +16,7 @@ describe("repeatable validation", () => {
 
   it("Should get error if repeatable item that is not of type group, has children", () => {
     const validationErrors = validateRepeatableItemChildren(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       repeatableItemWithChildren,
       qOrder,
     );
@@ -28,7 +29,7 @@ describe("repeatable validation", () => {
   });
   it("Should get error if repeatable item has no maxOccurs extension", () => {
     const validationErrors = validateRepeatableItemMaxOccurs(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       repeatableItemNoMaxOccurs,
     );
 

@@ -4,6 +4,7 @@ import {
 } from "src/types/IQuestionnareItemType";
 
 import type { Extension, QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "node_modules/i18next/typescript/t";
 import type {
   Items,
   OrderItem,
@@ -77,7 +78,7 @@ describe("Calculated expression Validation", () => {
     });
 
     const validationErrors = validateCalulatedExpressionElements(
-      translationMock,
+      translationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -118,7 +119,7 @@ describe("Calculated expression Validation", () => {
     });
 
     const validationErrors = validateCalulatedExpressionElements(
-      translationMock,
+      translationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -140,7 +141,7 @@ describe("Calculated expression Validation", () => {
     });
 
     const validationErrors = validateCalulatedExpressionElements(
-      translationMock,
+      translationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -193,7 +194,7 @@ describe("Calculated expression Validation", () => {
     });
 
     const validationErrors = validateCalulatedExpressionElements(
-      translationMock,
+      translationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -212,7 +213,7 @@ describe("Calculated expression Validation", () => {
     });
 
     const validationErrors = validateCalulatedExpressionElements(
-      translationMock,
+      translationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -238,7 +239,7 @@ describe("Calculated expression Validation", () => {
     });
 
     const validationErrors = validateCalulatedExpressionElements(
-      translationMock,
+      translationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -277,7 +278,7 @@ describe("Calculated expression Validation", () => {
     });
 
     const validationErrors = validateCalulatedExpressionElements(
-      translationMock,
+      translationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -304,7 +305,7 @@ describe("Calculated expression Validation", () => {
     });
 
     const validationErrors = validateCalulatedExpressionElements(
-      translationMock,
+      translationMock as unknown as TFunction<"translation">,
       treeState,
     );
 

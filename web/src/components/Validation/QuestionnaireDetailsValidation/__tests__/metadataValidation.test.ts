@@ -3,6 +3,7 @@ import {
   IQuestionnaireMetadataType,
 } from "src/types/IQuestionnaireMetadataType";
 
+import type { TFunction } from "node_modules/i18next/typescript/t";
 import type { TreeState } from "src/store/treeStore/treeStore";
 
 import { ErrorLevel } from "../../validationTypes";
@@ -17,7 +18,10 @@ describe("metadataValidation", () => {
   it("Metadata has no value, default validatation errors", () => {
     const treeState = { qMetadata: {} } as TreeState;
 
-    const validationErrors = validateMetadata(translatationMock, treeState);
+    const validationErrors = validateMetadata(
+      translatationMock as unknown as TFunction<"translation">,
+      treeState,
+    );
 
     expect(validationErrors.length).toBe(4);
 
@@ -47,7 +51,10 @@ describe("metadataValidation", () => {
       },
     } as TreeState;
 
-    const validationErrors = validateMetadata(translatationMock, treeState);
+    const validationErrors = validateMetadata(
+      translatationMock as unknown as TFunction<"translation">,
+      treeState,
+    );
 
     expect(validationErrors.length).toBe(0);
   });
@@ -62,7 +69,10 @@ describe("metadataValidation", () => {
       } as IQuestionnaireMetadata;
       const treeState = { qMetadata: metadata } as TreeState;
 
-      const validationErrors = validateMetadata(translatationMock, treeState);
+      const validationErrors = validateMetadata(
+        translatationMock as unknown as TFunction<"translation">,
+        treeState,
+      );
 
       expect(validationErrors.length).toBe(2);
       expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
@@ -80,7 +90,10 @@ describe("metadataValidation", () => {
       } as IQuestionnaireMetadata;
       const treeState = { qMetadata: metadata } as TreeState;
 
-      const validationErrors = validateMetadata(translatationMock, treeState);
+      const validationErrors = validateMetadata(
+        translatationMock as unknown as TFunction<"translation">,
+        treeState,
+      );
 
       expect(validationErrors.length).toBe(2);
       expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);
@@ -101,7 +114,10 @@ describe("metadataValidation", () => {
       } as IQuestionnaireMetadata;
       const treeState = { qMetadata: metadata } as TreeState;
 
-      const validationErrors = validateMetadata(translatationMock, treeState);
+      const validationErrors = validateMetadata(
+        translatationMock as unknown as TFunction<"translation">,
+        treeState,
+      );
       const titleError = validationErrors.filter(
         (f) => f.errorProperty === IQuestionnaireMetadataType.title,
       );
@@ -122,7 +138,10 @@ describe("metadataValidation", () => {
       } as IQuestionnaireMetadata;
       const treeState = { qMetadata: metadata } as TreeState;
 
-      const validationErrors = validateMetadata(translatationMock, treeState);
+      const validationErrors = validateMetadata(
+        translatationMock as unknown as TFunction<"translation">,
+        treeState,
+      );
       const titleError = validationErrors.filter(
         (f) => f.errorProperty === IQuestionnaireMetadataType.title,
       );
@@ -144,7 +163,10 @@ describe("metadataValidation", () => {
       } as IQuestionnaireMetadata;
       const treeState = { qMetadata: metadata } as TreeState;
 
-      const validationErrors = validateMetadata(translatationMock, treeState);
+      const validationErrors = validateMetadata(
+        translatationMock as unknown as TFunction<"translation">,
+        treeState,
+      );
       const titleError = validationErrors.filter(
         (f) => f.errorProperty === IQuestionnaireMetadataType.name,
       );
@@ -166,7 +188,10 @@ describe("metadataValidation", () => {
       } as IQuestionnaireMetadata;
       const treeState = { qMetadata: metadata } as TreeState;
 
-      const validationErrors = validateMetadata(translatationMock, treeState);
+      const validationErrors = validateMetadata(
+        translatationMock as unknown as TFunction<"translation">,
+        treeState,
+      );
       const titleError = validationErrors.filter(
         (f) => f.errorProperty === IQuestionnaireMetadataType.url,
       );
@@ -189,7 +214,10 @@ describe("metadataValidation", () => {
       } as IQuestionnaireMetadata;
       const treeState = { qMetadata: metadata } as TreeState;
 
-      const validationErrors = validateMetadata(translatationMock, treeState);
+      const validationErrors = validateMetadata(
+        translatationMock as unknown as TFunction<"translation">,
+        treeState,
+      );
       const titleError = validationErrors.filter(
         (f) => f.errorProperty === IQuestionnaireMetadataType.url,
       );
@@ -210,7 +238,10 @@ describe("metadataValidation", () => {
       } as IQuestionnaireMetadata;
       const treeState = { qMetadata: metadata } as TreeState;
 
-      const validationErrors = validateMetadata(translatationMock, treeState);
+      const validationErrors = validateMetadata(
+        translatationMock as unknown as TFunction<"translation">,
+        treeState,
+      );
       const titleError = validationErrors.filter(
         (f) => f.errorProperty === IQuestionnaireMetadataType.url,
       );

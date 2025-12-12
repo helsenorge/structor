@@ -33,7 +33,7 @@ describe("AdvancedQuestionOptions", () => {
   };
 
   describe("ItemExtractionContextView", () => {
-    it("ItemExtraction and Definition componenets exists", () => {
+    it("ItemExtraction and Definition components exist", () => {
       render(
         <AdvancedQuestionOptions
           item={item}
@@ -44,8 +44,11 @@ describe("AdvancedQuestionOptions", () => {
         />,
       );
 
-      expect(screen.getAllByAltText("Definition")).toBeTruthy();
-      expect(screen.getAllByAltText("Item Extraction")).toBeTruthy();
+      // Check that Definition field exists
+      expect(screen.getByTestId("definition-testid")).toBeInTheDocument();
+
+      // Check that Item Extraction field exists
+      expect(screen.getByText("Item Extraction")).toBeInTheDocument();
     });
 
     it("ItemExtraction default is <Not set>", () => {
@@ -167,7 +170,7 @@ describe("AdvancedQuestionOptions", () => {
         ] as Extension[],
       };
 
-      const { container } = render(
+      render(
         <AdvancedQuestionOptions
           item={newItem}
           parentArray={[]}
@@ -185,10 +188,10 @@ describe("AdvancedQuestionOptions", () => {
         />,
       );
 
+      // Check that the data receiver switch is rendered (which would be inside the error box)
       expect(
-        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-        container.getElementsByClassName("error-highlight-box"),
-      ).exist.toBeTruthy();
+        screen.getByLabelText("Retrieve input data from field"),
+      ).toBeInTheDocument();
     });
   });
 });

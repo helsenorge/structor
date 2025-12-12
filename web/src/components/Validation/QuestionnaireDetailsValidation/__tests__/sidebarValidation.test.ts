@@ -5,6 +5,7 @@ import {
 } from "src/types/IQuestionnareItemType";
 
 import type { Extension, QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "i18next";
 import type {
   Items,
   OrderItem,
@@ -60,7 +61,10 @@ describe("Sidebar Validation", () => {
       qItems: { "1": sotItem } as Items,
     } as TreeState;
 
-    const validationErrors = validateSidebar(translatationMock, treeState);
+    const validationErrors = validateSidebar(
+      translatationMock as unknown as TFunction<"translation">,
+      treeState,
+    );
 
     expect(validationErrors.length).toBe(0);
   });
@@ -91,7 +95,10 @@ describe("Sidebar Validation", () => {
       qItems: { "1": sotItem } as Items,
     } as TreeState;
 
-    const validationErrors = validateSidebar(translatationMock, treeState);
+    const validationErrors = validateSidebar(
+      translatationMock as unknown as TFunction<"translation">,
+      treeState,
+    );
 
     expect(validationErrors.length).toBe(1);
     expect(validationErrors[0].errorProperty).toBe(ValidationType.sidebar);

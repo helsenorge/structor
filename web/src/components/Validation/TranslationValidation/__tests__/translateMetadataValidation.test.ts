@@ -1,5 +1,6 @@
 import { TranslatableMetadataProperty } from "src/types/LanguageTypes";
 
+import type { TFunction } from "i18next";
 import type {
   MetadataTranslations,
   Translation,
@@ -28,7 +29,7 @@ describe("metadataValidation", () => {
       const translation = { metaData: metadata } as Translation;
 
       validateMetadataTranslation(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         "en-GB",
         translation,
         validationErrors,
@@ -55,7 +56,7 @@ describe("metadataValidation", () => {
       const translation = { metaData: metadata } as Translation;
 
       validateMetadataTranslation(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         "en-GB",
         translation,
         validationErrors,
@@ -82,7 +83,7 @@ describe("metadataValidation", () => {
       const translation = { metaData: metadata } as Translation;
 
       validateMetadataTranslation(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         "en-GB",
         translation,
         validationErrors,
@@ -110,7 +111,7 @@ describe("metadataValidation", () => {
       const translation = { metaData: metadata } as Translation;
 
       validateMetadataTranslation(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         "en-GB",
         translation,
         validationErrors,
@@ -136,7 +137,7 @@ describe("metadataValidation", () => {
       const translation = { metaData: metadata } as Translation;
 
       validateMetadataTranslation(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         "en-GB",
         translation,
         validationErrors,

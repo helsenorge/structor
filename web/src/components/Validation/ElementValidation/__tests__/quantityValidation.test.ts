@@ -1,4 +1,5 @@
 import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "node_modules/i18next/typescript/t";
 
 import { ErrorLevel } from "../../validationTypes";
 import {
@@ -16,7 +17,7 @@ describe("quantity validation", () => {
   describe("quantity initial value", () => {
     it("Should get error if initial value is not valueQuantity", () => {
       const validationErrors = validateQuantityInitialValue(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         initialValueNotQuantity,
       );
 
@@ -28,7 +29,7 @@ describe("quantity validation", () => {
     });
     it("Should NOT get error if initial value is valueQuantity", () => {
       const validationErrors = validateQuantityInitialValue(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         initialValueQuantity,
       );
 
@@ -39,7 +40,7 @@ describe("quantity validation", () => {
   describe("quantity system and code", () => {
     it("Should get errors if item extension has no system and no code", () => {
       const validationErrors = validateQuantitySystemAndCode(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         extensionWithNoSystemAndCode,
       );
 
@@ -55,7 +56,7 @@ describe("quantity validation", () => {
     });
     it("Should NOT get error if item extension has a system and a code", () => {
       const validationErrors = validateQuantitySystemAndCode(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         extensionWithSystemAndCode,
       );
 
@@ -66,7 +67,7 @@ describe("quantity validation", () => {
   describe("quantity display", () => {
     it("Should get error if unit in initial value does not match display in unit extension", () => {
       const validationErrors = validateQuantityDisplay(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         unitDismatch,
       );
 
@@ -78,7 +79,7 @@ describe("quantity validation", () => {
     });
     it("Should NOT get error if unit in initial value matches display in unit extension", () => {
       const validationErrors = validateQuantityDisplay(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         unitMatch,
       );
 
@@ -86,7 +87,7 @@ describe("quantity validation", () => {
     });
     it("Should get error if unit extension has no display value", () => {
       const validationErrors = validateQuantityDisplay(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         extensionWithNoDisplay,
       );
 

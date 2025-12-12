@@ -11,6 +11,7 @@ import type {
   QuestionnaireItem,
   QuestionnaireItemEnableWhen,
 } from "fhir/r4";
+import type { TFunction } from "i18next";
 import type {
   Items,
   OrderItem,
@@ -73,7 +74,7 @@ describe("data-receiver Validation", () => {
     } as TreeState;
 
     const validationErrors = validateDataReceiverElements(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -91,7 +92,7 @@ describe("data-receiver Validation", () => {
     } as TreeState;
 
     const validationErrors = validateDataReceiverElements(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -119,7 +120,7 @@ describe("data-receiver Validation", () => {
     } as TreeState;
 
     const validationErrors = validateDataReceiverElements(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -139,7 +140,7 @@ describe("data-receiver Validation", () => {
     } as TreeState;
 
     const validationErrors = validateDataReceiverElements(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -159,7 +160,7 @@ describe("data-receiver Validation", () => {
     } as TreeState;
 
     const validationErrors = validateDataReceiverElements(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -190,7 +191,7 @@ describe("data-receiver Validation", () => {
     } as TreeState;
 
     const validationErrors = validateDataReceiverElements(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -216,7 +217,7 @@ describe("data-receiver Validation", () => {
     } as TreeState;
 
     const validationErrors = validateDataReceiverElements(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -240,7 +241,7 @@ describe("data-receiver Validation", () => {
     } as TreeState;
 
     const validationErrors = validateDataReceiverElements(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -271,7 +272,7 @@ describe("data-receiver Validation", () => {
     } as TreeState;
 
     const validationErrors = validateDataReceiverElements(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       treeState,
     );
 

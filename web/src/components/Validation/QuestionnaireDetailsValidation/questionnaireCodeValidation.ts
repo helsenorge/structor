@@ -1,4 +1,4 @@
-import type { TFunction } from "react-i18next";
+import type { TFunction } from "i18next";
 import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 import type { ValidationError } from "src/utils/validationUtils";
 

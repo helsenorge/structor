@@ -1,3 +1,5 @@
+import type { TFunction } from "i18next";
+
 import { ErrorLevel } from "../../validationTypes";
 import { validateBundle } from "../bundleValidation";
 import { q5 } from "./data";
@@ -12,7 +14,10 @@ describe("bundleValidation", () => {
 
   describe("Id Validation", () => {
     it("Should get error if bundle has questionnaires with same id", () => {
-      const validationErrors = validateBundle(translatationMock, bundle);
+      const validationErrors = validateBundle(
+        translatationMock as unknown as TFunction<"translation">,
+        bundle,
+      );
 
       expect(validationErrors.length).toBe(1);
       expect(validationErrors[0].errorLevel).toBe(ErrorLevel.error);

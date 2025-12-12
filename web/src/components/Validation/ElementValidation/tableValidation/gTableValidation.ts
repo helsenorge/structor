@@ -2,7 +2,7 @@ import { getLinkIdFromValueString } from "src/helpers/dataReceiverHelper";
 import { ItemControlType } from "src/helpers/itemControl";
 
 import type { Questionnaire, QuestionnaireItem } from "fhir/r4";
-import type { TFunction } from "react-i18next";
+import type { TFunction } from "i18next";
 import type { ValidationError } from "src/utils/validationUtils";
 
 import { isDataReceiver } from "@helsenorge/refero";

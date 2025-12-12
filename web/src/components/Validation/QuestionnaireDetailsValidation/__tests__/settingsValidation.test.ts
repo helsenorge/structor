@@ -1,6 +1,7 @@
 import { IExtensionType } from "src/types/IQuestionnareItemType";
 
 import type { Extension } from "fhir/r4";
+import type { TFunction } from "i18next";
 import type { TreeState } from "src/store/treeStore/treeStore";
 import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 
@@ -29,7 +30,7 @@ describe("Questionnaire settings validation", () => {
     } as TreeState;
 
     const validationErrors = validateQuestionnaireSettings(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -60,7 +61,7 @@ describe("Questionnaire settings validation", () => {
     } as TreeState;
 
     const validationErrors = validateQuestionnaireSettings(
-      translatationMock,
+      translatationMock as unknown as TFunction<"translation">,
       treeState,
     );
 
@@ -78,7 +79,7 @@ describe("Questionnaire settings validation", () => {
       } as TreeState;
 
       const validationErrors = validateQuestionnaireSettings(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         treeState,
       );
 
@@ -96,7 +97,7 @@ describe("Questionnaire settings validation", () => {
       } as TreeState;
 
       const validationErrors = validateQuestionnaireSettings(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         treeState,
       );
 
@@ -117,7 +118,7 @@ describe("Questionnaire settings validation", () => {
       } as TreeState;
 
       const validationErrors = validateQuestionnaireSettings(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         treeState,
       );
 
@@ -138,7 +139,7 @@ describe("Questionnaire settings validation", () => {
       } as TreeState;
 
       const validationErrors = validateQuestionnaireSettings(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         treeState,
       );
 
@@ -161,7 +162,7 @@ describe("Questionnaire settings validation", () => {
       } as TreeState;
 
       const validationErrors = validateQuestionnaireSettings(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         treeState,
       );
 
@@ -179,7 +180,7 @@ describe("Questionnaire settings validation", () => {
       } as TreeState;
 
       const validationErrors = validateQuestionnaireSettings(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         treeState,
       );
 
@@ -200,7 +201,7 @@ describe("Questionnaire settings validation", () => {
       } as TreeState;
 
       const validationErrors = validateQuestionnaireSettings(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         treeState,
       );
 
@@ -221,7 +222,7 @@ describe("Questionnaire settings validation", () => {
       } as TreeState;
 
       const validationErrors = validateQuestionnaireSettings(
-        translatationMock,
+        translatationMock as unknown as TFunction<"translation">,
         treeState,
       );
 
