@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, afterEach, Mock } from "vitest";
-import type { TFunction } from "react-i18next";
+import { describe, it, expect, vi, afterEach, type Mock } from "vitest";
+
 import type { QuestionnaireItem } from "fhir/r4";
+import type { TFunction } from "react-i18next";
 
 vi.mock("src/helpers/constants", () => ({
   MAX_ATTACHMENT_ALLOWED: 3,
@@ -15,15 +16,19 @@ vi.mock("@helsenorge/refero", () => {
 });
 
 // 2) Now import SUT and mocked symbols (after mocks)
+// eslint-disable-next-line import/order
 import { attachementValidation } from "src/components/Validation/ElementValidation/attachementValidation";
+// eslint-disable-next-line import/order
 import {
   ErrorLevel,
   ValidationType,
 } from "src/components/Validation/validationTypes";
+// eslint-disable-next-line import/order
 import {
   IExtensionType,
   IQuestionnaireItemType,
 } from "src/types/IQuestionnareItemType";
+
 import {
   getMaxSizeExtensionValue,
   getMaxOccursExtensionValue,

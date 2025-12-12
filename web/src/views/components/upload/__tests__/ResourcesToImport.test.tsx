@@ -1,9 +1,10 @@
 // ResourcesToImport.test.tsx
-import React from "react";
 import "@testing-library/jest-dom";
-import { FhirResource } from "fhir/r4";
-import ResourcesToImport from "../ResourcesToImport";
 import { render, screen, userEvent } from "src/tests/testUtils";
+
+import type { FhirResource } from "fhir/r4";
+
+import ResourcesToImport from "../ResourcesToImport";
 
 // ---- CSS module mocks used by Preview and RawJson
 vi.mock("../preview/preview-fhir-resource.module.scss", () => ({

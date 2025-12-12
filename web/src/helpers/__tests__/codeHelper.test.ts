@@ -1,8 +1,10 @@
-import { QuestionnaireItem } from "fhir/r4";
+import { IItemProperty } from "src/types/IQuestionnareItemType";
 import { describe, it, expect, vi } from "vitest";
 
+import type { QuestionnaireItem } from "fhir/r4";
+
 import { removeItemCode, removeItemCodeWithCode } from "../codeHelper";
-import { IItemProperty } from "src/types/IQuestionnareItemType";
+
 describe("codeHelper", () => {
   describe("removeItemCode", () => {
     it("should not remove code if index is undefined", () => {

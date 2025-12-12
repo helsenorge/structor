@@ -1,4 +1,9 @@
+import {
+  IExtensionType,
+  ItemExtractionContext,
+} from "src/types/IQuestionnareItemType";
 import { describe, it, expect } from "vitest";
+
 import type {
   Questionnaire,
   QuestionnaireItem,
@@ -7,10 +12,7 @@ import type {
 } from "fhir/r4";
 
 import { ItemTypeConstants } from "@helsenorge/refero";
-import {
-  IExtensionType,
-  ItemExtractionContext,
-} from "src/types/IQuestionnareItemType";
+
 import { conditionValidation } from "../ConditionValidation";
 
 // ---------- helpers ----------
@@ -52,8 +54,6 @@ const wrapWithValidAncestor = (child: QuestionnaireItem): Questionnaire =>
   makeQuestionnaire([makeParentWithConditionExtractionContext([child])]);
 
 const EVIDENCE = "Condition#Evidence";
-const RECORDED_DATE = "Condition#RecordedDate";
-const CODE_ANCHOR = "Condition#Code";
 
 // ---------- tests ----------
 

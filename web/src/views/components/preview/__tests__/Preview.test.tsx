@@ -1,8 +1,9 @@
 // Preview.test.tsx
-import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen, userEvent } from "src/tests/testUtils";
-import { FhirResource } from "fhir/r4";
+
+import type { FhirResource } from "fhir/r4";
+
 import { Preview } from "../Preview";
 
 // ---- hook mock

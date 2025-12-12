@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import { Bundle } from "fhir/r4";
+import type { Bundle } from "fhir/r4";
 
 const q1: Bundle = JSON.parse(
   fs

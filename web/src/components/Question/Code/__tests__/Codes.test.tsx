@@ -1,20 +1,22 @@
-import {
-  Items,
-  OrderItem,
-  TreeContext,
-  TreeState,
-} from "src/store/treeStore/treeStore";
-import { QuestionnaireItem } from "fhir/r4";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import {
   addItemCodeAction,
   deleteItemCodeAction,
   updateItemCodePropertyAction,
 } from "src/store/treeStore/treeActions";
-import { Mock } from "vitest";
-import Codes from "../Codes";
-import userEvent from "@testing-library/user-event";
+import {
+  type Items,
+  type OrderItem,
+  TreeContext,
+  type TreeState,
+} from "src/store/treeStore/treeStore";
 import { ICodeSystem, ICodingProperty } from "src/types/IQuestionnareItemType";
+
+import type { QuestionnaireItem } from "fhir/r4";
+import type { Mock } from "vitest";
+
+import Codes from "../Codes";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => {

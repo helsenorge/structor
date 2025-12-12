@@ -1,4 +1,5 @@
 import { render, screen } from "src/tests/testUtils";
+
 import QuestionnaireSettings from "../../QuestionnaireSettings";
 import MetaItemExtractionContextView from "../MetaItemExtractionView";
 
@@ -7,7 +8,7 @@ describe("QuestionnaireSettings", () => {
     it("ItemExtraction exists", () => {
       render(<QuestionnaireSettings questionnaireDetailsErrors={[]} />);
 
-      expect(screen.queryAllByAltText("Item Extraction")).toBeTruthy();
+      expect(screen.getAllByAltText("Item Extraction")).toBeTruthy();
     });
 
     it("ItemExtraction default is <Not set>", () => {

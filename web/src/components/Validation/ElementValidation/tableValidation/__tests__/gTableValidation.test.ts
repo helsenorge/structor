@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
 import type { QuestionnaireItem } from "fhir/r4";
 import type { TFunction } from "react-i18next";
 
@@ -30,17 +31,24 @@ vi.mock("src/components/Validation/validationHelper", () => ({
   ),
 }));
 
+import { isDataReceiver } from "@helsenorge/refero";
+
+import { findQuestionnaireItemsInQuestionnaire } from "../../fhirExtract/utils";
 import { validateGTable } from "../gTableValidation";
+
+// eslint-disable-next-line import/order
 import { ItemControlType } from "src/helpers/itemControl";
 
 import { isTableType } from "../utils";
-import { isDataReceiver } from "@helsenorge/refero";
+
+// eslint-disable-next-line import/order
 import {
   ErrorLevel,
   ValidationType,
 } from "src/components/Validation/validationTypes";
+// eslint-disable-next-line import/order
 import { createError } from "src/components/Validation/validationHelper";
-import { findQuestionnaireItemsInQuestionnaire } from "../../fhirExtract/utils";
+// eslint-disable-next-line import/order
 import { getLinkIdFromValueString } from "src/helpers/dataReceiverHelper";
 
 // -----------------------------------------------------------------------------

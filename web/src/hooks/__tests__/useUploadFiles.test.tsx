@@ -1,11 +1,12 @@
-import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
-import { render, screen, fireEvent, waitFor } from "../../tests/testUtils";
 import userEvent from "@testing-library/user-event";
-import { useUploadFile } from "../useUploadFile";
 import { mapToTreeState } from "src/helpers/FhirToTreeStateMapper";
 import { saveQuestionnaire } from "src/store/treeStore/indexedDbHelper";
-import { resetQuestionnaireAction } from "src/store/treeStore/treeActions";
 import { getInitialState } from "src/store/treeStore/initialState";
+import { resetQuestionnaireAction } from "src/store/treeStore/treeActions";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+
+import { render, screen, fireEvent, waitFor } from "../../tests/testUtils";
+import { useUploadFile } from "../useUploadFile";
 
 // ——— mocks ———
 vi.mock("src/helpers/FhirToTreeStateMapper");

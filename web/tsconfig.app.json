@@ -1,37 +1,22 @@
 {
+  "extends": "./tsconfig.vite.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "useDefineForClassFields": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "types": ["vitest/globals", "@testing-library/jest-dom"],
+    "allowJs": true,
     "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": false,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": false,
-    "jsx": "react-jsx",
-    "isolatedModules": true,
-    "resolveJsonModule": true,
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    //"erasableSyntaxOnly": false, // default true i vite, men fungerer ikke med enums fra EntitiesGenerator eller SonarQube
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-
-    /* library-build specific options */
-    "declaration": true,
-    "declarationMap": true,
     "esModuleInterop": true,
+    "baseUrl": "./",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
     "paths": {
       "src/*": ["./src/*"]
-    }
+    },
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src"]
+  "exclude": ["node_modules", "dist", "coverage", "public"],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./setupTests.ts"]
 }

@@ -1,15 +1,17 @@
-import { TreeContext, TreeState } from "src/store/treeStore/treeStore";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { VisibilityType } from "src/helpers/globalVisibilityHelper";
+import { updateQuestionnaireMetadataAction } from "src/store/treeStore/treeActions";
+import { TreeContext, type TreeState } from "src/store/treeStore/treeStore";
 import {
-  IQuestionnaireMetadata,
+  type IQuestionnaireMetadata,
   IQuestionnaireMetadataType,
 } from "src/types/IQuestionnaireMetadataType";
 import { ICodeSystem, IExtensionType } from "src/types/IQuestionnareItemType";
-import { Coding, Extension } from "fhir/r4";
-import { fireEvent, render, screen } from "@testing-library/react";
+
+import type { Coding, Extension } from "fhir/r4";
+import type { Mock } from "vitest";
+
 import PdfSectionView from "../PdfSectionView";
-import { updateQuestionnaireMetadataAction } from "src/store/treeStore/treeActions";
-import { Mock } from "vitest";
-import { VisibilityType } from "src/helpers/globalVisibilityHelper";
 
 describe("PdfSectionView", () => {
   const updateExtensionMock = vi.fn();

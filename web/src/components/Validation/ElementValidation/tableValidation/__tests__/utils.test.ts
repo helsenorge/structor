@@ -1,5 +1,11 @@
 // __tests__/table-utils.test.ts
+import {
+  IQuestionnaireItemType,
+  IExtensionType,
+  ICodeSystem,
+} from "src/types/IQuestionnareItemType";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+
 import type { QuestionnaireItem, Extension, Coding } from "fhir/r4";
 import type { TFunction } from "react-i18next";
 
@@ -20,11 +26,6 @@ import {
   itemIsEnrichedText,
 } from "../utils"; // <-- CHANGE THIS
 // Keep the real enums/types from your codebase:
-import {
-  IQuestionnaireItemType,
-  IExtensionType,
-  ICodeSystem,
-} from "src/types/IQuestionnareItemType";
 
 // We want to partially mock itemControl helpers to control behavior in tests,
 // but still keep real enums (ItemControlType).
@@ -43,7 +44,9 @@ vi.mock("@helsenorge/refero", () => ({
   getExtension: vi.fn(),
 }));
 
+// eslint-disable-next-line import/order
 import { ItemControlType } from "src/helpers/itemControl";
+// eslint-disable-next-line import/order
 import { getCodes, getExtension } from "@helsenorge/refero";
 
 const mockedIsItemControlDataReceiver = vi.mocked(

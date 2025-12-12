@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
+
+import type { TreeState } from "src/store/treeStore/treeStore";
+import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
+
 import TranslateMetaData from "../TranslateMetaData";
-import { TreeState } from "src/store/treeStore/treeStore";
-import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 
 describe("TranslateMetaData", () => {
   vi.mock("src/components/MarkdownEditor/MarkdownEditor", () => ({

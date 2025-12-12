@@ -1,15 +1,17 @@
-import { TreeContext, TreeState } from "src/store/treeStore/treeStore";
-import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
-import { IExtensionType } from "src/types/IQuestionnareItemType";
-import { Extension, Reference } from "fhir/r4";
 import { render, screen } from "@testing-library/react";
-import PrintVersionView from "../PrintVersionView";
+import userEvent from "@testing-library/user-event";
 import {
   ErrorLevel,
   ValidationType,
 } from "src/components/Validation/validationTypes";
-import { ValidationError } from "src/utils/validationUtils";
-import userEvent from "@testing-library/user-event";
+import { TreeContext, type TreeState } from "src/store/treeStore/treeStore";
+import { IExtensionType } from "src/types/IQuestionnareItemType";
+
+import type { Extension, Reference } from "fhir/r4";
+import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
+import type { ValidationError } from "src/utils/validationUtils";
+
+import PrintVersionView from "../PrintVersionView";
 
 const printVersionValueReference = (value: string): Reference => {
   return {
@@ -88,9 +90,11 @@ describe("PrintVersionView", () => {
       </TreeContext.Provider>,
     );
 
+    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
     expect(container.getElementsByClassName("warning-highlight").length).toBe(
       1,
     );
+    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
     expect(container.getElementsByClassName("warning-text").length).toBe(1);
     expect(
       screen.getByText(

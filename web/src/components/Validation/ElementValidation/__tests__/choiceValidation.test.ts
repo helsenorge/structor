@@ -1,4 +1,4 @@
-import { QuestionnaireItem } from "fhir/r4";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import { ErrorLevel } from "../../validationTypes";
 import {

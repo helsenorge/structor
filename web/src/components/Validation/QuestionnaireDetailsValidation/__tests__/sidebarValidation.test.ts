@@ -1,13 +1,19 @@
-import { Extension, QuestionnaireItem } from "fhir/r4";
 import { ItemControlType } from "src/helpers/itemControl";
-import { Items, OrderItem, TreeState } from "src/store/treeStore/treeStore";
 import {
   IExtensionType,
   IValueSetSystem,
 } from "src/types/IQuestionnareItemType";
+
+import type { Extension, QuestionnaireItem } from "fhir/r4";
+import type {
+  Items,
+  OrderItem,
+  TreeState,
+} from "src/store/treeStore/treeStore";
+import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
+
 import { ErrorLevel, ValidationType } from "../../validationTypes";
 import { validateSidebar } from "../sidebarValidation";
-import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 
 const qOrder = [{ linkId: "1", items: [] }] as OrderItem[];
 const metadata = {

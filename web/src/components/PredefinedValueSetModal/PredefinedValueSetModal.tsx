@@ -85,7 +85,9 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
       compose.include &&
       compose.include[0].concept?.findIndex((x) => x && x.id === id);
     if (conceptToDelete || conceptToDelete === 0) {
-      compose.include && compose.include[0].concept?.splice(conceptToDelete, 1);
+      if (compose.include) {
+        compose.include[0].concept?.splice(conceptToDelete, 1);
+      }
     }
 
     setNewValueSet({ ...newValueSet });
@@ -150,15 +152,18 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
       compose.include && compose.include[0].concept?.splice(fromIndex, 1);
 
     if (fromIndex !== toIndex && itemToMove) {
-      compose.include &&
+      if (compose.include) {
         compose.include[0].concept?.splice(toIndex, 0, itemToMove[0]);
+      }
       setNewValueSet({ ...newValueSet });
     }
   };
 
   const handleSystem = (value: string): void => {
     const compose = { ...newValueSet.compose };
-    compose.include && (compose.include[0].system = value);
+    if (compose.include) {
+      compose.include[0].system = value;
+    }
     setNewValueSet({ ...newValueSet });
   };
 

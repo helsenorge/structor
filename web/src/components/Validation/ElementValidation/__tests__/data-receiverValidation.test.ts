@@ -1,18 +1,24 @@
-import {
-  Extension,
-  QuestionnaireItem,
-  QuestionnaireItemEnableWhen,
-} from "fhir/r4";
-import { Items, OrderItem, TreeState } from "src/store/treeStore/treeStore";
+import { ItemControlType } from "src/helpers/itemControl";
 import {
   ICodeSystem,
   IExtensionType,
   IValueSetSystem,
 } from "src/types/IQuestionnareItemType";
-import { validateDataReceiverElements } from "../data-receiverValidation";
-import { ErrorLevel, ValidationType } from "../../validationTypes";
-import { ItemControlType } from "src/helpers/itemControl";
 import { ScoringFormulaCodes } from "src/types/scoringFormulas";
+
+import type {
+  Extension,
+  QuestionnaireItem,
+  QuestionnaireItemEnableWhen,
+} from "fhir/r4";
+import type {
+  Items,
+  OrderItem,
+  TreeState,
+} from "src/store/treeStore/treeStore";
+
+import { ErrorLevel, ValidationType } from "../../validationTypes";
+import { validateDataReceiverElements } from "../data-receiverValidation";
 
 let mainItem = {} as QuestionnaireItem;
 let copyItem = {} as QuestionnaireItem;

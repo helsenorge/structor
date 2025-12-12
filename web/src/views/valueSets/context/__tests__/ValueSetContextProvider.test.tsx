@@ -1,14 +1,17 @@
-import React, { useContext } from "react";
-import { describe, it, expect, beforeEach, vi, Mock } from "vitest";
-import { ValueSet, ValueSetComposeIncludeConcept } from "fhir/r4";
-import { ValueSetProvider } from "../ValueSetContextProvider";
-import { ValueSetContext } from "../ValuseSetContext";
-import * as initialValueSets from "../../utils/intialValuesets";
-// We import the modules we are going to mock
+import { useContext } from "react";
+
 import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
-import { predefinedValueSetUri } from "src/types/IQuestionnareItemType";
 import { render, waitFor } from "src/tests/testUtils";
+import { predefinedValueSetUri } from "src/types/IQuestionnareItemType";
+import { describe, it, expect, beforeEach, vi, type Mock } from "vitest";
+
+import type { ValueSet, ValueSetComposeIncludeConcept } from "fhir/r4";
+
+import * as initialValueSets from "../../utils/intialValuesets";
+import { ValueSetProvider } from "../ValueSetContextProvider";
+import { ValueSetContext } from "../ValuseSetContext";
+// We import the modules we are going to mock
 
 // Vitest's vi.mock hoists these calls, so they apply to all imports in the file
 vi.mock("src/helpers/CreateUUID");

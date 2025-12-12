@@ -72,7 +72,7 @@ export const ColumnToOrderByOption = ({
 
   const onChangeOption = (newValue: string): void => {
     removeItemCode(item, ICodeSystem.tableOrderingColumn, dispatch);
-    optionsToUse &&
+    if (optionsToUse) {
       addItemCode(
         item,
         {
@@ -82,6 +82,7 @@ export const ColumnToOrderByOption = ({
         },
         dispatch,
       );
+    }
   };
 
   return (

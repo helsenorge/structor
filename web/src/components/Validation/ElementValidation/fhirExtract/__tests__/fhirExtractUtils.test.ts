@@ -1,4 +1,6 @@
+import { IExtensionType } from "src/types/IQuestionnareItemType";
 import { describe, it, expect, beforeEach, vi } from "vitest";
+
 import type { Questionnaire, QuestionnaireItem, Coding } from "fhir/r4";
 
 import {
@@ -21,8 +23,6 @@ import {
   SR_SUPPORTING_INFO_ANCHOR,
   SERVICE_REQUEST_ANCHORS,
 } from "../utils";
-
-import { IExtensionType } from "src/types/IQuestionnareItemType";
 
 // helpers
 const t: any = (s: string) => s;

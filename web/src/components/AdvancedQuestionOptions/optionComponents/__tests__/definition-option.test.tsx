@@ -1,11 +1,13 @@
-import { QuestionnaireItem } from "fhir/r4";
-import { updateItemAction } from "src/store/treeStore/treeActions";
-import { Mock } from "vitest";
-import { DefinitionOption } from "../definition-option";
-import { TreeContext, TreeState } from "src/store/treeStore/treeStore";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { updateItemAction } from "src/store/treeStore/treeActions";
+import { TreeContext, type TreeState } from "src/store/treeStore/treeStore";
 import { IItemProperty } from "src/types/IQuestionnareItemType";
+
+import type { QuestionnaireItem } from "fhir/r4";
+import type { Mock } from "vitest";
+
+import { DefinitionOption } from "../definition-option";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => {

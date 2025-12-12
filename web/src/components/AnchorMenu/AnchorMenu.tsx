@@ -62,14 +62,6 @@ interface ExtendedNode {
   path: string[];
 }
 
-interface NodeMoveEvent {
-  treeData: Node[];
-  nextParentNode: Node;
-  node: Node;
-  nextPath: string[];
-  prevPath: string[];
-}
-
 interface NodeVisibilityToggleEvent {
   node: Node;
   expanded: boolean;
@@ -245,8 +237,10 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
             node,
             nextPath,
             prevPath,
-          }: NodeMoveEvent) => {
-            const newPath = treePathToOrderArray(nextPath);
+          }) => {
+            const newPath = treePathToOrderArray(
+              nextPath as unknown as string[],
+            );
             // find parent node:
             const moveIndex = nextParentNode
               ? nextParentNode.children.findIndex(
@@ -263,7 +257,9 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                 ),
               );
             } else {
-              const oldPath = treePathToOrderArray(prevPath);
+              const oldPath = treePathToOrderArray(
+                prevPath as unknown as string[],
+              );
               // reorder within same parent
               if (JSON.stringify(newPath) === JSON.stringify(oldPath)) {
                 props.dispatch(
@@ -292,7 +288,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
             const item = props.qItems[node.title];
             return item ? canTypeHaveChildren(item) : false;
           }}
-          generateNodeProps={(extendedNode: ExtendedNode) => ({
+          generateNodeProps={(extendedNode) => ({
             className: `anchor-menu__item 
                             ${validationClasses(extendedNode.node.title)}
                             ${
@@ -315,7 +311,9 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                   props.dispatch(
                     updateMarkedLinkIdAction(
                       extendedNode.node.title,
-                      treePathToOrderArray(extendedNode.path),
+                      treePathToOrderArray(
+                        extendedNode.path as unknown as string[],
+                      ),
                     ),
                   );
                 }}
@@ -324,7 +322,9 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                     props.dispatch(
                       updateMarkedLinkIdAction(
                         extendedNode.node.title,
-                        treePathToOrderArray(extendedNode.path),
+                        treePathToOrderArray(
+                          extendedNode.path as unknown as string[],
+                        ),
                       ),
                     );
                   }
@@ -360,7 +360,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
             buttons: generateItemButtons(
               t,
               props.qItems[extendedNode.node.title],
-              treePathToOrderArray(extendedNode.path),
+              treePathToOrderArray(extendedNode.path as unknown as string[]),
               false,
               props.dispatch,
             ),

@@ -49,7 +49,7 @@ export const useUploadFile = (
         if (onUploadComplete && newId) {
           onUploadComplete(newId);
         }
-      } catch (err) {
+      } catch {
         setError(
           "Failed to import questionnaire. Please check the file format.",
         );
@@ -76,7 +76,7 @@ export const useUploadFile = (
           });
         });
         await Promise.all(filePromises);
-      } catch (err) {
+      } catch {
         setError("Failed to read files. Please check the file format.");
       } finally {
         setIsLoading(false);

@@ -1,5 +1,6 @@
-import { Questionnaire, Meta } from "fhir/r4";
 import { describe, beforeAll, it, expect } from "vitest";
+
+import type { Questionnaire, Meta } from "fhir/r4";
 
 import {
   addMetaSecurityIfDoesNotExist,

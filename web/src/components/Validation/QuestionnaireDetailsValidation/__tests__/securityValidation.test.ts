@@ -1,9 +1,10 @@
-import { Meta } from "fhir/r4";
-import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
-
 import { tilgangsstyringsCode } from "src/helpers/MetadataHelper";
-import { metaSecurityValidation } from "../securityValidation";
+
+import type { Meta } from "fhir/r4";
+import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
+
 import { ErrorLevel, ValidationType } from "../../validationTypes";
+import { metaSecurityValidation } from "../securityValidation";
 
 describe("securityValidation", () => {
   describe("metaSecurityValidation", () => {

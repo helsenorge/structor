@@ -1,22 +1,24 @@
-import { TreeContext, TreeState } from "src/store/treeStore/treeStore";
+import { fireEvent, render, screen } from "@testing-library/react";
+import {
+  ChoiceRenderOptionCodes,
+  RenderingOptionsEnum,
+} from "src/helpers/codeHelper";
+import {
+  addItemCodeAction,
+  updateItemAction,
+} from "src/store/treeStore/treeActions";
+import { TreeContext, type TreeState } from "src/store/treeStore/treeStore";
 import {
   ICodeSystem,
   IExtensionType,
   IItemProperty,
   IQuestionnaireItemType,
 } from "src/types/IQuestionnareItemType";
-import { QuestionnaireItem } from "fhir/r4";
-import { fireEvent, render, screen } from "@testing-library/react";
-import {
-  addItemCodeAction,
-  updateItemAction,
-} from "src/store/treeStore/treeActions";
-import { Mock } from "vitest";
+
+import type { QuestionnaireItem } from "fhir/r4";
+import type { Mock } from "vitest";
+
 import ViewOption from "../view-option";
-import {
-  ChoiceRenderOptionCodes,
-  RenderingOptionsEnum,
-} from "src/helpers/codeHelper";
 
 const displayFormAndPDF = {
   code: RenderingOptionsEnum.Default,

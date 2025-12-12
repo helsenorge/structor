@@ -34,7 +34,9 @@ const DateTimePicker = ({
         onChange={(date: Date | null) => {
           if (date) {
             setStartDate(date);
-            callback && callback(date);
+            if (callback) {
+              callback(date);
+            }
           }
         }}
         todayButton={nowButton ? t("Today") : undefined}

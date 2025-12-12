@@ -1,20 +1,21 @@
-import { Extension, QuestionnaireItem } from "fhir/r4";
+import { fireEvent, render, screen } from "@testing-library/react";
+import {
+  ErrorLevel,
+  ValidationType,
+} from "src/components/Validation/validationTypes";
 import { updateItemAction } from "src/store/treeStore/treeActions";
+import { TreeContext, type TreeState } from "src/store/treeStore/treeStore";
 import {
   IExtensionType,
   IItemProperty,
   IQuestionnaireItemType,
 } from "src/types/IQuestionnareItemType";
-import { fireEvent, render, screen } from "@testing-library/react";
-import { Mock } from "vitest";
-import { TreeContext, TreeState } from "src/store/treeStore/treeStore";
+
+import type { Extension, QuestionnaireItem } from "fhir/r4";
+import type { ValidationError } from "src/utils/validationUtils";
+import type { Mock } from "vitest";
+
 import CalculatedExpressionOption from "../calculatedExpression-option";
-import { createError } from "src/components/Validation/validationHelper";
-import { ValidationError } from "src/utils/validationUtils";
-import {
-  ErrorLevel,
-  ValidationType,
-} from "src/components/Validation/validationTypes";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => {
@@ -47,7 +48,7 @@ describe("CalculatedExpressionOption", () => {
   });
 
   it("Item does not have calculated expression", () => {
-    const { container } = render(
+    render(
       <TreeContext.Provider
         value={{ state: {} as TreeState, dispatch: vi.fn() }}
       >
@@ -171,6 +172,7 @@ describe("CalculatedExpressionOption", () => {
     );
 
     expect(
+      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
       container.getElementsByClassName("error-highlight-box"),
     ).exist.toBeTruthy();
   });

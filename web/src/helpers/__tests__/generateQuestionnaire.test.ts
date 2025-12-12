@@ -1,8 +1,9 @@
-import { Questionnaire } from "fhir/r4";
 import { describe, beforeAll, it, expect } from "vitest";
 
+import type { TreeState } from "../../store/treeStore/treeStore";
+import type { Questionnaire } from "fhir/r4";
+
 import { getInitialState } from "../../store/treeStore/initialState";
-import { TreeState } from "../../store/treeStore/treeStore";
 import { generateQuestionnaire } from "../generateQuestionnaire";
 
 describe(`generateQuestionnaire from initialState`, () => {
@@ -18,7 +19,7 @@ describe(`generateQuestionnaire from initialState`, () => {
   it("does not remove string properties", () => {
     expect(generatedQuestionnaire).toHaveProperty(
       "resourceType",
-      "Questionnaire"
+      "Questionnaire",
     );
   });
 

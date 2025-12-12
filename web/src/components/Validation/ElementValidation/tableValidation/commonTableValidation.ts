@@ -54,20 +54,6 @@ const allTableGroupsMustContainChildren = ({
   return errors;
 };
 
-const findChildItemWithCodeSystem = (
-  qItem: QuestionnaireItem,
-  system: ICodeSystem,
-): QuestionnaireItem | undefined => {
-  if (qItem.item && qItem.item.length > 0) {
-    for (const child of qItem.item) {
-      const found = findChildItemWithCodeSystem(child, system);
-      if (found) {
-        return found;
-      }
-    }
-  }
-  return qItem.item?.find((child) => itemHasCodeWithSystem(child, system));
-};
 export const validateTableCodes = ({
   t,
   qItem,

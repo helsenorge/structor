@@ -1,12 +1,13 @@
 import { describe, it, expect, beforeAll } from "vitest";
 
+import type { Items, TreeState } from "../../store/treeStore/treeStore";
+
 import {
   defaultState,
   item_JaNei,
   item_JaNeiVetIkke,
 } from "../../__data__/stateData";
 import { valuesetJaNei, valuesetJaNeiVetIkke } from "../../__data__/valuesets";
-import { Items, TreeState } from "../../store/treeStore/treeStore";
 import { getValueSetToTranslate } from "../validationUtils";
 
 describe("validationUtils", () => {

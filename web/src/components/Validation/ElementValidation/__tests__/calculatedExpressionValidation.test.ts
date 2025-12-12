@@ -1,12 +1,18 @@
-import { Extension, QuestionnaireItem } from "fhir/r4";
-import { Items, OrderItem, TreeState } from "src/store/treeStore/treeStore";
 import {
   IExtensionType,
   IQuestionnaireItemType,
 } from "src/types/IQuestionnareItemType";
+
+import type { Extension, QuestionnaireItem } from "fhir/r4";
+import type {
+  Items,
+  OrderItem,
+  TreeState,
+} from "src/store/treeStore/treeStore";
+import type { ValidationError } from "src/utils/validationUtils";
+
 import { ErrorLevel, ValidationType } from "../../validationTypes";
 import { validateCalulatedExpressionElements } from "../calculatedExpressionValidation";
-import { ValidationError } from "src/utils/validationUtils";
 
 const calulatedExtention = (valueString: string): Extension[] => {
   return [

@@ -1,4 +1,9 @@
+import {
+  IExtensionType,
+  ItemExtractionContext,
+} from "src/types/IQuestionnareItemType";
 import { describe, it, expect } from "vitest";
+
 import type {
   Questionnaire,
   QuestionnaireItem,
@@ -6,13 +11,9 @@ import type {
   Extension,
 } from "fhir/r4";
 
-import { observationValidation } from "../observationValidation";
-
 import { ItemTypeConstants } from "@helsenorge/refero";
-import {
-  IExtensionType,
-  ItemExtractionContext,
-} from "src/types/IQuestionnareItemType";
+
+import { observationValidation } from "../observationValidation";
 
 // ---------- helpers ----------
 const t = (s: string) => s;
@@ -53,7 +54,6 @@ const wrapWithValidAncestor = (child: QuestionnaireItem): Questionnaire =>
   makeQuestionnaire([makeParentWithObservationExtractionContext([child])]);
 
 const COMPONENT = "Observation#component";
-const DERIVED_FROM = "Observation#derivedFrom";
 const EFFECTIVE_DT = "Observation#effectiveDateTime";
 const CODE_ANCHOR = "Observation#code";
 const CATEGORY = "Observation#Category";

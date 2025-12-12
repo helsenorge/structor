@@ -1,20 +1,22 @@
 import { render, screen } from "@testing-library/react";
-import TranslateMetaDataRow from "../TranslateMetaDataRow";
-import { TranslatableMetadataProperty } from "src/types/LanguageTypes";
+import userEvent from "@testing-library/user-event";
+import { ErrorLevel } from "src/components/Validation/validationTypes";
 import { translatableMetadata } from "src/helpers/LanguageHelper";
 import {
+  type IQuestionnaireMetadata,
+  IQuestionnaireMetadataType,
+} from "src/types/IQuestionnaireMetadataType";
+import { TranslatableMetadataProperty } from "src/types/LanguageTypes";
+
+import type {
   Languages,
   MetadataTranslations,
   Translation,
   TreeState,
 } from "src/store/treeStore/treeStore";
-import {
-  IQuestionnaireMetadata,
-  IQuestionnaireMetadataType,
-} from "src/types/IQuestionnaireMetadataType";
-import { ValidationError } from "src/utils/validationUtils";
-import { ErrorLevel } from "src/components/Validation/validationTypes";
-import userEvent from "@testing-library/user-event";
+import type { ValidationError } from "src/utils/validationUtils";
+
+import TranslateMetaDataRow from "../TranslateMetaDataRow";
 
 describe("TranslateMetaDataRow", () => {
   vi.mock("react-i18next", () => ({
@@ -88,9 +90,11 @@ describe("TranslateMetaDataRow", () => {
         />,
       );
 
+      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
       expect(container.getElementsByClassName("warning-highlight").length).toBe(
         1,
       );
+      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
       expect(container.getElementsByClassName("warning-text").length).toBe(1);
       expect(
         screen.getByText(
@@ -122,10 +126,11 @@ describe("TranslateMetaDataRow", () => {
           validationErrors={[validationError]}
         />,
       );
-
+      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
       expect(container.getElementsByClassName("error-highlight").length).toBe(
         1,
       );
+      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
       expect(container.getElementsByClassName("error-text").length).toBe(1);
       expect(
         screen.getByText("Url must be 'Questionnaire/<Id>'"),
@@ -215,9 +220,11 @@ describe("TranslateMetaDataRow", () => {
       );
 
       expect(screen.getByText("Tittel")).toBeInTheDocument();
+      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
       expect(container.getElementsByClassName("error-highlight").length).toBe(
         1,
       );
+      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
       expect(container.getElementsByClassName("error-text").length).not.toBe(1);
     });
   });

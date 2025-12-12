@@ -103,7 +103,7 @@ const UploadFhirResource = ({ resourceType }: Props): React.JSX.Element => {
           } else if (resource.resourceType === resourceType) {
             return [resource];
           }
-        } catch (e) {
+        } catch {
           setFileUploadError(
             "One of the files is not valid JSON and was skipped.",
           );

@@ -1,9 +1,11 @@
-import { Extension } from "fhir/r4";
-import { TreeState } from "src/store/treeStore/treeStore";
-import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 import { IExtensionType } from "src/types/IQuestionnareItemType";
-import { validateQuestionnaireSettings } from "../settingsValidation";
+
+import type { Extension } from "fhir/r4";
+import type { TreeState } from "src/store/treeStore/treeStore";
+import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
+
 import { ErrorLevel } from "../../validationTypes";
+import { validateQuestionnaireSettings } from "../settingsValidation";
 
 describe("Questionnaire settings validation", () => {
   const translatationMock = vi.fn();

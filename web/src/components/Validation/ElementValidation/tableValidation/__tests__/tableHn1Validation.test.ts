@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
 import type { QuestionnaireItem } from "fhir/r4";
 import type { TFunction } from "react-i18next";
 
@@ -24,16 +25,19 @@ vi.mock("src/components/Validation/validationHelper", () => ({
   ),
 }));
 
+import { validateTableHn1 } from "../tableHn1Validation";
 import {
   isTableType,
   isAllowedTableItem,
   itemHasCodeWithOneOrMoreSystems,
 } from "../utils";
-import { validateTableHn1 } from "../tableHn1Validation";
+
+// eslint-disable-next-line import/order
 import {
   ErrorLevel,
   ValidationType,
 } from "src/components/Validation/validationTypes";
+// eslint-disable-next-line import/order
 import { createError } from "src/components/Validation/validationHelper";
 
 // -----------------------------------------------------------------------------

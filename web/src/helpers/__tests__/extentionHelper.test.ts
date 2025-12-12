@@ -1,7 +1,7 @@
-import { Element, Extension } from "fhir/r4";
 import { describe, vi, it, expect, beforeEach } from "vitest";
 
 import { ICodeSystem, IExtensionType } from "../../types/IQuestionnareItemType";
+import type { Element, Extension } from "fhir/r4";
 
 import {
   findExtensionByUrl,

@@ -1,10 +1,12 @@
 import React from "react";
-import { describe, it, expect, vi, afterEach } from "vitest";
+
 import { renderHook, act } from "@testing-library/react";
+import { ValueSetContext } from "src/views/valueSets/context/ValuseSetContext";
+import { describe, it, expect, vi, afterEach } from "vitest";
+
 import type { ValueSet, ValueSetComposeInclude } from "fhir/r4";
 
 import useValueSetInclude from "../useValueSetInclude";
-import { ValueSetContext } from "src/views/valueSets/context/ValuseSetContext";
 
 vi.mock("src/helpers/CreateUUID", () => {
   let n = 0;

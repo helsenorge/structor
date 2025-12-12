@@ -1,6 +1,7 @@
-import { QuestionnaireItem } from "fhir/r4";
+import type { QuestionnaireItem } from "fhir/r4";
+import type { OrderItem } from "src/store/treeStore/treeStore";
+
 import { ErrorLevel } from "../../validationTypes";
-import { OrderItem } from "src/store/treeStore/treeStore";
 import {
   validateRepeatableItemChildren,
   validateRepeatableItemMaxOccurs,

@@ -1,15 +1,17 @@
-import { TreeContext, TreeState } from "src/store/treeStore/treeStore";
-import { ICodeSystem, IItemProperty } from "src/types/IQuestionnareItemType";
-import { QuestionnaireItem } from "fhir/r4";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { ItemControlType } from "src/helpers/itemControl";
 import {
   addItemCodeAction,
   updateItemAction,
 } from "src/store/treeStore/treeActions";
-import { Mock } from "vitest";
-import { SummationOption } from "../summation-option";
-import { ItemControlType } from "src/helpers/itemControl";
+import { TreeContext, type TreeState } from "src/store/treeStore/treeStore";
+import { ICodeSystem, IItemProperty } from "src/types/IQuestionnareItemType";
 import { ScoringFormulaCodes } from "src/types/scoringFormulas";
+
+import type { QuestionnaireItem } from "fhir/r4";
+import type { Mock } from "vitest";
+
+import { SummationOption } from "../summation-option";
 
 const scoreCode = {
   code: ItemControlType.score,

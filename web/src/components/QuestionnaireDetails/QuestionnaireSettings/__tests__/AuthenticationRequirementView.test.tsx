@@ -1,12 +1,14 @@
-import AuthenticationRequirementView from "../AuthenticationRequirementView";
-import { TreeContext, TreeState } from "src/store/treeStore/treeStore";
-import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { TreeContext, type TreeState } from "src/store/treeStore/treeStore";
 import {
   IExtensionType,
   IValueSetSystem,
 } from "src/types/IQuestionnareItemType";
-import { Coding, Extension } from "fhir/r4";
-import { fireEvent, render, screen } from "@testing-library/react";
+
+import type { Coding, Extension } from "fhir/r4";
+import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
+
+import AuthenticationRequirementView from "../AuthenticationRequirementView";
 
 const authenticationCoding = (code: string): Coding => {
   return {

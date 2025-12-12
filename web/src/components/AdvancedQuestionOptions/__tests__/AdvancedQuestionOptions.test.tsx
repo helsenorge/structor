@@ -1,15 +1,15 @@
 import { render, screen } from "@testing-library/react";
-import { Extension, QuestionnaireItem } from "fhir/r4";
+import { ErrorLevel } from "src/components/Validation/validationTypes";
+import { ItemControlType } from "src/helpers/itemControl";
 import { vi } from "vitest";
 
 import {
   IExtensionType,
   ItemExtractionContext,
 } from "../../../types/IQuestionnareItemType";
+import type { Extension, QuestionnaireItem } from "fhir/r4";
 
 import AdvancedQuestionOptions from "../AdvancedQuestionOptions";
-import { ItemControlType } from "src/helpers/itemControl";
-import { ErrorLevel } from "src/components/Validation/validationTypes";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => {
@@ -44,8 +44,8 @@ describe("AdvancedQuestionOptions", () => {
         />,
       );
 
-      expect(screen.queryAllByAltText("Definition")).toBeTruthy();
-      expect(screen.queryAllByAltText("Item Extraction")).toBeTruthy();
+      expect(screen.getAllByAltText("Definition")).toBeTruthy();
+      expect(screen.getAllByAltText("Item Extraction")).toBeTruthy();
     });
 
     it("ItemExtraction default is <Not set>", () => {
@@ -186,6 +186,7 @@ describe("AdvancedQuestionOptions", () => {
       );
 
       expect(
+        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
         container.getElementsByClassName("error-highlight-box"),
       ).exist.toBeTruthy();
     });

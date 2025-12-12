@@ -1,10 +1,12 @@
-import { TreeState } from "src/store/treeStore/treeStore";
 import {
-  IQuestionnaireMetadata,
+  type IQuestionnaireMetadata,
   IQuestionnaireMetadataType,
 } from "src/types/IQuestionnaireMetadataType";
-import { validateMetadata } from "../metadataValidation";
+
+import type { TreeState } from "src/store/treeStore/treeStore";
+
 import { ErrorLevel } from "../../validationTypes";
+import { validateMetadata } from "../metadataValidation";
 
 describe("metadataValidation", () => {
   const translatationMock = vi.fn();

@@ -1,8 +1,11 @@
-import React from "react";
-import { describe, it, expect, vi, afterEach } from "vitest";
+import type React from "react";
+
 import { renderHook, act } from "@testing-library/react";
+import * as treeActions from "src/store/treeStore/treeActions";
+import { type ActionType, TreeContext } from "src/store/treeStore/treeStore";
+import { describe, it, expect, vi, afterEach } from "vitest";
+
 import type { ValueSet } from "fhir/r4";
-import { ActionType, TreeContext } from "src/store/treeStore/treeStore";
 
 const ctx = vi.hoisted(() => ({
   valueSetCtx: {
@@ -34,9 +37,8 @@ vi.mock("src/store/treeStore/treeActions", async (importOriginal) => {
   };
 });
 
-import useNewValueSet from "../useNewValueset";
-import * as treeActions from "src/store/treeStore/treeActions";
 import { ValueSetContext } from "../../context/ValuseSetContext";
+import useNewValueSet from "../useNewValueset";
 
 const actions = vi.mocked(treeActions, true);
 

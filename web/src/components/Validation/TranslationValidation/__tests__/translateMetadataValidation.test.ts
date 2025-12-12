@@ -1,10 +1,12 @@
-import {
+import { TranslatableMetadataProperty } from "src/types/LanguageTypes";
+
+import type {
   MetadataTranslations,
   Translation,
 } from "src/store/treeStore/treeStore";
-import { ValidationError } from "src/utils/validationUtils";
+import type { ValidationError } from "src/utils/validationUtils";
+
 import { ErrorLevel } from "../../validationTypes";
-import { TranslatableMetadataProperty } from "src/types/LanguageTypes";
 import { validateMetadataTranslation } from "../translateMetadataValidation";
 
 describe("metadataValidation", () => {

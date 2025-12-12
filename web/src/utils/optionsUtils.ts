@@ -67,11 +67,12 @@ export const getContainedOptions = (
       if (contained.id === idToSearchFor) {
         contained.compose?.include.forEach((include) => {
           include.concept?.forEach((concept) => {
-            concept.display &&
+            if (concept.display) {
               optionArray.push({
                 code: concept.code,
                 display: concept.display,
               });
+            }
           });
         });
       }

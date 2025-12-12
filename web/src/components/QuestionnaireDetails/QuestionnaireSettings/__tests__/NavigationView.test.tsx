@@ -1,8 +1,10 @@
-import { TreeContext, TreeState } from "src/store/treeStore/treeStore";
-import { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
-import { IExtensionType } from "src/types/IQuestionnareItemType";
-import { CodeableConcept, Extension } from "fhir/r4";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { TreeContext, type TreeState } from "src/store/treeStore/treeStore";
+import { IExtensionType } from "src/types/IQuestionnareItemType";
+
+import type { CodeableConcept, Extension } from "fhir/r4";
+import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
+
 import NavigationView from "../NavigationView";
 
 const navigatorCodeableConcept = {

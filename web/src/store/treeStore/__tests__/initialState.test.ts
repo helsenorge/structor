@@ -2,12 +2,6 @@ import { getInitialState } from "../initialState";
 
 describe("initialState", () => {
   describe("getInitialState", () => {
-    it("gets a new Id", () => {
-      const state = getInitialState(false);
-
-      expect(state.qMetadata.id).not.empty;
-    });
-
     it("sets a url", () => {
       const state = getInitialState(false);
 

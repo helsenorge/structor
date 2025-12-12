@@ -1,13 +1,15 @@
 // src/store/treeStore/indexedDbHelper.spec.ts
-import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import * as idb from "idb";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+
+import type { TreeState } from "../treeStore";
+
 import {
   saveQuestionnaire,
   getQuestionnaire,
   getAllQuestionnaires,
   deleteQuestionnaire,
 } from "../indexedDbHelper";
-import { TreeState } from "../treeStore";
 
 // ——— mock openDB from idb ———
 vi.mock("idb");

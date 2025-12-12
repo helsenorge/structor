@@ -1,6 +1,8 @@
-import { TreeContext, TreeState } from "src/store/treeStore/treeStore";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { updateQuestionnaireMetadataAction } from "src/store/treeStore/treeActions";
+import { TreeContext, type TreeState } from "src/store/treeStore/treeStore";
 import {
-  IQuestionnaireMetadata,
+  type IQuestionnaireMetadata,
   IQuestionnaireMetadataType,
 } from "src/types/IQuestionnaireMetadataType";
 import {
@@ -8,11 +10,11 @@ import {
   IExtensionType,
   WorkflowCode,
 } from "src/types/IQuestionnareItemType";
-import { CodeableConcept, Coding } from "fhir/r4";
-import { fireEvent, render, screen } from "@testing-library/react";
+
+import type { CodeableConcept, Coding } from "fhir/r4";
+import type { Mock } from "vitest";
+
 import WorkflowView from "../WorkflowView";
-import { updateQuestionnaireMetadataAction } from "src/store/treeStore/treeActions";
-import { Mock } from "vitest";
 
 const workflowCode = {
   system: IExtensionType.workflow,

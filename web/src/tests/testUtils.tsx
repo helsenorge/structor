@@ -1,25 +1,27 @@
-import React, { ReactNode } from "react";
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import React, { type ReactNode } from "react";
 
 import {
-  Queries,
+  type Queries,
   render,
-  RenderOptions,
-  RenderResult,
+  type RenderOptions,
+  type RenderResult,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CodeSystem, ValueSet } from "fhir/r4";
 import { I18nextProvider } from "react-i18next";
-import { MemoryRouter, MemoryRouterProps } from "react-router";
+import { MemoryRouter, type MemoryRouterProps } from "react-router";
 import i18n from "src/helpers/i18n";
 import { getInitialState } from "src/store/treeStore/initialState";
 import {
-  ActionType,
+  type ActionType,
   TreeContext,
-  TreeState,
+  type TreeState,
 } from "src/store/treeStore/treeStore";
 import { CodeSystemProvider } from "src/views/codeSystems/context/CodeSystemContextProvider";
 import { ValueSetProvider } from "src/views/valueSets/context/ValueSetContextProvider";
-import { Mock, vi } from "vitest";
+import { type Mock, vi } from "vitest";
+
+import type { CodeSystem, ValueSet } from "fhir/r4";
 
 interface ProvidersProps {
   children: ReactNode;

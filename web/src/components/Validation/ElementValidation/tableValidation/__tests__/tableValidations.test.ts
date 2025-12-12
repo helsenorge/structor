@@ -1,5 +1,7 @@
+/* eslint-disable import/order */
 // src/components/Validation/ElementValidation/tableValidation/__tests__/tableValidations.test.ts
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
 import type { QuestionnaireItem } from "fhir/r4";
 import type { TFunction } from "react-i18next";
 
@@ -47,19 +49,18 @@ vi.mock("../../validationHelper", () => ({
 }));
 
 // --- SUT ---------------------------------------------------------------------
-import { validateTable } from "../tableValidation";
+import { isDataReceiver } from "@helsenorge/refero";
 
+import { validateTable } from "../tableValidation";
 // --- Hent mocks med typer ----------------------------------------------------
 import { isTableType, checkAllDecendantsForCorrectTypes } from "../utils";
+
 import {
   existItemControlWithCode,
   oneOrMoreItemControlsExistOnItem,
 } from "src/helpers/itemControl";
 import { getAllOrderItemChildrenOfItem } from "src/helpers/codeHelper";
 import { doesAllItemsHaveSameAnswerValueSet } from "src/helpers/valueSetHelper";
-import { isDataReceiver } from "@helsenorge/refero";
-import { createError } from "../../../validationHelper";
-
 import { IQuestionnaireItemType } from "src/types/IQuestionnareItemType";
 import {
   ErrorLevel,

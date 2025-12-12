@@ -1,10 +1,11 @@
-import { QuestionnaireItem } from "fhir/r4";
+import type { QuestionnaireItem } from "fhir/r4";
+import type { Items, OrderItem } from "src/store/treeStore/treeStore";
+
 import { ErrorLevel } from "../../validationTypes";
 import {
   validateGroupParent,
   validateRepeatableGroup,
 } from "../groupValidation";
-import { Items, OrderItem } from "src/store/treeStore/treeStore";
 
 describe("group validation", () => {
   const translatationMock = vi.fn();

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
 import type { QuestionnaireItem } from "fhir/r4";
 import type { TFunction } from "react-i18next";
 
@@ -27,6 +28,7 @@ vi.mock("../../validationHelper", () => ({
   ),
 }));
 
+import { validateTableHn2 } from "../tableHn2Validation";
 import {
   isTableType,
   isAllowedTableItem,
@@ -35,7 +37,8 @@ import {
   hasTableColumnCodeWithCodeAndDisplay,
   hasTableColumnNameWithCodeAndDisplay,
 } from "../utils";
-import { validateTableHn2 } from "../tableHn2Validation";
+
+// eslint-disable-next-line import/order
 import {
   ErrorLevel,
   ValidationType,
