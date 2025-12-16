@@ -1,0 +1,25 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ *
+ */
+.scribo-markdown-editor .ContentEditable__root {
+  border: 0;
+  font-size: 15px;
+  display: block;
+  position: relative;
+  outline: 0;
+  padding: 8px;
+  min-height: 40px;
+  width: 100%;
+}
+
+@media (width <= 1025px) {
+  .scribo-markdown-editor .ContentEditable__root {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}

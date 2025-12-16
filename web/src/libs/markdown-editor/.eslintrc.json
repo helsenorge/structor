@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "import/no-duplicates": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-unused-expressions": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "import/order": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "react/jsx-no-literals": "off",
+    "jsx-a11y/no-static-element-interactions": "off"
+  }
+}

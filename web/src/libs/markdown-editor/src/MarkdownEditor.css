@@ -1,0 +1,1241 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * Source: https://github.com/facebook/lexical/blob/main/packages/lexical-playground/src/index.css
+ */
+
+/* stylelint-disable no-descending-specificity, declaration-property-value-keyword-no-deprecated, declaration-block-no-shorthand-property-overrides, font-family-no-missing-generic-family-keyword */
+
+.scribo-markdown-editor .editor-shell {
+  margin: 10px auto;
+  border-radius: 8px;
+  background: #eff0ef;
+  padding: 12px;
+
+  /* max-width: 1100px; */
+  color: #000;
+  position: relative;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.scribo-markdown-editor .editor-shell .editor-container {
+  background: #eff0ef;
+  position: relative;
+  display: block;
+  border-radius: 8px;
+}
+
+.scribo-markdown-editor .editor-shell .editor-container.tree-view {
+  border-radius: 0;
+}
+
+.scribo-markdown-editor .editor-shell .editor-container.plain-text {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.scribo-markdown-editor .editor-scroller {
+  min-height: 40px;
+  border: 0;
+  position: relative;
+  outline: 0;
+  z-index: 0;
+  overflow: auto;
+  resize: vertical;
+}
+
+.scribo-markdown-editor .editor {
+  position: relative;
+  z-index: -1;
+}
+
+.scribo-markdown-editor .editor p {
+  margin: 0 0 1em;
+}
+
+.scribo-markdown-editor .editor h1,
+.scribo-markdown-editor .editor h2,
+.scribo-markdown-editor .editor h3,
+.scribo-markdown-editor .editor h4,
+.scribo-markdown-editor .editor h5,
+.scribo-markdown-editor .editor h6 {
+  margin: 1em 0 0.5em;
+  line-height: 1.3;
+}
+
+.scribo-markdown-editor .editor h1 {
+  font-size: 1.75em;
+}
+
+.scribo-markdown-editor .editor h2 {
+  font-size: 1.5em;
+}
+
+.scribo-markdown-editor .editor h3 {
+  font-size: 1.25em;
+}
+
+.scribo-markdown-editor .editor h4 {
+  font-size: 1.1em;
+}
+
+.scribo-markdown-editor .editor h5,
+.scribo-markdown-editor .editor h6 {
+  font-size: 1em;
+}
+
+.scribo-markdown-editor .editor h1:first-child,
+.scribo-markdown-editor .editor h2:first-child,
+.scribo-markdown-editor .editor h3:first-child,
+.scribo-markdown-editor .editor h4:first-child,
+.scribo-markdown-editor .editor h5:first-child,
+.scribo-markdown-editor .editor h6:first-child {
+  margin-top: 0;
+}
+
+.scribo-markdown-editor .editor blockquote {
+  margin: 1em 0;
+  padding-left: 1em;
+  border-left: 3px solid #ddd;
+}
+
+.scribo-markdown-editor ul {
+  list-style-type: disc;
+  padding: 10px 0 !important;
+  padding-left: 20px !important;
+}
+
+.scribo-markdown-editor pre {
+  line-height: 1.1;
+  background: #222;
+  color: #fff;
+  margin: 0;
+  padding: 10px;
+  font-size: 12px;
+  overflow: auto;
+  max-height: 400px;
+}
+
+.scribo-markdown-editor pre::-webkit-scrollbar {
+  background: transparent;
+  width: 10px;
+}
+
+.scribo-markdown-editor pre::-webkit-scrollbar-thumb {
+  background: #999;
+}
+
+.scribo-markdown-editor i.bold {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-type-bold'%3E%3Cpath d='M8.21 13c2.106 0 3.412-1.087 3.412-2.823 0-1.306-.984-2.283-2.324-2.386v-.055a2.176 2.176 0 0 0 1.852-2.14c0-1.51-1.162-2.46-3.014-2.46H3.843V13H8.21zM5.908 4.674h1.696c.963 0 1.517.451 1.517 1.244 0 .834-.629 1.32-1.73 1.32H5.908V4.673zm0 6.788V8.598h1.73c1.217 0 1.88.492 1.88 1.415 0 .943-.643 1.449-1.832 1.449H5.907z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor i.italic {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-type-italic'%3E%3Cpath d='M7.991 11.674 9.53 4.455c.123-.595.246-.71 1.347-.807l.11-.52H7.211l-.11.52c1.06.096 1.128.212 1.005.807L6.57 11.674c-.123.595-.246.71-1.346.806l-.11.52h3.774l.11-.52c-1.06-.095-1.129-.211-1.006-.806z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor i.code {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-code'%3E%3Cpath d='M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor i.underline {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-type-underline'%3E%3Cpath d='M5.313 3.136h-1.23V9.54c0 2.105 1.47 3.623 3.917 3.623s3.917-1.518 3.917-3.623V3.136h-1.23v6.323c0 1.49-.978 2.57-2.687 2.57-1.709 0-2.687-1.08-2.687-2.57V3.136zM12.5 15h-9v-1h9v1z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor i.strikethrough {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-type-strikethrough'%3E%3Cpath d='M6.333 5.686c0 .31.083.581.27.814H5.166a2.776 2.776 0 0 1-.099-.76c0-1.627 1.436-2.768 3.48-2.768 1.969 0 3.39 1.175 3.445 2.85h-1.23c-.11-1.08-.964-1.743-2.25-1.743-1.23 0-2.18.602-2.18 1.607zm2.194 7.478c-2.153 0-3.589-1.107-3.705-2.81h1.23c.144 1.06 1.129 1.703 2.544 1.703 1.34 0 2.31-.705 2.31-1.675 0-.827-.547-1.374-1.914-1.675L8.046 8.5H1v-1h14v1h-3.504c.468.437.675.994.675 1.697 0 1.826-1.436 2.967-3.644 2.967z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor i.link {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-link'%3E%3Cpath d='M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z'/%3E%3Cpath d='M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .icon.plus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus'%3E%3Cpath d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .icon.caret-right {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-caret-right-fill'%3E%3Cpath d='m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .icon.dropdown-more {
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.648 4.475 1.824 12.25H.67l3.252-8.531h.744l-.018.756Zm2.368 7.775-2.83-7.775-.018-.756h.744l3.264 8.531h-1.16Zm-.147-3.158v.926H2.076v-.926H6.87Zm6.024 2.074V7.902c0-.25-.051-.466-.153-.65a.997.997 0 0 0-.445-.434c-.2-.101-.445-.152-.738-.152-.274 0-.514.047-.721.14a1.255 1.255 0 0 0-.48.37.809.809 0 0 0-.17.492H9.101c0-.227.058-.451.175-.674.118-.223.286-.424.504-.603.223-.184.489-.329.797-.434.313-.11.66-.164 1.043-.164.461 0 .867.078 1.219.234.355.157.633.393.832.71.203.312.305.704.305 1.177v2.953c0 .211.017.436.052.674.04.238.096.443.17.615v.094h-1.13a2.022 2.022 0 0 1-.13-.498 4.011 4.011 0 0 1-.046-.586Zm.187-2.76.012.762h-1.096c-.309 0-.584.025-.826.076a1.89 1.89 0 0 0-.61.217.979.979 0 0 0-.504.879c0 .2.046.38.135.545a.98.98 0 0 0 .405.392c.183.094.408.141.674.141.332 0 .625-.07.878-.211a1.83 1.83 0 0 0 .604-.516c.152-.203.234-.4.246-.591l.463.521a1.572 1.572 0 0 1-.223.545 2.607 2.607 0 0 1-1.2 1.025 2.328 2.328 0 0 1-.927.176c-.43 0-.806-.084-1.13-.252a1.933 1.933 0 0 1-.75-.674 1.784 1.784 0 0 1-.264-.955c0-.34.066-.638.199-.896a1.73 1.73 0 0 1 .574-.65c.25-.176.551-.31.903-.399a4.76 4.76 0 0 1 1.177-.135h1.26Z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor i.image {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-file-image'%3E%3Cpath d='M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z'/%3E%3Cpath d='M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8l-2.083-2.083a.5.5 0 0 0-.76.063L8 11 5.835 9.7a.5.5 0 0 0-.611.076L3 12V2z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor i.close {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3C!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc.--%3E%3Cpath d='M0 256C0 114.6 114.6 0 256 0s256 114.6 256 256-114.6 256-256 256S0 397.4 0 256zm175-47.9 47.1 47L175 303c-9.3 9.4-9.3 24.6 0 33.1 9.4 10.2 24.6 10.2 33.1 0l47-46.2 47.9 46.2c9.4 10.2 24.6 10.2 33.1 0 10.2-8.5 10.2-23.7 0-33.1l-46.2-47.9 46.2-47c10.2-8.5 10.2-23.7 0-33.1-8.5-9.3-23.7-9.3-33.1 0l-47.9 47.1-47-47.1c-8.5-9.3-23.7-9.3-33.1 0-9.3 9.4-9.3 24.6 0 33.1z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor i.markdown {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-markdown'%3E%3Cpath d='M14 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z'/%3E%3Cpath fill-rule='evenodd' d='M9.146 8.146a.5.5 0 0 1 .708 0L11.5 9.793l1.646-1.647a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 0-.708z'/%3E%3Cpath fill-rule='evenodd' d='M11.5 5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5z'/%3E%3Cpath d='M3.56 11V7.01h.056l1.428 3.239h.774l1.42-3.24h.056V11h1.073V5.001h-1.2l-1.71 3.894h-.039l-1.71-3.894H2.5V11h1.06z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor i.undo {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-arrow-counterclockwise'%3E%3Cpath fill-rule='evenodd' d='M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z'/%3E%3Cpath d='M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor i.redo {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-arrow-clockwise'%3E%3Cpath fill-rule='evenodd' d='M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z'/%3E%3Cpath d='M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .link-editor .button.active,
+.scribo-markdown-editor .toolbar .button.active {
+  background-color: rgb(223 232 250);
+}
+
+.scribo-markdown-editor .link-editor .link-input {
+  display: block;
+  width: calc(100% - 75px);
+  box-sizing: border-box;
+  margin: 12px;
+  padding: 8px 12px;
+  border-radius: 15px;
+  background-color: #eee;
+  font-size: 15px;
+  color: rgb(5 5 5);
+  border: 0;
+  outline: 0;
+  position: relative;
+  font-family: inherit;
+}
+
+.scribo-markdown-editor .link-editor .link-view {
+  display: block;
+  width: calc(100% - 24px);
+  margin: 8px 12px;
+  padding: 8px 12px;
+  border-radius: 15px;
+  font-size: 15px;
+  color: rgb(5 5 5);
+  border: 0;
+  outline: 0;
+  position: relative;
+  font-family: inherit;
+}
+
+.scribo-markdown-editor .link-editor .link-view a {
+  display: block;
+  word-break: break-word;
+  width: calc(100% - 33px);
+}
+
+.scribo-markdown-editor .link-editor div.link-edit {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-pencil-fill'%3E%3Cpath d='M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z'/%3E%3C/svg%3E");
+  background-size: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 35px;
+  vertical-align: -0.25em;
+  position: absolute;
+  right: 30px;
+  top: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.scribo-markdown-editor .link-editor div.link-trash {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-trash'%3E%3Cpath d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z'/%3E%3Cpath fill-rule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z'/%3E%3C/svg%3E");
+  background-size: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 35px;
+  vertical-align: -0.25em;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.scribo-markdown-editor .link-editor div.link-cancel {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3C!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc.--%3E%3Cpath d='M0 256C0 114.6 114.6 0 256 0s256 114.6 256 256-114.6 256-256 256S0 397.4 0 256zm175-47.9 47.1 47L175 303c-9.3 9.4-9.3 24.6 0 33.1 9.4 10.2 24.6 10.2 33.1 0l47-46.2 47.9 46.2c9.4 10.2 24.6 10.2 33.1 0 10.2-8.5 10.2-23.7 0-33.1l-46.2-47.9 46.2-47c10.2-8.5 10.2-23.7 0-33.1-8.5-9.3-23.7-9.3-33.1 0l-47.9 47.1-47-47.1c-8.5-9.3-23.7-9.3-33.1 0-9.3 9.4-9.3 24.6 0 33.1z'/%3E%3C/svg%3E");
+  background-size: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 35px;
+  vertical-align: -0.25em;
+  margin-right: 28px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.scribo-markdown-editor .link-editor div.link-confirm {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'%3E%3Ccircle cx='25' cy='25' r='25' fill='%23000'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' stroke-miterlimit='10' d='M38 15 22 33l-10-8'/%3E%3C/svg%3E");
+  background-size: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 35px;
+  vertical-align: -0.25em;
+  margin-right: 2px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.scribo-markdown-editor .link-editor .link-input a {
+  color: rgb(33 111 219);
+  text-decoration: underline;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-right: 30px;
+  text-overflow: ellipsis;
+}
+
+.scribo-markdown-editor .link-editor .link-input a:hover {
+  text-decoration: underline;
+}
+
+.scribo-markdown-editor .link-editor .font-size-wrapper,
+.scribo-markdown-editor .link-editor .font-family-wrapper {
+  display: flex;
+  margin: 0 4px;
+}
+
+.scribo-markdown-editor .link-editor select {
+  padding: 6px;
+  border: none;
+  background-color: rgb(0 0 0 / 7.5%);
+  border-radius: 4px;
+}
+
+.scribo-markdown-editor .mention:focus {
+  box-shadow: rgb(180 213 255) 0 0 0 2px;
+  outline: none;
+}
+
+.scribo-markdown-editor .characters-limit {
+  color: #888;
+  font-size: 12px;
+  text-align: right;
+  display: block;
+  position: absolute;
+  left: 12px;
+  bottom: 5px;
+}
+
+.scribo-markdown-editor .characters-limit.characters-limit-exceeded {
+  color: red;
+}
+
+.scribo-markdown-editor .dropdown,
+body > .dropdown {
+  z-index: 250;
+  display: block;
+  position: fixed;
+  box-shadow:
+    0 12px 28px 0 rgb(0 0 0 / 20%),
+    0 2px 4px 0 rgb(0 0 0 / 10%),
+    inset 0 0 0 1px rgb(255 255 255 / 50%);
+  border-radius: 8px;
+  min-height: 40px;
+  background-color: #fff;
+}
+
+.scribo-markdown-editor .dropdown .item,
+body > .dropdown .item {
+  margin: 0 8px;
+  padding: 8px;
+  color: #050505;
+  cursor: pointer;
+  line-height: 16px;
+  font-size: 15px;
+  display: flex;
+  place-content: center space-between;
+  flex-direction: row;
+  flex-shrink: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 0;
+  max-width: 250px;
+  min-width: 100px;
+}
+
+.scribo-markdown-editor .dropdown .item.fontsize-item,
+.scribo-markdown-editor .dropdown .item.fontsize-item .text,
+body > .dropdown .item.fontsize-item,
+body > .dropdown .item.fontsize-item .text {
+  min-width: unset;
+}
+
+.scribo-markdown-editor .dropdown .item .active,
+body > .dropdown .item .active {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+}
+
+.scribo-markdown-editor .dropdown .item:first-child,
+body > .dropdown .item:first-child {
+  margin-top: 8px;
+}
+
+.scribo-markdown-editor .dropdown .item:last-child,
+body > .dropdown .item:last-child {
+  margin-bottom: 8px;
+}
+
+.scribo-markdown-editor .dropdown .item:hover,
+body > .dropdown .item:hover {
+  background-color: #eee;
+}
+
+.scribo-markdown-editor .dropdown .item .text,
+body > .dropdown .item .text {
+  display: flex;
+  line-height: 20px;
+  flex-grow: 1;
+  min-width: 150px;
+}
+
+.scribo-markdown-editor .dropdown .item .icon,
+body > .dropdown .item .icon {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  user-select: none;
+  margin-right: 12px;
+  line-height: 16px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.scribo-markdown-editor .dropdown .divider {
+  width: auto;
+  background-color: #eee;
+  margin: 4px 8px;
+  height: 1px;
+}
+
+@media screen and (width <= 1100px) {
+  .scribo-markdown-editor .dropdown-button-text {
+    display: none !important;
+  }
+
+  .scribo-markdown-editor .font-size .dropdown-button-text {
+    display: flex !important;
+  }
+
+  .scribo-markdown-editor .code-language .dropdown-button-text {
+    display: flex !important;
+  }
+}
+
+.scribo-markdown-editor .icon.paragraph,
+body > .dropdown .icon.paragraph {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-text-paragraph'%3E%3Cpath fill-rule='evenodd' d='M2 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm4-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .icon.h1,
+body > .dropdown .icon.h1 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-type-h1'%3E%3Cpath d='M8.637 13V3.669H7.379V7.62H2.758V3.67H1.5V13h1.258V8.728h4.62V13h1.259zm5.329 0V3.669h-1.244L10.5 5.316v1.265l2.16-1.565h.062V13h1.244z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .icon.h2,
+body > .dropdown .icon.h2 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-type-h2'%3E%3Cpath d='M7.638 13V3.669H6.38V7.62H1.759V3.67H.5V13h1.258V8.728h4.62V13h1.259zm3.022-6.733v-.048c0-.889.63-1.668 1.716-1.668.957 0 1.675.608 1.675 1.572 0 .855-.554 1.504-1.067 2.085l-3.513 3.999V13H15.5v-1.094h-4.245v-.075l2.481-2.844c.875-.998 1.586-1.784 1.586-2.953 0-1.463-1.155-2.556-2.919-2.556-1.941 0-2.966 1.326-2.966 2.74v.049h1.223z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .icon.h3,
+body > .dropdown .icon.h3 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-type-h3'%3E%3Cpath d='M7.637 13V3.669H6.379V7.62H1.758V3.67H.5V13h1.258V8.728h4.62V13h1.259zm3.625-4.272h1.018c1.142 0 1.935.67 1.949 1.674.013 1.005-.78 1.737-2.01 1.73-1.08-.007-1.853-.588-1.935-1.32H9.108c.069 1.327 1.224 2.386 3.083 2.386 1.935 0 3.343-1.155 3.309-2.789-.027-1.51-1.251-2.16-2.037-2.249v-.068c.704-.123 1.764-.91 1.723-2.229-.035-1.353-1.176-2.4-2.954-2.385-1.873.006-2.857 1.162-2.898 2.358h1.196c.062-.69.711-1.299 1.696-1.299.998 0 1.695.622 1.695 1.525.007.922-.718 1.592-1.695 1.592h-.964v1.074z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .icon.h4,
+body > .dropdown .icon.h4 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-type-h4' %3E%3Cpath d='M7.637 13V3.669H6.379V7.62H1.758V3.67H.5V13h1.258V8.728h4.62V13Zm5.337.2v-2.328H9.108V9.828l3.441-6.35h1.632v6.141H15.5v1.253h-1.319V13.2Zm-2.615-3.581h2.615V6.7L13 4.689l-.872 1.7z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .icon.bullet-list,
+.scribo-markdown-editor .icon.bullet,
+body > .dropdown .icon.bullet-list,
+body > .dropdown .icon.bullet {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-list-ul'%3E%3Cpath fill-rule='evenodd' d='M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .icon.numbered-list,
+.scribo-markdown-editor .icon.number,
+body > .dropdown .icon.numbered-list,
+body > .dropdown .icon.number {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-list-ol'%3E%3Cpath fill-rule='evenodd' d='M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z'/%3E%3Cpath d='M1.713 11.865v-.474H2c.217 0 .363-.137.363-.317 0-.185-.158-.31-.361-.31-.223 0-.367.152-.373.31h-.59c.016-.467.373-.787.986-.787.588-.002.954.291.957.703a.595.595 0 0 1-.492.594v.033a.615.615 0 0 1 .569.631c.003.533-.502.8-1.051.8-.656 0-1-.37-1.008-.794h.582c.008.178.186.306.422.309.254 0 .424-.145.422-.35-.002-.195-.155-.348-.414-.348h-.3zm-.004-4.699h-.604v-.035c0-.408.295-.844.958-.844.583 0 .96.326.96.756 0 .389-.257.617-.476.848l-.537.572v.03h1.054V9H1.143v-.395l.957-.99c.138-.142.293-.304.293-.508 0-.18-.147-.32-.342-.32a.33.33 0 0 0-.342.338v.041zM2.564 5h-.635V2.924h-.031l-.598.42v-.567l.629-.443h.635V5z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .icon.quote,
+body > .dropdown .icon.quote {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chat-square-quote'%3E%3Cpath d='M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z'/%3E%3Cpath d='M7.066 4.76A1.665 1.665 0 0 0 4 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112zm4 0A1.665 1.665 0 0 0 8 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .icon.code,
+body > .dropdown .icon.code {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-code'%3E%3Cpath d='M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .switches {
+  z-index: 6;
+  position: fixed;
+  left: 10px;
+  bottom: 70px;
+  animation: slide-in 0.4s ease;
+}
+
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.scribo-markdown-editor .switch {
+  display: block;
+  color: #444;
+  margin: 5px 0;
+  background-color: rgb(238 238 238 / 70%);
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.scribo-markdown-editor #rich-text-switch {
+  right: 0;
+}
+
+.scribo-markdown-editor #character-count-switch {
+  right: 130px;
+}
+
+.scribo-markdown-editor .switch label {
+  margin-right: 5px;
+  line-height: 24px;
+  width: 100px;
+  font-size: 14px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.scribo-markdown-editor .switch button {
+  background-color: rgb(206 208 212);
+  height: 24px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  width: 44px;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.1s;
+  border: 2px solid transparent;
+}
+
+.scribo-markdown-editor .switch button:focus-visible {
+  border-color: blue;
+}
+
+.scribo-markdown-editor .switch button span {
+  top: 0;
+  left: 0;
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 12px;
+  background-color: white;
+  transition: transform 0.2s;
+}
+
+.scribo-markdown-editor .switch button[aria-checked="true"] {
+  background-color: rgb(24 119 242);
+}
+
+.scribo-markdown-editor .switch button[aria-checked="true"] span {
+  transform: translateX(20px);
+}
+
+.scribo-markdown-editor .editor-shell span.editor-image {
+  cursor: default;
+  display: inline-block;
+  position: relative;
+  user-select: none;
+}
+
+.scribo-markdown-editor .editor-shell .editor-image img {
+  max-width: 100%;
+  cursor: default;
+}
+
+.scribo-markdown-editor .editor-shell .editor-image img.focused {
+  outline: 2px solid rgb(60 132 244);
+  user-select: none;
+}
+
+.scribo-markdown-editor .editor-shell .editor-image img.focused.draggable {
+  cursor: grab;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .editor-image
+  img.focused.draggable:active {
+  cursor: grabbing;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .editor-image
+  .image-caption-container
+  .tree-view-output {
+  margin: 0;
+  border-radius: 0;
+}
+
+.scribo-markdown-editor .editor-shell .editor-image .image-caption-container {
+  display: block;
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid #fff;
+  background-color: rgb(255 255 255 / 90%);
+  min-width: 100px;
+  color: #000;
+  overflow: hidden;
+}
+
+.scribo-markdown-editor .editor-shell .editor-image .image-caption-button {
+  display: block;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  width: 30%;
+  padding: 10px;
+  margin: 0 auto;
+  border: 1px solid rgb(255 255 255 / 30%);
+  border-radius: 5px;
+  background-color: rgb(0 0 0 / 50%);
+  min-width: 100px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .editor-image
+  .image-caption-button:hover {
+  background-color: rgb(60 132 244 / 50%);
+}
+
+.scribo-markdown-editor .editor-shell .editor-image .image-edit-button {
+  border: 1px solid rgb(0 0 0 / 30%);
+  border-radius: 5px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-pencil-fill'%3E%3Cpath d='M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z'/%3E%3C/svg%3E");
+  background-size: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 35px;
+  height: 35px;
+  vertical-align: -0.25em;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.scribo-markdown-editor .editor-shell .editor-image .image-edit-button:hover {
+  background-color: rgb(60 132 244 / 10%);
+}
+
+.scribo-markdown-editor .editor-shell .editor-image .image-resizer {
+  display: block;
+  width: 7px;
+  height: 7px;
+  position: absolute;
+  background-color: rgb(60 132 244);
+  border: 1px solid #fff;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .editor-image
+  .image-resizer.image-resizer-n {
+  top: -6px;
+  left: 48%;
+  cursor: n-resize;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .editor-image
+  .image-resizer.image-resizer-ne {
+  top: -6px;
+  right: -6px;
+  cursor: ne-resize;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .editor-image
+  .image-resizer.image-resizer-e {
+  bottom: 48%;
+  right: -6px;
+  cursor: e-resize;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .editor-image
+  .image-resizer.image-resizer-se {
+  bottom: -2px;
+  right: -6px;
+  cursor: nwse-resize;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .editor-image
+  .image-resizer.image-resizer-s {
+  bottom: -2px;
+  left: 48%;
+  cursor: s-resize;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .editor-image
+  .image-resizer.image-resizer-sw {
+  bottom: -2px;
+  left: -6px;
+  cursor: sw-resize;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .editor-image
+  .image-resizer.image-resizer-w {
+  bottom: 48%;
+  left: -6px;
+  cursor: w-resize;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .editor-image
+  .image-resizer.image-resizer-nw {
+  top: -6px;
+  left: -6px;
+  cursor: nw-resize;
+}
+
+.scribo-markdown-editor .editor-shell span.inline-editor-image {
+  cursor: default;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+}
+
+.scribo-markdown-editor .editor-shell .inline-editor-image img {
+  max-width: 100%;
+  cursor: default;
+}
+
+.scribo-markdown-editor .editor-shell .inline-editor-image img.focused {
+  outline: 2px solid rgb(60 132 244);
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .inline-editor-image
+  img.focused.draggable {
+  cursor: grab;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .inline-editor-image
+  img.focused.draggable:active {
+  cursor: grabbing;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .inline-editor-image
+  .image-caption-container
+  .tree-view-output {
+  margin: 0;
+  border-radius: 0;
+}
+
+.scribo-markdown-editor .editor-shell .inline-editor-image.position-full {
+  margin: 1em 0;
+}
+
+.scribo-markdown-editor .editor-shell .inline-editor-image.position-left {
+  float: left;
+  width: 50%;
+  margin: 1em 1em 0 0;
+}
+
+.scribo-markdown-editor .editor-shell .inline-editor-image.position-right {
+  float: right;
+  width: 50%;
+  margin: 1em 0 0 1em;
+}
+
+.scribo-markdown-editor .editor-shell .inline-editor-image .image-edit-button {
+  display: block;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 8px;
+  margin: 0 auto;
+  border: 1px solid rgb(255 255 255 / 30%);
+  border-radius: 5px;
+  background-color: rgb(0 0 0 / 50%);
+  min-width: 60px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .inline-editor-image
+  .image-edit-button:hover {
+  background-color: rgb(60 132 244 / 50%);
+}
+
+.scribo-markdown-editor
+  .editor-shell
+  .inline-editor-image
+  .image-caption-container {
+  display: block;
+  background-color: #f4f4f4;
+  min-width: 100%;
+  color: #000;
+  overflow: hidden;
+}
+
+.scribo-markdown-editor .keyword {
+  color: rgb(241 118 94);
+  font-weight: bold;
+}
+
+.scribo-markdown-editor .actions {
+  position: absolute;
+  text-align: right;
+  margin: 10px;
+  bottom: 0;
+  right: 0;
+}
+
+.scribo-markdown-editor .actions.tree-view {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.scribo-markdown-editor .actions i {
+  background-size: contain;
+  display: inline-block;
+  height: 15px;
+  width: 15px;
+  vertical-align: -0.25em;
+}
+
+.scribo-markdown-editor .actions i.image {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-file-image'%3E%3Cpath d='M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z'/%3E%3Cpath d='M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8l-2.083-2.083a.5.5 0 0 0-.76.063L8 11 5.835 9.7a.5.5 0 0 0-.611.076L3 12V2z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .table-cell-action-button-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+.scribo-markdown-editor .table-cell-action-button {
+  background-color: none;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  position: relative;
+  border-radius: 15px;
+  color: #222;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.scribo-markdown-editor i.chevron-down {
+  background-color: transparent;
+  background-size: contain;
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-down'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+}
+
+.scribo-markdown-editor .action-button {
+  background-color: #eee;
+  border: 0;
+  padding: 8px 12px;
+  position: relative;
+  margin-left: 5px;
+  border-radius: 15px;
+  color: #222;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.scribo-markdown-editor .action-button:hover {
+  background-color: #ddd;
+  color: #000;
+}
+
+.scribo-markdown-editor button.action-button:disabled {
+  opacity: 0.6;
+  background: #eee;
+  cursor: not-allowed;
+}
+
+.scribo-markdown-editor .ltr {
+  text-align: left;
+}
+
+.scribo-markdown-editor .rtl {
+  text-align: right;
+}
+
+.scribo-markdown-editor .toolbar {
+  display: flex;
+  margin-bottom: 1px;
+  background: #fff;
+  padding: 4px;
+  border: 2px solid #eff0ef;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  vertical-align: middle;
+  overflow: auto;
+  height: 36px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  margin: -12px -12px 0;
+}
+
+.scribo-markdown-editor button.toolbar-item {
+  border: 0;
+  display: flex;
+  background: none;
+  border-radius: 10px;
+  padding: 8px;
+  cursor: pointer;
+  vertical-align: middle;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.scribo-markdown-editor button.toolbar-item:disabled {
+  cursor: not-allowed;
+}
+
+.scribo-markdown-editor button.toolbar-item.spaced {
+  margin-right: 2px;
+}
+
+.scribo-markdown-editor button.toolbar-item i.format {
+  background-size: contain;
+  height: 18px;
+  width: 18px;
+  vertical-align: -0.25em;
+  display: flex;
+  opacity: 0.6;
+}
+
+.scribo-markdown-editor button.toolbar-item:disabled .icon,
+.scribo-markdown-editor button.toolbar-item:disabled .text,
+.scribo-markdown-editor button.toolbar-item:disabled i.format,
+.scribo-markdown-editor button.toolbar-item:disabled .chevron-down {
+  opacity: 0.2;
+}
+
+.scribo-markdown-editor button.toolbar-item.active {
+  background-color: rgb(223 232 250 / 30%);
+}
+
+.scribo-markdown-editor button.toolbar-item.active i {
+  opacity: 1;
+}
+
+.scribo-markdown-editor .toolbar-item:hover:not([disabled]) {
+  background-color: #eee;
+}
+
+.scribo-markdown-editor .toolbar-item.font-family .text {
+  display: block;
+  max-width: 40px;
+}
+
+.scribo-markdown-editor .toolbar .code-language {
+  width: 150px;
+}
+
+.scribo-markdown-editor .toolbar .toolbar-item .text {
+  display: flex;
+  line-height: 20px;
+  vertical-align: middle;
+  font-size: 14px;
+  color: #777;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: 20px;
+  text-align: left;
+  padding-right: 10px;
+}
+
+.scribo-markdown-editor .toolbar .toolbar-item .icon {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  user-select: none;
+  margin-right: 8px;
+  line-height: 16px;
+  background-size: contain;
+}
+
+.scribo-markdown-editor .toolbar i.chevron-down,
+.scribo-markdown-editor .toolbar-item i.chevron-down {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  user-select: none;
+}
+
+.scribo-markdown-editor .toolbar i.chevron-down.inside {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  margin-left: -25px;
+  margin-top: 11px;
+  margin-right: 10px;
+  pointer-events: none;
+}
+
+.scribo-markdown-editor .toolbar .divider {
+  width: 1px;
+  background-color: #eee;
+  margin: 0 4px;
+}
+
+.scribo-markdown-editor .sticky-note-container {
+  position: absolute;
+  z-index: 9;
+  width: 120px;
+  display: inline-block;
+}
+
+.scribo-markdown-editor .sticky-note {
+  line-height: 1;
+  text-align: left;
+  width: 120px;
+  margin: 25px;
+  padding: 20px 10px;
+  position: relative;
+  border: 1px solid #e8e8e8;
+  font-family: "Reenie Beanie";
+  font-size: 24px;
+  border-bottom-right-radius: 60px 5px;
+  display: block;
+  cursor: move;
+}
+
+.scribo-markdown-editor .sticky-note::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -0;
+  bottom: 20px;
+  width: 120px;
+  height: 25px;
+  background: rgb(0 0 0 / 20%);
+  box-shadow: 2px 15px 5px rgb(0 0 0 / 40%);
+  transform: matrix(-1, -0.1, 0, 1, 0, 0);
+}
+
+.scribo-markdown-editor .sticky-note.yellow {
+  border-top: 1px solid #fdfd86;
+  background: linear-gradient(
+    135deg,
+    #ff8 81%,
+    #ff8 82%,
+    #ff8 82%,
+    #ffffc6 100%
+  );
+}
+
+.scribo-markdown-editor .sticky-note.pink {
+  border-top: 1px solid #e7d1e4;
+  background: linear-gradient(
+    135deg,
+    #f7cbe8 81%,
+    #f7cbe8 82%,
+    #f7cbe8 82%,
+    #e7bfe1 100%
+  );
+}
+
+.scribo-markdown-editor .sticky-note-container.dragging {
+  transition: none !important;
+}
+
+.scribo-markdown-editor .sticky-note div {
+  cursor: text;
+}
+
+.scribo-markdown-editor .sticky-note .delete {
+  border: 0;
+  background: none;
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 10px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.scribo-markdown-editor .sticky-note .delete:hover {
+  font-weight: bold;
+  opacity: 1;
+}
+
+.scribo-markdown-editor .sticky-note .color {
+  border: 0;
+  background: none;
+  position: absolute;
+  top: 8px;
+  right: 25px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.scribo-markdown-editor .sticky-note .color:hover {
+  opacity: 1;
+}
+
+.scribo-markdown-editor .sticky-note .color i {
+  display: block;
+  width: 12px;
+  height: 12px;
+  background-size: contain;
+}
+
+.scribo-markdown-editor .excalidraw-button {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+}
+
+.scribo-markdown-editor .excalidraw-button.selected {
+  outline: 2px solid rgb(60 132 244);
+  user-select: none;
+}
+
+.scribo-markdown-editor .github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
+}
+
+.scribo-markdown-editor .spacer {
+  letter-spacing: -2px;
+}
+
+.scribo-markdown-editor button.item i {
+  opacity: 0.6;
+}
+
+.scribo-markdown-editor button.item.dropdown-item-active {
+  background-color: rgb(223 232 250 / 30%);
+}
+
+.scribo-markdown-editor button.item.dropdown-item-active i {
+  opacity: 1;
+}
+
+.scribo-markdown-editor hr {
+  padding: 2px;
+  border: none;
+  margin: 1em 0;
+  cursor: pointer;
+}
+
+.scribo-markdown-editor hr::after {
+  content: "";
+  display: block;
+  height: 2px;
+  background-color: #ccc;
+  line-height: 2px;
+}
+
+.scribo-markdown-editor hr.selected {
+  outline: 2px solid rgb(60 132 244);
+  user-select: none;
+}
+
+.scribo-markdown-editor .TableNode__contentEditable {
+  min-height: 20px;
+  border: 0;
+  resize: none;
+  cursor: text;
+  display: block;
+  position: relative;
+  outline: 0;
+  padding: 0;
+  user-select: text;
+  font-size: 15px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  z-index: 3;
+}
+
+.scribo-markdown-editor .PlaygroundEditorTheme__blockCursor {
+  display: block;
+  pointer-events: none;
+  position: absolute;
+}
+
+.scribo-markdown-editor .PlaygroundEditorTheme__blockCursor::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -2px;
+  width: 20px;
+  border-top: 1px solid black;
+  animation: CursorBlink 1.1s steps(2, start) infinite;
+}
+
+.scribo-markdown-editor .dialog-dropdown {
+  background-color: #eee !important;
+  margin-bottom: 10px;
+  width: 100%;
+}
