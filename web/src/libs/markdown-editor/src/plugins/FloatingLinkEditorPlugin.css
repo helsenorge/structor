@@ -1,5 +1,3 @@
-/* stylelint-disable no-descending-specificity */
-
 .scribo-markdown-editor .link-editor {
   display: flex;
   position: absolute;
@@ -33,8 +31,8 @@
   background-color: #eee;
 }
 
-.scribo-markdown-editor .link-editor .button i,
-.scribo-markdown-editor .actions i {
+.scribo-markdown-editor .actions i,
+.scribo-markdown-editor .link-editor .button i {
   background-size: contain;
   display: inline-block;
   height: 20px;

@@ -1,6 +1,9 @@
-// @ts-nocheck
-// https://github.com/facebook/lexical/blob/main/packages/lexical-playground/src/plugins/FloatingLinkEditorPlugin/index.tsx
 /**
+ *
+ * This source code is modifed from:
+ * https://github.com/facebook/lexical/blob/main/packages/lexical-playground/src/plugins/FloatingLinkEditorPlugin/index.tsx
+ *
+ * The original file had the following license:
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * This source code is licensed under the MIT license found in the
@@ -292,6 +295,9 @@ function FloatingLinkEditor({
             onKeyDown={(event) => {
               monitorInputInteraction(event);
             }}
+            placeholder="Enter URL"
+            title="Enter URL (press Enter to confirm, Escape to cancel)"
+            aria-label="URL"
           />
           <div>
             <div

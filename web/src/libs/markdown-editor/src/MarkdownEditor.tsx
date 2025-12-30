@@ -16,7 +16,6 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { $getRoot, type EditorState } from "lexical";
 
 import EditorNodes from "./nodes/EditorNodes";
-import AutoLinkPlugin from "./plugins/AutoLinkPlugin";
 import FloatingLinkEditorPlugin from "./plugins/FloatingLinkEditorPlugin";
 import LinkPlugin from "./plugins/LinkPlugin";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
@@ -85,7 +84,6 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
             <HistoryPlugin />
             <ListPlugin />
             <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-            <AutoLinkPlugin />
             <LinkPlugin />
             <FloatingLinkEditorPlugin
               anchorElem={floatingAnchorElem}
