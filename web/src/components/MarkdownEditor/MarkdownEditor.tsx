@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import useDebounce from "./useDebounce";
-import { MarkdownEditor as ScriboEditor } from "../../libs/markdown-editor/src/main";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+
+import type { EventInfo } from "ckeditor5";
+
+import Editor from "./Editor";
+
+import "./MarkdownEditor.css";
 
 interface MarkdownEditorProps {
   data: string;
@@ -11,35 +16,49 @@ interface MarkdownEditorProps {
 }
 
 const MarkdownEditor = (props: MarkdownEditorProps): React.JSX.Element => {
-  const [markdown, setMarkdown] = useState(props.data);
-  const debouncedMarkdown = useDebounce(markdown, 500);
-
-  useEffect(() => {
-    if (props.onBlur && debouncedMarkdown !== props.data) {
-      props.onBlur(debouncedMarkdown);
-    }
-  }, [debouncedMarkdown]);
-
-  const handleChange = (newMarkdown: string): void => {
-    setMarkdown(newMarkdown);
+  const [value, setValue] = useState<string>(props.data);
+  const handleChange = (
+    _event: EventInfo<string, unknown>,
+    editor: Editor,
+  ): void => {
+    setValue(editor.getData());
   };
-
-  const handleBlur = (): void => {
+  const handleBlur = (
+    _event: EventInfo<string, unknown>,
+    editor: Editor,
+  ): void => {
     if (props.onBlur) {
-      props.onBlur(markdown);
+      props.onBlur(editor.getData());
     }
   };
 
-  if (props.disabled) {
-    return <div className="markdown-preview">{props.data}</div>;
-  }
+  const editorConfiguration = {
+    toolbar: [
+      "heading",
+      "|",
+      "bold",
+      "italic",
+      "link",
+      "bulletedList",
+      "numberedList",
+      "|",
+      "blockQuote",
+      "|",
+      "undo",
+      "redo",
+    ],
+    language: "no-nb",
+    placeholder: props.placeholder || "",
+  };
 
   return (
-    <ScriboEditor
-      initialMarkdown={props.data}
+    <CKEditor
+      data={value}
       onChange={handleChange}
       onBlur={handleBlur}
-      placeholder={props.placeholder || ""}
+      editor={Editor}
+      config={editorConfiguration}
+      disabled={props.disabled}
     />
   );
 };

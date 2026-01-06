@@ -9,9 +9,6 @@ const useOutsideClick = (
     if ((e.target as HTMLElement).closest(".ck-body-wrapper")) {
       return;
     }
-    if ((e.target as HTMLElement).closest(".dropdown")) {
-      return;
-    }
     if (ref.current && !ref.current.contains(e.target as Node)) {
       onClickOutside();
     }

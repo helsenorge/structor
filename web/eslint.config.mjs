@@ -19,6 +19,6 @@ export default [
     },
   },
   {
-    ignores: ["*config.*", "**/node_modules/**", "src/libs/markdown-editor/**"],
+    ignores: ["*config.*", "**/node_modules/**"],
   },
 ];
