@@ -19,7 +19,6 @@ import type * as React from "react";
 
 import {
   $createLinkNode,
-  $isAutoLinkNode,
   $isLinkNode,
   TOGGLE_LINK_COMMAND,
 } from "@lexical/link";
@@ -265,14 +264,6 @@ function FloatingLinkEditor({
           const selection = $getSelection();
           if ($isRangeSelection(selection)) {
             const parent = getSelectedNode(selection).getParent();
-            if ($isAutoLinkNode(parent)) {
-              const linkNode = $createLinkNode(parent.getURL(), {
-                rel: parent.__rel,
-                target: parent.__target,
-                title: parent.__title,
-              });
-              parent.replace(linkNode, true);
-            }
           }
         });
       }
@@ -369,11 +360,7 @@ function useFloatingLinkEditorToolbar(
       if ($isRangeSelection(selection)) {
         const focusNode = getSelectedNode(selection);
         const focusLinkNode = $findMatchingParent(focusNode, $isLinkNode);
-        const focusAutoLinkNode = $findMatchingParent(
-          focusNode,
-          $isAutoLinkNode,
-        );
-        if (!(focusLinkNode || focusAutoLinkNode)) {
+        if (!focusLinkNode) {
           setIsLink(false);
           return;
         }
@@ -382,14 +369,9 @@ function useFloatingLinkEditorToolbar(
           .filter((node) => !$isLineBreakNode(node))
           .find((node) => {
             const linkNode = $findMatchingParent(node, $isLinkNode);
-            const autoLinkNode = $findMatchingParent(node, $isAutoLinkNode);
             return (
               (focusLinkNode && !focusLinkNode.is(linkNode)) ||
-              (linkNode && !linkNode.is(focusLinkNode)) ||
-              (focusAutoLinkNode && !focusAutoLinkNode.is(autoLinkNode)) ||
-              (autoLinkNode &&
-                (!autoLinkNode.is(focusAutoLinkNode) ||
-                  autoLinkNode.getIsUnlinked()))
+              (linkNode && !linkNode.is(focusLinkNode))
             );
           });
         if (!badNode) {
