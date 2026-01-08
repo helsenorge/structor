@@ -1218,13 +1218,13 @@ body > .dropdown .icon.code {
   z-index: 3;
 }
 
-.scribo-markdown-editor .PlaygroundEditorTheme__blockCursor {
+.scribo-markdown-editor .EditorTheme__blockCursor {
   display: block;
   pointer-events: none;
   position: absolute;
 }
 
-.scribo-markdown-editor .PlaygroundEditorTheme__blockCursor::after {
+.scribo-markdown-editor .EditorTheme__blockCursor::after {
   content: "";
   display: block;
   position: absolute;
