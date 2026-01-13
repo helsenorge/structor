@@ -1,19 +1,76 @@
 .predefined-container {
-    display: flex;
-    padding-bottom: 50px;
+  display: flex;
+  padding-bottom: 50px;
 }
 
-.predefined-container>div {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid black;
+.predefined-container > div {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid black;
 }
 
-.predefined-container>div:first-child {
-    margin-right: 20px;
-    border: 1px dotted black;
+.predefined-container > div:first-child {
+  margin-right: 20px;
+  border: 1px dotted black;
 }
 
 .predefined-container .value-set {
-    padding-top: 10px;
+  padding-top: 10px;
+}
+
+/* React Aria drag and drop styles */
+.drag-handle {
+  margin-right: 8px;
+  cursor: grab;
+  user-select: none;
+  padding: 4px 8px;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--color-grey-dark, #666);
+}
+
+.drag-handle:hover {
+  background-color: var(--color-grey-light, #f0f0f0);
+  border-radius: 4px;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Drop indicator styling */
+.react-aria-DropIndicator[data-drop-target] {
+  outline: none;
+  background-color: transparent;
+  height: 0;
+  border: 0;
+  border-top: 3px solid var(--color-blueberry, #0067c5);
+  margin: 8px 0;
+  position: relative;
+}
+
+.react-aria-DropIndicator[data-drop-target]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-blueberry, #0067c5);
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.react-aria-DropIndicator[data-drop-target]::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-blueberry, #0067c5);
+  border-radius: 50%;
+  border: 2px solid white;
 }

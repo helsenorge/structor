@@ -1,13 +1,12 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 
 import {
-  type DraggingStyle,
-  type DropResult,
-  type NotDraggingStyle,
-  DragDropContext,
-  Draggable,
-  Droppable,
-} from "react-beautiful-dnd";
+  Button,
+  DropIndicator,
+  GridList,
+  GridListItem,
+  useDragAndDrop,
+} from "react-aria-components";
 import { useTranslation } from "react-i18next";
 import "./OptionReference.css";
 
@@ -15,7 +14,7 @@ import {
   IExtensionType,
   IItemProperty,
 } from "../../../types/IQuestionnareItemType";
-import type { Extension, QuestionnaireItem } from "fhir/r4";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import createUUID from "../../../helpers/CreateUUID";
 import { updateItemAction } from "../../../store/treeStore/treeActions";
@@ -89,148 +88,135 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
     }
   };
 
-  const getItemStyle = (
-    isDragging: boolean,
-    draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
-  ): React.CSSProperties => ({
-    userSelect: "none",
-    background: isDragging ? "lightgreen" : "transparent",
-    cursor: "pointer",
-    ...draggableStyle,
-  });
-
-  const getListStyle = (
-    isDraggingOver: boolean,
-  ): {
-    background: string;
-  } => ({
-    background: isDraggingOver ? "lightblue" : "transparent",
-  });
-
   const optionReferences = item.extension?.filter(
     (x) => x.url === IExtensionType.optionReference,
   );
 
-  const reorderExtension = (
-    list: Extension[],
-    to: number,
-    from: number,
-  ): Extension[] => {
-    const itemToMove = list.splice(from, 1);
-    list.splice(to, 0, itemToMove[0]);
-    return list;
-  };
+  const handleReorder = (e: {
+    keys: Set<React.Key>;
+    target: { key: React.Key; dropPosition: string };
+  }): void => {
+    if (!item.extension) return;
 
-  const handleReorder = (result: DropResult): void => {
-    if (!result.source || !result.destination || !result.draggableId) {
-      return;
+    const keys = [...e.keys];
+
+    const nonOptionReferences = item.extension.filter(
+      (x) => x.url !== IExtensionType.optionReference,
+    );
+    const currentOptionReferences = item.extension.filter(
+      (x) => x.url === IExtensionType.optionReference,
+    );
+
+    const sourceIndex = currentOptionReferences.findIndex(
+      (x) => x.valueReference?.id === keys[0],
+    );
+    const targetIndex = currentOptionReferences.findIndex(
+      (x) => x.valueReference?.id === e.target.key,
+    );
+
+    if (sourceIndex === -1 || targetIndex === -1) return;
+
+    const updatedReferences = [...currentOptionReferences];
+    const [movedItem] = updatedReferences.splice(sourceIndex, 1);
+
+    if (e.target.dropPosition === "before") {
+      updatedReferences.splice(targetIndex, 0, movedItem);
+    } else if (e.target.dropPosition === "after") {
+      updatedReferences.splice(targetIndex + 1, 0, movedItem);
     }
 
-    const fromIndex = result.source.index;
-    const toIndex = result.destination.index;
-
-    if (fromIndex !== toIndex) {
-      const tempList = item.extension ? [...item.extension] : [];
-      const nonOptionReferences = tempList.filter(
-        (x) => x.url !== IExtensionType.optionReference,
-      );
-      const currentOptionReferences = tempList.filter(
-        (x) => x.url === IExtensionType.optionReference,
-      );
-      const reordered = reorderExtension(
-        currentOptionReferences,
-        toIndex,
-        fromIndex,
-      );
-      dispatch(
-        updateItemAction(item.linkId, IItemProperty.extension, [
-          ...nonOptionReferences,
-          ...reordered,
-        ]),
-      );
-    }
+    dispatch(
+      updateItemAction(item.linkId, IItemProperty.extension, [
+        ...nonOptionReferences,
+        ...updatedReferences,
+      ]),
+    );
   };
+
+  const listItems = useMemo(
+    () =>
+      (optionReferences || []).map((reference) => ({
+        id: reference.valueReference?.id || "",
+        reference,
+      })),
+    [optionReferences],
+  );
+
+  const { dragAndDropHooks } = useDragAndDrop({
+    getItems: (keys) => [...keys].map((key) => ({ "text/plain": String(key) })),
+    acceptedDragTypes: ["text/plain"],
+    onReorder: handleReorder,
+    renderDropIndicator(target) {
+      return <DropIndicator target={target} />;
+    },
+  });
 
   return (
     <>
-      <DragDropContext onDragEnd={handleReorder}>
-        <Droppable
-          droppableId={`droppable-${item.linkId}-option-reference`}
-          key={`droppable-${item.linkId}-option-reference`}
-        >
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
-            >
-              {optionReferences?.map((reference, index) => {
-                return (
-                  <Draggable
-                    key={reference.valueReference?.id}
-                    draggableId={reference.valueReference?.id || "1"}
-                    index={index}
-                  >
-                    {(providedDrag, snapshotDrag) => (
-                      <div
-                        ref={providedDrag.innerRef}
-                        {...providedDrag.draggableProps}
-                        style={getItemStyle(
-                          snapshotDrag.isDragging,
-                          providedDrag.draggableProps.style,
-                        )}
-                        key={reference.valueReference?.id}
-                      >
-                        <div className="option-reference align-everything">
-                          <span
-                            {...providedDrag.dragHandleProps}
-                            className="reorder-icon"
-                            aria-label="reorder element"
-                          />
-                          <InputField
-                            name="beskrivelse"
-                            placeholder={t("Select recipient..")}
-                            defaultValue={reference.valueReference?.display}
-                            onBlur={(event) =>
-                              updateReference(
-                                "display",
-                                event.target.value,
-                                reference.valueReference?.id,
-                              )
-                            }
-                          />
-                          <InputField
-                            name="verdi"
-                            placeholder={t("Select endpoint..")}
-                            defaultValue={reference.valueReference?.reference}
-                            onBlur={(event) =>
-                              updateReference(
-                                "reference",
-                                event.target.value,
-                                reference.valueReference?.id,
-                              )
-                            }
-                          />
-                          {optionReferences.length > 2 && (
-                            <button
-                              type="button"
-                              name="Fjern element"
-                              className="align-everything"
-                              onClick={() =>
-                                removeItem(reference.valueReference?.id)
-                              }
-                            />
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </Draggable>
-                );
-              })}
-              {provided.placeholder}
+      <GridList
+        aria-label="Reorderable option references"
+        items={listItems}
+        dragAndDropHooks={dragAndDropHooks}
+        selectionMode="none"
+        renderEmptyState={() => <div>{t("No recipients")}</div>}
+      >
+        {({ id, reference }) => (
+          <GridListItem
+            id={id}
+            textValue={
+              reference.valueReference?.display ||
+              reference.valueReference?.reference ||
+              `Reference ${id}`
+            }
+          >
+            <div className="option-reference align-everything">
+              <Button
+                slot="drag"
+                className="drag-handle"
+                aria-label="reorder element"
+              >
+                {"☰"}
+              </Button>
+              <InputField
+                name="beskrivelse"
+                placeholder={t("Select recipient..")}
+                defaultValue={reference.valueReference?.display}
+                onKeyDown={(event) => event.stopPropagation()}
+                onBlur={(event) =>
+                  updateReference(
+                    "display",
+                    event.target.value,
+                    reference.valueReference?.id,
+                  )
+                }
+              />
+              <InputField
+                name="verdi"
+                placeholder={t("Select endpoint..")}
+                defaultValue={reference.valueReference?.reference}
+                onKeyDown={(event) => event.stopPropagation()}
+                onBlur={(event) =>
+                  updateReference(
+                    "reference",
+                    event.target.value,
+                    reference.valueReference?.id,
+                  )
+                }
+              />
+              {(optionReferences?.length || 0) > 2 && (
+                <button
+                  type="button"
+                  name="Fjern element"
+                  aria-label={t("Remove element")}
+                  title={t("Remove element")}
+                  className="align-everything"
+                  onClick={() => removeItem(reference.valueReference?.id)}
+                />
+              )}
             </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+          </GridListItem>
+        )}
+      </GridList>
       <div className="center-text new-option-reference">
         <Btn
           type="button"

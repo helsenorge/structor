@@ -1,13 +1,12 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 
 import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  type DraggingStyle,
-  type DropResult,
-  type NotDraggingStyle,
-} from "react-beautiful-dnd";
+  Button,
+  DropIndicator,
+  GridList,
+  GridListItem,
+  useDragAndDrop,
+} from "react-aria-components";
 import { useTranslation } from "react-i18next";
 import { getValueSetsFromState } from "src/store/treeStore/selectors";
 
@@ -27,8 +26,13 @@ import InputField from "../InputField/inputField";
 import Modal from "../Modal/Modal";
 import "./PredefinedValueSetModal.css";
 
+type ReorderEvent = Parameters<
+  NonNullable<Parameters<typeof useDragAndDrop>[0]["onReorder"]>
+>[0];
+
 type Props = {
   close: () => void;
+  onSaved?: (valueSet: ValueSet) => void;
 };
 
 const initValueSet = (): ValueSet =>
@@ -121,42 +125,37 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
   };
 
   const dispatchValueSet = (): void => {
-    dispatch(updateFhirResourceAction(newValueSet));
+    const savedValueSet = JSON.parse(JSON.stringify(newValueSet)) as ValueSet;
+    dispatch(updateFhirResourceAction(savedValueSet));
+    props.onSaved?.(savedValueSet);
     setNewValueSet({ ...initValueSet() });
   };
 
-  const getListStyle = (isDraggingOver: boolean): { background: string } => ({
-    background: isDraggingOver ? "lightblue" : "transparent",
-  });
+  const handleOrder = (e: ReorderEvent): void => {
+    if (!newValueSet.compose?.include[0].concept) return;
 
-  const getItemStyle = (
-    isDragging: boolean,
-    draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
-  ): React.CSSProperties => ({
-    userSelect: "none",
-    background: isDragging ? "lightgreen" : "transparent",
-    cursor: "pointer",
-    ...draggableStyle,
-  });
+    const keys = [...e.keys];
+    const concepts = newValueSet.compose.include[0].concept;
 
-  const handleOrder = (result: DropResult): void => {
-    if (!result.source || !result.destination || !result.draggableId) {
-      return;
+    const sourceIndex = concepts.findIndex((item) => item.id === keys[0]);
+    const targetIndex = concepts.findIndex((item) => item.id === e.target.key);
+
+    if (sourceIndex === -1 || targetIndex === -1) return;
+
+    const updatedConcepts = [...concepts];
+    const [movedItem] = updatedConcepts.splice(sourceIndex, 1);
+
+    if (e.target.dropPosition === "before") {
+      updatedConcepts.splice(targetIndex, 0, movedItem);
+    } else if (e.target.dropPosition === "after") {
+      updatedConcepts.splice(targetIndex + 1, 0, movedItem);
     }
-
-    const fromIndex = result.source.index;
-    const toIndex = result.destination.index;
 
     const compose = { ...newValueSet.compose };
-    const itemToMove =
-      compose.include && compose.include[0].concept?.splice(fromIndex, 1);
-
-    if (fromIndex !== toIndex && itemToMove) {
-      if (compose.include) {
-        compose.include[0].concept?.splice(toIndex, 0, itemToMove[0]);
-      }
-      setNewValueSet({ ...newValueSet });
+    if (compose.include) {
+      compose.include[0].concept = updatedConcepts;
     }
+    setNewValueSet({ ...newValueSet, compose });
   };
 
   const handleSystem = (value: string): void => {
@@ -235,94 +234,14 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
                       onBlur={(event) => handleSystem(event.target.value)}
                     />
                   </FormField>
-                  <DragDropContext onDragEnd={handleOrder}>
-                    <Droppable
-                      droppableId={`droppable-new-value-set-${include.system}`}
-                      key={`droppable-new-value-set-${include.system}`}
-                      type="value-set"
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          style={getListStyle(snapshot.isDraggingOver)}
-                        >
-                          {include.concept?.map((item, index) => {
-                            return (
-                              <Draggable
-                                key={item.id}
-                                draggableId={item.id || "1"}
-                                index={index}
-                              >
-                                {(providedDrag, snapshotDrag) => (
-                                  <div
-                                    ref={providedDrag.innerRef}
-                                    {...providedDrag.draggableProps}
-                                    style={getItemStyle(
-                                      snapshotDrag.isDragging,
-                                      providedDrag.draggableProps.style,
-                                    )}
-                                    className="answer-option-item align-everything"
-                                  >
-                                    <span
-                                      className="reorder-icon"
-                                      aria-label="reorder element"
-                                      {...providedDrag.dragHandleProps}
-                                    />
-                                    <div className="answer-option-content align-everything">
-                                      <InputField
-                                        disabled={includeIndex > 0}
-                                        value={item.display}
-                                        placeholder={t("Enter a title..")}
-                                        onBlur={(event) =>
-                                          handleConceptItem(
-                                            event.target.value,
-                                            "display",
-                                            item.id,
-                                            "blur",
-                                          )
-                                        }
-                                        onChange={(event) =>
-                                          handleConceptItem(
-                                            event.target.value,
-                                            "display",
-                                            item.id,
-                                            "change",
-                                          )
-                                        }
-                                      />
-                                      <InputField
-                                        disabled={includeIndex > 0}
-                                        value={item.code}
-                                        placeholder={t("Enter a value..")}
-                                        onChange={(event) =>
-                                          handleConceptItem(
-                                            event.target.value,
-                                            "code",
-                                            item.id,
-                                          )
-                                        }
-                                      />
-                                    </div>
-                                    {includeIndex === 0 &&
-                                      include.concept?.length &&
-                                      include.concept?.length > 2 && (
-                                        <button
-                                          type="button"
-                                          onClick={() => removeElement(item.id)}
-                                          name={t("Remove element")}
-                                          className="align-everything"
-                                        />
-                                      )}
-                                  </div>
-                                )}
-                              </Draggable>
-                            );
-                          })}
-                          {provided.placeholder}
-                        </div>
-                      )}
-                    </Droppable>
-                  </DragDropContext>
+                  <ConceptList
+                    concepts={include.concept || []}
+                    includeIndex={includeIndex}
+                    onReorder={handleOrder}
+                    onHandleConceptItem={handleConceptItem}
+                    onRemoveElement={removeElement}
+                    t={t}
+                  />
                 </div>
               );
             })}
@@ -352,6 +271,110 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
         </div>
       </div>
     </Modal>
+  );
+};
+
+type ConceptListProps = {
+  concepts: Array<{ id?: string; code?: string; display?: string }>;
+  includeIndex: number;
+  onReorder: (e: ReorderEvent) => void;
+  onHandleConceptItem: (
+    value: string,
+    field: "code" | "display",
+    id?: string,
+    eventType?: "blur" | "change",
+  ) => void;
+  onRemoveElement: (id?: string) => void;
+  t: (key: string) => string;
+};
+
+const ConceptList = ({
+  concepts,
+  includeIndex,
+  onReorder,
+  onHandleConceptItem,
+  onRemoveElement,
+  t,
+}: ConceptListProps): React.JSX.Element => {
+  const listItems = useMemo(
+    () =>
+      concepts.map((item) => ({
+        id: item.id || "",
+        item,
+      })),
+    [concepts],
+  );
+
+  const { dragAndDropHooks } = useDragAndDrop({
+    getItems: (keys) => [...keys].map((key) => ({ "text/plain": String(key) })),
+    acceptedDragTypes: ["text/plain"],
+    onReorder,
+    renderDropIndicator(target) {
+      return <DropIndicator target={target} />;
+    },
+  });
+
+  return (
+    <GridList
+      aria-label="Reorderable concept list"
+      items={listItems}
+      dragAndDropHooks={dragAndDropHooks}
+      selectionMode="none"
+      renderEmptyState={() => <div>{t("No concepts")}</div>}
+    >
+      {({ id, item }) => (
+        <GridListItem
+          id={id}
+          textValue={item.display || item.code || `Concept ${id}`}
+          className="answer-option-item align-everything"
+        >
+          <Button
+            slot="drag"
+            className="drag-handle"
+            aria-label="reorder element"
+          >
+            {"☰"}
+          </Button>
+          <div className="answer-option-content align-everything">
+            <InputField
+              disabled={includeIndex > 0}
+              key={`${item.id}-display`}
+              defaultValue={item.display}
+              placeholder={t("Enter a title..")}
+              onKeyDown={(event) => event.stopPropagation()}
+              onBlur={(event) =>
+                onHandleConceptItem(
+                  event.target.value,
+                  "display",
+                  item.id,
+                  "blur",
+                )
+              }
+            />
+            <InputField
+              disabled={includeIndex > 0}
+              key={`${item.id}-code`}
+              defaultValue={item.code}
+              placeholder={t("Enter a value..")}
+              onKeyDown={(event) => event.stopPropagation()}
+              onBlur={(event) =>
+                onHandleConceptItem(event.target.value, "code", item.id, "blur")
+              }
+            />
+          </div>
+          {includeIndex === 0 && concepts.length > 2 && (
+            <button
+              type="button"
+              onClick={() => onRemoveElement(item.id)}
+              name={t("Remove element")}
+              aria-label={t("Remove element")}
+              title={t("Remove element")}
+              className="align-everything"
+            />
+          )}
+        </GridListItem>
+      )}
+    </GridList>
   );
 };
 

@@ -15,6 +15,7 @@ type InputFieldProps = {
   testId?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   id?: string;
 };
 
@@ -31,6 +32,7 @@ const InputField = ({
   testId,
   onChange,
   onBlur,
+  onKeyDown,
   id,
 }: InputFieldProps): React.JSX.Element => {
   return (
@@ -50,6 +52,7 @@ const InputField = ({
       name={name}
       onChange={onChange}
       onBlur={onBlur}
+      onKeyDown={onKeyDown}
     />
   );
 };

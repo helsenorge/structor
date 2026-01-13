@@ -1,4 +1,4 @@
-import type React from "react";
+import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -12,14 +12,18 @@ import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 import { ValueSetDetails } from "./details/ValueSetDetails";
 import useNewValueSet from "./useNewValueset";
 import ValuseSetCompose from "./valueSetCompose/ValuseSetCompose";
+import PredefinedValueSetModal from "../../../components/PredefinedValueSetModal/PredefinedValueSetModal";
 import RawJson from "../../components/rawJson";
+import { useValueSetContext } from "../context/useValueSetContext";
 
 import styles from "./new-value-set.module.scss";
 type Props = {
   scrollToTarget: () => void;
 };
-const NewValueSet = ({ scrollToTarget }: Props): React.JSX.Element => {
+const NewValueSet = ({ scrollToTarget }: Props): JSX.Element => {
   const { t } = useTranslation();
+  const [showModal, setShowModal] = useState(false);
+  const { setNewValueSet } = useValueSetContext();
   const {
     startNewValueSet,
     dispatchValueSet,
@@ -47,6 +51,9 @@ const NewValueSet = ({ scrollToTarget }: Props): React.JSX.Element => {
       </div>
 
       <div className={styles.newValueSetButtons}>
+        <Button variant="outline" onClick={() => setShowModal(true)}>
+          {t("Simple mode")}
+        </Button>
         <Button variant="outline" onClick={dispatchValueSet}>
           <Icon svgIcon={Save} />
           {t("Save")}
@@ -73,6 +80,17 @@ const NewValueSet = ({ scrollToTarget }: Props): React.JSX.Element => {
         side="right"
         showHeadline={false}
       />
+      {showModal && (
+        <PredefinedValueSetModal
+          onSaved={(valueSet) => {
+            setNewValueSet(() => JSON.parse(JSON.stringify(valueSet)));
+          }}
+          close={() => {
+            setShowModal(false);
+            scrollToTarget();
+          }}
+        />
+      )}
     </div>
   );
 };
