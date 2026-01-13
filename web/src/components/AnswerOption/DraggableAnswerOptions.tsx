@@ -54,14 +54,17 @@ const DraggableAnswerOptions = ({
 
   const { dragAndDropHooks } = useDragAndDrop({
     // Enable reordering within the list
-    getItems: (keys) => [...keys].map((key) => ({ "text/plain": key })),
+    getItems: (keys) => [...keys].map((key) => ({ "text/plain": String(key) })),
     acceptedDragTypes: ["text/plain"],
+    renderDropIndicator: (target) => <DropIndicator target={target} />,
     onReorder(e) {
-      const keys = Array.from(e.keys);
+      const keys = Array.from(e.keys, (k) => String(k));
 
       if (e.target.dropPosition === "before") {
         // Find indices for reordering
-        const targetIndex = listItems.findIndex((i) => i.id === e.target.key);
+        const targetIndex = listItems.findIndex(
+          (i) => i.id === String(e.target.key),
+        );
         const sourceIndices = keys.map((key) =>
           listItems.findIndex((i) => i.id === key),
         );
@@ -73,7 +76,9 @@ const DraggableAnswerOptions = ({
 
         dispatchUpdateItem(IItemProperty.answerOption, newOptions);
       } else if (e.target.dropPosition === "after") {
-        const targetIndex = listItems.findIndex((i) => i.id === e.target.key);
+        const targetIndex = listItems.findIndex(
+          (i) => i.id === String(e.target.key),
+        );
         const sourceIndices = keys.map((key) =>
           listItems.findIndex((i) => i.id === key),
         );
@@ -93,7 +98,6 @@ const DraggableAnswerOptions = ({
       items={listItems}
       dragAndDropHooks={dragAndDropHooks}
       className="draggable-answer-options"
-      renderDropIndicator={(target) => <DropIndicator target={target} />}
     >
       {(listItem) => (
         <GridListItem

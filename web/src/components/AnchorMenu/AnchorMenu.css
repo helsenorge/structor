@@ -9,16 +9,6 @@
   display: flex;
 }
 
-/* override styling */
-.questionnaire-overview .rst__nodeContent {
-  right: 0;
-}
-
-.questionnaire-overview .rst__placeholder {
-  max-width: 100%;
-  height: 150px;
-}
-
 .questionnaire-overview__toolbox {
   width: 200px;
 }
@@ -44,25 +34,131 @@
   visibility: visible;
 }
 
-/* override styling */
-.anchor-menu__item .rst__rowLabel {
-  flex: 1;
+.anchor-menu__tree {
+  text-align: left;
+  padding-left: 0.5rem;
 }
 
-.anchor-menu__inneritem {
+.anchor-menu__item {
+  margin: 2px 0;
+}
+
+.anchor-menu__row {
   display: flex;
-  max-width: 600px;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 100%;
   padding: 0.5rem;
   cursor: pointer;
 }
 
-.anchor-menu__inneritem:hover {
+.anchor-menu__indent {
+  --tree-line: #cfd5dd;
+  --tree-line-opacity: 0.35;
+  --tree-line-opacity-hover: 0.7;
+  --tree-indent-unit: 18px;
+
+  display: inline-flex;
+  align-self: stretch;
+  margin-right: 0.25rem;
+}
+
+.anchor-menu__indent-col {
+  width: var(--tree-indent-unit);
+  flex: none;
+  position: relative;
+}
+
+.anchor-menu__indent-col[data-continuation="1"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-0.5px);
+  background-color: color-mix(
+    in srgb,
+    var(--tree-line) calc(var(--tree-line-opacity) * 100%),
+    transparent
+  );
+}
+
+.anchor-menu__indent-col--self::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-0.5px);
+  background-color: color-mix(
+    in srgb,
+    var(--tree-line) calc(var(--tree-line-opacity) * 100%),
+    transparent
+  );
+}
+
+.anchor-menu__indent-col--self[data-last="0"]::before {
+  bottom: 0;
+}
+
+.anchor-menu__indent-col--self[data-last="1"]::before {
+  bottom: 50%;
+}
+
+.anchor-menu__indent-col--self::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: 0;
+  height: 1px;
+  background-color: color-mix(
+    in srgb,
+    var(--tree-line) calc(var(--tree-line-opacity) * 100%),
+    transparent
+  );
+}
+
+.anchor-menu__item:hover .anchor-menu__indent-col::before,
+.anchor-menu__item:hover .anchor-menu__indent-col::after,
+.anchor-menu__item:focus-within .anchor-menu__indent-col::before,
+.anchor-menu__item:focus-within .anchor-menu__indent-col::after {
+  background-color: color-mix(
+    in srgb,
+    var(--tree-line) calc(var(--tree-line-opacity-hover) * 100%),
+    transparent
+  );
+}
+
+.anchor-menu__row:hover {
   background-color: #e4e4e4;
 }
 
-.anchor-menu__topitem .rst__rowContents {
-  /* override styling */
+.anchor-menu__topitem .anchor-menu__row {
   background-color: #e4f7f9;
+}
+
+.anchor-menu__chevron {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.anchor-menu__chevron-spacer {
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+}
+
+.anchor-menu__actions {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 0.25rem;
 }
 
 .anchor-menu__title {
@@ -72,17 +168,82 @@
 }
 
 .anchor-menu__dragcomponent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 8px 16px;
   background: #e4f7f9;
   margin: 5px;
   text-align: left;
   color: black;
   border: 1px solid #cae7ed;
+}
+
+.anchor-menu__toolbox-label {
+  flex: 1;
+}
+
+.drag-handle {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #cfd5dd;
+  background: #fff;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: grab;
 }
 
-.anchor-menu__dragcomponent:active {
+.drag-handle:hover {
+  border-color: var(--primary-2);
+}
+
+.drag-handle:active {
   cursor: grabbing;
+}
+
+.drag-handle__dots {
+  width: 12px;
+  height: 16px;
+  background-image: radial-gradient(#6b7280 1.3px, transparent 1.3px);
+  background-size: 4px 4px;
+  background-position: 0 0;
+}
+
+.anchor-menu__drop-indicator {
+  height: 4px;
+  background-color: var(--primary-2);
+  border-radius: 999px;
+  margin: 2px 0;
+  margin-left: calc(var(--drop-indent, 0px) + 0.5rem);
+  margin-right: 0.5rem;
+  position: relative;
+}
+
+.anchor-menu__drop-indicator::after {
+  content: "Nivå " attr(data-depth);
+  position: absolute;
+  top: -18px;
+  left: -2px;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #cfd5dd;
+  background: #fff;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.anchor-menu__drop-indicator--on {
+  background-color: #16a34a;
+}
+
+.anchor-menu__drop-indicator--on::after {
+  content: "Inn i nivå " attr(data-depth);
+  border-color: color-mix(in srgb, #16a34a 45%, #cfd5dd);
 }
 
 .folder-icon {

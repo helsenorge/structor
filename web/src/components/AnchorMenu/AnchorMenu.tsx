@@ -1,15 +1,17 @@
-import { type Dispatch, useState } from "react";
+import { type Dispatch, useEffect, useMemo, useState } from "react";
 
 import "./AnchorMenu.css";
 
-import { SortableTreeWithoutDndContext as SortableTree } from "@nosferatu500/react-sortable-tree";
 import {
-  DndProvider,
-  DragSource,
-  type DragSourceConnector,
-  type ConnectDragSource,
-} from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+  Button,
+  DropIndicator,
+  GridList,
+  GridListItem,
+  Tree,
+  TreeItem,
+  TreeItemContent,
+  useDragAndDrop,
+} from "react-aria-components";
 import { useTranslation } from "react-i18next";
 
 import type {
@@ -20,10 +22,13 @@ import type {
 } from "../../store/treeStore/treeStore";
 import { IQuestionnaireItemType } from "../../types/IQuestionnareItemType";
 import type { ValidationError } from "../../utils/validationUtils";
+import type { DropItem, DragItem, Key } from "@react-types/shared";
 
 import FormFieldTag from "@helsenorge/designsystem-react/components/FormFieldTag";
+import Icon from "@helsenorge/designsystem-react/components/Icon";
+import ChevronDown from "@helsenorge/designsystem-react/components/Icons/ChevronDown";
+import ChevronUp from "@helsenorge/designsystem-react/components/Icons/ChevronUp";
 
-import "@nosferatu500/react-sortable-tree/style.css";
 import { generateItemButtons } from "./ItemButtons/ItemButtons";
 import { isIgnorableItem } from "../../helpers/itemControl";
 import {
@@ -49,116 +54,72 @@ interface AnchorMenuProps {
   dispatch: Dispatch<ActionType>;
 }
 
-interface Node {
-  title: string;
-  hierarchy?: string;
-  nodeType?: IQuestionnaireItemType;
-  nodeReadableType?: string;
-  children: Node[];
-}
-
-interface ExtendedNode {
-  node: Node;
-  path: string[];
-}
-
-interface NodeVisibilityToggleEvent {
-  node: Node;
-  expanded: boolean;
-}
-
-const newNodeLinkId = "NEW";
-const externalNodeType = "yourNodeType";
-
-const externalNodeSpec = {
-  // This needs to return an object with a property `node` in it.
-  // Object rest spread is recommended to avoid side effects of
-  // referencing the same object in different trees.
-  beginDrag: (componentProps: {
-    node: Node;
-  }): {
-    node: Node;
-  } => ({
-    node: { ...componentProps.node },
-  }),
-};
-const externalNodeCollect = (
-  connect: DragSourceConnector,
-): {
-  connectDragSource: ConnectDragSource;
-} => ({
-  connectDragSource: connect.dragSource(),
-  // Add props via react-dnd APIs to enable more visual
-  // customization of your component
-  // isDragging: monitor.isDragging(),
-  // didDrop: monitor.didDrop(),
-});
-
-const ExternalNodeBaseComponent = (props: {
-  connectDragSource: ConnectDragSource;
-  node: Node;
-}): JSX.Element | null => {
-  return props.connectDragSource(
-    <div className="anchor-menu__dragcomponent">
-      {props.node.nodeReadableType}
-    </div>,
-    {
-      dropEffect: "copy",
-    },
-  );
+type TreeNode = {
+  id: string;
+  hierarchy: string;
+  children: TreeNode[];
 };
 
-const YourExternalNodeComponent = DragSource(
-  externalNodeType,
-  externalNodeSpec,
-  externalNodeCollect,
-)(ExternalNodeBaseComponent);
+type ToolboxNode = {
+  id: string;
+  type: IQuestionnaireItemType;
+  label: string;
+};
+
+const TOOLBOX_DRAG_TYPE = "application/x-hn-questionnaire-item";
+const TREE_ITEM_DRAG_TYPE = "application/x-hn-tree-item";
+const TREE_INDENT_UNIT_PX = 18;
+
+const getFirstKey = (keys: Set<Key>): string | null => {
+  const first = keys.values().next().value;
+  if (first === undefined || first === null) {
+    return null;
+  }
+  return String(first);
+};
+
+const getDroppedToolboxType = async (
+  items: DropItem[],
+): Promise<IQuestionnaireItemType | null> => {
+  for (const item of items) {
+    if (item.kind !== "text") {
+      continue;
+    }
+    if (!item.types.has(TOOLBOX_DRAG_TYPE)) {
+      continue;
+    }
+    try {
+      const data = await item.getText(TOOLBOX_DRAG_TYPE);
+      const parsed = JSON.parse(data) as { nodeType?: IQuestionnaireItemType };
+      return parsed.nodeType ?? null;
+    } catch {
+      return null;
+    }
+  }
+  return null;
+};
+
+const arraysEqual = (a: string[], b: string[]): boolean => {
+  if (a.length !== b.length) {
+    return false;
+  }
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) {
+      return false;
+    }
+  }
+  return true;
+};
 
 const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
   const { t } = useTranslation();
-  const [collapsedNodes, setCollapsedNodes] = useState<string[]>([]);
-
-  const mapToTreeData = (
-    item: OrderItem[],
-    hierarchy: string,
-    parentLinkId?: string,
-  ): Node[] => {
-    return item
-      .filter((x) => {
-        const parentItem = parentLinkId
-          ? props.qItems[parentLinkId]
-          : undefined;
-        return !isIgnorableItem(props.qItems[x.linkId], parentItem);
-      })
-      .map((x, index) => {
-        const newHierarchy = `${hierarchy}${index + 1}.`;
-        return {
-          title: x.linkId,
-          hierarchy: newHierarchy,
-          children: mapToTreeData(x.items, newHierarchy, x.linkId),
-          expanded: collapsedNodes.indexOf(x.linkId) === -1,
-        };
-      });
-  };
-
-  const getNodeKey = (extendedNode: ExtendedNode): string => {
-    return extendedNode.node.title;
-  };
-
-  const treePathToOrderArray = (treePath: string[]): string[] => {
-    const newPath = [...treePath];
-    newPath.splice(-1);
-    return newPath;
-  };
+  const [expandedKeys, setExpandedKeys] = useState<Set<Key>>(new Set());
 
   const validationClasses = (linkId: string): string => {
     return getSeverityClass(
       ErrorClassVariant.highlight,
       props.validationErrors.filter((error) => error.linkId === linkId),
     );
-  };
-  const isSelectedItem = (linkId: string): boolean => {
-    return props.qCurrentItem?.linkId === linkId;
   };
 
   const getRelevantIcon = (type?: string): string => {
@@ -174,174 +135,341 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
   const createTypeComponent = (
     type: IQuestionnaireItemType,
-    text: string,
-  ): JSX.Element => {
-    return (
-      <YourExternalNodeComponent
-        node={{
-          title: newNodeLinkId,
-          nodeType: type,
-          nodeReadableType: text,
-          children: [],
-        }}
-      />
-    );
+    label: string,
+  ): ToolboxNode => {
+    return {
+      id: `${type}`,
+      type,
+      label,
+    };
   };
 
-  const orderTreeData = mapToTreeData(props.qOrder, "");
-  return (
-    // @ts-expect-error context is not defined
-    <DndProvider backend={HTML5Backend} context={window}>
-      <div className="questionnaire-overview">
-        <div className="questionnaire-overview__toolbox">
-          <strong>{t("Components")}</strong>
-          {createTypeComponent(IQuestionnaireItemType.group, t("Group"))}
-          {createTypeComponent(IQuestionnaireItemType.string, t("Text answer"))}
-          {createTypeComponent(
-            IQuestionnaireItemType.display,
-            t("Information text"),
-          )}
-          {createTypeComponent(
-            IQuestionnaireItemType.attachment,
-            t("Attachment"),
-          )}
-          {createTypeComponent(
-            IQuestionnaireItemType.receiver,
-            t("Recipient list"),
-          )}
-          {createTypeComponent(
-            IQuestionnaireItemType.receiverComponent,
-            t("Recipient component"),
-          )}
-          {createTypeComponent(
-            IQuestionnaireItemType.boolean,
-            t("Confirmation"),
-          )}
-          {createTypeComponent(IQuestionnaireItemType.choice, t("Choice"))}
-          {createTypeComponent(IQuestionnaireItemType.date, t("Date"))}
-          {createTypeComponent(IQuestionnaireItemType.time, t("Time"))}
-          {createTypeComponent(IQuestionnaireItemType.integer, t("Number"))}
-          {createTypeComponent(IQuestionnaireItemType.quantity, t("Quantity"))}
-        </div>
-        <SortableTree
-          className="questionnaire-overview__treeview"
-          dndType={externalNodeType}
-          treeData={orderTreeData}
-          onChange={() => {
-            /* dummy */
-          }}
-          getNodeKey={getNodeKey}
-          onMoveNode={({
-            treeData,
-            nextParentNode,
-            node,
-            nextPath,
-            prevPath,
-          }) => {
-            const newPath = treePathToOrderArray(
-              nextPath as unknown as string[],
-            );
-            // find parent node:
-            const moveIndex = nextParentNode
-              ? nextParentNode.children.findIndex(
-                  (x: Node) => x.title === node.title,
-                )
-              : treeData.findIndex((x: Node) => x.title === node.title);
+  const toolboxItems: ToolboxNode[] = useMemo(() => {
+    return [
+      createTypeComponent(IQuestionnaireItemType.group, t("Group")),
+      createTypeComponent(IQuestionnaireItemType.string, t("Text answer")),
+      createTypeComponent(
+        IQuestionnaireItemType.display,
+        t("Information text"),
+      ),
+      createTypeComponent(IQuestionnaireItemType.attachment, t("Attachment")),
+      createTypeComponent(IQuestionnaireItemType.receiver, t("Recipient list")),
+      createTypeComponent(
+        IQuestionnaireItemType.receiverComponent,
+        t("Recipient component"),
+      ),
+      createTypeComponent(IQuestionnaireItemType.boolean, t("Confirmation")),
+      createTypeComponent(IQuestionnaireItemType.choice, t("Choice")),
+      createTypeComponent(IQuestionnaireItemType.date, t("Date")),
+      createTypeComponent(IQuestionnaireItemType.time, t("Time")),
+      createTypeComponent(IQuestionnaireItemType.integer, t("Number")),
+      createTypeComponent(IQuestionnaireItemType.quantity, t("Quantity")),
+    ];
+  }, [t]);
 
-            if (node.title === newNodeLinkId && node.nodeType) {
-              props.dispatch(
-                newItemAction(
-                  getInitialItemConfig(node.nodeType, t("Recipient component")),
-                  newPath,
-                  moveIndex,
-                ),
-              );
-            } else {
-              const oldPath = treePathToOrderArray(
-                prevPath as unknown as string[],
-              );
-              // reorder within same parent
-              if (JSON.stringify(newPath) === JSON.stringify(oldPath)) {
-                props.dispatch(
-                  reorderItemAction(node.title, newPath, moveIndex),
-                );
-              } else {
-                props.dispatch(
-                  moveItemAction(node.title, newPath, oldPath, moveIndex),
-                );
-              }
-            }
-          }}
-          onVisibilityToggle={({
-            node,
-            expanded,
-          }: NodeVisibilityToggleEvent) => {
-            const filteredNodes = collapsedNodes.filter(
-              (x) => x !== node.title,
-            );
-            if (!expanded) {
-              filteredNodes.push(node.title);
-            }
-            setCollapsedNodes(filteredNodes);
-          }}
-          canNodeHaveChildren={(node: Node): boolean => {
-            const item = props.qItems[node.title];
-            return item ? canTypeHaveChildren(item) : false;
-          }}
-          generateNodeProps={(extendedNode) => ({
-            className: `anchor-menu__item 
-                            ${validationClasses(extendedNode.node.title)}
-                            ${
-                              extendedNode.path.length === 1
-                                ? "anchor-menu__topitem"
-                                : ""
-                            } 
-                            ${
-                              isSelectedItem(extendedNode.node.title)
-                                ? "anchor-menu__item--selected"
-                                : ""
-                            }
-                        `,
-            title: (
-              <span
-                className="anchor-menu__inneritem"
-                role="button"
-                tabIndex={0}
-                onClick={() => {
-                  props.dispatch(
-                    updateMarkedLinkIdAction(
-                      extendedNode.node.title,
-                      treePathToOrderArray(
-                        extendedNode.path as unknown as string[],
-                      ),
-                    ),
-                  );
-                }}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    props.dispatch(
-                      updateMarkedLinkIdAction(
-                        extendedNode.node.title,
-                        treePathToOrderArray(
-                          extendedNode.path as unknown as string[],
-                        ),
-                      ),
-                    );
-                  }
-                }}
-              >
-                <span
-                  className={getRelevantIcon(
-                    props.qItems[extendedNode.node.title]?.type,
-                  )}
-                />
+  const toolboxDnD = useDragAndDrop<ToolboxNode>({
+    getItems: (keys, items): DragItem[] => {
+      return items
+        .filter((x) => keys.has(x.id))
+        .map((x) => ({
+          [TOOLBOX_DRAG_TYPE]: JSON.stringify({ nodeType: x.type }),
+        }));
+    },
+    getAllowedDropOperations: () => ["copy"],
+  });
+
+  const { treeData, parentPathById, expandableKeys } = useMemo(() => {
+    const parentPathMap = new Map<string, string[]>();
+    const expandable = new Set<Key>();
+
+    const mapToTreeData = (
+      items: OrderItem[],
+      hierarchy: string,
+      parentPath: string[],
+      parentLinkId?: string,
+    ): TreeNode[] => {
+      const parentItem = parentLinkId ? props.qItems[parentLinkId] : undefined;
+      return items
+        .filter((x) => !isIgnorableItem(props.qItems[x.linkId], parentItem))
+        .map((x, index) => {
+          const newHierarchy = `${hierarchy}${index + 1}.`;
+          parentPathMap.set(x.linkId, parentPath);
+          const children = mapToTreeData(
+            x.items,
+            newHierarchy,
+            [...parentPath, x.linkId],
+            x.linkId,
+          );
+          if (children.length > 0) {
+            expandable.add(x.linkId);
+          }
+          return {
+            id: x.linkId,
+            hierarchy: newHierarchy,
+            children,
+          };
+        });
+    };
+
+    return {
+      treeData: mapToTreeData(props.qOrder, "", []),
+      parentPathById: parentPathMap,
+      expandableKeys: expandable,
+    };
+  }, [props.qItems, props.qOrder]);
+
+  useEffect(() => {
+    if (expandedKeys.size === 0 && expandableKeys.size > 0) {
+      setExpandedKeys(new Set(expandableKeys));
+    }
+  }, [expandableKeys, expandedKeys.size]);
+
+  const getOrderArray = (orderPath: string[]): OrderItem[] => {
+    let current = props.qOrder;
+    for (const id of orderPath) {
+      const found = current.find((x) => x.linkId === id);
+      if (!found) {
+        return [];
+      }
+      current = found.items;
+    }
+    return current;
+  };
+
+  const getUiSiblingIds = (parentPath: string[]): string[] => {
+    const parentId = parentPath[parentPath.length - 1];
+    const parentItem = parentId ? props.qItems[parentId] : undefined;
+    return getOrderArray(parentPath)
+      .filter((x) => !isIgnorableItem(props.qItems[x.linkId], parentItem))
+      .map((x) => x.linkId);
+  };
+
+  const treeDnD = useDragAndDrop({
+    acceptedDragTypes: "all",
+    getItems: (keys: Set<Key>): DragItem[] => {
+      return Array.from(keys).map((k) => ({
+        [TREE_ITEM_DRAG_TYPE]: String(k),
+      }));
+    },
+    getDropOperation: (_target, types, allowedOperations) => {
+      if (types.has(TOOLBOX_DRAG_TYPE)) {
+        return allowedOperations.includes("copy") ? "copy" : "move";
+      }
+      return "move";
+    },
+    shouldAcceptItemDrop: (target) => {
+      if (target.dropPosition !== "on") {
+        return true;
+      }
+      const item = props.qItems[String(target.key)];
+      return item ? canTypeHaveChildren(item) : false;
+    },
+    onMove: (e): void => {
+      const draggedId = getFirstKey(e.keys);
+      if (!draggedId) {
+        return;
+      }
+
+      const targetId = String(e.target.key);
+      const oldParentPath = parentPathById.get(draggedId) ?? [];
+      const targetParentPath = parentPathById.get(targetId) ?? [];
+
+      let newParentPath = targetParentPath;
+      let newIndex: number | undefined;
+
+      if (e.target.dropPosition === "on") {
+        newParentPath = [...targetParentPath, targetId];
+      } else {
+        const targetSiblings = getUiSiblingIds(targetParentPath);
+        const targetIndex = targetSiblings.indexOf(targetId);
+        if (targetIndex === -1) {
+          return;
+        }
+        newIndex = targetIndex + (e.target.dropPosition === "after" ? 1 : 0);
+
+        if (arraysEqual(oldParentPath, targetParentPath)) {
+          const oldSiblings = targetSiblings;
+          const oldIndex = oldSiblings.indexOf(draggedId);
+          if (oldIndex !== -1 && oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+        }
+      }
+
+      if (arraysEqual(oldParentPath, newParentPath)) {
+        if (newIndex === undefined) {
+          return;
+        }
+        props.dispatch(reorderItemAction(draggedId, newParentPath, newIndex));
+      } else {
+        props.dispatch(
+          moveItemAction(draggedId, newParentPath, oldParentPath, newIndex),
+        );
+      }
+    },
+    onInsert: (e): void => {
+      const insertAsync = async (): Promise<void> => {
+        const nodeType = await getDroppedToolboxType(e.items);
+        if (!nodeType) {
+          return;
+        }
+
+        const targetId = String(e.target.key);
+        const targetParentPath = parentPathById.get(targetId) ?? [];
+
+        const targetSiblings = getUiSiblingIds(targetParentPath);
+        const targetIndex = targetSiblings.indexOf(targetId);
+        if (targetIndex === -1) {
+          return;
+        }
+
+        const insertIndex =
+          targetIndex + (e.target.dropPosition === "after" ? 1 : 0);
+        const newItem = getInitialItemConfig(
+          nodeType,
+          t("Recipient component"),
+        );
+        props.dispatch(newItemAction(newItem, targetParentPath, insertIndex));
+      };
+
+      void insertAsync();
+    },
+    onItemDrop: (e): void => {
+      const itemDropAsync = async (): Promise<void> => {
+        if (e.isInternal) {
+          return;
+        }
+        const nodeType = await getDroppedToolboxType(e.items);
+        if (!nodeType) {
+          return;
+        }
+        const targetId = String(e.target.key);
+        const targetParentPath = parentPathById.get(targetId) ?? [];
+        const newParentPath = [...targetParentPath, targetId];
+        const newItem = getInitialItemConfig(
+          nodeType,
+          t("Recipient component"),
+        );
+        props.dispatch(newItemAction(newItem, newParentPath));
+      };
+
+      void itemDropAsync();
+    },
+    onRootDrop: (e): void => {
+      const rootDropAsync = async (): Promise<void> => {
+        const nodeType = await getDroppedToolboxType(e.items);
+        if (!nodeType) {
+          return;
+        }
+        const newItem = getInitialItemConfig(
+          nodeType,
+          t("Recipient component"),
+        );
+        props.dispatch(newItemAction(newItem, []));
+      };
+
+      void rootDropAsync();
+    },
+    renderDropIndicator: (target): JSX.Element => {
+      const isItemTarget = target.type === "item";
+      const dropPosition = isItemTarget ? target.dropPosition : "after";
+      const key = isItemTarget ? String(target.key) : null;
+
+      const parentPath = key ? (parentPathById.get(key) ?? []) : [];
+      const depth =
+        dropPosition === "on" ? parentPath.length + 1 : parentPath.length;
+      const dropIndentPx = depth * TREE_INDENT_UNIT_PX;
+
+      return (
+        <DropIndicator
+          target={target}
+          className={`anchor-menu__drop-indicator anchor-menu__drop-indicator--${dropPosition}`}
+          style={
+            {
+              "--drop-indent": `${dropIndentPx}px`,
+            } as React.CSSProperties
+          }
+          data-depth={depth}
+        />
+      );
+    },
+  });
+
+  const renderTreeItems = (
+    nodes: TreeNode[],
+    ancestorContinuations: boolean[] = [],
+  ): JSX.Element[] => {
+    return nodes.map((node, index) => {
+      const item = props.qItems[node.id];
+      const parentPath = parentPathById.get(node.id) ?? [];
+      const isTopItem = parentPath.length === 0;
+      const depth = ancestorContinuations.length;
+      const isLast = index === nodes.length - 1;
+      const childContinuations = [...ancestorContinuations, !isLast];
+
+      return (
+        <TreeItem
+          key={node.id}
+          id={node.id}
+          textValue={item?.text || item?.linkId || node.id}
+          hasChildItems={node.children.length > 0}
+          className={`anchor-menu__item ${validationClasses(node.id)} ${
+            isTopItem ? "anchor-menu__topitem" : ""
+          } ${
+            props.qCurrentItem?.linkId === node.id
+              ? "anchor-menu__item--selected"
+              : ""
+          }`}
+        >
+          <TreeItemContent>
+            {({ isExpanded }) => (
+              <div className="anchor-menu__row">
+                {depth > 0 ? (
+                  <span className="anchor-menu__indent" aria-hidden="true">
+                    {ancestorContinuations.map((cont, idx) => (
+                      <span
+                        key={`${node.id}-indent-${idx}`}
+                        className="anchor-menu__indent-col"
+                        data-continuation={cont ? "1" : "0"}
+                      />
+                    ))}
+                    <span
+                      className="anchor-menu__indent-col anchor-menu__indent-col--self"
+                      data-last={isLast ? "1" : "0"}
+                    />
+                  </span>
+                ) : null}
+
+                {node.children.length > 0 ? (
+                  <Button
+                    slot="chevron"
+                    className="anchor-menu__chevron"
+                    aria-label={t("Expand/collapse")}
+                  >
+                    <Icon
+                      size={18}
+                      svgIcon={isExpanded ? ChevronUp : ChevronDown}
+                    />
+                  </Button>
+                ) : (
+                  <span className="anchor-menu__chevron-spacer" />
+                )}
+
+                <Button
+                  slot="drag"
+                  className="drag-handle anchor-menu__draghandle"
+                  aria-label={t("Drag")}
+                >
+                  <span className="drag-handle__dots" aria-hidden="true" />
+                </Button>
+
+                <span className={getRelevantIcon(item?.type)} />
 
                 <span className="anchor-menu__title">
-                  {extendedNode.node.hierarchy}
-                  {` `}
-                  {props.qItems[extendedNode.node.title]?.text}
+                  {node.hierarchy} {item?.text}
                 </span>
-                {props.qItems[extendedNode.node.title]?.required && (
+
+                {item?.required && (
                   <FormFieldTag
                     level="required-field"
                     resources={{
@@ -355,26 +483,97 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
                     }}
                   />
                 )}
-              </span>
-            ),
-            buttons: generateItemButtons(
-              t,
-              props.qItems[extendedNode.node.title],
-              treePathToOrderArray(extendedNode.path as unknown as string[]),
-              false,
-              props.dispatch,
-            ),
-          })}
-        />
-        {props.qOrder.length === 0 && (
-          <p className="anchor-menu__placeholder">
-            {t(
-              "Here you will find a summary of questionnaire elements. Drag a component here to start building this Questionnaire",
+
+                <div
+                  className="anchor-menu__actions"
+                  onPointerDownCapture={(e) => e.stopPropagation()}
+                >
+                  {generateItemButtons(
+                    t,
+                    item,
+                    parentPath,
+                    false,
+                    props.dispatch,
+                  )}
+                </div>
+              </div>
             )}
-          </p>
-        )}
+          </TreeItemContent>
+
+          {node.children.length > 0
+            ? renderTreeItems(node.children, childContinuations)
+            : null}
+        </TreeItem>
+      );
+    });
+  };
+
+  return (
+    <div className="questionnaire-overview">
+      <div className="questionnaire-overview__toolbox">
+        <strong>{t("Components")}</strong>
+        <GridList
+          aria-label={t("Components")}
+          items={toolboxItems}
+          selectionMode="none"
+          dragAndDropHooks={toolboxDnD.dragAndDropHooks}
+        >
+          {(item) => (
+            <GridListItem
+              id={item.id}
+              textValue={item.label}
+              className="anchor-menu__dragcomponent"
+            >
+              <Button
+                slot="drag"
+                className="drag-handle anchor-menu__toolbox-draghandle"
+                aria-label={t("Drag")}
+              >
+                <span className="drag-handle__dots" aria-hidden="true" />
+              </Button>
+              <span className="anchor-menu__toolbox-label">{item.label}</span>
+            </GridListItem>
+          )}
+        </GridList>
       </div>
-    </DndProvider>
+
+      <Tree
+        aria-label={t("Questionnaire overview")}
+        className="questionnaire-overview__treeview anchor-menu__tree"
+        selectionMode="single"
+        selectionBehavior="replace"
+        selectedKeys={
+          props.qCurrentItem?.linkId
+            ? new Set<Key>([props.qCurrentItem.linkId])
+            : new Set<Key>()
+        }
+        onSelectionChange={(keys) => {
+          const selectedId = getFirstKey(keys as Set<Key>);
+          if (!selectedId) {
+            return;
+          }
+          props.dispatch(
+            updateMarkedLinkIdAction(
+              selectedId,
+              parentPathById.get(selectedId) ?? [],
+            ),
+          );
+        }}
+        expandedKeys={expandedKeys}
+        onExpandedChange={setExpandedKeys}
+        dragAndDropHooks={treeDnD.dragAndDropHooks}
+      >
+        {renderTreeItems(treeData)}
+      </Tree>
+
+      {props.qOrder.length === 0 && (
+        <p className="anchor-menu__placeholder">
+          {t(
+            "Here you will find a summary of questionnaire elements. Drag a component here to start building this Questionnaire",
+          )}
+        </p>
+      )}
+    </div>
   );
 };
 
