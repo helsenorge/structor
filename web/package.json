@@ -43,6 +43,7 @@
     "immer": "^11.0.0",
     "papaparse": "^5.4.1",
     "react": "^18.3.1",
+    "react-aria-components": "^1.14.0",
     "react-beautiful-dnd": "^13.0.0",
     "react-datepicker": "^9.0.0",
     "react-dnd-html5-backend": "^16.0.0",

@@ -1,0 +1,104 @@
+.draggable-answer-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.draggable-answer-option {
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-start;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  background-color: var(--color-white, #fff);
+}
+
+.draggable-answer-option[data-dragging] {
+  opacity: 0.5;
+  border: 2px dashed var(--color-blueberry, #0067c5);
+}
+
+.draggable-answer-option[data-drop-target] {
+  background-color: var(--color-blueberry-light, #e6f2ff);
+  border: 2px solid var(--color-blueberry, #0067c5);
+  transform: scale(1.02);
+}
+
+.draggable-answer-option[data-drop-target]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: var(--color-blueberry, #0067c5);
+  border-radius: 2px;
+}
+
+.draggable-answer-option[data-drop-target="before"]::before {
+  top: -6px;
+}
+
+.draggable-answer-option[data-drop-target="after"]::before {
+  bottom: -6px;
+}
+
+.drag-handle {
+  margin-right: 8px;
+  cursor: grab;
+  user-select: none;
+  padding: 4px 8px;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--color-grey-dark, #666);
+}
+
+.drag-handle:hover {
+  background-color: var(--color-grey-light, #f0f0f0);
+  border-radius: 4px;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.answer-option-content {
+  flex: 1;
+}
+
+/* Style React Aria's drop indicator when active */
+.react-aria-DropIndicator[data-drop-target] {
+  outline: none;
+  background-color: transparent;
+  height: 0;
+  border: 0;
+  border-top: 3px solid var(--color-blueberry, #0067c5);
+  margin: 8px 0;
+  position: relative;
+}
+
+.react-aria-DropIndicator[data-drop-target]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-blueberry, #0067c5);
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.react-aria-DropIndicator[data-drop-target]::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-blueberry, #0067c5);
+  border-radius: 50%;
+  border: 2px solid white;
+}

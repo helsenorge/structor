@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 
 import { IExtensionType } from "../../types/IQuestionnareItemType";
 import type { QuestionnaireItem, QuestionnaireItemAnswerOption } from "fhir/r4";
-import type { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
 
 import "./AnswerOption.css";
 
@@ -20,7 +19,6 @@ import InputField from "../InputField/inputField";
 type Props = {
   item: QuestionnaireItem;
   answerOption?: QuestionnaireItemAnswerOption;
-  handleDrag?: DraggableProvidedDragHandleProps;
   changeDisplay: (event: ChangeEvent<HTMLInputElement>) => void;
   changeCode: (event: ChangeEvent<HTMLInputElement>) => void;
   changeOrdinalValueExtension: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -33,7 +31,6 @@ type Props = {
 const AnswerOption = ({
   item,
   answerOption,
-  handleDrag,
   changeDisplay,
   changeCode,
   changeOrdinalValueExtension,
@@ -101,13 +98,6 @@ const AnswerOption = ({
 
   return (
     <div className="answer-option-item align-everything">
-      {!disabled && (
-        <span
-          {...handleDrag}
-          className="reorder-icon"
-          aria-label="reorder element"
-        />
-      )}
       <div className="answer-option-content">
         <InputField
           name="beskrivelse"
