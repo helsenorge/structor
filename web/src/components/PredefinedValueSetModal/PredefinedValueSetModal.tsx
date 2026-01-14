@@ -132,7 +132,9 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
   };
 
   const handleOrder = (e: ReorderEvent): void => {
-    if (!newValueSet.compose?.include[0].concept) return;
+    if (!newValueSet.compose?.include[0].concept) {
+      return;
+    }
 
     const keys = [...e.keys];
     const concepts = newValueSet.compose.include[0].concept;
@@ -140,7 +142,9 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
     const sourceIndex = concepts.findIndex((item) => item.id === keys[0]);
     const targetIndex = concepts.findIndex((item) => item.id === e.target.key);
 
-    if (sourceIndex === -1 || targetIndex === -1) return;
+    if (sourceIndex === -1 || targetIndex === -1) {
+      return;
+    }
 
     const updatedConcepts = [...concepts];
     const [movedItem] = updatedConcepts.splice(sourceIndex, 1);
@@ -366,8 +370,6 @@ const ConceptList = ({
             <button
               type="button"
               onClick={() => onRemoveElement(item.id)}
-              name={t("Remove element")}
-              aria-label={t("Remove element")}
               title={t("Remove element")}
               className="align-everything"
             />

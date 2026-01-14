@@ -111,9 +111,160 @@ const arraysEqual = (a: string[], b: string[]): boolean => {
   return true;
 };
 
+type IndentRendererProps = {
+  nodeId: string;
+  ancestorContinuations: boolean[];
+  isLast: boolean;
+};
+
+const IndentRenderer = ({
+  nodeId,
+  ancestorContinuations,
+  isLast,
+}: IndentRendererProps): JSX.Element => {
+  return (
+    <span className="anchor-menu__indent" aria-hidden="true">
+      {ancestorContinuations.map((cont, idx) => (
+        <span
+          key={`${nodeId}-indent-${idx}`}
+          className="anchor-menu__indent-col"
+          data-continuation={cont ? "1" : "0"}
+        />
+      ))}
+      <span
+        className="anchor-menu__indent-col anchor-menu__indent-col--self"
+        data-last={isLast ? "1" : "0"}
+      />
+    </span>
+  );
+};
+
+type TreeItemContentRendererProps = {
+  node: TreeNode;
+  item: Items[string];
+  parentPath: string[];
+  depth: number;
+  isLast: boolean;
+  ancestorContinuations: boolean[];
+  isExpanded: boolean;
+  validationClasses: (linkId: string) => string;
+  getRelevantIcon: (type?: string) => string;
+  dispatch: Dispatch<ActionType>;
+  t: ReturnType<typeof useTranslation>["t"];
+};
+
+const TreeItemContentRenderer = ({
+  node,
+  item,
+  parentPath,
+  depth,
+  isLast,
+  ancestorContinuations,
+  isExpanded,
+  getRelevantIcon,
+  dispatch,
+  t,
+}: TreeItemContentRendererProps): JSX.Element => {
+  return (
+    <div className="anchor-menu__row">
+      {depth > 0 && (
+        <IndentRenderer
+          nodeId={node.id}
+          ancestorContinuations={ancestorContinuations}
+          isLast={isLast}
+        />
+      )}
+
+      {node.children.length > 0 ? (
+        <Button
+          slot="chevron"
+          className="anchor-menu__chevron"
+          aria-label={t("Expand/collapse")}
+        >
+          <Icon size={18} svgIcon={isExpanded ? ChevronUp : ChevronDown} />
+        </Button>
+      ) : (
+        <span className="anchor-menu__chevron-spacer" />
+      )}
+
+      <Button
+        slot="drag"
+        className="drag-handle anchor-menu__draghandle"
+        aria-label={t("Drag")}
+      >
+        <span className="drag-handle__dots" aria-hidden="true" />
+      </Button>
+
+      <span className={getRelevantIcon(item?.type)} />
+
+      <span className="anchor-menu__title">
+        {node.hierarchy} {item?.text}
+      </span>
+
+      {item?.required && (
+        <FormFieldTag
+          level="required-field"
+          resources={{
+            allRequired: t("formAllRequired"),
+            requiredField: t("Required"),
+            optional: t("formOptional"),
+            allOptional: t("formAllOptional"),
+            requiredRadiobuttonList: t("formRequiredRadiobuttonList"),
+            requiredCheckboxList: t("formRequiredMultiCheckbox"),
+            requiredSingleCheckbox: t("formRequiredSingleCheckbox"),
+          }}
+        />
+      )}
+
+      <div
+        className="anchor-menu__actions"
+        onPointerDownCapture={(e) => e.stopPropagation()}
+      >
+        {generateItemButtons(t, item, parentPath, false, dispatch)}
+      </div>
+    </div>
+  );
+};
+
+type DropIndicatorRendererProps = {
+  target: Parameters<
+    NonNullable<Parameters<typeof useDragAndDrop>[0]["renderDropIndicator"]>
+  >[0];
+  parentPathById: Map<string, string[]>;
+};
+
+const DropIndicatorRenderer = ({
+  target,
+  parentPathById,
+}: DropIndicatorRendererProps): JSX.Element => {
+  const isItemTarget = target.type === "item";
+  const dropPosition = isItemTarget ? target.dropPosition : "after";
+  const key = isItemTarget ? String(target.key) : null;
+
+  const parentPath = key ? (parentPathById.get(key) ?? []) : [];
+  const depth =
+    dropPosition === "on" ? parentPath.length + 1 : parentPath.length;
+  const dropIndentPx = depth * TREE_INDENT_UNIT_PX;
+
+  return (
+    <DropIndicator
+      target={target}
+      className={`anchor-menu__drop-indicator anchor-menu__drop-indicator--${dropPosition}`}
+      style={
+        {
+          "--drop-indent": `${dropIndentPx}px`,
+        } as React.CSSProperties
+      }
+      data-depth={depth}
+    />
+  );
+};
+
 const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
   const { t } = useTranslation();
   const [expandedKeys, setExpandedKeys] = useState<Set<Key>>(new Set());
+
+  const RECIPIENT_COMPONENT_LABEL = t("Recipient component");
 
   const validationClasses = (linkId: string): string => {
     return getSeverityClass(
@@ -156,7 +307,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
       createTypeComponent(IQuestionnaireItemType.receiver, t("Recipient list")),
       createTypeComponent(
         IQuestionnaireItemType.receiverComponent,
-        t("Recipient component"),
+        RECIPIENT_COMPONENT_LABEL,
       ),
       createTypeComponent(IQuestionnaireItemType.boolean, t("Confirmation")),
       createTypeComponent(IQuestionnaireItemType.choice, t("Choice")),
@@ -327,7 +478,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
           targetIndex + (e.target.dropPosition === "after" ? 1 : 0);
         const newItem = getInitialItemConfig(
           nodeType,
-          t("Recipient component"),
+          RECIPIENT_COMPONENT_LABEL,
         );
         props.dispatch(newItemAction(newItem, targetParentPath, insertIndex));
       };
@@ -348,7 +499,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
         const newParentPath = [...targetParentPath, targetId];
         const newItem = getInitialItemConfig(
           nodeType,
-          t("Recipient component"),
+          RECIPIENT_COMPONENT_LABEL,
         );
         props.dispatch(newItemAction(newItem, newParentPath));
       };
@@ -363,7 +514,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
         }
         const newItem = getInitialItemConfig(
           nodeType,
-          t("Recipient component"),
+          RECIPIENT_COMPONENT_LABEL,
         );
         props.dispatch(newItemAction(newItem, []));
       };
@@ -371,25 +522,10 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
       void rootDropAsync();
     },
     renderDropIndicator: (target): JSX.Element => {
-      const isItemTarget = target.type === "item";
-      const dropPosition = isItemTarget ? target.dropPosition : "after";
-      const key = isItemTarget ? String(target.key) : null;
-
-      const parentPath = key ? (parentPathById.get(key) ?? []) : [];
-      const depth =
-        dropPosition === "on" ? parentPath.length + 1 : parentPath.length;
-      const dropIndentPx = depth * TREE_INDENT_UNIT_PX;
-
       return (
-        <DropIndicator
+        <DropIndicatorRenderer
           target={target}
-          className={`anchor-menu__drop-indicator anchor-menu__drop-indicator--${dropPosition}`}
-          style={
-            {
-              "--drop-indent": `${dropIndentPx}px`,
-            } as React.CSSProperties
-          }
-          data-depth={depth}
+          parentPathById={parentPathById}
         />
       );
     },
@@ -423,80 +559,19 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
         >
           <TreeItemContent>
             {({ isExpanded }) => (
-              <div className="anchor-menu__row">
-                {depth > 0 ? (
-                  <span className="anchor-menu__indent" aria-hidden="true">
-                    {ancestorContinuations.map((cont, idx) => (
-                      <span
-                        key={`${node.id}-indent-${idx}`}
-                        className="anchor-menu__indent-col"
-                        data-continuation={cont ? "1" : "0"}
-                      />
-                    ))}
-                    <span
-                      className="anchor-menu__indent-col anchor-menu__indent-col--self"
-                      data-last={isLast ? "1" : "0"}
-                    />
-                  </span>
-                ) : null}
-
-                {node.children.length > 0 ? (
-                  <Button
-                    slot="chevron"
-                    className="anchor-menu__chevron"
-                    aria-label={t("Expand/collapse")}
-                  >
-                    <Icon
-                      size={18}
-                      svgIcon={isExpanded ? ChevronUp : ChevronDown}
-                    />
-                  </Button>
-                ) : (
-                  <span className="anchor-menu__chevron-spacer" />
-                )}
-
-                <Button
-                  slot="drag"
-                  className="drag-handle anchor-menu__draghandle"
-                  aria-label={t("Drag")}
-                >
-                  <span className="drag-handle__dots" aria-hidden="true" />
-                </Button>
-
-                <span className={getRelevantIcon(item?.type)} />
-
-                <span className="anchor-menu__title">
-                  {node.hierarchy} {item?.text}
-                </span>
-
-                {item?.required && (
-                  <FormFieldTag
-                    level="required-field"
-                    resources={{
-                      allRequired: t("formAllRequired"),
-                      requiredField: t("Required"),
-                      optional: t("formOptional"),
-                      allOptional: t("formAllOptional"),
-                      requiredRadiobuttonList: t("formRequiredRadiobuttonList"),
-                      requiredCheckboxList: t("formRequiredMultiCheckbox"),
-                      requiredSingleCheckbox: t("formRequiredSingleCheckbox"),
-                    }}
-                  />
-                )}
-
-                <div
-                  className="anchor-menu__actions"
-                  onPointerDownCapture={(e) => e.stopPropagation()}
-                >
-                  {generateItemButtons(
-                    t,
-                    item,
-                    parentPath,
-                    false,
-                    props.dispatch,
-                  )}
-                </div>
-              </div>
+              <TreeItemContentRenderer
+                node={node}
+                item={item}
+                parentPath={parentPath}
+                depth={depth}
+                isLast={isLast}
+                ancestorContinuations={ancestorContinuations}
+                isExpanded={isExpanded}
+                validationClasses={validationClasses}
+                getRelevantIcon={getRelevantIcon}
+                dispatch={props.dispatch}
+                t={t}
+              />
             )}
           </TreeItemContent>
 

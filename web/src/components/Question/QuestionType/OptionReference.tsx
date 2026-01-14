@@ -96,7 +96,9 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
     keys: Set<React.Key>;
     target: { key: React.Key; dropPosition: string };
   }): void => {
-    if (!item.extension) return;
+    if (!item.extension) {
+      return;
+    }
 
     const keys = [...e.keys];
 
@@ -114,7 +116,9 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
       (x) => x.valueReference?.id === e.target.key,
     );
 
-    if (sourceIndex === -1 || targetIndex === -1) return;
+    if (sourceIndex === -1 || targetIndex === -1) {
+      return;
+    }
 
     const updatedReferences = [...currentOptionReferences];
     const [movedItem] = updatedReferences.splice(sourceIndex, 1);
