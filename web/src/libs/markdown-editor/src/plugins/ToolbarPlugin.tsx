@@ -67,8 +67,11 @@ const blockTypeToBlockName = {
 };
 
 function dropDownActiveClass(active: boolean): string {
-  if (active) return "active dropdown-item-active";
-  else return "";
+  if (active) {
+    return "active dropdown-item-active";
+  } else {
+    return "";
+  }
 }
 
 function BlockFormatDropDown({
@@ -115,7 +118,7 @@ function BlockFormatDropDown({
       editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
     }
   };
-
+  const itemWide = "item wide wide";
   return (
     <DropDown
       disabled={disabled}
@@ -136,7 +139,7 @@ function BlockFormatDropDown({
         </div>
       </DropDownItem>
       <DropDownItem
-        className={"item wide wide " + dropDownActiveClass(blockType === "h1")}
+        className={itemWide + dropDownActiveClass(blockType === "h1")}
         onClick={() => formatHeading("h1")}
       >
         <div className="icon-text-container">
@@ -145,7 +148,7 @@ function BlockFormatDropDown({
         </div>
       </DropDownItem>
       <DropDownItem
-        className={"item wide wide " + dropDownActiveClass(blockType === "h2")}
+        className={itemWide + dropDownActiveClass(blockType === "h2")}
         onClick={() => formatHeading("h2")}
       >
         <div className="icon-text-container">
@@ -154,7 +157,7 @@ function BlockFormatDropDown({
         </div>
       </DropDownItem>
       <DropDownItem
-        className={"item wide wide " + dropDownActiveClass(blockType === "h3")}
+        className={itemWide + dropDownActiveClass(blockType === "h3")}
         onClick={() => formatHeading("h3")}
       >
         <div className="icon-text-container">
@@ -163,7 +166,7 @@ function BlockFormatDropDown({
         </div>
       </DropDownItem>
       <DropDownItem
-        className={"item wide wide " + dropDownActiveClass(blockType === "h4")}
+        className={itemWide + dropDownActiveClass(blockType === "h4")}
         onClick={() => formatHeading("h4")}
       >
         <div className="icon-text-container">
@@ -172,9 +175,7 @@ function BlockFormatDropDown({
         </div>
       </DropDownItem>
       <DropDownItem
-        className={
-          "item wide wide " + dropDownActiveClass(blockType === "bullet")
-        }
+        className={itemWide + dropDownActiveClass(blockType === "bullet")}
         onClick={formatBulletList}
       >
         <div className="icon-text-container">
@@ -183,9 +184,7 @@ function BlockFormatDropDown({
         </div>
       </DropDownItem>
       <DropDownItem
-        className={
-          "item wide wide " + dropDownActiveClass(blockType === "number")
-        }
+        className={itemWide + dropDownActiveClass(blockType === "number")}
         onClick={formatNumberedList}
       >
         <div className="icon-text-container">

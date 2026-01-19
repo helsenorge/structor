@@ -24,9 +24,8 @@ declare global {
 const documentMode =
   CAN_USE_DOM && "documentMode" in document ? document.documentMode : null;
 
-//TODO forcing false on this to stop mismatch render between ssr and clientside
+//forcing false on this to stop mismatch render between ssr and clientside
 export const IS_APPLE = false;
-//CAN_USE_DOM && /Mac|iPod|iPhone|iPad/.test(navigator.platform);
 
 export const IS_FIREFOX: boolean =
   CAN_USE_DOM && /^(?!.*Seamonkey)(?=.*Firefox).*/i.test(navigator.userAgent);
