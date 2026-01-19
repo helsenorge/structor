@@ -4,7 +4,6 @@ import { createRequire } from "node:module";
 import path from "node:path";
 import url from "node:url";
 
-import { esbuildCommonjs } from "@originjs/vite-plugin-commonjs";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import { defineConfig } from "vitest/config";
@@ -53,11 +52,6 @@ export default () => {
         },
         { find: "src", replacement: path.resolve(__dirname, "src") },
       ],
-    },
-    optimizeDeps: {
-      esbuildOptions: {
-        plugins: [esbuildCommonjs(["react-router", "react-s3"])],
-      },
     },
   });
 };

@@ -11,7 +11,7 @@ import type { JSX } from "react";
 import { isDOMNode } from "lexical";
 import * as React from "react";
 import {
-  ReactNode,
+  type ReactNode,
   useCallback,
   useEffect,
   useMemo,
@@ -77,7 +77,7 @@ function DropDownItems({
   autofocus,
 }: {
   children: React.ReactNode;
-  dropDownRef: React.RefObject<HTMLDivElement | null>;
+  dropDownRef: React.RefObject<HTMLDivElement>;
   onClose: () => void;
   autofocus: boolean;
 }) {

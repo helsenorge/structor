@@ -17,11 +17,7 @@ import "./FloatingLinkEditorPlugin.css";
 import { type Dispatch, useCallback, useEffect, useRef, useState } from "react";
 import type * as React from "react";
 
-import {
-  $createLinkNode,
-  $isLinkNode,
-  TOGGLE_LINK_COMMAND,
-} from "@lexical/link";
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $findMatchingParent, mergeRegister } from "@lexical/utils";
 import {
@@ -261,10 +257,6 @@ function FloatingLinkEditor({
             TOGGLE_LINK_COMMAND,
             sanitizeUrl(editedLinkUrl),
           );
-          const selection = $getSelection();
-          if ($isRangeSelection(selection)) {
-            const parent = getSelectedNode(selection).getParent();
-          }
         });
       }
       setEditedLinkUrl("https://");
