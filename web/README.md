@@ -35,6 +35,3 @@ If you are developing a production application, we recommend updating the config
 - 4.  For start run
   # npm run dev
   # http://localhost:3000/static_skjemabygger
-- 5 For preview
-  # npm run preview
-  # http://localhost:4173/static_skjemabygger/
