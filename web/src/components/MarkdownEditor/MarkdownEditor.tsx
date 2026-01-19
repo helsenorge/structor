@@ -1,12 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-
-import type { EventInfo } from "ckeditor5";
-
-import Editor from "./Editor";
-
-import "./MarkdownEditor.css";
+import useDebounce from "./useDebounce";
+import { MarkdownEditor as ScriboEditor } from "../../libs/markdown-editor/src/main";
 
 interface MarkdownEditorProps {
   data: string;
@@ -16,49 +11,35 @@ interface MarkdownEditorProps {
 }
 
 const MarkdownEditor = (props: MarkdownEditorProps): React.JSX.Element => {
-  const [value, setValue] = useState<string>(props.data);
-  const handleChange = (
-    _event: EventInfo<string, unknown>,
-    editor: Editor,
-  ): void => {
-    setValue(editor.getData());
+  const [markdown, setMarkdown] = useState(props.data);
+  const debouncedMarkdown = useDebounce(markdown, 250);
+
+  useEffect(() => {
+    if (props.onBlur && debouncedMarkdown !== props.data) {
+      props.onBlur(debouncedMarkdown);
+    }
+  }, [debouncedMarkdown]);
+
+  const handleChange = (newMarkdown: string): void => {
+    setMarkdown(newMarkdown);
   };
-  const handleBlur = (
-    _event: EventInfo<string, unknown>,
-    editor: Editor,
-  ): void => {
+
+  const handleBlur = (): void => {
     if (props.onBlur) {
-      props.onBlur(editor.getData());
+      props.onBlur(markdown);
     }
   };
 
-  const editorConfiguration = {
-    toolbar: [
-      "heading",
-      "|",
-      "bold",
-      "italic",
-      "link",
-      "bulletedList",
-      "numberedList",
-      "|",
-      "blockQuote",
-      "|",
-      "undo",
-      "redo",
-    ],
-    language: "no-nb",
-    placeholder: props.placeholder || "",
-  };
+  if (props.disabled) {
+    return <div className="markdown-preview">{props.data}</div>;
+  }
 
   return (
-    <CKEditor
-      data={value}
+    <ScriboEditor
+      initialMarkdown={props.data}
       onChange={handleChange}
       onBlur={handleBlur}
-      editor={Editor}
-      config={editorConfiguration}
-      disabled={props.disabled}
+      placeholder={props.placeholder || ""}
     />
   );
 };

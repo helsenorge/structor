@@ -66,7 +66,7 @@ const blockTypeToBlockName = {
   number: "Numbered List",
 };
 
-function dropDownActiveClass(active: boolean) {
+function dropDownActiveClass(active: boolean): string {
   if (active) return "active dropdown-item-active";
   else return "";
 }
@@ -80,7 +80,7 @@ function BlockFormatDropDown({
   editor: LexicalEditor;
   disabled?: boolean;
 }): JSX.Element {
-  const formatParagraph = () => {
+  const formatParagraph = (): void => {
     editor.update(() => {
       const selection = $getSelection();
       if ($isRangeSelection(selection)) {
@@ -89,7 +89,7 @@ function BlockFormatDropDown({
     });
   };
 
-  const formatHeading = (headingSize: HeadingTagType) => {
+  const formatHeading = (headingSize: HeadingTagType): void => {
     if (blockType !== headingSize) {
       editor.update(() => {
         const selection = $getSelection();
@@ -100,7 +100,7 @@ function BlockFormatDropDown({
     }
   };
 
-  const formatBulletList = () => {
+  const formatBulletList = (): void => {
     if (blockType !== "bullet") {
       editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
     } else {
@@ -108,7 +108,7 @@ function BlockFormatDropDown({
     }
   };
 
-  const formatNumberedList = () => {
+  const formatNumberedList = (): void => {
     if (blockType !== "number") {
       editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
     } else {
@@ -132,7 +132,7 @@ function BlockFormatDropDown({
       >
         <div className="icon-text-container">
           <i className="icon paragraph" />
-          <span className="text">Normal</span>
+          <span className="text">{"Normal"}</span>
         </div>
       </DropDownItem>
       <DropDownItem
@@ -141,7 +141,7 @@ function BlockFormatDropDown({
       >
         <div className="icon-text-container">
           <i className="icon h1" />
-          <span className="text">Heading 1</span>
+          <span className="text">{"Heading 1"}</span>
         </div>
       </DropDownItem>
       <DropDownItem
@@ -150,7 +150,7 @@ function BlockFormatDropDown({
       >
         <div className="icon-text-container">
           <i className="icon h2" />
-          <span className="text">Heading 2</span>
+          <span className="text">{"Heading 2"}</span>
         </div>
       </DropDownItem>
       <DropDownItem
@@ -159,7 +159,7 @@ function BlockFormatDropDown({
       >
         <div className="icon-text-container">
           <i className="icon h3" />
-          <span className="text">Heading 3</span>
+          <span className="text">{"Heading 3"}</span>
         </div>
       </DropDownItem>
       <DropDownItem
@@ -168,7 +168,7 @@ function BlockFormatDropDown({
       >
         <div className="icon-text-container">
           <i className="icon h4" />
-          <span className="text">Heading 4</span>
+          <span className="text">{"Heading 4"}</span>
         </div>
       </DropDownItem>
       <DropDownItem
@@ -179,7 +179,7 @@ function BlockFormatDropDown({
       >
         <div className="icon-text-container">
           <i className="icon bullet-list" />
-          <span className="text">Bullet List</span>
+          <span className="text">{"Bullet List"}</span>
         </div>
       </DropDownItem>
       <DropDownItem
@@ -190,7 +190,7 @@ function BlockFormatDropDown({
       >
         <div className="icon-text-container">
           <i className="icon numbered-list" />
-          <span className="text">Numbered List</span>
+          <span className="text">{"Numbered List"}</span>
         </div>
       </DropDownItem>
     </DropDown>

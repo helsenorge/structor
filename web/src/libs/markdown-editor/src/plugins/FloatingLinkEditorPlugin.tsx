@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /**
  *
  * This source code is modifed from:
@@ -10,11 +11,17 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-import type { JSX } from "react";
 
 import "./FloatingLinkEditorPlugin.css";
 
-import { type Dispatch, useCallback, useEffect, useRef, useState } from "react";
+import {
+  type Dispatch,
+  type JSX,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import type * as React from "react";
 
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
@@ -153,7 +160,7 @@ function FloatingLinkEditor({
   useEffect(() => {
     const scrollerElem = anchorElem.parentElement;
 
-    const update = () => {
+    const update = (): void => {
       editor.getEditorState().read(() => {
         $updateLinkEditor();
       });
@@ -165,7 +172,7 @@ function FloatingLinkEditor({
       scrollerElem.addEventListener("scroll", update);
     }
 
-    return () => {
+    return (): void => {
       window.removeEventListener("resize", update);
 
       if (scrollerElem) {
@@ -221,21 +228,21 @@ function FloatingLinkEditor({
     if (editorElement === null) {
       return;
     }
-    const handleBlur = (event: FocusEvent) => {
+    const handleBlur = (event: FocusEvent): void => {
       if (!editorElement.contains(event.relatedTarget as Element) && isLink) {
         setIsLink(false);
         setIsLinkEditMode(false);
       }
     };
     editorElement.addEventListener("focusout", handleBlur);
-    return () => {
+    return (): void => {
       editorElement.removeEventListener("focusout", handleBlur);
     };
   }, [editorRef, setIsLink, setIsLinkEditMode, isLink]);
 
   const monitorInputInteraction = (
     event: React.KeyboardEvent<HTMLInputElement>,
-  ) => {
+  ): void => {
     if (event.key === "Enter") {
       handleLinkSubmission(event);
     } else if (event.key === "Escape") {
@@ -248,7 +255,7 @@ function FloatingLinkEditor({
     event:
       | React.KeyboardEvent<HTMLInputElement>
       | React.MouseEvent<HTMLElement>,
-  ) => {
+  ): void => {
     event.preventDefault();
     if (lastSelection !== null) {
       if (linkUrl !== "") {
@@ -347,7 +354,7 @@ function useFloatingLinkEditorToolbar(
   const [isLink, setIsLink] = useState(false);
 
   useEffect(() => {
-    function $updateToolbar() {
+    function $updateToolbar(): void {
       const selection = $getSelection();
       if ($isRangeSelection(selection)) {
         const focusNode = getSelectedNode(selection);
@@ -454,6 +461,7 @@ export default function FloatingLinkEditorPlugin({
     return null;
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   return useFloatingLinkEditorToolbar(
     editor,
     effectiveAnchorElem,

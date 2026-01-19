@@ -3,6 +3,7 @@ import { ListItemNode, ListNode } from "@lexical/list";
 import { MarkNode } from "@lexical/mark";
 import { OverflowNode } from "@lexical/overflow";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
+
 import type { Klass, LexicalNode } from "lexical";
 
 const EditorNodes: Array<Klass<LexicalNode>> = [
@@ -13,6 +14,6 @@ const EditorNodes: Array<Klass<LexicalNode>> = [
   LinkNode,
   OverflowNode,
   MarkNode,
-] as any;
+];
 
 export default EditorNodes;

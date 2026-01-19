@@ -1,5 +1,4 @@
-import type React from "react";
-import { useState } from "react";
+import { useState, type FC } from "react";
 
 import {
   $convertFromMarkdownString,
@@ -63,35 +62,37 @@ export interface MarkdownEditorProps {
   id?: string;
 }
 
-const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
+const MarkdownEditor: FC<MarkdownEditorProps> = (props) => {
   const [isLinkEditMode, setIsLinkEditMode] = useState<boolean>(false);
 
   const [floatingAnchorElem, setFloatingAnchorElem] = useState<
     HTMLDivElement | undefined
   >(undefined);
 
-  const onRef = (_floatingAnchorElem: HTMLDivElement) => {
+  const onRef = (_floatingAnchorElem: HTMLDivElement): void => {
     if (_floatingAnchorElem !== null) {
       setFloatingAnchorElem(_floatingAnchorElem);
     }
   };
 
-  const internalOnChange = (editorState: EditorState) => {
+  const internalOnChange = (editorState: EditorState): void => {
     editorState.read(() => {
       const markdown = $convertToMarkdownString(TRANSFORMERS);
       const plainText = $getRoot().getTextContent();
-      props.onChange && props.onChange(markdown, { plainText });
+      if (props.onChange) {
+        props.onChange(markdown, { plainText });
+      }
     });
   };
 
   const initialConfig = {
     namespace: "ScriboMarkdown",
     nodes: [...EditorNodes],
-    onError: (error: Error) => {
+    onError: (error: Error): void => {
       throw error;
     },
     theme: EditorTheme,
-    editorState: () => {
+    editorState: (): void => {
       $convertFromMarkdownString(props.initialMarkdown ?? "", TRANSFORMERS);
     },
   };

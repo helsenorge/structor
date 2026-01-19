@@ -6,11 +6,8 @@
  *
  */
 
-import type { JSX } from "react";
-
-import { isDOMNode } from "lexical";
-import * as React from "react";
 import {
+  type JSX,
   type ReactNode,
   useCallback,
   useEffect,
@@ -18,6 +15,9 @@ import {
   useRef,
   useState,
 } from "react";
+import * as React from "react";
+
+import { isDOMNode } from "lexical";
 import { createPortal } from "react-dom";
 
 import { focusNearestDescendant, isKeyboardInput } from "../utils/focusUtils";
@@ -30,6 +30,7 @@ const DropDownContext = React.createContext<DropDownContextType | null>(null);
 
 const dropDownPadding = 4;
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function DropDownItem({
   children,
   className,
@@ -70,6 +71,7 @@ export function DropDownItem({
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function DropDownItems({
   children,
   dropDownRef,
@@ -93,7 +95,7 @@ function DropDownItems({
     [setItems],
   );
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
     const key = event.key;
     if (key === "Escape") {
       onClose();
@@ -151,7 +153,13 @@ function DropDownItems({
 
   return (
     <DropDownContext.Provider value={contextValue}>
-      <div className="dropdown" ref={dropDownRef} onKeyDown={handleKeyDown}>
+      <div
+        role="button"
+        tabIndex={-1}
+        className="dropdown"
+        ref={dropDownRef}
+        onKeyDown={handleKeyDown}
+      >
         {children}
       </div>
     </DropDownContext.Provider>
@@ -180,7 +188,7 @@ export default function DropDown({
   const [showDropDown, setShowDropDown] = useState(false);
   const [shouldAutofocus, setShouldAutofocus] = useState(false);
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setShowDropDown(false);
     if (buttonRef && buttonRef.current) {
       buttonRef.current.focus();
@@ -205,7 +213,7 @@ export default function DropDown({
     const button = buttonRef.current;
 
     if (button !== null && showDropDown) {
-      const handle = (event: PointerEvent) => {
+      const handle = (event: PointerEvent): void => {
         const target = event.target;
         if (!isDOMNode(target)) {
           return;
@@ -227,14 +235,14 @@ export default function DropDown({
       };
       document.addEventListener("click", handle);
 
-      return () => {
+      return (): void => {
         document.removeEventListener("click", handle);
       };
     }
   }, [dropDownRef, buttonRef, showDropDown, stopCloseOnClickSelf]);
 
   useEffect(() => {
-    const handleButtonPositionUpdate = () => {
+    const handleButtonPositionUpdate = (): void => {
       if (showDropDown) {
         const button = buttonRef.current;
         const dropDown = dropDownRef.current;
@@ -250,12 +258,12 @@ export default function DropDown({
 
     document.addEventListener("scroll", handleButtonPositionUpdate);
 
-    return () => {
+    return (): void => {
       document.removeEventListener("scroll", handleButtonPositionUpdate);
     };
   }, [buttonRef, dropDownRef, showDropDown]);
 
-  const handleOnClick = (e: React.MouseEvent) => {
+  const handleOnClick = (e: React.MouseEvent): void => {
     setShowDropDown(!showDropDown);
     setShouldAutofocus(isKeyboardInput(e));
   };
