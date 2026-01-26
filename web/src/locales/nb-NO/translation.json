@@ -396,6 +396,7 @@
   "Represented by power of attorney for non-consent competent? (true/false)": "Representert ved fullmakt for ikke samtykkekompetente? (true/false)",
   "Represented by parent? (true/false)": "Representert ved forelder? (true/false)",
   "Represented by guardianship? (true/false)": "Representert ved vergemålsvedtak? (true/false)",
+  "Representative relationship type": "Representant relasjonstype",
   "Upload ValueSets as json files. Accepts a Bundle or ValueSet in a single file. It is possible to upload several files at once": "Last opp verdisett som json-filer. Håndterer Bundle eller verdisett i en egen fil. Det er mulig å laste opp flere filer samtidig.",
   "...upload ValueSet(s)": "...Last opp verdisett",
   "Connect to print version (binary)": "Koble til PDF-skjema (binary)",

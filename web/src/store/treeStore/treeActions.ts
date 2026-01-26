@@ -64,6 +64,8 @@ export const UPDATE_FHIR_RESOURCE_ACTION = "UPDATE_FHIR_RESOURCE_ACTION";
 export const IMPORT_FHIR_RESOURCE_ACTION = "IMPORT_FHIR_RESOURCE_ACTION";
 export const UPDATE_ITEM_CODE_TRANSLATION_ACTION =
   "UPDATE_ITEM_CODE_TRANSLATION_ACTION";
+export const UPDATE_ITEM_EXTENSION_TRANSLATION_ACTION =
+  "UPDATE_ITEM_EXTENSION_TRANSLATION_ACTION";
 export const SAVE_ACTION = "save";
 
 type ItemValueType =
@@ -133,7 +135,7 @@ export interface UpdateItemTranslationAction {
   type: typeof UPDATE_ITEM_TRANSLATION_ACTION;
   languageCode: string;
   linkId: string;
-  propertyName: Exclude<TranslatableItemProperty, "code">;
+  propertyName: Exclude<TranslatableItemProperty, "code" | "extension">;
   value: string;
 }
 
@@ -143,6 +145,12 @@ export interface UpdateItemCodeTranslationAction {
   linkId: string;
   value: string;
   code: Coding;
+}
+export interface UpdateItemExtensionTranslationAction {
+  type: typeof UPDATE_ITEM_EXTENSION_TRANSLATION_ACTION;
+  languageCode: string;
+  linkId: string;
+  extension: Extension[];
 }
 export interface UpdateItemOptionTranslationAction {
   type: typeof UPDATE_ITEM_OPTION_TRANSLATION_ACTION;
@@ -367,7 +375,7 @@ export const removeQuestionnaireLanguageAction = (
 export const updateItemTranslationAction = (
   languageCode: string,
   linkId: string,
-  propertyName: Exclude<TranslatableItemProperty, "code">,
+  propertyName: Exclude<TranslatableItemProperty, "code" | "extension">,
   value: string,
 ): UpdateItemTranslationAction => {
   return {
@@ -392,7 +400,22 @@ export const updateItemCodeTranslation = (
     code,
   };
 };
-
+export const updateItemExtensionTranslation = ({
+  languageCode,
+  linkId,
+  extension,
+}: {
+  languageCode: string;
+  linkId: string;
+  extension: Extension[];
+}): UpdateItemExtensionTranslationAction => {
+  return {
+    type: UPDATE_ITEM_EXTENSION_TRANSLATION_ACTION,
+    languageCode,
+    linkId,
+    extension,
+  };
+};
 export const updateItemOptionTranslationAction = (
   languageCode: string,
   linkId: string,
