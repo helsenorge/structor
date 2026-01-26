@@ -368,7 +368,7 @@ const EnrichmentSet: Array<EnrichmentExpessionMetadata> = [
     type: "boolean",
   },
   {
-    name: "Representative relationship type",
+    name: "Representative role",
     expression:
       "iif(%representative.relationship.coding.where(system = 'urn:oid:2.16.578.1.12.4.1.1.7611').code = 'FO','Forelder',iif(%representative.relationship.coding.where(system = 'urn:oid:2.16.578.1.12.4.1.1.7611').code = 'FU','Ordinær fullmakt',iif(%representative.relationship.coding.where(system = 'urn:oid:2.16.578.1.12.4.1.1.7611').code = 'TD','Tildelt fullmakt',''))))",
     group: "Representative relation",
