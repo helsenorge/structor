@@ -16,7 +16,7 @@ import {
   updateItemOptionTranslationAction,
   updateSidebarTranslationAction,
   updateItemCodeTranslation,
-  updateItemExtensionTranslationAction,
+  updateItemExtensionTranslation,
 } from "../store/treeStore/treeActions";
 
 export const importCSV = (
@@ -359,11 +359,11 @@ const updateExtensionTranslation = (
   });
 
   dispatch(
-    updateItemExtensionTranslationAction(
+    updateItemExtensionTranslation({
       languageCode,
-      itemLinkId,
-      newExtensionArray,
-    ),
+      linkId: itemLinkId,
+      extension: newExtensionArray,
+    }),
   );
   returnValue = true;
 
