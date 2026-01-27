@@ -13,9 +13,7 @@ describe("codeHelper", () => {
         type: "choice",
       };
       const dispatch = vi.fn();
-
       removeItemCode(item, "http://example.org", dispatch);
-
       expect(dispatch).not.toHaveBeenCalled();
     });
 
