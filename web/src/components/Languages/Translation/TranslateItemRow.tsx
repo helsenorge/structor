@@ -1,16 +1,14 @@
 import React, { useContext, useState } from "react";
 
 import { useTranslation } from "react-i18next";
+import removeMd from "remove-markdown";
 import {
   ErrorClassVariant,
   getSeverityClassByLevelAndTypeIfError,
 } from "src/components/Validation/validationHelper";
 import { ErrorLevel } from "src/components/Validation/validationTypes";
 
-import {
-  IExtensionType,
-  IQuestionnaireItemType,
-} from "../../../types/IQuestionnareItemType";
+import { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
 import { TranslatableItemProperty } from "../../../types/LanguageTypes";
 import type {
   Coding,
@@ -38,7 +36,6 @@ import {
   updateItemOptionTranslationAction,
   updateItemTranslationAction,
   updateItemCodeTranslation,
-  updateItemExtensionTranslation,
 } from "../../../store/treeStore/treeActions";
 import {
   type ItemTranslation,
@@ -65,14 +62,21 @@ const TranslateItemRow = ({
   const itemTranslation: ItemTranslation = qAdditionalLanguages
     ? qAdditionalLanguages[targetLanguage].items[item.linkId] || {}
     : {};
-  const [translatedText, setTranslatedText] = useState(
-    itemTranslation.text || "",
-  );
   const isMarkdown: boolean = item._text ? true : false;
+  const [translatedText, setTranslatedText] = useState(
+    isMarkdown ? itemTranslation.markdown || "" : itemTranslation.text || "",
+  );
+
+  const convertToPlaintext = (stringToBeConverted: string): string => {
+    let plainText = removeMd(stringToBeConverted);
+    plainText = plainText.replaceAll("\\", "");
+    plainText = plainText.replaceAll(/([\n])+/g, " ");
+    return plainText.trim();
+  };
 
   function dispatchUpdateItemTranslation(
     text: string,
-    propertyName: Exclude<TranslatableItemProperty, "code" | "extension">,
+    propertyName: Exclude<TranslatableItemProperty, "code">,
   ): void {
     dispatch(
       updateItemTranslationAction(
@@ -82,24 +86,14 @@ const TranslateItemRow = ({
         text,
       ),
     );
-  }
-  function setExtensionValue(index: number, value: string | undefined): void {
-    const extensions = item.extension ? [...item.extension] : [];
-    const extension = extensions[index];
-    if (extension) {
-      const updatedExtension = { ...extension };
-      if (typeof value === "string") {
-        updatedExtension.valueString = value;
-      } else {
-        updatedExtension.valueString = undefined;
-      }
-      extensions[index] = updatedExtension;
+    if (propertyName === TranslatableItemProperty.markdown) {
       dispatch(
-        updateItemExtensionTranslation({
-          languageCode: targetLanguage,
-          linkId: item.linkId,
-          extension: extensions,
-        }),
+        updateItemTranslationAction(
+          targetLanguage,
+          item.linkId,
+          TranslatableItemProperty.text,
+          convertToPlaintext(text),
+        ),
       );
     }
   }
@@ -131,37 +125,6 @@ const TranslateItemRow = ({
       );
     }
   }
-  function getReadOnlyFhirPathExtensions(): React.JSX.Element {
-    const fhirPathExtensions =
-      item.extension
-        ?.map((ext, idx) => ({ ext, originalIndex: idx }))
-        ?.filter((pair) => pair.ext.url === IExtensionType.fhirPath) ?? [];
-
-    const extensions = fhirPathExtensions.map(({ ext, originalIndex }) => (
-      <textarea key={`${ext.url}-${originalIndex}-readonly`} disabled={true}>
-        {ext.valueString}
-      </textarea>
-    ));
-    return <>{extensions}</>;
-  }
-  function getFhirPathExtensions(): React.JSX.Element {
-    const fhirPathExtensions =
-      item.extension
-        ?.map((ext, idx) => ({ ext, originalIndex: idx }))
-        ?.filter((pair) => pair.ext.url === IExtensionType.fhirPath) ?? [];
-
-    const extensions = fhirPathExtensions.map(({ ext, originalIndex }) => (
-      <textarea
-        key={`${ext.url}-${originalIndex}`}
-        onBlur={(event) => setExtensionValue(originalIndex, event.target.value)}
-      >
-        {itemTranslation.extension?.[originalIndex]?.valueString
-          ? itemTranslation.extension?.[originalIndex]?.valueString
-          : ext?.valueString}
-      </textarea>
-    ));
-    return <>{extensions}</>;
-  }
 
   function getInputField(): React.JSX.Element {
     if (isMarkdown) {
@@ -170,13 +133,16 @@ const TranslateItemRow = ({
           className={getSeverityClassByLevelAndTypeIfError(
             ErrorLevel.error,
             ErrorClassVariant.highlight,
-            !itemTranslation.text?.trim(),
+            !itemTranslation.markdown?.trim(),
           )}
         >
           <MarkdownEditor
             data={translatedText}
             onBlur={(text) =>
-              dispatchUpdateItemTranslation(text, TranslatableItemProperty.text)
+              dispatchUpdateItemTranslation(
+                text,
+                TranslatableItemProperty.markdown,
+              )
             }
           />
         </div>
@@ -201,11 +167,17 @@ const TranslateItemRow = ({
     );
   }
 
-  function getReadOnlyInputField(input: string | undefined): React.JSX.Element {
+  function getReadOnlyInputField(): React.JSX.Element {
     if (isMarkdown) {
-      return <MarkdownEditor data={input || item.text || ""} disabled={true} />;
+      const valueMarkdown = getTextExtensionMarkdown(item);
+      return (
+        <MarkdownEditor
+          data={valueMarkdown || item.text || ""}
+          disabled={true}
+        />
+      );
     }
-    return <textarea defaultValue={input || ""} disabled={true} />;
+    return <textarea defaultValue={item.text} disabled={true} />;
   }
 
   function getOptionRow(
@@ -232,7 +204,7 @@ const TranslateItemRow = ({
   function getTranslatableField(
     header: string,
     textValue: string,
-    propertyName: Exclude<TranslatableItemProperty, "code" | "extension">,
+    propertyName: Exclude<TranslatableItemProperty, "code">,
     isMarkdownField: boolean,
   ): React.JSX.Element {
     const itemPropertyTranslation = getItemPropertyTranslation(
@@ -330,22 +302,13 @@ const TranslateItemRow = ({
     );
   }
   const itemCodes = getItemCodes(item);
-  const fhirPath = item.extension?.find(
-    (x) => x.url === IExtensionType.fhirPath,
-  );
-
   return (
     <>
       <div className="translation-group-header">{itemHeading}</div>
       <div className="translation-row">
-        <FormField>
-          {getReadOnlyInputField(
-            isMarkdown ? getTextExtensionMarkdown(item) : item.text,
-          )}
-        </FormField>
+        <FormField>{getReadOnlyInputField()}</FormField>
         <FormField>{getInputField()}</FormField>
       </div>
-
       {getSublabel(item) &&
         getTranslatableField(
           t("Sublabel"),
@@ -402,15 +365,6 @@ const TranslateItemRow = ({
         ?.map((code) =>
           getTranslatableCodeField(code.system || "system", code),
         )}
-      {fhirPath?.valueString && (
-        <div className="translation-group-header">
-          <span>{"FhirPath"}</span>
-          <div className="translation-row">
-            <FormField>{getReadOnlyFhirPathExtensions()}</FormField>
-            <FormField>{getFhirPathExtensions()}</FormField>
-          </div>
-        </div>
-      )}
     </>
   );
 };

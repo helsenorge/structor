@@ -129,15 +129,21 @@ const exportItemTranslations = (
     const item = qItems[linkId];
 
     if (item._text) {
-      const translatedValues: Array<string | undefined> = [];
+      const markdownTranslatedValues: Array<string | undefined> = [];
+      const textTranslatedValues: Array<string | undefined> = [];
       if (isItemControlSidebar(item)) {
-        translatedValues.push(
+        markdownTranslatedValues.push(
           ...additionalLanguagesInUse.map((lang) => {
             return additionalLanguages[lang].sidebarItems[linkId]?.markdown;
           }),
         );
       } else {
-        translatedValues.push(
+        markdownTranslatedValues.push(
+          ...additionalLanguagesInUse.map((lang) => {
+            return additionalLanguages[lang].items[linkId]?.markdown;
+          }),
+        );
+        textTranslatedValues.push(
           ...additionalLanguagesInUse.map((lang) => {
             return additionalLanguages[lang].items[linkId]?.text;
           }),
@@ -145,8 +151,18 @@ const exportItemTranslations = (
       }
 
       const markdownValue = getTextExtensionMarkdown(item);
-      const key = `${TranslatableKeyProptey.item}[${linkId}]._text.extension[${IExtensionType.markdown}].valueMarkdown`;
-      data.push([key, markdownValue, ...translatedValues] as string[]);
+      const markdownKey = `${TranslatableKeyProptey.item}[${linkId}]._text.extension[${IExtensionType.markdown}].valueMarkdown`;
+      data.push([
+        markdownKey,
+        markdownValue,
+        ...markdownTranslatedValues,
+      ] as string[]);
+
+      // Also export the plain text version for markdown items
+      if (!isItemControlSidebar(item)) {
+        const textKey = `${TranslatableKeyProptey.item}[${linkId}].text`;
+        data.push([textKey, item.text, ...textTranslatedValues] as string[]);
+      }
     } else {
       const translatedValues = additionalLanguagesInUse.map((lang) => {
         return additionalLanguages[lang].items[linkId]?.text;

@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import removeMd from "remove-markdown";
 
 import type {
   ActionType,
@@ -64,9 +65,19 @@ export const HelpOption = ({
     }
   };
 
+  const convertToPlaintext = (stringToBeConverted: string): string => {
+    let plainText = removeMd(stringToBeConverted);
+    plainText = plainText.replaceAll("\\", "");
+    plainText = plainText.replaceAll(/([\n])+/g, " ");
+    return plainText.trim();
+  };
+
   const dispatchUpdateItemHelpText = (id: string, value: string): void => {
     const newValue = createMarkdownExtension(value);
     dispatch(updateItemAction(id, IItemProperty._text, newValue));
+    dispatch(
+      updateItemAction(id, IItemProperty.text, convertToPlaintext(value)),
+    );
   };
 
   const handleHelpText = (markdown: string): void => {

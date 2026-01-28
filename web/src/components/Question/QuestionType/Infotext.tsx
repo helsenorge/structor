@@ -1,6 +1,7 @@
 import { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
+import removeMd from "remove-markdown";
 
 import {
   IExtensionType,
@@ -55,12 +56,25 @@ const Infotext = ({ item, parentArray }: InfotextProps): React.JSX.Element => {
     dispatch,
   } = useContext(TreeContext);
 
+  const convertToPlaintext = (stringToBeConverted: string): string => {
+    let plainText = removeMd(stringToBeConverted);
+    plainText = plainText.replaceAll("\\", "");
+    plainText = plainText.replaceAll(/([\n])+/g, " ");
+    return plainText.trim();
+  };
+
   const dispatchUpdateMarkdown = (markdown: string): void => {
     const markdownValue = createMarkdownExtension(markdown);
     dispatch(
       updateItemAction(childItemLinkId, IItemProperty._text, markdownValue),
     );
-    dispatch(updateItemAction(childItemLinkId, IItemProperty.text, markdown));
+    dispatch(
+      updateItemAction(
+        childItemLinkId,
+        IItemProperty.text,
+        convertToPlaintext(markdown),
+      ),
+    );
   };
 
   const searchPath = [...parentArray, item.linkId];
