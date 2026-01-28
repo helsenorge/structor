@@ -39,13 +39,13 @@ export type SettingsProperty = {
 export enum TranslatableItemProperty {
   initial = "initial",
   text = "text",
-  markdown = "markdown",
   validationText = "validationText",
   entryFormatText = "entryFormatText",
   sublabel = "sublabel",
   repeatsText = "repeatsText",
   prefix = "prefix",
   code = "code",
+  extension = "extension",
 }
 
 export enum TranslatableKeyProptey {

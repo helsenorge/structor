@@ -79,6 +79,8 @@ import {
   REMOVE_FHIR_RESOURCE_ACTION,
   IMPORT_FHIR_RESOURCE_ACTION,
   UPDATE_FHIR_RESOURCE_ACTION,
+  type UpdateItemExtensionTranslationAction,
+  UPDATE_ITEM_EXTENSION_TRANSLATION_ACTION,
 } from "./treeActions";
 import { findCodingBySystemAndCode } from "../../helpers/codeHelper";
 import createUUID from "../../helpers/CreateUUID";
@@ -115,7 +117,8 @@ export type ActionType =
   | UpdateItemExtensionAction
   | RemoveFhirResourceAction
   | ImportFhirResourceAction
-  | UpdateFhirResourceAction;
+  | UpdateFhirResourceAction
+  | UpdateItemExtensionTranslationAction;
 
 export interface Items {
   [linkId: string]: QuestionnaireItem;
@@ -130,12 +133,12 @@ export interface ItemTranslation {
   entryFormatText?: string;
   initial?: string;
   text?: string;
-  markdown?: string;
   validationText?: string;
   sublabel?: string;
   repeatsText?: string;
   prefix?: string;
   code?: Coding[];
+  extension?: Extension[];
 }
 
 export interface ContainedTranslation {
@@ -557,6 +560,24 @@ function updateItemCodeTranslation(
   }
 }
 
+function updateItemExtensionTranslation(
+  draft: TreeState,
+  action: UpdateItemExtensionTranslationAction,
+): void {
+  if (
+    draft.qAdditionalLanguages &&
+    draft.qAdditionalLanguages[action.languageCode]
+  ) {
+    if (!draft.qAdditionalLanguages[action.languageCode].items[action.linkId]) {
+      draft.qAdditionalLanguages[action.languageCode].items[action.linkId] = {};
+    }
+
+    draft.qAdditionalLanguages[action.languageCode].items[
+      action.linkId
+    ].extension = action.extension;
+  }
+}
+
 function updateItemOptionTranslation(
   draft: TreeState,
   action: UpdateItemOptionTranslationAction,
@@ -914,6 +935,9 @@ const reducer = produce((draft: TreeState, action: ActionType) => {
       break;
     case UPDATE_ITEM_CODE_TRANSLATION_ACTION:
       updateItemCodeTranslation(draft, action);
+      break;
+    case UPDATE_ITEM_EXTENSION_TRANSLATION_ACTION:
+      updateItemExtensionTranslation(draft, action);
       break;
     case UPDATE_ITEM_OPTION_TRANSLATION_ACTION:
       updateItemOptionTranslation(draft, action);

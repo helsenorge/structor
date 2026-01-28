@@ -29,11 +29,7 @@ import {
   FhirpathGenderExpression,
 } from "./EnrichmentSet";
 import { isItemControlSidebar } from "./itemControl";
-import {
-  getLanguageFromCode,
-  translatableMetadata,
-  translatableSettings,
-} from "./LanguageHelper";
+import { getLanguageFromCode, translatableMetadata } from "./LanguageHelper";
 import { getValueSetValues } from "./valueSetHelper";
 
 const getExtension = (
@@ -163,6 +159,7 @@ const getTranslatedItem = (
 
   // item.text
   let _text = undefined;
+  const translatedText = itemTranslation?.text;
   const markdownExtension = getExtension(
     currentItem._text?.extension,
     IExtensionType.markdown,
@@ -170,7 +167,7 @@ const getTranslatedItem = (
   if (markdownExtension) {
     const translatedMarkdownExtension = {
       ...markdownExtension,
-      valueMarkdown: itemTranslation?.markdown,
+      valueMarkdown: translatedText,
     };
     _text = {
       extension: updateTranslatedExtension(
@@ -180,9 +177,12 @@ const getTranslatedItem = (
     };
   }
 
-  let extension = undefined;
+  let extension: Extension[] | undefined = undefined;
   if (currentItem.extension) {
-    extension = [...currentItem.extension];
+    // Use currentItem.extension as base, not itemTranslation.extension
+    // itemTranslation.extension only contains FhirPath extensions
+    // Other extensions (validationtext, sublabel, etc.) are stored as separate properties
+    extension = currentItem.extension?.map((ext) => ({ ...ext }));
   }
 
   // ValidationMessage
@@ -245,6 +245,20 @@ const getTranslatedItem = (
       translatedRepeatsTextExtension,
     );
   }
+
+  // FhirPath extensions - merge translated FhirPath extensions
+  if (itemTranslation?.extension) {
+    const fhirPathExtensions = itemTranslation.extension.filter(
+      (x) => x.url === IExtensionType.fhirPath,
+    );
+    fhirPathExtensions.forEach((translatedFhirPathExtension) => {
+      extension = updateTranslatedExtension(
+        extension,
+        translatedFhirPathExtension,
+      );
+    });
+  }
+
   // answerOption
   const answerOption = getTranslatedAnswerOptions(
     currentItem.answerOption,
@@ -266,7 +280,7 @@ const getTranslatedItem = (
   const code: Coding[] = mergeCodes(currentItem?.code, itemTranslation?.code);
   const newItem: QuestionnaireItem = {
     ...currentItem,
-    text: itemTranslation?.text,
+    text: translatedText,
     _text,
     extension,
     answerOption,
@@ -314,17 +328,17 @@ const getTranslatedExtensions = (
   translation: Translation,
 ): Array<Extension> => {
   const translatedSettings = translation.settings;
-  const extensions = [];
-  for (const e of qMetadata.extension || []) {
-    const translatable = translatableSettings[e.url as IExtensionType];
-    if (translatable) continue;
+  let extensions: Extension[] = [];
 
-    extensions.push(e);
+  // Start with all original extensions
+  if (qMetadata.extension) {
+    extensions = qMetadata.extension.map((ext) => ({ ...ext }));
   }
 
-  // look for translated extensions that might not have an equal in the original
+  // Update translatable extensions with translated values (if translations exist)
   for (const extensionUrl in translatedSettings) {
-    extensions.push(translatedSettings[extensionUrl]);
+    const translatedExtension = translatedSettings[extensionUrl];
+    extensions = updateTranslatedExtension(extensions, translatedExtension);
   }
 
   return extensions;
