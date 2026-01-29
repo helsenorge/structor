@@ -27,7 +27,7 @@ import type { DropItem, DragItem, Key } from "@react-types/shared";
 import FormFieldTag from "@helsenorge/designsystem-react/components/FormFieldTag";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
 import ChevronDown from "@helsenorge/designsystem-react/components/Icons/ChevronDown";
-import ChevronUp from "@helsenorge/designsystem-react/components/Icons/ChevronUp";
+import ChevronRight from "@helsenorge/designsystem-react/components/Icons/ChevronRight";
 
 import { generateItemButtons } from "./ItemButtons/ItemButtons";
 import { isIgnorableItem } from "../../helpers/itemControl";
@@ -175,18 +175,6 @@ const TreeItemContentRenderer = ({
         />
       )}
 
-      {node.children.length > 0 ? (
-        <Button
-          slot="chevron"
-          className="anchor-menu__chevron"
-          aria-label={t("Expand/collapse")}
-        >
-          <Icon size={18} svgIcon={isExpanded ? ChevronUp : ChevronDown} />
-        </Button>
-      ) : (
-        <span className="anchor-menu__chevron-spacer" />
-      )}
-
       <Button
         slot="drag"
         className="drag-handle anchor-menu__draghandle"
@@ -194,6 +182,18 @@ const TreeItemContentRenderer = ({
       >
         <span className="drag-handle__dots" aria-hidden="true" />
       </Button>
+
+      {node.children.length > 0 ? (
+        <Button
+          slot="chevron"
+          className="anchor-menu__chevron"
+          aria-label={t("Expand/collapse")}
+        >
+          <Icon size={18} svgIcon={isExpanded ? ChevronDown : ChevronRight} />
+        </Button>
+      ) : (
+        <span className="anchor-menu__chevron-spacer" />
+      )}
 
       <span className={getRelevantIcon(item?.type)} />
 
@@ -643,9 +643,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
       {props.qOrder.length === 0 && (
         <p className="anchor-menu__placeholder">
-          {t(
-            "Here you will find a summary of questionnaire elements. Drag a component here to start building this Questionnaire",
-          )}
+          {t("Drag a component here to start building this Questionnaire")}
         </p>
       )}
     </div>
