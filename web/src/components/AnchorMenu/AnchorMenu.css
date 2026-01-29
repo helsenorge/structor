@@ -55,15 +55,19 @@
   gap: 0.25rem;
   width: calc(100% - 16px);
   max-width: 100%;
-  padding: 4px 8px;
+  padding: 6px 8px;
   margin-right: 16px;
   cursor: pointer;
   background-color: transparent;
-  min-height: 24px;
+  min-height: 32px;
 }
 
 .anchor-menu__item:hover {
   background-color: #e5e7eb;
+}
+
+.anchor-menu__item[data-dragging="true"] {
+  opacity: 0.3;
 }
 
 .anchor-menu__indent {
@@ -149,13 +153,29 @@
 }
 
 .anchor-menu__drop-indicator {
-  height: 4px;
-  background-color: var(--primary-2);
-  border-radius: 999px;
-  margin: 2px 0;
-  margin-left: calc(var(--drop-indent, 0px) + 0.5rem);
-  margin-right: 0.5rem;
+  min-height: 80px;
+  background-color: rgb(18 111 135 / 15%);
+  border: 2px dashed var(--primary-2);
+  border-radius: 4px;
+  margin: 3px 0;
+  margin-left: calc((var(--tree-item-level, 0) + 1) * 24px);
+  margin-right: 16px;
   position: relative;
+  box-shadow: 0 0 12px rgb(18 111 135 / 30%);
+  animation: pulse-border 1s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%,
+  100% {
+    border-color: var(--primary-2);
+    background-color: rgb(18 111 135 / 15%);
+  }
+
+  50% {
+    border-color: rgb(18 111 135 / 60%);
+    background-color: rgb(18 111 135 / 25%);
+  }
 }
 
 .anchor-menu__drop-indicator::after {
@@ -174,12 +194,18 @@
 }
 
 .anchor-menu__drop-indicator--on {
-  background-color: #16a34a;
+  background-color: rgb(22 163 74 / 20%);
+  border-color: #16a34a;
+  border-width: 3px;
+  box-shadow: 0 0 16px rgb(22 163 74 / 40%);
 }
 
 .anchor-menu__drop-indicator--on::after {
   content: "Inn i nivå " attr(data-depth);
-  border-color: color-mix(in srgb, #16a34a 45%, #cfd5dd);
+  border-color: #16a34a;
+  background-color: #dcfce7;
+  color: #166534;
+  font-weight: 600;
 }
 
 .folder-icon {

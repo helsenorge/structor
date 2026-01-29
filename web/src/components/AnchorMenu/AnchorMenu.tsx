@@ -68,7 +68,7 @@ type ToolboxNode = {
 
 const TOOLBOX_DRAG_TYPE = "application/x-hn-questionnaire-item";
 const TREE_ITEM_DRAG_TYPE = "application/x-hn-tree-item";
-const TREE_INDENT_UNIT_PX = 18;
+const TREE_INDENT_UNIT_PX = 24;
 
 const getFirstKey = (keys: Set<Key>): string | null => {
   const first = keys.values().next().value;
@@ -253,6 +253,7 @@ const DropIndicatorRenderer = ({
       style={
         {
           "--drop-indent": `${dropIndentPx}px`,
+          "--tree-item-level": depth,
         } as React.CSSProperties
       }
       data-depth={depth}
