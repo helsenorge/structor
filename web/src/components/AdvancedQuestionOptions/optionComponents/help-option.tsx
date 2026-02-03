@@ -68,7 +68,7 @@ export const HelpOption = ({
   const convertToPlaintext = (stringToBeConverted: string): string => {
     let plainText = removeMd(stringToBeConverted);
     plainText = plainText.replaceAll("\\", "");
-    plainText = plainText.replaceAll(/([\n])+/g, " ");
+    plainText = plainText.replaceAll(/(\n)+/g, " ");
     return plainText.trim();
   };
 

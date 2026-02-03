@@ -114,7 +114,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
   const convertToPlaintext = (stringToBeConverted: string): string => {
     let plainText = removeMd(stringToBeConverted);
     plainText = plainText.replaceAll("\\", "");
-    plainText = plainText.replaceAll(/([ \n])+/g, " ");
+    plainText = plainText.replaceAll(/( |\n)+/g, " ");
     return plainText;
   };
 
@@ -258,45 +258,24 @@ const Question = (props: QuestionProps): React.JSX.Element => {
         </FormField>
         {canTypeHaveSublabel(props.item) && (
           <FormField label={t("Sublabel")} isOptional>
-            {isMarkdownActivated ? (
-              <MarkdownEditor
-                data={getSublabelText()}
-                onBlur={(newValue: string) => {
-                  if (newValue) {
-                    const newExtension = {
-                      url: IExtensionType.sublabel,
-                      valueMarkdown: newValue,
-                    };
-                    setItemExtension(props.item, newExtension, props.dispatch);
-                  } else {
-                    removeItemExtension(
-                      props.item,
-                      IExtensionType.sublabel,
-                      props.dispatch,
-                    );
-                  }
-                }}
-              />
-            ) : (
-              <textarea
-                defaultValue={getSublabelText()}
-                onBlur={(e) => {
-                  if (e.target.value) {
-                    const newExtension = {
-                      url: IExtensionType.sublabel,
-                      valueMarkdown: e.target.value,
-                    };
-                    setItemExtension(props.item, newExtension, props.dispatch);
-                  } else {
-                    removeItemExtension(
-                      props.item,
-                      IExtensionType.sublabel,
-                      props.dispatch,
-                    );
-                  }
-                }}
-              />
-            )}
+            <MarkdownEditor
+              data={getSublabelText()}
+              onBlur={(newValue: string) => {
+                if (newValue) {
+                  const newExtension = {
+                    url: IExtensionType.sublabel,
+                    valueMarkdown: newValue,
+                  };
+                  setItemExtension(props.item, newExtension, props.dispatch);
+                } else {
+                  removeItemExtension(
+                    props.item,
+                    IExtensionType.sublabel,
+                    props.dispatch,
+                  );
+                }
+              }}
+            />
           </FormField>
         )}
         {respondType()}
