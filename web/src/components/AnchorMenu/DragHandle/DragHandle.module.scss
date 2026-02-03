@@ -1,0 +1,28 @@
+.dragHandle {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #cfd5dd;
+  background: #fff;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+
+  &:hover {
+    border-color: var(--primary-2);
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.dots {
+  width: 12px;
+  height: 16px;
+  background-image: radial-gradient(#6b7280 1.3px, transparent 1.3px);
+  background-size: 4px 4px;
+  background-position: 0 0;
+}

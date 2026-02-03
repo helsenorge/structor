@@ -1,0 +1,41 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  width: calc(100% - 16px);
+  max-width: 100%;
+  padding: 6px 8px;
+  margin-right: 16px;
+  cursor: pointer;
+  background-color: transparent;
+  min-height: 32px;
+}
+
+.chevron {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+}
+
+.chevronSpacer {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 1rem;
+}
+
+.actions {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 0.25rem;
+}

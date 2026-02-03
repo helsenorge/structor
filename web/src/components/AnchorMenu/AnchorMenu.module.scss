@@ -1,0 +1,33 @@
+.questionnaireOverview {
+  text-align: center;
+  margin-top: 70px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+}
+
+// Icon classes that are referenced by getRelevantIcon
+.folderIcon {
+  height: 25px;
+  min-width: 25px;
+  margin-right: 0.5rem;
+  background: url("../../images/icons/folder-outline.svg") no-repeat center;
+}
+
+.messageIcon {
+  height: 25px;
+  min-width: 25px;
+  margin-right: 0.5rem;
+  background: url("../../images/icons/information-circle-outline.svg") no-repeat
+    center;
+}
+
+.questionIcon {
+  height: 25px;
+  min-width: 25px;
+  margin-right: 0.5rem;
+  background: url("../../images/icons/help-circle-outline.svg") no-repeat center;
+}

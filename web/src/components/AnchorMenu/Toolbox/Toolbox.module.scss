@@ -1,0 +1,19 @@
+.toolbox {
+  width: 200px;
+}
+
+.dragComponent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 16px;
+  background: #e4f7f9;
+  margin: 5px;
+  text-align: left;
+  color: black;
+  border: 1px solid #cae7ed;
+}
+
+.label {
+  flex: 1;
+}

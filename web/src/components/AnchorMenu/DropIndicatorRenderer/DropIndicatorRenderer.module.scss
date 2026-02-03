@@ -1,0 +1,55 @@
+.dropIndicator {
+  min-height: 80px;
+  background-color: rgb(18 111 135 / 15%);
+  border: 2px dashed var(--primary-2);
+  border-radius: 4px;
+  margin: 3px 0;
+  margin-left: calc((var(--tree-item-level, 0) + 1) * 24px);
+  margin-right: 16px;
+  position: relative;
+  box-shadow: 0 0 12px rgb(18 111 135 / 30%);
+  animation: pulse-border 1s ease-in-out infinite;
+
+  &::after {
+    content: "Nivå " attr(data-depth);
+    position: absolute;
+    top: -18px;
+    left: -2px;
+    font-size: 11px;
+    line-height: 1;
+    padding: 3px 8px;
+    border-radius: 999px;
+    border: 1px solid #cfd5dd;
+    background: #fff;
+    color: #374151;
+    white-space: nowrap;
+  }
+}
+
+.dropIndicator--on {
+  background-color: rgb(22 163 74 / 20%);
+  border-color: #16a34a;
+  border-width: 3px;
+  box-shadow: 0 0 16px rgb(22 163 74 / 40%);
+
+  &::after {
+    content: "Inn i nivå " attr(data-depth);
+    border-color: #16a34a;
+    background-color: #dcfce7;
+    color: #166534;
+    font-weight: 600;
+  }
+}
+
+@keyframes pulse-border {
+  0%,
+  100% {
+    border-color: var(--primary-2);
+    background-color: rgb(18 111 135 / 15%);
+  }
+
+  50% {
+    border-color: rgb(18 111 135 / 60%);
+    background-color: rgb(18 111 135 / 25%);
+  }
+}

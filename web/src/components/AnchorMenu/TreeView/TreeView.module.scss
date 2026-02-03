@@ -1,0 +1,39 @@
+.treeView {
+  flex: 1;
+}
+
+.tree {
+  text-align: left;
+  width: 100%;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  margin-right: 24px;
+}
+
+.item {
+  margin: 3px 0;
+  margin-left: calc(var(--tree-item-level, 0) * 24px);
+  background-color: #f3f4f6;
+
+  &:hover {
+    background-color: #e5e7eb;
+  }
+
+  &[data-dragging="true"] {
+    opacity: 0.3;
+  }
+}
+
+.itemSelected {
+  box-shadow: 0 0 0 4px var(--primary-2);
+  background-color: #e4f7f9;
+}
+
+.placeholder {
+  position: absolute;
+  top: 45px;
+  text-align: center;
+  left: 200px;
+  right: 0;
+  pointer-events: none;
+}
