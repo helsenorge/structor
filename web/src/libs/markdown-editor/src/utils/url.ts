@@ -28,12 +28,21 @@ export function sanitizeUrl(url: string): string {
   return url;
 }
 
-// Source: https://stackoverflow.com/a/8234912/2013580
+const PROTOCOL = "[A-Za-z]{3,9}:(?:\\/\\/)?"; // http://, https://, ftp:, mailto:, etc.
+const AUTH = "(?:[-;:&=+$,\\w]+@)?"; // optional user:pass@
+// Host must start with alphanumeric, can contain hyphens/dots in middle, must have valid structure
+const HOST =
+  "[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:\\.[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)*";
+const WWW_OR_AUTH = "(?:www\\.|[-;:&=+$,\\w]+@)"; // www. prefix or user@
+const PATH = "(?:\\/[+~%\\/.\\w_-]*)?"; // /path/to/resource
+const QUERY = "\\??(?:[-+=&;%@.\\w_]*)"; // ?query=string
+const FRAGMENT = "#?(?:[\\w]*)"; // #anchor
+
+// Full URL pattern: (protocol + auth? + host) OR (www/auth + host), followed by path/query/fragment
 const urlRegExp = new RegExp(
-  /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@.\w_]*)#?(?:[\w]*))?)/,
+  `((${PROTOCOL}${AUTH}${HOST}|${WWW_OR_AUTH}${HOST})(${PATH}${QUERY}${FRAGMENT})?)`,
 );
+
 export function validateUrl(url: string): boolean {
-  // TODO Fix UI for link insertion; it should never default to an invalid URL such as https://.
-  // Maybe show a dialog where they user can type the URL before inserting it.
   return url === "https://" || urlRegExp.test(url);
 }
