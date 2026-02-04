@@ -46,6 +46,7 @@ export enum TranslatableItemProperty {
   repeatsText = "repeatsText",
   prefix = "prefix",
   code = "code",
+  extension = "extension",
 }
 
 export enum TranslatableKeyProptey {

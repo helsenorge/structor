@@ -16,6 +16,7 @@ import {
   updateItemOptionTranslationAction,
   updateSidebarTranslationAction,
   updateItemCodeTranslation,
+  updateItemExtensionTranslation,
 } from "../store/treeStore/treeActions";
 
 export const importCSV = (
@@ -201,6 +202,15 @@ const updateItemTranslation = (
         qItems,
       );
     }
+    if (key.includes(`.${TranslatableItemProperty.extension}`)) {
+      returnValue = updateExtensionTranslation(
+        key,
+        languageCode,
+        text,
+        dispatch,
+        qItems,
+      );
+    }
   }
   return returnValue;
 };
@@ -324,5 +334,49 @@ const updateCodeTranslation = (
     );
     returnValue = true;
   }
+  return returnValue;
+};
+
+const updateExtensionTranslation = (
+  key: string,
+  languageCode: string,
+  text: string,
+  dispatch: React.Dispatch<ActionType>,
+  qItems: Items,
+): boolean => {
+  let returnValue = false;
+
+  const itemLinkId = key.split("[")?.[1].split("]")?.[0];
+  const url: string | undefined = key?.split("[")?.[2]?.split("]")?.[0];
+  const item = qItems[itemLinkId];
+
+  if (!item?.extension || !url) {
+    return false;
+  }
+
+  // Find the extension index in the full array
+  const extensionIndex = item.extension.findIndex((ext) => ext.url === url);
+
+  if (extensionIndex === -1) {
+    return false;
+  }
+
+  // Create updated extension array with the translated value
+  const newExtensionArray = item.extension.map((ext, idx) => {
+    if (idx === extensionIndex) {
+      return { ...ext, valueString: text };
+    }
+    return { ...ext };
+  });
+
+  dispatch(
+    updateItemExtensionTranslation({
+      languageCode,
+      linkId: itemLinkId,
+      extension: newExtensionArray,
+    }),
+  );
+  returnValue = true;
+
   return returnValue;
 };
