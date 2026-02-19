@@ -1,8 +1,11 @@
-@use "./_variables.scss" as variables;
+$feature-color-1: #5b22a6;
 
 .page_refero__helpComponent {
   background-color: #efe4fd;
-  padding: 25px;
+
+  // Denne paddingen overstyres av en fieldset stylingklasse fra Designsystemet.
+  // Setter derfor !important, frem til komponentet byttes ut.
+  padding: 25px !important;
   margin-bottom: 20px;
   visibility: hidden;
 
@@ -12,7 +15,9 @@
 }
 
 .page_refero__helpButton {
-  margin-left: 1rem;
+  &.padding {
+    padding-left: 0.75rem;
+  }
 
   .atom_inline-functionbutton {
     position: relative;
@@ -28,18 +33,18 @@
     padding: 0;
 
     &[aria-expanded="true"] {
-      background-color: variables.$color-plumb-700;
+      background-color: $feature-color-1;
     }
   }
 
-  .atom_inline-functionbutton:before {
+  .atom_inline-functionbutton::before {
     content: "?";
     display: block;
     line-height: 1.5rem;
-    background-color: variables.$color-plumb-700;
+    background-color: $feature-color-1;
     color: white;
     border-radius: 50%;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     font-size: 18px;
     margin: 15%;
     width: 70%;

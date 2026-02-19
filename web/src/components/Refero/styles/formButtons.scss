@@ -1,0 +1,20 @@
+.formButtonsWrapper {
+  bottom: 0;
+  padding: 12px 0;
+}
+
+.formButtonInnerWrapper {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 24px;
+}
+
+.formButtonsBackground {
+  background-color: white;
+}
+
+@media (width <= 359px) {
+  .formButtonInnerWrapper {
+    gap: 16px;
+  }
+}

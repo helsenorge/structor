@@ -1,11 +1,15 @@
 @use "sass:map";
-@use "./_variables.scss" as variables;
-@use "@helsenorge/designsystem-react/scss/_spacers.scss" as spacers;
-@use "@helsenorge/designsystem-react/scss/_breakpoints.scss" as breakpoints;
+
+@use "@helsenorge/designsystem-react/scss/palette.scss" as palette;
+@use "@helsenorge/designsystem-react/scss/spacers.scss" as spacers;
+@use "@helsenorge/designsystem-react/scss/breakpoints.scss" as breakpoints;
+@use "@helsenorge/designsystem-react/scss/font-mixins.scss" as font_mixins;
+@use "./sidebar" as *;
 @use "./fieldset" as *;
 @use "./helpbutton.scss" as *;
 @use "./navigator.scss" as *;
-@import "./formFillerPreview.css";
+@use "./hn-skjema.scss" as *;
+@use "./formButtons.scss" as *;
 
 .page_refero__fixed-scroll-offset {
   scroll-padding-bottom: 70px;
@@ -23,12 +27,6 @@
     font-weight: 600;
   }
 
-  &__table_hn1 {
-    &__heading {
-      font-weight: bold;
-    }
-  }
-
   p {
     padding: 0;
   }
@@ -39,8 +37,9 @@
     display: none;
   }
 
-  div > label:first-child {
-    padding: 0.625rem 0 0.625rem 0;
+  // Overstyrer styling som arves fra afterLabelChildren i Label. Brukes foreløpig kun i boolean.tsx.
+  .label_helpButton_align {
+    align-items: flex-start !important;
   }
 
   .page_refero__component_choice_autosuggest {
@@ -61,6 +60,7 @@
 
   .page_refero__component_readonlytext {
     white-space: pre-line;
+    overflow-wrap: break-word;
   }
 
   .page_refero__heading {
@@ -86,56 +86,68 @@
     margin-top: 2rem;
   }
 
-  //EDGE fix
+  // EDGE fix
   @supports (-ms-ime-align: auto) {
     section section + section:last-of-type {
       padding-bottom: 6rem;
     }
   }
 
-  .page_refero__component:last-of-type {
-    margin-bottom: 0;
-  }
   .page_refero__component:last-of-type + section {
     margin-top: 1.5rem;
-  }
-
-  .page_refero__markdown p {
-    padding: 0.5rem 0;
   }
 
   // Heading spacing
   .page_refero__content h2 {
     margin-top: 1rem;
     margin-bottom: 1.5rem;
+    @include font_mixins.title2;
   }
 
   &.page_refero__markdown h2 {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+    @include font_mixins.title2;
+    & {
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+    }
   }
 
   &.page_refero h3,
   &.page_refero h4 {
-    margin-top: 0;
-    margin-bottom: 1rem;
+    @include font_mixins.title3;
+    & {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
   }
 
   &.page_refero__markdown h3,
   &.page_refero__markdown h4 {
-    margin-top: 0.8rem;
+    @include font_mixins.title3;
+    & {
+      margin-top: 0.8rem;
+    }
   }
 
   &.page_refero section + section > h4,
   &.page_refero .page_refero__repeatbutton + section > h4,
   &.page_refero .page_refero__component + section > h4 {
     margin-top: 2.5rem;
+    @include font_mixins.title4;
   }
 
   // Disse kan dukke opp under label eller legend, derfor må de være mindre
-  .nested-fieldset h3,
+  .nested-fieldset h3 {
+    @include font_mixins.title3;
+    & {
+      font-size: 1.125rem;
+    }
+  }
   .nested-fieldset h4 {
-    font-size: 1.125rem;
+    @include font_mixins.title4;
+    & {
+      font-size: 1.125rem;
+    }
   }
 
   .page_refero__repeatbutton {
@@ -152,16 +164,18 @@
   }
 
   .page_refero__formtitlewrapper {
+    display: flex;
+    align-items: center;
     margin: 3rem 0 2rem;
-    padding-right: 3rem;
-
-    .atom_helptrigger-button {
-      left: 0.5rem !important;
+    .atom_helptrigger-container {
+      transform: scale(1.2);
+      margin-top: 5px;
+      margin-left: 5px;
     }
   }
 
   h1.page_refero__formtitle {
-    display: inline;
+    @include font_mixins.title1;
   }
 
   &__sublabel p {
@@ -170,8 +184,8 @@
 
   &__component {
     padding: 1rem;
-    background-color: variables.$color-base-6-2;
-    border: 1px solid variables.$color-base-5-5;
+    background-color: palette.$neutral50;
+    border: 1px solid palette.$neutral100;
     margin-bottom: 1rem;
 
     @media (min-width: map.get(breakpoints.$grid-breakpoints, md)) {
@@ -182,6 +196,9 @@
       border: 0;
       padding: 0;
       margin-bottom: 2rem;
+    }
+    .page_refero__component_date {
+      margin-bottom: 0;
     }
   }
 
@@ -271,36 +288,28 @@
     background-color: #efe4fd;
     padding: 1.75rem 2rem;
   }
-}
-
-.extra_savebutton_wrapper {
-  position: relative;
-
-  @media (min-width: map.get(breakpoints.$grid-breakpoints, sm)) {
-    display: none;
-  }
-
-  .extra_savebutton {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-
-    &:not([disabled]) {
-      background-color: #f5f3f3;
+  .page_refero__receivercomponent {
+    h2 {
+      @include font_mixins.title2;
+      & {
+        margin: 0;
+      }
     }
 
-    > svg {
-      margin: 0 -1rem 0 0.5rem;
-      min-width: 2rem;
-      max-width: 2rem;
+    .page_refero__sublabel {
+      margin-bottom: 2rem;
     }
   }
-}
-
-.page_refero__stickybar + .extra_savebutton_wrapper {
-  position: sticky;
-  bottom: 0.5rem;
-  z-index: 2;
+  &__table_hn1 {
+    &__heading {
+      font-weight: bold;
+    }
+  }
+  &__table_hn2 {
+    &__heading {
+      font-weight: bold;
+    }
+  }
 }
 
 .page_refero__saveblock .atom_displaybutton:only-child {
@@ -308,7 +317,6 @@
   padding: 0 2rem;
 }
 
-.extra_savebutton_wrapper,
 .page_refero__saveblock {
   .atom_displaybutton {
     padding: 0;
@@ -329,10 +337,46 @@
       display: inline-block;
     }
   }
+
+  .page_refero__pausebutton_microweb {
+    display: none;
+    border-radius: 0;
+    @media (min-width: map.get(breakpoints.$grid-breakpoints, sm)) {
+      display: inline-block;
+    }
+  }
+
+  .page_refero__pausebutton_stepView {
+    display: flex;
+
+    @media (min-width: map.get(breakpoints.$grid-breakpoints, sm)) {
+      display: inline-block;
+    }
+  }
+}
+
+.page_refero__hidden_buttons {
+  & .formButtonsWrapper {
+    display: none;
+  }
+}
+.page_refero__stickybar {
+  & .formButtonsWrapper {
+    position: sticky;
+    bottom: 0.5rem;
+    z-index: 2;
+  }
+}
+.page_refero__static {
+  & .formButtonsWrapper {
+    bottom: 0.5rem;
+    z-index: 2;
+    position: relative;
+  }
 }
 
 .page_refero__stickybar .page_refero__saveblock {
-  @media (min-width: map.get(breakpoints.$grid-breakpoints, sm)) {
+  @media (min-width: map.get(breakpoints.$grid-breakpoints, xs)) {
     position: sticky;
     bottom: 0;
     background-color: #fff;
@@ -341,7 +385,10 @@
     box-shadow: 0px -1px 5px 0px rgba(0, 0, 0, 0.15);
   }
 }
-
+.page_refero__stepper-wrapper {
+  margin-top: 1.5rem;
+  display: block;
+}
 .page_refero__languge-selector {
   margin-top: 1.5rem;
   padding-bottom: 0;
@@ -350,7 +397,7 @@
 .page_refero__topmessage .atom_helptrigger-container {
   display: inline-block;
   width: 35px;
-
+  margin-right: 2px;
   .org_helptrigger {
     top: -10px;
     left: -8px;
@@ -359,19 +406,18 @@
     transform: scale(0.5);
   }
 }
-
-.page_refero .page_refero__receivercomponent {
-  h2 {
-    margin: 0;
-  }
-
-  .page_refero__sublabel {
-    margin-bottom: 2rem;
-  }
+.page_refero__messageboxes {
+  margin-top: 1rem;
 }
-
 .page_refero__receiverselect .atom_select {
   margin-bottom: 2rem;
   max-width: 30rem;
   width: 100%;
+}
+
+.page__refero__group__seperator {
+  margin: 1.5rem 0 1.5rem 0;
+  padding: 0 2rem;
+  height: 0px;
+  border-bottom: 4px solid #d6d4d3;
 }

@@ -1,13 +1,11 @@
-@use "@helsenorge/designsystem-react/scss/_spacers" as spacers;
-@use "@helsenorge/designsystem-react/scss/_breakpoints" as breakpoints;
-
 #navigator_blindzone {
   height: 1px;
 }
 
 .page_refero__navigator {
+  display: none;
   position: fixed;
-  top: -1px;
+  top: 0;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -21,6 +19,7 @@
     text-align: left;
     border: none;
     cursor: pointer;
+    align-items: center;
 
     &:hover,
     &:focus {

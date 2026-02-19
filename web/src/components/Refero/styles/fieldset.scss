@@ -1,14 +1,16 @@
-@use "./_variables.scss" as variables;
+@use "sass:map";
+@use "@helsenorge/designsystem-react/scss/palette.scss" as palette;
+@use "@helsenorge/designsystem-react/scss/spacers.scss" as spacers;
 
 .page_refero__component legend {
   font-weight: 500;
   font-size: 18px;
   line-height: 1.6667;
-  padding: 0.5rem 0;
+  padding: spacers.getSpacer(2xs) 0;
 
   em {
     font-weight: 500;
-    color: variables.$color-base-3-5;
+    color: palette.$neutral700;
   }
 }
 
@@ -18,6 +20,11 @@
   padding: 0;
   position: relative;
   min-width: inherit;
+
+  legend,
+  .nested-fieldset {
+    @extend %legend !optional;
+  }
 }
 
 // nested
@@ -31,9 +38,10 @@
       content: "";
       position: absolute;
       top: 0;
-      left: 0.5rem;
+      left: spacers.getSpacer(2xs);
       bottom: 0;
-      border-left: 4px solid variables.$color-base-4-5;
+      border-left: 4px solid #d6d4d3;
+      border-radius: 3px;
     }
 
     // Dersom fieldset ikke har legend, la streken gå høyere opp.
@@ -44,19 +52,16 @@
     label:first-of-type::before {
       content: "";
       position: absolute;
-      top: 0.5rem;
+      top: spacers.getSpacer(2xs);
       left: -2rem;
-      height: 1.5rem;
-      border-left: 4px solid variables.$color-base-4-5;
+      height: spacers.getSpacer(m);
     }
 
-    // ikke mer padding på nøsting > 2
-    fieldset,
-    .nested-fieldset {
-      padding-left: 0;
-
-      &::before {
-        content: none;
+    .page_refero__component_datetime {
+      label {
+        &:first-of-type::before {
+          content: none;
+        }
       }
     }
   }
