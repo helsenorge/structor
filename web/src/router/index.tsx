@@ -6,6 +6,7 @@ import FrontPage from "src/views/FrontPage";
 import PageWrapper from "src/views/pageWrapper/PageWrapper";
 import ValueSets from "src/views/valueSets";
 import { ValueSetProvider } from "src/views/valueSets/context/ValueSetContextProvider";
+import SimpleValuesetPage from "src/views/valueSets/simpleValueset";
 
 export default createHashRouter([
   { path: "/", element: <FrontPage /> },
@@ -50,6 +51,10 @@ export default createHashRouter([
       {
         path: "upload",
         element: <ValueSets />,
+      },
+      {
+        path: "simple",
+        element: <SimpleValuesetPage />,
       },
       {
         path: "*",

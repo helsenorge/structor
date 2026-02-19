@@ -162,8 +162,7 @@
   "Change to English": "Bytt til engelsk",
   "Change to norwegian": "Bytt til norsk",
   "Predefined values": "Predefinerte verdier",
-  "+ New option": "+ Nytt valg",
-  "Save >": "Lagre >",
+  "New option": "Nytt valg",
   "Enter a url..": "Skriv inn en url..",
   "Only capital letters and numbers": "Kun store bokstaver og tall",
   "Checkbox (Allow selection of multiple values)": "Avkrysningsbokser (Flere valg mulig)",
@@ -590,5 +589,7 @@
   "formAllOptional": "",
   "formRequiredRadiobuttonList": "",
   "formRequiredMultiCheckbox": "",
-  "formRequiredSingleCheckbox": ""
+  "formRequiredSingleCheckbox": "",
+  "ValueSets": "Verdisett",
+  "Simple ValueSet": "Enkelt Verdisett"
 }

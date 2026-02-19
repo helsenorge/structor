@@ -10,6 +10,7 @@ import Tabs from "@helsenorge/designsystem-react/components/Tabs";
 import ExistingValueSets from "./existinValueSets/ExistingValueSets";
 import ImportValueSet from "./ImportValueSet/Index";
 import NewValueSet from "./newValueSet/NewValueSet";
+import SimpleValuesetPage from "./simpleValueset";
 import SectionHeader from "../components/sectionHeader/SectionHeader";
 import Upload from "../components/upload/Upload";
 
@@ -34,6 +35,10 @@ const ValueSets = (): React.JSX.Element => {
       setActiveTab(2);
     } else if (pathname.endsWith("upload")) {
       setActiveTab(3);
+    } else if (pathname.endsWith("simple")) {
+      setActiveTab(4);
+    } else {
+      setActiveTab(0);
     }
   }, [pathname]);
   return (
@@ -81,6 +86,14 @@ const ValueSets = (): React.JSX.Element => {
           title={t("Upload ValueSet")}
         >
           <Upload resourceType="ValueSet" />
+        </Tabs.Tab>
+        <Tabs.Tab
+          onTabClick={() => {
+            navigate("simple");
+          }}
+          title={t("Simple ValueSet")}
+        >
+          <SimpleValuesetPage />
         </Tabs.Tab>
       </Tabs>
     </section>

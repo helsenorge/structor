@@ -1,0 +1,67 @@
+.predefined-container {
+  display: flex;
+  padding: 1rem;
+}
+
+.predefined-container > div {
+  flex: 1;
+  padding: 10px;
+}
+
+.predefined-container > div:first-child {
+  margin-right: 1rem;
+  padding-right: 1rem;
+  border-right: 1px dotted black;
+}
+
+.predefined-container .value-set {
+  padding-top: 10px;
+}
+
+.styles.answerOptionItem {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.answerOptionContent {
+  display: flex;
+  margin: 0.5rem 0;
+  gap: 1rem;
+}
+
+.btnGroup {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  justify-content: flex-start;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.valueSetValues {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.valueSetValuesItem {
+  margin: 0.25rem 0;
+  text-align: left;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.marginLeft {
+  margin-left: 1rem;
+}
+
+.valueSetHeader {
+  display: flex;
+  align-items: center;
+}

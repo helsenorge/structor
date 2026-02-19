@@ -189,7 +189,12 @@ const Navbar = ({
                 callbackAndHide(() => setShowJSONView(!showJSONView))
               }
             />
-
+            <Btn
+              title={t("Simple ValueSet")}
+              onClick={() => {
+                navigate(`/formbuilder/${state.qMetadata.id}/valuesets/simple`);
+              }}
+            />
             <Btn
               title={t("ValueSets")}
               onClick={() => {
