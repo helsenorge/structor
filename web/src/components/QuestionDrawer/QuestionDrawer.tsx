@@ -20,7 +20,7 @@ import { useKeyPress } from "../../hooks/useKeyPress";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { updateMarkedLinkIdAction } from "../../store/treeStore/treeActions";
 import { TreeContext } from "../../store/treeStore/treeStore";
-import { generateItemButtons } from "../AnchorMenu/ItemButtons/ItemButtons";
+import ItemButtons from "../AnchorMenu/ItemButtons/ItemButtons";
 import Drawer from "../Drawer/Drawer";
 import Question from "../Question/Question";
 
@@ -102,7 +102,11 @@ const QuestionDrawer = ({
         </div>
         {item && (
           <div className="pull-right">
-            {generateItemButtons(t, item, parentArray, true, dispatch)}
+            <ItemButtons
+              item={item}
+              parentArray={parentArray}
+              showLabel={true}
+            />
           </div>
         )}
       </div>

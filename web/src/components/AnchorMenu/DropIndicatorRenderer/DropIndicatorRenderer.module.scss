@@ -1,19 +1,22 @@
 .dropIndicator {
-  min-height: 80px;
-  background-color: rgb(18 111 135 / 15%);
+  min-height: auto;
+  background-color: rgb(18 111 135 / 8%);
   border: 2px dashed var(--primary-2);
-  border-radius: 4px;
-  margin: 3px 0;
+  border-radius: 6px;
+  margin: 2px 0;
   margin-left: calc((var(--tree-item-level, 0) + 1) * 24px);
   margin-right: 16px;
   position: relative;
-  box-shadow: 0 0 12px rgb(18 111 135 / 30%);
-  animation: pulse-border 1s ease-in-out infinite;
+  box-shadow: 0 0 8px rgb(18 111 135 / 20%);
+  animation: pulse-border 1.5s ease-in-out infinite;
+
+  &[data-drop-target="false"] {
+    display: none;
+  }
 
   &::after {
-    content: "Nivå " attr(data-depth);
     position: absolute;
-    top: -18px;
+    top: -16px;
     left: -2px;
     font-size: 11px;
     line-height: 1;
@@ -23,14 +26,15 @@
     background: #fff;
     color: #374151;
     white-space: nowrap;
+    content: "Nivå " attr(data-depth);
   }
 }
 
 .dropIndicator--on {
-  background-color: rgb(22 163 74 / 20%);
+  background-color: rgb(22 163 74 / 12%);
   border-color: #16a34a;
   border-width: 3px;
-  box-shadow: 0 0 16px rgb(22 163 74 / 40%);
+  box-shadow: 0 0 12px rgb(22 163 74 / 30%);
 
   &::after {
     content: "Inn i nivå " attr(data-depth);
@@ -41,15 +45,88 @@
   }
 }
 
+/* ─── Preview row inside "before"/"after" drop indicators ──────────────── */
+
+.previewRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 10px;
+  opacity: 0.7;
+}
+
+.previewDragHandle {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border: 1px dashed #a3b1bf;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.previewDots {
+  width: 10px;
+  height: 14px;
+  background-image: radial-gradient(#9ca3af 1.2px, transparent 1.2px);
+  background-size: 4px 4px;
+  background-position: 0 0;
+}
+
+.previewPlaceholder {
+  font-size: 13px;
+  color: #4b5563;
+  font-style: italic;
+}
+
+/* ─── Ghost preview (dragged item + children) ──────────────────────────── */
+
+.ghostPreview {
+  padding: 4px 6px;
+  opacity: 0.6;
+}
+
+.ghostItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 3px 8px;
+  margin: 4px 0;
+  min-height: 28px;
+  background-color: #f5f6f8;
+  border: 1px dashed #c4cdd5;
+  border-radius: 6px;
+  font-size: inherit;
+  color: #374151;
+}
+
+.ghostItemGroup {
+  background-color: #eaf1f7;
+  border-color: #b0c4d0;
+}
+
+.ghostHierarchy {
+  font-weight: 600;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.ghostText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @keyframes pulse-border {
   0%,
   100% {
     border-color: var(--primary-2);
-    background-color: rgb(18 111 135 / 15%);
+    background-color: rgb(18 111 135 / 8%);
   }
 
   50% {
-    border-color: rgb(18 111 135 / 60%);
-    background-color: rgb(18 111 135 / 25%);
+    border-color: rgb(18 111 135 / 50%);
+    background-color: rgb(18 111 135 / 15%);
   }
 }

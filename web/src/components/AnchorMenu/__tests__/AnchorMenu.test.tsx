@@ -11,14 +11,14 @@ import AnchorMenu from "../AnchorMenu";
 
 // Mock the sub-components
 vi.mock("../Toolbox/Toolbox", () => ({
-  Toolbox: ({ t }: any) => <div data-testid="toolbox">{t("Components")}</div>,
+  Toolbox: () => <div data-testid="toolbox">Components</div>,
 }));
 
 vi.mock("../TreeView/TreeView", () => ({
-  TreeView: ({ showPlaceholder, t }: any) => (
+  TreeView: ({ showPlaceholder }: any) => (
     <div data-testid="treeview">
       {showPlaceholder && (
-        <p>{t("Drag a component here to start building this Questionnaire")}</p>
+        <p>Drag a component here to start building this Questionnaire</p>
       )}
     </div>
   ),

@@ -11,12 +11,12 @@
 }
 
 .item {
-  margin: 3px 0;
+  margin: 16px 0;
   margin-left: calc(var(--tree-item-level, 0) * 24px);
-  background-color: #f3f4f6;
+  background-color: transparent;
 
   &:hover {
-    background-color: #e5e7eb;
+    z-index: 1;
   }
 
   &[data-dragging="true"] {
@@ -24,9 +24,16 @@
   }
 }
 
+.topItem {
+  margin-top: 20px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
 .itemSelected {
-  box-shadow: 0 0 0 4px var(--primary-2);
-  background-color: #e4f7f9;
+  z-index: 2;
 }
 
 .placeholder {

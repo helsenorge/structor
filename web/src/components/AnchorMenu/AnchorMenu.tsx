@@ -30,9 +30,7 @@ interface AnchorMenuProps {
 
 const getFirstKey = (keys: Set<Key>): string | null => {
   const first = keys.values().next().value;
-  if (first === undefined || first === null) {
-    return null;
-  }
+  if (first === undefined || first === null) return null;
   return String(first);
 };
 
@@ -41,7 +39,6 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
   const RECIPIENT_COMPONENT_LABEL = t("Recipient component");
 
-  // Use custom hooks
   const { treeData, parentPathById, expandableKeys } = useTreeData(
     props.qOrder,
     props.qItems,
@@ -49,13 +46,12 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
   const [expandedKeys, setExpandedKeys] = useExpandedKeys(expandableKeys);
 
-  const { validationClasses, getRelevantIcon } = useAnchorMenuHelpers(
-    props.validationErrors,
-  );
+  const { validationClasses } = useAnchorMenuHelpers();
 
-  const treeDnD = useTreeDragAndDrop({
+  const { dragAndDropHooks } = useTreeDragAndDrop({
     qOrder: props.qOrder,
     qItems: props.qItems,
+    treeData,
     parentPathById,
     dispatch: props.dispatch,
     recipientComponentLabel: RECIPIENT_COMPONENT_LABEL,
@@ -63,9 +59,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
   const handleSelectionChange = (keys: Set<Key>): void => {
     const selectedId = getFirstKey(keys);
-    if (!selectedId) {
-      return;
-    }
+    if (!selectedId) return;
     props.dispatch(
       updateMarkedLinkIdAction(
         selectedId,
@@ -76,21 +70,18 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
   return (
     <div className={styles.questionnaireOverview}>
-      <Toolbox t={t} recipientComponentLabel={RECIPIENT_COMPONENT_LABEL} />
+      <Toolbox recipientComponentLabel={RECIPIENT_COMPONENT_LABEL} />
 
       <TreeView
-        t={t}
         treeData={treeData}
         qItems={props.qItems}
         qCurrentItem={props.qCurrentItem}
         parentPathById={parentPathById}
         expandedKeys={expandedKeys}
         setExpandedKeys={setExpandedKeys}
-        dragAndDropHooks={treeDnD.dragAndDropHooks}
+        dragAndDropHooks={dragAndDropHooks}
         onSelectionChange={handleSelectionChange}
         validationClasses={validationClasses}
-        getRelevantIcon={getRelevantIcon}
-        dispatch={props.dispatch}
         showPlaceholder={props.qOrder.length === 0}
       />
     </div>

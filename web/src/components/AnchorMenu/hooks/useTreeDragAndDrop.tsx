@@ -1,4 +1,4 @@
-import type { Dispatch, JSX } from "react";
+import { type Dispatch, type JSX, useRef, useMemo } from "react";
 
 import { useDragAndDrop } from "react-aria-components";
 
@@ -8,6 +8,7 @@ import type {
   OrderItem,
 } from "../../../store/treeStore/treeStore";
 import type { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
+import type { TreeNode } from "../types";
 import type { Key, DropItem, DragItem } from "@react-types/shared";
 
 import { isIgnorableItem } from "../../../helpers/itemControl";
@@ -69,19 +70,35 @@ const arraysEqual = (a: string[], b: string[]): boolean => {
 interface UseDragAndDropOptions {
   qOrder: OrderItem[];
   qItems: Items;
+  treeData: TreeNode[];
   parentPathById: Map<string, string[]>;
   dispatch: Dispatch<ActionType>;
   recipientComponentLabel: string;
 }
 
+const buildNodeMap = (nodes: TreeNode[]): Map<string, TreeNode> => {
+  const map = new Map<string, TreeNode>();
+  const walk = (list: TreeNode[]): void => {
+    for (const node of list) {
+      map.set(node.id, node);
+      walk(node.children);
+    }
+  };
+  walk(nodes);
+  return map;
+};
+
 export const useTreeDragAndDrop = ({
   qOrder,
   qItems,
+  treeData,
   parentPathById,
   dispatch,
   recipientComponentLabel,
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 }: UseDragAndDropOptions) => {
+  const nodeMap = useMemo(() => buildNodeMap(treeData), [treeData]);
+  const draggedKeysRef = useRef<Set<Key> | null>(null);
   const getOrderArray = (orderPath: string[]): OrderItem[] => {
     let current = qOrder;
     for (const id of orderPath) {
@@ -108,6 +125,12 @@ export const useTreeDragAndDrop = ({
       return Array.from(keys).map((k) => ({
         [TREE_ITEM_DRAG_TYPE]: String(k),
       }));
+    },
+    onDragStart: (e): void => {
+      draggedKeysRef.current = e.keys;
+    },
+    onDragEnd: (): void => {
+      draggedKeysRef.current = null;
     },
     getDropOperation: (_target, types, allowedOperations) => {
       if (types.has(TOOLBOX_DRAG_TYPE)) {
@@ -220,10 +243,17 @@ export const useTreeDragAndDrop = ({
       void rootDropAsync();
     },
     renderDropIndicator: (target): JSX.Element => {
+      const draggedId = draggedKeysRef.current
+        ? getFirstKey(draggedKeysRef.current)
+        : null;
+      const draggedNode = draggedId ? (nodeMap.get(draggedId) ?? null) : null;
+
       return (
         <DropIndicatorRenderer
           target={target}
           parentPathById={parentPathById}
+          draggedNode={draggedNode}
+          qItems={qItems}
         />
       );
     },

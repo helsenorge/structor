@@ -1,0 +1,21 @@
+.mainContenetWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.editor {
+  display: flex;
+  height: 100%;
+}
+
+.pageWrapper {
+  width: 800px;
+  margin: 0 auto;
+}
+
+.detailsButton {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0.5rem;
+}

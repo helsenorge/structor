@@ -1,20 +1,18 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-
-import type { TFunction } from "i18next";
+import { describe, it, expect } from "vitest";
 
 import { Toolbox } from "../Toolbox";
 
-const mockT = vi.fn((key: string) => key) as unknown as TFunction;
-
 describe("Toolbox", () => {
   it("renders toolbox title", () => {
-    render(<Toolbox t={mockT} recipientComponentLabel="Recipient component" />);
-    expect(screen.getByText("Components")).toBeInTheDocument();
+    render(<Toolbox recipientComponentLabel="Recipient component" />);
+    expect(
+      screen.getByRole("grid", { name: "Components" }),
+    ).toBeInTheDocument();
   });
 
   it("renders all toolbox items", () => {
-    render(<Toolbox t={mockT} recipientComponentLabel="Recipient component" />);
+    render(<Toolbox recipientComponentLabel="Recipient component" />);
 
     expect(screen.getByText("Group")).toBeInTheDocument();
     expect(screen.getByText("Text answer")).toBeInTheDocument();
@@ -31,19 +29,19 @@ describe("Toolbox", () => {
   });
 
   it("renders drag handles for items", () => {
-    render(<Toolbox t={mockT} recipientComponentLabel="Recipient component" />);
+    render(<Toolbox recipientComponentLabel="Recipient component" />);
     const dragButtons = screen.getAllByRole("button", { name: "Drag" });
     expect(dragButtons.length).toBeGreaterThan(0);
   });
 
   it("uses custom recipient component label", () => {
     const customLabel = "Custom Recipient Label";
-    render(<Toolbox t={mockT} recipientComponentLabel={customLabel} />);
+    render(<Toolbox recipientComponentLabel={customLabel} />);
     expect(screen.getByText(customLabel)).toBeInTheDocument();
   });
 
   it("renders GridList with correct aria-label", () => {
-    render(<Toolbox t={mockT} recipientComponentLabel="Recipient component" />);
+    render(<Toolbox recipientComponentLabel="Recipient component" />);
     const gridList = screen.getByRole("grid", { name: "Components" });
     expect(gridList).toBeInTheDocument();
   });

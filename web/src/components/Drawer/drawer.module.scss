@@ -1,0 +1,41 @@
+.drawer {
+  display: block;
+  height: 100%;
+  background: white;
+  position: fixed;
+  top: 0;
+  width: 45%;
+  min-width: 600px;
+  z-index: 200;
+  box-shadow: 1px 0 7px rgb(0 0 0 / 50%);
+  transition: transform 0.3s ease-out;
+  overflow-y: auto;
+}
+
+.drawer.leftDrawer {
+  top: 0;
+  left: 0;
+  right: auto;
+  transform: translateX(-100%);
+}
+
+.drawer.rightDrawer {
+  right: 0;
+  left: auto;
+  transform: translateX(100%);
+}
+
+.drawer.open {
+  transform: translateX(0);
+  display: block;
+}
+
+.drawerHeader {
+  background-color: var(--primary-2);
+  display: flex;
+  padding: 9px;
+}
+
+.closeButton {
+  color: white;
+}

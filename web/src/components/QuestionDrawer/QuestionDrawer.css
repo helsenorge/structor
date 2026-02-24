@@ -1,43 +1,42 @@
 .right-drawer {
-    height: 100%;
-    background: white;
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 45%;
-    min-width: 600px;
-    z-index: 200;
-    box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
-    transform: translateX(100%);
-    transition: transform 0.3s ease-out;
-    overflow-y: auto;
+  height: 100%;
+  background: white;
+  top: 0;
+  right: 0;
+  width: 45%;
+  min-width: 600px;
+  z-index: 200;
+  box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-out;
+  overflow-y: auto;
 }
 
 .right-drawer.open {
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
 .item-validation-error-summary {
-    text-align: left;
-    padding: 1rem 2rem;
-    background-color: #f7e1d2;
-    border-left: 4px solid #b62e1c;
+  text-align: left;
+  padding: 1rem 2rem;
+  background-color: #f7e1d2;
+  border-left: 4px solid #b62e1c;
 }
 
 .item-button-row {
-    display: flex;
-    line-height: 55px;
+  display: flex;
+  line-height: 55px;
 }
 
 .item-button-row .item-button-wrapper {
-    height: 34px;
-    width: 64px;
+  height: 34px;
+  width: 64px;
 }
 
 .item-button-row .item-buttons {
-    display: flex;
+  display: flex;
 }
 
 .item-button-row .item-buttons .item-button {
-    padding: 5px;
+  padding: 5px;
 }

@@ -8,6 +8,8 @@ import Icon from "@helsenorge/designsystem-react/components/Icon";
 import X from "@helsenorge/designsystem-react/components/Icons/X";
 
 import useOutsideClick from "../../hooks/useOutsideClick";
+
+import styles from "./drawer.module.scss";
 type DrawerProps = {
   position: "left" | "right";
   visible: boolean;
@@ -25,18 +27,18 @@ const Drawer = (
   useOutsideClick(drawerRef, props.hide, !props.visible);
 
   const open = props.visible ? "open" : "";
-  const classNames = `drawer ${props.position}-drawer ${open}`;
+  const classNames = `${styles.drawer} ${styles[`${props.position}Drawer`]} ${styles[open]}`;
 
   return (
     <>
-      {props.visible && <div className="overlay" />}
+      {props.visible && <div className={styles.overlay} />}
       <div className={classNames} ref={ref || drawerRef}>
-        <div className="drawer-header">
+        <div className={styles.drawerHeader}>
           <Button
             ariaLabel={t("Close (Esc)")}
             onClick={props.hide}
             variant="borderless"
-            className="close-button"
+            className={styles.closeButton}
           >
             <Icon color="white" svgIcon={X} />
           </Button>

@@ -1,26 +1,26 @@
 import { useMemo } from "react";
 
 import { GridList, GridListItem, useDragAndDrop } from "react-aria-components";
+import { useTranslation } from "react-i18next";
 
 import { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
 import type { DragItem, ToolboxNode } from "../types";
-import type { TFunction } from "i18next";
 
 import { DragHandle } from "../DragHandle/DragHandle";
 
 import styles from "./Toolbox.module.scss";
 
 interface ToolboxProps {
-  t: TFunction;
   recipientComponentLabel: string;
 }
 
 const TOOLBOX_DRAG_TYPE = "application/x-hn-questionnaire-item";
 
 export const Toolbox = ({
-  t,
   recipientComponentLabel,
 }: ToolboxProps): JSX.Element => {
+  const { t } = useTranslation();
+
   const createTypeComponent = (
     type: IQuestionnaireItemType,
     label: string,
@@ -68,7 +68,6 @@ export const Toolbox = ({
 
   return (
     <div className={styles.toolbox}>
-      <strong>{t("Components")}</strong>
       <GridList
         aria-label={t("Components")}
         items={toolboxItems}

@@ -1,19 +1,54 @@
 .row {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0;
   width: calc(100% - 16px);
   max-width: 100%;
-  padding: 6px 8px;
   margin-right: 16px;
   cursor: pointer;
-  background-color: transparent;
-  min-height: 32px;
+  min-height: 28px;
+}
+
+.itemBox {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+  padding: 3px 8px;
+  background-color: #f5f6f8;
+  border: 1px solid #dde1e6;
+  border-radius: 6px;
+
+  .row:hover & {
+    background-color: #ebedf0;
+    border-color: #c4cdd5;
+  }
+}
+
+.itemBoxSelected {
+  border-color: var(--primary-2);
+  box-shadow: 0 0 0 2px var(--primary-2);
+  background-color: #e4f7f9;
+}
+
+.itemBoxTopLevel {
+  border-left: 3px solid var(--primary-2);
+}
+
+.itemBoxGroup {
+  background-color: #eaf1f7;
+  border-color: #c8d6e0;
+
+  .row:hover & {
+    background-color: #dce8f0;
+    border-color: #b0c4d0;
+  }
 }
 
 .chevron {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   padding: 0;
   display: inline-flex;
   align-items: center;
@@ -23,8 +58,8 @@
 }
 
 .chevronSpacer {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   display: inline-block;
 }
 
@@ -39,10 +74,10 @@
   display: inline-flex;
   gap: 0.25rem;
 }
-.dropTarget {
+.dropTarget .itemBox {
   background-color: rgb(18 111 135 / 15%);
   border: 2px dashed var(--primary-2);
-  border-radius: 4px;
+  border-radius: 6px;
   box-shadow: 0 0 12px rgb(18 111 135 / 30%);
   animation: pulse-border 1s ease-in-out infinite;
 }
