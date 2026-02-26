@@ -1,4 +1,4 @@
-import type { Dispatch } from "react";
+import { useCallback, type Dispatch } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -39,7 +39,10 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
   const RECIPIENT_COMPONENT_LABEL = t("Recipient component");
 
-  const { treeData, parentPathById } = useTreeData(props.qOrder, props.qItems);
+  const { treeData, parentPathById, expandableKeys } = useTreeData(
+    props.qOrder,
+    props.qItems,
+  );
 
   const { validationClasses } = useAnchorMenuHelpers();
 
@@ -52,16 +55,19 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     recipientComponentLabel: RECIPIENT_COMPONENT_LABEL,
   });
 
-  const handleSelectionChange = (keys: Set<Key>): void => {
-    const selectedId = getFirstKey(keys);
-    if (!selectedId) return;
-    props.dispatch(
-      updateMarkedLinkIdAction(
-        selectedId,
-        parentPathById.get(selectedId) ?? [],
-      ),
-    );
-  };
+  const handleSelectionChange = useCallback(
+    (keys: Set<Key>): void => {
+      const selectedId = getFirstKey(keys);
+      if (!selectedId) return;
+      props.dispatch(
+        updateMarkedLinkIdAction(
+          selectedId,
+          parentPathById.get(selectedId) ?? [],
+        ),
+      );
+    },
+    [props.dispatch, parentPathById],
+  );
 
   return (
     <div className={styles.questionnaireOverview}>
@@ -70,7 +76,9 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
       <TreeView
         qItems={props.qItems}
         qCurrentItem={props.qCurrentItem}
-        qOrder={props.qOrder}
+        treeData={treeData}
+        parentPathById={parentPathById}
+        expandableKeys={expandableKeys}
         dragAndDropHooks={dragAndDropHooks}
         onSelectionChange={handleSelectionChange}
         validationClasses={validationClasses}

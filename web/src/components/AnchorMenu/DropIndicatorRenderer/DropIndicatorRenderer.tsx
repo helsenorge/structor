@@ -3,6 +3,10 @@ import { DropIndicator } from "react-aria-components";
 import type { Items } from "../../../store/treeStore/treeStore";
 import type { TreeNode } from "../types";
 import type { DropTarget } from "@react-types/shared";
+import type { QuestionnaireItem } from "fhir/r4";
+
+import { IndentRenderer } from "../IndentRenderer/IndentRenderer";
+import { TreeItemIcon } from "../TreeView/TreeItemIcon";
 
 import styles from "./DropIndicatorRenderer.module.scss";
 
@@ -19,30 +23,48 @@ const GhostNode = ({
   node,
   qItems,
   depth,
+  isLast,
+  ancestorContinuations,
 }: {
   node: TreeNode;
   qItems: Items;
   depth: number;
+  isLast: boolean;
+  ancestorContinuations: boolean[];
 }): JSX.Element => {
   const item = qItems[node.id];
   const isGroup = item?.type === "group";
   return (
     <div>
-      <div
-        className={`${styles.ghostItem} ${isGroup ? styles.ghostItemGroup : ""}`}
-        style={{ marginLeft: depth * TREE_INDENT_UNIT_PX }}
-      >
-        <span className={styles.ghostHierarchy}>{node.hierarchy}</span>
-        <span className={styles.ghostText}>{item?.text || node.id}</span>
+      <div className={styles.ghostRow}>
+        {depth > 0 && (
+          <IndentRenderer
+            nodeId={node.id}
+            ancestorContinuations={ancestorContinuations}
+            isLast={isLast}
+          />
+        )}
+        <div
+          className={`${styles.ghostItem} ${isGroup ? styles.ghostItemGroup : ""}`}
+        >
+          <TreeItemIcon type={item?.type as QuestionnaireItem["type"]} />
+          <span className={styles.ghostHierarchy}>{node.hierarchy}</span>
+          <span className={styles.ghostText}>{item?.text || node.id}</span>
+        </div>
       </div>
-      {node.children.map((child) => (
-        <GhostNode
-          key={child.id}
-          node={child}
-          qItems={qItems}
-          depth={depth + 1}
-        />
-      ))}
+      {node.children.map((child, index) => {
+        const childIsLast = index === node.children.length - 1;
+        return (
+          <GhostNode
+            key={child.id}
+            node={child}
+            qItems={qItems}
+            depth={depth + 1}
+            isLast={childIsLast}
+            ancestorContinuations={[...ancestorContinuations, !childIsLast]}
+          />
+        );
+      })}
     </div>
   );
 };
@@ -78,7 +100,13 @@ export const DropIndicatorRenderer = ({
     >
       {showGhost ? (
         <div className={styles.ghostPreview}>
-          <GhostNode node={draggedNode} qItems={qItems} depth={0} />
+          <GhostNode
+            node={draggedNode}
+            qItems={qItems}
+            depth={0}
+            isLast={true}
+            ancestorContinuations={[]}
+          />
         </div>
       ) : (
         dropPosition !== "on" && (
@@ -87,7 +115,7 @@ export const DropIndicatorRenderer = ({
               <span className={styles.previewDots} />
             </div>
             <span className={styles.previewPlaceholder}>
-              Nytt element her (nivå {depth})
+              {`Nytt element her (nivå ${depth})`}
             </span>
           </div>
         )

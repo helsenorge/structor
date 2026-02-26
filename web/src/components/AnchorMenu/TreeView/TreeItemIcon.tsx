@@ -3,7 +3,6 @@ import type { QuestionnaireItem } from "fhir/r4";
 import Icon, { IconSize } from "@helsenorge/designsystem-react/components/Icon";
 import Attachment from "@helsenorge/designsystem-react/components/Icons/Attachment";
 import Calendar from "@helsenorge/designsystem-react/components/Icons/Calendar";
-import Check from "@helsenorge/designsystem-react/components/Icons/Check";
 import Gallery from "@helsenorge/designsystem-react/components/Icons/Gallery";
 import HelpSign from "@helsenorge/designsystem-react/components/Icons/HelpSign";
 import InfoSignStroke from "@helsenorge/designsystem-react/components/Icons/InfoSignStroke";
@@ -11,12 +10,13 @@ import Scale from "@helsenorge/designsystem-react/components/Icons/Scale";
 import SpeechBubble from "@helsenorge/designsystem-react/components/Icons/SpeechBubble";
 import Watch from "@helsenorge/designsystem-react/components/Icons/Watch";
 
+import BooleanIcon from "../icons/BooleanIcon";
 import ChoiceIcon from "../icons/ChoiceIcon";
 import NumberIcon from "../icons/NumberIcon";
 
 export const TreeItemIcon = ({
   type,
-  size = IconSize.XSmall,
+  size = IconSize.XXSmall,
 }: {
   type?: QuestionnaireItem["type"];
   size?: IconSize;
@@ -38,7 +38,7 @@ export const TreeItemIcon = ({
     case "decimal":
       return <Icon size={size} svgIcon={NumberIcon} />;
     case "boolean":
-      return <Icon size={size} svgIcon={Check} />;
+      return <Icon size={size} svgIcon={BooleanIcon} />;
     case "date":
     case "dateTime":
       return <Icon size={size} svgIcon={Calendar} />;

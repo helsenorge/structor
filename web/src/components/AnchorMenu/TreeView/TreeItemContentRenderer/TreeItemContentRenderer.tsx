@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import { Button } from "react-aria-components";
 import { useTranslation } from "react-i18next";
 
@@ -9,7 +11,6 @@ import Icon from "@helsenorge/designsystem-react/components/Icon";
 import ChevronDown from "@helsenorge/designsystem-react/components/Icons/ChevronDown";
 import ChevronRight from "@helsenorge/designsystem-react/components/Icons/ChevronRight";
 
-import { DragHandle } from "../../DragHandle/DragHandle";
 import { IndentRenderer } from "../../IndentRenderer/IndentRenderer";
 import { ItemButtons } from "../../ItemButtons/ItemButtons";
 import { TreeItemIcon } from "../TreeItemIcon";
@@ -27,7 +28,7 @@ interface TreeItemContentRendererProps {
   isDropTarget: boolean | undefined;
 }
 
-export const TreeItemContentRenderer = ({
+export const TreeItemContentRenderer = memo(function TreeItemContentRenderer({
   node,
   item,
   parentPath,
@@ -36,7 +37,7 @@ export const TreeItemContentRenderer = ({
   ancestorContinuations,
   isExpanded,
   isDropTarget,
-}: TreeItemContentRendererProps): JSX.Element => {
+}: TreeItemContentRendererProps): JSX.Element {
   const { t } = useTranslation();
 
   const isTopLevel = depth === 0;
@@ -60,7 +61,7 @@ export const TreeItemContentRenderer = ({
           .filter(Boolean)
           .join(" ")}
       >
-        <DragHandle ariaLabel={t("Drag")} variant="tree" />
+        {/* <DragHandle ariaLabel={t("Drag")} variant="tree" /> */}
         {node.children.length > 0 ? (
           <Button
             slot="chevron"
@@ -99,4 +100,4 @@ export const TreeItemContentRenderer = ({
       </div>
     </div>
   );
-};
+});

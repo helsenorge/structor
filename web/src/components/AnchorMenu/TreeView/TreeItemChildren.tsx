@@ -1,3 +1,5 @@
+import { memo, useMemo } from "react";
+
 import type { TreeNode } from "../types";
 import type { Items, MarkedItem } from "src/store/treeStore/treeStore";
 
@@ -13,7 +15,7 @@ export interface TreeItemChildrenProps {
   qCurrentItem: MarkedItem | undefined;
 }
 
-export const TreeItemChildren = ({
+export const TreeItemChildren = memo(function TreeItemChildren({
   node,
   qItems,
   parentPath,
@@ -21,7 +23,12 @@ export const TreeItemChildren = ({
   ancestorContinuations,
   validationClasses,
   qCurrentItem,
-}: TreeItemChildrenProps): React.JSX.Element | null => {
+}: TreeItemChildrenProps): React.JSX.Element | null {
+  const childParentPath = useMemo(
+    () => [...parentPath, node.id],
+    [parentPath, node.id],
+  );
+
   if (node.children.length === 0) return null;
 
   return (
@@ -34,7 +41,7 @@ export const TreeItemChildren = ({
             key={childNode.id}
             node={childNode}
             qItems={qItems}
-            parentPath={[...parentPath, node.id]}
+            parentPath={childParentPath}
             isTopItem={false}
             depth={depth + 1}
             isLast={childIsLast}
@@ -46,5 +53,5 @@ export const TreeItemChildren = ({
       })}
     </>
   );
-};
+});
 export default TreeItemChildren;

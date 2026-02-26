@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState } from "react";
+import { useMemo, useEffect, useRef, useState } from "react";
 
 import type { OrderItem, Items } from "../../../store/treeStore/treeStore";
 import type { TreeNode } from "../types";
@@ -61,12 +61,21 @@ export const useExpandedKeys = (
   expandableKeys: Set<Key>,
 ): [Set<Key>, (keys: Set<Key>) => void] => {
   const [expandedKeys, setExpandedKeys] = useState<Set<Key>>(new Set());
+  const prevExpandableRef = useRef<Set<Key>>(new Set());
 
   useEffect(() => {
-    if (expandedKeys.size === 0 && expandableKeys.size > 0) {
+    const expandableChanged =
+      expandableKeys.size !== prevExpandableRef.current.size ||
+      [...expandableKeys].some((k) => !prevExpandableRef.current.has(k));
+
+    if (
+      expandableKeys.size > 0 &&
+      (expandedKeys.size === 0 || expandableChanged)
+    ) {
       setExpandedKeys(new Set(expandableKeys));
     }
-  }, [expandableKeys, expandedKeys.size]);
+    prevExpandableRef.current = expandableKeys;
+  }, [expandableKeys]);
 
   return [expandedKeys, setExpandedKeys];
 };

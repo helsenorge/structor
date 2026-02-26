@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { memo, useContext } from "react";
 
 import { useTranslation } from "react-i18next";
 import { DeleteButton } from "src/components/Modal/DeleteModal";
@@ -19,11 +19,11 @@ type Props = {
   parentArray: string[];
   showLabel: boolean;
 };
-export const ItemButtons = ({
+export const ItemButtons = memo(function ItemButtons({
   item,
   parentArray,
   showLabel,
-}: Props): React.JSX.Element => {
+}: Props): React.JSX.Element {
   const { t } = useTranslation();
   const { dispatch } = useContext(TreeContext);
 
@@ -60,5 +60,5 @@ export const ItemButtons = ({
       />
     </>
   );
-};
+});
 export default ItemButtons;

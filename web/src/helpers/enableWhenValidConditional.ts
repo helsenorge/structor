@@ -80,6 +80,11 @@ export const getEnableWhenConditionals = (
     }
     const currentLinkId = searchArray[0];
     const stopIndex = order.findIndex((x) => x.linkId === currentLinkId);
+
+    if (stopIndex === -1) {
+      return [];
+    }
+
     const stopIndexWithoutSelfItem =
       searchArray.length > 1 ? stopIndex + 1 : stopIndex;
     return order
@@ -107,7 +112,7 @@ export const getEnableWhenConditionals = (
         [],
       )
       .concat(
-        search(order[stopIndex].items, searchArray.slice(1), [
+        search(order[stopIndex]?.items, searchArray.slice(1), [
           ...idArray,
           stopIndex + 1,
         ]),

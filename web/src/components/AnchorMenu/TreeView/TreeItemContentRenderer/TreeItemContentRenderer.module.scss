@@ -1,48 +1,69 @@
 .row {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 0;
   width: calc(100% - 16px);
   max-width: 100%;
   margin-right: 16px;
   cursor: pointer;
-  min-height: 28px;
+  min-height: 30px;
+  padding: 4px 0;
 }
 
 .itemBox {
+  button {
+    &:hover {
+      cursor: grab !important;
+    }
+  }
   display: flex;
   align-items: center;
+  align-self: center;
   gap: 0.25rem;
   flex: 1;
   min-width: 0;
-  padding: 3px 8px;
-  background-color: #f5f6f8;
-  border: 1px solid #dde1e6;
+  padding: 3px 10px;
+  background: #fff;
+  border: 1px solid #dce0e5;
   border-radius: 6px;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 5%);
+  transition: all 0.12s ease;
+  color: #000000;
 
   .row:hover & {
-    background-color: #ebedf0;
-    border-color: #c4cdd5;
+    background: #f9fafb;
+    border-color: #98a2b3;
+    box-shadow:
+      0 1px 3px rgb(16 24 40 / 10%),
+      0 1px 2px rgb(16 24 40 / 6%);
   }
 }
 
 .itemBoxSelected {
-  border-color: var(--primary-2);
-  box-shadow: 0 0 0 2px var(--primary-2);
-  background-color: #e4f7f9;
+  border-color: #127f8f;
+  box-shadow:
+    0 0 0 2px rgb(18 127 143 / 24%),
+    0 1px 2px rgb(16 24 40 / 5%);
+  background: #f0fafb;
 }
 
 .itemBoxTopLevel {
-  border-left: 3px solid var(--primary-2);
+  border-left: 3px solid #127f8f;
+  background: #f8fafb;
+  font-weight: 600;
+  color: #1d2939;
 }
 
 .itemBoxGroup {
-  background-color: #eaf1f7;
-  border-color: #c8d6e0;
+  background: #f5f8fc;
+  border-color: #c2d1e0;
 
   .row:hover & {
-    background-color: #dce8f0;
-    border-color: #b0c4d0;
+    background: #edf2f8;
+    border-color: #8da4bd;
+    box-shadow:
+      0 1px 3px rgb(16 24 40 / 10%),
+      0 1px 2px rgb(16 24 40 / 6%);
   }
 }
 
@@ -58,15 +79,14 @@
 }
 
 .chevronSpacer {
-  width: 24px;
-  height: 24px;
+  margin-left: 0.5rem;
   display: inline-block;
 }
 
 .title {
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-right: 1rem;
+  margin: 0 0.4rem;
 }
 
 .actions {
@@ -75,22 +95,22 @@
   gap: 0.25rem;
 }
 .dropTarget .itemBox {
-  background-color: rgb(18 111 135 / 15%);
-  border: 2px dashed var(--primary-2);
+  background-color: rgb(18 127 143 / 8%);
+  border: 2px dashed #127f8f;
   border-radius: 6px;
-  box-shadow: 0 0 12px rgb(18 111 135 / 30%);
-  animation: pulse-border 1s ease-in-out infinite;
+  box-shadow: 0 0 0 3px rgb(18 127 143 / 12%);
+  animation: pulse-border 1.5s ease-in-out infinite;
 }
 
 @keyframes pulse-border {
   0%,
   100% {
-    border-color: var(--primary-2);
-    background-color: rgb(18 111 135 / 15%);
+    border-color: #127f8f;
+    background-color: rgb(18 127 143 / 6%);
   }
 
   50% {
-    border-color: rgb(18 111 135 / 60%);
-    background-color: rgb(18 111 135 / 25%);
+    border-color: rgb(18 127 143 / 50%);
+    background-color: rgb(18 127 143 / 14%);
   }
 }

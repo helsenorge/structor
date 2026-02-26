@@ -1,15 +1,14 @@
+import { useCallback, useMemo } from "react";
+
 import { Tree, type DragAndDropHooks } from "react-aria-components";
 import { useTranslation } from "react-i18next";
 
-import type {
-  Items,
-  MarkedItem,
-  OrderItem,
-} from "../../../store/treeStore/treeStore";
+import type { Items, MarkedItem } from "../../../store/treeStore/treeStore";
+import type { TreeNode } from "../types";
 import type { Key } from "@react-types/shared";
 
 import { TreeItemsList } from "./TreeItemList";
-import { useExpandedKeys, useTreeData } from "../hooks/useTreeData";
+import { useExpandedKeys } from "../hooks/useTreeData";
 
 import styles from "./TreeView.module.scss";
 
@@ -18,30 +17,43 @@ import styles from "./TreeView.module.scss";
 export interface TreeViewProps {
   qItems: Items;
   qCurrentItem: MarkedItem | undefined;
+  treeData: TreeNode[];
+  parentPathById: Map<string, string[]>;
+  expandableKeys: Set<Key>;
   dragAndDropHooks: DragAndDropHooks;
   onSelectionChange: (keys: Set<Key>) => void;
   validationClasses: (linkId: string) => string;
   showPlaceholder: boolean;
-  qOrder: OrderItem[];
 }
 
 export const TreeView = ({
   qItems,
   qCurrentItem,
-  qOrder,
+  treeData,
+  parentPathById,
+  expandableKeys,
   dragAndDropHooks,
   onSelectionChange,
   validationClasses,
   showPlaceholder,
 }: TreeViewProps): JSX.Element => {
   const { t } = useTranslation();
-  const { treeData, parentPathById, expandableKeys } = useTreeData(
-    qOrder,
-    qItems,
-  );
 
   // Default expand all items if expandedKeys is empty
   const [expandedKeys, setExpandedKeys] = useExpandedKeys(expandableKeys);
+
+  const selectedKeys = useMemo(
+    () =>
+      qCurrentItem?.linkId
+        ? new Set<Key>([qCurrentItem.linkId])
+        : new Set<Key>(),
+    [qCurrentItem?.linkId],
+  );
+
+  const handleSelectionChange = useCallback(
+    (keys: "all" | Set<Key>) => onSelectionChange(keys as Set<Key>),
+    [onSelectionChange],
+  );
 
   return (
     <>
@@ -50,12 +62,8 @@ export const TreeView = ({
         className={`${styles.treeView} ${styles.tree}`}
         selectionMode="single"
         selectionBehavior="replace"
-        selectedKeys={
-          qCurrentItem?.linkId
-            ? new Set<Key>([qCurrentItem.linkId])
-            : new Set<Key>()
-        }
-        onSelectionChange={(keys) => onSelectionChange(keys as Set<Key>)}
+        selectedKeys={selectedKeys}
+        onSelectionChange={handleSelectionChange}
         expandedKeys={expandedKeys}
         onExpandedChange={setExpandedKeys}
         dragAndDropHooks={dragAndDropHooks}

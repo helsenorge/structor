@@ -21,6 +21,8 @@ import type {
 
 import "./Question.css";
 
+import { IconSize } from "@helsenorge/designsystem-react";
+
 import Choice from "./QuestionType/Choice";
 import { DateType } from "./QuestionType/DateType";
 import Infotext from "./QuestionType/Infotext";
@@ -51,6 +53,7 @@ import Accordion from "../Accordion/Accordion";
 import AdvancedQuestionOptions from "../AdvancedQuestionOptions/AdvancedQuestionOptions";
 import Codes from "./Code/Codes";
 import EnableWhen from "./EnableWhen/EnableWhen";
+import { TreeItemIcon } from "../AnchorMenu/TreeView/TreeItemIcon";
 import FormField from "../FormField/FormField";
 import MarkdownEditor from "../MarkdownEditor/MarkdownEditor";
 import SwitchBtn from "../SwitchBtn/SwitchBtn";
@@ -206,6 +209,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
     <div className="question" id={props.item.linkId}>
       <div className="question-form">
         <h2 className="question-type-header">
+          <TreeItemIcon type={props.item.type} size={IconSize.XSmall} />
           {t(getItemDisplayType(props.item))}
         </h2>
         <div className="horizontal">

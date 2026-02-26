@@ -5,14 +5,17 @@
 .tree {
   text-align: left;
   width: 100%;
-  margin-top: 24px;
-  margin-bottom: 16px;
-  margin-right: 24px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+  padding-bottom: 5rem;
 }
 
 .item {
-  margin: 16px 0;
-  padding-left: calc(var(--tree-item-level, 0) * 24px);
+  margin: 0;
+  padding-left: 0;
+  padding-inline-start: 0 !important;
+  --tree-item-indent: 0px;
   background-color: transparent;
 
   &:hover {
@@ -21,11 +24,16 @@
 
   &[data-dragging="true"] {
     opacity: 0.3;
+    cursor: grabbing;
+
+    * {
+      cursor: grabbing !important;
+    }
   }
 }
 
 .topItem {
-  margin-top: 20px;
+  margin-top: 0;
 
   &:first-child {
     margin-top: 0;

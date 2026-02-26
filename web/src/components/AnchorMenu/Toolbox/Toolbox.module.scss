@@ -12,19 +12,29 @@
 .dragComponent {
   &:hover {
     cursor: grab;
+    background: #f0f7f8;
+    border-color: #127f8f;
+    color: #000000;
   }
   &:active {
     cursor: grabbing;
+    background: #e4f2f4;
   }
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 8px 16px;
-  background: #e4f7f9;
-  margin: 5px;
+  padding: 6px 10px;
+  background: #fafcfc;
+  margin: 5px 0;
   text-align: left;
-  color: black;
-  border: 1px solid #cae7ed;
+  color: #344054;
+  font-size: 1rem;
+  border: 1px solid #d5e3e6;
+  border-radius: 4px;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease;
 }
 
 .label {

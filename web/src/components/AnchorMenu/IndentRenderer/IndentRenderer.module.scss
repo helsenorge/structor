@@ -1,11 +1,67 @@
+$indent-width: 24px;
+$line-color: #bcc0c5;
+$line-width: 1px;
+
 .indent {
-  display: none;
+  display: inline-flex;
+  align-items: stretch;
+  align-self: stretch;
+  flex-shrink: 0;
 }
 
+// Each column represents one ancestor level.
+// Only draw a vertical line when the ancestor has more siblings below.
 .indentCol {
-  display: none;
+  position: relative;
+  display: inline-block;
+  width: $indent-width;
+  flex-shrink: 0;
+
+  // No pseudo-elements by default — clean slate
+  &::before,
+  &::after {
+    content: none;
+  }
+
+  // Vertical continuation line: ancestor still has siblings below
+  &[data-continuation="1"]::before {
+    content: "";
+    position: absolute;
+    left: calc($indent-width / 2);
+    top: 0;
+    bottom: 0;
+    width: $line-width;
+    background-color: $line-color;
+  }
 }
 
+// The "self" column draws the connector from the parent down to this node.
 .indentColSelf {
-  display: none;
+  // Vertical line from top down to the vertical center of this row
+  &::before {
+    content: "";
+    position: absolute;
+    left: calc($indent-width / 2);
+    top: 0;
+    height: 50%;
+    width: $line-width;
+    background-color: $line-color;
+  }
+
+  // Horizontal line from mid-column to right edge (connects to the item box)
+  &::after {
+    content: "";
+    position: absolute;
+    left: calc($indent-width / 2);
+    top: 50%;
+    width: calc($indent-width / 2);
+    height: $line-width;
+    background-color: $line-color;
+  }
+
+  // Not the last sibling → extend vertical line to the full height
+  // so it continues down to the next sibling
+  &[data-last="0"]::before {
+    height: 100%;
+  }
 }

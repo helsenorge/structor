@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import { TreeItem, TreeItemContent } from "react-aria-components";
 
 import type { Items, MarkedItem } from "../../../store/treeStore/treeStore";
@@ -46,7 +48,7 @@ const buildTreeItemClassName = ({
 
 // ─── TreeItems ────────────────────────────────────────────────────────────────
 
-export const TreeItems = ({
+export const TreeItems = memo(function TreeItems({
   node,
   qItems,
   parentPath,
@@ -56,7 +58,7 @@ export const TreeItems = ({
   ancestorContinuations,
   validationClasses,
   qCurrentItem,
-}: TreeItemsProps): React.JSX.Element => {
+}: TreeItemsProps): React.JSX.Element {
   const item = qItems[node.id];
   const isSelected = qCurrentItem?.linkId === node.id;
 
@@ -98,4 +100,4 @@ export const TreeItems = ({
       />
     </TreeItem>
   );
-};
+});
