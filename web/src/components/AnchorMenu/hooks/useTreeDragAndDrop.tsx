@@ -1,4 +1,4 @@
-import { type Dispatch, type JSX, useRef, useMemo } from "react";
+import { type Dispatch, type JSX, useRef, useMemo, useCallback } from "react";
 
 import { useDragAndDrop } from "react-aria-components";
 
@@ -9,7 +9,13 @@ import type {
 } from "../../../store/treeStore/treeStore";
 import type { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
 import type { TreeNode } from "../types";
-import type { Key, DropItem, DragItem } from "@react-types/shared";
+import type {
+  Key,
+  DropItem,
+  DragItem,
+  DropTarget,
+  DropOperation,
+} from "@react-types/shared";
 
 import { isIgnorableItem } from "../../../helpers/itemControl";
 import {
@@ -119,6 +125,80 @@ export const useTreeDragAndDrop = ({
       .map((x) => x.linkId);
   };
 
+  const handleInternalMove = useCallback(
+    (keys: Set<Key>, target: { key: Key; dropPosition: string }): void => {
+      const draggedId = getFirstKey(keys);
+      if (!draggedId) return;
+
+      const targetId = String(target.key);
+      const oldParentPath = parentPathById.get(draggedId) ?? [];
+      const targetParentPath = parentPathById.get(targetId) ?? [];
+
+      let newParentPath = targetParentPath;
+      let newIndex: number | undefined;
+
+      if (target.dropPosition === "on") {
+        newParentPath = [...targetParentPath, targetId];
+      } else {
+        const targetSiblings = getUiSiblingIds(targetParentPath);
+        const targetIndex = targetSiblings.indexOf(targetId);
+        if (targetIndex === -1) return;
+        newIndex = targetIndex + (target.dropPosition === "after" ? 1 : 0);
+
+        if (arraysEqual(oldParentPath, targetParentPath)) {
+          const oldSiblings = targetSiblings;
+          const oldIndex = oldSiblings.indexOf(draggedId);
+          if (oldIndex !== -1 && oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+        }
+      }
+
+      if (arraysEqual(oldParentPath, newParentPath)) {
+        if (newIndex === undefined) return;
+        dispatch(reorderItemAction(draggedId, newParentPath, newIndex));
+      } else {
+        dispatch(
+          moveItemAction(draggedId, newParentPath, oldParentPath, newIndex),
+        );
+      }
+    },
+    [parentPathById, qOrder, qItems, dispatch],
+  );
+
+  const handleExternalDrop = useCallback(
+    async (items: DropItem[], target: DropTarget): Promise<void> => {
+      const nodeType = await getDroppedToolboxType(items);
+      if (!nodeType) return;
+
+      if (target.type === "root") {
+        const newItem = getInitialItemConfig(nodeType, recipientComponentLabel);
+        dispatch(newItemAction(newItem, []));
+        return;
+      }
+
+      if (target.type !== "item") return;
+
+      const targetId = String(target.key);
+      const targetParentPath = parentPathById.get(targetId) ?? [];
+
+      if (target.dropPosition === "on") {
+        const newParentPath = [...targetParentPath, targetId];
+        const newItem = getInitialItemConfig(nodeType, recipientComponentLabel);
+        dispatch(newItemAction(newItem, newParentPath));
+      } else {
+        const targetSiblings = getUiSiblingIds(targetParentPath);
+        const targetIndex = targetSiblings.indexOf(targetId);
+        if (targetIndex === -1) return;
+        const insertIndex =
+          targetIndex + (target.dropPosition === "after" ? 1 : 0);
+        const newItem = getInitialItemConfig(nodeType, recipientComponentLabel);
+        dispatch(newItemAction(newItem, targetParentPath, insertIndex));
+      }
+    },
+    [parentPathById, qOrder, qItems, dispatch, recipientComponentLabel],
+  );
+
   return useDragAndDrop({
     acceptedDragTypes: "all",
     getItems: (keys: Set<Key>): DragItem[] => {
@@ -145,102 +225,35 @@ export const useTreeDragAndDrop = ({
       const item = qItems[String(target.key)];
       return item ? canTypeHaveChildren(item) : false;
     },
-    onMove: (e): void => {
-      const draggedId = getFirstKey(e.keys);
-      if (!draggedId) {
-        return;
-      }
+    onDrop: (e: {
+      target: DropTarget;
+      items: DropItem[];
+      dropOperation: DropOperation;
+    }): void => {
+      const isInternal =
+        draggedKeysRef.current != null && draggedKeysRef.current.size > 0;
 
-      const targetId = String(e.target.key);
-      const oldParentPath = parentPathById.get(draggedId) ?? [];
-      const targetParentPath = parentPathById.get(targetId) ?? [];
-
-      let newParentPath = targetParentPath;
-      let newIndex: number | undefined;
-
-      if (e.target.dropPosition === "on") {
-        newParentPath = [...targetParentPath, targetId];
-      } else {
-        const targetSiblings = getUiSiblingIds(targetParentPath);
-        const targetIndex = targetSiblings.indexOf(targetId);
-        if (targetIndex === -1) {
-          return;
-        }
-        newIndex = targetIndex + (e.target.dropPosition === "after" ? 1 : 0);
-
-        if (arraysEqual(oldParentPath, targetParentPath)) {
-          const oldSiblings = targetSiblings;
-          const oldIndex = oldSiblings.indexOf(draggedId);
-          if (oldIndex !== -1 && oldIndex < newIndex) {
-            newIndex -= 1;
-          }
-        }
-      }
-
-      if (arraysEqual(oldParentPath, newParentPath)) {
-        if (newIndex === undefined) {
-          return;
-        }
-        dispatch(reorderItemAction(draggedId, newParentPath, newIndex));
-      } else {
-        dispatch(
-          moveItemAction(draggedId, newParentPath, oldParentPath, newIndex),
-        );
+      if (isInternal && e.target.type === "item") {
+        handleInternalMove(draggedKeysRef.current!, e.target);
+      } else if (!isInternal) {
+        void handleExternalDrop(e.items, e.target);
       }
     },
-    onInsert: (e): void => {
-      const insertAsync = async (): Promise<void> => {
-        const nodeType = await getDroppedToolboxType(e.items);
-        if (!nodeType) {
-          return;
-        }
-
-        const targetId = String(e.target.key);
-        const targetParentPath = parentPathById.get(targetId) ?? [];
-
-        const targetSiblings = getUiSiblingIds(targetParentPath);
-        const targetIndex = targetSiblings.indexOf(targetId);
-        if (targetIndex === -1) {
-          return;
-        }
-
-        const insertIndex =
-          targetIndex + (e.target.dropPosition === "after" ? 1 : 0);
-        const newItem = getInitialItemConfig(nodeType, recipientComponentLabel);
-        dispatch(newItemAction(newItem, targetParentPath, insertIndex));
-      };
-
-      void insertAsync();
+    // Keep onMove/onInsert/onItemDrop/onRootDrop so that
+    // useDragAndDrop treats the tree as droppable (isDroppable check)
+    // and so shouldAcceptItemDrop / getDropOperation work correctly.
+    // The actual dispatch is handled by onDrop above.
+    onMove: (): void => {
+      /* handled by onDrop */
     },
-    onItemDrop: (e): void => {
-      const itemDropAsync = async (): Promise<void> => {
-        if (e.isInternal) {
-          return;
-        }
-        const nodeType = await getDroppedToolboxType(e.items);
-        if (!nodeType) {
-          return;
-        }
-        const targetId = String(e.target.key);
-        const targetParentPath = parentPathById.get(targetId) ?? [];
-        const newParentPath = [...targetParentPath, targetId];
-        const newItem = getInitialItemConfig(nodeType, recipientComponentLabel);
-        dispatch(newItemAction(newItem, newParentPath));
-      };
-
-      void itemDropAsync();
+    onInsert: (): void => {
+      /* handled by onDrop */
     },
-    onRootDrop: (e): void => {
-      const rootDropAsync = async (): Promise<void> => {
-        const nodeType = await getDroppedToolboxType(e.items);
-        if (!nodeType) {
-          return;
-        }
-        const newItem = getInitialItemConfig(nodeType, recipientComponentLabel);
-        dispatch(newItemAction(newItem, []));
-      };
-
-      void rootDropAsync();
+    onItemDrop: (): void => {
+      /* handled by onDrop */
+    },
+    onRootDrop: (): void => {
+      /* handled by onDrop */
     },
     renderDropIndicator: (target): JSX.Element => {
       const draggedId = draggedKeysRef.current

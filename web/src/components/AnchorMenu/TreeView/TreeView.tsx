@@ -1,42 +1,48 @@
 import { Tree, type DragAndDropHooks } from "react-aria-components";
 import { useTranslation } from "react-i18next";
 
-import type { Items, MarkedItem } from "../../../store/treeStore/treeStore";
-import type { TreeNode } from "../types";
+import type {
+  Items,
+  MarkedItem,
+  OrderItem,
+} from "../../../store/treeStore/treeStore";
 import type { Key } from "@react-types/shared";
 
 import { TreeItemsList } from "./TreeItemList";
+import { useExpandedKeys, useTreeData } from "../hooks/useTreeData";
 
 import styles from "./TreeView.module.scss";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export interface TreeViewProps {
-  treeData: TreeNode[];
   qItems: Items;
   qCurrentItem: MarkedItem | undefined;
-  parentPathById: Map<string, string[]>;
-  expandedKeys: Set<Key>;
-  setExpandedKeys: (keys: Set<Key>) => void;
   dragAndDropHooks: DragAndDropHooks;
   onSelectionChange: (keys: Set<Key>) => void;
   validationClasses: (linkId: string) => string;
   showPlaceholder: boolean;
+  qOrder: OrderItem[];
 }
 
 export const TreeView = ({
-  treeData,
   qItems,
   qCurrentItem,
-  parentPathById,
-  expandedKeys,
-  setExpandedKeys,
+  qOrder,
   dragAndDropHooks,
   onSelectionChange,
   validationClasses,
   showPlaceholder,
 }: TreeViewProps): JSX.Element => {
   const { t } = useTranslation();
+  const { treeData, parentPathById, expandableKeys } = useTreeData(
+    qOrder,
+    qItems,
+  );
+
+  // Default expand all items if expandedKeys is empty
+  const [expandedKeys, setExpandedKeys] = useExpandedKeys(expandableKeys);
+
   return (
     <>
       <Tree

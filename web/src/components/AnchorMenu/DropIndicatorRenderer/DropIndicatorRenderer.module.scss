@@ -4,7 +4,7 @@
   border: 2px dashed var(--primary-2);
   border-radius: 6px;
   margin: 2px 0;
-  margin-left: calc((var(--tree-item-level, 0) + 1) * 24px);
+  margin-left: calc((var(--tree-item-level, 0)) * 24px);
   margin-right: 16px;
   position: relative;
   box-shadow: 0 0 8px rgb(18 111 135 / 20%);

@@ -12,7 +12,7 @@
 
 .item {
   margin: 16px 0;
-  margin-left: calc(var(--tree-item-level, 0) * 24px);
+  padding-left: calc(var(--tree-item-level, 0) * 24px);
   background-color: transparent;
 
   &:hover {

@@ -12,7 +12,7 @@ import type { ValidationError } from "../../utils/validationUtils";
 import type { Key } from "@react-types/shared";
 
 import { useAnchorMenuHelpers } from "./hooks/useAnchorMenuHelpers";
-import { useTreeData, useExpandedKeys } from "./hooks/useTreeData";
+import { useTreeData } from "./hooks/useTreeData";
 import { useTreeDragAndDrop } from "./hooks/useTreeDragAndDrop";
 import { Toolbox } from "./Toolbox/Toolbox";
 import { TreeView } from "./TreeView/TreeView";
@@ -39,12 +39,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
   const RECIPIENT_COMPONENT_LABEL = t("Recipient component");
 
-  const { treeData, parentPathById, expandableKeys } = useTreeData(
-    props.qOrder,
-    props.qItems,
-  );
-
-  const [expandedKeys, setExpandedKeys] = useExpandedKeys(expandableKeys);
+  const { treeData, parentPathById } = useTreeData(props.qOrder, props.qItems);
 
   const { validationClasses } = useAnchorMenuHelpers();
 
@@ -73,12 +68,9 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
       <Toolbox recipientComponentLabel={RECIPIENT_COMPONENT_LABEL} />
 
       <TreeView
-        treeData={treeData}
         qItems={props.qItems}
         qCurrentItem={props.qCurrentItem}
-        parentPathById={parentPathById}
-        expandedKeys={expandedKeys}
-        setExpandedKeys={setExpandedKeys}
+        qOrder={props.qOrder}
         dragAndDropHooks={dragAndDropHooks}
         onSelectionChange={handleSelectionChange}
         validationClasses={validationClasses}
