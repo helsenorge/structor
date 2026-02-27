@@ -30,8 +30,13 @@ describe("Toolbox", () => {
 
   it("renders drag handles for items", () => {
     render(<Toolbox recipientComponentLabel="Recipient component" />);
-    const dragButtons = screen.getAllByRole("button", { name: "Drag" });
-    expect(dragButtons.length).toBeGreaterThan(0);
+    // react-aria renders slot="drag" buttons only with full drag context;
+    // verify items are draggable via the HTML draggable attribute instead
+    const rows = screen.getAllByRole("row");
+    const draggableRows = rows.filter(
+      (row) => row.getAttribute("draggable") === "true",
+    );
+    expect(draggableRows.length).toBeGreaterThan(0);
   });
 
   it("uses custom recipient component label", () => {

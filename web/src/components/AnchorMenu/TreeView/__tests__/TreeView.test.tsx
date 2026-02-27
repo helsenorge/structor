@@ -2,16 +2,12 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 
 import type { TreeNode } from "../../types";
-import type { TFunction } from "i18next";
+import type { Key } from "@react-types/shared";
 
 import { TreeView } from "../TreeView";
 
-const mockDispatch = vi.fn();
-const mockT = vi.fn((key: string) => key) as unknown as TFunction;
 const mockValidationClasses = vi.fn(() => "");
-const mockGetRelevantIcon = vi.fn(() => "question-icon");
 const mockOnSelectionChange = vi.fn();
-const mockSetExpandedKeys = vi.fn();
 
 describe("TreeView", () => {
   const mockTreeData: TreeNode[] = [
@@ -57,19 +53,17 @@ describe("TreeView", () => {
     ["item-2", []],
   ]);
 
+  const expandableKeys = new Set<Key>(["item-1"]);
+
   const defaultProps = {
-    t: mockT,
     treeData: mockTreeData,
     qItems: mockQItems,
     qCurrentItem: undefined,
     parentPathById: mockParentPathById,
-    expandedKeys: new Set<string>(),
-    setExpandedKeys: mockSetExpandedKeys,
+    expandableKeys,
     dragAndDropHooks: {} as any,
     onSelectionChange: mockOnSelectionChange,
     validationClasses: mockValidationClasses,
-    getRelevantIcon: mockGetRelevantIcon,
-    dispatch: mockDispatch,
     showPlaceholder: false,
   };
 
@@ -81,8 +75,7 @@ describe("TreeView", () => {
   });
 
   it("renders all tree items", () => {
-    const expandedKeys = new Set(["item-1"]); // Expand the first item to reveal child
-    render(<TreeView {...defaultProps} expandedKeys={expandedKeys} />);
+    render(<TreeView {...defaultProps} />);
     expect(screen.getByText(/First Item/)).toBeInTheDocument();
     expect(screen.getByText(/Child Item/)).toBeInTheDocument();
     expect(screen.getByText(/Second Item/)).toBeInTheDocument();
@@ -117,8 +110,8 @@ describe("TreeView", () => {
   });
 
   it("renders nested tree structure", () => {
-    render(<TreeView {...defaultProps} expandedKeys={new Set(["item-1"])} />);
-    // Check that child item is rendered
+    render(<TreeView {...defaultProps} />);
+    // Check that child item is rendered (auto expanded via expandableKeys)
     expect(screen.getByText(/Child Item/)).toBeInTheDocument();
   });
 });
