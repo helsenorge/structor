@@ -24,7 +24,7 @@
   min-width: 0;
   padding: 3px 10px;
   background: #fff;
-  border: 1px solid #dce0e5;
+  border: 1px solid #727272;
   border-radius: 6px;
   box-shadow: 0 1px 2px rgb(16 24 40 / 5%);
   transition: all 0.12s ease;
@@ -32,7 +32,7 @@
 
   .row:hover & {
     background: #f9fafb;
-    border-color: #98a2b3;
+    border-color: #201f1f;
     box-shadow:
       0 1px 3px rgb(16 24 40 / 10%),
       0 1px 2px rgb(16 24 40 / 6%);
@@ -40,7 +40,7 @@
 }
 
 .itemBoxSelected {
-  border-color: #127f8f;
+  border-color: #727272;
   box-shadow:
     0 0 0 2px rgb(18 127 143 / 24%),
     0 1px 2px rgb(16 24 40 / 5%);
@@ -48,7 +48,7 @@
 }
 
 .itemBoxTopLevel {
-  border-left: 3px solid #127f8f;
+  border-left: 3px solid #727272;
   background: #f8fafb;
   font-weight: 600;
   color: #1d2939;
@@ -56,11 +56,11 @@
 
 .itemBoxGroup {
   background: #f5f8fc;
-  border-color: #c2d1e0;
+  border-color: #707881;
 
   .row:hover & {
     background: #edf2f8;
-    border-color: #8da4bd;
+    border-color: #2b3138;
     box-shadow:
       0 1px 3px rgb(16 24 40 / 10%),
       0 1px 2px rgb(16 24 40 / 6%);
@@ -95,7 +95,7 @@
   gap: 0.25rem;
 }
 .dropTarget .itemBox {
-  background-color: rgb(18 127 143 / 8%);
+  background-color: rgba(13, 81, 92, 0.08);
   border: 2px dashed #127f8f;
   border-radius: 6px;
   box-shadow: 0 0 0 3px rgb(18 127 143 / 12%);
