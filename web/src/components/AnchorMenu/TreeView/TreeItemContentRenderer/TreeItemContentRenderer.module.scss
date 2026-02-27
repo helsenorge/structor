@@ -16,6 +16,7 @@
       cursor: grab !important;
     }
   }
+
   display: flex;
   align-items: center;
   align-self: center;
@@ -28,7 +29,15 @@
   border-radius: 6px;
   box-shadow: 0 1px 2px rgb(16 24 40 / 5%);
   transition: all 0.12s ease;
-  color: #000000;
+  color: #000;
+
+  .dropTarget & {
+    background-color: rgb(13 81 92 / 8%);
+    border: 2px dashed #127f8f;
+    border-radius: 6px;
+    box-shadow: 0 0 0 3px rgb(18 127 143 / 12%);
+    animation: pulse-border 1.5s ease-in-out infinite;
+  }
 
   .row:hover & {
     background: #f9fafb;
@@ -93,13 +102,6 @@
   margin-left: auto;
   display: inline-flex;
   gap: 0.25rem;
-}
-.dropTarget .itemBox {
-  background-color: rgba(13, 81, 92, 0.08);
-  border: 2px dashed #127f8f;
-  border-radius: 6px;
-  box-shadow: 0 0 0 3px rgb(18 127 143 / 12%);
-  animation: pulse-border 1.5s ease-in-out infinite;
 }
 
 @keyframes pulse-border {
