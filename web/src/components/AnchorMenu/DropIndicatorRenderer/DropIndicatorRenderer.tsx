@@ -3,7 +3,6 @@ import { DropIndicator } from "react-aria-components";
 import type { Items } from "../../../store/treeStore/treeStore";
 import type { TreeNode } from "../types";
 import type { DropTarget } from "@react-types/shared";
-import type { QuestionnaireItem } from "fhir/r4";
 
 import { IndentRenderer } from "../IndentRenderer/IndentRenderer";
 import { TreeItemIcon } from "../TreeView/TreeItemIcon";
@@ -51,7 +50,7 @@ const GhostNode = ({
         <div
           className={`${styles.ghostItem} ${isGroup ? styles.ghostItemGroup : ""}`}
         >
-          <TreeItemIcon type={item?.type as QuestionnaireItem["type"]} />
+          <TreeItemIcon type={item?.type} />
           <span className={styles.ghostHierarchy}>{node.hierarchy}</span>
           <span className={styles.ghostText}>{item?.text || node.id}</span>
         </div>
