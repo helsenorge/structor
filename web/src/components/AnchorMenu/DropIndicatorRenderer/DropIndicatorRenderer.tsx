@@ -17,6 +17,10 @@ interface DropIndicatorRendererProps {
   qItems?: Items;
 }
 
+type CssVarStyle = React.CSSProperties & {
+  [key: `--${string}`]: string | number;
+};
+
 const TREE_INDENT_UNIT_PX = 24;
 
 const GhostNode = ({
@@ -84,10 +88,10 @@ export const DropIndicatorRenderer = ({
     dropPosition === "on" ? parentPath.length + 1 : parentPath.length;
   const dropIndentPx = depth * TREE_INDENT_UNIT_PX;
   const dropIndicatorClassKey = `dropIndicator--${dropPosition}`;
-  const dropIndicatorStyle = {
+  const dropIndicatorStyle: CssVarStyle = {
     "--drop-indent": `${dropIndentPx}px`,
     "--tree-item-level": depth,
-  } as React.CSSProperties;
+  };
 
   const showGhost = draggedNode && qItems && dropPosition !== "on";
 
