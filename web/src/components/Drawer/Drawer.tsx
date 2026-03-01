@@ -27,7 +27,9 @@ const Drawer = (
   useOutsideClick(drawerRef, props.hide, !props.visible);
 
   const open = props.visible ? "open" : "";
-  const classNames = `${styles.drawer} ${styles[`${props.position}Drawer`]} ${styles[open]}`;
+  const positionClass = `${props.position}Drawer`;
+  const classNames =
+    `${styles.drawer} ${styles[positionClass]} ${styles[open]}`;
 
   return (
     <>

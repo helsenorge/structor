@@ -29,7 +29,9 @@ export const TreeItemChildren = memo(function TreeItemChildren({
     [parentPath, node.id],
   );
 
-  if (node.children.length === 0) return null;
+  if (node.children.length === 0) {
+    return null;
+  }
 
   return (
     <>

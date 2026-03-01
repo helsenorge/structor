@@ -128,7 +128,9 @@ export const useTreeDragAndDrop = ({
   const handleInternalMove = useCallback(
     (keys: Set<Key>, target: { key: Key; dropPosition: string }): void => {
       const draggedId = getFirstKey(keys);
-      if (!draggedId) return;
+      if (!draggedId) {
+        return;
+      }
 
       const targetId = String(target.key);
       const oldParentPath = parentPathById.get(draggedId) ?? [];
@@ -142,7 +144,9 @@ export const useTreeDragAndDrop = ({
       } else {
         const targetSiblings = getUiSiblingIds(targetParentPath);
         const targetIndex = targetSiblings.indexOf(targetId);
-        if (targetIndex === -1) return;
+        if (targetIndex === -1) {
+          return;
+        }
         newIndex = targetIndex + (target.dropPosition === "after" ? 1 : 0);
 
         if (arraysEqual(oldParentPath, targetParentPath)) {
@@ -155,7 +159,9 @@ export const useTreeDragAndDrop = ({
       }
 
       if (arraysEqual(oldParentPath, newParentPath)) {
-        if (newIndex === undefined) return;
+        if (newIndex === undefined) {
+          return;
+        }
         dispatch(reorderItemAction(draggedId, newParentPath, newIndex));
       } else {
         dispatch(
@@ -169,7 +175,9 @@ export const useTreeDragAndDrop = ({
   const handleExternalDrop = useCallback(
     async (items: DropItem[], target: DropTarget): Promise<void> => {
       const nodeType = await getDroppedToolboxType(items);
-      if (!nodeType) return;
+      if (!nodeType) {
+        return;
+      }
 
       if (target.type === "root") {
         const newItem = getInitialItemConfig(nodeType, recipientComponentLabel);
@@ -177,7 +185,9 @@ export const useTreeDragAndDrop = ({
         return;
       }
 
-      if (target.type !== "item") return;
+      if (target.type !== "item") {
+        return;
+      }
 
       const targetId = String(target.key);
       const targetParentPath = parentPathById.get(targetId) ?? [];
@@ -189,7 +199,9 @@ export const useTreeDragAndDrop = ({
       } else {
         const targetSiblings = getUiSiblingIds(targetParentPath);
         const targetIndex = targetSiblings.indexOf(targetId);
-        if (targetIndex === -1) return;
+        if (targetIndex === -1) {
+          return;
+        }
         const insertIndex =
           targetIndex + (target.dropPosition === "after" ? 1 : 0);
         const newItem = getInitialItemConfig(nodeType, recipientComponentLabel);

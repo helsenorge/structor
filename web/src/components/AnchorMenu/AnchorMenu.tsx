@@ -30,7 +30,9 @@ interface AnchorMenuProps {
 
 const getFirstKey = (keys: Set<Key>): string | null => {
   const first = keys.values().next().value;
-  if (first === undefined || first === null) return null;
+  if (first === undefined || first === null) {
+    return null;
+  }
   return String(first);
 };
 
@@ -58,7 +60,9 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
   const handleSelectionChange = useCallback(
     (keys: Set<Key>): void => {
       const selectedId = getFirstKey(keys);
-      if (!selectedId) return;
+      if (!selectedId) {
+        return;
+      }
       props.dispatch(
         updateMarkedLinkIdAction(
           selectedId,
