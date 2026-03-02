@@ -4,7 +4,13 @@ import type { SvgPathProps } from "@helsenorge/designsystem-react/components/Ico
  * Custom SvgIcon showing three checkbox-style options for choice question types.
  * Three squares with one checked to indicate selection, designed for a 48×48 viewBox.
  */
-const ChoiceIcon: React.FC<SvgPathProps> = (props) => (
+const ChoiceIcon: React.FC<SvgPathProps> = ({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isHovered: _isHovered,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onColor: _onColor,
+  ...props
+}) => (
   <svg viewBox="0 0 48 48" fill="none" {...props}>
     {/* Option 1 – selected (filled square inside) */}
     <rect

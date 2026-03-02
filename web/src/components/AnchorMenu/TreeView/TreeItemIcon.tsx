@@ -6,13 +6,13 @@ import Calendar from "@helsenorge/designsystem-react/components/Icons/Calendar";
 import Gallery from "@helsenorge/designsystem-react/components/Icons/Gallery";
 import HelpSign from "@helsenorge/designsystem-react/components/Icons/HelpSign";
 import InfoSignStroke from "@helsenorge/designsystem-react/components/Icons/InfoSignStroke";
-import Scale from "@helsenorge/designsystem-react/components/Icons/Scale";
 import SpeechBubble from "@helsenorge/designsystem-react/components/Icons/SpeechBubble";
 import Watch from "@helsenorge/designsystem-react/components/Icons/Watch";
 
 import BooleanIcon from "../icons/BooleanIcon";
 import ChoiceIcon from "../icons/ChoiceIcon";
 import NumberIcon from "../icons/NumberIcon";
+import { QuantityIcon2 } from "../icons/QuantityIcon";
 
 export const TreeItemIcon = ({
   type,
@@ -33,7 +33,7 @@ export const TreeItemIcon = ({
     case "group":
       return <Icon size={size} svgIcon={Gallery} />;
     case "quantity":
-      return <Icon size={size} svgIcon={Scale} />;
+      return <Icon size={size} svgIcon={QuantityIcon2} />;
     case "integer":
     case "decimal":
       return <Icon size={size} svgIcon={NumberIcon} />;

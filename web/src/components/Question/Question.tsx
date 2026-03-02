@@ -23,6 +23,7 @@ import "./Question.css";
 
 import { IconSize } from "@helsenorge/designsystem-react";
 
+import useDebounce from "../MarkdownEditor/useDebounce";
 import Choice from "./QuestionType/Choice";
 import { DateType } from "./QuestionType/DateType";
 import Infotext from "./QuestionType/Infotext";
@@ -113,6 +114,49 @@ const Question = (props: QuestionProps): React.JSX.Element => {
         ?.valueMarkdown || ""
     );
   };
+
+  // Local state for text inputs with debouncing
+  const [textValue, setTextValue] = React.useState<string>(() =>
+    getLabelText(),
+  );
+  const [sublabelValue, setSublabelValue] = React.useState<string>(() =>
+    getSublabelText(),
+  );
+  const debouncedTextValue = useDebounce(textValue, 300);
+  const debouncedSublabelValue = useDebounce(sublabelValue, 300);
+
+  // Sync local state when item changes
+  React.useEffect(() => {
+    setTextValue(getLabelText());
+    setSublabelValue(getSublabelText());
+  }, [props.item.linkId]);
+
+  // Save debounced text changes
+  React.useEffect(() => {
+    if (debouncedTextValue !== getLabelText()) {
+      dispatchUpdateItem(IItemProperty.text, debouncedTextValue);
+    }
+  }, [debouncedTextValue]);
+
+  // Save debounced sublabel changes
+  React.useEffect(() => {
+    const currentSublabel = getSublabelText();
+    if (debouncedSublabelValue !== currentSublabel) {
+      if (debouncedSublabelValue) {
+        const newExtension = {
+          url: IExtensionType.sublabel,
+          valueMarkdown: debouncedSublabelValue,
+        };
+        setItemExtension(props.item, newExtension, props.dispatch);
+      } else {
+        removeItemExtension(
+          props.item,
+          IExtensionType.sublabel,
+          props.dispatch,
+        );
+      }
+    }
+  }, [debouncedSublabelValue]);
 
   const convertToPlaintext = (stringToBeConverted: string): string => {
     let plainText = removeMd(stringToBeConverted);
@@ -253,7 +297,8 @@ const Question = (props: QuestionProps): React.JSX.Element => {
             />
           ) : (
             <textarea
-              defaultValue={getLabelText()}
+              value={textValue}
+              onChange={(e) => setTextValue(e.target.value)}
               onBlur={(e) => {
                 dispatchUpdateItem(IItemProperty.text, e.target.value);
               }}
@@ -283,7 +328,8 @@ const Question = (props: QuestionProps): React.JSX.Element => {
               />
             ) : (
               <textarea
-                defaultValue={getSublabelText()}
+                value={sublabelValue}
+                onChange={(e) => setSublabelValue(e.target.value)}
                 onBlur={(e) => {
                   if (e.target.value) {
                     const newExtension = {

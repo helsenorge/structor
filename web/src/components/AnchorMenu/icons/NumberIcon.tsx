@@ -6,7 +6,13 @@ import type { SvgPathProps } from "@helsenorge/designsystem-react/components/Ico
  * drawn with clean strokes to match the design system icon style.
  * Designed for a 48×48 viewBox.
  */
-const NumberIcon: React.FC<SvgPathProps> = (props) => (
+const NumberIcon: React.FC<SvgPathProps> = ({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isHovered: _isHovered,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onColor: _onColor,
+  ...props
+}) => (
   <svg viewBox="0 0 48 48" fill="none" {...props}>
     {/* Left vertical (slightly tilted) */}
     <line
