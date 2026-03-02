@@ -81,8 +81,8 @@ describe("TreeView", () => {
     expect(screen.getByText(/Second Item/)).toBeInTheDocument();
   });
 
-  it("renders placeholder when showPlaceholder is true", () => {
-    render(<TreeView {...defaultProps} showPlaceholder={true} />);
+  it("renders placeholder when showPlaceholder is true and tree is empty", () => {
+    render(<TreeView {...defaultProps} showPlaceholder={true} treeData={[]} />);
     expect(
       screen.getByText(
         "Drag a component here to start building this Questionnaire",

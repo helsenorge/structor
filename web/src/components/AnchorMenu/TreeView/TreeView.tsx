@@ -65,7 +65,7 @@ export const TreeView = ({
       onExpandedChange={setExpandedKeys}
       dragAndDropHooks={dragAndDropHooks}
       renderEmptyState={() =>
-        showPlaceholder ? (
+        showPlaceholder && treeData.length === 0 ? (
           <div className={styles.emptyDropZone}>
             <span className={styles.emptyDropText}>
               {t("Drag a component here to start building this Questionnaire")}
