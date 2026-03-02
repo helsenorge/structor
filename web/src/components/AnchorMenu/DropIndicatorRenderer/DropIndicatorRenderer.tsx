@@ -5,6 +5,7 @@ import type { TreeNode } from "../types";
 import type { DropTarget } from "@react-types/shared";
 
 import { IndentRenderer } from "../IndentRenderer/IndentRenderer";
+import ItemButtons from "../ItemButtons/ItemButtons";
 import { TreeItemIcon } from "../TreeView/TreeItemIcon";
 
 import styles from "./DropIndicatorRenderer.module.scss";
@@ -53,6 +54,9 @@ const GhostNode = ({
           <TreeItemIcon type={item?.type} />
           <span className={styles.ghostHierarchy}>{node.hierarchy}</span>
           <span className={styles.ghostText}>{item?.text || node.id}</span>
+          <div className={styles.ghostActions}>
+            <ItemButtons item={item} parentArray={[]} showLabel={false} />
+          </div>
         </div>
       </div>
       {node.children.map((child, index) => {

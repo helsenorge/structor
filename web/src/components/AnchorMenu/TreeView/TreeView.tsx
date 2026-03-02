@@ -12,8 +12,6 @@ import { useExpandedKeys } from "../hooks/useTreeData";
 
 import styles from "./TreeView.module.scss";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-
 export interface TreeViewProps {
   qItems: Items;
   qCurrentItem: MarkedItem | undefined;
@@ -56,32 +54,33 @@ export const TreeView = ({
   );
 
   return (
-    <>
-      <Tree
-        aria-label={t("Questionnaire overview")}
-        className={`${styles.treeView} ${styles.tree}`}
-        selectionMode="single"
-        selectionBehavior="replace"
-        selectedKeys={selectedKeys}
-        onSelectionChange={handleSelectionChange}
-        expandedKeys={expandedKeys}
-        onExpandedChange={setExpandedKeys}
-        dragAndDropHooks={dragAndDropHooks}
-      >
-        <TreeItemsList
-          nodes={treeData}
-          qItems={qItems}
-          qCurrentItem={qCurrentItem}
-          parentPathById={parentPathById}
-          validationClasses={validationClasses}
-        />
-      </Tree>
-
-      {showPlaceholder && (
-        <p className={styles.placeholder}>
-          {t("Drag a component here to start building this Questionnaire")}
-        </p>
-      )}
-    </>
+    <Tree
+      aria-label={t("Questionnaire overview")}
+      className={`${styles.treeView} ${styles.tree}`}
+      selectionMode="single"
+      selectionBehavior="replace"
+      selectedKeys={selectedKeys}
+      onSelectionChange={handleSelectionChange}
+      expandedKeys={expandedKeys}
+      onExpandedChange={setExpandedKeys}
+      dragAndDropHooks={dragAndDropHooks}
+      renderEmptyState={() =>
+        showPlaceholder ? (
+          <div className={styles.emptyDropZone}>
+            <span className={styles.emptyDropText}>
+              {t("Drag a component here to start building this Questionnaire")}
+            </span>
+          </div>
+        ) : null
+      }
+    >
+      <TreeItemsList
+        nodes={treeData}
+        qItems={qItems}
+        qCurrentItem={qCurrentItem}
+        parentPathById={parentPathById}
+        validationClasses={validationClasses}
+      />
+    </Tree>
   );
 };

@@ -11,6 +11,7 @@ import Icon from "@helsenorge/designsystem-react/components/Icon";
 import ChevronDown from "@helsenorge/designsystem-react/components/Icons/ChevronDown";
 import ChevronRight from "@helsenorge/designsystem-react/components/Icons/ChevronRight";
 
+import { DragHandle } from "../../DragHandle/DragHandle";
 import { IndentRenderer } from "../../IndentRenderer/IndentRenderer";
 import { ItemButtons } from "../../ItemButtons/ItemButtons";
 import { TreeItemIcon } from "../TreeItemIcon";
@@ -61,7 +62,11 @@ export const TreeItemContentRenderer = memo(function TreeItemContentRenderer({
           .filter(Boolean)
           .join(" ")}
       >
-        {/* <DragHandle ariaLabel={t("Drag")} variant="tree" /> */}
+        <DragHandle
+          ariaLabel={t("Drag")}
+          variant="tree"
+          className={styles.srOnly}
+        />
         {node.children.length > 0 ? (
           <Button
             slot="chevron"

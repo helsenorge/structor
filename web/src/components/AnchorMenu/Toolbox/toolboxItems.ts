@@ -1,65 +1,70 @@
-import { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
+import type { QuestionnaireItem } from "fhir/r4";
 
-export const TOOLBOX_ITEM_DEFINITIONS = [
+export const TOOLBOX_ITEM_DEFINITIONS: {
+  id: QuestionnaireItem["type"] | "receiver" | "receiverComponent";
+  type: QuestionnaireItem["type"] | "receiver" | "receiverComponent";
+  labelKey: string;
+  isRecipientComponent?: boolean;
+}[] = [
   {
-    id: `${IQuestionnaireItemType.group}`,
-    type: IQuestionnaireItemType.group,
+    id: "group",
+    type: "group",
     labelKey: "Group",
   },
   {
-    id: `${IQuestionnaireItemType.string}`,
-    type: IQuestionnaireItemType.string,
+    id: "string",
+    type: "string",
     labelKey: "Text answer",
   },
   {
-    id: `${IQuestionnaireItemType.display}`,
-    type: IQuestionnaireItemType.display,
+    id: "display",
+    type: "display",
     labelKey: "Information text",
   },
   {
-    id: `${IQuestionnaireItemType.attachment}`,
-    type: IQuestionnaireItemType.attachment,
+    id: "attachment",
+    type: "attachment",
     labelKey: "Attachment",
   },
   {
-    id: `${IQuestionnaireItemType.receiver}`,
-    type: IQuestionnaireItemType.receiver,
+    id: "receiver",
+    type: "receiver",
     labelKey: "Recipient list",
   },
   {
-    id: `${IQuestionnaireItemType.receiverComponent}`,
-    type: IQuestionnaireItemType.receiverComponent,
+    id: "receiverComponent",
+    type: "receiverComponent",
     labelKey: "Recipient component",
     isRecipientComponent: true,
   },
   {
-    id: `${IQuestionnaireItemType.boolean}`,
-    type: IQuestionnaireItemType.boolean,
+    id: "boolean",
+    type: "boolean",
     labelKey: "Confirmation",
   },
   {
-    id: `${IQuestionnaireItemType.choice}`,
-    type: IQuestionnaireItemType.choice,
+    id: "choice",
+    type: "choice",
     labelKey: "Choice",
   },
   {
-    id: `${IQuestionnaireItemType.date}`,
-    type: IQuestionnaireItemType.date,
+    id: "date",
+    type: "date",
     labelKey: "Date",
   },
   {
-    id: `${IQuestionnaireItemType.time}`,
-    type: IQuestionnaireItemType.time,
+    id: "time",
+    type: "time",
     labelKey: "Time",
   },
   {
-    id: `${IQuestionnaireItemType.integer}`,
-    type: IQuestionnaireItemType.integer,
+    id: "integer",
+    type: "integer",
     labelKey: "Number",
   },
   {
-    id: `${IQuestionnaireItemType.quantity}`,
-    type: IQuestionnaireItemType.quantity,
+    id: "quantity",
+    type: "quantity",
     labelKey: "Quantity",
   },
 ];

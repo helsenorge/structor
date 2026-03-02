@@ -18,7 +18,7 @@ export const TreeItemIcon = ({
   type,
   size = IconSize.XXSmall,
 }: {
-  type?: QuestionnaireItem["type"];
+  type?: QuestionnaireItem["type"] | "receiver" | "receiverComponent";
   size?: IconSize;
 }): JSX.Element => {
   switch (type) {

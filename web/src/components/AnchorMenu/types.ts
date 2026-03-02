@@ -1,4 +1,4 @@
-import type { IQuestionnaireItemType } from "../../types/IQuestionnareItemType";
+import type { QuestionnaireItem } from "fhir/r4";
 
 export type TreeNode = {
   id: string;
@@ -8,7 +8,7 @@ export type TreeNode = {
 
 export type ToolboxNode = {
   id: string;
-  type: IQuestionnaireItemType;
+  type: QuestionnaireItem["type"] | "receiver" | "receiverComponent";
   label: string;
 };
 

@@ -46,11 +46,29 @@
   z-index: 2;
 }
 
-.placeholder {
-  position: absolute;
-  top: 45px;
+.emptyDropZone {
+  margin: 0 1rem 1rem 0;
+  padding: 1.25rem 1rem;
+  border: 2px dashed #a3b1bf;
+  border-radius: 8px;
+  background: #f9fafb;
+  color: #4b5563;
   text-align: center;
-  left: 200px;
-  right: 0;
-  pointer-events: none;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    color 0.15s ease;
+}
+
+.emptyDropZoneActive {
+  border-color: #127f8f;
+  background-color: rgb(18 127 143 / 10%);
+  color: #0f4c57;
+  box-shadow: 0 0 0 3px rgb(18 127 143 / 15%);
+}
+
+.emptyDropText {
+  font-size: 0.95rem;
+  font-style: italic;
 }
