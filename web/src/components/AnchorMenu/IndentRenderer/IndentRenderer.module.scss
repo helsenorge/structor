@@ -1,4 +1,4 @@
-$indent-width: 24px;
+$indent-width: 48px;
 $line-color: #272727;
 $line-width: 1px;
 
@@ -7,7 +7,7 @@ $line-width: 1px;
   align-items: stretch;
   align-self: stretch;
   flex-shrink: 0;
-  margin: -10px 0;
+  margin: -8px 0;
 }
 
 // Each column represents one ancestor level.
