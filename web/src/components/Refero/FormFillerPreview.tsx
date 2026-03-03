@@ -23,6 +23,8 @@ import {
 import { getResources } from "../../locales/referoResources";
 import Select from "../Select/Select";
 
+import "./styles/formFillerPreview.css";
+
 type Props = {
   showFormFiller: () => void;
   language?: string;
