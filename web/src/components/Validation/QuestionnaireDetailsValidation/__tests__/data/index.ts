@@ -2,11 +2,6 @@ import * as fs from "fs";
 
 import type { Bundle } from "fhir/r4";
 
-const q1: Bundle = JSON.parse(
-  fs
-    .readFileSync(__dirname + "/language_polish_english_norwegian2.json")
-    .toString(),
-);
 const q2: Bundle = JSON.parse(
   fs.readFileSync(__dirname + "/language_english_norwegian.json").toString(),
 );
@@ -26,4 +21,4 @@ const q6: Bundle = JSON.parse(
     .readFileSync(__dirname + "/language_gambia_english_norwegian.json")
     .toString(),
 );
-export { q1, q2, q3, q4, q5, q6 };
+export { q2, q3, q4, q5, q6 };
