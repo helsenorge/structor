@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import type { TreeState } from "src/store/treeStore/treeStore";
 import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
@@ -45,7 +46,7 @@ describe("TranslateMetaData", () => {
       <TranslateMetaData
         dispatch={vi.fn()}
         state={{ qMetadata: metadata } as TreeState}
-        targetLanguage="en-GB"
+        targetLanguage={ExtendedLanguageLocales.ENGLISH}
         validationErrors={[]}
       />,
     );
@@ -65,7 +66,7 @@ describe("TranslateMetaData", () => {
       <TranslateMetaData
         dispatch={vi.fn()}
         state={{ qMetadata: metadata } as TreeState}
-        targetLanguage="en-GB"
+        targetLanguage={ExtendedLanguageLocales.ENGLISH}
         validationErrors={[]}
       />,
     );

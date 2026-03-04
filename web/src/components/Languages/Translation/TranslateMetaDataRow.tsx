@@ -12,6 +12,7 @@ import { ErrorLevel } from "src/components/Validation/validationTypes";
 
 import type { ActionType, TreeState } from "../../../store/treeStore/treeStore";
 import {
+  type ExtendedLanguageLocales,
   type MetadataProperty,
   TranslatableMetadataProperty,
 } from "../../../types/LanguageTypes";
@@ -25,7 +26,7 @@ type TranslateMetaDataRowProps = {
   dispatch: React.Dispatch<ActionType>;
   metadataProperty: MetadataProperty;
   state: TreeState;
-  targetLanguage: string;
+  targetLanguage: ExtendedLanguageLocales;
   validationErrors: ValidationError[];
 };
 

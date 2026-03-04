@@ -3,6 +3,7 @@ import type React from "react";
 import { useTranslation } from "react-i18next";
 
 import type { ActionType, TreeState } from "../../../store/treeStore/treeStore";
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 import type { ValidationError } from "src/utils/validationUtils";
 
 import TranslateMetaDataRow from "./TranslateMetaDataRow";
@@ -10,7 +11,7 @@ import { translatableMetadata } from "../../../helpers/LanguageHelper";
 
 type TranslateMetaDataProps = {
   state: TreeState;
-  targetLanguage: string;
+  targetLanguage: ExtendedLanguageLocales;
   validationErrors: ValidationError[];
   dispatch: React.Dispatch<ActionType>;
 };

@@ -1,6 +1,8 @@
 import ContactDetails from "src/components/contactDetail/ContactDetails";
 import Identifiers from "src/components/valueInputs/Identifiers";
 import IdInput from "src/components/valueInputs/IdInput";
+import { supportedLanguages } from "src/helpers/LanguageHelper";
+import { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 import { toIsoOrUndefined } from "src/utils/dateUtils";
 import { initialContact } from "src/views/valueSets/utils/intialValuesets";
 
@@ -12,7 +14,6 @@ import Label from "@helsenorge/designsystem-react/components/Label";
 import Select from "@helsenorge/designsystem-react/components/Select";
 
 import DatePicker from "@helsenorge/datepicker/components/DatePicker";
-import { LanguageLocales } from "@helsenorge/designsystem-react";
 
 import { useCodeSystemContext } from "../../context/useCodeSystemContext";
 import { initialIdentifier } from "../../utils";
@@ -151,7 +152,7 @@ const CodeSystemDetails = (): React.JSX.Element => {
       </Select>
       <Select
         label={<Label labelTexts={[{ text: "Language" }]} />}
-        value={newCodeSystem.language || LanguageLocales.NORWEGIAN}
+        value={newCodeSystem.language || ExtendedLanguageLocales.NORWEGIAN}
         onChange={(event) =>
           setNewCodeSystem({
             ...newCodeSystem,
@@ -159,10 +160,11 @@ const CodeSystemDetails = (): React.JSX.Element => {
           })
         }
       >
-        <option value={LanguageLocales.ENGLISH}>{"English"}</option>
-        <option value={LanguageLocales.NORWEGIAN}>{"Norwegian "}</option>
-        <option value={LanguageLocales.NORWEGIAN_NYNORSK}>{"Nynorsk"}</option>
-        <option value={LanguageLocales.SAMI_NORTHERN}>{"Sami Northern"}</option>
+        {supportedLanguages.map((lang) => (
+          <option key={lang.code} value={lang.code}>
+            {lang.display}
+          </option>
+        ))}
       </Select>
       <ContactDetails
         contacts={newCodeSystem.contact}

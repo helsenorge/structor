@@ -1,3 +1,4 @@
+import type { ExtendedLanguageLocales } from "./LanguageTypes";
 import type {
   Coding,
   ContactDetail,
@@ -30,7 +31,7 @@ export interface IQuestionnaireMetadata {
   url?: string;
   id?: string;
   resourceType?: string;
-  language?: string;
+  language?: ExtendedLanguageLocales;
   name?: string;
   title?: string;
   description?: string;

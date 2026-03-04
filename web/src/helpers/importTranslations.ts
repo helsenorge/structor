@@ -3,6 +3,7 @@ import Papa from "papaparse";
 import type { ActionType, Items } from "../store/treeStore/treeStore";
 import { IExtensionType } from "../types/IQuestionnareItemType";
 import {
+  type ExtendedLanguageLocales,
   TranslatableItemProperty,
   TranslatableKeyProptey,
   TranslatableMetadataProperty,
@@ -44,7 +45,7 @@ const updateQuestionniareWithTranslation = (
     languageIndex < csvHeaders.length;
     languageIndex++
   ) {
-    const languageCode = csvHeaders[languageIndex];
+    const languageCode = csvHeaders[languageIndex] as ExtendedLanguageLocales;
 
     for (let itemIndex = 1; itemIndex < translatableItems.length; itemIndex++) {
       const key = translatableItems[itemIndex][0];
@@ -81,7 +82,7 @@ const updateQuestionniareWithTranslation = (
 
 const updateItemTranslation = (
   key: string,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   qItems: Items,
   text: string,
   dispatch: React.Dispatch<ActionType>,
@@ -217,7 +218,7 @@ const updateItemTranslation = (
 
 const updateMetadataTranslation = (
   key: string,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   text: string,
   dispatch: React.Dispatch<ActionType>,
 ): boolean => {
@@ -289,7 +290,7 @@ const updateMetadataTranslation = (
 
 const updateValueSetTranslation = (
   key: string,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   text: string,
   dispatch: React.Dispatch<ActionType>,
 ): boolean => {
@@ -313,7 +314,7 @@ const updateValueSetTranslation = (
 
 const updateCodeTranslation = (
   key: string,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   text: string,
   dispatch: React.Dispatch<ActionType>,
   qItems: Items,
@@ -339,7 +340,7 @@ const updateCodeTranslation = (
 
 const updateExtensionTranslation = (
   key: string,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   text: string,
   dispatch: React.Dispatch<ActionType>,
   qItems: Items,

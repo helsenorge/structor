@@ -1,7 +1,9 @@
+import { ExtendedLanguageLocales } from "src/types/LanguageTypes";
+
 import type { Resources } from "@helsenorge/refero";
 
-export const getResources = (language: string): Resources => {
-  if (language === "en-GB") {
+export const getResources = (language: ExtendedLanguageLocales): Resources => {
+  if (language === ExtendedLanguageLocales.ENGLISH) {
     return {
       formAllOptional: "All questions are optional",
       formAllRequired: "All questions are required",

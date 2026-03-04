@@ -8,7 +8,10 @@ import {
   IQuestionnaireItemType,
   IValueSetSystem,
 } from "../../types/IQuestionnareItemType";
-import type { TranslatableItemProperty } from "../../types/LanguageTypes";
+import type {
+  ExtendedLanguageLocales,
+  TranslatableItemProperty,
+} from "../../types/LanguageTypes";
 import type {
   QuestionnaireItem,
   Extension,
@@ -122,18 +125,18 @@ export interface UpdateMarkedLinkId {
 }
 export interface AddQuestionnaireLanguageAction {
   type: typeof ADD_QUESTIONNAIRE_LANGUAGE_ACTION;
-  additionalLanguageCode: string;
+  additionalLanguageCode: ExtendedLanguageLocales;
   translation: Translation;
 }
 
 export interface RemoveQuestionnaireLanguageAction {
   type: typeof REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION;
-  languageCode: string;
+  languageCode: ExtendedLanguageLocales;
 }
 
 export interface UpdateItemTranslationAction {
   type: typeof UPDATE_ITEM_TRANSLATION_ACTION;
-  languageCode: string;
+  languageCode: ExtendedLanguageLocales;
   linkId: string;
   propertyName: Exclude<TranslatableItemProperty, "code" | "extension">;
   value: string;
@@ -141,20 +144,20 @@ export interface UpdateItemTranslationAction {
 
 export interface UpdateItemCodeTranslationAction {
   type: typeof UPDATE_ITEM_CODE_TRANSLATION_ACTION;
-  languageCode: string;
+  languageCode: ExtendedLanguageLocales;
   linkId: string;
   value: string;
   code: Coding;
 }
 export interface UpdateItemExtensionTranslationAction {
   type: typeof UPDATE_ITEM_EXTENSION_TRANSLATION_ACTION;
-  languageCode: string;
+  languageCode: ExtendedLanguageLocales;
   linkId: string;
   extension: Extension[];
 }
 export interface UpdateItemOptionTranslationAction {
   type: typeof UPDATE_ITEM_OPTION_TRANSLATION_ACTION;
-  languageCode: string;
+  languageCode: ExtendedLanguageLocales;
   linkId: string;
   text: string;
   optionCode: string;
@@ -162,21 +165,21 @@ export interface UpdateItemOptionTranslationAction {
 
 export interface UpdateMetadataTranslationAction {
   type: typeof UPDATE_METADATA_TRANSLATION_ACTION;
-  languageCode: string;
+  languageCode: ExtendedLanguageLocales;
   propertyName: string;
   translation: string;
 }
 
 export interface UpdateSettingTranslationAction {
   type: typeof UPDATE_SETTING_TRANSLATION_ACTION;
-  languageCode: string;
+  languageCode: ExtendedLanguageLocales;
   extension: IExtensionType;
   translatedValue: Extension | null;
 }
 
 export interface UpdateContainedValueSetTranslationAction {
   type: typeof UPDATE_CONTAINED_VALUESET_TRANSLATION_ACTION;
-  languageCode: string;
+  languageCode: ExtendedLanguageLocales;
   valueSetId: string;
   conceptId: string;
   translation: string;
@@ -184,7 +187,7 @@ export interface UpdateContainedValueSetTranslationAction {
 
 export interface UpdateSidebarTranslationAction {
   type: typeof UPDATE_SIDEBAR_TRANSLATION_ACTION;
-  languageCode: string;
+  languageCode: ExtendedLanguageLocales;
   linkId: string;
   value: string;
 }
@@ -353,7 +356,7 @@ export const updateItemCodePropertyWithCodeAction = (
 };
 
 export const addQuestionnaireLanguageAction = (
-  additionalLanguageCode: string,
+  additionalLanguageCode: ExtendedLanguageLocales,
   translation: Translation,
 ): AddQuestionnaireLanguageAction => {
   return {
@@ -364,7 +367,7 @@ export const addQuestionnaireLanguageAction = (
 };
 
 export const removeQuestionnaireLanguageAction = (
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
 ): RemoveQuestionnaireLanguageAction => {
   return {
     type: REMOVE_QUESTIONNAIRE_LANGUAGE_ACTION,
@@ -373,7 +376,7 @@ export const removeQuestionnaireLanguageAction = (
 };
 
 export const updateItemTranslationAction = (
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   linkId: string,
   propertyName: Exclude<TranslatableItemProperty, "code" | "extension">,
   value: string,
@@ -387,7 +390,7 @@ export const updateItemTranslationAction = (
   };
 };
 export const updateItemCodeTranslation = (
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   linkId: string,
   value: string,
   code: Coding,
@@ -405,7 +408,7 @@ export const updateItemExtensionTranslation = ({
   linkId,
   extension,
 }: {
-  languageCode: string;
+  languageCode: ExtendedLanguageLocales;
   linkId: string;
   extension: Extension[];
 }): UpdateItemExtensionTranslationAction => {
@@ -417,7 +420,7 @@ export const updateItemExtensionTranslation = ({
   };
 };
 export const updateItemOptionTranslationAction = (
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   linkId: string,
   text: string,
   optionCode: string,
@@ -432,7 +435,7 @@ export const updateItemOptionTranslationAction = (
 };
 
 export const updateMetadataTranslationAction = (
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   propertyName: string,
   translation: string,
 ): UpdateMetadataTranslationAction => {
@@ -445,7 +448,7 @@ export const updateMetadataTranslationAction = (
 };
 
 export const updateSettingTranslationAction = (
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   extension: IExtensionType,
   translatedValue: Extension | null,
 ): UpdateSettingTranslationAction => {
@@ -458,7 +461,7 @@ export const updateSettingTranslationAction = (
 };
 
 export const updateContainedValueSetTranslationAction = (
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   valueSetId: string,
   conceptId: string,
   translation: string,
@@ -473,7 +476,7 @@ export const updateContainedValueSetTranslationAction = (
 };
 
 export const updateSidebarTranslationAction = (
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   linkId: string,
   value: string,
 ): UpdateSidebarTranslationAction => {

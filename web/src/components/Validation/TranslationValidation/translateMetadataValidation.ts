@@ -1,5 +1,8 @@
 import { isValidTitle } from "src/helpers/MetadataHelper";
-import { TranslatableMetadataProperty } from "src/types/LanguageTypes";
+import {
+  type ExtendedLanguageLocales,
+  TranslatableMetadataProperty,
+} from "src/types/LanguageTypes";
 
 import type { TFunction } from "i18next";
 import type { Translation } from "src/store/treeStore/treeStore";
@@ -10,7 +13,7 @@ import { ErrorLevel } from "../validationTypes";
 
 export const validateMetadataTranslation = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   translation: Translation,
   errors: ValidationError[],
 ): void => {
@@ -33,7 +36,7 @@ export const validateMetadataTranslation = (
 const validateTitle = (
   t: TFunction<"translation">,
   translation: Translation,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
 ): ValidationError | undefined => {
   if (!translation.metaData.title) {
     return createError(

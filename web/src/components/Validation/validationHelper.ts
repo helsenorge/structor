@@ -5,6 +5,7 @@ import { isItemWithLinkIdInArray } from "src/utils/itemSearchUtils";
 import type { QuestionnaireItem } from "fhir/r4";
 import type { TFunction } from "i18next";
 import type { OrderItem } from "src/store/treeStore/treeStore";
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 import type { ValidationError } from "src/utils/validationUtils";
 
 import { ErrorLevel } from "./validationTypes";
@@ -28,7 +29,7 @@ export const createError = (
   errorText: string,
   level?: ErrorLevel,
   index?: number,
-  languageCode?: string,
+  languageCode?: ExtendedLanguageLocales,
 ): ValidationError => {
   return {
     linkId: linkId,

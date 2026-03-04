@@ -21,6 +21,7 @@ import type {
   QuestionnaireItemAnswerOption,
   ValueSet,
 } from "fhir/r4";
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import { initPredefinedValueSet } from "./initPredefinedValueSet";
 import { isItemControlSidebar } from "./itemControl";
@@ -44,9 +45,10 @@ import {
 } from "./QuestionHelper";
 import { getValueSetValues } from "./valueSetHelper";
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function extractMetadata(questionnaireObj: Questionnaire) {
-  const getMetadataParts = ({
+function extractMetadata(
+  questionnaireObj: Questionnaire,
+): IQuestionnaireMetadata {
+  const {
     resourceType,
     language,
     id,
@@ -66,10 +68,11 @@ function extractMetadata(questionnaireObj: Questionnaire) {
     date,
     url,
     code,
-  }: // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  IQuestionnaireMetadata) => ({
+  } = questionnaireObj;
+
+  return {
     resourceType,
-    language,
+    language: language as ExtendedLanguageLocales | undefined,
     id,
     name,
     title,
@@ -87,8 +90,7 @@ function extractMetadata(questionnaireObj: Questionnaire) {
     date,
     url,
     code,
-  });
-  return getMetadataParts(questionnaireObj);
+  };
 }
 
 function extractItemsAndOrder(item?: Array<QuestionnaireItem>): {
@@ -265,9 +267,9 @@ export function translateQuestionnaire(
   return { contained, items, metaData, sidebarItems, settings };
 }
 
-export function languageToIsoString(language: string): string {
+export function languageToIsoString(language: string): ExtendedLanguageLocales {
   const parts = language.split("-");
-  return `${parts[0]}-${parts[1]?.toUpperCase()}`;
+  return `${parts[0]}-${parts[1]?.toUpperCase()}` as ExtendedLanguageLocales;
 }
 
 function extractTranslations(bundle: Bundle): Languages {

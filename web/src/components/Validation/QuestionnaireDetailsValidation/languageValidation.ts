@@ -1,13 +1,13 @@
+import { ExtendedLanguageLocales } from "src/types/LanguageTypes";
+
 import type { Bundle, Questionnaire } from "fhir/r4";
 import type { TFunction } from "i18next";
 import type { ValidationError } from "src/utils/validationUtils";
 
-import Languages from "@helsenorge/core-utils/constants/languages";
-
 import { createError } from "../validationHelper";
 import { ErrorLevel } from "../validationTypes";
 
-type LanguageCode = Languages | (string & {});
+type LanguageCode = ExtendedLanguageLocales | (string & {});
 
 const isBundle = (
   questionnaire: Questionnaire | Bundle,
@@ -19,10 +19,15 @@ export const validateLanguageCodeIsSupported = (
 ): ValidationError[] => {
   const errors: ValidationError[] = [];
   const supportedLanguageCodes: LanguageCode[] = [
-    Languages.ENGLISH,
-    Languages.NORWEGIAN,
-    Languages.SAMI_NORTHERN,
-    Languages.NORWEGIAN_NYNORSK,
+    ExtendedLanguageLocales.ENGLISH,
+    ExtendedLanguageLocales.NORWEGIAN,
+    ExtendedLanguageLocales.SAMI_NORTHERN,
+    ExtendedLanguageLocales.NORWEGIAN_NYNORSK,
+    ExtendedLanguageLocales.ROMANIAN,
+    ExtendedLanguageLocales.LITHUANIAN,
+    ExtendedLanguageLocales.RUSSIAN,
+    ExtendedLanguageLocales.FRENCH,
+    ExtendedLanguageLocales.POLISH,
   ];
   const languageCodes: LanguageCode[] =
     (isBundle(questionnaire)

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 import type { ValidationError } from "src/utils/validationUtils";
 
 import { ValidationContext } from "./ValidationContext";
@@ -11,7 +12,9 @@ export type ValidationProviderProps = {
 export const ValidationProvider = ({
   children,
 }: ValidationProviderProps): React.JSX.Element => {
-  const [translateLang, setTranslateLang] = useState("");
+  const [translateLang, setTranslateLang] = useState<
+    ExtendedLanguageLocales | ""
+  >("");
   const [itemsErrors, setItemsErrors] = useState<Array<ValidationError>>([]);
   const [questionnaireDetailsErrors, setQuestionnaireDetailsErrors] = useState<
     Array<ValidationError>

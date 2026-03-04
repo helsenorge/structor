@@ -1,4 +1,7 @@
-import { TranslatableMetadataProperty } from "src/types/LanguageTypes";
+import {
+  ExtendedLanguageLocales,
+  TranslatableMetadataProperty,
+} from "src/types/LanguageTypes";
 
 import type { TFunction } from "i18next";
 import type {
@@ -30,7 +33,7 @@ describe("metadataValidation", () => {
 
       validateMetadataTranslation(
         translatationMock as unknown as TFunction<"translation">,
-        "en-GB",
+        ExtendedLanguageLocales.ENGLISH,
         translation,
         validationErrors,
       );
@@ -57,7 +60,7 @@ describe("metadataValidation", () => {
 
       validateMetadataTranslation(
         translatationMock as unknown as TFunction<"translation">,
-        "en-GB",
+        ExtendedLanguageLocales.ENGLISH,
         translation,
         validationErrors,
       );
@@ -84,7 +87,7 @@ describe("metadataValidation", () => {
 
       validateMetadataTranslation(
         translatationMock as unknown as TFunction<"translation">,
-        "en-GB",
+        ExtendedLanguageLocales.ENGLISH,
         translation,
         validationErrors,
       );
@@ -112,7 +115,7 @@ describe("metadataValidation", () => {
 
       validateMetadataTranslation(
         translatationMock as unknown as TFunction<"translation">,
-        "en-GB",
+        ExtendedLanguageLocales.ENGLISH,
         translation,
         validationErrors,
       );
@@ -138,7 +141,7 @@ describe("metadataValidation", () => {
 
       validateMetadataTranslation(
         translatationMock as unknown as TFunction<"translation">,
-        "en-GB",
+        ExtendedLanguageLocales.ENGLISH,
         translation,
         validationErrors,
       );

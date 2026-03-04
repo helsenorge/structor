@@ -22,6 +22,7 @@ import type {
   QuestionnaireItemInitial,
   ValueSet,
 } from "fhir/r4";
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import { emptyPropertyReplacer } from "./emptyPropertyReplacer";
 import {
@@ -382,7 +383,7 @@ export const generateTree = (
 const generateTreeWithTranslations = (
   order: Array<OrderItem>,
   items: Items,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   languages: Languages,
 ): Array<QuestionnaireItem> => {
   return order.map((x) => {
@@ -414,7 +415,7 @@ export const generateMainQuestionnaire = (state: TreeState): Questionnaire => {
 
 const generateTranslatedQuestionnaire = (
   state: TreeState,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   languages: Languages,
 ): Questionnaire => {
   const usedValueSet = getUsedValueSet(state);
@@ -469,7 +470,7 @@ export const generateQuestionnaire = (state: TreeState): string => {
         questionnaires.push(
           generateTranslatedQuestionnaire(
             state,
-            languageCode,
+            languageCode as ExtendedLanguageLocales,
             qAdditionalLanguages,
           ),
         ),
@@ -532,7 +533,7 @@ const setEnrichmentValues = (
 
 export const generateQuestionnaireForPreview = (
   state: TreeState,
-  language?: string,
+  language?: ExtendedLanguageLocales,
   selectedGender?: string,
   selectedAge?: string,
 ): Questionnaire => {

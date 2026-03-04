@@ -1,6 +1,7 @@
 import type { TreeState } from "../store/treeStore/treeStore";
 import type { ValueSet } from "fhir/r4";
 import type { ErrorLevel } from "src/components/Validation/validationTypes";
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import { getUsedValueSet } from "../helpers/generateQuestionnaire";
 
@@ -10,7 +11,7 @@ export interface ValidationError {
   errorProperty: string;
   errorLevel: ErrorLevel;
   errorReadableText: string;
-  languagecode?: string;
+  languagecode?: ExtendedLanguageLocales;
 }
 
 export const getValueSetToTranslate = (

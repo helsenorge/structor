@@ -2,8 +2,20 @@ import type { IExtensionType } from "./IQuestionnareItemType";
 import type { TreeState } from "../store/treeStore/treeStore";
 import type { Extension } from "fhir/r4";
 
+import LanguageLocales from "@helsenorge/core-utils/constants/languages";
+
+export const ExtendedLanguageLocales = {
+  ...LanguageLocales,
+  FRENCH: "fr-FR",
+  UKRAINIAN: "uk-UA",
+  INGEN: "",
+} as const;
+
+export type ExtendedLanguageLocales =
+  (typeof ExtendedLanguageLocales)[keyof typeof ExtendedLanguageLocales];
+
 export type Language = {
-  code: string;
+  code: ExtendedLanguageLocales;
   display: string;
   localDisplay: string;
 };
@@ -25,7 +37,7 @@ export type MetadataProperty = {
   validate?: (
     value: string,
     state?: TreeState,
-    targetLanguage?: string,
+    targetLanguage?: ExtendedLanguageLocales,
   ) => string;
 };
 

@@ -9,7 +9,10 @@ import {
 } from "src/components/Validation/validationHelper";
 import { ErrorLevel } from "src/components/Validation/validationTypes";
 
-import { TranslatableItemProperty } from "../../../types/LanguageTypes";
+import {
+  type ExtendedLanguageLocales,
+  TranslatableItemProperty,
+} from "../../../types/LanguageTypes";
 import type { QuestionnaireItem } from "fhir/r4";
 
 import ModalHeader from "./modalHeader";
@@ -44,7 +47,7 @@ import Modal from "../../Modal/Modal";
 type TranslationModalProps = {
   close: () => void;
   markdownWarning: ValidationError | undefined;
-  targetLanguage: string;
+  targetLanguage: ExtendedLanguageLocales;
   validationErrors: ValidationError[];
 };
 

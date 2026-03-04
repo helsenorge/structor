@@ -1,6 +1,7 @@
 import type { Languages, TreeState } from "../store/treeStore/treeStore";
 import { IExtensionType } from "../types/IQuestionnareItemType";
 import {
+  ExtendedLanguageLocales,
   type Language,
   type MetadataProperty,
   type SettingsProperty,
@@ -12,21 +13,58 @@ import type { Coding, Extension } from "fhir/r4";
 import { isValidId } from "./MetadataHelper";
 
 export const INITIAL_LANGUAGE: Language = {
-  code: "nb-NO",
+  code: ExtendedLanguageLocales.NORWEGIAN,
   display: "Bokmål",
   localDisplay: "Bokmål",
 };
 
 export const supportedLanguages: Language[] = [
   INITIAL_LANGUAGE,
-  { code: "nn-NO", display: "Nynorsk", localDisplay: "Nynorsk" },
-  { code: "se-NO", display: "Samisk", localDisplay: "Davvisámegillii" },
-  { code: "en-GB", display: "Engelsk", localDisplay: "English" },
-  { code: "pl-PL", display: "Polsk", localDisplay: "Polskie" },
-  { code: "ro-RO", display: "Rumensk", localDisplay: "Română" },
-  { code: "lt-LT", display: "Litauisk", localDisplay: "Lietuvis" },
-  { code: "ru-RU", display: "Russisk", localDisplay: "русский" },
-  { code: "fr-FR", display: "Fransk", localDisplay: "Français" },
+  {
+    code: ExtendedLanguageLocales.NORWEGIAN_NYNORSK,
+    display: "Nynorsk",
+    localDisplay: "Nynorsk",
+  },
+  {
+    code: ExtendedLanguageLocales.SAMI_NORTHERN,
+    display: "Samisk",
+    localDisplay: "Davvisámegillii",
+  },
+  {
+    code: ExtendedLanguageLocales.ENGLISH,
+    display: "Engelsk",
+    localDisplay: "English",
+  },
+  {
+    code: ExtendedLanguageLocales.POLISH,
+    display: "Polsk",
+    localDisplay: "Polskie",
+  },
+  {
+    code: ExtendedLanguageLocales.ROMANIAN,
+    display: "Rumensk",
+    localDisplay: "Română",
+  },
+  {
+    code: ExtendedLanguageLocales.LITHUANIAN,
+    display: "Litauisk",
+    localDisplay: "Lietuvis",
+  },
+  {
+    code: ExtendedLanguageLocales.RUSSIAN,
+    display: "Russisk",
+    localDisplay: "русский",
+  },
+  {
+    code: ExtendedLanguageLocales.FRENCH,
+    display: "Fransk",
+    localDisplay: "Français",
+  },
+  {
+    code: ExtendedLanguageLocales.UKRAINIAN,
+    display: "Ukrainsk",
+    localDisplay: "Українська",
+  },
 ];
 
 export const getLanguageFromCode = (
@@ -54,18 +92,20 @@ export const getLanguagesInUse = ({
   );
 };
 
-export const getAdditionalLanguages = (state: TreeState): string[] => {
+export const getAdditionalLanguages = (
+  state: TreeState,
+): ExtendedLanguageLocales[] => {
   const languageInUse = getLanguagesInUse(state).map((x) => x.code);
   return languageInUse.filter(
     (x) => x.toLowerCase() !== state.qMetadata.language?.toLowerCase(),
-  );
+  ) as ExtendedLanguageLocales[];
 };
 
 export const isUniqueAcrossLanguages = (
   propertyName: TranslatableMetadataProperty,
   value: string,
   { qAdditionalLanguages, qMetadata }: TreeState,
-  targetLanguage: string,
+  targetLanguage: ExtendedLanguageLocales,
 ): boolean => {
   if (!qAdditionalLanguages || Object.keys(qAdditionalLanguages).length < 1) {
     return false;
@@ -97,7 +137,7 @@ export const translatableMetadata: MetadataProperty[] = [
     validate: (
       value: string,
       state?: TreeState,
-      targetLanguage?: string,
+      targetLanguage?: ExtendedLanguageLocales,
     ): string => {
       if (!isValidId(value)) {
         return "Id must be 1-64 characters and only letters a-z, numbers, - and .";

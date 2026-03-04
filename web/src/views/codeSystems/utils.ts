@@ -1,5 +1,6 @@
 import createUUID from "src/helpers/CreateUUID";
 import { createUriUUID } from "src/helpers/uriHelper";
+import { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import type {
   CodeSystem,
@@ -24,7 +25,7 @@ export const initialCodeSystem = (): CodeSystem => ({
   publisher: "",
   url: "https://nhn.no/code-system/",
   caseSensitive: true,
-  language: "nb-NO",
+  language: ExtendedLanguageLocales.NORWEGIAN,
   description: "",
 });
 export const initialConcept = (): CodeSystemConcept => ({

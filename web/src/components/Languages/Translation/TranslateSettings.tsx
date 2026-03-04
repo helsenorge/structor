@@ -5,13 +5,14 @@ import { useTranslation } from "react-i18next";
 import type { ActionType, Languages } from "../../../store/treeStore/treeStore";
 import type { IExtensionType } from "../../../types/IQuestionnareItemType";
 import type { Extension } from "fhir/r4";
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import { translatableSettings } from "../../../helpers/LanguageHelper";
 import { updateSettingTranslationAction } from "../../../store/treeStore/treeActions";
 import FormField from "../../FormField/FormField";
 
 type TranslateSettingsProps = {
-  targetLanguage: string;
+  targetLanguage: ExtendedLanguageLocales;
   translations: Languages;
   extensions: Extension[] | undefined;
   dispatch: React.Dispatch<ActionType>;

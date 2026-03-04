@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { IQuestionnaireMetadataType } from "../../types/IQuestionnaireMetadataType";
 import type { Meta, Questionnaire } from "fhir/r4";
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import UploadTranslation from "./uploadTranslation";
 import { exportTranslations } from "../../helpers/exportTranslations";
@@ -33,7 +34,7 @@ import FormField from "../FormField/FormField";
 import Select from "../Select/Select";
 
 interface LanguageAccordionProps {
-  setTranslateLang: (language: string) => void;
+  setTranslateLang: (language: ExtendedLanguageLocales) => void;
 }
 
 const LanguageAccordion = (
@@ -44,7 +45,9 @@ const LanguageAccordion = (
   const { qItems, qMetadata, qAdditionalLanguages } = state;
   const uploadRef = React.useRef<HTMLInputElement>(null);
 
-  const [selectedLang, setSelectedLang] = useState("");
+  const [selectedLang, setSelectedLang] = useState<
+    ExtendedLanguageLocales | ""
+  >("");
   const [fileUploadError, setFileUploadError] = useState<string>("");
 
   const updateMeta = (
@@ -65,7 +68,7 @@ const LanguageAccordion = (
   }
 
   const dispatchAddLanguage = (
-    selectedLanguage: string,
+    selectedLanguage: ExtendedLanguageLocales | "",
     translation: Translation,
   ): void => {
     const isoLanguage = languageToIsoString(selectedLanguage);
@@ -124,9 +127,10 @@ const LanguageAccordion = (
           event.target.result as string,
         );
         const mainQuestionnaire = generateMainQuestionnaire(state);
-        const isoLanguage = translatedQuestionnaire.language
-          ? languageToIsoString(translatedQuestionnaire.language)
-          : "";
+        const isoLanguage =
+          (translatedQuestionnaire.language as ExtendedLanguageLocales)
+            ? languageToIsoString(translatedQuestionnaire.language)
+            : "";
 
         const error = validateUploadedLanguageFile(
           translatedQuestionnaire,
@@ -211,7 +215,9 @@ const LanguageAccordion = (
                 placeholder={t("Select a language..")}
                 options={getUnusedLanguage}
                 value={selectedLang}
-                onChange={(event) => setSelectedLang(event.target.value)}
+                onChange={(event) =>
+                  setSelectedLang(event.target.value as ExtendedLanguageLocales)
+                }
               />
             </FormField>
             <div>

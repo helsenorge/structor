@@ -8,6 +8,7 @@ import type {
 } from "../../../store/treeStore/treeStore";
 import type { QuestionnaireItem } from "fhir/r4";
 import type { TFunction } from "i18next";
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import { validateMetadataTranslation } from "./translateMetadataValidation";
 import { isItemControlSidebar } from "../../../helpers/itemControl";
@@ -29,7 +30,7 @@ import { ErrorLevel } from "../validationTypes";
 
 const validateItemTranslations = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   qItems: Items,
   translation: Translation,
   errors: ValidationError[],
@@ -108,7 +109,7 @@ const validateItemTranslations = (
 
 const validateItemText = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   qItem: QuestionnaireItem,
   index: number,
   translation: Translation,
@@ -128,7 +129,7 @@ const validateItemText = (
 
 const validateItemPrefix = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   qItem: QuestionnaireItem,
   index: number,
   translation: Translation,
@@ -148,7 +149,7 @@ const validateItemPrefix = (
 
 const validateItemRepeatText = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   qItem: QuestionnaireItem,
   index: number,
   translation: Translation,
@@ -168,7 +169,7 @@ const validateItemRepeatText = (
 
 const validateItemEntryFormatText = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   qItem: QuestionnaireItem,
   index: number,
   translation: Translation,
@@ -191,7 +192,7 @@ const validateItemEntryFormatText = (
 
 const validateItemInitialText = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   qItem: QuestionnaireItem,
   index: number,
   translation: Translation,
@@ -211,7 +212,7 @@ const validateItemInitialText = (
 
 const validateItemAnswerOptions = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   qItem: QuestionnaireItem,
   index: number,
   translation: Translation,
@@ -224,7 +225,7 @@ const validateItemAnswerOptions = (
 
 const validateItemValidationText = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   qItem: QuestionnaireItem,
   index: number,
   translation: Translation,
@@ -247,7 +248,7 @@ const validateItemValidationText = (
 
 const validateItemSublabel = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   qItem: QuestionnaireItem,
   index: number,
   translation: Translation,
@@ -267,7 +268,7 @@ const validateItemSublabel = (
 
 const validateAnsweroptions = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   qItem: QuestionnaireItem,
   translation: Translation,
   itemIndex: number,
@@ -298,7 +299,7 @@ const validateAnsweroptions = (
 
 const addErrorForItemElement = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   linkId: string,
   itemIndex: number,
   element: string,
@@ -318,7 +319,7 @@ const addErrorForItemElement = (
 
 const validateSidebarTranslations = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   item: QuestionnaireItem,
   translation: Translation,
   errors: ValidationError[],
@@ -342,7 +343,7 @@ const validateSidebarTranslations = (
 
 const validateValueSetTranslations = (
   t: TFunction<"translation">,
-  languageCode: string,
+  languageCode: ExtendedLanguageLocales,
   state: TreeState,
   translation: Translation,
   errors: ValidationError[],
@@ -395,20 +396,20 @@ export const validateTranslations = (
     Object.keys(translations).forEach((languageCode) => {
       validateMetadataTranslation(
         t,
-        languageCode,
+        languageCode as ExtendedLanguageLocales,
         translations[languageCode],
         translationErrors,
       );
       validateItemTranslations(
         t,
-        languageCode,
+        languageCode as ExtendedLanguageLocales,
         state.qItems,
         translations[languageCode],
         translationErrors,
       );
       validateValueSetTranslations(
         t,
-        languageCode,
+        languageCode as ExtendedLanguageLocales,
         state,
         translations[languageCode],
         translationErrors,

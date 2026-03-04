@@ -5,6 +5,7 @@ import AdvancedQuestionnaireSettings from "src/components/AdvancedQuestionnaireS
 import QuestionnaireSettings from "src/components/QuestionnaireDetails/QuestionnaireSettings";
 
 import type { ValidationError } from "../../../utils/validationUtils";
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import { useKeyPress } from "../../../hooks/useKeyPress";
 import LanguageAccordion from "../../Languages/LanguageAccordion";
@@ -13,7 +14,7 @@ import Sidebar from "../../QuestionnaireDetails/Sidebar";
 import Drawer from "../Drawer";
 
 type FormDetailsDrawerProps = {
-  setTranslateLang: (language: string) => void;
+  setTranslateLang: (language: ExtendedLanguageLocales) => void;
   closeDrawer: () => void;
   questionnaireDetailsErrors: ValidationError[];
   isOpen?: boolean;

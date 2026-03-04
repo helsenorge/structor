@@ -12,6 +12,7 @@ import type {
   Items,
   Languages,
 } from "../../../store/treeStore/treeStore";
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import { isItemControlSidebar } from "../../../helpers/itemControl";
 import { updateSidebarTranslationAction } from "../../../store/treeStore/treeActions";
@@ -19,7 +20,7 @@ import FormField from "../../FormField/FormField";
 import MarkdownEditor from "../../MarkdownEditor/MarkdownEditor";
 
 type TranslateSidebarProps = {
-  targetLanguage: string;
+  targetLanguage: ExtendedLanguageLocales;
   translations: Languages;
   items: Items;
   dispatch: React.Dispatch<ActionType>;

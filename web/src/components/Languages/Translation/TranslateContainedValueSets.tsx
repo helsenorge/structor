@@ -9,6 +9,7 @@ import { ErrorLevel } from "src/components/Validation/validationTypes";
 
 import type { ActionType, Languages } from "../../../store/treeStore/treeStore";
 import type { ValueSet } from "fhir/r4";
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import { getValueSetValues } from "../../../helpers/valueSetHelper";
 import { updateContainedValueSetTranslationAction } from "../../../store/treeStore/treeActions";
@@ -16,7 +17,7 @@ import FormField from "../../FormField/FormField";
 
 type TranslateContainedValueSetsProps = {
   qContained?: ValueSet[];
-  targetLanguage: string;
+  targetLanguage: ExtendedLanguageLocales;
   translations: Languages;
   dispatch: React.Dispatch<ActionType>;
 };

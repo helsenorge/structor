@@ -12,7 +12,10 @@ import {
   IExtensionType,
   IQuestionnaireItemType,
 } from "../../../types/IQuestionnareItemType";
-import { TranslatableItemProperty } from "../../../types/LanguageTypes";
+import {
+  type ExtendedLanguageLocales,
+  TranslatableItemProperty,
+} from "../../../types/LanguageTypes";
 import type {
   Coding,
   QuestionnaireItem,
@@ -49,7 +52,7 @@ import FormField from "../../FormField/FormField";
 import MarkdownEditor from "../../MarkdownEditor/MarkdownEditor";
 
 type TranslationRowProps = {
-  targetLanguage: string;
+  targetLanguage: ExtendedLanguageLocales;
   item: QuestionnaireItem;
   itemHeading: string;
 };

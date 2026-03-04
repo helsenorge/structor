@@ -15,6 +15,7 @@ import {
   IExtensionType,
   IQuestionnaireItemType,
 } from "src/types/IQuestionnareItemType";
+import { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import type { QuestionnaireItem } from "fhir/r4";
 import type { Mock } from "vitest";
@@ -85,7 +86,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 text: "Translated text",
@@ -100,7 +101,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -120,7 +121,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {},
             },
@@ -133,7 +134,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -158,7 +159,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 text: "Existing translation",
@@ -173,7 +174,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -203,7 +204,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 text: "**Translated bold**",
@@ -218,7 +219,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -256,7 +257,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 answerOptions: {
@@ -274,7 +275,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -303,7 +304,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {},
             },
@@ -316,7 +317,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -343,7 +344,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 sublabel: "Translated sublabel",
@@ -358,7 +359,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -384,7 +385,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 repeatsText: "Translated repeat text",
@@ -399,7 +400,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -425,7 +426,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 validationText: "Translated validation message",
@@ -440,7 +441,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -468,7 +469,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 entryFormatText: "Translated placeholder",
@@ -483,7 +484,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -504,7 +505,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 prefix: "1.1 (translated)",
@@ -519,7 +520,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -544,7 +545,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 initial: "Translated initial value",
@@ -559,7 +560,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -584,7 +585,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {},
             },
@@ -597,7 +598,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -625,7 +626,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 code: [
@@ -646,7 +647,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -672,7 +673,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {},
             },
@@ -685,7 +686,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -714,7 +715,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {},
             },
@@ -727,7 +728,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -752,7 +753,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {},
             },
@@ -765,7 +766,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -798,7 +799,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 extension: [
@@ -826,7 +827,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -864,7 +865,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {},
             },
@@ -877,7 +878,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -912,7 +913,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {},
           },
         } as unknown as Languages,
@@ -923,7 +924,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -942,7 +943,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {},
           },
         },
@@ -953,7 +954,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />
@@ -972,7 +973,7 @@ describe("TranslateItemRow", () => {
 
       const treeState = {
         qAdditionalLanguages: {
-          "en-GB": {
+          [ExtendedLanguageLocales.ENGLISH]: {
             items: {
               "1": {
                 text: "", // Empty translation
@@ -987,7 +988,7 @@ describe("TranslateItemRow", () => {
           value={{ state: treeState, dispatch: dispatchMock }}
         >
           <TranslateItemRow
-            targetLanguage="en-GB"
+            targetLanguage={ExtendedLanguageLocales.ENGLISH}
             item={item}
             itemHeading="Question 1"
           />

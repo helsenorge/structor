@@ -6,7 +6,10 @@ import {
   type IQuestionnaireMetadata,
   IQuestionnaireMetadataType,
 } from "src/types/IQuestionnaireMetadataType";
-import { TranslatableMetadataProperty } from "src/types/LanguageTypes";
+import {
+  ExtendedLanguageLocales,
+  TranslatableMetadataProperty,
+} from "src/types/LanguageTypes";
 
 import type {
   Languages,
@@ -58,7 +61,7 @@ describe("TranslateMetaDataRow", () => {
               qAdditionalLanguages: languages,
             } as TreeState
           }
-          targetLanguage="en-GB"
+          targetLanguage={ExtendedLanguageLocales.ENGLISH}
           validationErrors={[]}
         />,
       );
@@ -85,7 +88,7 @@ describe("TranslateMetaDataRow", () => {
           dispatch={vi.fn()}
           metadataProperty={url}
           state={{ qMetadata: metadata } as TreeState}
-          targetLanguage="en-GB"
+          targetLanguage={ExtendedLanguageLocales.ENGLISH}
           validationErrors={[validationError]}
         />,
       );
@@ -122,7 +125,7 @@ describe("TranslateMetaDataRow", () => {
           dispatch={vi.fn()}
           metadataProperty={url}
           state={{ qMetadata: metadata } as TreeState}
-          targetLanguage="en-GB"
+          targetLanguage={ExtendedLanguageLocales.ENGLISH}
           validationErrors={[validationError]}
         />,
       );
@@ -149,7 +152,7 @@ describe("TranslateMetaDataRow", () => {
           dispatch={dispatchMock}
           metadataProperty={url}
           state={{ qMetadata: metadata } as TreeState}
-          targetLanguage="en-GB"
+          targetLanguage={ExtendedLanguageLocales.ENGLISH}
           validationErrors={[]}
         />,
       );
@@ -165,7 +168,9 @@ describe("TranslateMetaDataRow", () => {
       );
       expect(dispatchMock.mock.calls[0]).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ languageCode: "en-GB" }),
+          expect.objectContaining({
+            languageCode: ExtendedLanguageLocales.ENGLISH,
+          }),
         ]),
       );
       expect(dispatchMock.mock.calls[0]).toEqual(
@@ -195,7 +200,7 @@ describe("TranslateMetaDataRow", () => {
           dispatch={vi.fn()}
           metadataProperty={title}
           state={{ qMetadata: metadata } as TreeState}
-          targetLanguage="en-GB"
+          targetLanguage={ExtendedLanguageLocales.ENGLISH}
           validationErrors={[]}
         />,
       );
@@ -214,7 +219,7 @@ describe("TranslateMetaDataRow", () => {
           dispatch={vi.fn()}
           metadataProperty={title}
           state={{ qMetadata: metadata } as TreeState}
-          targetLanguage="en-GB"
+          targetLanguage={ExtendedLanguageLocales.ENGLISH}
           validationErrors={[]}
         />,
       );
