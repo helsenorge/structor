@@ -4,7 +4,7 @@ import {
   validateLanguageCodeIsSupported,
   validateLanguageCodeIsValid,
 } from "../languageValidation";
-import { q1, q2, q3, q4 } from "./data";
+import { q2, q3, q4, q6 } from "./data";
 
 describe("Language validation", () => {
   describe("validateLanguageCodeIsValid", () => {
@@ -41,7 +41,7 @@ describe("Language validation", () => {
     it("should return a warning if the language codes is not supported", () => {
       const errors = validateLanguageCodeIsSupported(
         translatationMock as unknown as TFunction<"translation">,
-        q1,
+        q6,
       );
       expect(errors.length).toBe(1);
       expect(translatationMock.mock.calls[1]).toEqual([
