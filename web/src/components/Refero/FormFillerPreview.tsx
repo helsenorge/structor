@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 
 import type { TreeState } from "../../store/treeStore/treeStore";
 import type { QuestionnaireResponse } from "fhir/r4";
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon from "@helsenorge/designsystem-react/components/Icon";
@@ -41,16 +42,16 @@ const FormFillerPreview = ({
   });
   const { t } = useTranslation();
   const languages = getLanguagesInUse(state);
-  const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(
-    language || state.qMetadata.language || INITIAL_LANGUAGE.code,
-  );
+  const [selectedLanguage, setSelectedLanguage] = useState<
+    ExtendedLanguageLocales | undefined | string
+  >(language || state.qMetadata.language || INITIAL_LANGUAGE.code);
   const [selectedGender, setSelectedGender] = useState<string>("");
   const [selectedAge, setSelectedAge] = useState<string>("");
   const questionnaireForPreview = JSON.parse(
     JSON.stringify(
       generateQuestionnaireForPreview(
         state,
-        selectedLanguage,
+        selectedLanguage as ExtendedLanguageLocales,
         selectedGender,
         selectedAge,
       ),
@@ -154,7 +155,9 @@ const FormFillerPreview = ({
                     authorized={true}
                     resources={
                       getResources(
-                        selectedLanguage || language || "",
+                        (selectedLanguage as ExtendedLanguageLocales) ||
+                          (language as ExtendedLanguageLocales) ||
+                          ("" as ExtendedLanguageLocales),
                       ) as Resources
                     }
                     sticky={true}
