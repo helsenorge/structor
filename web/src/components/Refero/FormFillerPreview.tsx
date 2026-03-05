@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import "./styles/formFillerPreview.css";
 import { configureStore, type Store } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
 import { Provider } from "react-redux";
