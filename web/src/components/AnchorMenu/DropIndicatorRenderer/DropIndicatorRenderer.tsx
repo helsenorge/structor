@@ -5,6 +5,7 @@ import type { ToolboxDragInfo } from "../contexts/DraggedNodeContext";
 import type { TreeNode } from "../types";
 import type { DropTarget } from "@react-types/shared";
 
+import DropContent from "./DropContent";
 import { IndentRenderer } from "../IndentRenderer/IndentRenderer";
 import ItemButtons from "../ItemButtons/ItemButtons";
 import { TreeItemIcon } from "../TreeView/TreeItemIcon";
@@ -131,9 +132,6 @@ export const DropIndicatorRenderer = ({
     "--tree-item-level": depth,
   };
 
-  const showGhost = draggedNode && qItems && dropPosition !== "on";
-  const showToolboxGhost = !showGhost && toolboxDrag && dropPosition !== "on";
-
   return (
     <DropIndicator
       target={target}
@@ -141,32 +139,13 @@ export const DropIndicatorRenderer = ({
       style={dropIndicatorStyle}
       data-depth={depth}
     >
-      {showGhost ? (
-        <div className={styles.ghostPreview}>
-          <GhostNode
-            node={draggedNode}
-            qItems={qItems}
-            depth={0}
-            isLast={true}
-            ancestorContinuations={[]}
-          />
-        </div>
-      ) : showToolboxGhost ? (
-        <div className={styles.ghostPreview}>
-          <ToolboxGhostNode toolboxDrag={toolboxDrag} />
-        </div>
-      ) : (
-        dropPosition !== "on" && (
-          <div className={styles.previewRow}>
-            <div className={styles.previewDragHandle} aria-hidden="true">
-              <span className={styles.previewDots} />
-            </div>
-            <span className={styles.previewPlaceholder}>
-              {`Nytt element her (nivå ${depth})`}
-            </span>
-          </div>
-        )
-      )}
+      <DropContent
+        draggedNode={draggedNode}
+        toolboxDrag={toolboxDrag}
+        qItems={qItems}
+        dropPosition={dropPosition}
+        depth={depth}
+      />
     </DropIndicator>
   );
 };
