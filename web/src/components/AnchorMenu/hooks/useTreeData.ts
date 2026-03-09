@@ -64,16 +64,29 @@ export const useExpandedKeys = (
   const prevExpandableRef = useRef<Set<Key>>(new Set());
 
   useEffect(() => {
-    const expandableChanged =
-      expandableKeys.size !== prevExpandableRef.current.size ||
-      [...expandableKeys].some((k) => !prevExpandableRef.current.has(k));
+    const prev = prevExpandableRef.current;
+    const newlyExpandable = [...expandableKeys].filter((k) => !prev.has(k));
 
-    if (
-      expandableKeys.size > 0 &&
-      (expandedKeys.size === 0 || expandableChanged)
-    ) {
-      setExpandedKeys(new Set(expandableKeys));
-    }
+    setExpandedKeys((current) => {
+      if (current.size === 0 && expandableKeys.size > 0) {
+        return new Set(expandableKeys);
+      }
+
+      const next = new Set(current);
+
+      for (const k of newlyExpandable) {
+        next.add(k);
+      }
+
+      for (const k of next) {
+        if (!expandableKeys.has(k)) {
+          next.delete(k);
+        }
+      }
+
+      return next;
+    });
+
     prevExpandableRef.current = expandableKeys;
   }, [expandableKeys]);
 

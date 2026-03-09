@@ -1,4 +1,4 @@
-import { useCallback, useMemo, type Dispatch } from "react";
+import { useCallback, useMemo, useState, type Dispatch } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -11,7 +11,10 @@ import type {
 import type { ValidationError } from "../../utils/validationUtils";
 import type { Key } from "@react-types/shared";
 
-import { DraggedNodeContext } from "./contexts/DraggedNodeContext";
+import {
+  DraggedNodeContext,
+  type ToolboxDragInfo,
+} from "./contexts/DraggedNodeContext";
 import { useAnchorMenuHelpers } from "./hooks/useAnchorMenuHelpers";
 import { useTreeData } from "./hooks/useTreeData";
 import { useTreeDragAndDrop } from "./hooks/useTreeDragAndDrop";
@@ -49,6 +52,14 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
   const { validationClasses } = useAnchorMenuHelpers();
 
+  const [toolboxDrag, setToolboxDrag] = useState<ToolboxDragInfo | null>(null);
+
+  const handleToolboxDragStart = useCallback(
+    (info: ToolboxDragInfo) => setToolboxDrag(info),
+    [],
+  );
+  const handleToolboxDragEnd = useCallback(() => setToolboxDrag(null), []);
+
   const { dragAndDropHooks, draggedNode } = useTreeDragAndDrop({
     qOrder: props.qOrder,
     qItems: props.qItems,
@@ -56,6 +67,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     parentPathById,
     dispatch: props.dispatch,
     recipientComponentLabel: RECIPIENT_COMPONENT_LABEL,
+    toolboxDrag,
   });
 
   const handleSelectionChange = useCallback(
@@ -75,13 +87,17 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
   );
 
   const draggedNodeContextValue = useMemo(
-    () => ({ draggedNode, qItems: props.qItems }),
-    [draggedNode, props.qItems],
+    () => ({ draggedNode, toolboxDrag, qItems: props.qItems }),
+    [draggedNode, toolboxDrag, props.qItems],
   );
 
   return (
     <div className={styles.questionnaireOverview}>
-      <Toolbox recipientComponentLabel={RECIPIENT_COMPONENT_LABEL} />
+      <Toolbox
+        recipientComponentLabel={RECIPIENT_COMPONENT_LABEL}
+        onToolboxDragStart={handleToolboxDragStart}
+        onToolboxDragEnd={handleToolboxDragEnd}
+      />
 
       <DraggedNodeContext.Provider value={draggedNodeContextValue}>
         <TreeView

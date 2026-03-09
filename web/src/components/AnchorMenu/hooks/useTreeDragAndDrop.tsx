@@ -15,6 +15,7 @@ import type {
   OrderItem,
 } from "../../../store/treeStore/treeStore";
 import type { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
+import type { ToolboxDragInfo } from "../contexts/DraggedNodeContext";
 import type { TreeNode } from "../types";
 import type {
   Key,
@@ -87,6 +88,7 @@ interface UseDragAndDropOptions {
   parentPathById: Map<string, string[]>;
   dispatch: Dispatch<ActionType>;
   recipientComponentLabel: string;
+  toolboxDrag: ToolboxDragInfo | null;
 }
 
 const buildNodeMap = (nodes: TreeNode[]): Map<string, TreeNode> => {
@@ -108,6 +110,7 @@ export const useTreeDragAndDrop = ({
   parentPathById,
   dispatch,
   recipientComponentLabel,
+  toolboxDrag,
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 }: UseDragAndDropOptions) => {
   const nodeMap = useMemo(() => buildNodeMap(treeData), [treeData]);
@@ -289,6 +292,7 @@ export const useTreeDragAndDrop = ({
           target={target}
           parentPathById={parentPathById}
           draggedNode={draggedNode}
+          toolboxDrag={toolboxDrag}
           qItems={qItems}
         />
       );

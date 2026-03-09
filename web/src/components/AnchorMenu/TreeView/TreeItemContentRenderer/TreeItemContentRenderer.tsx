@@ -18,7 +18,11 @@ import {
 } from "../../../../helpers/itemControl";
 import { useDraggedNode } from "../../contexts/DraggedNodeContext";
 import { DragHandle } from "../../DragHandle/DragHandle";
-import { GhostNode } from "../../DropIndicatorRenderer/DropIndicatorRenderer";
+import {
+  GhostNode,
+  ToolboxGhostNode,
+} from "../../DropIndicatorRenderer/DropIndicatorRenderer";
+import ghostStyles from "../../DropIndicatorRenderer/DropIndicatorRenderer.module.scss";
 import { IndentRenderer } from "../../IndentRenderer/IndentRenderer";
 import { ItemButtons } from "../../ItemButtons/ItemButtons";
 import { TreeItemIcon } from "../TreeItemIcon";
@@ -47,10 +51,11 @@ export const TreeItemContentRenderer = memo(function TreeItemContentRenderer({
   isDropTarget,
 }: TreeItemContentRendererProps): JSX.Element {
   const { t } = useTranslation();
-  const { draggedNode, qItems } = useDraggedNode();
+  const { draggedNode, toolboxDrag, qItems } = useDraggedNode();
 
   const isTopLevel = depth === 0;
   const showDropOnGhost = isDropTarget && draggedNode && qItems;
+  const showToolboxDropOnGhost = isDropTarget && !draggedNode && toolboxDrag;
 
   return (
     <>
@@ -130,10 +135,20 @@ export const TreeItemContentRenderer = memo(function TreeItemContentRenderer({
         </div>
       </div>
       {showDropOnGhost && (
-        <div className={styles.dropOnGhostPreview}>
+        <div className={ghostStyles.ghostPreview}>
           <GhostNode
             node={draggedNode}
             qItems={qItems}
+            depth={depth + 1}
+            isLast={true}
+            ancestorContinuations={[...ancestorContinuations, !isLast]}
+          />
+        </div>
+      )}
+      {showToolboxDropOnGhost && (
+        <div className={ghostStyles.ghostPreview}>
+          <ToolboxGhostNode
+            toolboxDrag={toolboxDrag}
             depth={depth + 1}
             isLast={true}
             ancestorContinuations={[...ancestorContinuations, !isLast]}

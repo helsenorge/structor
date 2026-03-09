@@ -1,6 +1,7 @@
 import { DropIndicator } from "react-aria-components";
 
 import type { Items } from "../../../store/treeStore/treeStore";
+import type { ToolboxDragInfo } from "../contexts/DraggedNodeContext";
 import type { TreeNode } from "../types";
 import type { DropTarget } from "@react-types/shared";
 
@@ -14,6 +15,7 @@ interface DropIndicatorRendererProps {
   target: DropTarget;
   parentPathById: Map<string, string[]>;
   draggedNode?: TreeNode | null;
+  toolboxDrag?: ToolboxDragInfo | null;
   qItems?: Items;
 }
 
@@ -78,10 +80,41 @@ export const GhostNode = ({
   );
 };
 
+export const ToolboxGhostNode = ({
+  toolboxDrag,
+  depth = 0,
+  isLast = true,
+  ancestorContinuations = [],
+}: {
+  toolboxDrag: ToolboxDragInfo;
+  depth?: number;
+  isLast?: boolean;
+  ancestorContinuations?: boolean[];
+}): JSX.Element => {
+  return (
+    <div>
+      <div className={styles.ghostRow}>
+        {depth > 0 && (
+          <IndentRenderer
+            nodeId="toolbox-ghost"
+            ancestorContinuations={ancestorContinuations}
+            isLast={isLast}
+          />
+        )}
+        <div className={styles.ghostItem}>
+          <TreeItemIcon type={toolboxDrag.type} />
+          <span className={styles.ghostText}>{toolboxDrag.label}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const DropIndicatorRenderer = ({
   target,
   parentPathById,
   draggedNode,
+  toolboxDrag,
   qItems,
 }: DropIndicatorRendererProps): JSX.Element => {
   const isItemTarget = target.type === "item";
@@ -99,6 +132,7 @@ export const DropIndicatorRenderer = ({
   };
 
   const showGhost = draggedNode && qItems && dropPosition !== "on";
+  const showToolboxGhost = !showGhost && toolboxDrag && dropPosition !== "on";
 
   return (
     <DropIndicator
@@ -116,6 +150,10 @@ export const DropIndicatorRenderer = ({
             isLast={true}
             ancestorContinuations={[]}
           />
+        </div>
+      ) : showToolboxGhost ? (
+        <div className={styles.ghostPreview}>
+          <ToolboxGhostNode toolboxDrag={toolboxDrag} />
         </div>
       ) : (
         dropPosition !== "on" && (
