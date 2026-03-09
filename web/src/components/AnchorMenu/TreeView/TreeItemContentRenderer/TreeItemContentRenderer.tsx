@@ -56,7 +56,12 @@ export const TreeItemContentRenderer = memo(function TreeItemContentRenderer({
   const isTopLevel = depth === 0;
   const showDropOnGhost = isDropTarget && draggedNode && qItems;
   const showToolboxDropOnGhost = isDropTarget && !draggedNode && toolboxDrag;
-
+  const itemType =
+    item && isItemControlReceiverComponent(item)
+      ? IQuestionnaireItemType.receiverComponent
+      : item && isRecipientList(item)
+        ? IQuestionnaireItemType.receiver
+        : item?.type;
   return (
     <>
       <div className={`${styles.row} ${isDropTarget ? styles.dropTarget : ""}`}>
@@ -96,15 +101,7 @@ export const TreeItemContentRenderer = memo(function TreeItemContentRenderer({
           ) : (
             <span className={styles.chevronSpacer} />
           )}
-          <TreeItemIcon
-            type={
-              item && isItemControlReceiverComponent(item)
-                ? IQuestionnaireItemType.receiverComponent
-                : item && isRecipientList(item)
-                  ? IQuestionnaireItemType.receiver
-                  : item?.type
-            }
-          />
+          <TreeItemIcon type={itemType} />
           <span className={styles.title}>
             {node.hierarchy} {item?.text}
           </span>

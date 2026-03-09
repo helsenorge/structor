@@ -99,7 +99,11 @@ const Question = (props: QuestionProps): React.JSX.Element => {
   ): void => {
     props.dispatch(updateItemAction(props.item.linkId, name, value));
   };
-
+  const itemType = isItemControlReceiverComponent(props.item)
+    ? IQuestionnaireItemType.receiverComponent
+    : isRecipientList(props.item)
+      ? IQuestionnaireItemType.receiver
+      : props.item.type;
   const getLabelText = (): string => {
     let labelText = "";
     if (isMarkdownActivated) {
@@ -253,16 +257,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
     <div className="question" id={props.item.linkId}>
       <div className="question-form">
         <h2 className="question-type-header">
-          <TreeItemIcon
-            type={
-              isItemControlReceiverComponent(props.item)
-                ? IQuestionnaireItemType.receiverComponent
-                : isRecipientList(props.item)
-                  ? IQuestionnaireItemType.receiver
-                  : props.item.type
-            }
-            size={IconSize.XSmall}
-          />
+          <TreeItemIcon type={itemType} size={IconSize.XSmall} />
           {t(getItemDisplayType(props.item))}
         </h2>
         <div className="horizontal">
