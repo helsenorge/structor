@@ -2,6 +2,7 @@ import React from "react";
 
 import { useTranslation } from "react-i18next";
 import removeMd from "remove-markdown";
+import { getItemType } from "src/helpers/treeHelper";
 
 import type { ActionType } from "../../store/treeStore/treeStore";
 import {
@@ -99,11 +100,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
   ): void => {
     props.dispatch(updateItemAction(props.item.linkId, name, value));
   };
-  const itemType = isItemControlReceiverComponent(props.item)
-    ? IQuestionnaireItemType.receiverComponent
-    : isRecipientList(props.item)
-      ? IQuestionnaireItemType.receiver
-      : props.item.type;
+  const itemType = getItemType(props.item);
   const getLabelText = (): string => {
     let labelText = "";
     if (isMarkdownActivated) {

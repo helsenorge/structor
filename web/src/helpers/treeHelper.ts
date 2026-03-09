@@ -1,6 +1,13 @@
-import type { Items, OrderItem } from "../store/treeStore/treeStore";
+import { IQuestionnaireItemType } from "src/types/IQuestionnareItemType";
 
-import { isIgnorableItem } from "./itemControl";
+import type { Items, OrderItem } from "../store/treeStore/treeStore";
+import type { QuestionnaireItem } from "fhir/r4";
+
+import {
+  isIgnorableItem,
+  isItemControlReceiverComponent,
+  isRecipientList,
+} from "./itemControl";
 
 export const findElementInTreeArray = (
   searchPath: Array<string>,
@@ -27,7 +34,19 @@ const removeUnsupportedChildren = (
     (x) => !isIgnorableItem(qItems[x.linkId], parentItem),
   );
 };
-
+export const getItemType = (
+  item: QuestionnaireItem,
+):
+  | QuestionnaireItem["type"]
+  | IQuestionnaireItemType.receiverComponent
+  | IQuestionnaireItemType.receiver
+  | undefined => {
+  if (!item) return undefined;
+  if (isItemControlReceiverComponent(item))
+    return IQuestionnaireItemType.receiverComponent;
+  if (isRecipientList(item)) return IQuestionnaireItemType.receiver;
+  return item.type;
+};
 const getItemIndexAsString = (
   linkId: string,
   itemOrder: Array<OrderItem>,

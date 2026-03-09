@@ -2,9 +2,9 @@ import { memo } from "react";
 
 import { Button } from "react-aria-components";
 import { useTranslation } from "react-i18next";
+import { getItemType } from "src/helpers/treeHelper";
 
 import type { Items } from "../../../../store/treeStore/treeStore";
-import { IQuestionnaireItemType } from "../../../../types/IQuestionnareItemType";
 import type { TreeNode } from "../../types";
 
 import FormFieldTag from "@helsenorge/designsystem-react/components/FormFieldTag";
@@ -12,10 +12,6 @@ import Icon from "@helsenorge/designsystem-react/components/Icon";
 import ChevronDown from "@helsenorge/designsystem-react/components/Icons/ChevronDown";
 import ChevronRight from "@helsenorge/designsystem-react/components/Icons/ChevronRight";
 
-import {
-  isItemControlReceiverComponent,
-  isRecipientList,
-} from "../../../../helpers/itemControl";
 import { useDraggedNode } from "../../contexts/DraggedNodeContext";
 import { DragHandle } from "../../DragHandle/DragHandle";
 import {
@@ -56,12 +52,7 @@ export const TreeItemContentRenderer = memo(function TreeItemContentRenderer({
   const isTopLevel = depth === 0;
   const showDropOnGhost = isDropTarget && draggedNode && qItems;
   const showToolboxDropOnGhost = isDropTarget && !draggedNode && toolboxDrag;
-  const itemType =
-    item && isItemControlReceiverComponent(item)
-      ? IQuestionnaireItemType.receiverComponent
-      : item && isRecipientList(item)
-        ? IQuestionnaireItemType.receiver
-        : item?.type;
+
   return (
     <>
       <div className={`${styles.row} ${isDropTarget ? styles.dropTarget : ""}`}>
@@ -101,7 +92,7 @@ export const TreeItemContentRenderer = memo(function TreeItemContentRenderer({
           ) : (
             <span className={styles.chevronSpacer} />
           )}
-          <TreeItemIcon type={itemType} />
+          <TreeItemIcon type={getItemType(item)} />
           <span className={styles.title}>
             {node.hierarchy} {item?.text}
           </span>
