@@ -4,17 +4,16 @@ import { useTranslation } from "react-i18next";
 import AnchorMenu from "src/components/AnchorMenu/AnchorMenu";
 import { useValidationContext } from "src/contexts/validation/useValidationContext";
 
-import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
-
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon, { IconSize } from "@helsenorge/designsystem-react/components/Icon";
-import Upload from "@helsenorge/designsystem-react/components/Icons/InfoSignStroke";
+import Settings from "@helsenorge/designsystem-react/components/Icons/Settings";
 
 import FormDetailsDrawer from "../components/Drawer/FormDetailsDrawer/FormDetailsDrawer";
 import QuestionDrawer from "../components/QuestionDrawer/QuestionDrawer";
 import { TreeContext } from "../store/treeStore/treeStore";
-import "./FormBuilder.css";
 
+import "./FormBuilder.css";
+import styles from "./formbuilder.module.scss";
 const FormBuilder = (): React.JSX.Element => {
   const { setTranslateLang, itemsErrors, questionnaireDetailsErrors } =
     useValidationContext();
@@ -28,40 +27,42 @@ const FormBuilder = (): React.JSX.Element => {
   }, [showFormDetails]);
 
   return (
-    <>
-      <div className="editor">
-        <AnchorMenu
-          dispatch={dispatch}
-          qOrder={state.qOrder}
-          qItems={state.qItems}
-          qCurrentItem={state.qCurrentItem}
-          validationErrors={itemsErrors}
-        />
+    <div className={styles.mainContenetWrapper}>
+      <div className={styles.detailsButton}>
+        <Button
+          onClick={toggleFormDetails}
+          ariaLabel={t("Questionnaire details")}
+          size="large"
+          variant="borderless"
+        >
+          <Icon size={IconSize.Large} svgIcon={Settings} />
+          {t("Questionnaire details")}
+        </Button>
       </div>
-      <div className="page-wrapper">
-        <div className="details-button">
-          <Button
-            onClick={toggleFormDetails}
-            ariaLabel={t("Questionnaire details")}
-            size="medium"
-            variant="borderless"
-          >
-            <Icon size={IconSize.Medium} svgIcon={Upload} />
-          </Button>
+      <div>
+        <div className={styles.editor}>
+          <AnchorMenu
+            dispatch={dispatch}
+            qOrder={state.qOrder}
+            qItems={state.qItems}
+            qCurrentItem={state.qCurrentItem}
+            validationErrors={itemsErrors}
+          />
         </div>
-
-        <FormDetailsDrawer
-          setTranslateLang={(language: ExtendedLanguageLocales) => {
-            setTranslateLang(language);
-            toggleFormDetails();
-          }}
-          questionnaireDetailsErrors={questionnaireDetailsErrors}
-          closeDrawer={toggleFormDetails}
-          isOpen={showFormDetails}
-        />
-        <QuestionDrawer validationErrors={itemsErrors} />
+        <div className={styles.pageWrapper}>
+          <FormDetailsDrawer
+            setTranslateLang={(language: string) => {
+              setTranslateLang(language);
+              toggleFormDetails();
+            }}
+            questionnaireDetailsErrors={questionnaireDetailsErrors}
+            closeDrawer={toggleFormDetails}
+            isOpen={showFormDetails}
+          />
+          <QuestionDrawer validationErrors={itemsErrors} />
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
