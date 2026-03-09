@@ -1,4 +1,4 @@
-import { useCallback, type Dispatch } from "react";
+import { useCallback, useMemo, type Dispatch } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -11,6 +11,7 @@ import type {
 import type { ValidationError } from "../../utils/validationUtils";
 import type { Key } from "@react-types/shared";
 
+import { DraggedNodeContext } from "./contexts/DraggedNodeContext";
 import { useAnchorMenuHelpers } from "./hooks/useAnchorMenuHelpers";
 import { useTreeData } from "./hooks/useTreeData";
 import { useTreeDragAndDrop } from "./hooks/useTreeDragAndDrop";
@@ -48,7 +49,7 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
 
   const { validationClasses } = useAnchorMenuHelpers();
 
-  const { dragAndDropHooks } = useTreeDragAndDrop({
+  const { dragAndDropHooks, draggedNode } = useTreeDragAndDrop({
     qOrder: props.qOrder,
     qItems: props.qItems,
     treeData,
@@ -73,21 +74,28 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     [props.dispatch, parentPathById],
   );
 
+  const draggedNodeContextValue = useMemo(
+    () => ({ draggedNode, qItems: props.qItems }),
+    [draggedNode, props.qItems],
+  );
+
   return (
     <div className={styles.questionnaireOverview}>
       <Toolbox recipientComponentLabel={RECIPIENT_COMPONENT_LABEL} />
 
-      <TreeView
-        qItems={props.qItems}
-        qCurrentItem={props.qCurrentItem}
-        treeData={treeData}
-        parentPathById={parentPathById}
-        expandableKeys={expandableKeys}
-        dragAndDropHooks={dragAndDropHooks}
-        onSelectionChange={handleSelectionChange}
-        validationClasses={validationClasses}
-        showPlaceholder={props.qOrder.length === 0}
-      />
+      <DraggedNodeContext.Provider value={draggedNodeContextValue}>
+        <TreeView
+          qItems={props.qItems}
+          qCurrentItem={props.qCurrentItem}
+          treeData={treeData}
+          parentPathById={parentPathById}
+          expandableKeys={expandableKeys}
+          dragAndDropHooks={dragAndDropHooks}
+          onSelectionChange={handleSelectionChange}
+          validationClasses={validationClasses}
+          showPlaceholder={props.qOrder.length === 0}
+        />
+      </DraggedNodeContext.Provider>
     </div>
   );
 };

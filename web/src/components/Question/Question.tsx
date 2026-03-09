@@ -253,7 +253,16 @@ const Question = (props: QuestionProps): React.JSX.Element => {
     <div className="question" id={props.item.linkId}>
       <div className="question-form">
         <h2 className="question-type-header">
-          <TreeItemIcon type={props.item.type} size={IconSize.XSmall} />
+          <TreeItemIcon
+            type={
+              isItemControlReceiverComponent(props.item)
+                ? IQuestionnaireItemType.receiverComponent
+                : isRecipientList(props.item)
+                  ? IQuestionnaireItemType.receiver
+                  : props.item.type
+            }
+            size={IconSize.XSmall}
+          />
           {t(getItemDisplayType(props.item))}
         </h2>
         <div className="horizontal">

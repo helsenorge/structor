@@ -1,3 +1,4 @@
+import { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
 import type { QuestionnaireItem } from "fhir/r4";
 
 import Icon, { IconSize } from "@helsenorge/designsystem-react/components/Icon";
@@ -13,15 +14,24 @@ import BooleanIcon from "../icons/BooleanIcon";
 import ChoiceIcon from "../icons/ChoiceIcon";
 import NumberIcon from "../icons/NumberIcon";
 import { QuantityIcon2 } from "../icons/QuantityIcon";
+import { RecipientComponentIcon } from "../icons/RecipientComponentIcon";
+import { RecipientListIcon } from "../icons/RecipientListIcon";
 
 export const TreeItemIcon = ({
   type,
   size = IconSize.XXSmall,
 }: {
-  type?: QuestionnaireItem["type"] | "receiver" | "receiverComponent";
+  type?:
+    | QuestionnaireItem["type"]
+    | IQuestionnaireItemType.receiver
+    | IQuestionnaireItemType.receiverComponent;
   size?: IconSize;
 }): JSX.Element => {
   switch (type) {
+    case IQuestionnaireItemType.receiver:
+      return <Icon size={size} svgIcon={RecipientListIcon} />;
+    case IQuestionnaireItemType.receiverComponent:
+      return <Icon size={size} svgIcon={RecipientComponentIcon} />;
     case "question":
       return <Icon size={size} svgIcon={HelpSign} />;
     case "choice":
@@ -48,6 +58,7 @@ export const TreeItemIcon = ({
       return <Icon size={size} svgIcon={InfoSignStroke} />;
     case "attachment":
       return <Icon size={size} svgIcon={Attachment} />;
+
     default:
       return <Icon size={size} svgIcon={HelpSign} />;
   }

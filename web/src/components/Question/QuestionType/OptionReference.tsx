@@ -1,7 +1,7 @@
 import { useContext, useMemo } from "react";
 
 import {
-  Button,
+  Button as AriaButton,
   DropIndicator,
   GridList,
   GridListItem,
@@ -16,10 +16,11 @@ import {
 } from "../../../types/IQuestionnareItemType";
 import type { QuestionnaireItem } from "fhir/r4";
 
+import Button from "@helsenorge/designsystem-react/components/Button";
+
 import createUUID from "../../../helpers/CreateUUID";
 import { updateItemAction } from "../../../store/treeStore/treeActions";
 import { TreeContext } from "../../../store/treeStore/treeStore";
-import Btn from "../../Btn/Btn";
 import InputField from "../../InputField/inputField";
 
 type Props = {
@@ -174,13 +175,13 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
             }
           >
             <div className="option-reference align-everything">
-              <Button
+              <AriaButton
                 slot="drag"
                 className="drag-handle"
                 aria-label="reorder element"
               >
                 {"☰"}
-              </Button>
+              </AriaButton>
               <InputField
                 name="beskrivelse"
                 placeholder={t("Select recipient..")}
@@ -222,12 +223,9 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
         )}
       </GridList>
       <div className="center-text new-option-reference">
-        <Btn
-          type="button"
-          variant="secondary"
-          onClick={() => dispatchNewItem()}
-          title={t("+ Add recipient")}
-        />
+        <Button onClick={() => dispatchNewItem()} variant="outline">
+          {t("+ Add recipient")}
+        </Button>
       </div>
     </>
   );

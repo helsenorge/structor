@@ -128,3 +128,9 @@
     background-color: rgb(18 127 143 / 14%);
   }
 }
+
+.dropOnGhostPreview {
+  padding: 2px 0;
+  opacity: 0.6;
+  pointer-events: none;
+}

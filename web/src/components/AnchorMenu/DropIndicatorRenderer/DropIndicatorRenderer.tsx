@@ -23,19 +23,21 @@ type CssVarStyle = React.CSSProperties & {
 
 const TREE_INDENT_UNIT_PX = 24;
 
-const GhostNode = ({
-  node,
-  qItems,
-  depth,
-  isLast,
-  ancestorContinuations,
-}: {
+export interface GhostNodeProps {
   node: TreeNode;
   qItems: Items;
   depth: number;
   isLast: boolean;
   ancestorContinuations: boolean[];
-}): JSX.Element => {
+}
+
+export const GhostNode = ({
+  node,
+  qItems,
+  depth,
+  isLast,
+  ancestorContinuations,
+}: GhostNodeProps): JSX.Element => {
   const item = qItems[node.id];
   const isGroup = item?.type === "group";
   return (

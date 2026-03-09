@@ -1,4 +1,11 @@
-import { type Dispatch, type JSX, useRef, useMemo, useCallback } from "react";
+import {
+  type Dispatch,
+  type JSX,
+  useRef,
+  useMemo,
+  useCallback,
+  useState,
+} from "react";
 
 import { useDragAndDrop } from "react-aria-components";
 
@@ -105,6 +112,7 @@ export const useTreeDragAndDrop = ({
 }: UseDragAndDropOptions) => {
   const nodeMap = useMemo(() => buildNodeMap(treeData), [treeData]);
   const draggedKeysRef = useRef<Set<Key> | null>(null);
+  const [draggedNode, setDraggedNode] = useState<TreeNode | null>(null);
   const getOrderArray = (orderPath: string[]): OrderItem[] => {
     let current = qOrder;
     for (const id of orderPath) {
@@ -211,7 +219,7 @@ export const useTreeDragAndDrop = ({
     [parentPathById, qOrder, qItems, dispatch, recipientComponentLabel],
   );
 
-  return useDragAndDrop({
+  const dndResult = useDragAndDrop({
     acceptedDragTypes: "all",
     getItems: (keys: Set<Key>): DragItem[] => {
       return Array.from(keys).map((k) => ({
@@ -220,9 +228,12 @@ export const useTreeDragAndDrop = ({
     },
     onDragStart: (e): void => {
       draggedKeysRef.current = e.keys;
+      const draggedId = getFirstKey(e.keys);
+      setDraggedNode(draggedId ? (nodeMap.get(draggedId) ?? null) : null);
     },
     onDragEnd: (): void => {
       draggedKeysRef.current = null;
+      setDraggedNode(null);
     },
     getDropOperation: (_target, types, allowedOperations) => {
       if (types.has(TOOLBOX_DRAG_TYPE)) {
@@ -283,4 +294,6 @@ export const useTreeDragAndDrop = ({
       );
     },
   });
+
+  return { ...dndResult, draggedNode };
 };
