@@ -41,10 +41,15 @@ export const getItemType = (
   | IQuestionnaireItemType.receiverComponent
   | IQuestionnaireItemType.receiver
   | undefined => {
-  if (!item) return undefined;
-  if (isItemControlReceiverComponent(item))
+  if (!item) {
+    return undefined;
+  }
+  if (isItemControlReceiverComponent(item)) {
     return IQuestionnaireItemType.receiverComponent;
-  if (isRecipientList(item)) return IQuestionnaireItemType.receiver;
+  }
+  if (isRecipientList(item)) {
+    return IQuestionnaireItemType.receiver;
+  }
   return item.type;
 };
 const getItemIndexAsString = (
