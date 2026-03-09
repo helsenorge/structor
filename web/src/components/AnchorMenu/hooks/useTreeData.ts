@@ -72,19 +72,24 @@ export const useExpandedKeys = (
         return new Set(expandableKeys);
       }
 
+      let changed = false;
       const next = new Set(current);
 
       for (const k of newlyExpandable) {
-        next.add(k);
-      }
-
-      for (const k of next) {
-        if (!expandableKeys.has(k)) {
-          next.delete(k);
+        if (!next.has(k)) {
+          next.add(k);
+          changed = true;
         }
       }
 
-      return next;
+      for (const k of current) {
+        if (!expandableKeys.has(k)) {
+          next.delete(k);
+          changed = true;
+        }
+      }
+
+      return changed ? next : current;
     });
 
     prevExpandableRef.current = expandableKeys;
