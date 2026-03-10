@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import AnchorMenu from "src/components/AnchorMenu/AnchorMenu";
 import { useValidationContext } from "src/contexts/validation/useValidationContext";
 
+import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
+
 import Button from "@helsenorge/designsystem-react/components/Button";
 import Icon, { IconSize } from "@helsenorge/designsystem-react/components/Icon";
 import Settings from "@helsenorge/designsystem-react/components/Icons/Settings";
@@ -51,7 +53,7 @@ const FormBuilder = (): React.JSX.Element => {
         </div>
         <div className={styles.pageWrapper}>
           <FormDetailsDrawer
-            setTranslateLang={(language: string) => {
+            setTranslateLang={(language: ExtendedLanguageLocales) => {
               setTranslateLang(language);
               toggleFormDetails();
             }}
