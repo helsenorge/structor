@@ -134,6 +134,7 @@
   align-items: center;
   justify-content: center;
   cursor: grab;
+  align-self: center;
 }
 
 .drag-handle:hover {

@@ -28,6 +28,7 @@
   font-size: 20px;
   line-height: 1;
   color: var(--color-grey-dark, #666);
+  align-self: center;
 }
 
 .drag-handle:hover {

@@ -111,7 +111,7 @@ export enum skjemaUtfyllerCode {
 }
 
 export enum skjemaUtfyllerDisplay {
-  Standard = "Standard tilgangsstyring (innbygger selv, foreldre på vegne av barn < 12 år, foreldre på vegne av barn 12-16 år, representant med tildelt fullmakt, representant med ordinær fullmakt)",
+  Standard = "Standard tilgangsstyring (innbygger selv, foreldre på vegne av barn < 12 år, foreldre på vegne av barn 12-16 år, representant med tildelt fullmakt, representant med fullmakt)",
   Tilpasset = "Tilpasset tilgangsstyring",
 }
 
@@ -141,7 +141,7 @@ export enum tilgangsstyringsDisplay {
   barnUnder12 = "Foreldre på vegne av barn < 12 år",
   barnMellom12Og16 = "Foreldre på vegne av barn 12-16 år",
   representantTildeltFullmakt = "Representant med tildelt fullmakt",
-  representantOrdinaerFullmakt = "Representant med ordinær fullmakt",
+  representantOrdinaerFullmakt = "Representant med fullmakt",
 }
 
 export const tilgangsstyringOptions = [

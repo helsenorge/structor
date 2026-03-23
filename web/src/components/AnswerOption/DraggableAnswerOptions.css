@@ -8,10 +8,16 @@
   padding: 8px;
   border-radius: 4px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   border: 2px solid transparent;
   transition: all 0.2s ease;
   background-color: var(--color-white, #fff);
+}
+
+.draggable-answer-option > [role="gridcell"] {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .draggable-answer-option[data-dragging] {
@@ -52,6 +58,7 @@
   border: none;
   font-size: 20px;
   line-height: 1;
+  align-self: center;
   color: var(--color-grey-dark, #666);
 }
 

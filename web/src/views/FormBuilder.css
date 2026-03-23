@@ -49,7 +49,7 @@ h1 {
   margin: 20px 70px;
 }
 
-input,
+input:not([type="radio"], [type="checkbox"]),
 textarea,
 select {
   padding: 10px;
