@@ -1,3 +1,5 @@
+import removeMd from "remove-markdown";
+
 import type {
   CodeStringValue,
   ContainedTranslations,
@@ -179,7 +181,9 @@ function translateItem(
   const answerOptions = translateAnswerOptions(translationItem?.answerOption);
   const entryFormatText = getPlaceHolderText(translationItem);
   const markdownValue = getTextExtensionMarkdown(translationItem);
-  const text = markdownValue || translationItem?.text || "";
+  const text = markdownValue
+    ? removeMd(markdownValue)
+    : translationItem?.text || "";
   const validationText = getValidationMessage(translationItem);
   const initial = getInitialText(translationItem);
   const sublabel = getSublabel(translationItem);
@@ -190,6 +194,7 @@ function translateItem(
     answerOptions,
     entryFormatText,
     text,
+    markdown: markdownValue,
     validationText,
     initial,
     sublabel,
