@@ -137,6 +137,7 @@ export enum tilgangsstyringsCode {
 }
 
 export enum tilgangsstyringsDisplay {
+  InnbyggerSelv = "Innbygger selv",
   kunInnbygger = "Kun innbygger selv",
   barnUnder12 = "Foreldre på vegne av barn < 12 år",
   barnMellom12Og16 = "Foreldre på vegne av barn 12-16 år",

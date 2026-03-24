@@ -15,6 +15,7 @@ import {
   skjemaUtfyllerCode,
   skjemaUtfyllerOptions,
   tilgangsstyringOptions,
+  tilgangsstyringsDisplay,
   tjenesteomaadeOptions,
   tjenesteomraadeCode,
   updateMetaSecurity,
@@ -131,11 +132,17 @@ const MetaSecurityEditor = (): React.JSX.Element => {
       </FormField>
 
       {/* Skjema Utfylling Tilgangsstyring */}
+
       {displayTilgangsstyring && (
         <FormField label={t("Hvem skal kunne fylle ut skjemaet?")}>
           <InfoCheckbox
             key={kunInnbyggerMetaSecurity.code}
-            label={kunInnbyggerMetaSecurity.display}
+            label={
+              tilgangsstyringOptions.length &&
+              tilgangsstyringOptions.filter(optionsIsChecked).length > 0
+                ? tilgangsstyringsDisplay.InnbyggerSelv
+                : kunInnbyggerMetaSecurity.display
+            }
             checked={true}
           />
           {tilgangsstyringOptions.map((option) => {
