@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import React, { type ReactNode } from "react";
+import React, { type ReactNode, useMemo } from "react";
 
 import {
   type Queries,
@@ -52,14 +52,16 @@ const Providers = ({
   initialCodeSystem,
 }: ProvidersProps): React.JSX.Element => {
   const newState = state as TreeState;
+  const contextValue = useMemo(
+    () => ({
+      dispatch: dispatch as React.Dispatch<ActionType>,
+      state: newState,
+    }),
+    [dispatch, newState],
+  );
   return (
     <I18nextProvider i18n={i18n}>
-      <TreeContext.Provider
-        value={{
-          dispatch: dispatch as React.Dispatch<ActionType>,
-          state: newState,
-        }}
-      >
+      <TreeContext.Provider value={contextValue}>
         <MemoryRouter initialEntries={initialEntries}>
           {initialValueSet ? (
             <ValueSetProvider initialValueSet={initialValueSet}>
