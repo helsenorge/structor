@@ -93,8 +93,10 @@ const ValueSetComposeComponent = (): React.JSX.Element => {
         borderType="full"
       />
       <Tabs
-        ariaLabelLeftButton="Scroll left"
-        ariaLabelRightButton="Scroll right"
+        resources={{
+          ariaLabelLeftButton: "Scroll left",
+          ariaLabelRightButton: "Scroll right",
+        }}
         sticky
         className={styles.valueSetCompose}
       >

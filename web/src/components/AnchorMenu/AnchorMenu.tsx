@@ -70,20 +70,21 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     toolboxDrag,
   });
 
+  const { dispatch } = props;
   const handleSelectionChange = useCallback(
     (keys: Set<Key>): void => {
       const selectedId = getFirstKey(keys);
       if (!selectedId) {
         return;
       }
-      props.dispatch(
+      dispatch(
         updateMarkedLinkIdAction(
           selectedId,
           parentPathById.get(selectedId) ?? [],
         ),
       );
     },
-    [props.dispatch, parentPathById],
+    [dispatch, parentPathById],
   );
 
   const draggedNodeContextValue = useMemo(

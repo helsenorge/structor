@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useMemo, type JSX } from "react";
 
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
@@ -15,8 +15,7 @@ import SectionHeader from "../components/sectionHeader/SectionHeader";
 import Upload from "../components/upload/Upload";
 
 import styles from "./valueSets.module.scss";
-const ValueSets = (): React.JSX.Element => {
-  const [activeTab, setActiveTab] = React.useState(0);
+const ValueSets = (): JSX.Element => {
   const { state } = useContext(TreeContext);
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -26,20 +25,19 @@ const ValueSets = (): React.JSX.Element => {
   const setTabToNewValueSetTab = (): void => {
     navigate("new");
   };
-  useEffect(() => {
+  const activeTab = useMemo(() => {
     if (pathname.endsWith("new")) {
-      setActiveTab(0);
+      return 0;
     } else if (pathname.endsWith("existing")) {
-      setActiveTab(1);
+      return 1;
     } else if (pathname.endsWith("import")) {
-      setActiveTab(2);
+      return 2;
     } else if (pathname.endsWith("upload")) {
-      setActiveTab(3);
+      return 3;
     } else if (pathname.endsWith("simple")) {
-      setActiveTab(4);
-    } else {
-      setActiveTab(0);
+      return 4;
     }
+    return 0;
   }, [pathname]);
   return (
     <section className={styles.valueSets} ref={targetRef}>
@@ -49,8 +47,10 @@ const ValueSets = (): React.JSX.Element => {
         linkText={t("To form builder")}
       />
       <Tabs
-        ariaLabelLeftButton="Scroll left"
-        ariaLabelRightButton="Scroll right"
+        resources={{
+          ariaLabelLeftButton: "Scroll left",
+          ariaLabelRightButton: "Scroll right",
+        }}
         sticky
         className={styles.valueSetTabs}
         activeTab={activeTab}

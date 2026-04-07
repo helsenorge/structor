@@ -3,7 +3,7 @@ import { mapToTreeState } from "src/helpers/FhirToTreeStateMapper";
 import { saveQuestionnaire } from "src/store/treeStore/indexedDbHelper";
 import { getInitialState } from "src/store/treeStore/initialState";
 import { resetQuestionnaireAction } from "src/store/treeStore/treeActions";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { render, screen, fireEvent, waitFor } from "../../tests/testUtils";
 import { useUploadFile } from "../useUploadFile";
@@ -14,7 +14,7 @@ vi.mock("src/store/treeStore/indexedDbHelper");
 vi.mock("src/store/treeStore/treeActions");
 
 const partialState = { foo: "bar", qMetadata: { id: "new-id" } };
-(mapToTreeState as Mock).mockReturnValue(partialState);
+vi.mocked(mapToTreeState).mockReturnValue(partialState as any);
 
 // ——— test‐only harness component ———
 const Harness = ({ onComplete }: { onComplete?: (id: string) => void }) => {
@@ -112,7 +112,7 @@ describe("useUploadFile", () => {
     });
     (file as any).text = () => Promise.resolve(JSON.stringify(payload));
 
-    (saveQuestionnaire as Mock).mockRejectedValueOnce(new Error("db fail"));
+    vi.mocked(saveQuestionnaire).mockRejectedValueOnce(new Error("db fail"));
 
     const onUploadComplete = vi.fn();
     render(<Harness onComplete={onUploadComplete} />, { dispatch });
@@ -139,10 +139,10 @@ describe("useUploadFile", () => {
     (file as any).text = () => Promise.resolve(JSON.stringify(payload));
     const onUploadComplete = vi.fn();
 
-    (mapToTreeState as Mock).mockReturnValue({
+    vi.mocked(mapToTreeState).mockReturnValue({
       foo: "bar",
       qMetadata: { id: undefined },
-    });
+    } as any);
 
     render(<Harness onComplete={onUploadComplete} />, { dispatch });
     await userEvent.upload(screen.getByTestId("file-input"), file);
@@ -162,7 +162,7 @@ describe("useUploadFile", () => {
     });
     (file as any).text = () => Promise.resolve(JSON.stringify(payload));
 
-    (mapToTreeState as Mock).mockReturnValue(partialState);
+    vi.mocked(mapToTreeState).mockReturnValue(partialState as any);
 
     render(<Harness />, { dispatch });
     await userEvent.upload(screen.getByTestId("file-input"), file);
@@ -187,7 +187,7 @@ describe("useUploadFile", () => {
       type: "application/json",
     });
     (file as any).text = () => Promise.resolve(JSON.stringify(payload));
-    (mapToTreeState as Mock).mockReturnValue(partialState);
+    vi.mocked(mapToTreeState).mockReturnValue(partialState as any);
 
     render(<Harness />, { dispatch });
     const input = screen.getByTestId<HTMLInputElement>("file-input");

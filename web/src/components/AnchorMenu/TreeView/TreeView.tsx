@@ -40,12 +40,10 @@ export const TreeView = ({
   // Default expand all items if expandedKeys is empty
   const [expandedKeys, setExpandedKeys] = useExpandedKeys(expandableKeys);
 
+  const currentLinkId = qCurrentItem?.linkId;
   const selectedKeys = useMemo(
-    () =>
-      qCurrentItem?.linkId
-        ? new Set<Key>([qCurrentItem.linkId])
-        : new Set<Key>(),
-    [qCurrentItem?.linkId],
+    () => (currentLinkId ? new Set<Key>([currentLinkId]) : new Set<Key>()),
+    [currentLinkId],
   );
 
   const handleSelectionChange = useCallback(

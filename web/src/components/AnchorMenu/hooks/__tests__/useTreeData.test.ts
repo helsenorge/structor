@@ -48,7 +48,6 @@ describe("useTreeData", () => {
     expect(result.current.treeData[0].hierarchy).toBe("1.");
     // eslint-disable-next-line testing-library/no-node-access
     expect(result.current.treeData[0].children).toHaveLength(1);
-    // eslint-disable-next-line testing-library/no-node-access
     expect(result.current.treeData[0].children[0].id).toBe("item-1-1");
   });
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type JSX } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -36,8 +36,10 @@ const NewValueSet = ({ scrollToTarget }: Props): JSX.Element => {
     <div className={styles.newValueSet}>
       <div className={styles.valueSetTabsContainer}>
         <Tabs
-          ariaLabelLeftButton="Scroll left"
-          ariaLabelRightButton="Scroll right"
+          resources={{
+            ariaLabelLeftButton: "Scroll left",
+            ariaLabelRightButton: "Scroll right",
+          }}
           sticky
           className={styles.valueSetTabs}
         >

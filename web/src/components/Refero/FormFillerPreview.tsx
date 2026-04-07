@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useId, useState } from "react";
 
 import "./styles/formFillerPreview.css";
 import { configureStore, type Store } from "@reduxjs/toolkit";
@@ -61,11 +61,8 @@ const FormFillerPreview = ({
   const [questionnaireResponse, setQuestionnaireResponse] =
     useState<QuestionnaireResponse>();
   const [showResponse, setShowResponse] = useState<boolean>(false);
-  const [referoKey, setReferoKey] = useState<string>("123");
-
-  useEffect(() => {
-    setReferoKey(Math.random().toString());
-  }, [selectedLanguage, selectedGender, selectedAge]);
+  const id = useId();
+  const referoKey = `${id}-${selectedLanguage}-${selectedGender}-${selectedAge}`;
 
   return (
     <Provider store={store}>

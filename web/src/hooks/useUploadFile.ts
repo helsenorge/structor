@@ -24,7 +24,7 @@ export const useUploadFile = (
   uploadFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
   uploadFiles: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isLoading: boolean;
-  uploadRef: React.RefObject<HTMLInputElement>;
+  uploadRef: React.RefObject<HTMLInputElement | null>;
   error: string | null;
 } => {
   const { onUploadComplete } = options;

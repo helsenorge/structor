@@ -19,22 +19,14 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.js"
-    ></script>
-
-    <script src="https://static-hn-mas-01.int-hn.nhn.no/core/static/js/dompurify/3.3.0/purify.min.js"></script>
+    <script src="https://static-hn-mas-01.int-hn.nhn.no/core/static/js/dompurify/3.3.2/purify.min.js"></script>
 
     <script type="importmap">
       {
         "imports": {
-          "react": "https://esm.sh/react@19?dev",
-          "react-dom/client": "https://esm.sh/react-dom@19/client?dev"
+          "react": "https://static-hn-mas-01.int-hn.nhn.no/core/static/js/esm/react-19.2.1.min.js",
+          "react-dom/client": "https://static-hn-mas-01.int-hn.nhn.no/core/static/js/esm/react-dom-19.2.1.min.js",
+          "@amplitude/analytics-browser": "https://static-hn-mas-01.int-hn.nhn.no/core/static/js/esm/analytics-browser-2.31.3.min.js"
         }
       }
     </script>

@@ -79,7 +79,7 @@ function DropDownItems({
   autofocus,
 }: {
   children: React.ReactNode;
-  dropDownRef: React.RefObject<HTMLDivElement>;
+  dropDownRef: React.RefObject<HTMLDivElement | null>;
   onClose: () => void;
   autofocus: boolean;
 }) {
@@ -137,6 +137,7 @@ function DropDownItems({
 
   useEffect(() => {
     if (items && !highlightedItem) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setHighlightedItem(items[0]);
     }
 

@@ -1,7 +1,7 @@
 import { tilgangsstyringsCode } from "src/helpers/MetadataHelper";
 
 import type { Meta } from "fhir/r4";
-import type { TFunction } from "node_modules/i18next/typescript/t";
+import type { TFunction } from "i18next";
 import type { IQuestionnaireMetadata } from "src/types/IQuestionnaireMetadataType";
 
 import { ErrorLevel, ValidationType } from "../../validationTypes";

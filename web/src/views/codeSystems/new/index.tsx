@@ -34,8 +34,10 @@ const NewCodeSystem = ({ scrollToTarget }: Props): React.JSX.Element => {
     <div>
       <div>
         <Tabs
-          ariaLabelLeftButton="Scroll left"
-          ariaLabelRightButton="Scroll right"
+          resources={{
+            ariaLabelLeftButton: "Scroll left",
+            ariaLabelRightButton: "Scroll right",
+          }}
           sticky
           className={styles.codeSystemTabs}
         >

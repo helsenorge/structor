@@ -22,13 +22,14 @@ const createUUIDMock = createUUID as Mock;
 const createUriUUIDMock = createUriUUID as Mock;
 
 // A simple consumer component to access context values in our tests
-let contextValue: any;
+const contextValueRef: { current: any } = { current: null };
 const TestConsumer = () => {
-  contextValue = useContext(ValueSetContext);
+  // eslint-disable-next-line react-hooks/immutability
+  contextValueRef.current = useContext(ValueSetContext);
   return (
     <div>
       {/* Display a value to ensure re-renders are captured */}
-      <span>{contextValue?.newValueSet?.name}</span>
+      <span>{contextValueRef.current?.newValueSet?.name}</span>
     </div>
   );
 };
@@ -76,7 +77,7 @@ describe("ValueSetProvider", () => {
     render(<TestConsumer />, { initialValueSet: initialVS });
 
     // expect(initialValueSets.initValueSet).toHaveBeenCalledTimes(1);
-    expect(contextValue.newValueSet).toEqual(initialVS);
+    expect(contextValueRef.current.newValueSet).toEqual(initialVS);
   });
 
   it("should reset the ValueSet to a new initial state when reset is called", async () => {
@@ -85,19 +86,19 @@ describe("ValueSetProvider", () => {
     const modifiedVs = createSampleValueSet("Modified Name");
 
     await waitFor(async () => {
-      contextValue.handleEdit(modifiedVs);
+      contextValueRef.current.handleEdit(modifiedVs);
     });
 
-    expect(contextValue.newValueSet.name).toBe("Modified Name");
-    expect(contextValue.newValueSet).not.toEqual(initialVS);
+    expect(contextValueRef.current.newValueSet.name).toBe("Modified Name");
+    expect(contextValueRef.current.newValueSet).not.toEqual(initialVS);
 
     // 2. Reset the state
     await waitFor(async () => {
-      contextValue.reset();
+      contextValueRef.current.reset();
     });
 
     // expect(initialValueSets.initValueSet).toHaveBeenCalledTimes(2); // Called once on initial render, once on reset
-    expect(contextValue.newValueSet).toEqual(initialVS);
+    expect(contextValueRef.current.newValueSet).toEqual(initialVS);
   });
 
   it("should correctly determine if a value set can be edited via canEdit", async () => {
@@ -107,9 +108,9 @@ describe("ValueSetProvider", () => {
       </ValueSetProvider>,
     );
 
-    expect(contextValue.canEdit("some-other-uri")).toBe(true);
-    expect(contextValue.canEdit(undefined)).toBe(true);
-    expect(contextValue.canEdit(predefinedValueSetUri)).toBe(false);
+    expect(contextValueRef.current.canEdit("some-other-uri")).toBe(true);
+    expect(contextValueRef.current.canEdit(undefined)).toBe(true);
+    expect(contextValueRef.current.canEdit(predefinedValueSetUri)).toBe(false);
   });
 
   it("should update the value set when handleEdit is called", async () => {
@@ -121,11 +122,11 @@ describe("ValueSetProvider", () => {
     const newVs = createSampleValueSet("A Whole New ValueSet");
 
     await waitFor(async () => {
-      contextValue.handleEdit(newVs);
+      contextValueRef.current.handleEdit(newVs);
     });
 
-    expect(contextValue.newValueSet).toEqual(newVs);
-    expect(contextValue.newValueSet).not.toBe(newVs);
+    expect(contextValueRef.current.newValueSet).toEqual(newVs);
+    expect(contextValueRef.current.newValueSet).not.toBe(newVs);
   });
 
   describe("copyComposeIncludeConcept", async () => {
@@ -174,17 +175,17 @@ describe("ValueSetProvider", () => {
       );
 
       const originalState = JSON.parse(
-        JSON.stringify(contextValue.newValueSet),
+        JSON.stringify(contextValueRef.current.newValueSet),
       );
 
       await waitFor(async () => {
-        contextValue.copyComposeIncludeConcept("non-existent-id", 0);
+        contextValueRef.current.copyComposeIncludeConcept("non-existent-id", 0);
       });
 
-      expect(contextValue.newValueSet).toEqual(originalState);
-      expect(contextValue.newValueSet.compose.include[0].concept.length).toBe(
-        1,
-      );
+      expect(contextValueRef.current.newValueSet).toEqual(originalState);
+      expect(
+        contextValueRef.current.newValueSet.compose.include[0].concept.length,
+      ).toBe(1);
     });
 
     it("should copy a concept and add it to the list with new UUIDs", async () => {
@@ -195,10 +196,14 @@ describe("ValueSetProvider", () => {
       );
 
       await waitFor(async () => {
-        contextValue.copyComposeIncludeConcept("concept-to-copy-id", 0);
+        contextValueRef.current.copyComposeIncludeConcept(
+          "concept-to-copy-id",
+          0,
+        );
       });
 
-      const concepts = contextValue.newValueSet.compose.include[0].concept;
+      const concepts =
+        contextValueRef.current.newValueSet.compose.include[0].concept;
       expect(concepts.length).toBe(2);
 
       const originalConcept = concepts[0];

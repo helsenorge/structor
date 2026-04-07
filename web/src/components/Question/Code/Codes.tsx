@@ -38,11 +38,6 @@ const Codes = ({
 
   const [rollback, setRollback] = useState(false);
 
-  useEffect(() => {
-    setRollback(false);
-    setCodes(getCodes());
-  }, [rollback, state.qItems[linkId].code]);
-
   const getCodes = (): Coding[] | undefined => {
     return state.qItems[linkId].code?.map((code) => {
       // Add id (for internal usage) if not already set
@@ -51,6 +46,13 @@ const Codes = ({
   };
 
   const [codes, setCodes] = useState(getCodes);
+
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    setRollback(false);
+    setCodes(getCodes());
+  }, [rollback, state.qItems[linkId].code]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const createEmptyCode = (): Coding => {
     return { code: "", display: "", system: createUriUUID(), id: createUUID() };

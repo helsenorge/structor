@@ -18,7 +18,7 @@ const defaultOptions: ScrollOptions = {
 export const useScrollToElement = <T extends HTMLElement>(
   options: ScrollOptions = defaultOptions,
 ): {
-  targetRef: React.RefObject<T>;
+  targetRef: React.RefObject<T | null>;
   scrollToTarget: () => void;
 } => {
   const targetRef = useRef<T>(null);

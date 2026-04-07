@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useMemo, type JSX } from "react";
 
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
@@ -14,8 +14,7 @@ import UploadCodeSystem from "../components/upload/Upload";
 
 import styles from "./codeSystems.module.scss";
 
-const CodeSystems = (): React.JSX.Element => {
-  const [activeTab, setActiveTab] = React.useState(0);
+const CodeSystems = (): JSX.Element => {
   const { state } = useContext(TreeContext);
 
   const navigate = useNavigate();
@@ -26,14 +25,15 @@ const CodeSystems = (): React.JSX.Element => {
   const setTabToNewValueSetTab = (): void => {
     navigate("new");
   };
-  useEffect(() => {
+  const activeTab = useMemo(() => {
     if (pathname.endsWith("new")) {
-      setActiveTab(0);
+      return 0;
     } else if (pathname.endsWith("existing")) {
-      setActiveTab(1);
+      return 1;
     } else if (pathname.endsWith("upload")) {
-      setActiveTab(2);
+      return 2;
     }
+    return 0;
   }, [pathname]);
 
   return (
@@ -45,8 +45,10 @@ const CodeSystems = (): React.JSX.Element => {
       />
 
       <Tabs
-        ariaLabelLeftButton="Scroll left"
-        ariaLabelRightButton="Scroll right"
+        resources={{
+          ariaLabelLeftButton: "Scroll left",
+          ariaLabelRightButton: "Scroll right",
+        }}
         sticky
         activeTab={activeTab}
       >

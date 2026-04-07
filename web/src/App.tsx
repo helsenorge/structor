@@ -2,6 +2,8 @@ import "./components/Refero/styles/refero.scss";
 
 import "./App.css";
 
+import type { JSX } from "react";
+
 import { setDefaultOptions } from "date-fns";
 import { nb } from "date-fns/locale";
 import { RouterProvider } from "react-router";

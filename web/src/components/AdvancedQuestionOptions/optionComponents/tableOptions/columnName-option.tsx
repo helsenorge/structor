@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -11,7 +11,7 @@ import {
   ICodeSystem,
   ICodingProperty,
 } from "../../../../types/IQuestionnareItemType";
-import type { QuestionnaireItem, Coding } from "fhir/r4";
+import type { QuestionnaireItem } from "fhir/r4";
 
 import {
   removeItemCodeWithCode,
@@ -38,9 +38,10 @@ export const ColumnNameOption = ({
   dispatch,
 }: ColumnNameOptionProps): JSX.Element => {
   const { t } = useTranslation();
-  const [existingColumnCodes, setExistingColumnCodes] = useState<
-    Coding[] | undefined
-  >(getAllMatchingCodes(item, ICodeSystem.tableColumnName));
+  const existingColumnCodes = useMemo(
+    () => getAllMatchingCodes(item, ICodeSystem.tableColumnName),
+    [item],
+  );
   const lastItem =
     existingColumnCodes && existingColumnCodes[existingColumnCodes?.length - 1];
 
@@ -89,12 +90,6 @@ export const ColumnNameOption = ({
   const onDeleteButtonClicked = (code: string): void => {
     removeItemCodeWithCode(item, ICodeSystem.tableColumnName, code, dispatch);
   };
-
-  useEffect(() => {
-    setExistingColumnCodes(
-      getAllMatchingCodes(item, ICodeSystem.tableColumnName),
-    );
-  }, [item.code]);
 
   return (
     <div className="horizontal full">

@@ -145,6 +145,7 @@ const CopyFromOption = (props: CopyFromOptionProps): React.JSX.Element => {
   useEffect(() => {
     if (!props.isDataReceiver) {
       removeItemExtension(props.item, IExtensionType.copyExpression, dispatch);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedvalue(undefined);
     } else {
       updateReadonlyItem(props.isDataReceiver);

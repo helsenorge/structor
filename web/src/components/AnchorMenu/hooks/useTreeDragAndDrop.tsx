@@ -116,25 +116,31 @@ export const useTreeDragAndDrop = ({
   const nodeMap = useMemo(() => buildNodeMap(treeData), [treeData]);
   const draggedKeysRef = useRef<Set<Key> | null>(null);
   const [draggedNode, setDraggedNode] = useState<TreeNode | null>(null);
-  const getOrderArray = (orderPath: string[]): OrderItem[] => {
-    let current = qOrder;
-    for (const id of orderPath) {
-      const found = current.find((x) => x.linkId === id);
-      if (!found) {
-        return [];
+  const getOrderArray = useCallback(
+    (orderPath: string[]): OrderItem[] => {
+      let current = qOrder;
+      for (const id of orderPath) {
+        const found = current.find((x) => x.linkId === id);
+        if (!found) {
+          return [];
+        }
+        current = found.items;
       }
-      current = found.items;
-    }
-    return current;
-  };
+      return current;
+    },
+    [qOrder],
+  );
 
-  const getUiSiblingIds = (parentPath: string[]): string[] => {
-    const parentId = parentPath[parentPath.length - 1];
-    const parentItem = parentId ? qItems[parentId] : undefined;
-    return getOrderArray(parentPath)
-      .filter((x) => !isIgnorableItem(qItems[x.linkId], parentItem))
-      .map((x) => x.linkId);
-  };
+  const getUiSiblingIds = useCallback(
+    (parentPath: string[]): string[] => {
+      const parentId = parentPath[parentPath.length - 1];
+      const parentItem = parentId ? qItems[parentId] : undefined;
+      return getOrderArray(parentPath)
+        .filter((x) => !isIgnorableItem(qItems[x.linkId], parentItem))
+        .map((x) => x.linkId);
+    },
+    [getOrderArray, qItems],
+  );
 
   const handleInternalMove = useCallback(
     (keys: Set<Key>, target: { key: Key; dropPosition: string }): void => {
@@ -180,7 +186,7 @@ export const useTreeDragAndDrop = ({
         );
       }
     },
-    [parentPathById, qOrder, qItems, dispatch],
+    [parentPathById, getUiSiblingIds, dispatch],
   );
 
   const handleExternalDrop = useCallback(
@@ -219,7 +225,7 @@ export const useTreeDragAndDrop = ({
         dispatch(newItemAction(newItem, targetParentPath, insertIndex));
       }
     },
-    [parentPathById, qOrder, qItems, dispatch, recipientComponentLabel],
+    [parentPathById, getUiSiblingIds, dispatch, recipientComponentLabel],
   );
 
   const dndResult = useDragAndDrop({

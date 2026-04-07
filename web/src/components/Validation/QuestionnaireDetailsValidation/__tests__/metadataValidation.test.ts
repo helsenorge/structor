@@ -3,7 +3,7 @@ import {
   IQuestionnaireMetadataType,
 } from "src/types/IQuestionnaireMetadataType";
 
-import type { TFunction } from "node_modules/i18next/typescript/t";
+import type { TFunction } from "i18next";
 import type { TreeState } from "src/store/treeStore/treeStore";
 
 import { ErrorLevel } from "../../validationTypes";

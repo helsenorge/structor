@@ -1,5 +1,5 @@
 import type { QuestionnaireItem } from "fhir/r4";
-import type { TFunction } from "node_modules/i18next/typescript/t";
+import type { TFunction } from "i18next";
 
 import { ErrorLevel } from "../../validationTypes";
 import {

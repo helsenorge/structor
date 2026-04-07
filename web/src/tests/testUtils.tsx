@@ -19,7 +19,7 @@ import {
 } from "src/store/treeStore/treeStore";
 import { CodeSystemProvider } from "src/views/codeSystems/context/CodeSystemContextProvider";
 import { ValueSetProvider } from "src/views/valueSets/context/ValueSetContextProvider";
-import { type Mock, vi } from "vitest";
+import { vi } from "vitest";
 
 import type { CodeSystem, ValueSet } from "fhir/r4";
 
@@ -29,7 +29,7 @@ interface ProvidersProps {
    * You can override dispatch if you want to assert calls,
    * @default vi.fn()
    */
-  dispatch?: React.Dispatch<ActionType> | Mock;
+  dispatch?: React.Dispatch<ActionType> | ReturnType<typeof vi.fn>;
   /**
    * Initial entries for MemoryRouter (e.g. ['/login', '/dashboard']).
    */
@@ -54,7 +54,12 @@ const Providers = ({
   const newState = state as TreeState;
   return (
     <I18nextProvider i18n={i18n}>
-      <TreeContext.Provider value={{ dispatch, state: newState }}>
+      <TreeContext.Provider
+        value={{
+          dispatch: dispatch as React.Dispatch<ActionType>,
+          state: newState,
+        }}
+      >
         <MemoryRouter initialEntries={initialEntries}>
           {initialValueSet ? (
             <ValueSetProvider initialValueSet={initialValueSet}>
@@ -74,7 +79,7 @@ const Providers = ({
 };
 
 type CustomRenderOptions = Omit<RenderOptions, "wrapper"> & {
-  dispatch?: React.Dispatch<ActionType> | Mock;
+  dispatch?: React.Dispatch<ActionType> | ReturnType<typeof vi.fn>;
   initialEntries?: MemoryRouterProps["initialEntries"];
   initialValueSet?: ValueSet;
 };
