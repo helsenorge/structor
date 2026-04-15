@@ -1,7 +1,6 @@
 import { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
-import removeMd from "remove-markdown";
 
 import {
   IExtensionType,
@@ -23,6 +22,7 @@ import {
   isItemControlInline,
   ItemControlType,
 } from "../../../helpers/itemControl";
+import { markdownToPlainText } from "../../../helpers/markdownToPlainText";
 import { createInlineItem } from "../../../helpers/questionTypeFeatures";
 import { findElementInTreeArray } from "../../../helpers/treeHelper";
 import {
@@ -57,13 +57,13 @@ const Infotext = ({ item, parentArray }: InfotextProps): React.JSX.Element => {
   } = useContext(TreeContext);
 
   const convertToPlaintext = (stringToBeConverted: string): string => {
-    let plainText = removeMd(stringToBeConverted);
-    plainText = plainText.replaceAll("\\", "");
-    plainText = plainText.replaceAll(/(\n)+/g, " ");
-    return plainText.trim();
+    return markdownToPlainText(stringToBeConverted);
   };
 
-  const dispatchUpdateMarkdown = (markdown: string): void => {
+  const dispatchUpdateMarkdown = (
+    markdown: string,
+    plainText?: string,
+  ): void => {
     const markdownValue = createMarkdownExtension(markdown);
     dispatch(
       updateItemAction(childItemLinkId, IItemProperty._text, markdownValue),
@@ -72,7 +72,7 @@ const Infotext = ({ item, parentArray }: InfotextProps): React.JSX.Element => {
       updateItemAction(
         childItemLinkId,
         IItemProperty.text,
-        convertToPlaintext(markdown),
+        plainText || convertToPlaintext(markdown),
       ),
     );
   };

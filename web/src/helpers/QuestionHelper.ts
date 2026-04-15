@@ -194,6 +194,14 @@ export const getSublabel = (item?: QuestionnaireItem): string => {
   );
 };
 
+export const getSublabelString = (item?: QuestionnaireItem): string => {
+  return (
+    item?.extension?.find(
+      (extension) => extension.url === IExtensionType.sublabelString,
+    )?.valueString ?? ""
+  );
+};
+
 export const getRepeatsText = (item?: QuestionnaireItem): string => {
   return (
     item?.extension?.find(

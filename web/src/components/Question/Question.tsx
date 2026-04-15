@@ -1,7 +1,6 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
-import removeMd from "remove-markdown";
 import { getItemType } from "src/helpers/treeHelper";
 
 import type { ActionType } from "../../store/treeStore/treeStore";
@@ -35,7 +34,6 @@ import { erRenderingOption } from "../../helpers/codeHelper";
 import {
   createMarkdownExtension,
   removeItemExtension,
-  setItemExtension,
 } from "../../helpers/extensionHelper";
 import {
   isItemControlInline,
@@ -43,6 +41,7 @@ import {
   isItemControlHighlight,
   isRecipientList,
 } from "../../helpers/itemControl";
+import { markdownToPlainText } from "../../helpers/markdownToPlainText";
 import { getTextExtensionMarkdown } from "../../helpers/QuestionHelper";
 import {
   canTypeBeRequired,
@@ -139,40 +138,62 @@ const Question = (props: QuestionProps): React.JSX.Element => {
     }
   }, [debouncedTextValue]);
 
-  // Save debounced sublabel changes
-  React.useEffect(() => {
-    const currentSublabel = getSublabelText();
-    if (debouncedSublabelValue !== currentSublabel) {
-      if (debouncedSublabelValue) {
-        const newExtension = {
-          url: IExtensionType.sublabel,
-          valueMarkdown: debouncedSublabelValue,
-        };
-        setItemExtension(props.item, newExtension, props.dispatch);
-      } else {
-        removeItemExtension(
-          props.item,
-          IExtensionType.sublabel,
-          props.dispatch,
-        );
-      }
-    }
-  }, [debouncedSublabelValue]);
-
   const convertToPlaintext = (stringToBeConverted: string): string => {
-    let plainText = removeMd(stringToBeConverted);
-    plainText = plainText.replaceAll("\\", "");
-    plainText = plainText.replaceAll(/( |\n)+/g, " ");
-    return plainText;
+    return markdownToPlainText(stringToBeConverted);
   };
 
-  const dispatchUpdateMarkdownLabel = (newLabel: string): void => {
+  const dispatchUpdateMarkdownLabel = (
+    newLabel: string,
+    plainText?: string,
+  ): void => {
     const markdownValue = createMarkdownExtension(newLabel);
 
     dispatchUpdateItem(IItemProperty._text, markdownValue);
     // update text with same value. Text is used in condition in enableWhen
-    dispatchUpdateItem(IItemProperty.text, convertToPlaintext(newLabel));
+    dispatchUpdateItem(
+      IItemProperty.text,
+      plainText || convertToPlaintext(newLabel),
+    );
   };
+
+  const dispatchUpdateSublabel = (value: string, plainText?: string): void => {
+    if (value) {
+      const extensionsToSet = (props.item.extension || []).filter(
+        (x: Extension) =>
+          x.url !== IExtensionType.sublabel &&
+          x.url !== IExtensionType.sublabelString,
+      );
+      extensionsToSet.push({
+        url: IExtensionType.sublabel,
+        valueMarkdown: value,
+      });
+      extensionsToSet.push({
+        url: IExtensionType.sublabelString,
+        valueString: plainText || convertToPlaintext(value),
+      });
+      props.dispatch(
+        updateItemAction(
+          props.item.linkId,
+          IItemProperty.extension,
+          extensionsToSet,
+        ),
+      );
+    } else {
+      removeItemExtension(
+        props.item,
+        [IExtensionType.sublabel, IExtensionType.sublabelString],
+        props.dispatch,
+      );
+    }
+  };
+
+  // Save debounced sublabel changes (plain text textarea path)
+  React.useEffect(() => {
+    const currentSublabel = getSublabelText();
+    if (debouncedSublabelValue !== currentSublabel) {
+      dispatchUpdateSublabel(debouncedSublabelValue);
+    }
+  }, [debouncedSublabelValue]);
 
   const respondType = (): React.JSX.Element => {
     if (isItemControlReceiverComponent(props.item)) {
@@ -311,20 +332,8 @@ const Question = (props: QuestionProps): React.JSX.Element => {
             {isMarkdownActivated ? (
               <MarkdownEditor
                 data={getSublabelText()}
-                onBlur={(newValue: string) => {
-                  if (newValue) {
-                    const newExtension = {
-                      url: IExtensionType.sublabel,
-                      valueMarkdown: newValue,
-                    };
-                    setItemExtension(props.item, newExtension, props.dispatch);
-                  } else {
-                    removeItemExtension(
-                      props.item,
-                      IExtensionType.sublabel,
-                      props.dispatch,
-                    );
-                  }
+                onBlur={(newValue: string, plainText?: string) => {
+                  dispatchUpdateSublabel(newValue, plainText);
                 }}
               />
             ) : (
@@ -332,19 +341,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
                 value={sublabelValue}
                 onChange={(e) => setSublabelValue(e.target.value)}
                 onBlur={(e) => {
-                  if (e.target.value) {
-                    const newExtension = {
-                      url: IExtensionType.sublabel,
-                      valueMarkdown: e.target.value,
-                    };
-                    setItemExtension(props.item, newExtension, props.dispatch);
-                  } else {
-                    removeItemExtension(
-                      props.item,
-                      IExtensionType.sublabel,
-                      props.dispatch,
-                    );
-                  }
+                  dispatchUpdateSublabel(e.target.value);
                 }}
               />
             )}

@@ -119,13 +119,13 @@ const TranslationModal = (props: TranslationModalProps): React.JSX.Element => {
             >
               <MarkdownEditor
                 data={translatedHelpText}
-                onBlur={(value) =>
+                onBlur={(value, plainText) =>
                   dispatch(
                     updateItemTranslationAction(
                       props.targetLanguage,
                       linkId,
                       TranslatableItemProperty.text,
-                      value,
+                      plainText || value,
                     ),
                   )
                 }

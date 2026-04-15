@@ -31,6 +31,7 @@ import {
 } from "./EnrichmentSet";
 import { isItemControlSidebar } from "./itemControl";
 import { getLanguageFromCode, translatableMetadata } from "./LanguageHelper";
+import { markdownToPlainText } from "./markdownToPlainText";
 import { getValueSetValues } from "./valueSetHelper";
 
 const getExtension = (
@@ -219,14 +220,30 @@ const getTranslatedItem = (
 
   // Sublabel
   const sublabelExtension = getExtension(extension, IExtensionType.sublabel);
-  if (sublabelExtension) {
-    const translatedSublabelExtension = {
+  if (sublabelExtension && itemTranslation?.sublabel) {
+    const translatedSublabelExtension: Extension = {
       ...sublabelExtension,
-      valueMarkdown: itemTranslation?.sublabel,
+      valueMarkdown: itemTranslation.sublabel,
     };
     extension = updateTranslatedExtension(
       extension,
       translatedSublabelExtension,
+    );
+  }
+
+  // Sublabel string (plain text version)
+  const sublabelStringExtension = getExtension(
+    extension,
+    IExtensionType.sublabelString,
+  );
+  if (sublabelStringExtension && itemTranslation?.sublabel) {
+    const translatedSublabelStringExtension: Extension = {
+      ...sublabelStringExtension,
+      valueString: markdownToPlainText(itemTranslation.sublabel),
+    };
+    extension = updateTranslatedExtension(
+      extension,
+      translatedSublabelStringExtension,
     );
   }
 
@@ -278,9 +295,16 @@ const getTranslatedItem = (
 
   //Coding
   const code: Coding[] = mergeCodes(currentItem?.code, itemTranslation?.code);
+
+  // When markdown is active, ensure text is plain text (strip markdown)
+  const text =
+    _text && itemTranslation?.text
+      ? markdownToPlainText(itemTranslation.text)
+      : itemTranslation?.text;
+
   const newItem: QuestionnaireItem = {
     ...currentItem,
-    text: itemTranslation?.text,
+    text,
     _text,
     extension,
     answerOption,

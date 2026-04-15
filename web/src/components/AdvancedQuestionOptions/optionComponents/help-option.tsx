@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import removeMd from "remove-markdown";
 
 import type {
   ActionType,
@@ -11,6 +10,7 @@ import type { QuestionnaireItem } from "fhir/r4";
 
 import { createMarkdownExtension } from "../../../helpers/extensionHelper";
 import { getHelpText, isItemControlHelp } from "../../../helpers/itemControl";
+import { markdownToPlainText } from "../../../helpers/markdownToPlainText";
 import { canTypeHaveHelp } from "../../../helpers/questionTypeFeatures";
 import { findTreeArray } from "../../../store/treeStore/findTreeArray";
 import {
@@ -66,24 +66,29 @@ export const HelpOption = ({
   };
 
   const convertToPlaintext = (stringToBeConverted: string): string => {
-    let plainText = removeMd(stringToBeConverted);
-    plainText = plainText.replaceAll("\\", "");
-    plainText = plainText.replaceAll(/(\n)+/g, " ");
-    return plainText.trim();
+    return markdownToPlainText(stringToBeConverted);
   };
 
-  const dispatchUpdateItemHelpText = (id: string, value: string): void => {
+  const dispatchUpdateItemHelpText = (
+    id: string,
+    value: string,
+    plainText?: string,
+  ): void => {
     const newValue = createMarkdownExtension(value);
     dispatch(updateItemAction(id, IItemProperty._text, newValue));
     dispatch(
-      updateItemAction(id, IItemProperty.text, convertToPlaintext(value)),
+      updateItemAction(
+        id,
+        IItemProperty.text,
+        plainText || convertToPlaintext(value),
+      ),
     );
   };
 
-  const handleHelpText = (markdown: string): void => {
+  const handleHelpText = (markdown: string, plainText?: string): void => {
     const helpItem = getHelpTextItem();
     if (helpItem) {
-      dispatchUpdateItemHelpText(helpItem.linkId, markdown);
+      dispatchUpdateItemHelpText(helpItem.linkId, markdown, plainText);
     }
   };
 

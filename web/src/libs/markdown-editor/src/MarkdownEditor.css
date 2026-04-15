@@ -105,6 +105,14 @@
   list-style-type: disc;
   padding: 10px 0 !important;
   padding-left: 20px !important;
+  text-align: left;
+}
+
+.scribo-markdown-editor ol {
+  list-style-type: decimal;
+  padding: 10px 0 !important;
+  padding-left: 20px !important;
+  text-align: left;
 }
 
 .scribo-markdown-editor pre {

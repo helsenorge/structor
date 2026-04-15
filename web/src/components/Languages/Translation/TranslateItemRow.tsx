@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import removeMd from "remove-markdown";
 import {
   ErrorClassVariant,
   getSeverityClassByLevelAndTypeIfError,
@@ -28,6 +27,7 @@ import {
   getItemCodeDisplayTranslation,
   getItemPropertyTranslation,
 } from "../../../helpers/LanguageHelper";
+import { markdownToPlainText } from "../../../helpers/markdownToPlainText";
 import {
   getInitialText,
   getPlaceHolderText,
@@ -75,15 +75,13 @@ const TranslateItemRow = ({
   );
 
   const convertToPlaintext = (stringToBeConverted: string): string => {
-    let plainText = removeMd(stringToBeConverted);
-    plainText = plainText.replaceAll("\\", "");
-    plainText = plainText.replaceAll(/(\n)+/g, " ");
-    return plainText.trim();
+    return markdownToPlainText(stringToBeConverted);
   };
 
   function dispatchUpdateItemTranslation(
     text: string,
     propertyName: Exclude<TranslatableItemProperty, "code" | "extension">,
+    plainText?: string,
   ): void {
     dispatch(
       updateItemTranslationAction(
@@ -99,7 +97,7 @@ const TranslateItemRow = ({
           targetLanguage,
           item.linkId,
           TranslatableItemProperty.text,
-          convertToPlaintext(text),
+          plainText || convertToPlaintext(text),
         ),
       );
     }
@@ -196,10 +194,11 @@ const TranslateItemRow = ({
         >
           <MarkdownEditor
             data={translatedText}
-            onBlur={(text) =>
+            onBlur={(text, plainText) =>
               dispatchUpdateItemTranslation(
                 text,
                 TranslatableItemProperty.markdown,
+                plainText,
               )
             }
           />
@@ -270,8 +269,11 @@ const TranslateItemRow = ({
     ): void => {
       dispatchUpdateItemTranslation(event.target.value, propertyName);
     };
-    const handleOnBlurMarkdown = (newValue: string): void => {
-      dispatchUpdateItemTranslation(newValue, propertyName);
+    const handleOnBlurMarkdown = (
+      newValue: string,
+      plainText?: string,
+    ): void => {
+      dispatchUpdateItemTranslation(newValue, propertyName, plainText);
     };
     return (
       <>

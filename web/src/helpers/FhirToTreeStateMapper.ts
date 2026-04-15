@@ -1,5 +1,3 @@
-import removeMd from "remove-markdown";
-
 import type {
   CodeStringValue,
   ContainedTranslations,
@@ -32,6 +30,7 @@ import {
   translatableMetadata,
   translatableSettings,
 } from "./LanguageHelper";
+import { markdownToPlainText } from "./markdownToPlainText";
 import {
   addMetaSecurityIfDoesNotExist,
   addMetaSecurityIfCanBePerformedByExist,
@@ -182,7 +181,7 @@ function translateItem(
   const entryFormatText = getPlaceHolderText(translationItem);
   const markdownValue = getTextExtensionMarkdown(translationItem);
   const text = markdownValue
-    ? removeMd(markdownValue)
+    ? markdownToPlainText(markdownValue)
     : translationItem?.text || "";
   const validationText = getValidationMessage(translationItem);
   const initial = getInitialText(translationItem);

@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 
+import { IExtensionType } from "../../types/IQuestionnareItemType";
 import type { Bundle, Questionnaire } from "fhir/r4";
 
 import {
@@ -7,6 +8,7 @@ import {
   translateQuestionnaire,
 } from "../FhirToTreeStateMapper";
 import { generateQuestionnaire } from "../generateQuestionnaire";
+import { markdownToPlainText } from "../markdownToPlainText";
 
 function createItemWithMarkdown(
   linkId: string,
@@ -243,5 +245,120 @@ describe("round-trip: Bundle with markdown translations survives load and save",
         e.url === "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
     );
     expect(markdownExt?.valueMarkdown).toBe(enMarkdown);
+  });
+});
+
+function createItemWithMarkdownText(linkId: string, markdown: string) {
+  return {
+    linkId,
+    type: "string" as const,
+    text: markdownToPlainText(markdown),
+    required: false,
+    _text: {
+      extension: [
+        {
+          url: "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
+          valueMarkdown: markdown,
+        },
+      ],
+    },
+  };
+}
+
+describe("FhirToTreeStateMapper: import strips markdown from text", () => {
+  it("strips markdown from item.text when _text has markdown", () => {
+    const linkId = "item-1";
+    const markdown = "This is **bold** and *italic* text";
+
+    const main = createMinimalQuestionnaire("nb-NO", [
+      createItemWithMarkdownText(linkId, markdown),
+    ]);
+
+    const state = mapToTreeState(main);
+    expect(state.qItems[linkId].text).not.toContain("**");
+    expect(state.qItems[linkId].text).not.toContain("*");
+    expect(state.qItems[linkId].text).toContain("bold");
+    expect(state.qItems[linkId].text).toContain("italic");
+  });
+
+  it("strips markdown from translation text on import", () => {
+    const linkId = "item-1";
+
+    const main = createMinimalQuestionnaire("nb-NO", [
+      createItemWithMarkdownText(linkId, "Norsk **tekst**"),
+    ]);
+    const translation = createMinimalQuestionnaire("en-GB", [
+      createItemWithMarkdownText(linkId, "English **text**"),
+    ]);
+
+    const result = translateQuestionnaire(main, translation);
+    expect(result.items[linkId].text).not.toContain("**");
+    expect(result.items[linkId].text).toContain("English");
+    expect(result.items[linkId].text).toContain("text");
+    expect(result.items[linkId].markdown).toBe("English **text**");
+  });
+
+  it("strips malformed markdown from translation text on import", () => {
+    const linkId = "item-1";
+    const malformed = "## asdad**asdasd*asdasd***\n\n### asdadasd";
+
+    const main = createMinimalQuestionnaire("nb-NO", [
+      createItemWithMarkdownText(linkId, malformed),
+    ]);
+    const translation = createMinimalQuestionnaire("en-GB", [
+      createItemWithMarkdownText(linkId, malformed),
+    ]);
+
+    const result = translateQuestionnaire(main, translation);
+    expect(result.items[linkId].text).not.toContain("**");
+    expect(result.items[linkId].text).not.toContain("*");
+    expect(result.items[linkId].text).not.toContain("#");
+  });
+});
+
+describe("translateQuestionnaire with sublabel", () => {
+  function createItemWithSublabel(
+    linkId: string,
+    text: string,
+    markdown: string,
+    sublabelMarkdown: string,
+  ) {
+    return {
+      ...createItemWithMarkdown(linkId, text, markdown),
+      extension: [
+        { url: IExtensionType.sublabel, valueMarkdown: sublabelMarkdown },
+        {
+          url: IExtensionType.sublabelString,
+          valueString: markdownToPlainText(sublabelMarkdown),
+        },
+      ],
+    };
+  }
+
+  it("stores sublabel markdown in translation state", () => {
+    const linkId = "item-1";
+
+    const main = createMinimalQuestionnaire("nb-NO", [
+      createItemWithSublabel(
+        linkId,
+        "Norsk",
+        "**Norsk**",
+        "Norsk **sublabel**",
+      ),
+    ]);
+    const translation = createMinimalQuestionnaire("en-GB", [
+      createItemWithSublabel(
+        linkId,
+        "English",
+        "**English**",
+        "English **sublabel**",
+      ),
+    ]);
+
+    const result = translateQuestionnaire(main, translation);
+
+    expect(result.items[linkId].sublabel).toBe("English **sublabel**");
+    expect(result.items[linkId].text).not.toContain("**");
+    expect(result.items[linkId].markdown).toBe("**English**");
   });
 });

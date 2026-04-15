@@ -135,6 +135,7 @@ export enum IExtensionType {
   fhirPathMaxValue = "http://ehelse.no/fhir/StructureDefinition/sdf-maxvalue",
   fhirPathMinValue = "http://ehelse.no/fhir/StructureDefinition/sdf-minvalue",
   sublabel = "http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel",
+  sublabelString = "http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel-text",
   saveCapability = "http://helsenorge.no/fhir/StructureDefinition/sdf-save-capabilities",
   printVersion = "http://helsenorge.no/fhir/StructureDefinition/sdf-questionnaire-print-version",
   hyperlinkTarget = "http://helsenorge.no/fhir/StructureDefinition/sdf-hyperlink-target",
