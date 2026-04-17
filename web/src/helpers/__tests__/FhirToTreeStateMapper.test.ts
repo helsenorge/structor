@@ -362,3 +362,103 @@ describe("translateQuestionnaire with sublabel", () => {
     expect(result.items[linkId].markdown).toBe("**English**");
   });
 });
+
+describe("FhirToTreeStateMapper: fallback when valueMarkdown is missing", () => {
+  it("uses item.text as markdown when extension URL exists but valueMarkdown is undefined", () => {
+    const linkId = "item-1";
+
+    const main = createMinimalQuestionnaire("nb-NO", [
+      createItemWithMarkdown(linkId, "Norsk tekst", "Norsk **markdown**"),
+    ]);
+    const translation = createMinimalQuestionnaire("en-GB", [
+      {
+        linkId,
+        type: "string" as const,
+        text: "English text",
+        required: false,
+        _text: {
+          extension: [
+            {
+              url: "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
+            },
+          ],
+        },
+      },
+    ]);
+
+    const result = translateQuestionnaire(main, translation);
+
+    expect(result.items[linkId].markdown).toBe("English text");
+    expect(result.items[linkId].text).toBe("English text");
+  });
+
+  it("uses item.text as markdown when valueMarkdown is empty string", () => {
+    const linkId = "item-1";
+
+    const main = createMinimalQuestionnaire("nb-NO", [
+      createItemWithMarkdown(linkId, "Norsk tekst", "Norsk **markdown**"),
+    ]);
+    const translation = createMinimalQuestionnaire("en-GB", [
+      {
+        linkId,
+        type: "string" as const,
+        text: "English fallback",
+        required: false,
+        _text: {
+          extension: [
+            {
+              url: "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
+              valueMarkdown: "",
+            },
+          ],
+        },
+      },
+    ]);
+
+    const result = translateQuestionnaire(main, translation);
+
+    // getTextExtensionMarkdown returns "" which is falsy, so fallback triggers
+    expect(result.items[linkId].markdown).toBe("English fallback");
+  });
+
+  it("does not use fallback when no rendering-markdown extension exists", () => {
+    const linkId = "item-1";
+
+    const main = createMinimalQuestionnaire("nb-NO", [
+      { linkId, type: "string", text: "Norsk", required: false },
+    ]);
+    const translation = createMinimalQuestionnaire("en-GB", [
+      { linkId, type: "string", text: "English", required: false },
+    ]);
+
+    const result = translateQuestionnaire(main, translation);
+
+    expect(result.items[linkId].markdown).toBeUndefined();
+    expect(result.items[linkId].text).toBe("English");
+  });
+
+  it("preserves markdown in main questionnaire items on import", () => {
+    const linkId = "item-1";
+
+    const q = createMinimalQuestionnaire("nb-NO", [
+      {
+        linkId,
+        type: "string" as const,
+        text: "Plain text",
+        required: false,
+        _text: {
+          extension: [
+            {
+              url: "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
+            },
+          ],
+        },
+      },
+    ]);
+
+    const state = mapToTreeState(q);
+
+    // Main items store _text as-is in qItems, but the text should still be accessible
+    expect(state.qItems[linkId].text).toBe("Plain text");
+  });
+});

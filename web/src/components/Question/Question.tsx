@@ -125,6 +125,19 @@ const Question = (props: QuestionProps): React.JSX.Element => {
   const debouncedTextValue = useDebounce(textValue, 300);
   const debouncedSublabelValue = useDebounce(sublabelValue, 300);
 
+  // Track whether there is a pending (unflushed) change
+  const pendingTextRef = React.useRef<string | null>(null);
+  const pendingSublabelRef = React.useRef<string | null>(null);
+
+  React.useEffect(() => {
+    pendingTextRef.current = textValue !== getLabelText() ? textValue : null;
+  }, [textValue]);
+
+  React.useEffect(() => {
+    pendingSublabelRef.current =
+      sublabelValue !== getSublabelText() ? sublabelValue : null;
+  }, [sublabelValue]);
+
   // Sync local state when item changes
   React.useEffect(() => {
     setTextValue(getLabelText());
@@ -135,6 +148,7 @@ const Question = (props: QuestionProps): React.JSX.Element => {
   React.useEffect(() => {
     if (debouncedTextValue !== getLabelText()) {
       dispatchUpdateItem(IItemProperty.text, debouncedTextValue);
+      pendingTextRef.current = null;
     }
   }, [debouncedTextValue]);
 
@@ -187,11 +201,42 @@ const Question = (props: QuestionProps): React.JSX.Element => {
     }
   };
 
+  // Flush pending values on unmount or when switching to a different item
+  const dispatchRef = React.useRef(props.dispatch);
+  const linkIdRef = React.useRef(props.item.linkId);
+  const dispatchUpdateSublabelRef = React.useRef(dispatchUpdateSublabel);
+
+  React.useEffect(() => {
+    dispatchRef.current = props.dispatch;
+    linkIdRef.current = props.item.linkId;
+    dispatchUpdateSublabelRef.current = dispatchUpdateSublabel;
+  });
+
+  React.useEffect(() => {
+    return (): void => {
+      if (pendingTextRef.current !== null) {
+        dispatchRef.current(
+          updateItemAction(
+            linkIdRef.current,
+            IItemProperty.text,
+            pendingTextRef.current,
+          ),
+        );
+        pendingTextRef.current = null;
+      }
+      if (pendingSublabelRef.current !== null) {
+        dispatchUpdateSublabelRef.current(pendingSublabelRef.current);
+        pendingSublabelRef.current = null;
+      }
+    };
+  }, [props.item.linkId]);
+
   // Save debounced sublabel changes (plain text textarea path)
   React.useEffect(() => {
     const currentSublabel = getSublabelText();
     if (debouncedSublabelValue !== currentSublabel) {
       dispatchUpdateSublabel(debouncedSublabelValue);
+      pendingSublabelRef.current = null;
     }
   }, [debouncedSublabelValue]);
 

@@ -1,3 +1,5 @@
+import { IExtensionType } from "src/types/IQuestionnareItemType";
+
 import type {
   CodeStringValue,
   ContainedTranslations,
@@ -94,6 +96,14 @@ function extractMetadata(
   };
 }
 
+function hasRenderingMarkdownExtension(
+  item: QuestionnaireItem | undefined,
+): boolean {
+  return !!item?._text?.extension?.some(
+    (ext) => ext.url === IExtensionType.markdown,
+  );
+}
+
 function extractItemsAndOrder(item?: Array<QuestionnaireItem>): {
   qItems: Items;
   qOrder: Array<OrderItem>;
@@ -179,7 +189,14 @@ function translateItem(
 ): ItemTranslation {
   const answerOptions = translateAnswerOptions(translationItem?.answerOption);
   const entryFormatText = getPlaceHolderText(translationItem);
-  const markdownValue = getTextExtensionMarkdown(translationItem);
+  let markdownValue = getTextExtensionMarkdown(translationItem);
+  if (
+    !markdownValue &&
+    translationItem?.text &&
+    hasRenderingMarkdownExtension(translationItem)
+  ) {
+    markdownValue = translationItem.text;
+  }
   const text = markdownValue
     ? markdownToPlainText(markdownValue)
     : translationItem?.text || "";

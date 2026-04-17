@@ -34,45 +34,49 @@
   padding-left: 16px;
 }
 
-.scribo-markdown-editor .EditorTheme__h1 {
-  font-size: 24px;
-  line-height: 1.3;
-  padding-top: 1rem;
-  padding-bottom: 0.5rem;
-  color: #406280;
-  font-weight: 700;
-  margin: 0;
+.scribo-markdown-editor .EditorTheme__h2 {
+  font-size: 1.625rem;
+  line-height: 1.938rem;
+  font-weight: 600;
+  margin: 1.5rem 0 1rem;
   text-align: left;
 }
 
-.scribo-markdown-editor .EditorTheme__h2 {
-  font-size: 20px;
-  color: #406280;
-  padding-top: 1rem;
-  padding-bottom: 0.5rem;
-  font-weight: 700;
-  margin: 0;
-  text-align: left;
+@media (width >= 768px) {
+  .scribo-markdown-editor .EditorTheme__h2 {
+    font-size: 2rem;
+    line-height: 2.375rem;
+  }
 }
 
 .scribo-markdown-editor .EditorTheme__h3 {
-  font-size: 24px;
-  color: #406280;
-  padding-top: 2rem;
-  padding-bottom: 0.5rem;
-  font-weight: 700;
-  margin: 0;
+  font-size: 1.375rem;
+  line-height: 1.813rem;
+  font-weight: 600;
+  margin: 0.8rem 0 1rem;
   text-align: left;
 }
 
+@media (width >= 768px) {
+  .scribo-markdown-editor .EditorTheme__h3 {
+    font-size: 1.625rem;
+    line-height: 2rem;
+  }
+}
+
 .scribo-markdown-editor .EditorTheme__h4 {
-  font-size: 16px;
-  color: #406280;
-  padding-top: 1.5rem;
-  padding-bottom: 0;
-  font-weight: 700;
-  margin: 0;
+  font-size: 1.375rem;
+  line-height: 1.813rem;
+  font-weight: 600;
+  margin: 0.8rem 0 1rem;
   text-align: left;
+}
+
+@media (width >= 768px) {
+  .scribo-markdown-editor .EditorTheme__h4 {
+    font-size: 1.625rem;
+    line-height: 2rem;
+  }
 }
 
 .scribo-markdown-editor .EditorTheme__indent {

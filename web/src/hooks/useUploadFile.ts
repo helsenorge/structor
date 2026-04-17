@@ -1,6 +1,7 @@
 import { useCallback, useContext, useRef, useState } from "react";
 
 import { mapToTreeState } from "src/helpers/FhirToTreeStateMapper";
+import { sanitizeJsonInPlace } from "src/helpers/sanitizeMarkdownExtensions";
 import { saveQuestionnaire } from "src/store/treeStore/indexedDbHelper";
 import { resetQuestionnaireAction } from "src/store/treeStore/treeActions";
 import { TreeContext } from "src/store/treeStore/treeStore";
@@ -40,6 +41,8 @@ export const useUploadFile = (
       try {
         const raw = await file.text();
         const payload = JSON.parse(raw);
+
+        sanitizeJsonInPlace(payload);
 
         const importedState = { ...mapToTreeState(payload), isEdited: true };
         dispatch(resetQuestionnaireAction(importedState));

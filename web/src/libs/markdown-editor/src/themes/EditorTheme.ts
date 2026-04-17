@@ -17,7 +17,6 @@ const theme: EditorThemeClasses = {
   blockCursor: "EditorTheme__blockCursor",
   characterLimit: "EditorTheme__characterLimit",
   heading: {
-    h1: "EditorTheme__h1",
     h2: "EditorTheme__h2",
     h3: "EditorTheme__h3",
     h4: "EditorTheme__h4",

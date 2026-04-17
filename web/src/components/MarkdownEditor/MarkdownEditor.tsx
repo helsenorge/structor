@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { ReadOnlyMarkdown } from "./ReadOnlyMarkdown";
 import useDebounce from "./useDebounce";
 import {
   MarkdownEditor as ScriboEditor,
@@ -36,7 +37,7 @@ const MarkdownEditor = (props: MarkdownEditorProps): React.JSX.Element => {
   };
 
   if (props.disabled) {
-    return <div className="markdown-preview">{props.data}</div>;
+    return <ReadOnlyMarkdown data={props.data} />;
   }
 
   return (

@@ -165,10 +165,11 @@ const getTranslatedItem = (
     currentItem._text?.extension,
     IExtensionType.markdown,
   );
-  if (markdownExtension) {
+  if (markdownExtension?.valueMarkdown) {
     const translatedMarkdownExtension = {
       ...markdownExtension,
-      valueMarkdown: itemTranslation?.markdown,
+      valueMarkdown:
+        itemTranslation?.markdown || itemTranslation?.text || undefined,
     };
     _text = {
       extension: updateTranslatedExtension(

@@ -1,12 +1,4 @@
-import { useMemo } from "react";
-
-import {
-  GridList,
-  GridListItem,
-  Button,
-  DropIndicator,
-  useDragAndDrop,
-} from "react-aria-components";
+import { useRef, useState } from "react";
 
 import {
   IExtensionType,
@@ -42,143 +34,173 @@ const DraggableAnswerOptions = ({
   item,
   dispatchUpdateItem,
 }: DraggableAnswerOptionsProps): React.JSX.Element => {
-  // Transform answerOptions to list items with keys
-  const listItems = useMemo(
-    () =>
-      (item.answerOption ?? []).map((option) => ({
-        id: option.valueCoding?.id ?? "",
-        answerOption: option,
-      })),
-    [item.answerOption],
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dropTargetIndex, setDropTargetIndex] = useState<number | null>(null);
+  const [dropPosition, setDropPosition] = useState<"before" | "after" | null>(
+    null,
   );
+  const dragCounterRef = useRef(0);
 
-  const { dragAndDropHooks } = useDragAndDrop({
-    // Enable reordering within the list
-    getItems: (keys) => [...keys].map((key) => ({ "text/plain": String(key) })),
-    acceptedDragTypes: ["text/plain"],
-    renderDropIndicator: (target) => <DropIndicator target={target} />,
-    onReorder(e) {
-      const keys = Array.from(e.keys, (k) => String(k));
+  const options = item.answerOption ?? [];
 
-      if (e.target.dropPosition === "before") {
-        // Find indices for reordering
-        const targetIndex = listItems.findIndex(
-          (i) => i.id === String(e.target.key),
-        );
-        const sourceIndices = keys.map((key) =>
-          listItems.findIndex((i) => i.id === key),
-        );
+  const handleDragStart = (index: number, e: React.DragEvent): void => {
+    setDragIndex(index);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", String(index));
+  };
 
-        // Perform reorder
-        const newOptions = [...(item.answerOption ?? [])];
-        const [movedItem] = newOptions.splice(sourceIndices[0], 1);
-        newOptions.splice(targetIndex, 0, movedItem);
+  const handleDragEnter = (index: number): void => {
+    dragCounterRef.current++;
+    setDropTargetIndex(index);
+  };
 
-        dispatchUpdateItem(IItemProperty.answerOption, newOptions);
-      } else if (e.target.dropPosition === "after") {
-        const targetIndex = listItems.findIndex(
-          (i) => i.id === String(e.target.key),
-        );
-        const sourceIndices = keys.map((key) =>
-          listItems.findIndex((i) => i.id === key),
-        );
+  const handleDragLeave = (): void => {
+    dragCounterRef.current--;
+    if (dragCounterRef.current === 0) {
+      setDropTargetIndex(null);
+      setDropPosition(null);
+    }
+  };
 
-        const newOptions = [...(item.answerOption ?? [])];
-        const [movedItem] = newOptions.splice(sourceIndices[0], 1);
-        newOptions.splice(targetIndex + 1, 0, movedItem);
+  const handleDragOver = (index: number, e: React.DragEvent): void => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    const rect = e.currentTarget.getBoundingClientRect();
+    const midY = rect.top + rect.height / 2;
+    setDropPosition(e.clientY < midY ? "before" : "after");
+    setDropTargetIndex(index);
+  };
 
-        dispatchUpdateItem(IItemProperty.answerOption, newOptions);
-      }
-    },
-  });
+  const handleDrop = (targetIndex: number, e: React.DragEvent): void => {
+    e.preventDefault();
+    dragCounterRef.current = 0;
+
+    const sourceIndex = Number(e.dataTransfer.getData("text/plain"));
+    const rect = e.currentTarget.getBoundingClientRect();
+    const insertAfter = e.clientY >= rect.top + rect.height / 2;
+
+    setDropTargetIndex(null);
+    setDropPosition(null);
+    setDragIndex(null);
+
+    if (sourceIndex === targetIndex) return;
+
+    const newOptions = [...options];
+    const [movedItem] = newOptions.splice(sourceIndex, 1);
+    // Adjust target index after removal
+    let insertIndex = insertAfter ? targetIndex : targetIndex;
+    if (sourceIndex < targetIndex) {
+      insertIndex = insertAfter ? targetIndex : targetIndex - 1;
+    }
+    newOptions.splice(insertIndex, 0, movedItem);
+    dispatchUpdateItem(IItemProperty.answerOption, newOptions);
+  };
+
+  const handleDragEnd = (): void => {
+    dragCounterRef.current = 0;
+    setDragIndex(null);
+    setDropTargetIndex(null);
+    setDropPosition(null);
+  };
 
   return (
-    <GridList
-      aria-label="Answer options"
-      items={listItems}
-      dragAndDropHooks={dragAndDropHooks}
-      className="draggable-answer-options"
-    >
-      {(listItem) => (
-        <GridListItem
-          id={listItem.id}
-          textValue={listItem.answerOption.valueCoding?.display ?? ""}
-          className="draggable-answer-option"
-        >
-          <Button slot="drag" className="drag-handle">
-            {"☰"}
-          </Button>
-          <div className="answer-option-content">
-            <AnswerOption
-              item={item}
-              changeDisplay={(event) => {
-                const newArray = updateAnswerOption(
-                  item.answerOption ?? [],
-                  listItem.answerOption.valueCoding?.id ?? "",
-                  event.target.value,
-                );
-                dispatchUpdateItem(IItemProperty.answerOption, newArray);
-              }}
-              changeCode={(event) => {
-                const newArray = updateAnswerOptionCode(
-                  item.answerOption ?? [],
-                  listItem.answerOption.valueCoding?.id ?? "",
-                  event.target.value,
-                );
-                dispatchUpdateItem(IItemProperty.answerOption, newArray);
-              }}
-              changeOrdinalValueExtension={(event) => {
-                if (event.target.value === "") {
-                  const newArray = removeExtensionFromSingleAnswerOption(
-                    item.answerOption ?? [],
-                    listItem.answerOption.valueCoding?.id ?? "",
-                    IExtensionType.ordinalValue,
-                  );
-                  dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                } else {
-                  const newArray = updateAnswerOptionExtension(
-                    item.answerOption ?? [],
-                    listItem.answerOption.valueCoding?.id ?? "",
+    <div className="draggable-answer-options">
+      {options.map((option, index) => {
+        const optionId = option.valueCoding?.id ?? "";
+        const isDragging = dragIndex === index;
+        const isDropTarget = dropTargetIndex === index && dragIndex !== index;
+
+        let className = "draggable-answer-option";
+        if (isDragging) className += " dragging";
+        if (isDropTarget) {
+          className += " drop-target";
+          if (dropPosition === "before") className += " drop-before";
+          if (dropPosition === "after") className += " drop-after";
+        }
+
+        return (
+          <div
+            key={optionId}
+            className={className}
+            draggable
+            onDragStart={(e) => handleDragStart(index, e)}
+            onDragEnter={() => handleDragEnter(index)}
+            onDragLeave={handleDragLeave}
+            onDragOver={(e) => handleDragOver(index, e)}
+            onDrop={(e) => handleDrop(index, e)}
+            onDragEnd={handleDragEnd}
+          >
+            <span className="drag-handle">{"☰"}</span>
+            <div className="answer-option-content">
+              <AnswerOption
+                item={item}
+                changeDisplay={(event) => {
+                  const newArray = updateAnswerOption(
+                    options,
+                    optionId,
                     event.target.value,
-                    IExtensionType.ordinalValue,
                   );
                   dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                }
-              }}
-              changeValueSetLabel={(event) => {
-                if (event.target.value === "") {
-                  const newArray = removeExtensionFromSingleAnswerOption(
-                    item.answerOption || [],
-                    listItem.answerOption.valueCoding?.id || "",
-                    IExtensionType.valueSetLabel,
-                  );
-                  dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                } else {
-                  const newArray = updateAnswerOptionExtension(
-                    item.answerOption || [],
-                    listItem.answerOption.valueCoding?.id || "",
+                }}
+                changeCode={(event) => {
+                  const newArray = updateAnswerOptionCode(
+                    options,
+                    optionId,
                     event.target.value,
-                    IExtensionType.valueSetLabel,
                   );
                   dispatchUpdateItem(IItemProperty.answerOption, newArray);
-                }
-              }}
-              deleteItem={() => {
-                const newArray = removeOptionFromAnswerOptionArray(
-                  item.answerOption ?? [],
-                  listItem.answerOption.valueCoding?.id ?? "",
-                );
-                dispatchUpdateItem(IItemProperty.answerOption, newArray);
-              }}
-              answerOption={listItem.answerOption}
-              showDelete={
-                !!item.answerOption?.length && item.answerOption?.length > 2
-              }
-            />
+                }}
+                changeOrdinalValueExtension={(event) => {
+                  if (event.target.value === "") {
+                    const newArray = removeExtensionFromSingleAnswerOption(
+                      options,
+                      optionId,
+                      IExtensionType.ordinalValue,
+                    );
+                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                  } else {
+                    const newArray = updateAnswerOptionExtension(
+                      options,
+                      optionId,
+                      event.target.value,
+                      IExtensionType.ordinalValue,
+                    );
+                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                  }
+                }}
+                changeValueSetLabel={(event) => {
+                  if (event.target.value === "") {
+                    const newArray = removeExtensionFromSingleAnswerOption(
+                      options,
+                      optionId,
+                      IExtensionType.valueSetLabel,
+                    );
+                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                  } else {
+                    const newArray = updateAnswerOptionExtension(
+                      options,
+                      optionId,
+                      event.target.value,
+                      IExtensionType.valueSetLabel,
+                    );
+                    dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                  }
+                }}
+                deleteItem={() => {
+                  const newArray = removeOptionFromAnswerOptionArray(
+                    options,
+                    optionId,
+                  );
+                  dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                }}
+                answerOption={option}
+                showDelete={options.length > 2}
+              />
+            </div>
           </div>
-        </GridListItem>
-      )}
-    </GridList>
+        );
+      })}
+    </div>
   );
 };
 

@@ -1,6 +1,7 @@
-import type React from "react";
+import type { JSX } from "react";
 
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router";
 import AdvancedQuestionnaireSettings from "src/components/AdvancedQuestionnaireSettings";
 import QuestionnaireSettings from "src/components/QuestionnaireDetails/QuestionnaireSettings";
 
@@ -25,8 +26,9 @@ const FormDetailsDrawer = ({
   closeDrawer,
   questionnaireDetailsErrors,
   isOpen = false,
-}: FormDetailsDrawerProps): React.JSX.Element => {
+}: FormDetailsDrawerProps): JSX.Element => {
   const { t } = useTranslation();
+  const { id } = useParams();
   useKeyPress("Escape", closeDrawer, !isOpen);
 
   return (
@@ -35,6 +37,7 @@ const FormDetailsDrawer = ({
       position="left"
       visible={isOpen}
       hide={closeDrawer}
+      key={id}
     >
       <MetadataEditor questionnaireDetailsErrors={questionnaireDetailsErrors} />
       <QuestionnaireSettings

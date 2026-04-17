@@ -600,3 +600,124 @@ describe("malformed sublabel markdown in translation", () => {
     expect(translatedItem.text).not.toContain("*");
   });
 });
+
+// --- FHIR R4: rendering-markdown extension must always have valueMarkdown ---
+
+describe("FHIR R4: _text rendering-markdown extension integrity", () => {
+  it("never produces _text.extension with rendering-markdown but no valueMarkdown", () => {
+    const linkId = "item-1";
+
+    const main = createMinimalQuestionnaire("nb-NO", [
+      createItemWithMarkdownText(linkId, "Norsk **tekst**"),
+    ]);
+    const translation = createMinimalQuestionnaire("en-GB", [
+      createItemWithMarkdownText(linkId, "English **text**"),
+    ]);
+
+    const bundle = createBundle(main, translation);
+    const state = mapToTreeState(bundle);
+    const output = JSON.parse(generateQuestionnaire(state)) as Bundle;
+
+    for (const entry of output.entry!) {
+      const q = entry.resource as Questionnaire;
+      for (const item of q.item!) {
+        const markdownExt = item._text?.extension?.find(
+          (e) => e.url === MARKDOWN_URL,
+        );
+        if (markdownExt) {
+          expect(markdownExt.valueMarkdown).toBeDefined();
+          expect(markdownExt.valueMarkdown).not.toBe("");
+        }
+      }
+    }
+  });
+
+  it("does not emit _text when translation has no markdown", () => {
+    const linkId = "item-1";
+
+    const main = createMinimalQuestionnaire("nb-NO", [
+      { linkId, type: "string", text: "Vanlig tekst", required: false },
+    ]);
+    const translation = createMinimalQuestionnaire("en-GB", [
+      { linkId, type: "string", text: "Plain text", required: false },
+    ]);
+
+    const bundle = createBundle(main, translation);
+    const state = mapToTreeState(bundle);
+    const output = JSON.parse(generateQuestionnaire(state)) as Bundle;
+
+    const translatedQ = output.entry![1].resource as Questionnaire;
+    const translatedItem = translatedQ.item![0];
+
+    // No _text on main item means no _text on translated item
+    expect(translatedItem._text).toBeUndefined();
+  });
+
+  it("handles translation where main has markdown but translation valueMarkdown is missing", () => {
+    const linkId = "item-1";
+
+    // Main has proper markdown
+    const main = createMinimalQuestionnaire("nb-NO", [
+      createItemWithMarkdownText(linkId, "Norsk **markdown**"),
+    ]);
+    // Translation has the extension URL but valueMarkdown is missing (the bug scenario)
+    const translation = createMinimalQuestionnaire("en-GB", [
+      {
+        linkId,
+        type: "string" as const,
+        text: "English text",
+        required: false,
+        _text: {
+          extension: [{ url: MARKDOWN_URL }],
+        },
+      },
+    ]);
+
+    const bundle = createBundle(main, translation);
+    const state = mapToTreeState(bundle);
+
+    // The mapper should have recovered the markdown from text
+    const enTranslation = state.qAdditionalLanguages?.["en-GB"];
+    expect(enTranslation?.items[linkId].markdown).toBe("English text");
+    expect(enTranslation?.items[linkId].text).toBe("English text");
+
+    // Round-trip: output should have valid valueMarkdown
+    const output = JSON.parse(generateQuestionnaire(state)) as Bundle;
+    const translatedQ = output.entry![1].resource as Questionnaire;
+    const translatedItem = translatedQ.item![0];
+    const markdownExt = translatedItem._text?.extension?.find(
+      (e) => e.url === MARKDOWN_URL,
+    );
+
+    if (markdownExt) {
+      expect(markdownExt.valueMarkdown).toBeDefined();
+      expect(markdownExt.valueMarkdown).not.toBe("");
+    }
+  });
+
+  it("handles translation where main has markdown but translation has empty valueMarkdown", () => {
+    const linkId = "item-1";
+
+    const main = createMinimalQuestionnaire("nb-NO", [
+      createItemWithMarkdownText(linkId, "Norsk **markdown**"),
+    ]);
+    const translation = createMinimalQuestionnaire("en-GB", [
+      {
+        linkId,
+        type: "string" as const,
+        text: "English text",
+        required: false,
+        _text: {
+          extension: [{ url: MARKDOWN_URL, valueMarkdown: "" }],
+        },
+      },
+    ]);
+
+    const bundle = createBundle(main, translation);
+    const state = mapToTreeState(bundle);
+
+    // Mapper should fall back to item.text
+    const enTranslation = state.qAdditionalLanguages?.["en-GB"];
+    expect(enTranslation?.items[linkId].markdown).toBe("English text");
+  });
+});

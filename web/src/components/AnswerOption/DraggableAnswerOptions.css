@@ -12,26 +12,27 @@
   border: 2px solid transparent;
   transition: all 0.2s ease;
   background-color: var(--color-white, #fff);
+  position: relative;
 }
 
-.draggable-answer-option > [role="gridcell"] {
+.draggable-answer-option > .answer-option-content {
   display: flex;
   align-items: center;
   width: 100%;
 }
 
-.draggable-answer-option[data-dragging] {
+.draggable-answer-option.dragging {
   opacity: 0.5;
   border: 2px dashed var(--color-blueberry, #0067c5);
 }
 
-.draggable-answer-option[data-drop-target] {
+.draggable-answer-option.drop-target {
   background-color: var(--color-blueberry-light, #e6f2ff);
   border: 2px solid var(--color-blueberry, #0067c5);
   transform: scale(1.02);
 }
 
-.draggable-answer-option[data-drop-target]::before {
+.draggable-answer-option.drop-target::before {
   content: "";
   position: absolute;
   left: 0;
@@ -41,11 +42,11 @@
   border-radius: 2px;
 }
 
-.draggable-answer-option[data-drop-target="before"]::before {
+.draggable-answer-option.drop-target.drop-before::before {
   top: -6px;
 }
 
-.draggable-answer-option[data-drop-target="after"]::before {
+.draggable-answer-option.drop-target.drop-after::before {
   bottom: -6px;
 }
 

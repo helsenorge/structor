@@ -57,7 +57,6 @@ import { sanitizeUrl } from "../utils/url";
 
 const blockTypeToBlockName = {
   paragraph: "Normal",
-  h1: "Heading 1",
   h2: "Heading 2",
   h3: "Heading 3",
   h4: "Heading 4",
@@ -136,15 +135,6 @@ function BlockFormatDropDown({
         <div className="icon-text-container">
           <i className="icon paragraph" />
           <span className="text">{"Normal"}</span>
-        </div>
-      </DropDownItem>
-      <DropDownItem
-        className={itemWide + dropDownActiveClass(blockType === "h1")}
-        onClick={() => formatHeading("h1")}
-      >
-        <div className="icon-text-container">
-          <i className="icon h1" />
-          <span className="text">{"Heading 1"}</span>
         </div>
       </DropDownItem>
       <DropDownItem
