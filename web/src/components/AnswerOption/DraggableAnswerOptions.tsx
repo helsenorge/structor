@@ -83,12 +83,14 @@ const DraggableAnswerOptions = ({
     setDropPosition(null);
     setDragIndex(null);
 
-    if (sourceIndex === targetIndex) return;
+    if (sourceIndex === targetIndex) {
+      return;
+    }
 
     const newOptions = [...options];
     const [movedItem] = newOptions.splice(sourceIndex, 1);
     // Adjust target index after removal
-    let insertIndex = insertAfter ? targetIndex : targetIndex;
+    let insertIndex = insertAfter ? targetIndex + 1 : targetIndex;
     if (sourceIndex < targetIndex) {
       insertIndex = insertAfter ? targetIndex : targetIndex - 1;
     }
@@ -111,11 +113,17 @@ const DraggableAnswerOptions = ({
         const isDropTarget = dropTargetIndex === index && dragIndex !== index;
 
         let className = "draggable-answer-option";
-        if (isDragging) className += " dragging";
+        if (isDragging) {
+          className += " dragging";
+        }
         if (isDropTarget) {
           className += " drop-target";
-          if (dropPosition === "before") className += " drop-before";
-          if (dropPosition === "after") className += " drop-after";
+          if (dropPosition === "before") {
+            className += " drop-before";
+          }
+          if (dropPosition === "after") {
+            className += " drop-after";
+          }
         }
 
         return (
