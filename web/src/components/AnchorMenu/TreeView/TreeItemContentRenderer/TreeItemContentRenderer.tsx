@@ -34,6 +34,7 @@ interface TreeItemContentRendererProps {
   ancestorContinuations: boolean[];
   isExpanded: boolean;
   isDropTarget: boolean | undefined;
+  validationClassName?: string;
 }
 
 export const TreeItemContentRenderer = memo(function TreeItemContentRenderer({
@@ -45,6 +46,7 @@ export const TreeItemContentRenderer = memo(function TreeItemContentRenderer({
   ancestorContinuations,
   isExpanded,
   isDropTarget,
+  validationClassName,
 }: TreeItemContentRendererProps): JSX.Element {
   const { t } = useTranslation();
   const { draggedNode, toolboxDrag, qItems } = useDraggedNode();
@@ -69,6 +71,7 @@ export const TreeItemContentRenderer = memo(function TreeItemContentRenderer({
             styles.itemBox,
             isTopLevel ? styles.itemBoxTopLevel : "",
             item?.type === "group" ? styles.itemBoxGroup : "",
+            validationClassName,
           ]
             .filter(Boolean)
             .join(" ")}

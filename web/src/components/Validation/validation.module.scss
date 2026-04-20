@@ -3,15 +3,15 @@ $color-warning: #ab7c00;
 $color-info: #08667c;
 
 .error-highlight {
-  border: $color-error 4px solid !important;
+  box-shadow: 0 0 0 3px $color-error !important;
 }
 
 .warning-highlight {
-  border: $color-warning 4px solid !important;
+  box-shadow: 0 0 0 3px $color-warning !important;
 }
 
 .info-highlight {
-  border: $color-info 4px solid !important;
+  box-shadow: 0 0 0 3px $color-info !important;
 }
 
 .error-text {

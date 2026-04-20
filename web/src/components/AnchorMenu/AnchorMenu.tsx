@@ -50,7 +50,13 @@ const AnchorMenu = (props: AnchorMenuProps): JSX.Element => {
     props.qItems,
   );
 
-  const { validationClasses } = useAnchorMenuHelpers();
+  const { validationClasses: validationClassesFn } = useAnchorMenuHelpers();
+
+  const validationClasses = useCallback(
+    (linkId: string): string =>
+      validationClassesFn(linkId, props.validationErrors),
+    [validationClassesFn, props.validationErrors],
+  );
 
   const [toolboxDrag, setToolboxDrag] = useState<ToolboxDragInfo | null>(null);
 

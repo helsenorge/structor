@@ -28,18 +28,14 @@ interface TreeItemClassNameProps {
   nodeId: string;
   isTopItem: boolean;
   isSelected: boolean;
-  validationClasses: (linkId: string) => string;
 }
 
 const buildTreeItemClassName = ({
-  nodeId,
   isTopItem,
   isSelected,
-  validationClasses,
 }: TreeItemClassNameProps): string =>
   [
     styles.item,
-    validationClasses(nodeId),
     isTopItem ? styles.topItem : "",
     isSelected ? styles.itemSelected : "",
   ]
@@ -71,7 +67,6 @@ export const TreeItems = memo(function TreeItems({
         nodeId: node.id,
         isTopItem,
         isSelected,
-        validationClasses,
       })}
     >
       <TreeItemContent>
@@ -85,6 +80,7 @@ export const TreeItems = memo(function TreeItems({
             ancestorContinuations={ancestorContinuations}
             isExpanded={isExpanded}
             isDropTarget={isDropTarget}
+            validationClassName={validationClasses(node.id)}
           />
         )}
       </TreeItemContent>
