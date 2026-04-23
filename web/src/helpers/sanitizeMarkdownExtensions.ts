@@ -4,7 +4,6 @@ import type { Bundle, Questionnaire, QuestionnaireItem } from "fhir/r4";
 function needsSanitization(item: QuestionnaireItem): boolean {
   return !!(
     item._text?.extension &&
-    item.text &&
     item._text.extension.some(
       (ext) =>
         ext.url === IExtensionType.markdown &&
@@ -27,13 +26,13 @@ function populateMissingMarkdownExtensionValue(item: QuestionnaireItem): void {
       }
     }
   } else {
-    for (const ext of item._text.extension) {
-      if (
-        ext.url === IExtensionType.markdown &&
-        (ext.valueMarkdown === undefined || ext.valueMarkdown === "")
-      ) {
-        ext.valueMarkdown = "";
-      }
+    item._text.extension = item._text.extension.filter(
+      (ext) =>
+        ext.url !== IExtensionType.markdown ||
+        (ext.valueMarkdown !== undefined && ext.valueMarkdown !== ""),
+    );
+    if (item._text.extension.length === 0) {
+      delete item._text;
     }
   }
 }
@@ -50,11 +49,60 @@ function sanitizeItemsInPlace(items: QuestionnaireItem[] | undefined): void {
   }
 }
 
+function collectMarkdownLinkIds(
+  items: QuestionnaireItem[] | undefined,
+  result: Set<string>,
+): void {
+  if (!items) return;
+  for (const item of items) {
+    if (
+      item._text?.extension?.some(
+        (ext) => ext.url === IExtensionType.markdown && ext.valueMarkdown,
+      )
+    ) {
+      result.add(item.linkId);
+    }
+    collectMarkdownLinkIds(item.item, result);
+  }
+}
+
+function propagateMarkdownExtensionToItems(
+  items: QuestionnaireItem[] | undefined,
+  markdownLinkIds: Set<string>,
+): void {
+  if (!items) return;
+  for (const item of items) {
+    if (markdownLinkIds.has(item.linkId)) {
+      const hasMarkdownExt = item._text?.extension?.some(
+        (ext) => ext.url === IExtensionType.markdown,
+      );
+      if (!hasMarkdownExt && item.text) {
+        item._text = {
+          extension: [
+            { url: IExtensionType.markdown, valueMarkdown: item.text },
+          ],
+        };
+      }
+    }
+    propagateMarkdownExtensionToItems(item.item, markdownLinkIds);
+  }
+}
+
 export function sanitizeJsonInPlace(json: Bundle | Questionnaire): void {
   if (json.resourceType === "Bundle" && "entry" in json && json.entry) {
-    for (const entry of json.entry) {
-      const resource = entry.resource as Questionnaire;
+    const mainResource = json.entry[0]?.resource as Questionnaire | undefined;
+    const markdownLinkIds = new Set<string>();
+    if (mainResource?.resourceType === "Questionnaire") {
+      sanitizeItemsInPlace(mainResource.item);
+      collectMarkdownLinkIds(mainResource.item, markdownLinkIds);
+    }
+
+    for (let i = 1; i < json.entry.length; i++) {
+      const resource = json.entry[i].resource as Questionnaire;
       if (resource?.resourceType === "Questionnaire") {
+        if (markdownLinkIds.size > 0) {
+          propagateMarkdownExtensionToItems(resource.item, markdownLinkIds);
+        }
         sanitizeItemsInPlace(resource.item);
       }
     }

@@ -131,7 +131,7 @@ const getTranslatedSidebarItem = (
     currentItem._text?.extension,
     IExtensionType.markdown,
   );
-  if (markdownExtension) {
+  if (markdownExtension && translatedText) {
     const translatedMarkdownExtension = {
       ...markdownExtension,
       valueMarkdown: translatedText,
@@ -165,11 +165,13 @@ const getTranslatedItem = (
     currentItem._text?.extension,
     IExtensionType.markdown,
   );
-  if (markdownExtension?.valueMarkdown) {
+
+  const translatedMarkdownValue =
+    itemTranslation?.markdown || itemTranslation?.text || "";
+  if (markdownExtension?.valueMarkdown && translatedMarkdownValue) {
     const translatedMarkdownExtension = {
       ...markdownExtension,
-      valueMarkdown:
-        itemTranslation?.markdown || itemTranslation?.text || undefined,
+      valueMarkdown: translatedMarkdownValue,
     };
     _text = {
       extension: updateTranslatedExtension(
