@@ -93,7 +93,9 @@ function propagateMarkdownExtensionToItems(
 }
 
 function sanitizeBundleInPlace(bundle: Bundle): void {
-  if (!bundle.entry) return;
+  if (!bundle.entry) {
+    return;
+  }
 
   const mainResource = bundle.entry[0]?.resource as Questionnaire | undefined;
   const markdownLinkIds = new Set<string>();
@@ -104,7 +106,9 @@ function sanitizeBundleInPlace(bundle: Bundle): void {
 
   for (let i = 1; i < bundle.entry.length; i++) {
     const resource = bundle.entry[i].resource as Questionnaire;
-    if (resource?.resourceType !== "Questionnaire") continue;
+    if (resource?.resourceType !== "Questionnaire") {
+      continue;
+    }
     if (markdownLinkIds.size > 0) {
       propagateMarkdownExtensionToItems(resource.item, markdownLinkIds);
     }
