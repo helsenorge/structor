@@ -53,7 +53,9 @@ function collectMarkdownLinkIds(
   items: QuestionnaireItem[] | undefined,
   result: Set<string>,
 ): void {
-  if (!items) return;
+  if (!items) {
+    return;
+  }
   for (const item of items) {
     if (
       item._text?.extension?.some(
@@ -70,7 +72,9 @@ function propagateMarkdownExtensionToItems(
   items: QuestionnaireItem[] | undefined,
   markdownLinkIds: Set<string>,
 ): void {
-  if (!items) return;
+  if (!items) {
+    return;
+  }
   for (const item of items) {
     if (markdownLinkIds.has(item.linkId)) {
       const hasMarkdownExt = item._text?.extension?.some(
@@ -88,24 +92,29 @@ function propagateMarkdownExtensionToItems(
   }
 }
 
-export function sanitizeJsonInPlace(json: Bundle | Questionnaire): void {
-  if (json.resourceType === "Bundle" && "entry" in json && json.entry) {
-    const mainResource = json.entry[0]?.resource as Questionnaire | undefined;
-    const markdownLinkIds = new Set<string>();
-    if (mainResource?.resourceType === "Questionnaire") {
-      sanitizeItemsInPlace(mainResource.item);
-      collectMarkdownLinkIds(mainResource.item, markdownLinkIds);
-    }
+function sanitizeBundleInPlace(bundle: Bundle): void {
+  if (!bundle.entry) return;
 
-    for (let i = 1; i < json.entry.length; i++) {
-      const resource = json.entry[i].resource as Questionnaire;
-      if (resource?.resourceType === "Questionnaire") {
-        if (markdownLinkIds.size > 0) {
-          propagateMarkdownExtensionToItems(resource.item, markdownLinkIds);
-        }
-        sanitizeItemsInPlace(resource.item);
-      }
+  const mainResource = bundle.entry[0]?.resource as Questionnaire | undefined;
+  const markdownLinkIds = new Set<string>();
+  if (mainResource?.resourceType === "Questionnaire") {
+    sanitizeItemsInPlace(mainResource.item);
+    collectMarkdownLinkIds(mainResource.item, markdownLinkIds);
+  }
+
+  for (let i = 1; i < bundle.entry.length; i++) {
+    const resource = bundle.entry[i].resource as Questionnaire;
+    if (resource?.resourceType !== "Questionnaire") continue;
+    if (markdownLinkIds.size > 0) {
+      propagateMarkdownExtensionToItems(resource.item, markdownLinkIds);
     }
+    sanitizeItemsInPlace(resource.item);
+  }
+}
+
+export function sanitizeJsonInPlace(json: Bundle | Questionnaire): void {
+  if (json.resourceType === "Bundle") {
+    sanitizeBundleInPlace(json);
   } else if (json.resourceType === "Questionnaire") {
     sanitizeItemsInPlace(json.item);
   }
