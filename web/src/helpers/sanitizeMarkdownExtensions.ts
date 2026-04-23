@@ -13,16 +13,27 @@ function needsSanitization(item: QuestionnaireItem): boolean {
   );
 }
 
-function fixMissingValueMarkdown(item: QuestionnaireItem): void {
-  if (!item._text?.extension || !item.text) {
+function populateMissingMarkdownExtensionValue(item: QuestionnaireItem): void {
+  if (!item._text || !item._text.extension) {
     return;
   }
-  for (const ext of item._text.extension) {
-    if (
-      ext.url === IExtensionType.markdown &&
-      (ext.valueMarkdown === undefined || ext.valueMarkdown === "")
-    ) {
-      ext.valueMarkdown = item.text;
+  if (item.text) {
+    for (const ext of item._text.extension) {
+      if (
+        ext.url === IExtensionType.markdown &&
+        (ext.valueMarkdown === undefined || ext.valueMarkdown === "")
+      ) {
+        ext.valueMarkdown = item.text;
+      }
+    }
+  } else {
+    for (const ext of item._text.extension) {
+      if (
+        ext.url === IExtensionType.markdown &&
+        (ext.valueMarkdown === undefined || ext.valueMarkdown === "")
+      ) {
+        ext.valueMarkdown = "";
+      }
     }
   }
 }
@@ -33,7 +44,7 @@ function sanitizeItemsInPlace(items: QuestionnaireItem[] | undefined): void {
   }
   for (const item of items) {
     if (needsSanitization(item)) {
-      fixMissingValueMarkdown(item);
+      populateMissingMarkdownExtensionValue(item);
     }
     sanitizeItemsInPlace(item.item);
   }
