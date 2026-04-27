@@ -1,7 +1,7 @@
 import { describe, vi, it, expect, beforeEach } from "vitest";
 
 import { ICodeSystem, IExtensionType } from "../../types/IQuestionnareItemType";
-import type { Element, Extension } from "fhir/r4";
+import type { Element, Extension, QuestionnaireItem } from "fhir/r4";
 
 import {
   findExtensionByUrl,
@@ -239,7 +239,7 @@ describe("extentionHelper", () => {
 
   describe("ensureOptionReferenceIds", () => {
     it("should assign an id to optionReference valueReferences missing one", () => {
-      const item = {
+      const item: QuestionnaireItem = {
         linkId: "1",
         type: "choice" as const,
         extension: [
@@ -259,10 +259,10 @@ describe("extentionHelper", () => {
 
       ensureOptionReferenceIds(item);
 
-      expect(item.extension[0].valueReference?.id).toBeDefined();
-      expect(item.extension[0].valueReference?.id).not.toBe("");
-      expect(item.extension[1].valueReference?.id).toBeDefined();
-      expect(item.extension[1].valueReference?.id).not.toBe("");
+      expect(item?.extension?.[0].valueReference?.id).toBeDefined();
+      expect(item?.extension?.[0].valueReference?.id).not.toBe("");
+      expect(item?.extension?.[1].valueReference?.id).toBeDefined();
+      expect(item?.extension?.[1].valueReference?.id).not.toBe("");
     });
 
     it("should not overwrite existing ids", () => {
@@ -307,18 +307,18 @@ describe("extentionHelper", () => {
     });
 
     it("should handle item with no extensions", () => {
-      const item = {
+      const item: QuestionnaireItem = {
         linkId: "1",
         type: "choice" as const,
       };
 
       ensureOptionReferenceIds(item);
 
-      expect(item.extension).toBeUndefined();
+      expect(item?.extension).toBeUndefined();
     });
 
     it("should assign unique ids to each valueReference", () => {
-      const item = {
+      const item: QuestionnaireItem = {
         linkId: "1",
         type: "choice" as const,
         extension: [
@@ -335,8 +335,8 @@ describe("extentionHelper", () => {
 
       ensureOptionReferenceIds(item);
 
-      const id1 = item.extension[0].valueReference?.id;
-      const id2 = item.extension[1].valueReference?.id;
+      const id1 = item.extension?.[0].valueReference?.id;
+      const id2 = item.extension?.[1].valueReference?.id;
       expect(id1).not.toBe(id2);
     });
   });
