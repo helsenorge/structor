@@ -25,6 +25,7 @@ import type {
 } from "fhir/r4";
 import type { ExtendedLanguageLocales } from "src/types/LanguageTypes";
 
+import { ensureOptionReferenceIds } from "./extensionHelper";
 import { initPredefinedValueSet } from "./initPredefinedValueSet";
 import { isItemControlSidebar } from "./itemControl";
 import {
@@ -338,6 +339,11 @@ export function mapToTreeState(resource: Bundle | Questionnaire): TreeState {
   const valueSets =
     qContained?.filter((x) => x.resourceType === "ValueSet") || [];
   const { qItems, qOrder } = extractItemsAndOrder(mainQuestionnaire.item);
+
+  // Assign IDs to optionReference valueReferences missing them (old forms)
+  for (const item of Object.values(qItems)) {
+    ensureOptionReferenceIds(item);
+  }
 
   // add missing initial value sets:
   initPredefinedValueSet.forEach((x) => {

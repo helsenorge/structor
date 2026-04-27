@@ -9,6 +9,7 @@ import {
   findExtentionByCode,
   getExtensionByCodeAndElement,
   hasOneOrMoreExtensions,
+  ensureOptionReferenceIds,
 } from "../extensionHelper";
 
 describe("extentionHelper", () => {
@@ -233,6 +234,110 @@ describe("extentionHelper", () => {
       ];
 
       expect(hasOneOrMoreExtensions(extensions, extensionTypes)).toBe(true);
+    });
+  });
+
+  describe("ensureOptionReferenceIds", () => {
+    it("should assign an id to optionReference valueReferences missing one", () => {
+      const item = {
+        linkId: "1",
+        type: "choice" as const,
+        extension: [
+          {
+            url: IExtensionType.optionReference,
+            valueReference: { reference: "Endpoint/1", display: "Test" },
+          },
+          {
+            url: IExtensionType.optionReference,
+            valueReference: {
+              reference: "Endpoint/2",
+              display: "Test2",
+            },
+          },
+        ],
+      };
+
+      ensureOptionReferenceIds(item);
+
+      expect(item.extension[0].valueReference?.id).toBeDefined();
+      expect(item.extension[0].valueReference?.id).not.toBe("");
+      expect(item.extension[1].valueReference?.id).toBeDefined();
+      expect(item.extension[1].valueReference?.id).not.toBe("");
+    });
+
+    it("should not overwrite existing ids", () => {
+      const item = {
+        linkId: "1",
+        type: "choice" as const,
+        extension: [
+          {
+            url: IExtensionType.optionReference,
+            valueReference: {
+              reference: "Endpoint/1",
+              display: "Test",
+              id: "existing-id",
+            },
+          },
+        ],
+      };
+
+      ensureOptionReferenceIds(item);
+
+      expect(item.extension[0].valueReference?.id).toBe("existing-id");
+    });
+
+    it("should not touch non-optionReference extensions", () => {
+      const item = {
+        linkId: "1",
+        type: "choice" as const,
+        extension: [
+          {
+            url: IExtensionType.markdown,
+            valueMarkdown: "some text",
+          },
+        ],
+      };
+
+      ensureOptionReferenceIds(item);
+
+      expect(item.extension[0]).toEqual({
+        url: IExtensionType.markdown,
+        valueMarkdown: "some text",
+      });
+    });
+
+    it("should handle item with no extensions", () => {
+      const item = {
+        linkId: "1",
+        type: "choice" as const,
+      };
+
+      ensureOptionReferenceIds(item);
+
+      expect(item.extension).toBeUndefined();
+    });
+
+    it("should assign unique ids to each valueReference", () => {
+      const item = {
+        linkId: "1",
+        type: "choice" as const,
+        extension: [
+          {
+            url: IExtensionType.optionReference,
+            valueReference: { reference: "Endpoint/1", display: "A" },
+          },
+          {
+            url: IExtensionType.optionReference,
+            valueReference: { reference: "Endpoint/2", display: "B" },
+          },
+        ],
+      };
+
+      ensureOptionReferenceIds(item);
+
+      const id1 = item.extension[0].valueReference?.id;
+      const id2 = item.extension[1].valueReference?.id;
+      expect(id1).not.toBe(id2);
     });
   });
 });

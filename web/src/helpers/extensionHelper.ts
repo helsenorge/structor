@@ -160,6 +160,18 @@ export const createOptionReferenceExtensions = [
   },
 ];
 
+export const ensureOptionReferenceIds = (item: QuestionnaireItem): void => {
+  item.extension?.forEach((ext) => {
+    if (
+      ext.url === IExtensionType.optionReference &&
+      ext.valueReference &&
+      !ext.valueReference.id
+    ) {
+      ext.valueReference.id = createUUID();
+    }
+  });
+};
+
 export const createMarkdownExtension = (markdownValue: string): Element => {
   return {
     extension: [

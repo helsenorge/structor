@@ -141,7 +141,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
   const listItems = useMemo(
     () =>
       (optionReferences || []).map((reference) => ({
-        id: reference.valueReference?.id || "",
+        id: reference.valueReference?.id || createUUID(),
         reference,
       })),
     [optionReferences],
