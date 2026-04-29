@@ -109,9 +109,15 @@ const Question = (props: QuestionProps): React.JSX.Element => {
   };
 
   const getSublabelText = (): string => {
+    if (isMarkdownActivated) {
+      return (
+        props.item.extension?.find((x) => x.url === IExtensionType.sublabel)
+          ?.valueMarkdown || ""
+      );
+    }
     return (
-      props.item.extension?.find((x) => x.url === IExtensionType.sublabel)
-        ?.valueMarkdown || ""
+      props.item.extension?.find((x) => x.url === IExtensionType.sublabelString)
+        ?.valueString || ""
     );
   };
 
