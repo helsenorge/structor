@@ -1,0 +1,2650 @@
+{
+  "resourceType": "Questionnaire",
+  "language": "nb-NO",
+  "id": "7a975034-d1e7-4d76-8f54-6b87e872de06",
+  "name": "Hdir_mental_abc",
+  "title": "ABC for god psykisk helse - Test deg selv",
+  "version": "0.08",
+  "status": "draft",
+  "publisher": "NHN",
+  "meta": {
+    "profile": ["http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire"],
+    "tag": [
+      { "system": "urn:ietf:bcp:47", "code": "nb-NO", "display": "Bokmål" }
+    ],
+    "security": [
+      {
+        "code": "3",
+        "display": "Helsehjelp (Full)",
+        "system": "urn:oid:2.16.578.1.12.4.1.1.7618"
+      }
+    ]
+  },
+  "contact": [{ "name": "http://www.nhn.no" }],
+  "subjectType": ["Patient"],
+  "extension": [
+    {
+      "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar",
+      "valueCoding": {
+        "system": "http://helsenorge.no/fhir/ValueSet/sdf-sidebar",
+        "code": "1"
+      }
+    },
+    {
+      "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-information-message",
+      "valueCoding": {
+        "system": "http://helsenorge.no/fhir/ValueSet/sdf-information-message",
+        "code": "1"
+      }
+    },
+    {
+      "url": "http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility",
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+            "code": "hide-help",
+            "display": "Hide help texts"
+          },
+          {
+            "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+            "code": "hide-sublabel",
+            "display": "Hide sublabel texts"
+          }
+        ]
+      }
+    },
+    {
+      "url": "http://ehelse.no/fhir/StructureDefinition/sdf-authenticationrequirement",
+      "valueCoding": {
+        "system": "http://ehelse.no/fhir/ValueSet/AuthenticationRequirement",
+        "code": "1"
+      }
+    },
+    {
+      "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-save-capabilities",
+      "valueCoding": {
+        "system": "http://helsenorge.no/fhir/ValueSet/sdf-save-capabilities",
+        "code": "3"
+      }
+    }
+  ],
+  "url": "Questionnaire/7a975034-d1e7-4d76-8f54-6b87e872de06",
+  "purpose": "quiz",
+  "copyright": "Hdir",
+  "contained": [
+    {
+      "resourceType": "ValueSet",
+      "id": "fbb2a6d7-1ff2-44b9-90ca-b25df57a00a3",
+      "version": "1.0",
+      "name": " Bortsett fra jobb/skole og husarbeid, hvor ofte bruker du hender og hode til noe kreativt? Som å snekre, spikke, sy, spille gitar, jobbe med fotobok eller planter etc.",
+      "title": "HvorOfteAktiv",
+      "date": "2026-04-27T11:49:54.919Z",
+      "status": "draft",
+      "compose": {
+        "id": "41184e72-24b7-4b84-a1cc-6ee83789a83f",
+        "include": [
+          {
+            "system": "urn:uuid:68a1eee5-8b14-49ff-8071-88a1ab7cf21b",
+            "concept": [
+              {
+                "id": "6acb9ff8-a0c2-4f11-f0b7-1657d085e83e",
+                "code": "hver-dag",
+                "display": "Hver dag"
+              },
+              {
+                "id": "b76e5ffb-0e73-4c2d-e750-a9ee2a131423",
+                "code": "hver-uke",
+                "display": "Hver uke"
+              },
+              {
+                "id": "08295cdd-dd34-4ac6-c276-3ff37429d32f",
+                "code": "annenhver-uke",
+                "display": "Annenhver uke"
+              },
+              {
+                "id": "b5c54b11-cc52-4c64-8855-c6286d2af169",
+                "code": "hver-måned",
+                "display": "Hver måned"
+              },
+              {
+                "id": "1ca72438-323d-4440-8312-46558482a68b",
+                "code": "sjeldnere",
+                "display": "Sjeldnere"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "linkId": "bb1f8b70-3872-4038-ec70-b6b574c82ccd",
+      "type": "group",
+      "text": "Test deg selv",
+      "required": false,
+      "item": [
+        {
+          "linkId": "6be60479-cf31-444a-8a8f-191102534b15",
+          "type": "display",
+          "text": "Det du gjør i hverdagen påvirker hvordan du har det. Vil du få en bedre forståelse av hvordan noen av hverdagsvalgene dine påvirker deg? Ta denne enkle og helt anonyme testen. Det tar ca. fem minutter. ",
+          "required": false
+        }
+      ]
+    },
+    {
+      "linkId": "6dc447b6-35e1-4bf7-b969-6c839bc35471",
+      "type": "group",
+      "text": "Psykisk helse og livskvalitet",
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                "code": "step",
+                "display": "Step"
+              }
+            ]
+          }
+        }
+      ],
+      "required": false,
+      "item": [
+        {
+          "linkId": "display-din-psykiske-helse",
+          "type": "display",
+          "text": "Under er noen utsagn om tanker og følelser. Marker hvor godt de stemmer for deg.",
+          "required": false
+        },
+        {
+          "linkId": "8d66cc80-ca86-4b5a-8494-b175a49be960",
+          "type": "choice",
+          "text": "Jeg har følt meg optimistisk de siste to ukene.",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "slider",
+                    "display": "Slider"
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "label",
+              "display": "Display value",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderDisplayType"
+            },
+            {
+              "code": "LabelLeft",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "LabelRight",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "52e0466d-12e1-40fc-b5ba-3de9f772bd76",
+                "code": "not-at-all",
+                "system": "urn:uuid:fcbe6186-5a25-4277-8b02-579cc741e36a",
+                "display": "Nei",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "3600329a-cc11-4e61-88d9-e5116fab2653",
+                "code": "rarely",
+                "system": "urn:uuid:fcbe6186-5a25-4277-8b02-579cc741e36a",
+                "display": "Sjelden",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "53588853-27f5-4802-bbc6-9c1bb4adeee7",
+                "code": "sometimes",
+                "system": "urn:uuid:fcbe6186-5a25-4277-8b02-579cc741e36a",
+                "display": "Innimellom",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 3
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "d6504e3f-713e-42a5-b59a-2c38fec3790c",
+                "code": "often",
+                "system": "urn:uuid:fcbe6186-5a25-4277-8b02-579cc741e36a",
+                "display": "Ofte",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 4
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "63349f9a-c296-4308-9e8c-10d14c797c22",
+                "code": "all-the-time",
+                "system": "urn:uuid:fcbe6186-5a25-4277-8b02-579cc741e36a",
+                "display": "Veldig",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "cdf40cb0-4a0e-4ca2-9af7-b9c9534ab721",
+          "type": "choice",
+          "text": "Jeg har følt meg nyttig de to siste ukene.",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "slider",
+                    "display": "Slider"
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "label",
+              "display": "Display value",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderDisplayType"
+            },
+            {
+              "code": "LabelLeft",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "LabelRight",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "b53cf98c-2610-454e-bd4e-b269acaaecc1",
+                "code": "not-at-all",
+                "system": "urn:uuid:10d713ff-2173-421f-91e6-56f442a085c7",
+                "display": "Nei",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "e43bc601-99ad-47c5-8eff-efdf33f38d5b",
+                "code": "rarely",
+                "system": "urn:uuid:10d713ff-2173-421f-91e6-56f442a085c7",
+                "display": "Sjelden",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "d10be48f-0f00-47b5-aced-a3ad0eb6bd3a",
+                "code": "sometimes",
+                "system": "urn:uuid:10d713ff-2173-421f-91e6-56f442a085c7",
+                "display": "Innimellom",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 3
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "0133efc6-de5d-42d1-a1ab-5a0db9b2906d",
+                "code": "often",
+                "system": "urn:uuid:10d713ff-2173-421f-91e6-56f442a085c7",
+                "display": "Ofte",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 4
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "88a7e808-38ed-440b-8710-870a112f9fb4",
+                "code": "all-the-time",
+                "system": "urn:uuid:10d713ff-2173-421f-91e6-56f442a085c7",
+                "display": "Veldig",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "637e2031-8136-4dfd-a01a-936620ca86f2",
+          "type": "choice",
+          "text": "Jeg har hatt lyst til å være sosial de siste to ukene.",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "slider",
+                    "display": "Slider"
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "label",
+              "display": "Display value",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderDisplayType"
+            },
+            {
+              "code": "LabelLeft",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "LabelRight",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "ee405cde-f9b4-4b0f-a398-ab39afc17641",
+                "code": "not-at-all",
+                "system": "urn:uuid:954354bf-c6e0-4dfc-a929-3961a1d0d2cc",
+                "display": "Nei",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "a7ac1c57-a411-4d5b-803d-dd3f1e8c14da",
+                "code": "rarely",
+                "system": "urn:uuid:954354bf-c6e0-4dfc-a929-3961a1d0d2cc",
+                "display": "Sjelden",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "c1700b8a-2851-4ca2-b2f7-49d8ccb3681c",
+                "code": "sometimes",
+                "system": "urn:uuid:954354bf-c6e0-4dfc-a929-3961a1d0d2cc",
+                "display": "Innimellom",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 3
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "4737780f-d024-4f2e-a08c-93cc8eed2fcb",
+                "code": "often",
+                "system": "urn:uuid:954354bf-c6e0-4dfc-a929-3961a1d0d2cc",
+                "display": "Ofte",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 4
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "3a0f5b55-3e6a-4f2e-bd83-d682b606ad74",
+                "code": "all-the-time",
+                "system": "urn:uuid:954354bf-c6e0-4dfc-a929-3961a1d0d2cc",
+                "display": "Veldig",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "b8e23fde-c0c4-4966-9c67-e6218882b573",
+          "type": "choice",
+          "text": "Jeg har hatt energi og overskudd de to siste ukene. ",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "slider",
+                    "display": "Slider"
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "label",
+              "display": "Display value",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderDisplayType"
+            },
+            {
+              "code": "LabelLeft",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "LabelRight",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "3c0460b1-2b48-49a1-9daf-c05d50673b50",
+                "code": "not-at-all",
+                "system": "urn:uuid:9a76f477-1de3-4224-b18c-6f738c7253d9",
+                "display": "Nei",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "013e4ba9-5820-473e-ad48-47a03e9fa7f2",
+                "code": "rarely",
+                "system": "urn:uuid:9a76f477-1de3-4224-b18c-6f738c7253d9",
+                "display": "Sjelden",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "dfc375f9-79d7-4c33-bf42-870efb513cfe",
+                "code": "sometimes",
+                "system": "urn:uuid:9a76f477-1de3-4224-b18c-6f738c7253d9",
+                "display": "Innimellom",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 3
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "a109e2fd-ab73-469a-a4da-ca3baa704f38",
+                "code": "often",
+                "system": "urn:uuid:9a76f477-1de3-4224-b18c-6f738c7253d9",
+                "display": "Ofte",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 4
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "75300d3c-cbf4-44cb-b157-08a7fda78934",
+                "code": "all-the-time",
+                "system": "urn:uuid:9a76f477-1de3-4224-b18c-6f738c7253d9",
+                "display": "Veldig",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "2cdca4dc-ad12-4ba9-8bf9-a87de29ba472",
+          "type": "choice",
+          "text": "Jeg har takla utfordringer på en god måte de to siste ukene.",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "slider",
+                    "display": "Slider"
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "label",
+              "display": "Display value",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderDisplayType"
+            },
+            {
+              "code": "LabelLeft",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "LabelRight",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "e0af0984-6e3a-46c8-8768-e49f27484bcf",
+                "code": "not-at-all",
+                "system": "urn:uuid:8feabf3d-d01c-43cf-bc26-a16e9afe13bc",
+                "display": "Nei",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "46ee1ce4-8326-460d-baf0-a90f92df966e",
+                "code": "rarely",
+                "system": "urn:uuid:8feabf3d-d01c-43cf-bc26-a16e9afe13bc",
+                "display": "Sjelden",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "b03e65ad-a6f9-47b9-a950-094a18a8f7c0",
+                "code": "sometimes",
+                "system": "urn:uuid:8feabf3d-d01c-43cf-bc26-a16e9afe13bc",
+                "display": "Innimellom",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 3
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "81338120-40e5-4ed3-a0ba-55bcbcb6da01",
+                "code": "often",
+                "system": "urn:uuid:8feabf3d-d01c-43cf-bc26-a16e9afe13bc",
+                "display": "Ofte",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 4
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "5773d111-83eb-4e3f-a9d6-2eb243b0b95f",
+                "code": "all-the-time",
+                "system": "urn:uuid:8feabf3d-d01c-43cf-bc26-a16e9afe13bc",
+                "display": "Veldig",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "a0f4f247-b7ff-4cd0-a97b-239403661751",
+          "type": "choice",
+          "text": "Jeg har følt på nærhet til andre mennesker de to siste ukene.",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "slider",
+                    "display": "Slider"
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "label",
+              "display": "Display value",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderDisplayType"
+            },
+            {
+              "code": "LabelLeft",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "LabelRight",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "1519c411-84cb-4106-98c1-8797977b7167",
+                "code": "not-at-all",
+                "system": "urn:uuid:56e3fdc6-2345-44a6-90b1-dc0b0da3f810",
+                "display": "Nei",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "05e75765-379a-49b4-a8a0-cf530d2100f4",
+                "code": "rarely",
+                "system": "urn:uuid:56e3fdc6-2345-44a6-90b1-dc0b0da3f810",
+                "display": "Sjelden",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "728a7af2-8602-4386-ba2d-d403fab72de2",
+                "code": "sometimes",
+                "system": "urn:uuid:56e3fdc6-2345-44a6-90b1-dc0b0da3f810",
+                "display": "Innimellom",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 3
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "e72c454f-0f07-4622-a784-3b52f3eae891",
+                "code": "often",
+                "system": "urn:uuid:56e3fdc6-2345-44a6-90b1-dc0b0da3f810",
+                "display": "Ofte",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 4
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "e0417fc1-9803-4c81-a9a9-ad5cd0b32733",
+                "code": "all-the-time",
+                "system": "urn:uuid:56e3fdc6-2345-44a6-90b1-dc0b0da3f810",
+                "display": "Veldig",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "edfa1efa-8dd7-4a2c-91d9-1c55218359b3",
+          "type": "choice",
+          "text": "Jeg har merket at andre verdsetter meg de to siste ukene.",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "slider",
+                    "display": "Slider"
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "label",
+              "display": "Display value",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderDisplayType"
+            },
+            {
+              "code": "LabelLeft",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "LabelRight",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "c72da564-929d-4668-bf6f-6cad80ed2013",
+                "code": "not-at-all",
+                "system": "urn:uuid:add2f50e-41d7-4761-a40e-a412bc1f9144",
+                "display": "Nei",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "2788b259-bcd7-46ff-b190-391d293fd871",
+                "code": "rarely",
+                "system": "urn:uuid:add2f50e-41d7-4761-a40e-a412bc1f9144",
+                "display": "Sjelden",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "f29434c9-965e-48f0-a00d-dcff0dd7d8a4",
+                "code": "sometimes",
+                "system": "urn:uuid:add2f50e-41d7-4761-a40e-a412bc1f9144",
+                "display": "Innimellom",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 3
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "28e342a6-2833-4083-b775-b04a112bd891",
+                "code": "often",
+                "system": "urn:uuid:add2f50e-41d7-4761-a40e-a412bc1f9144",
+                "display": "Ofte",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 4
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "ae2d6471-013b-4985-bb9a-26ac9c1b07e1",
+                "code": "all-the-time",
+                "system": "urn:uuid:add2f50e-41d7-4761-a40e-a412bc1f9144",
+                "display": "Veldig",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "56994f90-675d-47e4-ae18-c45a3fc5c80e",
+          "type": "choice",
+          "text": "Jeg har vært nysgjerrig og åpen for nye ting de to siste ukene.",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "slider",
+                    "display": "Slider"
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "label",
+              "display": "Display value",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderDisplayType"
+            },
+            {
+              "code": "LabelLeft",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "LabelRight",
+              "system": "http://helsenorge.no/fhir/CodeSystem/SliderLabels"
+            },
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "39d380a6-6e89-4b15-af9e-ae725f3b2e42",
+                "code": "not-at-all",
+                "system": "urn:uuid:e5c8d63b-ef75-4089-9d74-b9cee8e9eb31",
+                "display": "Nei",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "fdda172b-4e88-4261-bc1f-7be36c0cac15",
+                "code": "rarely",
+                "system": "urn:uuid:e5c8d63b-ef75-4089-9d74-b9cee8e9eb31",
+                "display": "Sjelden",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "d070fb92-5d02-492f-9118-8bea2f66b852",
+                "code": "sometimes",
+                "system": "urn:uuid:e5c8d63b-ef75-4089-9d74-b9cee8e9eb31",
+                "display": "Innimellom",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 3
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "df12455b-e849-4196-be09-180aa280ab03",
+                "code": "often",
+                "system": "urn:uuid:e5c8d63b-ef75-4089-9d74-b9cee8e9eb31",
+                "display": "Ofte",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 4
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "091cfa9b-6394-4fc0-b015-994dc1255632",
+                "code": "all-the-time",
+                "system": "urn:uuid:e5c8d63b-ef75-4089-9d74-b9cee8e9eb31",
+                "display": "Veldig",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "c83fe996-a4a2-4196-8960-dc017dbca97e",
+          "type": "decimal",
+          "text": "Din trivselsskår",
+          "code": [
+            {
+              "system": "http://ehelse.no/Score",
+              "code": "score",
+              "display": "score"
+            },
+            {
+              "system": "http://ehelse.no/scoringFormulas",
+              "code": "SS",
+              "display": "Section score"
+            }
+          ],
+          "required": false,
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "linkId": "64ef988c-9331-4da8-b6ff-2d30976c192e",
+      "type": "group",
+      "text": "Aktiv",
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                "code": "step",
+                "display": "Step"
+              }
+            ]
+          }
+        }
+      ],
+      "required": false,
+      "item": [
+        {
+          "linkId": "d8f96add-4299-4689-bc93-e4c3ab9d7c83",
+          "type": "choice",
+          "text": "Bortsett fra jobb/skole og husarbeid, hvor ofte er du fysisk aktiv?\n(For eksempel går tur, trener, danser, står slalåm etc.)",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button",
+                    "display": "Radio Button"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "c3ffa6bf-69b2-48eb-b3b7-ff462ba56978",
+                "code": "rarely",
+                "system": "urn:uuid:c91c63ce-494b-4f48-9ed6-67f80d980cee",
+                "display": "Sjeldnere",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "c1d4c88a-acba-45a5-b6c7-f47d163a35f0",
+                "code": "Monthly",
+                "system": "urn:uuid:c91c63ce-494b-4f48-9ed6-67f80d980cee",
+                "display": "Hver måned",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0.5
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "54eb3a95-f229-4b6b-a32f-adff3329cee6",
+                "code": "Every other week",
+                "system": "urn:uuid:c91c63ce-494b-4f48-9ed6-67f80d980cee",
+                "display": "Annenhver uke",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "e971c6f4-bb22-42bb-af23-e5b20f84ecd1",
+                "code": "Weekly",
+                "system": "urn:uuid:c91c63ce-494b-4f48-9ed6-67f80d980cee",
+                "display": "Hver uke",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "2bd226ff-89d3-417a-844f-7f53d64e58cf",
+                "code": "hver-dag",
+                "system": "urn:uuid:c91c63ce-494b-4f48-9ed6-67f80d980cee",
+                "display": "Hver dag",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue"
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "e96b3e59-741a-42ae-a31a-c4155ef6e890",
+          "type": "choice",
+          "text": "Utenom jobb/skole, hvor ofte er du ute i naturen på tur, bading, jakt, bærplukking eller tilsvarende?",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button",
+                    "display": "Radio Button"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "f6c0d2a9-4b60-4772-bbf8-8696ae217c61",
+                "code": "rarely",
+                "system": "urn:uuid:c91c63ce-494b-4f48-9ed6-67f80d980cee",
+                "display": "Sjeldnere ",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "690b9125-48d6-4bc6-b44c-591030d3d2fa",
+                "code": "every month",
+                "system": "urn:uuid:c91c63ce-494b-4f48-9ed6-67f80d980cee",
+                "display": "Hver måned",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0.5
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "72b94b95-439a-49f3-b017-87f6c17c511b",
+                "code": "Every other week",
+                "system": "urn:uuid:c91c63ce-494b-4f48-9ed6-67f80d980cee",
+                "display": "Annenhver uke",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0.5
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "af11a009-f869-4048-9bb0-ec0e36c3dd0a",
+                "code": "weekly",
+                "system": "urn:uuid:c91c63ce-494b-4f48-9ed6-67f80d980cee",
+                "display": "Hver uke",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "a07146af-c2a3-4482-8776-645b703b912d",
+                "code": "daily",
+                "system": "urn:uuid:c91c63ce-494b-4f48-9ed6-67f80d980cee",
+                "display": "Hver dag",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2.5
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "ee8e2438-5e5d-4088-b134-f2ad106dfd37",
+          "type": "choice",
+          "text": "Bortsett fra jobb/skole, hvor ofte driver du med konsentrasjonsaktiviteter som å lese bok, løse kryssord eller planlegge noe litt komplisert? ",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button",
+                    "display": "Radio Button"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "aef1fbe1-5538-48ff-bca5-467d96f89a4b",
+                "code": "rarely",
+                "system": "urn:uuid:68e42829-77db-4e9c-8190-7ab06049f1bb",
+                "display": "Sjeldnere",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "fc549f9d-cc2a-46a4-b4d0-e9528951be9d",
+                "code": "monthly",
+                "system": "urn:uuid:68e42829-77db-4e9c-8190-7ab06049f1bb",
+                "display": "Hver måned",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "9b3f9b9a-b918-4dcc-8947-9d37362a640f",
+                "system": "urn:uuid:68e42829-77db-4e9c-8190-7ab06049f1bb",
+                "display": "Annenhver uke",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0
+                  }
+                ],
+                "code": "Every-other-week"
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "d1da583a-b86a-47ac-99be-b9dbdfa4eae4",
+                "code": "weekly",
+                "system": "urn:uuid:68e42829-77db-4e9c-8190-7ab06049f1bb",
+                "display": "Hver uke",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "4521133d-ca77-4398-a409-09f65859420f",
+                "code": "daily",
+                "system": "urn:uuid:68e42829-77db-4e9c-8190-7ab06049f1bb",
+                "display": "Hver dag",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "9ae235c8-1e53-43ae-8721-875b9fe62f60",
+          "type": "choice",
+          "text": "Bortsett fra jobb/skole og husarbeid, hvor ofte bruker du hender og hode til noe kreativt som å snekre, spikke, sy, spille gitar eller lignende?",
+          "required": false,
+          "answerValueSet": "#fbb2a6d7-1ff2-44b9-90ca-b25df57a00a3"
+        },
+        {
+          "linkId": "b0159525-c0ca-4544-f561-fbf3f7248d94",
+          "type": "choice",
+          "text": "Hvor ofte deltar du på kulturelle arrangement som konserter, revy og teater, eller besøker museer og lignende? ",
+          "required": false,
+          "answerValueSet": "#fbb2a6d7-1ff2-44b9-90ca-b25df57a00a3",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "e0b31e14-c810-4cee-b277-36cc77e148b6",
+          "type": "choice",
+          "text": "Hvor ofte gjør du noe åndelig som å meditere eller be, gruble over livet eller la blikket hvile på vakker natur?",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button",
+                    "display": "Radio Button"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "5d184310-31c0-4236-a6b0-81cf6eddd7b4",
+                "code": "yearly",
+                "system": "urn:uuid:ed021b62-c089-44c4-95d1-73c6c6b4af06",
+                "display": "En gang i året",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "e11dfb36-556f-4208-9693-3231c54dab8b",
+                "code": "half-yearly",
+                "system": "urn:uuid:ed021b62-c089-44c4-95d1-73c6c6b4af06",
+                "display": "En gang hvert halvår",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "13413b81-5e41-4326-b4fb-6a5dd5125161",
+                "code": "quarterly",
+                "system": "urn:uuid:ed021b62-c089-44c4-95d1-73c6c6b4af06",
+                "display": "En gang hvert kvartal",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "6858f27d-6a21-4c18-9f95-bf76bc90ef4f",
+                "code": "1-2-monthly",
+                "system": "urn:uuid:ed021b62-c089-44c4-95d1-73c6c6b4af06",
+                "display": "En-to ganger i måneden",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "9d5a0926-ce48-442e-81cb-aa0b45ebbbf8",
+                "code": "3-4-monthly",
+                "system": "urn:uuid:ed021b62-c089-44c4-95d1-73c6c6b4af06",
+                "display": "Tre-fire ganger i måneden",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 4
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "efb672f5-bd4b-4225-b680-90064b3f0dd6",
+                "code": "weekly",
+                "system": "urn:uuid:ed021b62-c089-44c4-95d1-73c6c6b4af06",
+                "display": "Hver uke",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "4895cf96-345e-4072-9612-9960dd80d1f8",
+          "type": "decimal",
+          "text": "Din aktivitetsskår",
+          "code": [
+            {
+              "system": "http://ehelse.no/Score",
+              "code": "score",
+              "display": "score"
+            },
+            {
+              "system": "http://ehelse.no/scoringFormulas",
+              "code": "SS",
+              "display": "Section score"
+            }
+          ],
+          "required": false,
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "linkId": "36a94f28-e236-4d45-b3d5-60a833acc358",
+      "type": "group",
+      "text": "Sammen",
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                "code": "step",
+                "display": "Step"
+              }
+            ]
+          }
+        }
+      ],
+      "required": false,
+      "item": [
+        {
+          "linkId": "display-sammen",
+          "type": "display",
+          "text": "Nå kommer noen spørsmål om hvor ofte du gjør noe sosialt.",
+          "required": false
+        },
+        {
+          "linkId": "30d050d4-3978-462a-9b02-002cb8c40e80",
+          "type": "choice",
+          "text": "Hvor ofte gjør du noe sosialt med venner, slektninger eller kolleger?",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button",
+                    "display": "Radio Button"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "a7ac94ce-586b-4a39-abd5-b7fce5d91fe5",
+                "code": "yearly-or-less",
+                "system": "urn:uuid:42275970-d46f-4d5d-ac72-9c8f6724569a",
+                "display": "En gang i året eller sjeldnere",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "9a22501d-4c7b-41ae-8917-8f57a93561f2",
+                "code": "few-yearly",
+                "system": "urn:uuid:42275970-d46f-4d5d-ac72-9c8f6724569a",
+                "display": "Et par ganger i året",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0.5
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "2d89af32-e9e6-4195-941e-f9b9531b349c",
+                "code": "3-4-monthly",
+                "system": "urn:uuid:42275970-d46f-4d5d-ac72-9c8f6724569a",
+                "display": "Månedlig",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "25545fb6-a7a1-458d-ac8e-d3252ee228e6",
+                "code": "monthly",
+                "system": "urn:uuid:42275970-d46f-4d5d-ac72-9c8f6724569a",
+                "display": "Annenhver uke",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1.5
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "92012906-2086-4dc5-9833-2cad0d75b822",
+                "code": "weekly-or-more",
+                "system": "urn:uuid:42275970-d46f-4d5d-ac72-9c8f6724569a",
+                "display": "Ukentlig eller oftere",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "74d09640-89b7-43af-883d-4253f9f617c5",
+          "type": "choice",
+          "text": "Hvor ofte deltar du på arrangement i nærmiljøet, som konserter, idrettsarrangement eller beboermøter?",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button",
+                    "display": "Radio Button"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "9de4179c-edc4-4aa2-a287-e3ebef3330a1",
+                "code": "yearly-or-less",
+                "system": "urn:uuid:375d12f1-b9c9-40d1-9423-457e5d0c74ae",
+                "display": "En gang i året eller sjeldnere",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "74a3c8d5-5c01-4690-acb0-d13bbc4dd3de",
+                "code": "few-yearly",
+                "system": "urn:uuid:375d12f1-b9c9-40d1-9423-457e5d0c74ae",
+                "display": "Et par ganger i året",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "97aad7ec-f05c-40bf-b833-b272a9fef4bf",
+                "code": "monthly",
+                "system": "urn:uuid:375d12f1-b9c9-40d1-9423-457e5d0c74ae",
+                "display": "Hver måned",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 3
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "d7464f5e-bee6-4649-9327-1c59579485d2",
+                "code": "weekly-or-more",
+                "system": "urn:uuid:375d12f1-b9c9-40d1-9423-457e5d0c74ae",
+                "display": "Ukentlig eller oftere",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "bb7fc735-1252-4a4c-96d2-69ab5c6f88ca",
+          "type": "choice",
+          "text": "Hvor ofte deltar du på møter/treff i et lag, en gruppe eller organisasjon du er medlem i?",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button",
+                    "display": "Radio Button"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "5a7c23eb-9e24-43c3-ad8f-c5a737745c64",
+                "code": "3-yearly-or-less",
+                "system": "urn:uuid:94eabdaf-285d-4f60-9fb9-75b43b666f00",
+                "display": "Sjeldnere enn hvert tredje år",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "a186971f-b73e-426e-a606-52a8cc032c0f",
+                "code": "2-3-yearly",
+                "system": "urn:uuid:94eabdaf-285d-4f60-9fb9-75b43b666f00",
+                "display": "Annethvert eller hvert tredje år",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "c7fcc420-fc8e-4761-a09f-0fea03aef820",
+                "code": "1-2-yearly",
+                "system": "urn:uuid:94eabdaf-285d-4f60-9fb9-75b43b666f00",
+                "display": "En eller to ganger i året",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "c8f227e8-f188-4b46-a7dc-74cee6af7696",
+                "code": "2-3-monthly",
+                "system": "urn:uuid:94eabdaf-285d-4f60-9fb9-75b43b666f00",
+                "display": "Annenhver eller hver tredje måned",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 3
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "a692db4d-6370-42dc-83ed-c6cb8d54da72",
+                "code": "monthly-or-more",
+                "system": "urn:uuid:94eabdaf-285d-4f60-9fb9-75b43b666f00",
+                "display": "Hver måned eller oftere",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "f7371673-1e77-4796-8f82-74fc80808495",
+          "type": "choice",
+          "text": "Hvis du er i jobb/utdanning, i hvilken grad føler du deg inkludert i miljøet?",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button",
+                    "display": "Radio Button"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "ce098728-487c-4a3e-b95f-2da48ce8b076",
+                "code": "not-employed",
+                "system": "urn:uuid:99851c0d-bb1a-4b2e-8db0-dd4fc1d1baa5",
+                "display": "Jeg er ikke ansatt noe sted",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "551150eb-5c0f-4bb7-b582-358090d7d822",
+                "code": "not-part-of-team",
+                "system": "urn:uuid:99851c0d-bb1a-4b2e-8db0-dd4fc1d1baa5",
+                "display": "Jeg føler meg egentlig ikke som en del av et team",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 1
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "69af5327-f60c-4f71-a85c-79ed5953815f",
+                "code": "partly-part-of-team",
+                "system": "urn:uuid:99851c0d-bb1a-4b2e-8db0-dd4fc1d1baa5",
+                "display": "Jeg føler  meg delvis som en del av et team",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 3
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "35a4b0cb-9dc5-48af-a845-9ed3aaf1c83c",
+                "code": "part-of-team",
+                "system": "urn:uuid:99851c0d-bb1a-4b2e-8db0-dd4fc1d1baa5",
+                "display": "Ja, jeg føler jeg er del av et tett og godt team",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "7070b144-3086-41a6-b985-91c148126401",
+          "type": "decimal",
+          "text": "Din tilhørighetsskår",
+          "code": [
+            {
+              "system": "http://ehelse.no/Score",
+              "code": "score",
+              "display": "score"
+            },
+            {
+              "system": "http://ehelse.no/scoringFormulas",
+              "code": "SS",
+              "display": "Section score"
+            }
+          ],
+          "required": false,
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "linkId": "d16a0ba7-7338-49de-b751-b333a3a62145",
+      "type": "group",
+      "text": "Meningsfullt",
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                "code": "step",
+                "display": "Step"
+              }
+            ]
+          }
+        }
+      ],
+      "required": false,
+      "item": [
+        {
+          "linkId": "display-meningsfullt",
+          "type": "display",
+          "text": "Nå kommer det noen spørsmål om hva slags aktiviteter du deltar i.",
+          "required": false
+        },
+        {
+          "linkId": "3bc3a7df-d16f-47f1-90e4-4964baa32c83",
+          "type": "choice",
+          "text": "Hvor ofte driver du med litt utfordrende fritidsaktiviteter som oppussing, tar en videreutdanning/kurs eller trener til noe bestemt?",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button",
+                    "display": "Radio Button"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel",
+              "valueMarkdown": "For eksempel ."
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "fb966e53-32a5-4a43-b0c6-90256a3a4e18",
+                "code": "no",
+                "system": "urn:uuid:711d30bb-ec82-4924-933c-30a5da78508d",
+                "display": "Nei"
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "2713ea00-bf0c-43fa-8f2f-aa46001eae9d",
+                "code": "ja",
+                "system": "urn:uuid:711d30bb-ec82-4924-933c-30a5da78508d",
+                "display": "Ja"
+              }
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "63daefd1-3608-4b7c-9089-df8ac2e1f110",
+          "type": "choice",
+          "text": "Hvis du er i jobb, er jobben din utfordrende og innebærer at du ofte må lære nye ting, eller er den mer rutinepreget?",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button",
+                    "display": "Radio Button"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "b59912f5-5ea3-4cbe-afb5-5dcc415ca8ee",
+                "code": "not-employed",
+                "system": "urn:uuid:6d66b973-09d5-4cb6-9e20-a5506c00d8b2",
+                "display": "Jeg er ikke i jobb",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 0
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "a726ab57-3531-4b31-8de2-3fa235c3e9bd",
+                "code": "easy",
+                "system": "urn:uuid:6d66b973-09d5-4cb6-9e20-a5506c00d8b2",
+                "display": "Ganske lett",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 2
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "d40a2cc2-a083-463b-9d11-48909d9fd666",
+                "code": "somewhat-challenging",
+                "system": "urn:uuid:6d66b973-09d5-4cb6-9e20-a5506c00d8b2",
+                "display": "Litt utfordrende",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 3
+                  }
+                ]
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "5b7738e7-70ed-4a71-9ab1-5d5e431ea263",
+                "code": "very-challenging",
+                "system": "urn:uuid:6d66b973-09d5-4cb6-9e20-a5506c00d8b2",
+                "display": "Svært utfordrende",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                    "valueDecimal": 5
+                  }
+                ]
+              }
+            }
+          ],
+          "code": [
+            {
+              "code": "score",
+              "display": "score",
+              "system": "http://ehelse.no/Score"
+            },
+            {
+              "code": "QS",
+              "display": "Question score",
+              "system": "http://ehelse.no/scoringFormulas"
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "920384a0-262d-4e6f-9131-283912fce501",
+          "type": "choice",
+          "text": "Er du engasjert i en organisasjon som jobber med politikk eller andre samfunnssaker og deltar i aktiviteter der?",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button",
+                    "display": "Radio Button"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "f56757b0-a1e0-472b-a9c6-47305b140abe",
+                "code": "no",
+                "system": "urn:uuid:f831421a-8cbe-494f-8143-023717277fe0",
+                "display": "Nei"
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "ed9b4cdc-f3d5-4fe3-a3c8-7b04177eadb4",
+                "code": "ja",
+                "system": "urn:uuid:f831421a-8cbe-494f-8143-023717277fe0",
+                "display": "Ja"
+              }
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "a1e06daa-075f-4896-a8d2-7bc977904b6b",
+          "type": "choice",
+          "text": "Hvor ofte bidrar du i frivillig arbeid som for eksempel fotballtrener, leksehjelp eller besøksvenn gjennom Røde Kors?",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button",
+                    "display": "Radio Button"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel",
+              "valueMarkdown": " "
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "0ada3c2d-cd8c-4918-9930-049505f2d7bb",
+                "code": "no",
+                "system": "urn:uuid:1953a17e-f8ac-4671-9997-1412fc00b69b",
+                "display": "Sjeldnere"
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "9189a8bb-f062-4d83-b25b-3453111b5d04",
+                "code": "ja",
+                "system": "urn:uuid:1953a17e-f8ac-4671-9997-1412fc00b69b",
+                "display": "Hver måned"
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "41f89e2d-2aa8-4c1d-8750-9287a829052f",
+                "code": "annenhver-uke",
+                "system": "urn:uuid:1953a17e-f8ac-4671-9997-1412fc00b69b",
+                "display": "Annenhver uke"
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "d34dde15-e559-49d4-82b8-83822e14b14c",
+                "code": "ver-uke",
+                "system": "urn:uuid:1953a17e-f8ac-4671-9997-1412fc00b69b",
+                "display": "hver uke"
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "503a3899-5df0-4672-dec6-5c1334ba863b",
+                "code": "annenhver-dag",
+                "system": "urn:uuid:1953a17e-f8ac-4671-9997-1412fc00b69b",
+                "display": "hver dag"
+              }
+            }
+          ],
+          "required": true
+        },
+        {
+          "linkId": "ff923ab2-7957-4639-95c2-70f190ff05c9",
+          "type": "choice",
+          "text": "Utenom eventuelt organisert frivillig arbeid, hvor ofte hjelper du for eksempel en nabo, venn eller egne barn med noe praktisk? ",
+          "required": true,
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "5fc02e18-a38e-4bcd-f48a-c4da5f4740d6",
+                "system": "urn:uuid:a1976c05-ded5-41a6-8cc3-1e7e4dd575b4",
+                "display": "Sjeldnere",
+                "code": "sjeldnere"
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "6f67c619-7a51-4efb-fc91-2b2e51375250",
+                "system": "urn:uuid:a1976c05-ded5-41a6-8cc3-1e7e4dd575b4",
+                "display": "Hver måned",
+                "code": "hver-måned"
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "e6d0c183-bf85-494d-d6cf-e749f82ec553",
+                "code": "annenhver-uke",
+                "system": "urn:uuid:a1976c05-ded5-41a6-8cc3-1e7e4dd575b4",
+                "display": "Annenhver uke"
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "5760e8ac-bc5e-44fa-db07-17cb5defb291",
+                "code": "hver-uke",
+                "system": "urn:uuid:a1976c05-ded5-41a6-8cc3-1e7e4dd575b4",
+                "display": "hver uke"
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "c0056a0e-7217-4557-855d-cd3fdc703d5c",
+                "code": "annenhver-dag",
+                "system": "urn:uuid:a1976c05-ded5-41a6-8cc3-1e7e4dd575b4",
+                "display": "hver dag"
+              }
+            }
+          ],
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                    "code": "radio-button"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "47ca7c18-6439-4d35-b313-56a544a11a93",
+          "type": "decimal",
+          "text": "Din engasjementsskår",
+          "code": [
+            {
+              "system": "http://ehelse.no/Score",
+              "code": "score",
+              "display": "score"
+            },
+            {
+              "system": "http://ehelse.no/scoringFormulas",
+              "code": "SS",
+              "display": "Section score"
+            }
+          ],
+          "required": false,
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "linkId": "1987b28d-d77d-49c6-8759-70e97b03b799",
+      "type": "group",
+      "text": "Resultater",
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                "code": "step",
+                "display": "Step"
+              }
+            ]
+          }
+        }
+      ],
+      "required": false,
+      "item": [
+        {
+          "linkId": "38d258c9-10e1-4938-a1a8-86ea9cce3420",
+          "type": "display",
+          "text": "Gratulerer med å ha fullført ABC-testen!"
+        },
+        {
+          "linkId": "42a3b91e-65b7-4843-8116-ddcd3d09640b",
+          "type": "decimal",
+          "text": "Totalskår",
+          "code": [
+            {
+              "system": "http://ehelse.no/Score",
+              "code": "score",
+              "display": "score"
+            },
+            {
+              "system": "http://ehelse.no/scoringFormulas",
+              "code": "TS",
+              "display": "Total score"
+            }
+          ],
+          "required": false,
+          "readOnly": true
+        },
+        {
+          "linkId": "fde76933-0342-4156-9737-cdd373f2e6ce",
+          "type": "group",
+          "text": "Din psykiske helse",
+          "item": [
+            {
+              "linkId": "3c0ae7cb-aace-499b-aaf0-03d02d7b8e28",
+              "type": "display",
+              "text": "Skår: x av y\n\nHvis skåren din stemmer godt med hvordan du har det nå, og du ønsker en høyere skår, kan det være lurt å finne aktiviteter som gir flere gode opplevelser i hverdagen. \n\nKanskje du kan får noen ideer ved å lese her.",
+              "enableWhen": [
+                {
+                  "question": "c83fe996-a4a2-4196-8960-dc017dbca97e",
+                  "operator": "<",
+                  "answerDecimal": 50
+                }
+              ]
+            },
+            {
+              "linkId": "938620f5-3b2d-4601-b9e9-5e15ec4b1df8",
+              "type": "display",
+              "text": "Skår x av y. Skåren din viser at du stort sett har gode dager. Stemmer det? Om du ønsker å øke skåren din, kan du vurdere å bruke mer tid på aktiviteter som gjør deg godt. Fysisk aktivitet er alltid bra, men det er også mye annet bra du kan holde på med. Hva kan være aktuelt for deg?",
+              "enableWhen": [
+                {
+                  "question": "c83fe996-a4a2-4196-8960-dc017dbca97e",
+                  "operator": ">=",
+                  "answerDecimal": 50
+                },
+                {
+                  "question": "c83fe996-a4a2-4196-8960-dc017dbca97e",
+                  "operator": "<",
+                  "answerDecimal": 60
+                }
+              ],
+              "enableBehavior": "all"
+            },
+            {
+              "linkId": "d9251dbf-d3da-46af-be12-3a9b723048a2",
+              "type": "display",
+              "text": "x av y. Denne skåren tyder på at du har hverdagsvaner som bidrar til god psykisk helse og god livskvalitet. Heia deg!",
+              "enableWhen": [
+                {
+                  "question": "c83fe996-a4a2-4196-8960-dc017dbca97e",
+                  "operator": ">=",
+                  "answerDecimal": 60
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "a7ff1695-d88a-45a2-8bcc-ef359b85e8ad",
+          "type": "group",
+          "text": "Aktiv",
+          "item": [
+            {
+              "linkId": "9ead17df-a2c2-4dff-a68f-d1534070ad1b",
+              "type": "display",
+              "text": "x av y \nEn skår under åtte betyr at du har gode muligheter til å styrke både livskvalitet og psykisk helse ved å ta noen aktive grep. Å ha noe å holde på med og holde seg i aktivitet på ulike måter, er viktige byggesteiner for god psykisk helse. Kanskje du får noen ideer om hva som kan passe for deg om du leser om abc for god psykisk helse?",
+              "enableWhen": [
+                {
+                  "question": "4895cf96-345e-4072-9612-9960dd80d1f8",
+                  "operator": "<",
+                  "answerDecimal": 8
+                }
+              ]
+            },
+            {
+              "linkId": "6087a95f-f666-4eb2-a844-1261a2d42db5",
+              "type": "display",
+              "text": "Så bra! Det ser ut som du allerede holder deg aktiv på flere ulike måter. Ta gjerne en kikk på hvilket område du fikk lavere skår på og tenk etter om det er noe som er lett for deg å endre på.  ",
+              "enableWhen": [
+                {
+                  "question": "4895cf96-345e-4072-9612-9960dd80d1f8",
+                  "operator": ">=",
+                  "answerDecimal": 8
+                },
+                {
+                  "question": "4895cf96-345e-4072-9612-9960dd80d1f8",
+                  "operator": "<",
+                  "answerDecimal": 14
+                }
+              ],
+              "enableBehavior": "all"
+            },
+            {
+              "linkId": "d0e17b2e-9e81-4d45-b5eb-cc0ee2fa3ccb",
+              "type": "display",
+              "text": "For et flott resultat! Du har et høyt aktivitetsnivå. Fortsett slik! Kanskje du også kan inspirere andre til å bli mer aktive og få mer ut av hverdagen?",
+              "enableWhen": [
+                {
+                  "question": "4895cf96-345e-4072-9612-9960dd80d1f8",
+                  "operator": ">=",
+                  "answerDecimal": 14
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "161cc22a-c1fc-4df3-88b4-3ff88c7a860f",
+          "type": "group",
+          "text": "Sammen",
+          "item": [
+            {
+              "linkId": "eba56a53-f976-4384-a9c9-e52cb39388a7",
+              "type": "display",
+              "text": "Sosiale relasjoner er bra for den psykiske helsa. Noen trenger mange, andre trenger få, men alle trenger noen. Relasjoner kan gjøre deg bedre rustet til å takle vanskelige perioder i livet og styrke den psykiske helsa.\n\nForsøk å holde kontakten med menneskene rundt deg, som slektninger, bekjente eller naboer. ",
+              "enableWhen": [
+                {
+                  "question": "7070b144-3086-41a6-b985-91c148126401",
+                  "operator": "<",
+                  "answerDecimal": 9
+                }
+              ]
+            },
+            {
+              "linkId": "b5262751-9173-40e9-a1d4-a3ffa1811ea0",
+              "type": "display",
+              "text": "Du gjør det bra, men det kan også være rom for å gjøre litt mer. Det å være med på aktiviteter sammen med andre styrker den gode følelsen av tilhørighet og mening. ",
+              "enableWhen": [
+                {
+                  "question": "7070b144-3086-41a6-b985-91c148126401",
+                  "operator": ">=",
+                  "answerDecimal": 9
+                },
+                {
+                  "question": "7070b144-3086-41a6-b985-91c148126401",
+                  "operator": "<",
+                  "answerDecimal": 14
+                }
+              ],
+              "enableBehavior": "all"
+            },
+            {
+              "linkId": "bdc53770-3986-4e2f-a61d-093c9968f872",
+              "type": "display",
+              "text": "Godt gjort! Å være engasjert i grupper og nærmiljøet kan være bra for livskvalitet og psykisk helse. Supert om du også får med deg flere.",
+              "enableWhen": [
+                {
+                  "question": "7070b144-3086-41a6-b985-91c148126401",
+                  "operator": ">=",
+                  "answerDecimal": 14
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "774f25e0-e9ca-444c-b504-ed54dee8b934",
+          "type": "group",
+          "text": "Meningsfullt ",
+          "item": [
+            {
+              "linkId": "adfdc795-60fc-4af1-8455-f120e7940519",
+              "type": "display",
+              "text": " Start med å lage deg en personlig utfordring eller et konkret mål. Det kan være å hjelpe en nabo, lære noe nytt, eller å engasjere deg enda mer i noe du allerede deltar i.",
+              "enableWhen": [
+                {
+                  "question": "47ca7c18-6439-4d35-b313-56a544a11a93",
+                  "operator": "<",
+                  "answerDecimal": 9
+                }
+              ]
+            },
+            {
+              "linkId": "df57bb96-f4e3-4da4-87a6-cc2f234b3f37",
+              "type": "display",
+              "text": "Du har et godt nivå av engasjement i aktivitetene dine, men det er som regel rom for forbedring. Mange opplever det som givende å være frivillig, hjelpe andre, lære nye ferdigheter eller sette seg en personlig utfordring.",
+              "enableWhen": [
+                {
+                  "question": "47ca7c18-6439-4d35-b313-56a544a11a93",
+                  "operator": ">=",
+                  "answerDecimal": 9
+                },
+                {
+                  "question": "47ca7c18-6439-4d35-b313-56a544a11a93",
+                  "operator": "<",
+                  "answerDecimal": 14
+                }
+              ],
+              "enableBehavior": "all"
+            },
+            {
+              "linkId": "3b379bd5-3bd7-4777-bb68-500fc9b1ded4",
+              "type": "display",
+              "enableWhen": [
+                {
+                  "question": "47ca7c18-6439-4d35-b313-56a544a11a93",
+                  "operator": ">=",
+                  "answerDecimal": 14
+                }
+              ],
+              "text": "Så bra at du engasjerer deg i en rekke aktiviteter! Dette kan bidra til at du føler deg bra, styrke selvfølelsen og ha positiv betydning for den psykiske helsa di."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "b350bcf7-22a0-4f06-ee5a-bc763932e98e",
+      "type": "display",
+      "text": "Videresending",
+      "extension": [
+        {
+          "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-guidanceaction",
+          "valueString": "/psykisk-helse/abc-for-god-psykisk-helse/"
+        }
+      ],
+      "required": false
+    }
+  ]
+}

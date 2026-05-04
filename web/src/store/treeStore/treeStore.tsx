@@ -878,7 +878,7 @@ function removeAttributeFromItem(
   }
 }
 
-const reducer = produce((draft: TreeState, action: ActionType) => {
+export const reducer = produce((draft: TreeState, action: ActionType) => {
   // Flag as dirty on all changes except reset, save and "scroll"
   if (
     action.type !== RESET_QUESTIONNAIRE_ACTION &&

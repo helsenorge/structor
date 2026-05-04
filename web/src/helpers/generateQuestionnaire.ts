@@ -1,3 +1,5 @@
+import { produce } from "immer";
+
 import type {
   CodeStringValue,
   Items,
@@ -487,16 +489,46 @@ export function getUsedValueSet(state: TreeState): string[] {
   return Array.from(new Set(allValueSets));
 }
 
+function trimAndCleanSublabels(draft: TreeState): void {
+  for (const item of Object.values(draft.qItems)) {
+    if (!item.extension) continue;
+    const sublabelExt = item.extension.find(
+      (ext) => ext.url === IExtensionType.sublabel,
+    );
+    if (!sublabelExt) continue;
+
+    const trimmed = sublabelExt.valueMarkdown?.trim();
+    if (!trimmed) {
+      item.extension = item.extension.filter(
+        (ext) =>
+          ext.url !== IExtensionType.sublabel &&
+          ext.url !== IExtensionType.sublabelString,
+      );
+    } else {
+      sublabelExt.valueMarkdown = trimmed;
+      const sublabelStringExt = item.extension.find(
+        (ext) => ext.url === IExtensionType.sublabelString,
+      );
+      if (sublabelStringExt) {
+        sublabelStringExt.valueString = sublabelStringExt.valueString?.trim();
+      }
+    }
+  }
+}
+
 export const generateQuestionnaire = (state: TreeState): string => {
+  const cleanedState = produce(state, (draft) => {
+    trimAndCleanSublabels(draft);
+  });
   function translateQuestionnaires(): Questionnaire[] {
     const questionnaires: Questionnaire[] = [];
 
-    const { qAdditionalLanguages } = state;
+    const { qAdditionalLanguages } = cleanedState;
     if (qAdditionalLanguages) {
       Object.keys(qAdditionalLanguages).forEach((languageCode) =>
         questionnaires.push(
           generateTranslatedQuestionnaire(
-            state,
+            cleanedState,
             languageCode as ExtendedLanguageLocales,
             qAdditionalLanguages,
           ),
@@ -508,15 +540,15 @@ export const generateQuestionnaire = (state: TreeState): string => {
 
   // Return bundle if translations exist
   if (
-    state.qAdditionalLanguages &&
-    Object.keys(state.qAdditionalLanguages).length > 0
+    cleanedState.qAdditionalLanguages &&
+    Object.keys(cleanedState.qAdditionalLanguages).length > 0
   ) {
     const bundle: Bundle = {
       resourceType: "Bundle",
       type: "searchset",
-      total: Object.keys(state.qAdditionalLanguages).length + 1,
+      total: Object.keys(cleanedState.qAdditionalLanguages).length + 1,
       entry: [
-        { resource: generateMainQuestionnaire(state) },
+        { resource: generateMainQuestionnaire(cleanedState) },
         ...translateQuestionnaires().map((q) => {
           return { resource: q };
         }),
@@ -527,7 +559,7 @@ export const generateQuestionnaire = (state: TreeState): string => {
   }
 
   return JSON.stringify(
-    generateMainQuestionnaire(state),
+    generateMainQuestionnaire(cleanedState),
     emptyPropertyReplacer,
   );
 };
