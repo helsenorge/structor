@@ -163,6 +163,7 @@ const OptionReference = ({ item }: Props): React.JSX.Element => {
         items={listItems}
         dragAndDropHooks={dragAndDropHooks}
         selectionMode="none"
+        disallowTypeAhead
         renderEmptyState={() => <div>{t("No recipients")}</div>}
       >
         {({ id, reference }) => (
