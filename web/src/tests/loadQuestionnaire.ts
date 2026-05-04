@@ -49,7 +49,9 @@ export function getQuestionnaires(
 export function collectAllItems(
   items: QuestionnaireItem[] | undefined,
 ): QuestionnaireItem[] {
-  if (!items) return [];
+  if (!items) {
+    return [];
+  }
   const result: QuestionnaireItem[] = [];
   for (const item of items) {
     result.push(item);

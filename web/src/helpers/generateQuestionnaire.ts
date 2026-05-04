@@ -491,11 +491,15 @@ export function getUsedValueSet(state: TreeState): string[] {
 
 function trimAndCleanSublabels(draft: TreeState): void {
   for (const item of Object.values(draft.qItems)) {
-    if (!item.extension) continue;
+    if (!item.extension) {
+      continue;
+    }
     const sublabelExt = item.extension.find(
       (ext) => ext.url === IExtensionType.sublabel,
     );
-    if (!sublabelExt) continue;
+    if (!sublabelExt) {
+      continue;
+    }
 
     const trimmed = sublabelExt.valueMarkdown?.trim();
     if (!trimmed) {
