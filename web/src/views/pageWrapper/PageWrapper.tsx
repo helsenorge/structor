@@ -110,7 +110,6 @@ const PageWrapper = ({
           translationErrors={translationErrors}
           questionnaireDetailsErrors={questionnaireDetailsErrors}
           markdownWarning={markdownWarning}
-          qAdditionalLanguages={state.qAdditionalLanguages}
           onClose={() => setShowValidationModal(false)}
         />
       )}
