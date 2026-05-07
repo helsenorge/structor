@@ -1,0 +1,221 @@
+{
+  "title": "Testskjema - validering av items uten grupper",
+  "resourceType": "Questionnaire",
+  "language": "nb-NO",
+  "name": "Validering_av_items_uten_grupper",
+  "status": "draft",
+  "publisher": "NHN",
+  "meta": {
+    "profile": ["http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire"],
+    "tag": [
+      { "system": "urn:ietf:bcp:47", "code": "nb-NO", "display": "Bokmål" }
+    ],
+    "security": [
+      {
+        "code": "3",
+        "display": "Helsehjelp (Full)",
+        "system": "urn:oid:2.16.578.1.12.4.1.1.7618"
+      }
+    ]
+  },
+  "contact": [{ "name": "http://www.nhn.no" }],
+  "subjectType": ["Patient"],
+  "extension": [
+    {
+      "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar",
+      "valueCoding": {
+        "system": "http://helsenorge.no/fhir/ValueSet/sdf-sidebar",
+        "code": "1"
+      }
+    },
+    {
+      "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-information-message",
+      "valueCoding": {
+        "system": "http://helsenorge.no/fhir/ValueSet/sdf-information-message",
+        "code": "1"
+      }
+    },
+    {
+      "url": "http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility",
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+            "code": "hide-help",
+            "display": "Hide help texts"
+          },
+          {
+            "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+            "code": "hide-sublabel",
+            "display": "Hide sublabel texts"
+          }
+        ]
+      }
+    }
+  ],
+  "id": "b7366c34-8b7e-4ef9-e9ea-fc4478756c10",
+  "url": "Questionnaire/b7366c34-8b7e-4ef9-e9ea-fc4478756c10",
+  "item": [
+    {
+      "linkId": "a01e2056-ffce-4f18-88f0-7f92f132ff29",
+      "type": "string",
+      "text": "Tekst uten gruppe",
+      "extension": [
+        {
+          "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel",
+          "valueMarkdown": "sdfsdf"
+        },
+        {
+          "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-sublabel-text",
+          "valueString": "sdfsdf"
+        }
+      ],
+      "required": false
+    },
+    {
+      "linkId": "1b52300d-0e20-4597-8680-7c0f6f16f7d9",
+      "type": "group",
+      "text": "Gruppe 1",
+      "item": [
+        {
+          "linkId": "5a03c435-05c4-4388-8aae-602775d2c456",
+          "type": "string",
+          "text": "Text med gruppe",
+          "required": false
+        }
+      ],
+      "required": false
+    },
+    {
+      "linkId": "a87be74f-fc84-404e-9251-306e455fa509",
+      "type": "string",
+      "text": "text uten gruppe med children",
+      "item": [
+        {
+          "linkId": "dd8700a1-6082-4c98-8de0-ef18db99d3dc",
+          "type": "group",
+          "text": "Gruppe 2 - child av text",
+          "required": false
+        }
+      ],
+      "required": false
+    },
+    {
+      "linkId": "406277c5-ab3f-4132-9252-1b6f82c300ba",
+      "type": "group",
+      "text": "gruppe på topp",
+      "item": [
+        {
+          "linkId": "6a4319a3-bcac-43e0-8a8b-dbf4b63705aa",
+          "type": "string",
+          "text": "Text med gruppe",
+          "item": [
+            {
+              "linkId": "34711f0d-4988-4a36-9d2e-ad120aa147ba",
+              "type": "string",
+              "text": "Text med gruppe",
+              "item": [
+                {
+                  "linkId": "13ea4617-1761-4fb0-eecc-e0de4df5f7e2",
+                  "type": "string",
+                  "text": "Text med gruppe",
+                  "item": [
+                    {
+                      "linkId": "9ade6ba3-a8f8-413a-8eb0-06f862c065c3",
+                      "type": "string",
+                      "text": "Text med gruppe",
+                      "required": false
+                    }
+                  ],
+                  "required": false
+                }
+              ],
+              "required": false
+            }
+          ],
+          "required": false
+        }
+      ],
+      "required": false
+    },
+    {
+      "linkId": "8a05207d-3d81-4c20-edf5-f6aee679a5aa",
+      "type": "string",
+      "text": "Text med gruppe",
+      "item": [
+        {
+          "linkId": "79b9b699-32db-4d51-855b-c50fee029e25",
+          "type": "string",
+          "text": "Text med gruppe",
+          "item": [
+            {
+              "linkId": "7943ca98-5bd9-4461-9691-4f6b5fb49c7c",
+              "type": "string",
+              "text": "Text med gruppe",
+              "item": [
+                {
+                  "linkId": "8abd822b-257c-4123-ecdd-c03c505ac19d",
+                  "type": "string",
+                  "text": "Text med gruppe",
+                  "required": false
+                }
+              ],
+              "required": false
+            }
+          ],
+          "required": false
+        }
+      ],
+      "required": false
+    },
+    {
+      "linkId": "1",
+      "type": "display",
+      "text": "1",
+      "item": [
+        {
+          "linkId": "1.1",
+          "type": "choice",
+          "text": "choice",
+          "item": [
+            {
+              "linkId": "b8365346-c765-47f6-8574-26c03f8a6711",
+              "type": "group",
+              "item": [
+                {
+                  "linkId": "1.1-1",
+                  "type": "boolean",
+                  "item": [
+                    { "linkId": "1.1-1.1", "type": "group", "required": false }
+                  ],
+                  "required": false
+                }
+              ],
+              "required": false
+            }
+          ],
+          "required": false,
+          "answerOption": [
+            {
+              "valueCoding": {
+                "id": "fb7bb814-bd2a-4085-84af-56506dc45d2d",
+                "code": "1",
+                "system": "urn:uuid:5329ca5b-e189-4441-9a3d-55f2b9b42275",
+                "display": "1"
+              }
+            },
+            {
+              "valueCoding": {
+                "id": "3b42b1b5-8f01-4fca-8450-4a990897d828",
+                "code": "2",
+                "system": "urn:uuid:5329ca5b-e189-4441-9a3d-55f2b9b42275",
+                "display": "2"
+              }
+            }
+          ]
+        }
+      ],
+      "required": false
+    }
+  ]
+}
