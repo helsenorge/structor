@@ -1,10 +1,9 @@
 import questionnaire from "src/tests/__data__/Validering_av_items_uten_grupper-nb-NO.json";
 import { loadQuestionnaireIntoState } from "src/tests/loadQuestionnaire";
 
-import type { QuestionnaireItem } from "fhir/r4";
+import type { Questionnaire, QuestionnaireItem } from "fhir/r4";
 import type { TFunction } from "i18next";
 import type { Items, OrderItem } from "src/store/treeStore/treeStore";
-
 
 import { ErrorLevel } from "../../validationTypes";
 import {
@@ -12,7 +11,6 @@ import {
   validatehasGroupAsParent,
   validateRepeatableGroup,
 } from "../groupValidation";
-
 
 describe("group validation", () => {
   const translatationMock = vi.fn();
@@ -109,7 +107,9 @@ describe("validatehasGroupAsParent - full questionnaire flow", () => {
   const tMock = vi.fn(
     (key: string) => key,
   ) as unknown as TFunction<"translation">;
-  const state = loadQuestionnaireIntoState(questionnaire);
+  const state = loadQuestionnaireIntoState(
+    questionnaire as unknown as Questionnaire,
+  );
   const { qItems: stateItems, qOrder: stateOrder } = state;
 
   beforeEach(() => {
