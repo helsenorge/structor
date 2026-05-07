@@ -171,7 +171,12 @@ export const doesItemHaveChildren = (
   // Start søk på root nivå
   return findChildren(qOrder);
 };
-
+export const itemIsRootItem = (
+  qItem: QuestionnaireItem,
+  qOrder: OrderItem[],
+): boolean => {
+  return qOrder.some((orderItem) => orderItem.linkId === qItem.linkId);
+};
 export const isItemChildOfType = (
   childItemId: string,
   type: IQuestionnaireItemType,

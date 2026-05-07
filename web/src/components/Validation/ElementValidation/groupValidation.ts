@@ -1,6 +1,7 @@
 import {
   doesItemHaveStepCoding,
   isItemChildOfType,
+  itemIsRootItem,
 } from "src/utils/itemSearchUtils";
 
 import { IQuestionnaireItemType } from "../../../types/IQuestionnareItemType";
@@ -10,6 +11,7 @@ import type { TFunction } from "i18next";
 import type { Items, OrderItem } from "src/store/treeStore/treeStore";
 
 import { createError } from "../validationHelper";
+import { ErrorLevel } from "../validationTypes";
 
 export const validateGroup = (
   t: TFunction<"translation">,
@@ -19,8 +21,40 @@ export const validateGroup = (
 ): ValidationError[] => {
   const groupParentValdiation = validateGroupParent(t, qItem, qItems, qOrder);
   const repeatableGroupValidation = validateRepeatableGroup(t, qItem);
+  const hasGroupAsParent = validatehasGroupAsParent(t, qItem, qItems, qOrder);
+  return repeatableGroupValidation
+    .concat(groupParentValdiation)
+    .concat(hasGroupAsParent);
+};
 
-  return repeatableGroupValidation.concat(groupParentValdiation);
+export const validatehasGroupAsParent = (
+  t: TFunction<"translation">,
+  qItem: QuestionnaireItem,
+  qItems: Items,
+  qOrder: OrderItem[],
+): ValidationError[] => {
+  const isItemChildOfGroup = isItemChildOfType(
+    qItem.linkId,
+    IQuestionnaireItemType.group,
+    qItems,
+    qOrder,
+  );
+  if (
+    itemIsRootItem(qItem, qOrder) &&
+    qItem.type === IQuestionnaireItemType.group
+  ) {
+    return [];
+  }
+  return isItemChildOfGroup
+    ? []
+    : [
+        createError(
+          qItem.linkId,
+          "Questionnaire Item",
+          t("Item must have a parent group"),
+          ErrorLevel.warning,
+        ),
+      ];
 };
 
 export const validateGroupParent = (

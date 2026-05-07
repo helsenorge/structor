@@ -2,7 +2,6 @@ import type React from "react";
 
 import { useTranslation } from "react-i18next";
 
-import type { Languages } from "../../store/treeStore/treeStore";
 import type { ValidationError } from "../../utils/validationUtils";
 
 import {
@@ -18,16 +17,19 @@ interface ValidationErrorsModalProps {
   translationErrors: ValidationError[];
   questionnaireDetailsErrors: ValidationError[];
   markdownWarning: ValidationError | undefined;
-  qAdditionalLanguages: Languages | undefined;
   onClose: () => void;
 }
 
-export const ValidationErrorsModal = (
-  props: ValidationErrorsModalProps,
-): React.JSX.Element => {
+export const ValidationErrorsModal = ({
+  validationErrors,
+  translationErrors,
+  questionnaireDetailsErrors,
+  markdownWarning,
+  onClose,
+}: ValidationErrorsModalProps): React.JSX.Element => {
   const { t } = useTranslation();
   const renderTranslateErrorMessages = (): React.JSX.Element[] | undefined => {
-    if (props.translationErrors.length > 0) {
+    if (translationErrors.length > 0) {
       const translationErrors = translationErrorMessages();
       const elements: React.JSX.Element[] = [];
       translationErrors?.map((message) => {
@@ -48,11 +50,11 @@ export const ValidationErrorsModal = (
   const translationErrorMessages = (): string[] => {
     const messages: string[] = [];
     const languages = [
-      ...new Set(props.translationErrors.map((item) => item.languagecode)),
+      ...new Set(translationErrors.map((item) => item.languagecode)),
     ];
     languages.forEach((language) => {
       if (language) {
-        const count = props.translationErrors.filter(
+        const count = translationErrors.filter(
           (item) => item.languagecode === language,
         ).length;
         const message = t("{0}: Found {1} missing translation(s).")
@@ -67,11 +69,11 @@ export const ValidationErrorsModal = (
   const renderQuestionnaireDetailsErrorMessages = ():
     | React.JSX.Element[]
     | undefined => {
-    if (props.questionnaireDetailsErrors.length > 0) {
+    if (questionnaireDetailsErrors.length > 0) {
       const elements: React.JSX.Element[] = [];
       getErrorMessagesAndSeverityClasses(
         ErrorClassVariant.text,
-        props.questionnaireDetailsErrors,
+        questionnaireDetailsErrors,
       )?.forEach((error) => {
         elements.push(<p className={error.severityClass}>{error.message}</p>);
       });
@@ -79,13 +81,14 @@ export const ValidationErrorsModal = (
     }
   };
   const renderValidationErrorMessages = (): React.JSX.Element | undefined => {
-    if (props.validationErrors.length > 0) {
-      const errors = props.validationErrors.filter(
+    if (validationErrors.length > 0) {
+      const errors = validationErrors.filter(
         (x) => x.errorLevel === ErrorLevel.error,
       );
-      const warnings = props.validationErrors.filter(
+      const warnings = validationErrors.filter(
         (x) => x.errorLevel === ErrorLevel.warning,
       );
+
       return (
         <>
           {errors.length > 0 ? (
@@ -117,7 +120,7 @@ export const ValidationErrorsModal = (
     }
   };
   const renderWarningMessages = (): React.JSX.Element | undefined => {
-    if (props.markdownWarning) {
+    if (markdownWarning) {
       return (
         <p
           className={getSeverityClassByLevelAndType(
@@ -125,16 +128,16 @@ export const ValidationErrorsModal = (
             ErrorClassVariant.text,
           )}
         >
-          {props.markdownWarning.errorReadableText}
+          {markdownWarning.errorReadableText}
         </p>
       );
     }
   };
   const renderNoValidationErrormessage = (): React.JSX.Element | undefined => {
     if (
-      props.validationErrors?.length === 0 &&
-      props.translationErrors?.length === 0 &&
-      props.questionnaireDetailsErrors?.length === 0
+      validationErrors?.length === 0 &&
+      translationErrors?.length === 0 &&
+      questionnaireDetailsErrors?.length === 0
     ) {
       return <p>{t("Found no validation errors!")}</p>;
     }
@@ -142,7 +145,7 @@ export const ValidationErrorsModal = (
 
   return (
     <Modal
-      close={props.onClose}
+      close={onClose}
       title={t("Validation")}
       buttonSecondaryText={t("Close")}
     >
