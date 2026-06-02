@@ -30,7 +30,7 @@
     "@helsenorge/datepicker": "^14.0.0",
     "@helsenorge/designsystem-react": "^14.0.0",
     "@helsenorge/file-upload": "^38.0.0",
-    "@helsenorge/refero": "23.2.1",
+    "@helsenorge/refero": "24.1.2",
     "@lexical/code": "^0.35.0",
     "@lexical/hashtag": "^0.35.0",
     "@lexical/link": "^0.35.0",
